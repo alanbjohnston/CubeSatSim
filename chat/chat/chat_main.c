@@ -189,7 +189,7 @@ void *receive(void *arg) {
             exit(EXIT_FAILURE);
         }
 
-        usleep(100000);
+        usleep(25000);
     }
 
     return NULL;
@@ -273,6 +273,8 @@ void *transmit(void *arg) {
             fprintf(stderr, "Failed to post on semaphore with error %s\n", strerror(errno));
             exit(EXIT_FAILURE);
         }
+
+	usleep(200000);
     }
 
     return NULL;
@@ -289,6 +291,12 @@ int get_message(uint8_t *buffer, int avail) {
         instructionsPrinted = 1;
     }
     fgets((char *)buffer, avail, stdin);
+
+    // check for end-of-file (for redirecting stdin)
+    if (feof(stdin)) {
+        buffer[0] = '\n';
+        buffer[1] = 0;
+    }
 
     // If the newline isn't present, the message is too long
 
