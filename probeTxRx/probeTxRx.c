@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <stdint.h>
 
-#include "spi/ax5043spi.h"
+#include "spi/ax5043spi_p.h"
 
 #define AX5043_PWRMODE            (0x002)
 #define AX5043_PWRSTATE_POWERDOWN (0x000)

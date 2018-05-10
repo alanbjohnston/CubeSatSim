@@ -11,12 +11,10 @@
 #include <string.h>
 #include <errno.h>
 
-#include "../ax5043/ax5043init.h"
-#include "../spi/ax5043spi.h"
-#include "../ax5043/ax5043mode.h"
-#include "../ax5043/ax5043rx.h"
-#include "../ax5043/ax5043tx.h"
-#include "../generated/configrx.h"
+#include "../spi/ax5043spi_p.h"
+#include "../ax5043/ax5043mode_p.h"
+#include "../ax5043/ax5043rx_p.h"
+#include "../ax5043/ax5043tx_p.h"
 #include "../generated/configtx.h"
 
 #define MAX_MESSAGE_LENGTH (197)
