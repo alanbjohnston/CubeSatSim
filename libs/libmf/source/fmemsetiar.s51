@@ -1,0 +1,154 @@
+#include "iar_common.h"
+
+	NAME fmemset
+
+	//RTMODEL "__SystemLibrary", "CLib"
+	//RTMODEL "__calling_convention", "idata_reentrant"
+	RTMODEL "__code_model", "near"
+	RTMODEL "__core", "plain"
+	//RTMODEL "__data_model", "small"
+	RTMODEL "__dptr_size", "16"
+	RTMODEL "__extended_stack", "disabled"
+	//RTMODEL "__location_for_constants", "data"
+	RTMODEL "__number_of_dptrs", "1"
+	RTMODEL "__rt_version", "1"
+
+	RSEG DOVERLAY:DATA:NOROOT(0)
+	RSEG IOVERLAY:IDATA:NOROOT(0)
+	RSEG ISTACK:IDATA:NOROOT(0)
+	RSEG PSTACK:XDATA:NOROOT(0)
+	RSEG XSTACK:XDATA:NOROOT(0)
+
+	PUBLIC fmemset
+	FUNCTION fmemset,0203H
+	ARGFRAME ISTACK, 2, STACK
+
+	CFI Names cfiNames0
+	CFI StackFrame CFA_SP SP IDATA
+	CFI StackFrame CFA_PSP16 PSP16 XDATA
+	CFI StackFrame CFA_XSP16 XSP16 XDATA
+	CFI StaticOverlayFrame CFA_IOVERLAY IOVERLAY
+	CFI StaticOverlayFrame CFA_DOVERLAY DOVERLAY
+	CFI Resource `PSW.CY`:1, `B.BR0`:1, `B.BR1`:1, `B.BR2`:1, `B.BR3`:1
+	CFI Resource `B.BR4`:1, `B.BR5`:1, `B.BR6`:1, `B.BR7`:1, `VB.BR8`:1
+	CFI Resource `VB.BR9`:1, `VB.BR10`:1, `VB.BR11`:1, `VB.BR12`:1
+	CFI Resource `VB.BR13`:1, `VB.BR14`:1, `VB.BR15`:1, VB:8, B:8, A:8
+	CFI Resource PSW:8, DPL0:8, DPH0:8, R0:8, R1:8, R2:8, R3:8, R4:8, R5:8
+	CFI Resource R6:8, R7:8, V0:8, V1:8, V2:8, V3:8, V4:8, V5:8, V6:8, V7:8
+	CFI Resource SP:8, PSPH:8, PSPL:8, PSP16:16, XSPH:8, XSPL:8, XSP16:16
+	CFI VirtualResource ?RET:16, ?RET_HIGH:8, ?RET_LOW:8
+	CFI ResourceParts PSP16 PSPH, PSPL
+	CFI ResourceParts XSP16 XSPH, XSPL
+	CFI ResourceParts ?RET ?RET_HIGH, ?RET_LOW
+	CFI EndNames cfiNames0
+
+	CFI Common cfiCommon0 Using cfiNames0
+	CFI CodeAlign 1
+	CFI DataAlign -1
+	CFI ReturnAddress ?RET CODE
+	CFI CFA_DOVERLAY Used
+	CFI CFA_IOVERLAY Used
+	CFI CFA_SP SP+-2
+	CFI CFA_PSP16 PSP16+0
+	CFI CFA_XSP16 XSP16+0
+	CFI `PSW.CY` SameValue
+	CFI `B.BR0` SameValue
+	CFI `B.BR1` SameValue
+	CFI `B.BR2` SameValue
+	CFI `B.BR3` SameValue
+	CFI `B.BR4` SameValue
+	CFI `B.BR5` SameValue
+	CFI `B.BR6` SameValue
+	CFI `B.BR7` SameValue
+	CFI `VB.BR8` SameValue
+	CFI `VB.BR9` SameValue
+	CFI `VB.BR10` SameValue
+	CFI `VB.BR11` SameValue
+	CFI `VB.BR12` SameValue
+	CFI `VB.BR13` SameValue
+	CFI `VB.BR14` SameValue
+	CFI `VB.BR15` SameValue
+	CFI VB SameValue
+	CFI B Undefined
+	CFI A Undefined
+	CFI PSW SameValue
+	CFI DPL0 Undefined
+	CFI DPH0 Undefined
+	CFI R0 Undefined
+	CFI R1 Undefined
+	CFI R2 Undefined
+	CFI R3 Undefined
+	CFI R4 Undefined
+	CFI R5 Undefined
+	CFI R6 SameValue
+	CFI R7 SameValue
+	CFI V0 SameValue
+	CFI V1 SameValue
+	CFI V2 SameValue
+	CFI V3 SameValue
+	CFI V4 SameValue
+	CFI V5 SameValue
+	CFI V6 SameValue
+	CFI V7 SameValue
+	CFI PSPH Undefined
+	CFI PSPL Undefined
+	CFI XSPH Undefined
+	CFI XSPL Undefined
+	CFI ?RET Concat
+	CFI ?RET_HIGH Frame(CFA_SP, 2)
+	CFI ?RET_LOW Frame(CFA_SP, 1)
+	CFI EndCommon cfiCommon0
+
+	RSEG NEAR_CODE:CODE:NOROOT(0)
+	// __reentrantb void fmemset(void __generic *p, char c, uint16_t n) __reentrant
+fmemset:
+	CFI Block cfiBlock0 Using cfiCommon0
+	CFI Function fmemset
+	CODE
+
+AR0	EQU	0
+AR1	EQU	1
+AR2	EQU	2
+AR3	EQU	3
+AR4	EQU	4
+AR5	EQU	5
+AR6	EQU	6
+AR7	EQU	7
+
+	MOV	R0,SP
+	DEC	R0
+	DEC	R0
+	MOV	AR7,@R0
+	DEC	R0
+	MOV	A,@R0
+	MOV	R6,A
+	JNZ	nlownz
+	ORL	A,R7
+	JNZ	nnz
+doret:	RET
+nlownz:	INC	R7
+nnz:	// decide memory space
+	MOV	A,R3
+	JB	ACC.7,doret		// >=0x80 code
+	JNB	ACC.0,xdataptr		// ==0x01 xdata
+idataptr:
+	MOV	A,R4
+idataloop:
+	MOV	@R1,A
+	INC	R1
+	DJNZ	R6,idataloop
+	DJNZ	R7,idataloop
+	RET
+xdataptr:
+	MOV	DPL,R1
+	MOV	DPH,R2
+	MOV	A,R4
+xdataloop:
+	MOVX	@DPTR,A
+	INC	DPTR
+	DJNZ	R6,xdataloop
+	DJNZ	R7,xdataloop
+	RET
+	CFI EndBlock cfiBlock0
+
+	END

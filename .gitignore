@@ -1,0 +1,12 @@
+*.o
+*.a
+radiochat
+radiopiglatin
+testax5043
+testax5043tx
+testax5043rx
+testax5043init
+testax50432freq
+doc/html/
+doc/latex/
+/.metadata/
