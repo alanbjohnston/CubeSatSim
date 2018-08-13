@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name PiHatAx5043-rescue)(type Legacy)(uri ${KIPRJMOD}/PiHatAx5043-rescue.lib)(options "")(descr ""))
+  (lib (name max31725)(type Legacy)(uri /home/jbrandenburg/src/git/maker/kicad/library/max31725.lib)(options "")(descr ""))
+)
