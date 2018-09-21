@@ -65,7 +65,7 @@ int ax25_init(ax25_conf_t *conf, const uint8_t *dest_addr, uint8_t dest_ssid,
     //*out++ = ((0b1111 & dest_ssid) << 1) | 0b01100000;
 
     for (i = 0; i < strnlen((char *) src_addr, AX25_CALLSIGN_MAX_LEN); i++) {
-        *out++ = (uint8_t) (dest_addr[i] << 1);
+        *out++ = (uint8_t) (src_addr[i] << 1);
     }
     for (; i < AX25_CALLSIGN_MAX_LEN; i++) {
         *out++ = ' ' << 1;
