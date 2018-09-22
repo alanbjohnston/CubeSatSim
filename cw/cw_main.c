@@ -42,6 +42,9 @@ int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail);
+int add_dash2(uint8_t *msg, int number, int counter); 
+int add_dot2(uint8_t *msg, int number, int counter); 
+int add_space2(uint8_t *msg, int number, int counter);
 
 static uint8_t on_value = 0xff;
 static uint8_t off_value = 0x00;
@@ -109,6 +112,18 @@ int main(void)
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail) {
 
     int count = 0;
+
+    count = add_dash2(&buffer[0], 1, count);
+    count = add_dot2(&buffer[0], 1, count);
+    count = add_dash2(&buffer[0], 1, count);
+    count = add_dot2(&buffer[0], 1, count);
+    count = add_space2(&buffer[0], 3, count);
+    
+    count = add_dash2(&buffer[0], 2, count);
+    count = add_dot2(&buffer[0], 1, count);
+    count = add_dash2(&buffer[0], 1, count);
+    count = add_space2(&buffer[0], 7, count);
+    count++;
 
     count += encode_digit(&buffer[count], channel);
     count += encode_digit(&buffer[count], upper_digit(val1));
@@ -412,4 +427,72 @@ void config_cw() {
 */    
 	return;
 
+}
+
+
+
+int add_space2(uint8_t *msg, int number, int counter) {
+	int nyb = (int)(counter/2);
+	if (number == 3) {
+		if (nyb*2 == counter) {
+     			msg[nyb] = 0x00;
+			msg[nyb + 1] = 0x00;
+			msg[nyb + 2] = 0x00;
+			msg[nyb + 3 ] = 0xf0;
+		} else {
+			msg[nyb] = msg[nyb] && 0x0f;
+			msg[nyb + 1] = 0x00;
+		}
+		counter += 3;
+	} else if (number == 7) { 
+		if (nyb*2 == counter) {
+     			msg[nyb] = 0x00;
+			msg[nyb + 1] = 0x00;
+			msg[nyb + 2] = 0x00;
+			msg[nyb + 3] = 0x00;
+		} else {
+			msg[nyb] = msg[nyb] && 0x0f;
+			msg[nyb + 1] = 0x00;
+			msg[nyb + 2] = 0x00;
+			msg[nyb + 3] = 0x00;
+		}	
+		counter += 7;
+	}
+	else { 
+		printf("ERROR: Add space not 3 or 7\n");
+	}
+	return counter;	
+}
+
+int add_dash2(uint8_t *msg, int number, int counter) {
+	int nyb = (int)(counter/2);
+
+	int j;
+	for (j=0; j < number; j++) {
+		if (nyb*2 == counter) {
+     			msg[nyb] = 0xff;
+			msg[nyb + 1] = 0x0f;
+		} else {
+			msg[nyb] = msg[nyb]  ||  0xf0;
+			msg[nyb + 1] = 0xff;
+			msg[nyb + 2] = 0x00;
+		}
+		counter += 4;
+	}
+	return counter;	
+}
+
+int add_dot2(uint8_t *msg, int number, int counter) {
+	int nyb = (int)(counter/2);
+	int j;
+	for (j=0; j < number; j++) {
+		if (nyb*2 == counter) {
+     			msg[nyb] = 0x0f;
+		} else {
+			msg[nyb] = msg[nyb] || 0xf0;
+			msg[nyb + 1] = 0x00;
+		}
+		counter += 2;
+	}
+	return counter;	
 }
