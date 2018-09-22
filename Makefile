@@ -53,7 +53,7 @@ radiochat: libax5043.a
 radiochat: chat/chat_main.o
 	gcc -o radiochat -pthread -L./ chat/chat_main.o -lwiringPi -lax5043
 
-raiocw: libax5043.a
+radiocw: libax5043.a
 radiocw: cw/cw_main.o
 	gcc -o radiocw -pthread -L./ cw/cw_main.o -lwiringPi -lax5043
 
