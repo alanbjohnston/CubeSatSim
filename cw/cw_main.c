@@ -31,11 +31,17 @@
 #define MAX_MESSAGE_LENGTH (197)
 
 extern uint8_t axradio_rxbuffer[];
-
-void *receive(void *arg);
 void *transmit(void *arg);
-size_t get_message(uint8_t *buffer, size_t avail);
-
+int get_message(uint8_t *buffer, int avail);
+int get_cw(uint8_t *buffer, int avail);
+int add_dot(uint8_t *msg, int number);
+int add_dash(uint8_t *msg, int number);
+int add_space(uint8_t *msg, int number);
+int lower_digit(int number);
+int upper_digit(int number);
+int encode_digit(uint8_t *msg, int number);
+void config_cw();
+ 
 enum RadioState {UnknownState, RxState, TxState};
 enum RadioState currentState = UnknownState;
 
@@ -43,6 +49,11 @@ enum ReceiveState {WaitingForNewPacket, WaitingForPacketCounter1,
    WaitingForPacketCounter2, WaitingForMessageLength1,
    WaitingForMessageLength2, WaitingForMessage,
    WaitingForChecksum1, WaitingForChecksum2};
+
+static uint8_t on_value = 0xff;
+static uint8_t off_value = 0x00;
+int spacing = 1;  // integer number of octets for a dot
+
 
 int main(void)
 {
@@ -75,14 +86,6 @@ int main(void)
         exit(EXIT_FAILURE);
     }
 
-
-    pthread_t receive_thread;
-    result = pthread_create(&receive_thread, NULL, receive, (void *)&ax5043_sem);
-    if (result != 0) {
-        fprintf(stderr, "ERROR: Unable to spawn receive thread with error %s\n", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-
     pthread_t transmit_thread;
     result = pthread_create(&transmit_thread, NULL, transmit, (void *)&ax5043_sem);
     if (result != 0) {
@@ -103,154 +106,33 @@ int main(void)
     return 0;
 }
 
-void *receive(void *arg) {
-    sem_t *sem;
-    sem = (sem_t *)arg;
-
-    uint8_t retVal;
-    uint16_t packetNumber;
-    uint16_t messageLength;
-    uint16_t checksum;
-    char ch;
-
-    enum ReceiveState currentReceiveState = WaitingForNewPacket;
-
-    for (;;) {
-        int result;
-
-        result = sem_wait(sem);
-        if (result != 0) {
-            fprintf(stderr, "Failed to wait on semaphore with error %s\n", strerror(errno));
-            exit(EXIT_FAILURE);
-        }
-
-
-        // Enter receive mode only if not already in receive mode
-        if (currentState != RxState) {
-            retVal = mode_rx();
-            if (retVal != AXRADIO_ERR_NOERROR) {
-                fprintf(stderr, "ERROR: Unable to enter RX mode\n");
-                exit(EXIT_FAILURE);
-            }
-            currentState = RxState;
-        }
-
-        retVal = receive_packet();
-        if (retVal > 0) {
-            uint8_t counter = 0;
-            while (retVal-- > 0) {
-                switch(currentReceiveState) {
-                case WaitingForNewPacket:
-                    printf("Pkt Len: %d ", (int)axradio_rxbuffer[counter++]);
-                    currentReceiveState = WaitingForPacketCounter1;
-                    break;
-                case WaitingForPacketCounter1:
-                    packetNumber =  (int)axradio_rxbuffer[counter++];
-                    currentReceiveState = WaitingForPacketCounter2;
-                    break;
-                case WaitingForPacketCounter2:
-                    packetNumber |= (uint16_t)(axradio_rxbuffer[counter++] << 8);
-                    printf("Pkt Num: %d ", (int)packetNumber);
-                    currentReceiveState = WaitingForMessageLength1;
-                    break;
-                case WaitingForMessageLength1:
-                    messageLength =  (int)axradio_rxbuffer[counter++];
-                    currentReceiveState = WaitingForMessageLength2;
-                    break;
-                case WaitingForMessageLength2:
-                    messageLength |= (uint16_t)(axradio_rxbuffer[counter++] << 8);
-                    printf("Msg Len: %d ", (int)messageLength);
-                    currentReceiveState = WaitingForMessage;
-                    break;
-                case WaitingForMessage:
-                    ch = (char)axradio_rxbuffer[counter++];
-                    if (ch != '\n') {
-                        printf("%c", ch);
-                    }
-                    else {
-                        printf(" ");
-                        currentReceiveState = WaitingForChecksum1;
-                    }
-                    break;
-                case WaitingForChecksum1:
-                    checksum =  (int)axradio_rxbuffer[counter++];
-                    currentReceiveState = WaitingForChecksum2;
-                    break;
-                case WaitingForChecksum2:
-                    checksum |= (uint16_t)(axradio_rxbuffer[counter++] << 8);
-                    printf("(Chksum: %d)\n", (int)checksum);
-                    currentReceiveState = WaitingForNewPacket;
-                    break;
-                default:
-                    fprintf(stderr, "ERROR: Unknown state in receive state machine\n");
-                    exit(EXIT_FAILURE);
-                    break;
-                }
-            }
-
-            fflush(stdout);
-
-        }
-
-        result = sem_post(sem);
-        if (result != 0) {
-            fprintf(stderr, "Failed to post on semaphore with error %s\n", strerror(errno));
-            exit(EXIT_FAILURE);
-        }
-
-        usleep(25000);
-    }
-
-    return NULL;
-}
-
 void *transmit(void *arg) {
     sem_t *sem;
     sem = (sem_t *)arg;
 
     uint8_t retVal;
+/*
+        int x;
+	for (x = 0; x < 0x20; x++)
+        {
+                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
+        }
 
-    for (;;) {
+        printf("Register Dump complete");
+*/    
+     for (;;) {
         int result;
 
         // allocate space for the buffer
         static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
-        uint16_t pkt_counter;
+        //uint16_t pkt_counter;
 
-        ++pkt_counter;
+       // ++pkt_counter;
+        
+     
+	int reserved_space = 0;
 
-        // Calculate the number of reserved bytes at the beginning of the packet
-        size_t reserved_space = 0;
-
-        // if transmitting a packet counter, reserve two bytes
-        if (framing_insert_counter) {
-            reserved_space += 2;
-        }
-
-        // reserve two bytes for the overall length of the packet including the
-        // packet counter, if present, and the field containing the length
-        reserved_space += 2;
-
-        // get a message to transmit.
-        size_t msg_length = get_message(&packet[reserved_space], (MAX_MESSAGE_LENGTH + 1) - reserved_space);
-
-        // if message consists only of a newline, terminate
-        if (msg_length <= 1) {
-            break;
-        }
-
-        if (framing_insert_counter) {
-            packet[framing_counter_pos] = (uint8_t)(pkt_counter & 0xFF);
-            packet[framing_counter_pos+1] = (uint8_t)((pkt_counter>>8) & 0xFF);
-
-            // include the message length
-            packet[framing_counter_pos+2] = msg_length & 0xFF ;
-            packet[framing_counter_pos+3] = (msg_length>>8) & 0xFF;
-        }
-        else { // only include the message length
-            packet[framing_counter_pos] = msg_length & 0xFF ;
-            packet[framing_counter_pos+1] = (msg_length>>8) & 0xFF;
-        }
+        int msg_length = get_cw(&packet[reserved_space], (MAX_MESSAGE_LENGTH + 1) - reserved_space);
 
         result = sem_wait(sem);
         if (result != 0) {
@@ -268,13 +150,75 @@ void *transmit(void *arg) {
             currentState = TxState;
         }
 
-        //printf("INFO: Sending another packet...\n");
-        //printf("DEBUG: msg_length = %d\n", msg_length);
-        //printf("DEBUG: reserved_space = %d\n", reserved_space);
-        retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length + reserved_space));
-        if (retVal != AXRADIO_ERR_NOERROR) {
-            fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-            exit(EXIT_FAILURE);
+        printf("INFO: Sending another packet...\n");
+        printf("DEBUG: msg_length = %d\n", msg_length);
+        printf("DEBUG: reserved_space = %d\n", reserved_space);
+
+	while(1) {
+
+/*
+        int x;
+        for (x = 0; x < 0x20; x++)
+        {
+                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
+        }
+
+        printf("Register Dump complete");
+*/
+
+/*
+        printf("Register write to clear framing and crc\n");
+	ax5043WriteReg(0x12,0);
+
+        printf("Register write to disable fec\n");
+	ax5043WriteReg(0x18,0);
+
+        printf("Register write \n");
+	ax5043WriteReg(0x165,0);
+
+	ax5043WriteReg(0x166,0);
+	ax5043WriteReg(0x167,0x50); // 0x08); // 0x20);
+	
+	ax5043WriteReg(0x161,0);
+	ax5043WriteReg(0x162,0x20);
+	
+	long txRate;
+	txRate = ax5043ReadReg(0x167) + 256 * ax5043ReadReg(0x166) + 65536 * ax5043ReadReg(0x165);
+	printf("Tx Rate %x %x %x \n", ax5043ReadReg(0x165), ax5043ReadReg(0x166), ax5043ReadReg(0x167)); 
+	long fskDev;
+	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
+
+	ax5043WriteReg(0x37,(ax5043ReadReg(0x37) + 4));  // Increase FREQA
+
+	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
+	
+	ax5043WriteReg(0x10,0);	// ASK
+
+	printf("Modulation: %x \n", (int)ax5043ReadReg(0x10));
+	printf("Frequency A: 0x%x %x %x %x \n",(int)ax5043ReadReg(0x34),(int)ax5043ReadReg(0x35),(int)ax5043ReadReg(0x36),(int)ax5043ReadReg(0x37));
+*/
+
+/* HERE */
+
+/*
+        int x;
+	for (x = 0; x < 0x20; x++)
+        {
+                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
+        }
+
+        printf("Register Dump complete");
+*/    
+
+		config_cw();
+
+        	retVal = transmit_packet(&remoteaddr_tx, packet, msg_length + reserved_space);
+        	if (retVal != AXRADIO_ERR_NOERROR) {
+            		fprintf(stderr, "ERROR: Unable to transmit a packet\n");
+            	exit(EXIT_FAILURE);
+		}
+	sleep(10);
+
         }
 
         result = sem_post(sem);
@@ -289,40 +233,281 @@ void *transmit(void *arg) {
     return NULL;
 }
 
-size_t get_message(uint8_t *buffer, size_t avail) {
+int get_cw(uint8_t *buffer, int avail) {
 
-    static int instructionsPrinted = 0;
+    int count = 0;
+/*
+count += add_space(&buffer[count], 10);
 
-    // obtain a line of text. We state the message is limited to avail-2 to
-    // leave space for the newline and the null terminator
-    if (!instructionsPrinted) {
-        printf("Please enter your message, up to %d characters\n   (empty message to terminate the program):\n", (int)(avail-2));
-        instructionsPrinted = 1;
+count += add_dash(&buffer[count], 1);		// c 
+count += add_dot(&buffer[count], 1);		
+count += add_dash(&buffer[count], 1);		 
+count += add_dot(&buffer[count], 1);		
+count += add_space(&buffer[count], 3);
+   
+count += add_dash(&buffer[count], 2);		// q 
+count += add_dot(&buffer[count], 1);		 
+count += add_dash(&buffer[count], 1);		
+count += add_space(&buffer[count], 7);
+ 
+count += add_dot(&buffer[count], 4);		// h
+count += add_space(&buffer[count], 3);
+
+count += add_dot(&buffer[count], 2);		// i
+count += add_space(&buffer[count], 7);
+
+count += add_dot(&buffer[count], 4);		// h
+count += add_space(&buffer[count], 3);
+
+count += add_dot(&buffer[count], 2);		// i
+count += add_space(&buffer[count], 7);
+*/
+
+int tlm_1a = 42;
+int tlm_1b = 35;
+
+count += encode_digit(&buffer[count], 1);
+count += encode_digit(&buffer[count], upper_digit(tlm_1a));
+count += encode_digit(&buffer[count], lower_digit(tlm_1a));
+
+count += add_space(&buffer[count], 7);
+
+count += encode_digit(&buffer[count], 1);
+count += encode_digit(&buffer[count], upper_digit(tlm_1b));
+count += encode_digit(&buffer[count], lower_digit(tlm_1b));
+
+count += add_space(&buffer[count], 14);
+
+count += encode_digit(&buffer[count], 1);
+count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
+count += encode_digit(&buffer[count], lower_digit(tlm_1a));
+
+count += add_space(&buffer[count], 7);
+/*
+count += encode_digit(&buffer[count], 1);
+count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
+count += encode_digit(&buffer[count], lower_digit(tlm_1b));
+
+count += add_space(&buffer[count], 14);
+
+count += encode_digit(&buffer[count], 2);
+count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
+count += encode_digit(&buffer[count], lower_digit(tlm_1a));
+
+count += add_space(&buffer[count], 7);
+
+count += encode_digit(&buffer[count], 2);
+count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
+count += encode_digit(&buffer[count], lower_digit(tlm_1b));
+
+count += add_space(&buffer[count], 14);
+
+count += encode_digit(&buffer[count], 2);
+count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
+count += encode_digit(&buffer[count], lower_digit(tlm_1a));
+
+count += add_space(&buffer[count], 7);
+
+count += encode_digit(&buffer[count], 2);
+count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
+count += encode_digit(&buffer[count], lower_digit(tlm_1b));
+
+count += add_space(&buffer[count], 14);
+
+*/
+    printf("DEBUG count: %d avail: %d \n", count, avail);
+    if (count > avail) {
+    	buffer[avail-1] = 0;
+    	count = avail-1;
+	printf("DEBUG count > avail!\n");
     }
-    fgets((char *)buffer, (int)avail, stdin);
+   // printf("DEBUG get_cw: ***%s***\n", buffer);
 
-    // check for end-of-file (for redirecting stdin)
-    if (feof(stdin)) {
-        buffer[0] = '\n';
-        buffer[1] = 0;
-    }
+    //return strlen((char *)buffer);
+    return count;
+}
 
-    // If the newline isn't present, the message is too long
+int add_dash(uint8_t *msg, int number) {
+	int counter = 0;
+	int i,j;
+	for (j=0; j < number; j++) {
+		for (i=0; i < spacing * 3; i++) {
+			msg[counter++] = on_value;
+		}
+		counter += add_space(&msg[counter], 1);
+	}
+	return counter;
+}
 
-    //printf("DEBUG: ***%s***\n", buffer);
+int add_dot(uint8_t *msg, int number) {
+	int counter = 0;
+	int i,j;
+	for (j=0; j < number; j++) {
+		for (i=0; i < spacing; i++) {
+			msg[counter++] = on_value;
+		}
 
-    if (buffer[strlen((char *)buffer) - 1] != '\n') {
-        buffer[strlen((char *)buffer) - 1] = '\n';
-        printf("WARNING: message too long. It will be truncated to\n%s", (char *)buffer);
+		counter += add_space(&msg[counter], 1);
+	}
+	return counter;
+}
 
-        // If the newline isn't in the buffer, read characters from the keyboard buffer to the newline
-        int c;
-        do {
-            c = getchar();
-        } while (c != '\n' && c != EOF);
-    }
+int add_space(uint8_t *msg, int number) {
+	int j;
+	int counter = 0;
+	for (j=0; j < number * spacing; j++) {
+		msg[counter++] = off_value;
+	}
+	return counter;
+}
 
-    //printf("DEBUG: ***%s***\n", buffer);
+int encode_digit(uint8_t *buffer, int digit) {
+	int count = 0;
+	switch(digit)
 
-    return strlen((char *)buffer);
+	{
+		case 0:
+			count += add_dash(&buffer[count], 5);		// 0
+			count += add_space(&buffer[count], 3);
+
+			break;
+
+		case 1:
+			count += add_dot(&buffer[count], 1);		// 1
+			count += add_dash(&buffer[count], 4);		
+			count += add_space(&buffer[count], 3);
+    
+			break;
+
+		case 2:
+			count += add_dot(&buffer[count], 2);		// 2
+			count += add_dash(&buffer[count], 3);		
+			count += add_space(&buffer[count], 3);
+
+			break;
+
+		case 3:
+			count += add_dot(&buffer[count], 3);		// 3
+			count += add_dash(&buffer[count], 2);		
+			count += add_space(&buffer[count], 3);
+			
+			break;
+
+		case 4:
+			count += add_dot(&buffer[count], 4);		// 4
+			count += add_dash(&buffer[count], 1);		
+			count += add_space(&buffer[count], 3);
+			
+			break;
+
+		case 5:
+			count += add_dot(&buffer[count], 5);		// 5
+			count += add_space(&buffer[count], 3);
+			
+			break;
+
+		case 6:
+			count += add_dash(&buffer[count], 1);		// 6
+			count += add_dot(&buffer[count], 4);		
+			count += add_space(&buffer[count], 3);
+			
+			break;
+
+		case 7:
+
+			count += add_dash(&buffer[count], 2);		// 7
+			count += add_dot(&buffer[count], 3);		
+			count += add_space(&buffer[count], 3);
+
+			break;
+
+		case 8:
+			count += add_dash(&buffer[count], 3);		// 8
+			count += add_dot(&buffer[count], 2);		
+			count += add_space(&buffer[count], 3);
+
+			break;
+
+		case 9:
+			count += add_dash(&buffer[count], 4);		// 9
+			count += add_dot(&buffer[count], 1);		
+			count += add_space(&buffer[count], 3);
+		
+			break;
+
+		default:
+			printf("ERROR: Not a digit!\n");
+			return 0;
+	}
+	return count;
+}
+int lower_digit(int number) {
+
+	int digit = 0;
+
+	if (number < 100) 
+		digit = number - ((int)(number/10) * 10);
+	else
+		printf("ERROR: Not a digit in lower_digit!\n");
+
+	return digit;
+}
+
+int upper_digit(int number) {
+
+	int digit = 0;
+
+	if (number < 100) 
+		digit = (int)(number/10);
+	else
+		printf("ERROR: Not a digit in upper_digit!\n");
+
+	return digit;
+}
+
+void config_cw() {
+
+        printf("Register write to clear framing and crc\n");
+	ax5043WriteReg(0x12,0);
+
+        printf("Register write to disable fec\n");
+	ax5043WriteReg(0x18,0);
+
+        printf("Register write \n");
+	ax5043WriteReg(0x165,0);
+
+	ax5043WriteReg(0x166,0);
+	ax5043WriteReg(0x167,0x50); // 0x08); // 0x20);
+	
+	ax5043WriteReg(0x161,0);
+	ax5043WriteReg(0x162,0x20);
+	
+	long txRate;
+	txRate = ax5043ReadReg(0x167) + 256 * ax5043ReadReg(0x166) + 65536 * ax5043ReadReg(0x165);
+	printf("Tx Rate %x %x %x \n", ax5043ReadReg(0x165), ax5043ReadReg(0x166), ax5043ReadReg(0x167)); 
+	long fskDev;
+	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
+
+	ax5043WriteReg(0x37,(ax5043ReadReg(0x37) + 4));  // Increase FREQA
+
+	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
+	
+	ax5043WriteReg(0x10,0);	// ASK
+
+	printf("Modulation: %x \n", (int)ax5043ReadReg(0x10));
+	printf("Frequency A: 0x%x %x %x %x \n",(int)ax5043ReadReg(0x34),(int)ax5043ReadReg(0x35),(int)ax5043ReadReg(0x36),(int)ax5043ReadReg(0x37));
+
+/* HERE */
+
+/*
+        int x;
+	for (x = 0; x < 0x20; x++)
+        {
+                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
+        }
+
+        printf("Register Dump complete");
+*/    
+	return;
+
 }
