@@ -80,7 +80,10 @@ int main(void)
      
     int reserved_space = 0;
 
-    int msg_length = get_cw(&packet[reserved_space],
+//    int msg_length = get_cw(&packet[reserved_space],
+//			 (MAX_MESSAGE_LENGTH + 1) - reserved_space);
+
+    int msg_length = encode_tlm(&packet[reserved_space], 1, 12, 34, 56,78,
 			 (MAX_MESSAGE_LENGTH + 1) - reserved_space);
 
     printf("INFO: Sending another packet...\n");
