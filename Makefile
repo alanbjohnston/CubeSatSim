@@ -6,6 +6,7 @@ all: testax5043tx
 all: testax50432freq
 all: testax5043init
 all: testafsktx
+all: radioafsk 
 
 rebuild: clean
 rebuild: all
@@ -19,6 +20,7 @@ clean:
 	rm -f testax5043tx
 	rm -f testax50432freq
 	rm -f testax5043init
+	rm -f radioafsk
 	rm -f testafsktx
 	rm -f libax5043.a
 	rm -f */*.o
@@ -74,6 +76,13 @@ testafsktx: afsktx/ax25.o
 testafsktx: afsktx/ax5043.o
 testafsktx: afsktx/main.o
 	gcc -o testafsktx -L./ afsktx/ax25.o afsktx/ax5043.o afsktx/main.o -lwiringPi -lax5043
+
+radioafsk: libax5043.a
+radioafsk: afsk/ax25.o
+radioafsk: afsk/ax5043.o
+radioafsk: afsk/main.o
+	gcc -o radioafsk -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043
+
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
@@ -271,4 +280,26 @@ afsktx/main.o: afsktx/ax5043.h
 afsktx/main.o: afsktx/ax25.h
 afsktx/main.o: ax5043/spi/ax5043spi.h
 	cd afsktx; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
+
+afsk/ax25.o: afsk/ax25.c
+afsk/ax25.o: afsk/ax25.h
+afsk/ax25.o: afsk/ax5043.h
+afsk/ax25.o: afsk/status.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax25.c; cd ..
+
+afsk/ax5043.o: afsk/ax5043.c
+afsk/ax5043.o: afsk/ax25.h
+afsk/ax5043.o: afsk/ax5043.h
+afsk/ax5043.o: afsk/status.h
+afsk/ax5043.o: afsk/utils.h
+afsk/ax5043.o: ax5043/spi/ax5043spi.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax5043.c; cd ..
+
+afsk/main.o: afsk/main.c
+afsk/main.o: afsk/status.h
+afsk/main.o: afsk/ax5043.h
+afsk/main.o: afsk/ax25.h
+afsk/main.o: ax5043/spi/ax5043spi.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
+
 
