@@ -41,7 +41,8 @@ int lower_digit(int number);
 int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
- 
+int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail);
+
 static uint8_t on_value = 0xff;
 static uint8_t off_value = 0x00;
 int spacing = 1;  // integer number of octets for a dot
@@ -100,6 +101,37 @@ int main(void)
 
 	usleep(200000);
     }
+}
+
+int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail) {
+
+    int count = 0;
+
+    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], upper_digit(val1));
+    count += encode_digit(&buffer[count], lower_digit(val1));
+
+    count += add_space(&buffer[count], 7);
+
+    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], upper_digit(val2));
+    count += encode_digit(&buffer[count], lower_digit(val2));
+
+    count += add_space(&buffer[count], 14);
+
+    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], upper_digit(val3));
+    count += encode_digit(&buffer[count], lower_digit(val3));
+
+    count += add_space(&buffer[count], 7);
+
+    printf("DEBUG count: %d avail: %d \n", count, avail);
+    if (count > avail) {
+       buffer[avail-1] = 0;
+       count = avail-1;
+       printf("DEBUG count > avail!\n");
+    }
+return count;
 }
 
 int get_cw(uint8_t *buffer, int avail) {
