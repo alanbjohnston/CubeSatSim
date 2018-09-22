@@ -7,6 +7,7 @@ all: testax50432freq
 all: testax5043init
 all: testafsktx
 all: radioafsk 
+all: radiocw 
 
 rebuild: clean
 rebuild: all
@@ -14,7 +15,8 @@ rebuild: all
 lib: libax5043.a
 
 clean:
-	rm -f radiochat
+	rm -f radiochat	
+	rm -f radiocw
 	rm -f radiopiglatin
 	rm -f testax5043rx
 	rm -f testax5043tx
@@ -50,6 +52,10 @@ libax5043.a: ax5043/spi/ax5043spi.o
 radiochat: libax5043.a
 radiochat: chat/chat_main.o
 	gcc -o radiochat -pthread -L./ chat/chat_main.o -lwiringPi -lax5043
+
+raiocw: libax5043.a
+radiocw: cw/cw_main.o
+	gcc -o radiocw -pthread -L./ cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -202,6 +208,20 @@ chat/chat_main.o: ax5043/axradio/axradiotx.h
 chat/chat_main.o: ax5043/axradio/axradiotx_p.h
 chat/chat_main.o: ax5043/generated/configtx.h
 	cd chat; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c chat_main.c; cd ..
+
+cw/cw_main.o: cw/cw_main.c
+cw/cw_main.o: ax5043/spi/ax5043spi.h
+cw/cw_main.o: ax5043/spi/ax5043spi_p.h
+cw/cw_main.o: ax5043/axradio/axradioinit.h
+cw/cw_main.o: ax5043/axradio/axradioinit_p.h
+cw/cw_main.o: ax5043/axradio/axradiomode.h
+cw/cw_main.o: ax5043/axradio/axradiomode_p.h
+cw/cw_main.o: ax5043/axradio/axradiorx.h
+cw/cw_main.o: ax5043/axradio/axradiorx_p.h
+cw/cw_main.o: ax5043/axradio/axradiotx.h
+cw/cw_main.o: ax5043/axradio/axradiotx_p.h
+cw/cw_main.o: ax5043/generated/configtx.h
+	cd cw; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c cw_main.c; cd ..
 
 piglatin/piglatin_main.o: piglatin/piglatin_main.c
 piglatin/piglatin_main.o: ax5043/spi/ax5043spi.h
