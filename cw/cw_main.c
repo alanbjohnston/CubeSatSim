@@ -188,7 +188,7 @@ void *transmit(void *arg) {
 	long fskDev;
 	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
 
-	ax5043WriteReg(0x37,(ax5043ReadReg(0x37) + 4));  // Increase FREQA
+	ax5043WriteReg(0x37,(uint8_t)((ax5043ReadReg(0x37) + 4)));  // Increase FREQA
 
 	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
 	
@@ -212,12 +212,12 @@ void *transmit(void *arg) {
 
 		config_cw();
 
-        	retVal = transmit_packet(&remoteaddr_tx, packet, msg_length + reserved_space);
+        	retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length + reserved_space));
         	if (retVal != AXRADIO_ERR_NOERROR) {
             		fprintf(stderr, "ERROR: Unable to transmit a packet\n");
             	exit(EXIT_FAILURE);
 		}
-	sleep(10);
+	sleep(1);
 
         }
 
@@ -488,7 +488,7 @@ void config_cw() {
 	long fskDev;
 	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
 
-	ax5043WriteReg(0x37,(ax5043ReadReg(0x37) + 4));  // Increase FREQA
+	ax5043WriteReg(0x37,(uint8_t)((ax5043ReadReg(0x37) + 4)));  // Increase FREQA
 
 	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
 	
