@@ -42,18 +42,9 @@ int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
  
-enum RadioState {UnknownState, RxState, TxState};
-enum RadioState currentState = UnknownState;
-
-enum ReceiveState {WaitingForNewPacket, WaitingForPacketCounter1,
-   WaitingForPacketCounter2, WaitingForMessageLength1,
-   WaitingForMessageLength2, WaitingForMessage,
-   WaitingForChecksum1, WaitingForChecksum2};
-
 static uint8_t on_value = 0xff;
 static uint8_t off_value = 0x00;
 int spacing = 1;  // integer number of octets for a dot
-
 
 int main(void)
 {
@@ -83,39 +74,32 @@ int main(void)
          exit(EXIT_FAILURE);
     }
 
-     for (;;) {
-
-        // allocate space for the buffer
-        static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
-        //uint16_t pkt_counter;
-
-       // ++pkt_counter;
-        
+    // allocate space for the buffer
+    static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
-	int reserved_space = 0;
+    int reserved_space = 0;
 
-        int msg_length = get_cw(&packet[reserved_space], (MAX_MESSAGE_LENGTH + 1) - reserved_space);
+    int msg_length = get_cw(&packet[reserved_space],
+			 (MAX_MESSAGE_LENGTH + 1) - reserved_space);
 
-        printf("INFO: Sending another packet...\n");
-        printf("DEBUG: msg_length = %d\n", msg_length);
-        printf("DEBUG: reserved_space = %d\n", reserved_space);
+    printf("INFO: Sending another packet...\n");
+    printf("DEBUG: msg_length = %d\n", msg_length);
+    printf("DEBUG: reserved_space = %d\n", reserved_space);
 
-	while(1) {
+    while(1) {
 
 	config_cw();
 
-    retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length + reserved_space));
-    if (retVal != AXRADIO_ERR_NOERROR) {
-         fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-    exit(EXIT_FAILURE);
-		}
-	  sleep(1);
+        retVal = transmit_packet(&remoteaddr_tx, packet,
+			 (uint16_t)(msg_length + reserved_space));
+        if (retVal != AXRADIO_ERR_NOERROR) {
+            fprintf(stderr, "ERROR: Unable to transmit a packet\n");
+            exit(EXIT_FAILURE);
+	}
+	sleep(1);
 
-        }
 	usleep(200000);
     }
-
-   
 }
 
 int get_cw(uint8_t *buffer, int avail) {
