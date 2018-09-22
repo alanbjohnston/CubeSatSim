@@ -42,9 +42,9 @@ int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail);
-int add_dash2(uint8_t *msg, int number, int counter); 
-int add_dot2(uint8_t *msg, int number, int counter); 
-int add_space2(uint8_t *msg, int number, int counter);
+int add_dash2(uint8_t *msg, int number); 
+int add_dot2(uint8_t *msg, int number); 
+int add_space2(uint8_t *msg);
 
 static uint8_t on_value = 0xff;
 static uint8_t off_value = 0x00;
@@ -103,7 +103,7 @@ int main(void)
             fprintf(stderr, "ERROR: Unable to transmit a packet\n");
             exit(EXIT_FAILURE);
 	}
-	sleep(1);
+//	sleep(1);
 
 	usleep(200000);
     }
@@ -113,18 +113,22 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
 
     int count = 0;
 
-    count = add_dash2(&buffer[0], 1, count);
-    count = add_dot2(&buffer[0], 1, count);
-    count = add_dash2(&buffer[0], 1, count);
-    count = add_dot2(&buffer[0], 1, count);
-    count = add_space2(&buffer[0], 3, count);
+    count += add_space2(&buffer[count]);
     
-    count = add_dash2(&buffer[0], 2, count);
-    count = add_dot2(&buffer[0], 1, count);
-    count = add_dash2(&buffer[0], 1, count);
-    count = add_space2(&buffer[0], 7, count);
-    count++;
+    count += add_dash2(&buffer[count], 1);
+    count += add_dot2(&buffer[count], 1);
+    count += add_dash2(&buffer[count], 1);
+    count += add_dot2(&buffer[count], 1);
 
+    count += add_space2(&buffer[count]);
+    
+    count += add_dash2(&buffer[count], 2);
+    count += add_dot2(&buffer[count], 1);
+    count += add_dash2(&buffer[count], 1);
+    count += add_space2(&buffer[count]);
+
+    count++;
+/*
     count += encode_digit(&buffer[count], channel);
     count += encode_digit(&buffer[count], upper_digit(val1));
     count += encode_digit(&buffer[count], lower_digit(val1));
@@ -142,7 +146,7 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
     count += encode_digit(&buffer[count], lower_digit(val3));
 
     count += add_space(&buffer[count], 7);
-
+*/
     printf("DEBUG count: %d avail: %d \n", count, avail);
     if (count > avail) {
        buffer[avail-1] = 0;
@@ -396,7 +400,7 @@ void config_cw() {
 	ax5043WriteReg(0x165,0);
 
 	ax5043WriteReg(0x166,0);
-	ax5043WriteReg(0x167,0x50); // 0x08); // 0x20);
+	ax5043WriteReg(0x167,0x25); // 0x50); // 0x08); // 0x20);
 	
 	ax5043WriteReg(0x161,0);
 	ax5043WriteReg(0x162,0x20);
@@ -430,69 +434,27 @@ void config_cw() {
 }
 
 
+int add_space2(uint8_t *msg) {
+    	msg[0] = 0x00;
+	return 1;	
+}
 
-int add_space2(uint8_t *msg, int number, int counter) {
-	int nyb = (int)(counter/2);
-	if (number == 3) {
-		if (nyb*2 == counter) {
-     			msg[nyb] = 0x00;
-			msg[nyb + 1] = 0x00;
-			msg[nyb + 2] = 0x00;
-			msg[nyb + 3 ] = 0xf0;
-		} else {
-			msg[nyb] = msg[nyb] && 0x0f;
-			msg[nyb + 1] = 0x00;
-		}
-		counter += 3;
-	} else if (number == 7) { 
-		if (nyb*2 == counter) {
-     			msg[nyb] = 0x00;
-			msg[nyb + 1] = 0x00;
-			msg[nyb + 2] = 0x00;
-			msg[nyb + 3] = 0x00;
-		} else {
-			msg[nyb] = msg[nyb] && 0x0f;
-			msg[nyb + 1] = 0x00;
-			msg[nyb + 2] = 0x00;
-			msg[nyb + 3] = 0x00;
-		}	
-		counter += 7;
-	}
-	else { 
-		printf("ERROR: Add space not 3 or 7\n");
+int add_dash2(uint8_t *msg, int number) {
+	int j;
+	int counter = 0;
+
+	for (j=0; j < number; j++) {
+     		msg[counter++] = 0xff;
+		msg[counter++] = 0x0f;
 	}
 	return counter;	
 }
 
-int add_dash2(uint8_t *msg, int number, int counter) {
-	int nyb = (int)(counter/2);
-
+int add_dot2(uint8_t *msg, int number) {
+	int counter = 0;
 	int j;
 	for (j=0; j < number; j++) {
-		if (nyb*2 == counter) {
-     			msg[nyb] = 0xff;
-			msg[nyb + 1] = 0x0f;
-		} else {
-			msg[nyb] = msg[nyb]  ||  0xf0;
-			msg[nyb + 1] = 0xff;
-			msg[nyb + 2] = 0x00;
-		}
-		counter += 4;
-	}
-	return counter;	
-}
-
-int add_dot2(uint8_t *msg, int number, int counter) {
-	int nyb = (int)(counter/2);
-	int j;
-	for (j=0; j < number; j++) {
-		if (nyb*2 == counter) {
-     			msg[nyb] = 0x0f;
-		} else {
-			msg[nyb] = msg[nyb] || 0xf0;
-			msg[nyb + 1] = 0x00;
-		}
-		counter += 2;
+     		msg[counter++] = 0x0f;
 	}
 	return counter;	
 }
