@@ -13,7 +13,6 @@
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-
 #include <axradio/axradioinit_p.h>
 #include <axradio/axradiomode_p.h>
 #include <axradio/axradiorx_p.h>
@@ -78,51 +77,13 @@ int main(void)
 
     printf("INFO: Found and initialized AX5043\n");
 
-    int result;
-
-    sem_t ax5043_sem;
-    result = sem_init(&ax5043_sem, 0, 1);
-    if (result != 0) {
-        fprintf(stderr, "ERROR: Unable to create semaphore with error %s\n", strerror(errno));
-        exit(EXIT_FAILURE);
+    retVal = mode_tx();
+    if (retVal != AXRADIO_ERR_NOERROR) {
+         fprintf(stderr, "ERROR: Unable to enter TX mode\n");
+         exit(EXIT_FAILURE);
     }
 
-    pthread_t transmit_thread;
-    result = pthread_create(&transmit_thread, NULL, transmit, (void *)&ax5043_sem);
-    if (result != 0) {
-        fprintf(stderr, "ERROR: Unable to spawn transmit thread with error %s\n", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-
-
-    void *transmit_result;
-    result = pthread_join(transmit_thread, &transmit_result);
-    if (result != 0) {
-        fprintf(stderr, "ERROR: Unable to wait for transmit thread to finish with error %s\n", strerror(errno));
-        exit(EXIT_FAILURE);
-    }
-
-    sem_destroy(&ax5043_sem);
-
-    return 0;
-}
-
-void *transmit(void *arg) {
-    sem_t *sem;
-    sem = (sem_t *)arg;
-
-    uint8_t retVal;
-/*
-        int x;
-	for (x = 0; x < 0x20; x++)
-        {
-                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
-        }
-
-        printf("Register Dump complete");
-*/    
      for (;;) {
-        int result;
 
         // allocate space for the buffer
         static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
@@ -135,103 +96,26 @@ void *transmit(void *arg) {
 
         int msg_length = get_cw(&packet[reserved_space], (MAX_MESSAGE_LENGTH + 1) - reserved_space);
 
-        result = sem_wait(sem);
-        if (result != 0) {
-            fprintf(stderr, "Failed to wait on semaphore with error %s\n", strerror(errno));
-            exit(EXIT_FAILURE);
-        }
-
-        // Enter transmit mode only if not already in receive mode
-        if (currentState != TxState) {
-            retVal = mode_tx();
-            if (retVal != AXRADIO_ERR_NOERROR) {
-                fprintf(stderr, "ERROR: Unable to enter TX mode\n");
-                exit(EXIT_FAILURE);
-            }
-            currentState = TxState;
-        }
-
         printf("INFO: Sending another packet...\n");
         printf("DEBUG: msg_length = %d\n", msg_length);
         printf("DEBUG: reserved_space = %d\n", reserved_space);
 
 	while(1) {
 
-/*
-        int x;
-        for (x = 0; x < 0x20; x++)
-        {
-                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
-        }
+	config_cw();
 
-        printf("Register Dump complete");
-*/
-
-/*
-        printf("Register write to clear framing and crc\n");
-	ax5043WriteReg(0x12,0);
-
-        printf("Register write to disable fec\n");
-	ax5043WriteReg(0x18,0);
-
-        printf("Register write \n");
-	ax5043WriteReg(0x165,0);
-
-	ax5043WriteReg(0x166,0);
-	ax5043WriteReg(0x167,0x50); // 0x08); // 0x20);
-	
-	ax5043WriteReg(0x161,0);
-	ax5043WriteReg(0x162,0x20);
-	
-	long txRate;
-	txRate = ax5043ReadReg(0x167) + 256 * ax5043ReadReg(0x166) + 65536 * ax5043ReadReg(0x165);
-	printf("Tx Rate %x %x %x \n", ax5043ReadReg(0x165), ax5043ReadReg(0x166), ax5043ReadReg(0x167)); 
-	long fskDev;
-	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
-
-	ax5043WriteReg(0x37,(uint8_t)((ax5043ReadReg(0x37) + 4)));  // Increase FREQA
-
-	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
-	
-	ax5043WriteReg(0x10,0);	// ASK
-
-	printf("Modulation: %x \n", (int)ax5043ReadReg(0x10));
-	printf("Frequency A: 0x%x %x %x %x \n",(int)ax5043ReadReg(0x34),(int)ax5043ReadReg(0x35),(int)ax5043ReadReg(0x36),(int)ax5043ReadReg(0x37));
-*/
-
-/* HERE */
-
-/*
-        int x;
-	for (x = 0; x < 0x20; x++)
-        {
-                printf("Register %x contents: %x\n",x,(int)ax5043ReadReg(x));
-        }
-
-        printf("Register Dump complete");
-*/    
-
-		config_cw();
-
-        	retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length + reserved_space));
-        	if (retVal != AXRADIO_ERR_NOERROR) {
-            		fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-            	exit(EXIT_FAILURE);
+    retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length + reserved_space));
+    if (retVal != AXRADIO_ERR_NOERROR) {
+         fprintf(stderr, "ERROR: Unable to transmit a packet\n");
+    exit(EXIT_FAILURE);
 		}
-	sleep(1);
+	  sleep(1);
 
         }
-
-        result = sem_post(sem);
-        if (result != 0) {
-            fprintf(stderr, "Failed to post on semaphore with error %s\n", strerror(errno));
-            exit(EXIT_FAILURE);
-        }
-
 	usleep(200000);
     }
 
-    return NULL;
+   
 }
 
 int get_cw(uint8_t *buffer, int avail) {
@@ -497,8 +381,6 @@ void config_cw() {
 
 	printf("Modulation: %x \n", (int)ax5043ReadReg(0x10));
 	printf("Frequency A: 0x%x %x %x %x \n",(int)ax5043ReadReg(0x34),(int)ax5043ReadReg(0x35),(int)ax5043ReadReg(0x36),(int)ax5043ReadReg(0x37));
-
-/* HERE */
 
 /*
         int x;
