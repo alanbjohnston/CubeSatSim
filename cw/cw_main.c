@@ -33,22 +33,23 @@
 extern uint8_t axradio_rxbuffer[];
 void *transmit(void *arg);
 int get_message(uint8_t *buffer, int avail);
+/*
 int get_cw(uint8_t *buffer, int avail);
 int add_dot(uint8_t *msg, int number);
 int add_dash(uint8_t *msg, int number);
 int add_space(uint8_t *msg, int number);
+static uint8_t on_value = 0xff;
+static uint8_t off_value = 0x00;
+int spacing = 1;  // integer number of octets for a dot
+*/
 int lower_digit(int number);
 int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail);
-int add_dash2(uint8_t *msg, int number); 
-int add_dot2(uint8_t *msg, int number); 
-int add_space2(uint8_t *msg);
-
-static uint8_t on_value = 0xff;
-static uint8_t off_value = 0x00;
-int spacing = 1;  // integer number of octets for a dot
+int add_dash(uint8_t *msg, int number); 
+int add_dot(uint8_t *msg, int number); 
+int add_space(uint8_t *msg);
 
 int main(void)
 {
@@ -83,9 +84,6 @@ int main(void)
      
     int reserved_space = 0;
 
-//    int msg_length = get_cw(&packet[reserved_space],
-//			 (MAX_MESSAGE_LENGTH + 1) - reserved_space);
-
     int msg_length = encode_tlm(&packet[reserved_space], 1, 00, 00, 00, 00,
 			 (MAX_MESSAGE_LENGTH + 1) - reserved_space);
 
@@ -112,7 +110,7 @@ int main(void)
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail) {
 
     int count = 0;
-
+/*
     count += add_space2(&buffer[count]);
     
     count += add_dash2(&buffer[count], 1);
@@ -128,25 +126,31 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
     count += add_space2(&buffer[count]);
 
     count++;
-/*
+*/
     count += encode_digit(&buffer[count], channel);
     count += encode_digit(&buffer[count], upper_digit(val1));
     count += encode_digit(&buffer[count], lower_digit(val1));
 
-    count += add_space(&buffer[count], 7);
+    count += add_space(&buffer[count]);
 
     count += encode_digit(&buffer[count], channel);
     count += encode_digit(&buffer[count], upper_digit(val2));
     count += encode_digit(&buffer[count], lower_digit(val2));
 
-    count += add_space(&buffer[count], 14);
+    count += add_space(&buffer[count]);
 
     count += encode_digit(&buffer[count], channel);
     count += encode_digit(&buffer[count], upper_digit(val3));
     count += encode_digit(&buffer[count], lower_digit(val3));
 
-    count += add_space(&buffer[count], 7);
-*/
+    count += add_space(&buffer[count]);
+
+    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], upper_digit(val4));
+    count += encode_digit(&buffer[count], lower_digit(val4));
+
+    count += add_space(&buffer[count]);
+
     printf("DEBUG count: %d avail: %d \n", count, avail);
     if (count > avail) {
        buffer[avail-1] = 0;
@@ -156,10 +160,11 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
 return count;
 }
 
+/*
 int get_cw(uint8_t *buffer, int avail) {
 
     int count = 0;
-/*
+*
 count += add_space(&buffer[count], 10);
 
 count += add_dash(&buffer[count], 1);		// c 
@@ -184,7 +189,7 @@ count += add_space(&buffer[count], 3);
 
 count += add_dot(&buffer[count], 2);		// i
 count += add_space(&buffer[count], 7);
-*/
+*
 
 int tlm_1a = 42;
 int tlm_1b = 35;
@@ -206,7 +211,7 @@ count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
 count += encode_digit(&buffer[count], lower_digit(tlm_1a));
 
 count += add_space(&buffer[count], 7);
-/*
+*
 count += encode_digit(&buffer[count], 1);
 count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
 count += encode_digit(&buffer[count], lower_digit(tlm_1b));
@@ -237,7 +242,7 @@ count += encode_digit(&buffer[count], lower_digit(tlm_1b));
 
 count += add_space(&buffer[count], 14);
 
-*/
+*
     printf("DEBUG count: %d avail: %d \n", count, avail);
     if (count > avail) {
     	buffer[avail-1] = 0;
@@ -250,6 +255,7 @@ count += add_space(&buffer[count], 14);
     return count;
 }
 
+*
 int add_dash(uint8_t *msg, int number) {
 	int counter = 0;
 	int i,j;
@@ -283,6 +289,8 @@ int add_space(uint8_t *msg, int number) {
 	}
 	return counter;
 }
+*/
+
 
 int encode_digit(uint8_t *buffer, int digit) {
 	int count = 0;
@@ -291,48 +299,48 @@ int encode_digit(uint8_t *buffer, int digit) {
 	{
 		case 0:
 			count += add_dash(&buffer[count], 5);		// 0
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 
 			break;
 
 		case 1:
 			count += add_dot(&buffer[count], 1);		// 1
 			count += add_dash(&buffer[count], 4);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
     
 			break;
 
 		case 2:
 			count += add_dot(&buffer[count], 2);		// 2
 			count += add_dash(&buffer[count], 3);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 
 			break;
 
 		case 3:
 			count += add_dot(&buffer[count], 3);		// 3
 			count += add_dash(&buffer[count], 2);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 			
 			break;
 
 		case 4:
 			count += add_dot(&buffer[count], 4);		// 4
 			count += add_dash(&buffer[count], 1);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 			
 			break;
 
 		case 5:
 			count += add_dot(&buffer[count], 5);		// 5
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 			
 			break;
 
 		case 6:
 			count += add_dash(&buffer[count], 1);		// 6
 			count += add_dot(&buffer[count], 4);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 			
 			break;
 
@@ -340,21 +348,21 @@ int encode_digit(uint8_t *buffer, int digit) {
 
 			count += add_dash(&buffer[count], 2);		// 7
 			count += add_dot(&buffer[count], 3);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 
 			break;
 
 		case 8:
 			count += add_dash(&buffer[count], 3);		// 8
 			count += add_dot(&buffer[count], 2);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 
 			break;
 
 		case 9:
 			count += add_dash(&buffer[count], 4);		// 9
 			count += add_dot(&buffer[count], 1);		
-			count += add_space(&buffer[count], 3);
+			count += add_space(&buffer[count]);
 		
 			break;
 
@@ -434,12 +442,12 @@ void config_cw() {
 }
 
 
-int add_space2(uint8_t *msg) {
+int add_space(uint8_t *msg) {
     	msg[0] = 0x00;
 	return 1;	
 }
 
-int add_dash2(uint8_t *msg, int number) {
+int add_dash(uint8_t *msg, int number) {
 	int j;
 	int counter = 0;
 
@@ -450,7 +458,7 @@ int add_dash2(uint8_t *msg, int number) {
 	return counter;	
 }
 
-int add_dot2(uint8_t *msg, int number) {
+int add_dot(uint8_t *msg, int number) {
 	int counter = 0;
 	int j;
 	for (j=0; j < number; j++) {
