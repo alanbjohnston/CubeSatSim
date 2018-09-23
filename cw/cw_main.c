@@ -33,15 +33,6 @@
 extern uint8_t axradio_rxbuffer[];
 void *transmit(void *arg);
 int get_message(uint8_t *buffer, int avail);
-/*
-int get_cw(uint8_t *buffer, int avail);
-int add_dot(uint8_t *msg, int number);
-int add_dash(uint8_t *msg, int number);
-int add_space(uint8_t *msg, int number);
-static uint8_t on_value = 0xff;
-static uint8_t off_value = 0x00;
-int spacing = 1;  // integer number of octets for a dot
-*/
 int lower_digit(int number);
 int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
@@ -110,23 +101,10 @@ int main(void)
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail) {
 
     int count = 0;
-/*
-    count += add_space2(&buffer[count]);
-    
-    count += add_dash2(&buffer[count], 1);
-    count += add_dot2(&buffer[count], 1);
-    count += add_dash2(&buffer[count], 1);
-    count += add_dot2(&buffer[count], 1);
 
-    count += add_space2(&buffer[count]);
-    
-    count += add_dash2(&buffer[count], 2);
-    count += add_dot2(&buffer[count], 1);
-    count += add_dash2(&buffer[count], 1);
-    count += add_space2(&buffer[count]);
-
-    count++;
-*/
+    count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
+ 
     count += encode_digit(&buffer[count], channel);
     count += encode_digit(&buffer[count], upper_digit(val1));
     count += encode_digit(&buffer[count], lower_digit(val1));
@@ -160,142 +138,9 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
 return count;
 }
 
-/*
-int get_cw(uint8_t *buffer, int avail) {
-
-    int count = 0;
-*
-count += add_space(&buffer[count], 10);
-
-count += add_dash(&buffer[count], 1);		// c 
-count += add_dot(&buffer[count], 1);		
-count += add_dash(&buffer[count], 1);		 
-count += add_dot(&buffer[count], 1);		
-count += add_space(&buffer[count], 3);
-   
-count += add_dash(&buffer[count], 2);		// q 
-count += add_dot(&buffer[count], 1);		 
-count += add_dash(&buffer[count], 1);		
-count += add_space(&buffer[count], 7);
- 
-count += add_dot(&buffer[count], 4);		// h
-count += add_space(&buffer[count], 3);
-
-count += add_dot(&buffer[count], 2);		// i
-count += add_space(&buffer[count], 7);
-
-count += add_dot(&buffer[count], 4);		// h
-count += add_space(&buffer[count], 3);
-
-count += add_dot(&buffer[count], 2);		// i
-count += add_space(&buffer[count], 7);
-*
-
-int tlm_1a = 42;
-int tlm_1b = 35;
-
-count += encode_digit(&buffer[count], 1);
-count += encode_digit(&buffer[count], upper_digit(tlm_1a));
-count += encode_digit(&buffer[count], lower_digit(tlm_1a));
-
-count += add_space(&buffer[count], 7);
-
-count += encode_digit(&buffer[count], 1);
-count += encode_digit(&buffer[count], upper_digit(tlm_1b));
-count += encode_digit(&buffer[count], lower_digit(tlm_1b));
-
-count += add_space(&buffer[count], 14);
-
-count += encode_digit(&buffer[count], 1);
-count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
-count += encode_digit(&buffer[count], lower_digit(tlm_1a));
-
-count += add_space(&buffer[count], 7);
-*
-count += encode_digit(&buffer[count], 1);
-count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
-count += encode_digit(&buffer[count], lower_digit(tlm_1b));
-
-count += add_space(&buffer[count], 14);
-
-count += encode_digit(&buffer[count], 2);
-count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
-count += encode_digit(&buffer[count], lower_digit(tlm_1a));
-
-count += add_space(&buffer[count], 7);
-
-count += encode_digit(&buffer[count], 2);
-count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
-count += encode_digit(&buffer[count], lower_digit(tlm_1b));
-
-count += add_space(&buffer[count], 14);
-
-count += encode_digit(&buffer[count], 2);
-count += encode_digit(&buffer[count], upper_digit(tlm_1a++));
-count += encode_digit(&buffer[count], lower_digit(tlm_1a));
-
-count += add_space(&buffer[count], 7);
-
-count += encode_digit(&buffer[count], 2);
-count += encode_digit(&buffer[count], upper_digit(tlm_1b++));
-count += encode_digit(&buffer[count], lower_digit(tlm_1b));
-
-count += add_space(&buffer[count], 14);
-
-*
-    printf("DEBUG count: %d avail: %d \n", count, avail);
-    if (count > avail) {
-    	buffer[avail-1] = 0;
-    	count = avail-1;
-	printf("DEBUG count > avail!\n");
-    }
-   // printf("DEBUG get_cw: ***%s***\n", buffer);
-
-    //return strlen((char *)buffer);
-    return count;
-}
-
-*
-int add_dash(uint8_t *msg, int number) {
-	int counter = 0;
-	int i,j;
-	for (j=0; j < number; j++) {
-		for (i=0; i < spacing * 3; i++) {
-			msg[counter++] = on_value;
-		}
-		counter += add_space(&msg[counter], 1);
-	}
-	return counter;
-}
-
-int add_dot(uint8_t *msg, int number) {
-	int counter = 0;
-	int i,j;
-	for (j=0; j < number; j++) {
-		for (i=0; i < spacing; i++) {
-			msg[counter++] = on_value;
-		}
-
-		counter += add_space(&msg[counter], 1);
-	}
-	return counter;
-}
-
-int add_space(uint8_t *msg, int number) {
-	int j;
-	int counter = 0;
-	for (j=0; j < number * spacing; j++) {
-		msg[counter++] = off_value;
-	}
-	return counter;
-}
-*/
-
-
 int encode_digit(uint8_t *buffer, int digit) {
 	int count = 0;
 	switch(digit)
-
 	{
 		case 0:
 			count += add_dash(&buffer[count], 5);		// 0
