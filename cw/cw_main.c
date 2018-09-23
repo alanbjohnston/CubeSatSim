@@ -38,6 +38,7 @@ int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail);
+int encode_header(uint8_t *buffer, int avail);
 int add_dash(uint8_t *msg, int number); 
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
@@ -70,24 +71,35 @@ int main(void)
          exit(EXIT_FAILURE);
     }
 
+    config_cw();
+
     // allocate space for the buffer
     static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
-    int reserved_space = 0;
-
-    int msg_length = encode_tlm(&packet[reserved_space], 1, 00, 00, 00, 00,
-			 (MAX_MESSAGE_LENGTH + 1) - reserved_space);
-
-    printf("INFO: Sending another packet...\n");
-    printf("DEBUG: msg_length = %d\n", msg_length);
-    printf("DEBUG: reserved_space = %d\n", reserved_space);
+    int channel;
+    int msg_length;
 
     while(1) {
 
-	config_cw();
+	for (channel = 0; channel < 7; channel++) {
+
+        if (channel == 0) {
+            msg_length = encode_header(&packet[0], 
+			 (MAX_MESSAGE_LENGTH + 1));
+       
+            printf("\nINFO: Sending TLM header\n");
+
+        } else {
+            msg_length = encode_tlm(&packet[0], channel,
+		 channel, channel+1, channel+2, channel+3,
+			 (MAX_MESSAGE_LENGTH + 1));
+       
+            printf("\nINFO: Sending TLM channel %d \n", channel);
+        }
+        printf("DEBUG: msg_length = %d\n", msg_length);
 
         retVal = transmit_packet(&remoteaddr_tx, packet,
-			 (uint16_t)(msg_length + reserved_space));
+			 (uint16_t)(msg_length));
         if (retVal != AXRADIO_ERR_NOERROR) {
             fprintf(stderr, "ERROR: Unable to transmit a packet\n");
             exit(EXIT_FAILURE);
@@ -95,13 +107,46 @@ int main(void)
 //	sleep(1);
 
 	usleep(200000);
+        }
     }
 }
+int encode_header(uint8_t *buffer, int avail) {
+
+    int count = 0;
+
+    count += add_dash(&buffer[count], 1);		// c 
+    count += add_dot(&buffer[count], 1);		
+    count += add_dash(&buffer[count], 1);		 
+    count += add_dot(&buffer[count], 1);		
+    count += add_space(&buffer[count]);
+    
+    count += add_dash(&buffer[count], 2);		// q 
+    count += add_dot(&buffer[count], 1);		 
+    count += add_dash(&buffer[count], 1);		
+    count += add_space(&buffer[count]);
+    
+    count += add_dot(&buffer[count], 4);		// h
+    count += add_space(&buffer[count]);
+    
+    count += add_dot(&buffer[count], 2);		// i
+    count += add_space(&buffer[count]);
+    
+    count += add_dot(&buffer[count], 4);		// h
+    count += add_space(&buffer[count]);
+    
+    count += add_dot(&buffer[count], 2);		// i
+    count += add_space(&buffer[count]);
+
+    return count;
+}
+
 
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail) {
 
     int count = 0;
 
+    count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
  
@@ -129,7 +174,7 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
 
     count += add_space(&buffer[count]);
 
-    printf("DEBUG count: %d avail: %d \n", count, avail);
+    //printf("DEBUG count: %d avail: %d \n", count, avail);
     if (count > avail) {
        buffer[avail-1] = 0;
        count = avail-1;
