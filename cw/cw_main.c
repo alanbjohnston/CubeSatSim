@@ -113,6 +113,8 @@ int main(void)
 int encode_header(uint8_t *buffer, int avail) {
 
     int count = 0;
+    count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
 
     count += add_dash(&buffer[count], 1);		// c 
     count += add_dot(&buffer[count], 1);		
@@ -125,16 +127,23 @@ int encode_header(uint8_t *buffer, int avail) {
     count += add_dash(&buffer[count], 1);		
     count += add_space(&buffer[count]);
     
+    count += add_space(&buffer[count]);
+
     count += add_dot(&buffer[count], 4);		// h
     count += add_space(&buffer[count]);
     
     count += add_dot(&buffer[count], 2);		// i
     count += add_space(&buffer[count]);
     
+    count += add_space(&buffer[count]);
+    
     count += add_dot(&buffer[count], 4);		// h
     count += add_space(&buffer[count]);
     
     count += add_dot(&buffer[count], 2);		// i
+    count += add_space(&buffer[count]);
+
+    count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
 
     return count;
@@ -298,7 +307,7 @@ void config_cw() {
 	ax5043WriteReg(0x165,0);
 
 	ax5043WriteReg(0x166,0);
-	ax5043WriteReg(0x167,0x25); // 0x50); // 0x08); // 0x20);
+	ax5043WriteReg(0x167,0x50); // 0x25); // 0x50); // 0x08); // 0x20);
 	
 	ax5043WriteReg(0x161,0);
 	ax5043WriteReg(0x162,0x20);
