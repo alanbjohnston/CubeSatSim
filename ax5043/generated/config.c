@@ -354,7 +354,7 @@ const uint16_t axradio_phy_preamble_wor_len = 176;
 const uint16_t axradio_phy_preamble_longlen = 0;
 const uint16_t axradio_phy_preamble_len = 0; // 112; No preamble for CW
 const uint8_t axradio_phy_preamble_byte = 0x00; // 0x7e; No preamble for XW
-const uint8_t axradio_phy_preamble_flags = 0x38;
+const uint8_t axradio_phy_preamble_flags =  0x38;
 const uint8_t axradio_phy_preamble_appendbits = 0;
 const uint8_t axradio_phy_preamble_appendpattern = 0x00;
 
@@ -362,7 +362,7 @@ const uint8_t axradio_phy_preamble_appendpattern = 0x00;
 const uint8_t axradio_framing_maclen = 0; // 1;
 const uint8_t axradio_framing_addrlen = 0;
 const uint8_t axradio_framing_destaddrpos = 0;
-const uint8_t axradio_framing_sourceaddrpos = 0xff;
+const uint8_t axradio_framing_sourceaddrpos =  0xff;
 const uint8_t axradio_framing_lenpos = 0;
 const uint8_t axradio_framing_lenoffs = 0;
 const uint8_t axradio_framing_lenmask = 0xff;
