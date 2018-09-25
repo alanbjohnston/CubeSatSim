@@ -1,5 +1,5 @@
 /*
- *  A sample application transmitting AFSK at 1200 baud
+ *  A sample application transmitting 1k2 AFSK in X.25 format
  *
  *  Portions Copyright (C) 2018 Jonathan Brandenburg
  *
