@@ -78,21 +78,20 @@ int main(void)
     // allocate space for the buffer
     static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
-    int channel;
+    int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
     int msg_length;
 
-    while(1) {
+    while(1) {  // loop forever
 
 	for (channel = 0; channel < 7; channel++) {
 
-        if (channel == 0) {
-            msg_length = encode_header(&packet[0], 
-			 (MAX_MESSAGE_LENGTH + 1));
+        if (channel == 0) {  // start with telemetry header "hi hi" plus a few chars to help CW decoding software sync
+            msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
        
             printf("\nINFO: Sending TLM header\n");
 
         } else {
-            msg_length = encode_tlm(&packet[0], channel,
+            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
 		 channel, channel+1, channel+2, channel+3,
 			 (MAX_MESSAGE_LENGTH + 1));
        
@@ -100,8 +99,7 @@ int main(void)
         }
         printf("DEBUG: msg_length = %d\n", msg_length);
 
-        retVal = transmit_packet(&remoteaddr_tx, packet,
-			 (uint16_t)(msg_length));
+        retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
         if (retVal != AXRADIO_ERR_NOERROR) {
             fprintf(stderr, "ERROR: Unable to transmit a packet\n");
             exit(EXIT_FAILURE);
@@ -112,6 +110,8 @@ int main(void)
         }
     }
 }
+// Encodes telemetry header (channel 0) into buffer
+//
 int encode_header(uint8_t *buffer, int avail) {
 
     int count = 0;
@@ -151,7 +151,8 @@ int encode_header(uint8_t *buffer, int avail) {
     return count;
 }
 
-
+// Encodes one channel of telemetry into buffer
+//
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail) {
 
     int count = 0;
@@ -161,39 +162,40 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
     count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
  
-    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1aa
     count += encode_digit(&buffer[count], upper_digit(val1));
     count += encode_digit(&buffer[count], lower_digit(val1));
 
     count += add_space(&buffer[count]);
 
-    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1bb
     count += encode_digit(&buffer[count], upper_digit(val2));
     count += encode_digit(&buffer[count], lower_digit(val2));
 
     count += add_space(&buffer[count]);
 
-    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1cc
     count += encode_digit(&buffer[count], upper_digit(val3));
     count += encode_digit(&buffer[count], lower_digit(val3));
 
     count += add_space(&buffer[count]);
 
-    count += encode_digit(&buffer[count], channel);
+    count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1dd
     count += encode_digit(&buffer[count], upper_digit(val4));
     count += encode_digit(&buffer[count], lower_digit(val4));
 
     count += add_space(&buffer[count]);
 
     //printf("DEBUG count: %d avail: %d \n", count, avail);
-    if (count > avail) {
+    if (count > avail) {		// make sure not too long
        buffer[avail-1] = 0;
        count = avail-1;
        printf("DEBUG count > avail!\n");
     }
 return count;
 }
-
+//  Encodes a single digit of telemetry into buffer
+//
 int encode_digit(uint8_t *buffer, int digit) {
 	int count = 0;
 	switch(digit)
@@ -203,48 +205,41 @@ int encode_digit(uint8_t *buffer, int digit) {
 			count += add_space(&buffer[count]);
 
 			break;
-
 		case 1:
 			count += add_dot(&buffer[count], 1);		// 1
 			count += add_dash(&buffer[count], 4);		
 			count += add_space(&buffer[count]);
     
 			break;
-
 		case 2:
 			count += add_dot(&buffer[count], 2);		// 2
 			count += add_dash(&buffer[count], 3);		
 			count += add_space(&buffer[count]);
 
 			break;
-
 		case 3:
 			count += add_dot(&buffer[count], 3);		// 3
 			count += add_dash(&buffer[count], 2);		
 			count += add_space(&buffer[count]);
 			
 			break;
-
 		case 4:
 			count += add_dot(&buffer[count], 4);		// 4
 			count += add_dash(&buffer[count], 1);		
 			count += add_space(&buffer[count]);
 			
 			break;
-
 		case 5:
 			count += add_dot(&buffer[count], 5);		// 5
 			count += add_space(&buffer[count]);
 			
 			break;
-
 		case 6:
 			count += add_dash(&buffer[count], 1);		// 6
 			count += add_dot(&buffer[count], 4);		
 			count += add_space(&buffer[count]);
 			
 			break;
-
 		case 7:
 
 			count += add_dash(&buffer[count], 2);		// 7
@@ -252,27 +247,26 @@ int encode_digit(uint8_t *buffer, int digit) {
 			count += add_space(&buffer[count]);
 
 			break;
-
 		case 8:
 			count += add_dash(&buffer[count], 3);		// 8
 			count += add_dot(&buffer[count], 2);		
 			count += add_space(&buffer[count]);
 
 			break;
-
 		case 9:
 			count += add_dash(&buffer[count], 4);		// 9
 			count += add_dot(&buffer[count], 1);		
 			count += add_space(&buffer[count]);
 		
 			break;
-
 		default:
 			printf("ERROR: Not a digit!\n");
 			return 0;
 	}
 	return count;
 }
+//  Returns lower digit of a number which must be less than 99
+//
 int lower_digit(int number) {
 
 	int digit = 0;
@@ -284,7 +278,8 @@ int lower_digit(int number) {
 
 	return digit;
 }
-
+// Returns upper digit of a number which must be less than 99
+//
 int upper_digit(int number) {
 
 	int digit = 0;
@@ -296,7 +291,8 @@ int upper_digit(int number) {
 
 	return digit;
 }
-
+//  Configure radio to send CW which is ASK
+//
 void config_cw() {
 
         printf("Register write to clear framing and crc\n");
@@ -339,30 +335,31 @@ void config_cw() {
         printf("Register Dump complete");
 */    
 	return;
-
 }
-
-
+// Adds a Morse space to the buffer
+//
 int add_space(uint8_t *msg) {
-    	msg[0] = 0x00;
+    	msg[0] = 0x00;  // a space is 8 bits
 	return 1;	
 }
-
+// Adds a Morse dash to the buffer
+//
 int add_dash(uint8_t *msg, int number) {
 	int j;
 	int counter = 0;
 
-	for (j=0; j < number; j++) {
+	for (j=0; j < number; j++) { // a dot is 4 bits, so a dash is 12 bits
      		msg[counter++] = 0xff;
 		msg[counter++] = 0x0f;
 	}
 	return counter;	
 }
-
+// Adds a Morse dot to the buffer
+//
 int add_dot(uint8_t *msg, int number) {
 	int counter = 0;
 	int j;
-	for (j=0; j < number; j++) {
+	for (j=0; j < number; j++) {  // a dot is 4 bits
      		msg[counter++] = 0x0f;
 	}
 	return counter;	
