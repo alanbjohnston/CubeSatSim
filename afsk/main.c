@@ -42,7 +42,8 @@ int main(void) {
     uint8_t data[1024];
     // 0x03 is a UI frame
     // 0x0F is no Level 3 protocol
-    const char *str = "\x03\x0fThis is an AX.25 Packet from CubeSatSim!!!";
+    // rest is dummy CubeSatSim telemetry in AO-7 format 	
+    const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
 
     /* Infinite loop */
     for (;;) {
