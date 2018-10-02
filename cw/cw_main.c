@@ -81,6 +81,12 @@ int main(void)
     int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
     int msg_length;
 
+    FILE* file = popen("mpcmd show data 2>&1", "r");
+    char cmdbuffer[1000];
+    fgets(cmdbuffer, 1000, file);
+    pclose(file);
+    printf("buffer is :%s\n", cmdbuffer);
+     
     while(1) {  // loop forever
 
 	for (channel = 0; channel < 7; channel++) {
