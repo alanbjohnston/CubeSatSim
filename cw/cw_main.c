@@ -32,6 +32,14 @@
 
 #define MAX_MESSAGE_LENGTH (197)
 
+#define VBATT 16
+#define ADC5 18
+#define ADC6 19
+#define ADC7 20
+#define ADC8 21
+#define TIME 8
+#define UCTEMP 31
+
 extern uint8_t axradio_rxbuffer[];
 void *transmit(void *arg);
 int get_message(uint8_t *buffer, int avail);
