@@ -111,7 +111,8 @@ int main(void)
     pch = strtok (NULL, " ");
     i++;
   }
-    printf("Battery voltage = %s\n", mopower[16]);
+    printf("Battery voltage = %s ADC5 = %s ADC6 = %s ADC7 = %s ADC8 %s \n", 
+	   	mopower[VBATT],mopower[ADC5],mopower[ADC6],mopower[ADC7],mopower[ADC8]);
 
     int tlm_3a = (int)(((strtol(mopower[16], (char **)NULL, 10) * 10) - 65) + 0.5);
 	
