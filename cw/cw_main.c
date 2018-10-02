@@ -105,6 +105,10 @@ int main(void)
   }
     printf("Battery voltage = %s\n", mopower[16]);
 
+    int tlm_3a = (int)(((strtol(mopower[16], (char **)NULL, 10) * 10) - 65) + 0.5);
+	
+    printf("TLM 3A = %d \n", tlm_3a);
+
     while(1) {  // loop forever
 
 	for (channel = 0; channel < 7; channel++) {
