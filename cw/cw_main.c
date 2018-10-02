@@ -86,7 +86,25 @@ int main(void)
     fgets(cmdbuffer, 1000, file);
     pclose(file);
     printf("buffer is :%s\n", cmdbuffer);
-     
+  
+    char mopower[64][14];
+
+   
+//  char str[] ="- This, a sample string.";
+  char * pch;
+//  printf ("Splitting string \"%s\" into tokens:\n",str);
+//  pch = strtok (str," ");
+  int i = 0;
+  pch = strtok (cmdbuffer," ,.-");
+  while (pch != NULL)
+  {
+    strcpy(mopower[i], pch);
+    printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
+    pch = strtok (NULL, " ");
+    i++;
+  }
+    printf("Battery voltage = %s\n", mopower[16]);
+
     while(1) {  // loop forever
 
 	for (channel = 0; channel < 7; channel++) {
