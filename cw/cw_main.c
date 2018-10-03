@@ -98,17 +98,14 @@ int main(void)
     char mopower[64][14];
 
    
-//  char str[] ="- This, a sample string.";
-  char * pch;
-//  printf ("Splitting string \"%s\" into tokens:\n",str);
-//  pch = strtok (str," ");
+  char * data;
   int i = 0;
-  pch = strtok (cmdbuffer," ,.-");
-  while (pch != NULL)
+  data = strtok (cmdbuffer," ");
+  while (data != NULL)
   {
-    strcpy(mopower[i], pch);
-    printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
-    pch = strtok (NULL, " ");
+    strcpy(mopower[i], data);
+    printf ("mopwer[%d]=%s\n",i,mopower[i]);
+    data = strtok (NULL, " ");
     i++;
   }
     printf("Battery voltage = %s ADC5 = %s ADC6 = %s ADC7 = %s ADC8 %s \n", 
@@ -129,7 +126,7 @@ int main(void)
 
         } else {
             msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
-		 channel, channel+1, channel+2, channel+3,
+		 tlm_3a, channel+1, channel+2, channel+3,
 			 (MAX_MESSAGE_LENGTH + 1));
        
             printf("\nINFO: Sending TLM channel %d \n", channel);
