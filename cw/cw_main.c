@@ -32,13 +32,13 @@
 
 #define MAX_MESSAGE_LENGTH (197)
 
-#define VBATT 16
-#define ADC5 18
-#define ADC6 19
-#define ADC7 20
-#define ADC8 21
+#define VBATT 15
+#define ADC5 17
+#define ADC6 18
+#define ADC7 19
+#define ADC8 20
 #define TIME 8
-#define UCTEMP 31
+#define UCTEMP 30
 
 extern uint8_t axradio_rxbuffer[];
 void *transmit(void *arg);
@@ -110,8 +110,11 @@ int main(void)
   }
     printf("Battery voltage = %s ADC5 = %s ADC6 = %s ADC7 = %s ADC8 %s \n", 
 	   	mopower[VBATT],mopower[ADC5],mopower[ADC6],mopower[ADC7],mopower[ADC8]);
-
-    int tlm_3a = (int)(((strtol(mopower[16], (char **)NULL, 10) * 10) - 65) + 0.5);
+    float vbat;
+    //char s[100] ="7.0800" ;
+    vbat = strtof(mopower[VBATT], NULL);
+    printf(" vbat: %f \n", vbat);
+    int tlm_3a = (int)((vbat * 10) - 65.5);
 	
     printf("TLM 3A = %d \n", tlm_3a);
 
