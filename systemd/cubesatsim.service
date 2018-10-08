@@ -1,0 +1,10 @@
+ [Unit]
+ Description=CubeSatSim Service
+ After=multi-user.target
+
+ [Service]
+ Type=idle
+ ExecStart=/home/pi/CubeSatSim/radiocw > /home/pi/CubeSatSim/log.txt 2>&1
+
+ [Install]
+ WantedBy=multi-user.target
