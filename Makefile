@@ -1,11 +1,4 @@
 all: libax5043.a
-all: radiochat
-all: radiopiglatin
-all: testax5043rx
-all: testax5043tx
-all: testax50432freq
-all: testax5043init
-all: testafsktx
 all: radioafsk 
 all: radiocw 
 
