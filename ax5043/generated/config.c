@@ -349,12 +349,13 @@ const uint16_t axradio_phy_cs_period = 7; // timer0 units, 10ms
 const uint8_t axradio_phy_cs_enabled = 0;
 const uint8_t axradio_phy_lbt_retries = 0;
 const uint8_t axradio_phy_lbt_forcetx = 0;
-const uint16_t axradio_phy_preamble_wor_longlen = 2; // wor_longlen + wor_len totals to 240.0ms plus 112bits
-const uint16_t axradio_phy_preamble_wor_len = 176;  
+const uint16_t axradio_phy_preamble_wor_longlen = 0; //2; // wor_longlen + wor_len totals to 240.0ms plus 112bits
+const uint16_t axradio_phy_preamble_wor_len = 0; // 176;  
 const uint16_t axradio_phy_preamble_longlen = 0;
 const uint16_t axradio_phy_preamble_len = 0; // 112; No preamble for CW
+
 const uint8_t axradio_phy_preamble_byte = 0x00; // 0x7e; No preamble for XW
-const uint8_t axradio_phy_preamble_flags =  0x38;
+const uint8_t axradio_phy_preamble_flags =  0x00; //0x38;
 const uint8_t axradio_phy_preamble_appendbits = 0;
 const uint8_t axradio_phy_preamble_appendpattern = 0x00;
 
