@@ -63,9 +63,8 @@ cw/ax5043.o: ax5043/spi/ax5043spi.h
 radiocw: libax5043.a
 radiocw: cw/ax25.o
 radiocw: cw/ax5043.o
-radiocw: cw/main.o
 radiocw: cw/cw_main.o
-	gcc -o radiocw -pthread -L./ cw/ax25.o cw/ax5043.o cw/main.o cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -pthread -L./ cw/ax25.o cw/ax5043.o cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
