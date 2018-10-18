@@ -17,11 +17,11 @@
 
 #include <axradio/axradioinit_p.h>
 #include <axradio/axradiomode_p.h>
-#include <axradio/axradiorx_p.h>
+//#include <axradio/axradiorx_p.h>
 #include <axradio/axradiotx_p.h>
 #include <generated/configtx.h>
-#include <pthread.h>
-#include <semaphore.h>
+//#include <pthread.h>
+//#include <semaphore.h>
 #include <spi/ax5043spi_p.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -30,6 +30,11 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPiI2C.h>
+#include <stdlib.h>
+
+#include "status.h"
+#include "ax5043.h"
+#include "ax25.h"
 
 #define MAX_MESSAGE_LENGTH (197)
 
