@@ -56,9 +56,58 @@ int main(void) {
     	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
-
         
 	printf("INFO: Transmitting X.25 packet\n");
+	    
+	FILE* file = popen("mpcmd show data 2>&1", "r");
+
+      char cmdbuffer[1000];
+      fgets(cmdbuffer, 1000, file);
+      pclose(file);
+      printf("buffer is :%s\n", cmdbuffer);
+
+ 
+      char mopower[64][14];
+      char * data;
+      int i = 0;
+      data = strtok (cmdbuffer," ");
+
+      while (data != NULL)
+
+      {
+        strcpy(mopower[i], data);
+        printf ("mopwer[%d]=%s\n",i,mopower[i]);
+        data = strtok (NULL, " ");
+        i++;
+      }
+
+        printf("Battery voltage = %s ADC5 = %s ADC6 = %s ADC7 = %s ADC8 %s \n", 
+	  mopower[VBATT],mopower[ADC5],mopower[ADC6],mopower[ADC7],mopower[ADC8]);
+
+        float vbat;
+        vbat = strtof(mopower[VBATT], NULL);
+        printf(" vbat: %f \n", vbat);
+        int tlm_3a = (int)((vbat * 10) - 65.5);
+   	
+        printf("TLM 3A = %d \n", tlm_3a);
+
+       // Read current from I2C bus
+/*
+        int devId = 0x40; // +X Panel current
+
+        int i2cDevice = wiringPiI2CSetup (devId) ;
+        printf("\n\nI2C result: %d\n", i2cDevice);
+        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+
+        int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
+        printf("Write result: %d\n", result);
+	    
+        int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
+        printf("Current: %d\n\n\n", currentValue);
+        int tlm_1b = (int) (98.5 - currentValue/400);
+        printf("TLM 1B = %d \n\n", tlm_1b);
+
+*/
 
         memcpy(data, str, strnlen(str, 256));
         ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
