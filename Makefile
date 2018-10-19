@@ -48,7 +48,8 @@ radiochat: chat/chat_main.o
 
 radiocw: libax5043.a
 radiocw: cw/cw_main.o
-	gcc -o radiocw -pthread -L./ cw/cw_main.o -lwiringPi -lax5043
+radiocw: afsk/send_afsk.o
+	gcc -o radiocw -pthread -L./ afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -202,6 +203,10 @@ chat/chat_main.o: ax5043/axradio/axradiotx_p.h
 chat/chat_main.o: ax5043/generated/configtx.h
 	cd chat; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c chat_main.c; cd ..
 
+afsk/send_afsk.o: afsk/send_afsk.c
+afsk/send_afsk.o: afsk/send_afsk.h
+	cd afsk; gcc  -pedantic -Wconversion -Wall -Wextra -c send_afsk.c; cd ..
+
 cw/cw_main.o: cw/cw_main.c
 cw/cw_main.o: ax5043/spi/ax5043spi.h
 cw/cw_main.o: ax5043/spi/ax5043spi_p.h
@@ -314,4 +319,5 @@ afsk/main.o: afsk/ax5043.h
 afsk/main.o: afsk/ax25.h
 afsk/main.o: ax5043/spi/ax5043spi.h
 	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
+
 
