@@ -26,6 +26,14 @@
 #include "ax25.h"
 #include "spi/ax5043spi.h"
 
+#define VBATT 15
+#define ADC5 17
+#define ADC6 18
+#define ADC7 19
+#define ADC8 20
+#define TIME 8
+#define UCTEMP 30
+
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
@@ -68,16 +76,16 @@ int main(void) {
 
  
       char mopower[64][14];
-      char * data;
+      char * data2;
       int i = 0;
-      data = strtok (cmdbuffer," ");
+      data2 = strtok (cmdbuffer," ");
 
-      while (data != NULL)
+      while (data2 != NULL)
 
       {
-        strcpy(mopower[i], data);
+        strcpy(mopower[i], data2);
         printf ("mopwer[%d]=%s\n",i,mopower[i]);
-        data = strtok (NULL, " ");
+        data2 = strtok (NULL, " ");
         i++;
       }
 
