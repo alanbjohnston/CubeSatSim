@@ -31,8 +31,9 @@
 #define ADC6 18
 #define ADC7 19
 #define ADC8 20
-#define TIME 8
+#define SEC 8
 #define UCTEMP 30
+#define UPTIME_SEC 8 
 
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
@@ -40,6 +41,10 @@ ax25_conf_t hax25;
 static void init_rf();
 void config_x25();
 void trans_x25();
+long int timestamp = 0;
+
+int upper_digit(int number);
+int lower_digit(int number);
 
 int main(void) {
     setSpiChannel(SPI_CHANNEL);
@@ -51,7 +56,7 @@ int main(void) {
     // 0x03 is a UI frame
     // 0x0F is no Level 3 protocol
     // rest is dummy CubeSatSim telemetry in AO-7 format 	
-    const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
+    // const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
 
     /* Infinite loop */
     for (;;) {
@@ -84,13 +89,18 @@ int main(void) {
 
       {
         strcpy(mopower[i], data2);
-        printf ("mopwer[%d]=%s\n",i,mopower[i]);
+//        printf ("mopwer[%d]=%s\n",i,mopower[i]);
         data2 = strtok (NULL, " ");
         i++;
       }
 
-        printf("Battery voltage = %s ADC5 = %s ADC6 = %s ADC7 = %s ADC8 %s \n", 
-	  mopower[VBATT],mopower[ADC5],mopower[ADC6],mopower[ADC7],mopower[ADC8]);
+        printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
+	  mopower[VBATT], mopower[UPTIME_SEC], mopower[UCTEMP]);
+        long int time =  atoi(mopower[UPTIME_SEC]);
+	if (timestamp == 0)
+	 	timestamp = time;
+	int tlm_2c = (int)( (time - timestamp) / 15);
+	printf("Relative time: %ld seconds 2C: %d  2C: %d%d\n", time - timestamp,tlm_2c, upper_digit(tlm_2c), lower_digit(tlm_2c));
 
         float vbat;
         vbat = strtof(mopower[VBATT], NULL);
@@ -100,7 +110,9 @@ int main(void) {
         printf("TLM 3A = %d \n", tlm_3a);
 
        char tlm_str[1000];
-       sprintf(tlm_str, "\x03\x0fhi hi 101 102 103 104 202 203 204 205 3%d 3%d 3%d 3%d", tlm_3a, tlm_3a, tlm_3a, tlm_3a); 
+       sprintf(tlm_str, "\x03\x0fhi hi 101 102 103 104 202 203 2%d%d 205 3%d%d 300 300 300 404 405 406 407 408 505 506 507 508 606 607 608 609\n", 
+		upper_digit(tlm_2c), lower_digit(tlm_2c), 
+		upper_digit(tlm_3a), lower_digit(tlm_3a)); 
        printf("%s\n",tlm_str);
 
        // Read current from I2C bus
@@ -152,3 +164,26 @@ static void init_rf() {
     }
 }
 
+//  Returns lower digit of a number which must be less than 99
+//
+int lower_digit(int number) {
+
+	int digit = 0;
+	if (number < 100) 
+		digit = number - ((int)(number/10) * 10);
+	else
+		printf("ERROR: Not a digit in lower_digit!\n");
+	return digit;
+}
+
+// Returns upper digit of a number which must be less than 99
+//
+int upper_digit(int number) {
+
+	int digit = 0;
+	if (number < 100) 
+		digit = (int)(number/10);
+	else
+		printf("ERROR: Not a digit in upper_digit!\n");
+	return digit;
+}
