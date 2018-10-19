@@ -1,5 +1,4 @@
 // Sends CubeSatSim telemetry encoded as CW (Morse Code) using AO-7 format
-// and X.25
 //
 // Portions Copyright (c) 2018 Brandenburg Tech, LLC
 // All right reserved.
@@ -31,11 +30,6 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPiI2C.h>
-#include <stdlib.h>
-
-#include "../afsk/status.h"
-#include "../afsk/ax5043.h"
-#include "../afsk/ax25.h"
 
 #define MAX_MESSAGE_LENGTH (197)
 
@@ -59,14 +53,6 @@ int encode_header(uint8_t *buffer, int avail);
 int add_dash(uint8_t *msg, int number); 
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
-
-ax5043_conf_t hax5043;
-ax25_conf_t hax25;
-
-static void init_rf();
-void config_x25();
-void trans_x25();
-
 
 int main(void)
 {
@@ -451,62 +437,3 @@ int add_dot(uint8_t *msg, int number) {
 	}
 	return counter;	
 }
-/*
-int x25_in(void) {
-    setSpiChannel(SPI_CHANNEL);
-    setSpiSpeed(SPI_SPEED);
-    initializeSpi();
-
-    int ret;
-    uint8_t data[1024];
-    // 0x03 is a UI frame
-    // 0x0F is no Level 3 protocol
-    // rest is dummy CubeSatSim telemetry in AO-7 format 	
-    const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
-
-    // Infinite loop 
-    for (;;) {
-        sleep(2);
-    	
-	// send X.25 packet
-
-    	init_rf();
-
-    	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
-    		AX25_PREAMBLE_LEN,
-   		 AX25_POSTAMBLE_LEN);
-
-        
-	printf("INFO: Transmitting X.25 packet\n");
-
-        memcpy(data, str, strnlen(str, 256));
-        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
-        if (ret) {
-            fprintf(stderr,
-                    "ERROR: Failed to transmit AX.25 frame with error code %d\n",
-                    ret);
-            exit(EXIT_FAILURE);
-        }
-        ax5043_wait_for_transmit();
-        if (ret) {
-            fprintf(stderr,
-                    "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
-                    ret);
-            exit(EXIT_FAILURE);
-        }
-
-    }
-
-    return 0;
-}
-
-static void init_rf() {
-    int ret;
-    ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
-    if (ret != PQWS_SUCCESS) {
-        fprintf(stderr,
-                "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
-        exit(EXIT_FAILURE);
-    }
-}
-*/
