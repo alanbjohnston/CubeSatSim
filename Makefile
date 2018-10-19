@@ -48,7 +48,7 @@ radiochat: chat/chat_main.o
 
 radiocw: libax5043.a
 radiocw: cw/cw_main.o
-	gcc -o radiocw -pthread -L./  cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -pthread -L./ cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
