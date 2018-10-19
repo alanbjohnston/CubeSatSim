@@ -230,6 +230,9 @@ cw/cw_main.o: ax5043/axradio/axradiorx_p.h
 cw/cw_main.o: ax5043/axradio/axradiotx.h
 cw/cw_main.o: ax5043/axradio/axradiotx_p.h
 cw/cw_main.o: ax5043/generated/configtx.h
+cw/cw_main.o: cw/status.h
+cw/cw_main.o: cw/ax5043.h
+cw/cw_main.o: cw/ax25.h
 	cd cw; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c cw_main.c; cd ..
 
 piglatin/piglatin_main.o: piglatin/piglatin_main.c
