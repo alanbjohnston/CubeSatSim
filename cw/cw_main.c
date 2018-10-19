@@ -30,6 +30,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPiI2C.h>
+#include <../afsk/send_afsk.h>
 
 #define MAX_MESSAGE_LENGTH (197)
 
@@ -57,6 +58,8 @@ int add_space(uint8_t *msg);
 int main(void)
 {
     uint8_t retVal;
+
+    send_afsk();
 
     // Configure SPI bus to AX5043
     setSpiChannel(SPI_CHANNEL);
