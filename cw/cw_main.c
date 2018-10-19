@@ -31,11 +31,11 @@
 #include <errno.h>
 #include <wiringPiI2C.h>
 #include <stdlib.h>
-
+/*
 #include "status.h"
 #include "ax5043.h"
 #include "ax25.h"
-
+*/
 #define MAX_MESSAGE_LENGTH (197)
 
 #define VBATT 15
@@ -58,14 +58,14 @@ int encode_header(uint8_t *buffer, int avail);
 int add_dash(uint8_t *msg, int number); 
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
-
+/*
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 static void init_rf();
 void config_x25();
 void trans_x25();
-
+*/
 
 int main(void)
 {
@@ -450,7 +450,7 @@ int add_dot(uint8_t *msg, int number) {
 	}
 	return counter;	
 }
-
+/*
 int x25_main(void) {
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
@@ -463,7 +463,7 @@ int x25_main(void) {
     // rest is dummy CubeSatSim telemetry in AO-7 format 	
     const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
 
-    /* Infinite loop */
+    // Infinite loop 
     for (;;) {
         sleep(2);
     	
@@ -508,3 +508,4 @@ static void init_rf() {
         exit(EXIT_FAILURE);
     }
 }
+*/
