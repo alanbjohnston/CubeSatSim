@@ -1,4 +1,5 @@
 // Sends CubeSatSim telemetry encoded as CW (Morse Code) using AO-7 format
+// and X.25
 //
 // Portions Copyright (c) 2018 Brandenburg Tech, LLC
 // All right reserved.
@@ -17,11 +18,11 @@
 
 #include <axradio/axradioinit_p.h>
 #include <axradio/axradiomode_p.h>
-//#include <axradio/axradiorx_p.h>
+#include <axradio/axradiorx_p.h>
 #include <axradio/axradiotx_p.h>
 #include <generated/configtx.h>
-//#include <pthread.h>
-//#include <semaphore.h>
+#include <pthread.h>
+#include <semaphore.h>
 #include <spi/ax5043spi_p.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -31,11 +32,11 @@
 #include <errno.h>
 #include <wiringPiI2C.h>
 #include <stdlib.h>
-/*
-#include "status.h"
-#include "ax5043.h"
-#include "ax25.h"
-*/
+
+#include "../afsk/status.h"
+#include "../afsk/ax5043.h"
+#include "../afsk/ax25.h"
+
 #define MAX_MESSAGE_LENGTH (197)
 
 #define VBATT 15
@@ -58,14 +59,14 @@ int encode_header(uint8_t *buffer, int avail);
 int add_dash(uint8_t *msg, int number); 
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
-/*
+
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 static void init_rf();
 void config_x25();
 void trans_x25();
-*/
+
 
 int main(void)
 {
@@ -451,7 +452,7 @@ int add_dot(uint8_t *msg, int number) {
 	return counter;	
 }
 /*
-int x25_main(void) {
+int x25_in(void) {
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
