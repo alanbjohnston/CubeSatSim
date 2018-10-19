@@ -6,7 +6,13 @@ try:
     from ina219 import DeviceRangeError
     INA219DISABLE=0
     ina = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)
+except:
+    print "Error"
+try:
     ina.wake()
+except:
+    print "Error2"
+try:
     ina.configure(ina.RANGE_16V)
     ina.voltage()
     ina.current()
