@@ -45,12 +45,10 @@ libax5043.a: ax5043/spi/ax5043spi.o
 radiochat: libax5043.a
 radiochat: chat/chat_main.o
 	gcc -o radiochat -pthread -L./ chat/chat_main.o -lwiringPi -lax5043
-	
+
 radiocw: libax5043.a
-radiocw: cw/ax25.o
-radiocw: cw/ax5043.o
 radiocw: cw/cw_main.o
-	gcc -o radiocw -pthread -L./ cw/ax25.o cw/ax5043.o cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -pthread -L./ cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -204,20 +202,6 @@ chat/chat_main.o: ax5043/axradio/axradiotx_p.h
 chat/chat_main.o: ax5043/generated/configtx.h
 	cd chat; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c chat_main.c; cd ..
 
-cw/ax25.o: cw/ax25.c
-cw/ax25.o: cw/ax25.h
-cw/ax25.o: cw/ax5043.h
-cw/ax25.o: cw/status.h
-	cd cw; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax25.c; cd ..
-
-cw/ax5043.o: cw/ax5043.c
-cw/ax5043.o: cw/ax25.h
-cw/ax5043.o: cw/ax5043.h
-cw/ax5043.o: cw/status.h
-cw/ax5043.o: cw/utils.h
-cw/ax5043.o: ax5043/spi/ax5043spi.h
-	cd cw; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax5043.c; cd ..
-
 cw/cw_main.o: cw/cw_main.c
 cw/cw_main.o: ax5043/spi/ax5043spi.h
 cw/cw_main.o: ax5043/spi/ax5043spi_p.h
@@ -230,9 +214,6 @@ cw/cw_main.o: ax5043/axradio/axradiorx_p.h
 cw/cw_main.o: ax5043/axradio/axradiotx.h
 cw/cw_main.o: ax5043/axradio/axradiotx_p.h
 cw/cw_main.o: ax5043/generated/configtx.h
-cw/cw_main.o: cw/status.h
-cw/cw_main.o: cw/ax5043.h
-cw/cw_main.o: cw/ax25.h
 	cd cw; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c cw_main.c; cd ..
 
 piglatin/piglatin_main.o: piglatin/piglatin_main.c
@@ -333,5 +314,4 @@ afsk/main.o: afsk/ax5043.h
 afsk/main.o: afsk/ax25.h
 afsk/main.o: ax5043/spi/ax5043spi.h
 	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
-
 
