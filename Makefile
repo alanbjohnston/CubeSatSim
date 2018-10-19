@@ -48,8 +48,10 @@ radiochat: chat/chat_main.o
 
 radiocw: libax5043.a
 radiocw: cw/cw_main.o
+radiocw: afsk/ax25.o
+radiocw: afsk/ax5043.o
 radiocw: afsk/send_afsk.o
-	gcc -o radiocw -pthread -L./ afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -pthread -L./ afsk/ax25.o afsk/ax5043.o afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -203,9 +205,33 @@ chat/chat_main.o: ax5043/axradio/axradiotx_p.h
 chat/chat_main.o: ax5043/generated/configtx.h
 	cd chat; gcc -I../ax5043 -pedantic -Wconversion -Wall -Wextra -c chat_main.c; cd ..
 
+afsk/ax25.o: afsk/ax25.c
+afsk/ax25.o: afsk/ax25.h
+afsk/ax25.o: afsk/ax5043.h
+afsk/ax25.o: afsk/status.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax25.c; cd ..
+
+afsk/ax5043.o: afsk/ax5043.c
+afsk/ax5043.o: afsk/ax25.h
+afsk/ax5043.o: afsk/ax5043.h
+afsk/ax5043.o: afsk/status.h
+afsk/ax5043.o: afsk/utils.h
+afsk/ax5043.o: ax5043/spi/ax5043spi.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax5043.c; cd ..
+
+afsk/main.o: afsk/main.c
+afsk/main.o: afsk/status.h
+afsk/main.o: afsk/ax5043.h
+afsk/main.o: afsk/ax25.h
+afsk/main.o: ax5043/spi/ax5043spi.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
+
 afsk/send_afsk.o: afsk/send_afsk.c
 afsk/send_afsk.o: afsk/send_afsk.h
-	cd afsk; gcc  -pedantic -Wconversion -Wall -Wextra -c send_afsk.c; cd ..
+afsktx/send_afsk.o: afsktx/status.h
+afsktx/send_afsk.o: afsktx/ax5043.h
+afsktx/send_afsk.o: afsktx/ax25.h
+	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c send_afsk.c; cd ..
 
 cw/cw_main.o: cw/cw_main.c
 cw/cw_main.o: ax5043/spi/ax5043spi.h
@@ -298,26 +324,3 @@ afsktx/main.o: afsktx/ax5043.h
 afsktx/main.o: afsktx/ax25.h
 afsktx/main.o: ax5043/spi/ax5043spi.h
 	cd afsktx; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
-
-afsk/ax25.o: afsk/ax25.c
-afsk/ax25.o: afsk/ax25.h
-afsk/ax25.o: afsk/ax5043.h
-afsk/ax25.o: afsk/status.h
-	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax25.c; cd ..
-
-afsk/ax5043.o: afsk/ax5043.c
-afsk/ax5043.o: afsk/ax25.h
-afsk/ax5043.o: afsk/ax5043.h
-afsk/ax5043.o: afsk/status.h
-afsk/ax5043.o: afsk/utils.h
-afsk/ax5043.o: ax5043/spi/ax5043spi.h
-	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c ax5043.c; cd ..
-
-afsk/main.o: afsk/main.c
-afsk/main.o: afsk/status.h
-afsk/main.o: afsk/ax5043.h
-afsk/main.o: afsk/ax25.h
-afsk/main.o: ax5043/spi/ax5043spi.h
-	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
-
-
