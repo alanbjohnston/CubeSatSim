@@ -99,6 +99,10 @@ int main(void) {
    	
         printf("TLM 3A = %d \n", tlm_3a);
 
+       char tlm_str[1000];
+       sprintf(tlm_str, "\x03\x0fhi hi 101 102 103 104 202 203 204 205 3%d 3%d 3%d 3%d", tlm_3a, tlm_3a, tlm_3a, tlm_3a); 
+       printf("%s\n",tlm_str);
+
        // Read current from I2C bus
 /*
         int devId = 0x40; // +X Panel current
@@ -117,8 +121,8 @@ int main(void) {
 
 */
 
-        memcpy(data, str, strnlen(str, 256));
-        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
+        memcpy(data, tlm_str, strnlen(tlm_str, 256));
+        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(tlm_str, 256));
         if (ret) {
             fprintf(stderr,
                     "ERROR: Failed to transmit AX.25 frame with error code %d\n",
