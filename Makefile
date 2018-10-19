@@ -51,7 +51,7 @@ radiocw: cw/cw_main.o
 radiocw: afsk/ax25.o
 radiocw: afsk/ax5043.o
 radiocw: afsk/send_afsk.o
-	gcc -o radiocw -pthread -L./ afsk/ax25.o afsk/ax5043.o afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -L./ afsk/ax5043.o cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -228,9 +228,9 @@ afsk/main.o: ax5043/spi/ax5043spi.h
 
 afsk/send_afsk.o: afsk/send_afsk.c
 afsk/send_afsk.o: afsk/send_afsk.h
-afsktx/send_afsk.o: afsktx/status.h
-afsktx/send_afsk.o: afsktx/ax5043.h
-afsktx/send_afsk.o: afsktx/ax25.h
+afsk/send_afsk.o: afsktx/status.h
+afsk/send_afsk.o: afsktx/ax5043.h
+afsk/send_afsk.o: afsktx/ax25.h
 	cd afsk; gcc -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c send_afsk.c; cd ..
 
 cw/cw_main.o: cw/cw_main.c

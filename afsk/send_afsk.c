@@ -34,6 +34,7 @@ void config_x25();
 void trans_x25();
 
 int send_afsk(void) {
+    return 0;
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
@@ -46,7 +47,7 @@ int send_afsk(void) {
     const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
 
     /* Infinite loop */
-    for (;;) {
+//    for (;;) {
         sleep(2);
     	
 	// send X.25 packet
@@ -76,7 +77,8 @@ int send_afsk(void) {
             exit(EXIT_FAILURE);
         }
 
-    }
+ //   }
+    sleep(20);
 
     return 0;
 }

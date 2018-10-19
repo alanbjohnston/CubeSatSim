@@ -20,8 +20,8 @@
 #include <axradio/axradiorx_p.h>
 #include <axradio/axradiotx_p.h>
 #include <generated/configtx.h>
-#include <pthread.h>
-#include <semaphore.h>
+//#include <pthread.h>
+//#include <semaphore.h>
 #include <spi/ax5043spi_p.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPiI2C.h>
-#include <../afsk/send_afsk.h>
+//#include <../afsk/send_afsk.h>
 
 #define MAX_MESSAGE_LENGTH (197)
 
@@ -59,15 +59,18 @@ int main(void)
 {
     uint8_t retVal;
 
-    send_afsk();
-
-    // Configure SPI bus to AX5043
+ //   int res = send_afsk();
+ //   printf("Result: %d \n",res);
+ 
+   // Configure SPI bus to AX5043
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
+    printf("1\n");
 
     // Initialize the AX5043
     retVal = axradio_init();
+    printf("2\n");
     if (retVal == AXRADIO_ERR_NOCHIP) {
         fprintf(stderr, "ERROR: No AX5043 RF chip found\n");
         exit(EXIT_FAILURE);
