@@ -25,6 +25,7 @@
 #include "ax5043.h"
 #include "ax25.h"
 #include "spi/ax5043spi.h"
+#include <wiringPiI2C.h>
 
 #define VBATT 15
 #define ADC5 17
@@ -57,6 +58,9 @@ int main(void) {
     // 0x0F is no Level 3 protocol
     // rest is dummy CubeSatSim telemetry in AO-7 format 	
     // const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
+
+    int devId = 0x40; // +X Panel current
+    int i2cDevice = wiringPiI2CSetup (devId) ;
 
     /* Infinite loop */
     for (;;) {
@@ -106,20 +110,12 @@ int main(void) {
         vbat = strtof(mopower[VBATT], NULL);
         printf(" vbat: %f \n", vbat);
         int tlm_3a = (int)((vbat * 10) - 65.5);
-   	
+	int tlm_6b = 0, tlm_2b = 99;
+	
         printf("TLM 3A = %d \n", tlm_3a);
 
-       char tlm_str[1000];
-       sprintf(tlm_str, "\x03\x0fhi hi 101 102 103 104 202 203 2%d%d 205 3%d%d 300 300 300 404 405 406 407 408 505 506 507 508 606 607 608 609\n", 
-		upper_digit(tlm_2c), lower_digit(tlm_2c), 
-		upper_digit(tlm_3a), lower_digit(tlm_3a)); 
-       printf("%s\n",tlm_str);
-
        // Read current from I2C bus
-/*
-        int devId = 0x40; // +X Panel current
 
-        int i2cDevice = wiringPiI2CSetup (devId) ;
         printf("\n\nI2C result: %d\n", i2cDevice);
         printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
 
@@ -130,8 +126,49 @@ int main(void) {
         printf("Current: %d\n\n\n", currentValue);
         int tlm_1b = (int) (98.5 - currentValue/400);
         printf("TLM 1B = %d \n\n", tlm_1b);
+	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98, tlm_4a = 49;
 
-*/
+//  Reading 5V voltage and current
+
+      file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
+
+      fgets(cmdbuffer, 1000, file);
+      pclose(file);
+      printf("Current buffer is:%s\n", cmdbuffer);
+
+      char battery[3][14];
+      i = 0;
+      data2 = strtok (cmdbuffer," ");
+
+      while (data2 != NULL)
+
+      {
+        strcpy(battery[i], data2);
+        printf ("battery[%d]=%s\n",i,battery[i]);
+        data2 = strtok (NULL, " ");
+        i++;
+      }
+	int tlm_3b = (int)(strtof(battery[0], NULL) * 10.0);
+	int tlm_2d = (int)(50.0 + strtof(battery[1], NULL)/40.0);
+	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
+
+       char tlm_str[1000];
+       sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 651\n", 
+		upper_digit(tlm_1a), lower_digit(tlm_1a), 
+		upper_digit(tlm_1b), lower_digit(tlm_1b), 
+		upper_digit(tlm_1c), lower_digit(tlm_1c), 
+		upper_digit(tlm_1d), lower_digit(tlm_1d), 
+		upper_digit(tlm_2a), lower_digit(tlm_2a), 
+		upper_digit(tlm_2b), lower_digit(tlm_2b), 
+		upper_digit(tlm_2c), lower_digit(tlm_2c), 
+		upper_digit(tlm_2d), lower_digit(tlm_2d), 
+		upper_digit(tlm_3a), lower_digit(tlm_3a), 
+		upper_digit(tlm_3b), lower_digit(tlm_3b), 
+		upper_digit(tlm_4a), lower_digit(tlm_4a), 
+		upper_digit(tlm_6b), lower_digit(tlm_6b)); 
+       printf("%s\n",tlm_str);
+
+
 
         memcpy(data, tlm_str, strnlen(tlm_str, 256));
         ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(tlm_str, 256));
