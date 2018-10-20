@@ -118,11 +118,11 @@ int main(void)
     int msg_length;
 
     while(1) {  // loop forever
-            //send_afsk();
-            //config_cw();
-	
         for (channel = 0; channel < 7; channel++) {
-
+            
+	    send_afsk();
+            config_cw();
+	
             if (channel == 0) {  
 // start with telemetry header "hi hi" plus a few chars to help CW decoding software sync
             msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
@@ -376,6 +376,34 @@ int upper_digit(int number) {
 //  Configure radio to send CW which is ASK
 //
 void config_cw() {
+
+    uint8_t retVal;
+	
+// Configure SPI bus to AX5043
+    setSpiChannel(SPI_CHANNEL);
+    setSpiSpeed(SPI_SPEED);
+    initializeSpi();
+    printf("1\n");
+
+    // Initialize the AX5043
+    retVal = axradio_init();
+    printf("2\n");
+    if (retVal == AXRADIO_ERR_NOCHIP) {
+        fprintf(stderr, "ERROR: No AX5043 RF chip found\n");
+        exit(EXIT_FAILURE);
+    }
+    if (retVal != AXRADIO_ERR_NOERROR) {
+        fprintf(stderr, "ERROR: Unable to initialize AX5043\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("INFO: Found and initialized AX5043\n");
+
+    retVal = mode_tx();
+    if (retVal != AXRADIO_ERR_NOERROR) {
+         fprintf(stderr, "ERROR: Unable to enter TX mode\n");
+         exit(EXIT_FAILURE);
+    }
 
         printf("Register write to clear framing and crc\n");
 	ax5043WriteReg(0x12,0);
