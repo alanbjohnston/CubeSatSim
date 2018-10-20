@@ -62,6 +62,10 @@ int main(void) {
     int devId = 0x40; // +X Panel current
     int i2cDevice = wiringPiI2CSetup (devId) ;
 
+    int tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+   
+    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
+    
     /* Infinite loop */
     for (;;) {
         sleep(2);
@@ -103,7 +107,7 @@ int main(void) {
         long int time =  atoi(mopower[UPTIME_SEC]);
 	if (timestamp == 0)
 	 	timestamp = time;
-	int tlm_2c = (int)( (time - timestamp) / 15);
+	int tlm_2c = (int)((time - timestamp) / 15) % 100; 
 	printf("Relative time: %ld seconds 2C: %d  2C: %d%d\n", time - timestamp,tlm_2c, upper_digit(tlm_2c), lower_digit(tlm_2c));
 
         float vbat;
@@ -126,7 +130,7 @@ int main(void) {
         printf("Current: %d\n\n\n", currentValue);
         int tlm_1b = (int) (98.5 - currentValue/400);
         printf("TLM 1B = %d \n\n", tlm_1b);
-	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98, tlm_4a = 49;
+	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
 
 //  Reading 5V voltage and current
 
@@ -152,8 +156,23 @@ int main(void) {
 	int tlm_2d = (int)(50.0 + strtof(battery[1], NULL)/40.0);
 	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
 
+        int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
+        printf("Read: %x\n", tempValue);
+
+        uint8_t upper = (uint8_t) (tempValue >> 8);
+        uint8_t lower = (uint8_t) (tempValue & 0xff);
+        float temp = (float)lower + ((float)upper / 0x100);
+        printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
+       
+        int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
+        printf(" 4A: %d \n", tlm_4a);
+        
+        int tlm_6d = 49 + rand() % 3; 
+       
        char tlm_str[1000];
-       sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 651\n", 
+
+       printf("%d %d %d %d %d %d %d %d %d %d %d %d %d \n", tlm_1a, tlm_1b, tlm_1c, tlm_1d, tlm_2a, tlm_2b, tlm_2c, tlm_2d, tlm_3a, tlm_3b, tlm_4a, tlm_6b, tlm_6d); 
+       sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 6%d%d\n", 
 		upper_digit(tlm_1a), lower_digit(tlm_1a), 
 		upper_digit(tlm_1b), lower_digit(tlm_1b), 
 		upper_digit(tlm_1c), lower_digit(tlm_1c), 
@@ -165,7 +184,8 @@ int main(void) {
 		upper_digit(tlm_3a), lower_digit(tlm_3a), 
 		upper_digit(tlm_3b), lower_digit(tlm_3b), 
 		upper_digit(tlm_4a), lower_digit(tlm_4a), 
-		upper_digit(tlm_6b), lower_digit(tlm_6b)); 
+		upper_digit(tlm_6b), lower_digit(tlm_6b), 
+		upper_digit(tlm_6d), lower_digit(tlm_6d)); 
        printf("%s\n",tlm_str);
 
 
