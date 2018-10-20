@@ -51,7 +51,7 @@ radiocw: cw/cw_main.o
 radiocw: afsk/ax25.o
 radiocw: afsk/ax5043.o
 radiocw: afsk/send_afsk.o
-	gcc -o radiocw -pedantic -Wall -Wextra -L./ afsk/ax5043.o cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -L./ afsk/ax25.o afsk/ax5043.o afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o

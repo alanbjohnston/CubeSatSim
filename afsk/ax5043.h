@@ -527,7 +527,7 @@ typedef struct {
     vco_mode_t vco;
 } ax5043_conf_t;
 
-int ax5043_reset(ax5043_conf_t *conf);
+int ax5043_reset_a(ax5043_conf_t *conf);
 
 int ax5043_init(ax5043_conf_t *conf, uint32_t f_xtal, vco_mode_t vco);
 

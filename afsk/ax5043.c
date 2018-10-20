@@ -77,7 +77,7 @@ static uint8_t is_ax5043_conf_valid(ax5043_conf_t *conf) {
  * @param conf the AX5043 configuration handler
  * @return 0 on success or appropriate negative error code
  */
-int ax5043_reset(ax5043_conf_t *conf) {
+int ax5043_reset_a(ax5043_conf_t *conf) {
     int ret;
     uint8_t val;
 
@@ -152,7 +152,7 @@ int ax5043_init(ax5043_conf_t *conf, uint32_t f_xtal, vco_mode_t vco) {
         conf->f_xtaldiv = 1;
     }
 
-    ret = ax5043_reset(conf);
+    ret = ax5043_reset_a(conf);
     if (ret) {
         return ret;
     }
