@@ -34,7 +34,7 @@ void config_x25();
 void trans_x25();
 
 int send_afsk(void) {
-    return 0;
+    
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
@@ -48,7 +48,7 @@ int send_afsk(void) {
 
     /* Infinite loop */
 //    for (;;) {
-        sleep(2);
+//        sleep(2);
     	
 	// send X.25 packet
 
@@ -78,7 +78,7 @@ int send_afsk(void) {
         }
 
  //   }
-    sleep(20);
+ //   sleep(20);
 
     return 0;
 }

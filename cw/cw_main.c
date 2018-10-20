@@ -30,7 +30,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPiI2C.h>
-//#include <../afsk/send_afsk.h>
+#include <../afsk/send_afsk.h>
 
 #define MAX_MESSAGE_LENGTH (197)
 
@@ -59,8 +59,8 @@ int main(void)
 {
     uint8_t retVal;
 
- //   int res = send_afsk();
- //   printf("Result: %d \n",res);
+    send_afsk();
+//    printf("Result: %d \n",res);
  
    // Configure SPI bus to AX5043
     setSpiChannel(SPI_CHANNEL);
@@ -118,10 +118,13 @@ int main(void)
     int msg_length;
 
     while(1) {  // loop forever
+            //send_afsk();
+            //config_cw();
 	
         for (channel = 0; channel < 7; channel++) {
 
-        if (channel == 0) {  // start with telemetry header "hi hi" plus a few chars to help CW decoding software sync
+            if (channel == 0) {  
+// start with telemetry header "hi hi" plus a few chars to help CW decoding software sync
             msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
        
             printf("\nINFO: Sending TLM header\n");
