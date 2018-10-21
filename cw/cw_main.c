@@ -503,7 +503,7 @@ int get_tlm(int tlm[][5]) {
       file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
       fgets(cmdbuffer, 1000, file);
       pclose(file);
-      printf("Current buffer is:%s\n", cmdbuffer);
+ //     printf("Current buffer is:%s\n", cmdbuffer);
 
       char battery[3][14];
       i = 0;
@@ -511,7 +511,7 @@ int get_tlm(int tlm[][5]) {
 
       while (data2 != NULL) {
         strcpy(battery[i], data2);
-        printf ("battery[%d]=%s\n",i,battery[i]);
+//        printf ("battery[%d]=%s\n",i,battery[i]);
         data2 = strtok (NULL, " ");
         i++;
       }
