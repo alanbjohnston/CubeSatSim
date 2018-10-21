@@ -416,7 +416,7 @@ int add_dot(uint8_t *msg, int number) {
 	}
 	return counter;	
 }
-int get_tlm(int *tlm) {
+int get_tlm(int *tlm[][]) {
 	
 	tlm[1][1] = 99;
 	printf("TLM 1a: %d \n", tlm[1][1]);
