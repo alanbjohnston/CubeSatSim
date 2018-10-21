@@ -44,8 +44,8 @@ int send_afsk(int tlm[][5]) {
     // 0x03 is a UI frame
     // 0x0F is no Level 3 protocol
     // rest is dummy CubeSatSim telemetry in AO-7 format 	
-    const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
-
+    //const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
+    
     /* Infinite loop */
 //    for (;;) {
 //        sleep(2);
@@ -57,7 +57,22 @@ int send_afsk(int tlm[][5]) {
     	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
-
+	char str[1000];
+	
+	str = "\x03\x0fhi hi ";
+	
+	char tlm_str[1000];
+        int channel;
+	for (channel = 1; channel < 7; channel++) {
+            printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
+            sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+		channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+		channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
+		channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+		channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+	    printf("%s \n",tlm_str);
+	    strcat(str, tlm_str);
+	}	
         
 	printf("INFO: Transmitting X.25 packet\n");
 
