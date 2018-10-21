@@ -57,6 +57,7 @@ int add_dash(uint8_t *msg, int number);
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
+int tempSensor, xPlusSensor;
 
 int main(void)
 {
@@ -68,6 +69,10 @@ int main(void)
 		tlm[i][j] = 0;
 	}
     }
+    xPlusSensor = wiringPiI2CSetup (0x40) ;  // +X panel current sensor 
+
+    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
 
 //    send_afsk();
 //    printf("Result: %d \n",res);
@@ -434,19 +439,6 @@ int add_dot(uint8_t *msg, int number) {
 }
 int get_tlm(int tlm[][5]) {
 	
-    int devId = 0x40; // +X Panel current
-
-    int i2cDevice = wiringPiI2CSetup (devId) ;
-
-
-
-    int tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-
-   
-
-    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
-
-
      FILE* file = popen("mpcmd show data 2>&1", "r");
 
 
@@ -527,116 +519,66 @@ int get_tlm(int tlm[][5]) {
 
 
 
-        printf("\n\nI2C result: %d\n", i2cDevice);
+  //      printf("\n\nI2C result: %d\n", i2cDevice);
+//        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
 
-        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
-
-
-
-        int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-
+        int result = wiringPiI2CWriteReg16(xPlusSensor, 0x05, 4096);
         printf("Write result: %d\n", result);
 
-	    
-
-        int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-
+        int currentValue = wiringPiI2CReadReg16(xPlusSensor, 0x04);
         printf("Current: %d\n\n\n", currentValue);
 
         int tlm_1b = (int) (98.5 - currentValue/400);
-
         printf("TLM 1B = %d \n\n", tlm_1b);
-
 	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
-
 
 
 //  Reading 5V voltage and current
 
-
-
       file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
 
-
-
       fgets(cmdbuffer, 1000, file);
-
       pclose(file);
-
       printf("Current buffer is:%s\n", cmdbuffer);
 
-
-
       char battery[3][14];
-
       i = 0;
-
       data2 = strtok (cmdbuffer," ");
 
-
-
       while (data2 != NULL)
-
-
-
       {
-
         strcpy(battery[i], data2);
-
         printf ("battery[%d]=%s\n",i,battery[i]);
-
         data2 = strtok (NULL, " ");
-
         i++;
-
       }
 
 	int tlm_3b = (int)(strtof(battery[0], NULL) * 10.0);
-
 	int tlm_2d = (int)(50.0 + strtof(battery[1], NULL)/40.0);
-
 	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
 
-
-
         int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
-
         printf("Read: %x\n", tempValue);
 
-
-
         uint8_t upper = (uint8_t) (tempValue >> 8);
-
         uint8_t lower = (uint8_t) (tempValue & 0xff);
 
         float temp = (float)lower + ((float)upper / 0x100);
-
         printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
 
-       
-
         int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
-
         printf(" 4A: %d \n", tlm_4a);
-
-        
 
         int tlm_6d = 49 + rand() % 3; 
 
-       
-
        char tlm_str[1000];
-
-
 
        printf("%d %d %d %d %d %d %d %d %d %d %d %d %d \n", tlm_1a, tlm_1b, tlm_1c, tlm_1d, tlm_2a, tlm_2b, tlm_2c, tlm_2d, tlm_3a, tlm_3b, tlm_4a, tlm_6b, tlm_6d); 
 
        sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 6%d%d\n", 
 
 		upper_digit(tlm_1a), lower_digit(tlm_1a), 
-
 		upper_digit(tlm_1b), lower_digit(tlm_1b), 
-
 		upper_digit(tlm_1c), lower_digit(tlm_1c), 
 
 		upper_digit(tlm_1d), lower_digit(tlm_1d), 
