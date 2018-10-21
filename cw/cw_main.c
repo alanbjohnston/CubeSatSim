@@ -54,6 +54,7 @@ int encode_header(uint8_t *buffer, int avail);
 int add_dash(uint8_t *msg, int number); 
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
+int get_tlm(int *tlm[7][5]); 
 
 int main(void)
 {
