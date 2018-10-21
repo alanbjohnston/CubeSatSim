@@ -32,7 +32,9 @@ ax25_conf_t hax25;
 static void init_rf();
 void config_x25();
 void trans_x25();
-
+extern int upper_digit(int number);
+extern int lower_digit(int number);
+ 
 int send_afsk(int tlm[][5]) {
     
     setSpiChannel(SPI_CHANNEL);
@@ -66,14 +68,14 @@ int send_afsk(int tlm[][5]) {
 	
         int channel;
 	for (channel = 1; channel < 7; channel++) {
-            printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
-            sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
-		channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
-		channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
-		channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
-		channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-	    printf("%s \n",tlm_str);
-	    strcat(str, tlm_str);
+//        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
+          sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+	  channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+ 	  channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
+	  channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+	  channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+//	  printf("%s \n",tlm_str);
+	  strcat(str, tlm_str);
 	}	
         
 	printf("INFO: Transmitting X.25 packet\n");

@@ -122,7 +122,7 @@ int main(void)
 	    get_tlm(tlm);
     	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		    
-	    int tlm_3a = 0, tlm_1b = 0;
+//	    int tlm_3a = 0, tlm_1b = 0;
 
             msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
 //		tlm_3a, tlm_1b, channel+2, channel+3,
@@ -181,6 +181,9 @@ int encode_header(uint8_t *buffer, int avail) {
 
     count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
+
+    if (count > avail)
+	printf("ERROR: encode_header count > avail \n");
 
     return count;
 }
@@ -372,11 +375,11 @@ void config_cw() {
 	ax5043WriteReg(0x161,0);
 	ax5043WriteReg(0x162,0x20);
 	
-	long txRate;
-	txRate = ax5043ReadReg(0x167) + 256 * ax5043ReadReg(0x166) + 65536 * ax5043ReadReg(0x165);
+//	long txRate;
+//	txRate = ax5043ReadReg(0x167) + 256 * ax5043ReadReg(0x166) + 65536 * ax5043ReadReg(0x165);
 //	printf("Tx Rate %x %x %x \n", ax5043ReadReg(0x165), ax5043ReadReg(0x166), ax5043ReadReg(0x167)); 
-	long fskDev;
-	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
+//	long fskDev;
+//	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
 
 	ax5043WriteReg(0x37,(uint8_t)((ax5043ReadReg(0x37) + 4)));  // Increase FREQA
 
