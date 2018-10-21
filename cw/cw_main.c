@@ -479,7 +479,8 @@ int get_tlm(int tlm[][5]) {
 //        int tlm_3a = (int)((vbat * 10) - 65.5);
 	tlm[3][A] = (int)((vbat * 10) - 65.5);
 //	int tlm_6b = 0, tlm_2b = 99;
-	tlm[6][B] = 0, tlm_2b = 99;
+	tlm[6][B] = 0, 
+	tlm[2][B] = 99;
 //        printf("TLM 3A = %d \n", tlm_3a);
 
        // Read current from I2C bus
