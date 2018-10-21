@@ -108,7 +108,7 @@ int main(void)
     while(1) {  // loop forever
         for (channel = 0; channel < 7; channel++) {
             
-	    send_afsk();
+	    send_afsk(tlm);
             config_cw();
 	
             if (channel == 0) {  
