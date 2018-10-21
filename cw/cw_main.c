@@ -417,9 +417,11 @@ int add_dot(uint8_t *msg, int number) {
 	return counter;	
 }
 int get_tlm(int *tlm[7][5]) {
-	
+        printf("11\n");	
 	*tlm[1][1] = 99;
+	printf("12\n");
 	printf("TLM 1a: %d \n", *tlm[1][1]);
+	printf("13\n");
 	
 	return 0;
 }
