@@ -460,8 +460,8 @@ int get_tlm(int tlm[][5]) {
           data2 = strtok (NULL, " ");
           i++;
       }
-      printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
-	  mopower[VBATT], mopower[UPTIME_SEC], mopower[UCTEMP]);
+//      printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
+//	  mopower[VBATT], mopower[UPTIME_SEC], mopower[UCTEMP]);
 
       long int time =  atoi(mopower[UPTIME_SEC]);
 
@@ -475,11 +475,11 @@ int get_tlm(int tlm[][5]) {
 
         float vbat;
         vbat = strtof(mopower[VBATT], NULL);
-        printf(" vbat: %f \n", vbat);
+//        printf(" vbat: %f \n", vbat);
 //        int tlm_3a = (int)((vbat * 10) - 65.5);
 	tlm[3][A] = (int)((vbat * 10) - 65.5);
 //	int tlm_6b = 0, tlm_2b = 99;
-	tlm[6][B] = 0, 
+	tlm[6][B] = 0 ;
 	tlm[2][B] = 99;
 //        printf("TLM 3A = %d \n", tlm_3a);
 
@@ -567,6 +567,14 @@ int get_tlm(int tlm[][5]) {
 		upper_digit(tlm_6d), lower_digit(tlm_6d)); 
 
        printf("%s\n",tlm_str);
-*/	
+*/
+
+    int k, j;
+    for (k = 1; k < 7; k++) {
+        for (j = 1; j < 5; j++) {
+	printf(" %2d ",	tlm[k][j]);
+	}
+    printf("\n");
+    }	
        return 0;
 }
