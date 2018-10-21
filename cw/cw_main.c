@@ -58,6 +58,7 @@ int add_space(uint8_t *msg);
 int main(void)
 {
     uint8_t retVal;
+    int tlm[7][4];
 
 //    send_afsk();
 //    printf("Result: %d \n",res);
@@ -108,10 +109,13 @@ int main(void)
             printf("\nINFO: Sending TLM header\n");
 
         } else {
-    		    
-	int tlm_3a = 0, tlm_1b = 0;
+		    
+	    get_tlm(&tlm);
+    	    printf("TLM Received 1a: %d \n", tlm[1][1]);
+		    
+	    int tlm_3a = 0, tlm_1b = 0;
 
-         msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
+            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
 		 tlm_3a, tlm_1b, channel+2, channel+3,
 			 (MAX_MESSAGE_LENGTH + 1));
        
@@ -411,4 +415,11 @@ int add_dot(uint8_t *msg, int number) {
      		msg[counter++] = 0x0f;
 	}
 	return counter;	
+}
+int get_tlm(int *tlm) {
+	
+	tlm[1][1] = 99;
+	printf("TLM 1a: %d \n", tlm[1][1]);
+	
+	return 0;
 }
