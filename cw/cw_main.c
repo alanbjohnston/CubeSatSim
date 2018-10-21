@@ -418,8 +418,8 @@ int add_dot(uint8_t *msg, int number) {
 }
 int get_tlm(int *tlm[7][5]) {
 	
-	tlm[1][1] = 99;
-	printf("TLM 1a: %d \n", tlm[1][1]);
+	&tlm[1][1] = 99;
+	printf("TLM 1a: %d \n", &tlm[1][1]);
 	
 	return 0;
 }
