@@ -58,7 +58,7 @@ int add_space(uint8_t *msg);
 int main(void)
 {
     uint8_t retVal;
-    int tlm[7][4];
+    int tlm[7][5];
 
 //    send_afsk();
 //    printf("Result: %d \n",res);
@@ -416,7 +416,7 @@ int add_dot(uint8_t *msg, int number) {
 	}
 	return counter;	
 }
-int get_tlm(int *tlm[][]) {
+int get_tlm(int *tlm[7][5]) {
 	
 	tlm[1][1] = 99;
 	printf("TLM 1a: %d \n", tlm[1][1]);
