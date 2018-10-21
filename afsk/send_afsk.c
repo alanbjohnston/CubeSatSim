@@ -57,11 +57,13 @@ int send_afsk(int tlm[][5]) {
     	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
+	
 	char str[1000];
-	
-	str = "\x03\x0fhi hi ";
-	
 	char tlm_str[1000];
+	
+	tlm_str = "\x03\x0fhi hi ";
+	strcat(str,tlm_str);
+	
         int channel;
 	for (channel = 1; channel < 7; channel++) {
             printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
