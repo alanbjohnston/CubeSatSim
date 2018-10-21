@@ -87,28 +87,6 @@ int main(void)
          fprintf(stderr, "ERROR: Unable to enter TX mode\n");
          exit(EXIT_FAILURE);
     }
-   // Read current from I2C bus
-    int devId = 0x40; // +X Panel current
-    int i2cDevice = wiringPiI2CSetup (devId) ;
-    printf("\n\nCurrent setup result: %d\n", i2cDevice);
-    printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
-
-    int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-    printf("Write result: %d\n", result);
-    
-    float current = 0.05 * wiringPiI2CReadReg16(i2cDevice, 0x04);
-    printf("Current: %f\n\n\n", current);
-   
-    // Read temperature from I2C bus
-    devId = 0x48; // temp 
-    i2cDevice = wiringPiI2CSetup (devId);
-    printf("\n\nTemp setup result: %d\n", i2cDevice);
-    int tempValue = wiringPiI2CRead(i2cDevice); 
-    printf("Read: %x\n", tempValue);
-    uint8_t upper = tempValue >> 8;
-    uint8_t lower = tempValue && 0xff;
-    printf("upper: %x lower: %x\n", upper, lower);  
-
     config_cw();
 
     // allocate space for the buffer
@@ -130,48 +108,8 @@ int main(void)
             printf("\nINFO: Sending TLM header\n");
 
         } else {
-    
-      FILE* file = popen("mpcmd show data 2>&1", "r");
-    
-      char cmdbuffer[1000];
-      fgets(cmdbuffer, 1000, file);
-      pclose(file);
-      printf("buffer is :%s\n", cmdbuffer);
-  
-      char mopower[64][14];
-
-      char * data;
-      int i = 0;
-      data = strtok (cmdbuffer," ");
-      while (data != NULL)
-      {
-        strcpy(mopower[i], data);
-        printf ("mopwer[%d]=%s\n",i,mopower[i]);
-        data = strtok (NULL, " ");
-        i++;
-      }
-        printf("Battery voltage = %s ADC5 = %s ADC6 = %s ADC7 = %s ADC8 %s \n", 
-	  mopower[VBATT],mopower[ADC5],mopower[ADC6],mopower[ADC7],mopower[ADC8]);
-        float vbat;
-        vbat = strtof(mopower[VBATT], NULL);
-        printf(" vbat: %f \n", vbat);
-        int tlm_3a = (int)((vbat * 10) - 65.5);
-    	
-        printf("TLM 3A = %d \n", tlm_3a);
-
-       // Read current from I2C bus
-        int devId = 0x40; // +X Panel current
-        int i2cDevice = wiringPiI2CSetup (devId) ;
-        printf("\n\nI2C result: %d\n", i2cDevice);
-        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
-
-        int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-        printf("Write result: %d\n", result);
-    
-        int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n\n", currentValue);
-        int tlm_1b = (int) (98.5 - currentValue/400);
-        printf("TLM 1B = %d \n\n", tlm_1b);
+    		    
+	int tlm_3a = 0, tlm_1b = 0;
 
          msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
 		 tlm_3a, tlm_1b, channel+2, channel+3,
