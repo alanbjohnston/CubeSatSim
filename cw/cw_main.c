@@ -59,18 +59,18 @@ int main(void)
 {
     uint8_t retVal;
 
-    send_afsk();
+//    send_afsk();
 //    printf("Result: %d \n",res);
  
    // Configure SPI bus to AX5043
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
-    printf("1\n");
+//    printf("1\n");
 
     // Initialize the AX5043
     retVal = axradio_init();
-    printf("2\n");
+//    printf("2\n");
     if (retVal == AXRADIO_ERR_NOCHIP) {
         fprintf(stderr, "ERROR: No AX5043 RF chip found\n");
         exit(EXIT_FAILURE);
@@ -117,7 +117,7 @@ int main(void)
        
             printf("\nINFO: Sending TLM channel %d \n", channel);
         }
-        printf("DEBUG: msg_length = %d\n", msg_length);
+ //       printf("DEBUG: msg_length = %d\n", msg_length);
 
         retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
         if (retVal != AXRADIO_ERR_NOERROR) {
@@ -321,11 +321,11 @@ void config_cw() {
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
-    printf("1\n");
+ //   printf("1\n");
 
     // Initialize the AX5043
     retVal = axradio_init();
-    printf("2\n");
+//    printf("2\n");
     if (retVal == AXRADIO_ERR_NOCHIP) {
         fprintf(stderr, "ERROR: No AX5043 RF chip found\n");
         exit(EXIT_FAILURE);
@@ -335,7 +335,7 @@ void config_cw() {
         exit(EXIT_FAILURE);
     }
 
-    printf("INFO: Found and initialized AX5043\n");
+//    printf("INFO: Found and initialized AX5043\n");
 
     retVal = mode_tx();
     if (retVal != AXRADIO_ERR_NOERROR) {
@@ -343,13 +343,13 @@ void config_cw() {
          exit(EXIT_FAILURE);
     }
 
-        printf("Register write to clear framing and crc\n");
+//        printf("Register write to clear framing and crc\n");
 	ax5043WriteReg(0x12,0);
 
-        printf("Register write to disable fec\n");
+//        printf("Register write to disable fec\n");
 	ax5043WriteReg(0x18,0);
 
-        printf("Register write \n");
+//        printf("Register write \n");
 	ax5043WriteReg(0x165,0);
 
 	ax5043WriteReg(0x166,0);
@@ -360,18 +360,18 @@ void config_cw() {
 	
 	long txRate;
 	txRate = ax5043ReadReg(0x167) + 256 * ax5043ReadReg(0x166) + 65536 * ax5043ReadReg(0x165);
-	printf("Tx Rate %x %x %x \n", ax5043ReadReg(0x165), ax5043ReadReg(0x166), ax5043ReadReg(0x167)); 
+//	printf("Tx Rate %x %x %x \n", ax5043ReadReg(0x165), ax5043ReadReg(0x166), ax5043ReadReg(0x167)); 
 	long fskDev;
 	fskDev = ax5043ReadReg(0x163) + 256 * ax5043ReadReg(0x162) + 65536 * ax5043ReadReg(0x161);
 
 	ax5043WriteReg(0x37,(uint8_t)((ax5043ReadReg(0x37) + 4)));  // Increase FREQA
 
-	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
+//	printf("Tx Rate: %ld FSK Dev: %ld \n", txRate, fskDev);
 	
 	ax5043WriteReg(0x10,0);	// ASK
 
-	printf("Modulation: %x \n", (int)ax5043ReadReg(0x10));
-	printf("Frequency A: 0x%x %x %x %x \n",(int)ax5043ReadReg(0x34),(int)ax5043ReadReg(0x35),(int)ax5043ReadReg(0x36),(int)ax5043ReadReg(0x37));
+//	printf("Modulation: %x \n", (int)ax5043ReadReg(0x10));
+//	printf("Frequency A: 0x%x %x %x %x \n",(int)ax5043ReadReg(0x34),(int)ax5043ReadReg(0x35),(int)ax5043ReadReg(0x36),(int)ax5043ReadReg(0x37));
 
 /*
         int x;
