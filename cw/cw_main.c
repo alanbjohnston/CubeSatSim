@@ -60,6 +60,12 @@ int main(void)
 {
     uint8_t retVal;
     int tlm[7][5];
+    int i, j;
+    for (i = 1, i < 7, i++) {
+        for (j = 1, j < 5, j++) {
+		tlm[i][j] = 0;
+	}
+    }
 
 //    send_afsk();
 //    printf("Result: %d \n",res);
@@ -112,7 +118,7 @@ int main(void)
         } else {
 		    
 	    get_tlm(tlm);
-    	    printf("TLM Received 1a: %d \n", tlm[1][1]);
+    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		    
 	    int tlm_3a = 0, tlm_1b = 0;
 
