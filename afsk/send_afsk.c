@@ -61,8 +61,8 @@ int send_afsk(int tlm[][5]) {
 	char str[1000];
 	char tlm_str[1000];
 	
-	tlm_str = "\x03\x0fhi hi ";
-	strcat(str,tlm_str);
+	char header_str[] = "\x03\x0fhi hi ";
+	strcpy(str, header_str);
 	
         int channel;
 	for (channel = 1; channel < 7; channel++) {
