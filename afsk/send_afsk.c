@@ -33,7 +33,7 @@ static void init_rf();
 void config_x25();
 void trans_x25();
 
-int send_afsk(void) {
+int send_afsk(int tlm[][5]) {
     
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
