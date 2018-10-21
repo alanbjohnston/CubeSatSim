@@ -41,7 +41,9 @@
 #define ADC8 20
 #define TIME 8
 #define UCTEMP 30
+#define UPTIME_SEC 8 
 
+long int timestamp = 0;
 extern uint8_t axradio_rxbuffer[];
 void *transmit(void *arg);
 int get_message(uint8_t *buffer, int avail);
