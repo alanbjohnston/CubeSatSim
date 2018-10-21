@@ -64,6 +64,8 @@ int main(void)
     for (i = 1; i < 7; i++) {
         for (j = 1; j < 5; j++) {
 		tlm[i][j] = 0;
+		if (i == j)
+			tlm[i][j] = 50;
 	}
     }
 
@@ -123,7 +125,8 @@ int main(void)
 	    int tlm_3a = 0, tlm_1b = 0;
 
             msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
-		 tlm_3a, tlm_1b, channel+2, channel+3,
+//		tlm_3a, tlm_1b, channel+2, channel+3,
+		tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4], 
 			 (MAX_MESSAGE_LENGTH + 1));
        
             printf("\nINFO: Sending TLM channel %d \n", channel);
