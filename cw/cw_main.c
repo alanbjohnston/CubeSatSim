@@ -64,8 +64,6 @@ int main(void)
     for (i = 1; i < 7; i++) {
         for (j = 1; j < 5; j++) {
 		tlm[i][j] = 0;
-		if (i == j)
-			tlm[i][j] = 50;
 	}
     }
 
@@ -108,6 +106,9 @@ int main(void)
     while(1) {  // loop forever
         for (channel = 0; channel < 7; channel++) {
             
+	    get_tlm(tlm);
+//    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
+		
 	    send_afsk(tlm);
             config_cw();
 	
@@ -119,8 +120,8 @@ int main(void)
 
         } else {
 		    
-	    get_tlm(tlm);
-    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
+//	    get_tlm(tlm);
+//    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		    
 //	    int tlm_3a = 0, tlm_1b = 0;
 
@@ -430,13 +431,233 @@ int add_dot(uint8_t *msg, int number) {
 	return counter;	
 }
 int get_tlm(int tlm[][5]) {
-//        printf("11\n");	
-//        printf("TLM 1a: %d \n", tlm[1][1]);
-//        printf("12\n");	
-	tlm[1][1] = 99;
-//	printf("13\n");
-	printf("TLM 1a: %d \n", tlm[1][1]);
-//	printf("14\n");
 	
-	return 0;
+    int devId = 0x40; // +X Panel current
+
+    int i2cDevice = wiringPiI2CSetup (devId) ;
+
+
+
+    int tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+
+   
+
+    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
+
+
+     FILE* file = popen("mpcmd show data 2>&1", "r");
+
+
+
+      char cmdbuffer[1000];
+
+      fgets(cmdbuffer, 1000, file);
+
+      pclose(file);
+
+      printf("buffer is :%s\n", cmdbuffer);
+
+
+
+ 
+
+      char mopower[64][14];
+
+      char * data2;
+
+      int i = 0;
+
+      data2 = strtok (cmdbuffer," ");
+
+
+
+      while (data2 != NULL)
+
+
+
+      {
+
+        strcpy(mopower[i], data2);
+
+//        printf ("mopwer[%d]=%s\n",i,mopower[i]);
+
+        data2 = strtok (NULL, " ");
+
+        i++;
+
+      }
+
+
+
+        printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
+
+	  mopower[VBATT], mopower[UPTIME_SEC], mopower[UCTEMP]);
+
+        long int time =  atoi(mopower[UPTIME_SEC]);
+
+	if (timestamp == 0)
+
+	 	timestamp = time;
+
+	int tlm_2c = (int)((time - timestamp) / 15) % 100; 
+
+	printf("Relative time: %ld seconds 2C: %d  2C: %d%d\n", time - timestamp,tlm_2c, upper_digit(tlm_2c), lower_digit(tlm_2c));
+
+
+
+        float vbat;
+
+        vbat = strtof(mopower[VBATT], NULL);
+
+        printf(" vbat: %f \n", vbat);
+
+        int tlm_3a = (int)((vbat * 10) - 65.5);
+
+	int tlm_6b = 0, tlm_2b = 99;
+
+	
+
+        printf("TLM 3A = %d \n", tlm_3a);
+
+
+
+       // Read current from I2C bus
+
+
+
+        printf("\n\nI2C result: %d\n", i2cDevice);
+
+        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+
+
+
+        int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
+
+        printf("Write result: %d\n", result);
+
+	    
+
+        int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
+
+        printf("Current: %d\n\n\n", currentValue);
+
+        int tlm_1b = (int) (98.5 - currentValue/400);
+
+        printf("TLM 1B = %d \n\n", tlm_1b);
+
+	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
+
+
+
+//  Reading 5V voltage and current
+
+
+
+      file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
+
+
+
+      fgets(cmdbuffer, 1000, file);
+
+      pclose(file);
+
+      printf("Current buffer is:%s\n", cmdbuffer);
+
+
+
+      char battery[3][14];
+
+      i = 0;
+
+      data2 = strtok (cmdbuffer," ");
+
+
+
+      while (data2 != NULL)
+
+
+
+      {
+
+        strcpy(battery[i], data2);
+
+        printf ("battery[%d]=%s\n",i,battery[i]);
+
+        data2 = strtok (NULL, " ");
+
+        i++;
+
+      }
+
+	int tlm_3b = (int)(strtof(battery[0], NULL) * 10.0);
+
+	int tlm_2d = (int)(50.0 + strtof(battery[1], NULL)/40.0);
+
+	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
+
+
+
+        int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
+
+        printf("Read: %x\n", tempValue);
+
+
+
+        uint8_t upper = (uint8_t) (tempValue >> 8);
+
+        uint8_t lower = (uint8_t) (tempValue & 0xff);
+
+        float temp = (float)lower + ((float)upper / 0x100);
+
+        printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
+
+       
+
+        int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
+
+        printf(" 4A: %d \n", tlm_4a);
+
+        
+
+        int tlm_6d = 49 + rand() % 3; 
+
+       
+
+       char tlm_str[1000];
+
+
+
+       printf("%d %d %d %d %d %d %d %d %d %d %d %d %d \n", tlm_1a, tlm_1b, tlm_1c, tlm_1d, tlm_2a, tlm_2b, tlm_2c, tlm_2d, tlm_3a, tlm_3b, tlm_4a, tlm_6b, tlm_6d); 
+
+       sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 6%d%d\n", 
+
+		upper_digit(tlm_1a), lower_digit(tlm_1a), 
+
+		upper_digit(tlm_1b), lower_digit(tlm_1b), 
+
+		upper_digit(tlm_1c), lower_digit(tlm_1c), 
+
+		upper_digit(tlm_1d), lower_digit(tlm_1d), 
+
+		upper_digit(tlm_2a), lower_digit(tlm_2a), 
+
+		upper_digit(tlm_2b), lower_digit(tlm_2b), 
+
+		upper_digit(tlm_2c), lower_digit(tlm_2c), 
+
+		upper_digit(tlm_2d), lower_digit(tlm_2d), 
+
+		upper_digit(tlm_3a), lower_digit(tlm_3a), 
+
+		upper_digit(tlm_3b), lower_digit(tlm_3b), 
+
+		upper_digit(tlm_4a), lower_digit(tlm_4a), 
+
+		upper_digit(tlm_6b), lower_digit(tlm_6b), 
+
+		upper_digit(tlm_6d), lower_digit(tlm_6d)); 
+
+       printf("%s\n",tlm_str);
+	
+       return 0;
 }
