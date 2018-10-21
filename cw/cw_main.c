@@ -438,86 +438,43 @@ int add_dot(uint8_t *msg, int number) {
 	return counter;	
 }
 int get_tlm(int tlm[][5]) {
-	
-     FILE* file = popen("mpcmd show data 2>&1", "r");
 
-
-
+//  Read MoPower UPS data
+      FILE* file = popen("mpcmd show data 2>&1", "r");
       char cmdbuffer[1000];
-
       fgets(cmdbuffer, 1000, file);
-
       pclose(file);
-
-      printf("buffer is :%s\n", cmdbuffer);
-
-
-
- 
+//      printf("buffer is :%s\n", cmdbuffer);
 
       char mopower[64][14];
-
       char * data2;
-
       int i = 0;
-
       data2 = strtok (cmdbuffer," ");
-
-
-
-      while (data2 != NULL)
-
-
-
-      {
-
-        strcpy(mopower[i], data2);
-
+      while (data2 != NULL) {
+          strcpy(mopower[i], data2);
 //        printf ("mopwer[%d]=%s\n",i,mopower[i]);
-
-        data2 = strtok (NULL, " ");
-
-        i++;
-
+          data2 = strtok (NULL, " ");
+          i++;
       }
-
-
-
-        printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
-
+      printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
 	  mopower[VBATT], mopower[UPTIME_SEC], mopower[UCTEMP]);
 
-        long int time =  atoi(mopower[UPTIME_SEC]);
+      long int time =  atoi(mopower[UPTIME_SEC]);
 
-	if (timestamp == 0)
-
+      if (timestamp == 0)
 	 	timestamp = time;
 
 	int tlm_2c = (int)((time - timestamp) / 15) % 100; 
-
 	printf("Relative time: %ld seconds 2C: %d  2C: %d%d\n", time - timestamp,tlm_2c, upper_digit(tlm_2c), lower_digit(tlm_2c));
 
-
-
         float vbat;
-
         vbat = strtof(mopower[VBATT], NULL);
-
         printf(" vbat: %f \n", vbat);
-
         int tlm_3a = (int)((vbat * 10) - 65.5);
-
 	int tlm_6b = 0, tlm_2b = 99;
-
-	
-
         printf("TLM 3A = %d \n", tlm_3a);
 
-
-
        // Read current from I2C bus
-
-
 
   //      printf("\n\nI2C result: %d\n", i2cDevice);
 //        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
@@ -532,11 +489,9 @@ int get_tlm(int tlm[][5]) {
         printf("TLM 1B = %d \n\n", tlm_1b);
 	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
 
-
 //  Reading 5V voltage and current
 
       file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
-
       fgets(cmdbuffer, 1000, file);
       pclose(file);
       printf("Current buffer is:%s\n", cmdbuffer);
@@ -545,8 +500,7 @@ int get_tlm(int tlm[][5]) {
       i = 0;
       data2 = strtok (cmdbuffer," ");
 
-      while (data2 != NULL)
-      {
+      while (data2 != NULL) {
         strcpy(battery[i], data2);
         printf ("battery[%d]=%s\n",i,battery[i]);
         data2 = strtok (NULL, " ");
@@ -574,9 +528,7 @@ int get_tlm(int tlm[][5]) {
        char tlm_str[1000];
 
        printf("%d %d %d %d %d %d %d %d %d %d %d %d %d \n", tlm_1a, tlm_1b, tlm_1c, tlm_1d, tlm_2a, tlm_2b, tlm_2c, tlm_2d, tlm_3a, tlm_3b, tlm_4a, tlm_6b, tlm_6d); 
-
        sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 6%d%d\n", 
-
 		upper_digit(tlm_1a), lower_digit(tlm_1a), 
 		upper_digit(tlm_1b), lower_digit(tlm_1b), 
 		upper_digit(tlm_1c), lower_digit(tlm_1c), 
