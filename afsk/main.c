@@ -47,6 +47,8 @@ long int timestamp = 0;
 int upper_digit(int number);
 int lower_digit(int number);
 
+uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
+
 int main(void) {
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
@@ -120,32 +122,32 @@ int main(void) {
 
        // Read current from I2C bus
     	i2cDevice = wiringPiI2CSetup (0x40) ;
-        printf("\n\nI2C result: %d\n", i2cDevice);
-        printf("1 Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+       	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
+        printf("\n\n1 I2C result: %d\n", result);
         int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
         printf("Current: %d\n\n\n", currentValue);
 
     	i2cDevice = wiringPiI2CSetup (0x41) ;
-        printf("\n\nI2C result: %d\n", i2cDevice);
-        printf("2 Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+        result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
+        printf("\n\n2 I2C result: %d\n", result);
         result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
         printf("Current: %d\n\n\n", currentValue);
 
     	i2cDevice = wiringPiI2CSetup (0x44) ;
-        printf("\n\nI2C result: %d\n", i2cDevice);
-        printf("3 Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+       	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
+        printf("\n\n3 I2C result: %d\n", result);
         result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
         printf("Current: %d\n\n\n", currentValue);
 
     	i2cDevice = wiringPiI2CSetup (0x45) ;
-        printf("\n\nI2C result: %d\n", i2cDevice);
-        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+       	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
+        printf("\n\n4 I2C result: %d\n", result);
         result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
