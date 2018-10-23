@@ -127,7 +127,7 @@ int main(void) {
         int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n\n", currentValue);
+        printf("Current: %d\n\n", currentValue);
 
     	i2cDevice = wiringPiI2CSetup (0x41) ;
         result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
@@ -135,7 +135,7 @@ int main(void) {
         result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n\n", currentValue);
+        printf("Current: %d\n\n", currentValue);
 
     	i2cDevice = wiringPiI2CSetup (0x44) ;
        	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
@@ -143,7 +143,7 @@ int main(void) {
         result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n\n", currentValue);
+        printf("Current: %d\n\n", currentValue);
 
     	i2cDevice = wiringPiI2CSetup (0x45) ;
        	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
