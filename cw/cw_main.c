@@ -46,11 +46,12 @@
 #define B 2
 #define C 3
 #define D 4
-#define SENSOR_4A 0
-#define SENSOR_40 3
-#define SENSOR_41 6
-#define SENSOR_44 9
-#define SENSOR_45 12
+
+#define SENSOR_40 0
+#define SENSOR_41 3
+#define SENSOR_44 6
+#define SENSOR_45 9
+#define SENSOR_4A 12
 #define VOLTS 0
 #define CURRENT 1
 #define POWER 2
