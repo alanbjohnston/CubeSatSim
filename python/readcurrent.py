@@ -49,7 +49,9 @@ if INA219DISABLE !=1:
     ina45.wake();
     ina45.configure(ina45.RANGE_16V)
 
-    print ina4A.voltage(), ina4A.current(), ina4A.power(), ina40.voltage(), ina40.current(), ina40.power(), ina41.voltage(), ina41.current(), ina41.power(), ina44.voltage(), ina44.current(), ina44.power(), ina45.voltage(), ina45.current(), ina45.power()
+    print  ina40.voltage(), ina40.current(), ina40.power(), ina41.voltage(), ina41.current(), ina41.power(), 
+                  ina44.voltage(), ina44.current(), ina44.power(), ina45.voltage(), ina45.current(), ina45.power(),
+                  ina4A.voltage(), ina4A.current(), ina4A.power()
 
     ina4A.sleep();
     ina40.sleep();
