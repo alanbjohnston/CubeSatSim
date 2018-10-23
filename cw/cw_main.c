@@ -527,8 +527,8 @@ int get_tlm(int tlm[][5]) {
       }
 
 	tlm[1][B] = (int) (98.5 - ina219[4]/400);  // +X current
-	tlm[1][C] = (int) (98.5 - ina219[7]/400);  // +Y current
-	tlm[1][D] = (int) (98.5 - ina219[10]/400);  // +Z current
+	tlm[1][D] = (int) (98.5 - ina219[7]/400);  // +Y current
+	tlm[1][C] = (int) (98.5 - ina219[10]/400);  // +Z  (actually -X current, AO-7 didn't have a Z solar panel?)
 
 //	int tlm_3b = (int)(strtof(ina219[0], NULL) * 10.0);
 //	int tlm_2d = (int)(50.0 + strtof(ina219[1], NULL)/40.0);
