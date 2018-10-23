@@ -61,7 +61,7 @@ int add_dash(uint8_t *msg, int number);
 int add_dot(uint8_t *msg, int number); 
 int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
-int tempSensor, xPlusSensor;
+int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
 int main(void)
 {
@@ -74,6 +74,9 @@ int main(void)
 	}
     }
     xPlusSensor = wiringPiI2CSetup (0x40) ;  // +X panel current sensor 
+    yPlusSensor = wiringPiI2CSetup (0x41) ;  // +Y panel current sensor 
+    zPlusSensor = wiringPiI2CSetup (0x44) ;  // Z+ panel current sensor 
+    battCurrentSensor = wiringPiI2CSetup (0x45) ;  // battery current sensor 
 
     tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
     srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
@@ -491,11 +494,17 @@ int get_tlm(int tlm[][5]) {
 //        int result = wiringPiI2CWriteReg16(xPlusSensor, 0x05, 4096);
 //        printf("Write result: %d\n", result);
 
-        int currentValue = wiringPiI2CReadReg16(xPlusSensor, 0x04);
-//        printf("Current: %d\n\n\n", currentValue);
+        int xCurrentValue = wiringPiI2CReadReg16(xPlusSensor, 0x04);
+        int yCurrentValue = wiringPiI2CReadReg16(yPlusSensor, 0x04);
+        int zCurrentValue = wiringPiI2CReadReg16(zPlusSensor, 0x04);
+        int battCurrentValue = wiringPiI2CReadReg16(battCurrentSensor, 0x04);
+        printf("Currents: %d %d %d %d \n\n", xCurrentValue, yCurrentValue, zCurrentValue, battCurrentValue);
 
 //        int tlm_1b = (int) (98.5 - currentValue/400);
-	tlm[1][B] = (int) (98.5 - currentValue/400);
+	tlm[1][A] = (int) (98.5 - battCurrentValue/400);
+	tlm[1][B] = (int) (98.5 - xCurrentValue/400);
+	tlm[1][C] = (int) (98.5 - yCurrentValue/400);
+	tlm[1][D] = (int) (98.5 - zCurrentValue/400);
 //        printf("TLM 1B = %d \n\n", tlm_1b);
 //	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
 

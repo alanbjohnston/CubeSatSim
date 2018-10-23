@@ -119,15 +119,38 @@ int main(void) {
         printf("TLM 3A = %d \n", tlm_3a);
 
        // Read current from I2C bus
-
+    	i2cDevice = wiringPiI2CSetup (0x40) ;
         printf("\n\nI2C result: %d\n", i2cDevice);
-        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
-
+        printf("1 Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
         int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
-	    
         int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
         printf("Current: %d\n\n\n", currentValue);
+
+    	i2cDevice = wiringPiI2CSetup (0x41) ;
+        printf("\n\nI2C result: %d\n", i2cDevice);
+        printf("2 Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+        result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
+        printf("Write result: %d\n", result);
+        currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
+        printf("Current: %d\n\n\n", currentValue);
+
+    	i2cDevice = wiringPiI2CSetup (0x44) ;
+        printf("\n\nI2C result: %d\n", i2cDevice);
+        printf("3 Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+        result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
+        printf("Write result: %d\n", result);
+        currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
+        printf("Current: %d\n\n\n", currentValue);
+
+    	i2cDevice = wiringPiI2CSetup (0x45) ;
+        printf("\n\nI2C result: %d\n", i2cDevice);
+        printf("Read: %d\n", wiringPiI2CRead(i2cDevice)) ;
+        result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
+        printf("Write result: %d\n", result);
+        currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
+        printf("Current: %d\n\n\n", currentValue);
+
         int tlm_1b = (int) (98.5 - currentValue/400);
         printf("TLM 1B = %d \n\n", tlm_1b);
 	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
