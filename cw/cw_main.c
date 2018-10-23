@@ -1,5 +1,7 @@
 // Sends CubeSatSim telemetry encoded as CW (Morse Code) using AO-7 format
 //
+// Copyright (c) 2018 Alan Johnston
+//
 // Portions Copyright (c) 2018 Brandenburg Tech, LLC
 // All right reserved.
 //
