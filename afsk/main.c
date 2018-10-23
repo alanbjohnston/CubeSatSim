@@ -120,6 +120,8 @@ int main(void) {
 	
         printf("TLM 3A = %d \n", tlm_3a);
 
+	printf("Config = %d %x \n", config, config);
+	    
        // Read current from I2C bus
     	i2cDevice = wiringPiI2CSetup (0x40) ;
        	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
