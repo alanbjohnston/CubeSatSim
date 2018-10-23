@@ -46,6 +46,14 @@
 #define B 2
 #define C 3
 #define D 4
+#define SENSOR_4A 0
+#define SENSOR_40 3
+#define SENSOR_41 6
+#define SENSOR_44 9
+#define SENSOR_45 12
+#define VOLTS 0
+#define CURRENT 1
+#define POWER 2
 
 long int timestamp = 0;
 extern uint8_t axradio_rxbuffer[];
@@ -526,17 +534,17 @@ int get_tlm(int tlm[][5]) {
         i++;
       }
 
-	tlm[1][B] = (int) (98.5 - ina219[4]/400);  // +X current
-	tlm[1][D] = (int) (98.5 - ina219[7]/400);  // +Y current
-	tlm[1][C] = (int) (98.5 - ina219[10]/400);  // +Z  (actually -X current, AO-7 didn't have a Z solar panel?)
+	tlm[1][B] = (int) (98.5 - ina219[SENSOR_40 + CURRENT]/400);  // +X current [4]
+	tlm[1][D] = (int) (98.5 - ina219[SENSOR_41 + CURRENT]/400);  // +Y current [7]
+	tlm[1][C] = (int) (98.5 - ina219[SENSOR_44 + CURRENT]/400);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
 
 //	int tlm_3b = (int)(strtof(ina219[0], NULL) * 10.0);
-//	int tlm_2d = (int)(50.0 + strtof(ina219[1], NULL)/40.0);
-	tlm[3][B] = (int)(strtof(ina219[0], NULL) * 10.0);      // 5V supply to Pi
-	tlm[2][D] = (int)(50.0 + strtof(ina219[13], NULL)/40.0);   // NiMH Battery current
+//	int tlm_2d = (int)(50.0 + strtof(ina219[SENSOR_4A + VOLTAGE], NULL)/40.0);
+	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0);      // 5V supply to Pi
+	tlm[2][D] = (int)(50.0 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/40.0);   // NiMH Battery current
 //	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
 	   
-        tlm[1][A] = (int)(strtof(ina219[1], NULL) / 29.5 + 0.5);  // Current of 5V supply to Pi
+        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) / 29.5 + 0.5);  // Current of 5V supply to Pi
 	
         int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
 //        printf("Read: %x\n", tempValue);
