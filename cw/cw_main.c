@@ -331,12 +331,10 @@ int encode_digit(uint8_t *buffer, int digit) {
 int lower_digit(int number) {
 
 	int digit = 0;
-
 	if (number < 100) 
 		digit = number - ((int)(number/10) * 10);
 	else
 		printf("ERROR: Not a digit in lower_digit!\n");
-
 	return digit;
 }
 // Returns upper digit of a number which must be less than 99
@@ -344,12 +342,10 @@ int lower_digit(int number) {
 int upper_digit(int number) {
 
 	int digit = 0;
-
 	if (number < 100) 
 		digit = (int)(number/10);
 	else
 		printf("ERROR: Not a digit in upper_digit!\n");
-
 	return digit;
 }
 //  Configure radio to send CW which is ASK
@@ -565,37 +561,7 @@ int get_tlm(int tlm[][5]) {
 
 //        int tlm_6d = 49 + rand() % 3; 
 	tlm[6][D] = 49 + rand() % 3; 
-/*
-       char tlm_str[1000];
 
-       printf("%d %d %d %d %d %d %d %d %d %d %d %d %d \n", tlm_1a, tlm_1b, tlm_1c, tlm_1d, tlm_2a, tlm_2b, tlm_2c, tlm_2d, tlm_3a, tlm_3b, tlm_4a, tlm_6b, tlm_6d); 
-       sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 6%d%d\n", 
-		upper_digit(tlm_1a), lower_digit(tlm_1a), 
-		upper_digit(tlm_1b), lower_digit(tlm_1b), 
-		upper_digit(tlm_1c), lower_digit(tlm_1c), 
-
-		upper_digit(tlm_1d), lower_digit(tlm_1d), 
-
-		upper_digit(tlm_2a), lower_digit(tlm_2a), 
-
-		upper_digit(tlm_2b), lower_digit(tlm_2b), 
-
-		upper_digit(tlm_2c), lower_digit(tlm_2c), 
-
-		upper_digit(tlm_2d), lower_digit(tlm_2d), 
-
-		upper_digit(tlm_3a), lower_digit(tlm_3a), 
-
-		upper_digit(tlm_3b), lower_digit(tlm_3b), 
-
-		upper_digit(tlm_4a), lower_digit(tlm_4a), 
-
-		upper_digit(tlm_6b), lower_digit(tlm_6b), 
-
-		upper_digit(tlm_6d), lower_digit(tlm_6d)); 
-
-       printf("%s\n",tlm_str);
-*/
 
     int k, j;
     for (k = 1; k < 7; k++) {
