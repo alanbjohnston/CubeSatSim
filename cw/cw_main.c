@@ -532,6 +532,7 @@ int get_tlm(int tlm[][5]) {
         data2 = strtok (NULL, " ");
         i++;
       }
+	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][B] = (int) (98.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/400);  // +X current [4]
 	tlm[1][D] = (int) (98.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/400);  // +Y current [7]
@@ -542,8 +543,10 @@ int get_tlm(int tlm[][5]) {
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0);      // 5V supply to Pi
 	tlm[2][D] = (int)(50.0 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/40.0);   // NiMH Battery current
 //	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
+	
+	printf("1A: ina219[%d]: %s val: %f \n", SENSOR_4A + CURRENT, ina219[SENSOR_4A + CURRENT], strtof(ina219[SENSOR_4A + CURRENT], NULL));
 	   
-        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) / 29.5 + 0.5);  // Current of 5V supply to Pi
+        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 29.5 + 0.5);  // Current of 5V supply to Pi
 	
         int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
 //        printf("Read: %x\n", tempValue);
