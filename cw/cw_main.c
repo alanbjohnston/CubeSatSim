@@ -54,7 +54,7 @@
 #define SENSOR_44 6
 #define SENSOR_45 9
 #define SENSOR_4A 12
-#define VOLTS 0
+#define VOLTAGE 0
 #define CURRENT 1
 #define POWER 2
 
@@ -533,9 +533,9 @@ int get_tlm(int tlm[][5]) {
         i++;
       }
 
-	tlm[1][B] = (int) (98.5 - ina219[SENSOR_40 + CURRENT]/400);  // +X current [4]
-	tlm[1][D] = (int) (98.5 - ina219[SENSOR_41 + CURRENT]/400);  // +Y current [7]
-	tlm[1][C] = (int) (98.5 - ina219[SENSOR_44 + CURRENT]/400);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
+	tlm[1][B] = (int) (98.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/400);  // +X current [4]
+	tlm[1][D] = (int) (98.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/400);  // +Y current [7]
+	tlm[1][C] = (int) (98.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/400);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
 
 //	int tlm_3b = (int)(strtof(ina219[0], NULL) * 10.0);
 //	int tlm_2d = (int)(50.0 + strtof(ina219[SENSOR_4A + VOLTAGE], NULL)/40.0);

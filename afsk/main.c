@@ -124,9 +124,9 @@ int main(void) {
 	    
        // Read current from I2C bus
     	i2cDevice = wiringPiI2CSetup (0x40) ;
-       	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
+       	int result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
         printf("\n\n1 I2C result: %d\n", result);
-        int result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
+        result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
         printf("Write result: %d\n", result);
         int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
         printf("Current: %d\n\n", currentValue);
