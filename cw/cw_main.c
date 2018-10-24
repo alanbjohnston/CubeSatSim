@@ -534,19 +534,19 @@ int get_tlm(int tlm[][5]) {
       }
 	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
-	tlm[1][B] = (int) (98.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/400);  // +X current [4]
-	tlm[1][D] = (int) (98.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/400);  // +Y current [7]
-	tlm[1][C] = (int) (98.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/400);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
+	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10);  // +X current [4]
+	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10);  // +Y current [7]
+	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
 
 //	int tlm_3b = (int)(strtof(ina219[0], NULL) * 10.0);
 //	int tlm_2d = (int)(50.0 + strtof(ina219[SENSOR_4A + VOLTAGE], NULL)/40.0);
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0);      // 5V supply to Pi
-	tlm[2][D] = (int)(50.0 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/40.0);   // NiMH Battery current
+	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0);   // NiMH Battery current
 //	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
 	
 	printf("1A: ina219[%d]: %s val: %f \n", SENSOR_4A + CURRENT, ina219[SENSOR_4A + CURRENT], strtof(ina219[SENSOR_4A + CURRENT], NULL));
 	   
-        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 29.5 + 0.5);  // Current of 5V supply to Pi
+        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5);  // Current of 5V supply to Pi
 	
         int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
 //        printf("Read: %x\n", tempValue);
@@ -561,7 +561,7 @@ int get_tlm(int tlm[][5]) {
 	tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5);
 //        printf(" 4A: %d \n", tlm_4a);
 	
-        tlm[5][A] = (int)((95.8 - atoi(mopower[UCTEMP]))/1.48 + 0.5);
+        tlm[5][A] = (int)((95.8 - (atoi(mopower[UCTEMP]) - 30))/1.48 + 0.5);
         printf(" 5A: %d \n", tlm[5][A]);
 
 //        int tlm_6d = 49 + rand() % 3; 
