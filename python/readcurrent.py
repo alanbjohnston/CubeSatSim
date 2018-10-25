@@ -5,6 +5,15 @@ MAX_EXPECTED_AMPS45 = 0.6
 ina40v = 0
 ina40i = 0
 ina40p = 0
+ina41v = 0
+ina41i = 0
+ina41p = 0
+ina44v = 0
+ina44i = 0
+ina44p = 0
+ina45v = 0
+ina45i = 0
+ina45p = 0
 ina4av = 0
 ina4ai = 0
 ina4ap = 0
@@ -14,7 +23,7 @@ FAIL = -1
 try:
     from ina219 import INA219
     from ina219 import DeviceRangeError
-    INA219DISABLE=1
+    INA219DISABLE=-1
 except:
     INA219DISABLE=1
     
