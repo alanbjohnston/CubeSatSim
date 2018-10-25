@@ -35,8 +35,10 @@ if INA219DISABLE !=1:
         ina40v = ina40.voltage()
         ina40i = ina40.current()
         ina40p = ina40.power()
-        ina4a = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
-        
+    except:
+        FAIL = 1
+    try:
+        ina4a = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)        
         ina4a.wake();
         ina4a.configure(ina4a.RANGE_16V)
         ina4av = ina4a.voltage()
