@@ -5,6 +5,7 @@ MAX_EXPECTED_AMPS45 = 0.6
 ina40v = 0
 ina40i = 0
 ina40p = 0
+FAIL = -1
 
 try:
     from ina219 import INA219
@@ -21,7 +22,8 @@ if INA219DISABLE !=1:
         ina40v = ina40.voltage()
         ina40i = ina40.current()
         ina40p = ina40.power()
-    except:    
+    except:
+        FAIL = 1
 print ina40v, ina40i, ina40p
 
 if INA219DISABLE !=1:
