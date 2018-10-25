@@ -35,6 +35,7 @@ if INA219DISABLE !=1:
         ina40v = ina40.voltage()
         ina40i = ina40.current()
         ina40p = ina40.power()
+        ina40.sleep();
     except:
         FAIL = 1
     try:
@@ -44,6 +45,7 @@ if INA219DISABLE !=1:
         ina41v = ina41.voltage()
         ina41i = ina41.current()
         ina41p = ina41.power()
+        ina41.sleep();
     except:
         FAIL = 1
     try:
@@ -53,6 +55,7 @@ if INA219DISABLE !=1:
         ina44v = ina44.voltage()
         ina44i = ina44.current()
         ina44p = ina44.power()
+        ina44.sleep();
     except:
         FAIL = 1
     try:
@@ -62,6 +65,7 @@ if INA219DISABLE !=1:
         ina45v = ina45.voltage()
         ina45i = ina45.current()
         ina45p = ina45.power()
+        ina45.sleep();
     except:
         FAIL = 1
     try:
@@ -70,13 +74,9 @@ if INA219DISABLE !=1:
         ina4a.configure(ina4a.RANGE_16V)
         ina4av = ina4a.voltage()
         ina4ai = ina4a.current()
-        ina4ap = ina4a.power()
+        ina4ap = inaaa.power()
+        ina4a.sleep();
     except:
         FAIL = 1
 print ina40v, ina40i, ina40p, ina41v, ina41i, ina41p, ina44v, ina44i, ina44p, ina45v, ina45i, ina45p, ina4av, ina4ai, ina4ap
 
-    ina4A.sleep();
-    ina40.sleep();
-    ina41.sleep();
-    ina44.sleep();
-    ina45.sleep();
