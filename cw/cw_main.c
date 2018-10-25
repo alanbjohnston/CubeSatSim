@@ -75,12 +75,12 @@ int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
 int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
-int mai
-n(void_partial)
+int main(void)
 {
     uint8_t retVal;
     int tlm[7][5];
-    ini++) {
+    int i,j;
+    for (i = 1; i < 7; i++) {
         for (j = 1; j < 5; j++) {
 		tlm[i][j] = 0;
 	}
@@ -164,16 +164,16 @@ n(void_partial)
 */		    
             msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][1], tlm[channel][2]);
        
-            printf("\nINFO: Sending TLM channel %d \n", channel
+            printf("\nINFO: Sending TLM channel %d \n", channel);
 		   
             retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
             if (retVal != AXRADIO_ERR_NOERROR) {
                  fprintf(stderr, "ERROR: Unable to transmit a packet\n");
                  exit(EXIT_FAILURE);
 	    }    
-	    msg_length = encode_tlm_partial(&packet[0], tlm[channel][3], tlm[channel][4]);
+	    msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][3], tlm[channel][4]);
 		    
-            printf("\nINFO: Sending TLM channel %d \n", channel
+            printf("\nINFO: Sending TLM channel %d \n", channel);
 
             retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
             if (retVal != AXRADIO_ERR_NOERROR) {
