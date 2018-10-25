@@ -21,7 +21,7 @@ if INA219DISABLE !=1:
         ina40v = ina40.voltage()
         ina40i = ina40.current()
         ina40p = ina40.power()
-        
+    except:    
 print ina40v, ina40i, ina40p
 
 if INA219DISABLE !=1:
