@@ -39,7 +39,7 @@ if INA219DISABLE !=1:
     except:
         FAIL = 1
     try:
-        ina41 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
+        ina41 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x41)
         ina41.wake();
         ina41.configure(ina41.RANGE_16V)
         ina41v = ina41.voltage()
@@ -49,7 +49,7 @@ if INA219DISABLE !=1:
     except:
         FAIL = 1
     try:
-        ina44 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
+        ina44 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x44)
         ina44.wake();
         ina44.configure(ina44.RANGE_16V)
         ina44v = ina44.voltage()
@@ -59,7 +59,7 @@ if INA219DISABLE !=1:
     except:
         FAIL = 1
     try:
-        ina45 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
+        ina45 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x45)
         ina45.wake();
         ina45.configure(ina45.RANGE_16V)
         ina45v = ina45.voltage()
@@ -69,12 +69,12 @@ if INA219DISABLE !=1:
     except:
         FAIL = 1
     try:
-        ina4a = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)        
+        ina4a = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)        
         ina4a.wake();
         ina4a.configure(ina4a.RANGE_16V)
         ina4av = ina4a.voltage()
         ina4ai = ina4a.current()
-        ina4ap = inaaa.power()
+        ina4ap = ina4a.power()
         ina4a.sleep();
     except:
         FAIL = 1
