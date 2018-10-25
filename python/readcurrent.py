@@ -24,6 +24,17 @@ try:
 except:
     print "1 INA219 libraries not found or hardware INA219 not found at address 0x4a, defaulting to non-INA219 output"
     INA219DISABLE=1
+    
+try:
+    ina40v = ina40.voltage()
+    ina40i = ina40.current()
+    ina40p = ina40.power()
+except:
+    ina40v = 0
+    ina40i = 0
+    ina40p = 0
+    
+print ina40v, ina40i, ina40p
 
 if INA219DISABLE !=1:
     ina4A = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)
