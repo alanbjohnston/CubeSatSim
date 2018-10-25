@@ -28,7 +28,7 @@ print ina40v, ina40i, ina40p
     
 print ina40v, ina40i, ina40p
 
- INA219DISABLE !=1:
+if INA219DISABLE !=1:
     ina4A = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)
     ina4A.wake();
     ina4A.configure(ina4A.RANGE_16V)
