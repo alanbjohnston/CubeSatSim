@@ -1,14 +1,16 @@
 SHUNT_OHMS = 0.01
 MAX_EXPECTED_AMPS = 2.5
 SHUNT_OHMS45 = 0.1
-MAX_EXPECTED_AMPS45 = 0.6 
+MAX_EXPECTED_AMPS45 = 0.6
+ina40v = 0
+ina40i = 0
+ina40p = 0
 
 try:
     from ina219 import INA219
     from ina219 import DeviceRangeError
     INA219DISABLE=1
 except:
-    print "1 INA219 libraries not found or hardware INA219 not found at address 0x4a, defaulting to non-INA219 output"
     INA219DISABLE=1
     
 if INA219DISABLE !=1:
@@ -19,10 +21,6 @@ if INA219DISABLE !=1:
         ina40v = ina40.voltage()
         ina40i = ina40.current()
         ina40p = ina40.power()
-    except:
-        ina40v = 0
-        ina40i = 0
-        ina40p = 0
         
 print ina40v, ina40i, ina40p
 
