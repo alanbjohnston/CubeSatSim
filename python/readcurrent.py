@@ -7,36 +7,28 @@ try:
     from ina219 import INA219
     from ina219 import DeviceRangeError
     INA219DISABLE=0
-    ina4A = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)
-    ina45 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x45)
-except:
-    print "Error"
-try:
-    ina4A.wake()
-    ina4A.configure(ina4A.RANGE_16V)
-    ina4A.voltage()
-    ina4A.current()
-    ina4A.power()
-    ina45.configure(ina45.RANGE_16V)
-    ina45.voltage()
-    ina45.current()
-    ina45.power()
 except:
     print "1 INA219 libraries not found or hardware INA219 not found at address 0x4a, defaulting to non-INA219 output"
     INA219DISABLE=1
     
-try:
-    ina40v = ina40.voltage()
-    ina40i = ina40.current()
-    ina40p = ina40.power()
-except:
-    ina40v = 0
-    ina40i = 0
-    ina40p = 0
+if INA219DISABLE !=1:
+    try:
+        ina40 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
+        ina40.wake();
+        ina40.configure(ina40.RANGE_16V)
+        ina40v = ina40.voltage()
+        ina40i = ina40.current()
+        ina40p = ina40.power()
+    except:
+        ina40v = 0
+        ina40i = 0
+        ina40p = 0
+        
+print ina40v, ina40i, ina40p
     
 print ina40v, ina40i, ina40p
 
-if INA219DISABLE !=1:
+ INA219DISABLE !=1:
     ina4A = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)
     ina4A.wake();
     ina4A.configure(ina4A.RANGE_16V)
