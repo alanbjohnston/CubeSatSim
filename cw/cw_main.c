@@ -138,7 +138,7 @@ int main(void)
 	    get_tlm(tlm);
 //    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		
-	    send_afsk(tlm);
+//	    send_afsk(tlm);
             config_cw();
 	
             if (channel == 0) {  
@@ -146,13 +146,13 @@ int main(void)
             msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
        
             printf("\nINFO: Sending TLM header\n");
-/*		    
+/**/		    
             retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
             if (retVal != AXRADIO_ERR_NOERROR) {
                 fprintf(stderr, "ERROR: Unable to transmit a packet\n");
             exit(EXIT_FAILURE);
 	    }
-*/
+/**/
 
         } else {
 		    
@@ -161,22 +161,22 @@ int main(void)
 		    
 //	    int tlm_3a = 0, tlm_1b = 0;
 
-/*            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
+/**/            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
 //		tlm_3a, tlm_1b, channel+2, channel+3,
 		tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4], 
 			 (MAX_MESSAGE_LENGTH + 1));
-*/		    
-            msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][1], tlm[channel][2]);
+/**/		    
+ //           msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][1], tlm[channel][2]);
        
             printf("\nINFO: Sending TLM channel %d \n", channel);
-/*		   
+/**/		   
             retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
             if (retVal != AXRADIO_ERR_NOERROR) {
                  fprintf(stderr, "ERROR: Unable to transmit a packet\n");
                  exit(EXIT_FAILURE);
 	    }
-*/
-	    get_tlm(tlm);
+/**/
+/*	    get_tlm(tlm);
 	    send_afsk(tlm);
 
             config_cw();
@@ -184,7 +184,7 @@ int main(void)
 	    msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][3], tlm[channel][4]);
 		    
             printf("\nINFO: Sending TLM channel %d \n", channel);
-/*
+
             retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
             if (retVal != AXRADIO_ERR_NOERROR) {
                 fprintf(stderr, "ERROR: Unable to transmit a packet\n");
