@@ -74,8 +74,17 @@ int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
 int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
-int main(void)
+int main(int argc, char *argv[])
 {
+    bool send_cw = true;
+    bool send_afsk = true;
+	
+    if (argc > 0) {
+	if (argv[1][1] == 'a')
+		send_cw = false;
+	if (argv[1][1] == 'c')
+		send_afsk = false;	    
+    }
     uint8_t retVal;
     int tlm[7][5];
     int i, j;
@@ -134,7 +143,8 @@ int main(void)
 	    get_tlm(tlm);
 //    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		
-	    send_afsk(tlm);
+	    if (send_afsk)
+		    send_afsk(tlm);
             config_cw();
 	
             if (channel == 0) {  
@@ -158,12 +168,13 @@ int main(void)
             printf("\nINFO: Sending TLM channel %d \n", channel);
         }
  //       printf("DEBUG: msg_length = %d\n", msg_length);
-
-        retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
-        if (retVal != AXRADIO_ERR_NOERROR) {
-            fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-            exit(EXIT_FAILURE);
-	}
+        if (send_cw) {
+            retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
+            if (retVal != AXRADIO_ERR_NOERROR) {
+                fprintf(stderr, "ERROR: Unable to transmit a packet\n");
+                exit(EXIT_FAILURE);
+	    }
+	}	
 //	sleep(1);
 
 	usleep(200000);
