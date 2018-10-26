@@ -35,7 +35,8 @@
 #include <../afsk/send_afsk.h>
 
 #define MAX_MESSAGE_LENGTH (197)
-
+#define TRUE 1
+#define FALSE 0
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -76,15 +77,32 @@ int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
 int main(int argc, char *argv[])
 {
-    bool send_cw = true;
-    bool send_afsk = true;
-	
-    if (argc > 0) {
-	if (argv[1][1] == 'a')
-		send_cw = false;
-	if (argv[1][1] == 'c')
-		send_afsk = false;	    
+ int z=0;
+ printf("\ncmdline args count=%d", argc);
+
+ /* First argument is executable name only */
+ printf("\nexe name=%s", argv[0]);
+
+ for (z=1; z< argc; z++) {
+     printf("\narg%d=%s", z, argv[z]);
+ }
+
+ printf("\n");
+    int send_cw_tlm = TRUE;
+    int send_afsk_tlm = TRUE;
+//    char a = 'a';
+ //   char c = 'c';	
+    if (argc > 1) {
+//	if (strcmp(argv[2],"c") == 1) {
+		send_cw_tlm = FALSE;
+ //     		printf("AFSK telemetry only!\n");
+//	}
+//	if (strcmp(argv[2],"c") == 1) {
+//		send_afsk_tlm = FALSE;	    
+ //     		printf("CW telemetry only!\n");
+//	}
     }
+
     uint8_t retVal;
     int tlm[7][5];
     int i, j;
@@ -143,7 +161,7 @@ int main(int argc, char *argv[])
 	    get_tlm(tlm);
 //    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		
-	    if (send_afsk)
+	    if (send_afsk_tlm)
 		    send_afsk(tlm);
             config_cw();
 	
@@ -168,7 +186,7 @@ int main(int argc, char *argv[])
             printf("\nINFO: Sending TLM channel %d \n", channel);
         }
  //       printf("DEBUG: msg_length = %d\n", msg_length);
-        if (send_cw) {
+        if (send_cw_tlm) {
             retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
             if (retVal != AXRADIO_ERR_NOERROR) {
                 fprintf(stderr, "ERROR: Unable to transmit a packet\n");
