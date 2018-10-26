@@ -75,12 +75,11 @@ int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
 int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
-static char cmdbuffer[1000];
-static char mopower[64][14];
-static char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
-
 int main(void)
 {
+    static char cmdbuffer[1000];
+    static char mopower[64][14];
+    static char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
     uint8_t retVal;
     int tlm[7][5];
     int i,j;
