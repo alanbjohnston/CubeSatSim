@@ -130,13 +130,67 @@ int main(int argc, char *argv[])
     initializeSpi();
 //    printf("1\n");
    
-	config_afsk();
+// Send one frame of CW Telem	
+// Initialize the AX5043
+    retVal = axradio_init();
+    if (retVal == AXRADIO_ERR_NOCHIP) {
+        fprintf(stderr, "ERROR: No AX5043 RF chip found\n");
+        exit(EXIT_FAILURE);
+    }
+    if (retVal != AXRADIO_ERR_NOERROR) {
+        fprintf(stderr, "ERROR: Unable to initialize AX5043\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("INFO: Found and initialized AX5043\n");
+
+    retVal = mode_tx();
+    if (retVal != AXRADIO_ERR_NOERROR) {
+         fprintf(stderr, "ERROR: Unable to enter TX mode\n");
+         exit(EXIT_FAILURE);
+    }
+    config_cw();
+
+    // allocate space for the buffer
+    static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
+     
+    int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
+    int msg_length;
+
+    for (channel = 0; channel < 7; channel++) {
+            
+	get_tlm(tlm);
+    	if (channel == 0) {  
+    
+// start with telemetry header "hi hi" plus a few chars to help CW decoding software sync
+        	msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
+       
+        	printf("\nINFO: Sending TLM header\n");
+
+     	} else {
+     
+        	msg_length = encode_tlm(&packet[0], channel,
+				tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4], 
+			 	(MAX_MESSAGE_LENGTH + 1));
+       
+        	printf("\nINFO: Sending TLM channel %d \n", channel);
+    	}
+    	retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
+    	if (retVal != AXRADIO_ERR_NOERROR) {
+        	fprintf(stderr, "ERROR: Unable to transmit a packet\n");
+        	exit(EXIT_FAILURE);
+		}
+	}	
+
+	usleep(200000);
+
+    config_afsk();  // Now switch to AFSK Telem
 
     while(1) {
 	get_tlm(tlm);
        send_afsk(tlm);
-
     }
+	
     // Initialize the AX5043
     retVal = axradio_init();
 //    printf("2\n");
