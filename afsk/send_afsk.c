@@ -38,9 +38,9 @@ extern int lower_digit(int number);
 int send_afsk(int tlm[][5]) {
      printf("INFO: Configuring radio for X.25\n");
     
-    setSpiChannel(SPI_CHANNEL);
-    setSpiSpeed(SPI_SPEED);
-    initializeSpi();
+//    setSpiChannel(SPI_CHANNEL);
+//    setSpiSpeed(SPI_SPEED);
+//    initializeSpi();
 
     int ret;
     uint8_t data[1024];

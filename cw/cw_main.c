@@ -357,9 +357,9 @@ void config_cw() {
     uint8_t retVal;
 	
 // Configure SPI bus to AX5043
-    setSpiChannel(SPI_CHANNEL);
-    setSpiSpeed(SPI_SPEED);
-    initializeSpi();
+//    setSpiChannel(SPI_CHANNEL);
+//    setSpiSpeed(SPI_SPEED);
+//    initializeSpi();
  //   printf("1\n");
 
     // Initialize the AX5043
