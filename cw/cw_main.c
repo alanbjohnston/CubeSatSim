@@ -213,10 +213,10 @@ int main(int argc, char *argv[])
     config_cw();
 
     // allocate space for the buffer
-    static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
+    //static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
-    int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
-    int msg_length;
+    //int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
+    //int msg_length;
 
     while(1) {  // loop forever
         for (channel = 0; channel < 7; channel++) {
