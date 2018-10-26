@@ -74,6 +74,7 @@ int add_dot(uint8_t *msg, int number);
 int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
 int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
+extern int config_afsk();
 
 int main(int argc, char *argv[])
 {
@@ -103,6 +104,7 @@ int main(int argc, char *argv[])
 //	}
     }
 
+   send_cw_tlm = FALSE;
     uint8_t retVal;
     int tlm[7][5];
     int i, j;
@@ -127,7 +129,14 @@ int main(int argc, char *argv[])
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
 //    printf("1\n");
+   
+	config_afsk();
 
+    while(1) {
+	get_tlm(tlm);
+       send_afsk(tlm);
+
+    }
     // Initialize the AX5043
     retVal = axradio_init();
 //    printf("2\n");

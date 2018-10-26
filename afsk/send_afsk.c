@@ -34,9 +34,21 @@ void config_x25();
 void trans_x25();
 extern int upper_digit(int number);
 extern int lower_digit(int number);
- 
+
+int config_afsk() {
+
+    	init_rf();
+    
+        printf("INFO: Initiating radio for X.25\n");
+
+    	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
+    		AX25_PREAMBLE_LEN,
+   		 AX25_POSTAMBLE_LEN);
+   return(1);
+
+} 
 int send_afsk(int tlm[][5]) {
-     printf("INFO: Configuring radio for X.25\n");
+     printf("INFO: Configuring rf for X.25\n");
     
 //    setSpiChannel(SPI_CHANNEL);
 //    setSpiSpeed(SPI_SPEED);
@@ -54,12 +66,6 @@ int send_afsk(int tlm[][5]) {
 //        sleep(2);
     	
 	// send X.25 packet
-
-    	init_rf();
-
-    	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
-    		AX25_PREAMBLE_LEN,
-   		 AX25_POSTAMBLE_LEN);
 
 	printf("INFO: Preparing X.25 packet\n");
 	
@@ -106,9 +112,11 @@ int send_afsk(int tlm[][5]) {
 }
 
 static void init_rf() {
+    printf("INFO: Before rf init\n");
     int ret;
     ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
-    if (ret != PQWS_SUCCESS) {
+    printf("INFO: After rf init\n");
+     if (ret != PQWS_SUCCESS) {
         fprintf(stderr,
                 "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
         exit(EXIT_FAILURE);
