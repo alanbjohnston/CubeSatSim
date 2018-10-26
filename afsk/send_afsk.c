@@ -48,7 +48,7 @@ int config_afsk() {
 
 } 
 int send_afsk(int tlm[][5]) {
-     printf("INFO: Configuring rf for X.25\n");
+//     printf("INFO: Configuring rf for X.25\n");
     
 //    setSpiChannel(SPI_CHANNEL);
 //    setSpiSpeed(SPI_SPEED);
