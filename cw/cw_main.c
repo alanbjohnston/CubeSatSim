@@ -67,7 +67,6 @@ int upper_digit(int number);
 int encode_digit(uint8_t *msg, int number);
 void config_cw();
 int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int val4, int avail);
-int encode_tlm_partial(uint8_t *buffer, int channel, int val1, int val2);
 int encode_header(uint8_t *buffer, int avail);
 int add_dash(uint8_t *msg, int number); 
 int add_dot(uint8_t *msg, int number); 
@@ -79,7 +78,7 @@ int main(void)
 {
     uint8_t retVal;
     int tlm[7][5];
-    int i,j;
+    int i, j;
     for (i = 1; i < 7; i++) {
         for (j = 1; j < 5; j++) {
 		tlm[i][j] = 0;
@@ -123,18 +122,19 @@ int main(void)
     }
     config_cw();
 
-    // allocate space for buffers
+    // allocate space for the buffer
     static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
     int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
     int msg_length;
 
+    while(1) {  // loop forever
         for (channel = 0; channel < 7; channel++) {
             
 	    get_tlm(tlm);
 //    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
 		
-//	    send_afsk(tlm);
+	    send_afsk(tlm);
             config_cw();
 	
             if (channel == 0) {  
@@ -142,13 +142,6 @@ int main(void)
             msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
        
             printf("\nINFO: Sending TLM header\n");
-/**/		    
-            retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
-            if (retVal != AXRADIO_ERR_NOERROR) {
-                fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-            exit(EXIT_FAILURE);
-	    }
-/**/
 
         } else {
 		    
@@ -157,51 +150,25 @@ int main(void)
 		    
 //	    int tlm_3a = 0, tlm_1b = 0;
 
-/**/            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
+            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
 //		tlm_3a, tlm_1b, channel+2, channel+3,
 		tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4], 
 			 (MAX_MESSAGE_LENGTH + 1));
-/**/		    
- //           msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][1], tlm[channel][2]);
        
             printf("\nINFO: Sending TLM channel %d \n", channel);
-/**/		   
-            retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
-            if (retVal != AXRADIO_ERR_NOERROR) {
-                 fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-                 exit(EXIT_FAILURE);
-	    }
-/**/
-/*	    get_tlm(tlm);
-	    send_afsk(tlm);
+        }
+ //       printf("DEBUG: msg_length = %d\n", msg_length);
 
-            config_cw();
-	
-	    msg_length = encode_tlm_partial(&packet[0], channel, tlm[channel][3], tlm[channel][4]);
-		    
-            printf("\nINFO: Sending TLM channel %d \n", channel);
-
-            retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
-            if (retVal != AXRADIO_ERR_NOERROR) {
-                fprintf(stderr, "ERROR: Unable to transmit a packet\n");
+        retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
+        if (retVal != AXRADIO_ERR_NOERROR) {
+            fprintf(stderr, "ERROR: Unable to transmit a packet\n");
             exit(EXIT_FAILURE);
-	    }
-*/
-         }
-       }	
-	  while (1) {  // loop forever
-
-            get_tlm(tlm);
-            send_afsk(tlm);
-            sleep (4);
-
-          } 
+	}
 //	sleep(1);
 
-//	usleep(200000);
-    
-
-  
+	usleep(200000);
+        }
+    }
 }
 // Encodes telemetry header (channel 0) into buffer
 //
@@ -290,33 +257,6 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
     }
 return count;
 }
-
-// Encodes one channel of telemetry into buffer
-//
-int encode_tlm_partial(uint8_t *buffer, int channel, int val1, int val2) {
-
-    int count = 0;
-
-    count += add_space(&buffer[count]);
-    count += add_space(&buffer[count]);
-    count += add_space(&buffer[count]);
-    count += add_space(&buffer[count]);
- 
-    count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1aa
-    count += encode_digit(&buffer[count], upper_digit(val1));
-    count += encode_digit(&buffer[count], lower_digit(val1));
-
-    count += add_space(&buffer[count]);
-
-    count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1bb
-    count += encode_digit(&buffer[count], upper_digit(val2));
-    count += encode_digit(&buffer[count], lower_digit(val2));
-
-    count += add_space(&buffer[count]);
-	
-    return count;
-}
-
 //  Encodes a single digit of telemetry into buffer
 //
 int encode_digit(uint8_t *buffer, int digit) {
@@ -512,16 +452,15 @@ int add_dot(uint8_t *msg, int number) {
 	return counter;	
 }
 int get_tlm(int tlm[][5]) {
-    static char cmdbuffer[1000];
-    static char mopower[64][14];
-    static char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
 
 //  Read MoPower UPS data
       FILE* file = popen("mpcmd show data 2>&1", "r");
+      char cmdbuffer[1000];
       fgets(cmdbuffer, 1000, file);
       pclose(file);
 //      printf("buffer is :%s\n", cmdbuffer);
 
+      char mopower[64][14];
       char * data2;
       int i = 0;
       data2 = strtok (cmdbuffer," ");
@@ -583,30 +522,31 @@ int get_tlm(int tlm[][5]) {
       pclose(file);
  //     printf("Current buffer is:%s\n", cmdbuffer);
 
+      char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
       i = 0;
       data2 = strtok (cmdbuffer," ");
 
       while (data2 != NULL) {
         strcpy(ina219[i], data2);
-//        printf ("ina219[%d]=%s\n",i,ina219[i]);
+        printf ("ina219[%d]=%s\n",i,ina219[i]);
         data2 = strtok (NULL, " ");
         i++;
       }
-//	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
+	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
-	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/5.0);  // +X current [4]
-	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/5.0);  // +Y current [7]
-	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/5.0);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
+	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10);  // +X current [4]
+	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10);  // +Y current [7]
+	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
 
 //	int tlm_3b = (int)(strtof(ina219[0], NULL) * 10.0);
 //	int tlm_2d = (int)(50.0 + strtof(ina219[SENSOR_4A + VOLTAGE], NULL)/40.0);
-	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 5.0);      // 5V supply to Pi
+	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0);      // 5V supply to Pi
 	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0);   // NiMH Battery current
 //	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
 	
-//	printf("1A: ina219[%d]: %s val: %f \n", SENSOR_4A + CURRENT, ina219[SENSOR_4A + CURRENT], strtof(ina219[SENSOR_4A + CURRENT], NULL));
+	printf("1A: ina219[%d]: %s val: %f \n", SENSOR_4A + CURRENT, ina219[SENSOR_4A + CURRENT], strtof(ina219[SENSOR_4A + CURRENT], NULL));
 	   
-        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 7.5 + 0.5);  // Current of 5V supply to Pi
+        tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5);  // Current of 5V supply to Pi
 	
         int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
 //        printf("Read: %x\n", tempValue);
@@ -615,19 +555,19 @@ int get_tlm(int tlm[][5]) {
         uint8_t lower = (uint8_t) (tempValue & 0xff);
 
         float temp = (float)lower + ((float)upper / 0x100);
-//        printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
+        printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
 
 //        int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
 	tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5);
 //        printf(" 4A: %d \n", tlm_4a);
 	
         tlm[5][A] = (int)((95.8 - (atoi(mopower[UCTEMP]) - 30))/1.48 + 0.5);
- //       printf(" 5A: %d \n", tlm[5][A]);
+        printf(" 5A: %d \n", tlm[5][A]);
 
 //        int tlm_6d = 49 + rand() % 3; 
 	tlm[6][D] = 49 + rand() % 3; 
 
-/*
+
     int k, j;
     for (k = 1; k < 7; k++) {
         for (j = 1; j < 5; j++) {
@@ -635,6 +575,5 @@ int get_tlm(int tlm[][5]) {
 	}
     printf("\n");
     }	
-*/
        return 0;
 }
