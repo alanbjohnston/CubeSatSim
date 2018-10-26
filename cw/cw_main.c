@@ -129,7 +129,8 @@ int main(int argc, char *argv[])
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
 //    printf("1\n");
-   
+
+if (send_cw_tlm) {	
 // Send one frame of CW Telem	
 // Initialize the AX5043
     retVal = axradio_init();
@@ -183,7 +184,8 @@ int main(int argc, char *argv[])
 	}	
 
 	usleep(200000);
-
+    }
+	
     config_afsk();  // Now switch to AFSK Telem
 
     while(1) {
