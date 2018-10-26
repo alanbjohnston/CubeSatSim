@@ -75,6 +75,10 @@ int add_space(uint8_t *msg);
 int get_tlm(int tlm[7][5]); 
 int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
+static char cmdbuffer[1000];
+static char mopower[64][14];
+static char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
+
 int main(void)
 {
     uint8_t retVal;
@@ -123,13 +127,12 @@ int main(void)
     }
     config_cw();
 
-    // allocate space for the buffer
+    // allocate space for buffers
     static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
     int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
     int msg_length;
 
-    while(1) {  // loop forever
         for (channel = 0; channel < 7; channel++) {
             
 	    get_tlm(tlm);
@@ -188,12 +191,21 @@ int main(void)
             exit(EXIT_FAILURE);
 	    }
 */
+         }
+       }	
+	  while (1) {  // loop forever
+
+            get_tlm(tlm);
+            send_afsk(tlm);
+            sleep (4);
+
           } 
 //	sleep(1);
 
 //	usleep(200000);
-        }
-    }
+    
+
+  
 }
 // Encodes telemetry header (channel 0) into buffer
 //
@@ -507,12 +519,10 @@ int get_tlm(int tlm[][5]) {
 
 //  Read MoPower UPS data
       FILE* file = popen("mpcmd show data 2>&1", "r");
-      char cmdbuffer[1000];
       fgets(cmdbuffer, 1000, file);
       pclose(file);
 //      printf("buffer is :%s\n", cmdbuffer);
 
-      char mopower[64][14];
       char * data2;
       int i = 0;
       data2 = strtok (cmdbuffer," ");
@@ -574,7 +584,6 @@ int get_tlm(int tlm[][5]) {
       pclose(file);
  //     printf("Current buffer is:%s\n", cmdbuffer);
 
-      char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
       i = 0;
       data2 = strtok (cmdbuffer," ");
 

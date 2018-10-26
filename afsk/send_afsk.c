@@ -36,6 +36,7 @@ extern int upper_digit(int number);
 extern int lower_digit(int number);
  
 int send_afsk(int tlm[][5]) {
+     printf("INFO: Configuring radio for X.25\n");
     
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
@@ -59,6 +60,8 @@ int send_afsk(int tlm[][5]) {
     	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
+
+	printf("INFO: Preparing X.25 packet\n");
 	
 	char str[1000];
 	char tlm_str[1000];
