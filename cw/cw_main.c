@@ -129,7 +129,7 @@ int main(int argc, char *argv[])
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
 //    printf("1\n");
-
+   
 // Send one frame of CW Telem	
 // Initialize the AX5043
     retVal = axradio_init();
@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
 	}	
 
 	usleep(200000);
-  	
+
     config_afsk();  // Now switch to AFSK Telem
 
     while(1) {
@@ -213,10 +213,10 @@ int main(int argc, char *argv[])
     config_cw();
 
     // allocate space for the buffer
-    static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
+    //static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
      
-    int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
-    int msg_length;
+    //int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
+    //int msg_length;
 
     while(1) {  // loop forever
         for (channel = 0; channel < 7; channel++) {
