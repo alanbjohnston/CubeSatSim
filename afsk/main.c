@@ -101,7 +101,7 @@ int main(void) {
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
         
-	printf("INFO: Transmitting X.25 packet\n");
+	printf("INFO: Getting TLM Data\n");
 	    
 	get_tlm(tlm);
 
@@ -182,12 +182,13 @@ int upper_digit(int number) {
 }
 int get_tlm(int tlm[][5]) {
 
-//  Reading I2C voltage and current sensors	     
+//  Reading I2C voltage and current sensors	
+	
       char cmdbuffer[1000];
       FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
       fgets(cmdbuffer, 1000, file);
       pclose(file);
- //     printf("Current buffer is:%s\n", cmdbuffer);
+      printf("I2C Sensor data: %s\n", cmdbuffer);
 
       char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
       int i = 0;
@@ -195,7 +196,7 @@ int get_tlm(int tlm[][5]) {
 
       while (data2 != NULL) {
           strcpy(ina219[i], data2);
-          printf ("ina219[%d]=%s\n",i,ina219[i]);
+  //        printf ("ina219[%d]=%s\n",i,ina219[i]);
           data2 = strtok (NULL, " ");
           i++;
       }
@@ -205,9 +206,6 @@ int get_tlm(int tlm[][5]) {
 	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10);  // +X current [4]
 	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10);  // +Y current [7]
 	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10);  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
-
-//	int tlm_3b = (int)(strtof(ina219[0], NULL) * 10.0);
-//	int tlm_2d = (int)(50.0 + strtof(ina219[SENSOR_4A + VOLTAGE], NULL)/40.0);
 	
 	tlm[2][B] = 99;
 	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
@@ -215,29 +213,17 @@ int get_tlm(int tlm[][5]) {
 	
 	tlm[3][A] = (int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5);
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0);      // 5V supply to Pi
-	
-//	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
-//	printf("1A: ina219[%d]: %s val: %f \n", SENSOR_4A + CURRENT, ina219[SENSOR_4A + CURRENT], strtof(ina219[SENSOR_4A + CURRENT], NULL));
-	   	
+		   	
         int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
 //        printf("Read: %x\n", tempValue);
         uint8_t upper = (uint8_t) (tempValue >> 8);
         uint8_t lower = (uint8_t) (tempValue & 0xff);
         float temp = (float)lower + ((float)upper / 0x100);
- //       printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
 
-//        int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
 	tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5);
-	
-//        printf(" 4A: %d \n", tlm_4a);
-	
+		
 	tlm[6][B] = 0 ;
 	tlm[6][D] = 49 + rand() % 3; 
-	
-//        tlm[5][A] = (int)((95.8 - (atoi(mopower[UCTEMP]) - 30))/1.48 + 0.5);
-//        printf(" 5A: %d \n", tlm[5][A]);
-
-//        int tlm_6d = 49 + rand() % 3; 
 
 // Display tlm
     int k, j;
