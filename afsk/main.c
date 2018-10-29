@@ -54,6 +54,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 static void init_rf();
+int get_tlm(int tlm[][5]);
 void config_x25();
 void trans_x25();
 long int timestamp = 0;
@@ -147,7 +148,7 @@ int main(void) {
                     "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
                     ret);
             exit(EXIT_FAILURE);
-
+	}
     }
 
     return 0;
