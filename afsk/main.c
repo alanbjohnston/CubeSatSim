@@ -1,5 +1,7 @@
 /*
- *  A sample application transmitting 1k2 AFSK in X.25 format
+ *  Transmits CubeSat Telemetry at 440MHz in AO-7 format
+ *
+ *  Copyright Alan B. Johnston
  *
  *  Portions Copyright (C) 2018 Jonathan Brandenburg
  *
