@@ -28,6 +28,7 @@
 #include "ax25.h"
 #include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
+#include <time.h>
 
 #define VBATT 15
 #define ADC5 17
@@ -59,8 +60,8 @@ static void init_rf();
 int get_tlm(int tlm[][5]);
 void config_x25();
 void trans_x25();
-long int timestamp = 0;
-int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
+//long int timestamp;
+//int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
 int upper_digit(int number);
 int lower_digit(int number);
@@ -76,9 +77,10 @@ int main(void) {
 		tlm[i][j] = 0;
 	}
     }
+    long int timestamp = time(NULL);
 	
-    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
+    //tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    //srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
 	
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
@@ -284,6 +286,9 @@ int get_tlm(int tlm[][5]) {
 //	int tlm_2d = (int)(50.0 + strtof(ina219[SENSOR_4A + VOLTAGE], NULL)/40.0);
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0);      // 5V supply to Pi
 	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0);   // NiMH Battery current
+	
+	tlm[3][A] = (int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5);
+	
 //	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
 	
 	printf("1A: ina219[%d]: %s val: %f \n", SENSOR_4A + CURRENT, ina219[SENSOR_4A + CURRENT], strtof(ina219[SENSOR_4A + CURRENT], NULL));
@@ -302,6 +307,9 @@ int get_tlm(int tlm[][5]) {
 //        int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
 	tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5);
 //        printf(" 4A: %d \n", tlm_4a);
+	tlm[6][B] = 0 ;
+	tlm[2][B] = 99;
+	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 	
 //        tlm[5][A] = (int)((95.8 - (atoi(mopower[UCTEMP]) - 30))/1.48 + 0.5);
         printf(" 5A: %d \n", tlm[5][A]);
