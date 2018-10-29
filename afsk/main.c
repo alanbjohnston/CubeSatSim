@@ -416,7 +416,7 @@ int get_tlm(int tlm[][5]) {
 	tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5);
 //        printf(" 4A: %d \n", tlm_4a);
 	
-        tlm[5][A] = (int)((95.8 - (atoi(mopower[UCTEMP]) - 30))/1.48 + 0.5);
+//        tlm[5][A] = (int)((95.8 - (atoi(mopower[UCTEMP]) - 30))/1.48 + 0.5);
         printf(" 5A: %d \n", tlm[5][A]);
 
 //        int tlm_6d = 49 + rand() % 3; 
