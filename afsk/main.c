@@ -352,13 +352,13 @@ int get_tlm(int tlm[][5]) {
 
 //        int result = wiringPiI2CWriteReg16(xPlusSensor, 0x05, 4096);
 //        printf("Write result: %d\n", result);
-/*
+*
         int xCurrentValue = wiringPiI2CReadReg16(xPlusSensor, 0x04);
         int yCurrentValue = wiringPiI2CReadReg16(yPlusSensor, 0x04);
         int zCurrentValue = wiringPiI2CReadReg16(zPlusSensor, 0x04);
         int battCurrentValue = wiringPiI2CReadReg16(battCurrentSensor, 0x04);
         printf("Currents: %d %d %d %d \n\n", xCurrentValue, yCurrentValue, zCurrentValue, battCurrentValue);
-*/
+*
 	
 //        int tlm_1b = (int) (98.5 - currentValue/400);
 //	tlm[1][A] = (int) (98.5 - battCurrentValue/400);
@@ -378,7 +378,7 @@ int get_tlm(int tlm[][5]) {
  //     printf("Current buffer is:%s\n", cmdbuffer);
 
       char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
-      i = 0;
+      int i = 0;
       char * data2 = strtok (cmdbuffer," ");
 
       while (data2 != NULL) {
