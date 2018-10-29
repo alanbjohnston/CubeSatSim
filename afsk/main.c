@@ -57,6 +57,7 @@ static void init_rf();
 void config_x25();
 void trans_x25();
 long int timestamp = 0;
+int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
 
 int upper_digit(int number);
 int lower_digit(int number);
