@@ -32,7 +32,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <wiringPiI2C.h>
-#include <../afsk/send_afsk.h>
+#include <time.h>
 
 #define MAX_MESSAGE_LENGTH (197)
 #define TRUE 1
