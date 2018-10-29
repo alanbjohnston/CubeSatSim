@@ -108,148 +108,33 @@ int main(void) {
    		 AX25_POSTAMBLE_LEN);
         
 	printf("INFO: Transmitting X.25 packet\n");
-/*	    
-	FILE* file = popen("mpcmd show data 2>&1", "r");
+	    
+	get_tlm(tlm);
 
-      char cmdbuffer[1000];
-      fgets(cmdbuffer, 1000, file);
-      pclose(file);
-      printf("buffer is :%s\n", cmdbuffer);
-
- 
-      char mopower[64][14];
-      char * data2;
-      int i = 0;
-      data2 = strtok (cmdbuffer," ");
-
-      while (data2 != NULL)
-
-      {
-        strcpy(mopower[i], data2);
-//        printf ("mopwer[%d]=%s\n",i,mopower[i]);
-        data2 = strtok (NULL, " ");
-        i++;
-      }
-
-        printf("Battery voltage = %s UPTIME_SEC %s UCTEMP %s \n", 
-	  mopower[VBATT], mopower[UPTIME_SEC], mopower[UCTEMP]);
-        long int time =  atoi(mopower[UPTIME_SEC]);
-	if (timestamp == 0)
-	 	timestamp = time;
-	int tlm_2c = (int)((time - timestamp) / 15) % 100; 
-	printf("Relative time: %ld seconds 2C: %d  2C: %d%d\n", time - timestamp,tlm_2c, upper_digit(tlm_2c), lower_digit(tlm_2c));
-
-        float vbat;
-        vbat = strtof(mopower[VBATT], NULL);
-        printf(" vbat: %f \n", vbat);
-        int tlm_3a = (int)((vbat * 10) - 65.5);
-	int tlm_6b = 0, tlm_2b = 99;
+	printf("INFO: Preparing X.25 packet\n");
 	
-        printf("TLM 3A = %d \n", tlm_3a);
-
-	printf("Config = %d %x \n", config, config);
-	    
-       // Read current from I2C bus
-    	i2cDevice = wiringPiI2CSetup (0x40) ;
-       	int result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
-        printf("\n\n1 I2C result: %d\n", result);
-        result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-        printf("Write result: %d\n", result);
-        int currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n", currentValue);
-
-    	i2cDevice = wiringPiI2CSetup (0x41) ;
-        result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
-        printf("\n\n2 I2C result: %d\n", result);
-        result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-        printf("Write result: %d\n", result);
-        currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n", currentValue);
-
-    	i2cDevice = wiringPiI2CSetup (0x44) ;
-     	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
-        printf("\n\n3 I2C result: %d\n", result);
-    	result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-        printf("Write result: %d\n", result);
-        currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n", currentValue);
-
-    	i2cDevice = wiringPiI2CSetup (0x45) ;
-	result = wiringPiI2CWriteReg16(i2cDevice, 0x00, config);
-        printf("\n\n4 I2C result: %d\n", result);
-  	result = wiringPiI2CWriteReg16(i2cDevice, 0x05, 4096);
-        printf("Write result: %d\n", result);
-        currentValue = wiringPiI2CReadReg16(i2cDevice, 0x04);
-        printf("Current: %d\n\n\n", currentValue);
-
-        int tlm_1b = (int) (98.5 - currentValue/400);
-        printf("TLM 1B = %d \n\n", tlm_1b);
-	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
-*/
-//  Reading 5V voltage and current
-	    
-      char cmdbuffer[1000];
-      int tlm_3a = 0, tlm_6b = 0, tlm_2b = 99, tlm_2c = 0;
-      int tlm_1a = 0, tlm_1b = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
-	    
-      FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
-
-      fgets(cmdbuffer, 1000, file);
-      pclose(file);
-      printf("Current buffer is:%s\n", cmdbuffer);
-
-      char battery[3][14];
-      i = 0;
-      char *data2 = strtok (cmdbuffer," ");
-
-      while (data2 != NULL)
-
-      {
-        strcpy(battery[i], data2);
-        printf ("battery[%d]=%s\n",i,battery[i]);
-        data2 = strtok (NULL, " ");
-        i++;
-      }
-	int tlm_3b = (int)(strtof(battery[0], NULL) * 10.0);
-	int tlm_2d = (int)(50.0 + strtof(battery[1], NULL)/40.0);
-	printf(" 2D: %d 3B: %d\n", tlm_2d, tlm_3b);
-
-        int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
-        printf("Read: %x\n", tempValue);
-
-        uint8_t upper = (uint8_t) (tempValue >> 8);
-        uint8_t lower = (uint8_t) (tempValue & 0xff);
-        float temp = (float)lower + ((float)upper / 0x100);
-        printf("upper: %x lower: %x temp: %f\n", upper, lower, temp); 
-       
-        int tlm_4a = (int)((95.8 - temp)/1.48 + 0.5);
-        printf(" 4A: %d \n", tlm_4a);
+	char str[1000];
+	char tlm_str[1000];
+	
+	char header_str[] = "\x03\x0fhi hi ";
+	strcpy(str, header_str);
+	
+        int channel;
+	for (channel = 1; channel < 7; channel++) {
+//        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
+          sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+	  channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+ 	  channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
+	  channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+	  channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+//	  printf("%s \n",tlm_str);
+	  strcat(str, tlm_str);
+	}	
         
-        int tlm_6d = 49 + rand() % 3; 
-       
-       char tlm_str[1000];
+	printf("INFO: Transmitting X.25 packet\n");
 
-       printf("%d %d %d %d %d %d %d %d %d %d %d %d %d \n", tlm_1a, tlm_1b, tlm_1c, tlm_1d, tlm_2a, tlm_2b, tlm_2c, tlm_2d, tlm_3a, tlm_3b, tlm_4a, tlm_6b, tlm_6d); 
-       sprintf(tlm_str, "\x03\x0fhi hi 1%d%d 1%d%d 1%d%d 1%d%d 2%d%d 2%d%d 2%d%d 2%d%d 3%d%d 3%d%d 300 300 4%d%d 400 400 400 400 500 500 500 500 600 6%d%d 600 6%d%d\n", 
-		upper_digit(tlm_1a), lower_digit(tlm_1a), 
-		upper_digit(tlm_1b), lower_digit(tlm_1b), 
-		upper_digit(tlm_1c), lower_digit(tlm_1c), 
-		upper_digit(tlm_1d), lower_digit(tlm_1d), 
-		upper_digit(tlm_2a), lower_digit(tlm_2a), 
-		upper_digit(tlm_2b), lower_digit(tlm_2b), 
-		upper_digit(tlm_2c), lower_digit(tlm_2c), 
-		upper_digit(tlm_2d), lower_digit(tlm_2d), 
-		upper_digit(tlm_3a), lower_digit(tlm_3a), 
-		upper_digit(tlm_3b), lower_digit(tlm_3b), 
-		upper_digit(tlm_4a), lower_digit(tlm_4a), 
-		upper_digit(tlm_6b), lower_digit(tlm_6b), 
-		upper_digit(tlm_6d), lower_digit(tlm_6d)); 
-       printf("%s\n",tlm_str);
-
-
-
-        memcpy(data, tlm_str, strnlen(tlm_str, 256));
-        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(tlm_str, 256));
+        memcpy(data, str, strnlen(str, 256));
+        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
         if (ret) {
             fprintf(stderr,
                     "ERROR: Failed to transmit AX.25 frame with error code %d\n",
@@ -262,7 +147,6 @@ int main(void) {
                     "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
                     ret);
             exit(EXIT_FAILURE);
-        }
 
     }
 
