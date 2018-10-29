@@ -58,6 +58,7 @@ ax25_conf_t hax25;
 
 static void init_rf();
 int get_tlm(int tlm[][5]);
+long int timestamp;
 void config_x25();
 void trans_x25();
 //long int timestamp;
@@ -77,7 +78,7 @@ int main(void) {
 		tlm[i][j] = 0;
 	}
     }
-    long int timestamp = time(NULL);
+    timestamp = time(NULL);
 	
     //tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
     //srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
@@ -93,12 +94,12 @@ int main(void) {
     // rest is dummy CubeSatSim telemetry in AO-7 format 	
     // const char *str = "\x03\x0fhi hi 101 102 103 104 202 203 204 205 303 304 305 306 404 405 406 407 408 505 506 507 508 606 607 608 609\n";
 
-    int devId = 0x40; // +X Panel current
-    int i2cDevice = wiringPiI2CSetup (devId) ;
+    //int devId = 0x40; // +X Panel current
+    //int i2cDevice = wiringPiI2CSetup (devId) ;
 
-    int tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    //int tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
    
-    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
+    //srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
     
     /* Infinite loop */
     for (;;) {
