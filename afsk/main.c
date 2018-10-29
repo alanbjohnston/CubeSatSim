@@ -62,7 +62,7 @@ long int timestamp;
 void config_x25();
 void trans_x25();
 //long int timestamp;
-//int tempSensor, xPlusSensor, yPlusSensor, zPlusSensor, battCurrentSensor;
+int tempSensor; 
 
 int upper_digit(int number);
 int lower_digit(int number);
@@ -80,7 +80,7 @@ int main(void) {
     }
     timestamp = time(NULL);
 	
-    //tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
     //srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
 	
     setSpiChannel(SPI_CHANNEL);
