@@ -32,9 +32,23 @@
 #define ADC6 18
 #define ADC7 19
 #define ADC8 20
-#define SEC 8
+#define TIME 8
 #define UCTEMP 30
 #define UPTIME_SEC 8 
+#define A 1
+#define B 2
+#define C 3
+#define D 4
+
+#define SENSOR_40 0
+#define SENSOR_41 3
+#define SENSOR_44 6
+#define SENSOR_45 9
+#define SENSOR_4A 12
+#define VOLTAGE 0
+#define CURRENT 1
+#define POWER 2
+#define VBATT 15
 
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
@@ -50,6 +64,18 @@ int lower_digit(int number);
 uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
 int main(void) {
+    
+    int tlm[7][5];
+    int i, j;
+    for (i = 1; i < 7; i++) {
+        for (j = 1; j < 5; j++) {
+		tlm[i][j] = 0;
+	}
+    }
+	
+    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
+	
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
