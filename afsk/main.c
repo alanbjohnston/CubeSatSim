@@ -187,10 +187,11 @@ int main(void) {
 	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
 */
 //  Reading 5V voltage and current
+	    
       char cmdbuffer[1000];
       int tlm_3a = 0, tlm_6b = 0, tlm_2b = 99;
 
-      file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
+      FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
 
       fgets(cmdbuffer, 1000, file);
       pclose(file);
@@ -198,7 +199,7 @@ int main(void) {
 
       char battery[3][14];
       i = 0;
-      data2 = strtok (cmdbuffer," ");
+      char *data2 = strtok (cmdbuffer," ");
 
       while (data2 != NULL)
 
