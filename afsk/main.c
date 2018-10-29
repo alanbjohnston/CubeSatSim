@@ -108,7 +108,7 @@ int main(void) {
    		 AX25_POSTAMBLE_LEN);
         
 	printf("INFO: Transmitting X.25 packet\n");
-	    
+/*	    
 	FILE* file = popen("mpcmd show data 2>&1", "r");
 
       char cmdbuffer[1000];
@@ -185,7 +185,7 @@ int main(void) {
         int tlm_1b = (int) (98.5 - currentValue/400);
         printf("TLM 1B = %d \n\n", tlm_1b);
 	int tlm_1a = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
-
+*/
 //  Reading 5V voltage and current
 
       file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
