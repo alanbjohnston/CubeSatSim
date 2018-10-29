@@ -121,8 +121,9 @@ int main(void)
      
     int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
     int msg_length;
-
-    for (channel = 0; channel < 7; channel++) {
+	
+    while(1) {   // loop infinitely
+      for (channel = 0; channel < 7; channel++) {
             
 	get_tlm(tlm);
     	if (channel == 0) {  
@@ -148,86 +149,7 @@ int main(void)
 	}	
 
 	usleep(200000);
-//    }
-/*
-config_afsk();  // Now switch to AFSK Telem
-
-    while(1) {
-	get_tlm(tlm);
-       send_afsk(tlm);
     }
-	
-    // Initialize the AX5043
-    retVal = axradio_init();
-//    printf("2\n");
-    if (retVal == AXRADIO_ERR_NOCHIP) {
-        fprintf(stderr, "ERROR: No AX5043 RF chip found\n");
-        exit(EXIT_FAILURE);
-    }
-    if (retVal != AXRADIO_ERR_NOERROR) {
-        fprintf(stderr, "ERROR: Unable to initialize AX5043\n");
-        exit(EXIT_FAILURE);
-    }
-
-    printf("INFO: Found and initialized AX5043\n");
-
-    retVal = mode_tx();
-    if (retVal != AXRADIO_ERR_NOERROR) {
-         fprintf(stderr, "ERROR: Unable to enter TX mode\n");
-         exit(EXIT_FAILURE);
-    }
-    config_cw();
-
-    // allocate space for the buffer
-    //static uint8_t packet[MAX_MESSAGE_LENGTH + 1];
-     
-    //int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
-    //int msg_length;
-
-    while(1) {  // loop forever
-        for (channel = 0; channel < 7; channel++) {
-            
-	    get_tlm(tlm);
-//    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
-		
-	    if (send_afsk_tlm)
-		    send_afsk(tlm);
-            config_cw();
-	
-            if (channel == 0) {  
-// start with telemetry header "hi hi" plus a few chars to help CW decoding software sync
-            msg_length = encode_header(&packet[0], MAX_MESSAGE_LENGTH + 1);
-       
-            printf("\nINFO: Sending TLM header\n");
-
-        } else {
-		    
-//	    get_tlm(tlm);
-//    	    printf("TLM Received 1a: %d 2b: %d\n", tlm[1][1], tlm[2][2]);
-		    
-//	    int tlm_3a = 0, tlm_1b = 0;
-
-            msg_length = encode_tlm(&packet[0], channel, // add a channel with dummy data to buffer
-//		tlm_3a, tlm_1b, channel+2, channel+3,
-		tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4], 
-			 (MAX_MESSAGE_LENGTH + 1));
-       
-            printf("\nINFO: Sending TLM channel %d \n", channel);
-        }
- //       printf("DEBUG: msg_length = %d\n", msg_length);
-        if (send_cw_tlm) {
-            retVal = transmit_packet(&remoteaddr_tx, packet, (uint16_t)(msg_length)); // send telemetry
-            if (retVal != AXRADIO_ERR_NOERROR) {
-                fprintf(stderr, "ERROR: Unable to transmit a packet\n");
-                exit(EXIT_FAILURE);
-	    }
-	}	
-//	sleep(1);
-
-	usleep(200000);
-        }
-    }
-    */
 }
 // Encodes telemetry header (channel 0) into buffer
 //
