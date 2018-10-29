@@ -78,33 +78,6 @@ extern int config_afsk();
 
 int main(void)
 {
- int z=0;
- //printf("\ncmdline args count=%d", argc);
-
- /* First argument is executable name only */
-// printf("\nexe name=%s", argv[0]);
-
- //for (z=1; z< argc; z++) {
- //    printf("\narg%d=%s", z, argv[z]);
-// }
-
- //printf("\n");
-  //  int send_cw_tlm = TRUE;
-   // int send_afsk_tlm = TRUE;
-//    char a = 'a';
- //   char c = 'c';	
-   // if (argc > 1) {
-//	if (strcmp(argv[2],"c") == 1) {
-	//	send_cw_tlm = FALSE;
- //     		printf("AFSK telemetry only!\n");
-//	}
-//	if (strcmp(argv[2],"c") == 1) {
-//		send_afsk_tlm = FALSE;	    
- //     		printf("CW telemetry only!\n");
-//	}
-    }
-
-//   send_cw_tlm = FALSE;
     uint8_t retVal;
     int tlm[7][5];
     int i, j;
@@ -113,16 +86,7 @@ int main(void)
 		tlm[i][j] = 0;
 	}
     }
-  //  xPlusSensor = wiringPiI2CSetup (0x40) ;  // +X panel current sensor 
-  //  yPlusSensor = wiringPiI2CSetup (0x41) ;  // +Y panel current sensor 
-  //  zPlusSensor = wiringPiI2CSetup (0x44) ;  // Z+ panel current sensor 
-  //  battCurrentSensor = wiringPiI2CSetup (0x45) ;  // battery current sensor 
-
     tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-  //  srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
-
-//    send_afsk();
-//    printf("Result: %d \n",res);
  
    // Configure SPI bus to AX5043
     setSpiChannel(SPI_CHANNEL);
