@@ -80,8 +80,7 @@ int main(void) {
     }
     timestamp = time(NULL);
 	
-    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-    //srand((unsigned int)(wiringPiI2CReadReg16(tempSensor, 0)));   
+    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48); 
 	
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
