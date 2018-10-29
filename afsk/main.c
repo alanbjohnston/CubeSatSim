@@ -189,7 +189,7 @@ int main(void) {
 //  Reading 5V voltage and current
 	    
       char cmdbuffer[1000];
-      int tlm_3a = 0, tlm_6b = 0, tlm_2b = 99;
+      int tlm_3a = 0, tlm_6b = 0, tlm_2b = 99, tlm_2c = 0;
       int tlm_1a = 0, tlm_1b = 0, tlm_1c = 98, tlm_1d = 98, tlm_2a = 98;
 	    
       FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
