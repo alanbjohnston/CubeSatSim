@@ -158,6 +158,8 @@ int encode_header(uint8_t *buffer, int avail) {
     int count = 0;
     count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
 
     count += add_dash(&buffer[count], 1);		// c 
     count += add_dot(&buffer[count], 1);		
@@ -171,6 +173,7 @@ int encode_header(uint8_t *buffer, int avail) {
     count += add_space(&buffer[count]);
     
     count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
 
     count += add_dot(&buffer[count], 4);		// h
     count += add_space(&buffer[count]);
@@ -179,6 +182,7 @@ int encode_header(uint8_t *buffer, int avail) {
     count += add_space(&buffer[count]);
     
     count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
     
     count += add_dot(&buffer[count], 4);		// h
     count += add_space(&buffer[count]);
@@ -186,6 +190,7 @@ int encode_header(uint8_t *buffer, int avail) {
     count += add_dot(&buffer[count], 2);		// i
     count += add_space(&buffer[count]);
 
+    count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
 
@@ -211,11 +216,13 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
     count += encode_digit(&buffer[count], lower_digit(val1));
 
     count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
 
     count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1bb
     count += encode_digit(&buffer[count], upper_digit(val2));
     count += encode_digit(&buffer[count], lower_digit(val2));
 
+    count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
 
     count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1cc
@@ -223,11 +230,14 @@ int encode_tlm(uint8_t *buffer, int channel, int val1, int val2, int val3, int v
     count += encode_digit(&buffer[count], lower_digit(val3));
 
     count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
 
     count += encode_digit(&buffer[count], channel);		// for channel 1, encodes 1dd
     count += encode_digit(&buffer[count], upper_digit(val4));
     count += encode_digit(&buffer[count], lower_digit(val4));
 
+    count += add_space(&buffer[count]);
+    count += add_space(&buffer[count]);
     count += add_space(&buffer[count]);
 
     //printf("DEBUG count: %d avail: %d \n", count, avail);
