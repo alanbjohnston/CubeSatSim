@@ -4,7 +4,7 @@
 
  [Service]
  Type=idle
- ExecStart=/home/pi/CubeSatSim/radiocw > /home/pi/CubeSatSim/log.txt 2>&1
+ ExecStart=/home/pi/CubeSatSim/demo.sh > /home/pi/CubeSatSim/log.txt 2>&1
 
  [Install]
  WantedBy=multi-user.target

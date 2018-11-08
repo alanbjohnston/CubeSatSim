@@ -122,7 +122,7 @@ int main(void)
     int channel; // AO-7 telemetry format has 6 channels, 4 sub channels in each
     int msg_length;
 	
-    while(1) {   // loop infinitely
+    //while(1) {   // loop infinitely
       for (channel = 0; channel < 7; channel++) {
             
 	get_tlm(tlm);
@@ -149,7 +149,7 @@ int main(void)
 	}	
 
 	usleep(200000);
-    }
+    //}
 }
 // Encodes telemetry header (channel 0) into buffer
 //
