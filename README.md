@@ -1,10 +1,12 @@
 # CubeSatSim
 
-RPi code using the Brandenburg Tech Digital Transceiver 
+See the Wiki for more details.
+
+Raspberry Pi code using the Brandenburg Tech Digital Transceiver 
      https://brandenburgtech.wordpress.com/- 
      
  - cw - Code that sends telemetry in CW (Morse code) using AO-7 format
- - afsk - Code that sends a simple text message in 1k2 AFSK X.25 format
+ - afsk - Code that sends telemetry in 1k2 AFSK X.25 format
 
 based on DigitalTxRxRP
 
