@@ -469,21 +469,21 @@ int get_tlm(int tlm[][5]) {
 	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // +Y current [7]
 	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
 	
-	tlm[2][B] = 99;
+	tlm[2][A] = 99;
 	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0) % 100;   // NiMH Battery current
 	
-	tlm[3][A] = (int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100;
+	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
-		   	
-        int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
-//        printf("Read: %x\n", tempValue);
-        uint8_t upper = (uint8_t) (tempValue >> 8);
-        uint8_t lower = (uint8_t) (tempValue & 0xff);
-        float temp = (float)lower + ((float)upper / 0x100);
+	if (tempSensor != -1) {		   	
+        	int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
+//     		   printf("Read: %x\n", tempValue);
+        	uint8_t upper = (uint8_t) (tempValue >> 8);
+        	uint8_t lower = (uint8_t) (tempValue & 0xff);
+        	float temp = (float)lower + ((float)upper / 0x100);
 
-	tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
-		
+		tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
+	}		
 	tlm[6][B] = 0 ;
 	tlm[6][D] = 49 + rand() % 3; 
 
