@@ -16,6 +16,9 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 // OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 // ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#include <unistd.h>				//Needed for I2C port
+#include <fcntl.h>				//Needed for I2C port
+#include <sys/ioctl.h>			//Needed for I2C port
 
 #include <axradio/axradioinit_p.h>
 #include <axradio/axradiomode_p.h>
@@ -86,7 +89,18 @@ int main(void)
 		tlm[i][j] = 0;
 	}
     }
-    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    int file_i2c;
+    char *filenam1e = (char*)"/dev/i2c-3";
+    if ((file_i2c = open(filenam1e, O_RDWR)) < 0)
+    {
+	    printf("ERROR: /dev/ic2-3 bus not present\n");
+	    tempSensor = -1;
+    } else
+    {
+            tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    }
+		
+    printf("tempSensor: %d \n",tempSensor);
  
    // Configure SPI bus to AX5043
     setSpiChannel(SPI_CHANNEL);
