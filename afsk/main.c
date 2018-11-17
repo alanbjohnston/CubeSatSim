@@ -19,6 +19,10 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//#include <unistd.h>                             //Needed for I2C port
+#include <fcntl.h>                              //Needed for I2C port
+//#include <sys/ioctl.h>                  //Needed for I2C port
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -80,8 +84,19 @@ int main(void) {
     }
     timestamp = time(NULL);
 	
-    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48); 
-	
+    int file_i2c;
+    //char *filenam1e = (char*)"/dev/i2c-3";
+    if ((file_i2c = open("/dev/i2c-3", O_RDWR)) < 0)
+    {
+            printf("ERROR: /dev/ic2-3 bus not present\n");
+            tempSensor = -1;
+    } else
+    {
+            tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+    }
+
+    printf("tempSensor: %d \n",tempSensor);	
+
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
