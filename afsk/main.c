@@ -75,6 +75,8 @@ uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
 int main(void) {
     
+//    sleep(20);
+
     int tlm[7][5];
     int i, j;
     for (i = 1; i < 7; i++) {
@@ -103,6 +105,13 @@ int main(void) {
 
     int ret;
     uint8_t data[1024];
+
+    init_rf();
+
+    ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
+    		AX25_PREAMBLE_LEN,
+   		 AX25_POSTAMBLE_LEN);
+        
         
     /* Infinite loop */
     for (;;) {
@@ -110,11 +119,11 @@ int main(void) {
     	
 	// send X.25 packet
 
-    	init_rf();
+ //   	init_rf();
 
-    	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
-    		AX25_PREAMBLE_LEN,
-   		 AX25_POSTAMBLE_LEN);
+ //   	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
+ //   		AX25_PREAMBLE_LEN,
+ //  		 AX25_POSTAMBLE_LEN);
         
 	printf("INFO: Getting TLM Data\n");
 	    
