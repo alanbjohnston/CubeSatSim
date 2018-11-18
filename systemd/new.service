@@ -1,0 +1,10 @@
+[Unit]
+Description=My last command
+After=multi-user.target
+
+[Service]
+Type=simple
+ExecStart=/sbin/last_command
+
+[Install]
+WantedBy=custom.target
