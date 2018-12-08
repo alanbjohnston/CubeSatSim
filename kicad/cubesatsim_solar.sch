@@ -1,4 +1,5 @@
 EESchema Schematic File Version 4
+LIBS:cubesatsim_solar-cache
 EELAYER 26 0
 EELAYER END
 $Descr USLetter 11000 8500
@@ -370,7 +371,7 @@ L pihat_template-rescue:Raspberry_Pi_+_Conn-pihat_template-rescue P3
 U 1 1 54E92361
 P 2300 2700
 F 0 "P3" H 1200 4650 60  0000 C CNN
-F 1 "Male Extra Long (19mm) 20x2 Header Pins" H 2050 1175 60  0000 C CNN
+F 1 "Male Extra Long (19mm) 20x2 Header Pins" H 2075 900 60  0000 C CNN
 F 2 "w_conn_strip:vasch_strip_20x2" H 2300 2700 60  0001 C CNN
 F 3 "" H 2300 2700 60  0000 C CNN
 F 4 "517-30340-6002" H 2300 2700 60  0001 C CNN "Mouser Part No."
@@ -978,4 +979,6 @@ Wire Wire Line
 	8050 1875 8925 1875
 Wire Wire Line
 	8050 1875 8050 2700
+Text Label 1975 4375 0    50   ~ 0
+Raspberry Pi GPIO Connector
 $EndSCHEMATC
