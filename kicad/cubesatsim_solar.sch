@@ -6,7 +6,7 @@ $Descr USLetter 11000 8500
 encoding utf-8
 Sheet 1 1
 Title "AMSAT CubeSat Simulator Solar Panel Board"
-Date ""
+Date "December 8, 2018"
 Rev "Beta1"
 Comp "See https://github.com/alanbjohnston/cubesatsim"
 Comment1 ""
@@ -115,7 +115,7 @@ L pihat_template-rescue:D-device D1
 U 1 1 5BF2DDAE
 P 5350 2425
 F 0 "D1" H 5350 2641 50  0000 C CNN
-F 1 "D" H 5350 2550 50  0000 C CNN
+F 1 "1N5817" H 5350 2550 50  0000 C CNN
 F 2 "Diode_THT:D_DO-41_SOD81_P3.81mm_Vertical_AnodeUp" H 5350 2425 50  0001 C CNN
 F 3 "~" H 5350 2425 50  0001 C CNN
 	1    5350 2425
@@ -371,7 +371,7 @@ L pihat_template-rescue:Raspberry_Pi_+_Conn-pihat_template-rescue P3
 U 1 1 54E92361
 P 2300 2700
 F 0 "P3" H 1200 4650 60  0000 C CNN
-F 1 "Male Extra Long (19mm) 20x2 Header Pins" H 2075 900 60  0000 C CNN
+F 1 "Raspberry Pi GPIO Connector" H 2025 1225 60  0000 C CNN
 F 2 "w_conn_strip:vasch_strip_20x2" H 2300 2700 60  0001 C CNN
 F 3 "" H 2300 2700 60  0000 C CNN
 F 4 "517-30340-6002" H 2300 2700 60  0001 C CNN "Mouser Part No."
@@ -794,7 +794,7 @@ L pihat_template-rescue:D-device D2
 U 1 1 5BFCE14D
 P 5350 2750
 F 0 "D2" H 5350 2966 50  0000 C CNN
-F 1 "D" H 5350 2875 50  0000 C CNN
+F 1 "1N5817" H 5350 2875 50  0000 C CNN
 F 2 "Diode_THT:D_DO-41_SOD81_P3.81mm_Vertical_AnodeUp" H 5350 2750 50  0001 C CNN
 F 3 "~" H 5350 2750 50  0001 C CNN
 	1    5350 2750
@@ -811,7 +811,7 @@ L pihat_template-rescue:D-device D3
 U 1 1 5BFD1A73
 P 5350 3100
 F 0 "D3" H 5350 3316 50  0000 C CNN
-F 1 "D" H 5350 3225 50  0000 C CNN
+F 1 "1N5817" H 5350 3225 50  0000 C CNN
 F 2 "Diode_THT:D_DO-41_SOD81_P3.81mm_Vertical_AnodeUp" H 5350 3100 50  0001 C CNN
 F 3 "~" H 5350 3100 50  0001 C CNN
 	1    5350 3100
@@ -828,7 +828,7 @@ L pihat_template-rescue:D-device D4
 U 1 1 5BFD565A
 P 5350 3425
 F 0 "D4" H 5350 3641 50  0000 C CNN
-F 1 "D" H 5350 3550 50  0000 C CNN
+F 1 "1N5817" H 5350 3550 50  0000 C CNN
 F 2 "Diode_THT:D_DO-41_SOD81_P3.81mm_Vertical_AnodeUp" H 5350 3425 50  0001 C CNN
 F 3 "~" H 5350 3425 50  0001 C CNN
 	1    5350 3425
@@ -845,7 +845,7 @@ L pihat_template-rescue:D-device D5
 U 1 1 5BFD9541
 P 5350 3775
 F 0 "D5" H 5350 3991 50  0000 C CNN
-F 1 "D" H 5350 3900 50  0000 C CNN
+F 1 "1N5817" H 5350 3900 50  0000 C CNN
 F 2 "Diode_THT:D_DO-41_SOD81_P3.81mm_Vertical_AnodeUp" H 5350 3775 50  0001 C CNN
 F 3 "~" H 5350 3775 50  0001 C CNN
 	1    5350 3775
@@ -884,8 +884,6 @@ Wire Wire Line
 	5625 1675 8925 1675
 Wire Wire Line
 	6700 1775 8925 1775
-Text Label 4800 3975 0    50   ~ 0
-1N5817 Schottky Barrier Diodes 
 $Comp
 L pihat_template-rescue:BoostConverter-New_Library U1
 U 1 1 5C0B38CE
@@ -905,14 +903,12 @@ Wire Wire Line
 	6700 2700 6900 2700
 Wire Wire Line
 	6700 1775 6700 2700
-Text Label 6150 3400 0    50   ~ 0
-Boost Converter trim pot adjusted to give 15V output at maximum solar panel voltage input.
 $Comp
 L pihat_template-rescue:Audio-Jack-3_2Switches-conn2 J13
 U 1 1 5C0EA00C
 P 9050 1025
 F 0 "J13" H 8762 1002 50  0000 R CNN
-F 1 "3.5mm TRS Audio Jack with 2 Switches" H 8762 1093 50  0000 R CNN
+F 1 "3.5mm TRS Audio Jack with 2 Switches" H 9850 725 50  0000 R CNN
 F 2 "" H 9300 1125 50  0001 C CNN
 F 3 "" H 9300 1125 50  0001 C CNN
 	1    9050 1025
@@ -929,10 +925,6 @@ F 3 "" H 9275 1875 50  0001 C CNN
 	1    9275 1875
 	-1   0    0    -1  
 $EndComp
-Text Label 5700 6600 0    50   ~ 0
-INA219 boards are mounted vertically with 45 degree 5x1 pins
-Text Label 5825 1325 0    50   ~ 0
-3.5mm plug for RBF switch has jumper between 3 and 1 (center and outer)
 Wire Wire Line
 	9475 1975 9850 1975
 Wire Wire Line
@@ -965,12 +957,6 @@ Wire Wire Line
 	9475 1875 9725 1875
 Text Label 9550 5450 0    50   ~ 0
 To Solar Panels
-Text Label 8500 6625 0    50   ~ 0
-Between NiMH battery and MoPower Board
-Text Label 9475 2450 0    50   ~ 0
-female barrel jack
-Text Label 9475 2350 0    50   ~ 0
-To 5.5mm x 2.1mm
 Text Label 12250 10925 0    50   ~ 0
 AMSAT CubeSat Simulator Solar Power Board
 Wire Wire Line
@@ -979,6 +965,20 @@ Wire Wire Line
 	8050 1875 8925 1875
 Wire Wire Line
 	8050 1875 8050 2700
-Text Label 1975 4375 0    50   ~ 0
-Raspberry Pi GPIO Connector
+Text Notes 9475 2350 0    50   ~ 0
+To 5.5mm x 2.1mm
+Text Notes 9475 2450 0    50   ~ 0
+female barrel jack
+Text Notes 6050 1450 0    50   ~ 0
+With the RBF switch removed, the solar panels are \nconnected to the boost converter input and the \noutput of the boost converter is connected to \nthe Vout to the MoPower board.
+Text Notes 6150 3400 0    50   ~ 0
+Boost Converter trim pot adjusted to give 15V output at maximum solar panel voltage input.
+Text Notes 8500 6625 0    50   ~ 0
+Between NiMH battery and MoPower Board
+Text Notes 5700 6600 0    50   ~ 0
+INA219 boards are mounted vertically with 45 degree 5x1 pins
+Text Notes 1700 4325 0    50   ~ 0
+Male Extra Long (19mm) 20x2 Header Pins
+Text Notes 6050 1025 0    50   ~ 0
+With RBF switch inserted (3.5mm jack plugged in), \nVout to MoPower comes from the Vdc in barrel jack\nthrough 3.5mm plug that has jumper between 3 and 1 \n(center and outer). Solar panels are isolated from the \ninput to the boost converter through the switch.\n
 $EndSCHEMATC
