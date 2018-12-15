@@ -6,10 +6,10 @@ $Descr USLetter 11000 8500
 encoding utf-8
 Sheet 1 1
 Title "AMSAT CubeSat Simulator Solar Panel Board"
-Date "December 13, 2018"
-Rev "Beta1.1"
+Date "December 15, 2018"
+Rev "Beta1.2"
 Comp "See https://github.com/alanbjohnston/cubesatsim"
-Comment1 ""
+Comment1 "KU2Y"
 Comment2 ""
 Comment3 ""
 Comment4 ""
@@ -188,59 +188,59 @@ F 3 "" H 9125 1875 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L pihat_template-rescue:CONN_01X02-conn2 J4
-U 1 1 5BF6082F
-P 9125 2350
-F 0 "J4" H 9202 2391 50  0000 L CNN
-F 1 "Vdc In" H 9202 2300 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9125 2350 50  0001 C CNN
-F 3 "" H 9125 2350 50  0001 C CNN
-	1    9125 2350
-	1    0    0    -1  
-$EndComp
-$Comp
 L pihat_template-rescue:CONN_01X02-conn2 J3
-U 1 1 5BF6089F
+U 1 1 5BF6082F
 P 9125 2700
-F 0 "J3" H 9203 2741 50  0000 L CNN
-F 1 "Vout to MoPOWER" H 9203 2650 50  0000 L CNN
+F 0 "J3" H 9202 2741 50  0000 L CNN
+F 1 "Vdc In" H 9202 2650 50  0000 L CNN
 F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9125 2700 50  0001 C CNN
 F 3 "" H 9125 2700 50  0001 C CNN
 	1    9125 2700
 	1    0    0    -1  
 $EndComp
 $Comp
+L pihat_template-rescue:CONN_01X02-conn2 J4
+U 1 1 5BF6089F
+P 9125 2375
+F 0 "J4" H 9203 2416 50  0000 L CNN
+F 1 "Vout to MoPOWER" H 9203 2325 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical" H 9125 2375 50  0001 C CNN
+F 3 "" H 9125 2375 50  0001 C CNN
+	1    9125 2375
+	1    0    0    -1  
+$EndComp
+$Comp
 L pihat_template-rescue:GND-power #PWR0105
 U 1 1 5BF609A2
-P 8925 2400
-F 0 "#PWR0105" H 8925 2150 50  0001 C CNN
-F 1 "GND-power" H 8925 2250 50  0000 C CNN
-F 2 "" H 8925 2400 50  0001 C CNN
-F 3 "" H 8925 2400 50  0001 C CNN
-	1    8925 2400
+P 8950 2750
+F 0 "#PWR0105" H 8950 2500 50  0001 C CNN
+F 1 "GND-power" H 8950 2600 50  0000 C CNN
+F 2 "" H 8950 2750 50  0001 C CNN
+F 3 "" H 8950 2750 50  0001 C CNN
+	1    8950 2750
 	1    0    0    -1  
 $EndComp
 $Comp
 L pihat_template-rescue:GND-power #PWR0106
 U 1 1 5BF609DA
-P 8925 2750
-F 0 "#PWR0106" H 8925 2500 50  0001 C CNN
-F 1 "GND-power" H 8930 2577 50  0000 C CNN
-F 2 "" H 8925 2750 50  0001 C CNN
-F 3 "" H 8925 2750 50  0001 C CNN
-	1    8925 2750
+P 8925 2425
+F 0 "#PWR0106" H 8925 2175 50  0001 C CNN
+F 1 "GND-power" H 8875 2300 50  0000 C CNN
+F 2 "" H 8925 2425 50  0001 C CNN
+F 3 "" H 8925 2425 50  0001 C CNN
+	1    8925 2425
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	8550 2650 8550 1975
+	8550 2325 8550 1975
 Wire Wire Line
 	8550 1975 8925 1975
 Wire Wire Line
-	8925 2075 8750 2075
+	8925 2075 8625 2075
 Wire Wire Line
-	8750 2075 8750 2300
+	8625 2075 8625 2650
 Wire Wire Line
-	8750 2300 8925 2300
+	8625 2650 8925 2650
 Wire Wire Line
 	5500 2425 5625 2425
 Wire Wire Line
@@ -493,7 +493,7 @@ Wire Wire Line
 Wire Wire Line
 	1075 1250 1075 1225
 Wire Wire Line
-	8550 2650 8925 2650
+	8550 2325 8925 2325
 $Comp
 L pihat_template-rescue:+5V-power #PWR0111
 U 1 1 5BF939C5
@@ -965,9 +965,9 @@ Wire Wire Line
 	8050 1875 8925 1875
 Wire Wire Line
 	8050 1875 8050 2700
-Text Notes 9475 2350 0    50   ~ 0
+Text Notes 9550 2750 0    50   ~ 0
 To 5.5mm x 2.1mm
-Text Notes 9475 2450 0    50   ~ 0
+Text Notes 9575 2850 0    50   ~ 0
 female barrel jack
 Text Notes 6050 1450 0    50   ~ 0
 With the RBF switch removed, the solar panels are \nconnected to the boost converter input and the \noutput of the boost converter is connected to \nthe Vout to the MoPower board.
