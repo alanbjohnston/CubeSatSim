@@ -6,8 +6,8 @@ $Descr USLetter 11000 8500
 encoding utf-8
 Sheet 1 1
 Title "AMSAT CubeSat Simulator Solar Panel Board"
-Date "December 8, 2018"
-Rev "Beta1"
+Date "December 13, 2018"
+Rev "Beta1.1"
 Comp "See https://github.com/alanbjohnston/cubesatsim"
 Comment1 ""
 Comment2 ""
@@ -363,9 +363,9 @@ Wire Wire Line
 Wire Wire Line
 	7325 5475 7325 5450
 Text GLabel 975  3100 0    50   Input ~ 0
-SDA_0
+SDA_3
 Text GLabel 975  3000 0    50   Input ~ 0
-SCL_0
+SCL_3
 $Comp
 L pihat_template-rescue:Raspberry_Pi_+_Conn-pihat_template-rescue P3
 U 1 1 54E92361
@@ -437,46 +437,46 @@ Wire Wire Line
 Connection ~ 1025 3000
 Wire Wire Line
 	1025 3000 1200 3000
-Text GLabel 7450 5750 0    50   Input ~ 0
+Text GLabel 2575 4950 0    50   Input ~ 0
 VbattIn
-Text GLabel 7450 5850 0    50   Input ~ 0
+Text GLabel 2575 5050 0    50   Input ~ 0
 VbattOut
-Text GLabel 7450 5950 0    50   Input ~ 0
+Text GLabel 2575 5150 0    50   Input ~ 0
 SDA_1
-Text GLabel 7450 6050 0    50   Input ~ 0
+Text GLabel 2575 5250 0    50   Input ~ 0
 SCL_1
 $Comp
 L pihat_template-rescue:GND-power #PWR05
 U 1 1 5BF9E33A
-P 6900 6250
-F 0 "#PWR05" H 6900 6000 50  0001 C CNN
-F 1 "GND" H 6905 6077 50  0000 C CNN
-F 2 "" H 6900 6250 50  0001 C CNN
-F 3 "" H 6900 6250 50  0001 C CNN
-	1    6900 6250
+P 2025 5450
+F 0 "#PWR05" H 2025 5200 50  0001 C CNN
+F 1 "GND" H 2030 5277 50  0000 C CNN
+F 2 "" H 2025 5450 50  0001 C CNN
+F 3 "" H 2025 5450 50  0001 C CNN
+	1    2025 5450
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	6900 6250 6900 6150
+	2025 5450 2025 5350
 Wire Wire Line
-	6900 6150 7450 6150
+	2025 5350 2575 5350
 $Comp
 L pihat_template-rescue:Conn_01x06_Female-Connector J10
 U 1 1 5BF9E342
-P 7650 5950
-F 0 "J10" H 7678 5926 50  0000 L CNN
-F 1 "INA219 Sensor Board" H 7678 5835 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 7650 5950 50  0001 C CNN
-F 3 "~" H 7650 5950 50  0001 C CNN
-	1    7650 5950
+P 2775 5150
+F 0 "J10" H 2803 5126 50  0000 L CNN
+F 1 "INA219 Sensor Board" H 2803 5035 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 2775 5150 50  0001 C CNN
+F 3 "~" H 2775 5150 50  0001 C CNN
+	1    2775 5150
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	7450 6250 7375 6250
+	2575 5450 2500 5450
 Wire Wire Line
-	7375 6250 7375 6325
+	2500 5450 2500 5525
 Wire Wire Line
-	7375 6325 7325 6325
+	2500 5525 2450 5525
 $Comp
 L pihat_template-rescue:+3.3V-PiHatAx5043-cache #PWR0101
 U 1 1 5BFA1168
@@ -528,9 +528,9 @@ F 3 "" H 1700 6775 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 2200 6875 0    50   Input ~ 0
-SDA_0
+SDA_3
 Text GLabel 2200 6975 0    50   Input ~ 0
-SCL_0
+SCL_3
 Wire Wire Line
 	2275 6875 2200 6875
 Wire Wire Line
@@ -557,17 +557,17 @@ $EndComp
 $Comp
 L pihat_template-rescue:power_+3.3V-PiHatAx5043-cache #PWR0115
 U 1 1 5BFB928B
-P 7325 6325
-F 0 "#PWR0115" H 7325 6175 50  0001 C CNN
-F 1 "power_+3.3V" H 7350 6275 50  0000 C CNN
-F 2 "" H 7325 6325 50  0001 C CNN
-F 3 "" H 7325 6325 50  0001 C CNN
-	1    7325 6325
+P 2450 5525
+F 0 "#PWR0115" H 2450 5375 50  0001 C CNN
+F 1 "power_+3.3V" H 2475 5475 50  0000 C CNN
+F 2 "" H 2450 5525 50  0001 C CNN
+F 3 "" H 2450 5525 50  0001 C CNN
+	1    2450 5525
 	1    0    0    -1  
 $EndComp
 Text Notes 7750 5350 0    50   ~ 0
 I2C Address 0x40
-Text Notes 7750 6200 0    50   ~ 0
+Text Notes 2875 5400 0    50   ~ 0
 I2C Address 0x45
 Text GLabel 5850 4925 0    50   Input ~ 0
 Y+In
@@ -679,69 +679,69 @@ F 3 "" H 4050 5500 50  0001 C CNN
 $EndComp
 Text Notes 4450 5400 0    50   ~ 0
 I2C Address 0x44\n
-Text GLabel 2450 4925 0    50   Input ~ 0
+Text GLabel 7450 5750 0    50   Input ~ 0
 X-In
-Text GLabel 2450 5025 0    50   Input ~ 0
+Text GLabel 7450 5850 0    50   Input ~ 0
 X-Out
-Text GLabel 2450 5125 0    50   Input ~ 0
-SDA_0
-Text GLabel 2450 5225 0    50   Input ~ 0
-SCL_0
+Text GLabel 7450 5950 0    50   Input ~ 0
+SDA_3
+Text GLabel 7450 6050 0    50   Input ~ 0
+SCL_3
 $Comp
 L pihat_template-rescue:GND-power #PWR0120
 U 1 1 5BFBED52
-P 1900 5425
-F 0 "#PWR0120" H 1900 5175 50  0001 C CNN
-F 1 "GND" H 1905 5252 50  0000 C CNN
-F 2 "" H 1900 5425 50  0001 C CNN
-F 3 "" H 1900 5425 50  0001 C CNN
-	1    1900 5425
+P 6900 6250
+F 0 "#PWR0120" H 6900 6000 50  0001 C CNN
+F 1 "GND" H 6905 6077 50  0000 C CNN
+F 2 "" H 6900 6250 50  0001 C CNN
+F 3 "" H 6900 6250 50  0001 C CNN
+	1    6900 6250
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	1900 5425 1900 5325
+	6900 6250 6900 6150
 Wire Wire Line
-	1900 5325 2450 5325
+	6900 6150 7450 6150
 $Comp
 L pihat_template-rescue:Conn_01x06_Female-Connector J11
 U 1 1 5BFBED5A
-P 2650 5125
-F 0 "J11" H 2678 5101 50  0000 L CNN
-F 1 "INA219 Sensor Board" H 2678 5010 50  0000 L CNN
-F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 2650 5125 50  0001 C CNN
-F 3 "~" H 2650 5125 50  0001 C CNN
-	1    2650 5125
+P 7650 5950
+F 0 "J11" H 7678 5926 50  0000 L CNN
+F 1 "INA219 Sensor Board" H 7678 5835 50  0000 L CNN
+F 2 "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical" H 7650 5950 50  0001 C CNN
+F 3 "~" H 7650 5950 50  0001 C CNN
+	1    7650 5950
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2450 5425 2375 5425
+	7450 6250 7375 6250
 Wire Wire Line
-	2375 5425 2375 5500
+	7375 6250 7375 6325
 Wire Wire Line
-	2375 5500 2325 5500
+	7375 6325 7325 6325
 Wire Wire Line
-	2325 5500 2325 5475
+	7325 6325 7325 6300
 $Comp
 L pihat_template-rescue:power_+3.3V-PiHatAx5043-cache #PWR0121
 U 1 1 5BFBED64
-P 2325 5475
-F 0 "#PWR0121" H 2325 5325 50  0001 C CNN
-F 1 "power_+3.3V" H 2275 5400 50  0000 C CNN
-F 2 "" H 2325 5475 50  0001 C CNN
-F 3 "" H 2325 5475 50  0001 C CNN
-	1    2325 5475
+P 7325 6300
+F 0 "#PWR0121" H 7325 6150 50  0001 C CNN
+F 1 "power_+3.3V" H 7275 6225 50  0000 C CNN
+F 2 "" H 7325 6300 50  0001 C CNN
+F 3 "" H 7325 6300 50  0001 C CNN
+	1    7325 6300
 	1    0    0    -1  
 $EndComp
-Text Notes 2725 5375 0    50   ~ 0
+Text Notes 7725 6200 0    50   ~ 0
 I2C Address 0x40
 Text GLabel 5800 5775 0    50   Input ~ 0
 Y-In
 Text GLabel 5800 5875 0    50   Input ~ 0
 Y-Out
 Text GLabel 5800 5975 0    50   Input ~ 0
-SDA_0
+SDA_3
 Text GLabel 5800 6075 0    50   Input ~ 0
-SCL_0
+SCL_3
 $Comp
 L pihat_template-rescue:GND-power #PWR0122
 U 1 1 5BFC1EBA
@@ -976,7 +976,7 @@ Boost Converter trim pot adjusted to give 15V output at maximum solar panel volt
 Text Notes 8500 6625 0    50   ~ 0
 Between NiMH battery and MoPower Board
 Text Notes 5700 6600 0    50   ~ 0
-INA219 boards are mounted vertically with 45 degree 5x1 pins
+INA219 boards are mounted vertically with 90 degree 5x1 header pins
 Text Notes 1700 4325 0    50   ~ 0
 Male Extra Long (19mm) 20x2 Header Pins
 Text Notes 6050 1025 0    50   ~ 0
