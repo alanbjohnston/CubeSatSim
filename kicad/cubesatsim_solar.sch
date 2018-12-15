@@ -7,7 +7,7 @@ encoding utf-8
 Sheet 1 1
 Title "AMSAT CubeSat Simulator Solar Panel Board"
 Date "December 15, 2018"
-Rev "Beta1.2"
+Rev "Beta1.3"
 Comp "See https://github.com/alanbjohnston/cubesatsim"
 Comment1 "KU2Y"
 Comment2 ""
@@ -363,9 +363,9 @@ Wire Wire Line
 Wire Wire Line
 	7325 5475 7325 5450
 Text GLabel 975  3100 0    50   Input ~ 0
-SDA_3
+SDA_0
 Text GLabel 975  3000 0    50   Input ~ 0
-SCL_3
+SCL_0
 $Comp
 L pihat_template-rescue:Raspberry_Pi_+_Conn-pihat_template-rescue P3
 U 1 1 54E92361
@@ -528,9 +528,9 @@ F 3 "" H 1700 6775 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Text GLabel 2200 6875 0    50   Input ~ 0
-SDA_3
+SDA_0
 Text GLabel 2200 6975 0    50   Input ~ 0
-SCL_3
+SCL_0
 Wire Wire Line
 	2275 6875 2200 6875
 Wire Wire Line
@@ -684,9 +684,9 @@ X-In
 Text GLabel 7450 5850 0    50   Input ~ 0
 X-Out
 Text GLabel 7450 5950 0    50   Input ~ 0
-SDA_3
+SDA_0
 Text GLabel 7450 6050 0    50   Input ~ 0
-SCL_3
+SCL_0
 $Comp
 L pihat_template-rescue:GND-power #PWR0120
 U 1 1 5BFBED52
@@ -739,9 +739,9 @@ Y-In
 Text GLabel 5800 5875 0    50   Input ~ 0
 Y-Out
 Text GLabel 5800 5975 0    50   Input ~ 0
-SDA_3
+SDA_0
 Text GLabel 5800 6075 0    50   Input ~ 0
-SCL_3
+SCL_0
 $Comp
 L pihat_template-rescue:GND-power #PWR0122
 U 1 1 5BFC1EBA
