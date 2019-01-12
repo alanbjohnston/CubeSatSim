@@ -228,8 +228,8 @@ int get_tlm(int tlm[][5]) {
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10) % 100;  // +X current [4]
-	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // +Y current [7]
-	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
+	tlm[1][C] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // +Y current [7]
+	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] (actually -X current, AO-7 didn't have a Z solar panel?)
 	
 	tlm[2][A] = 99;
 	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
