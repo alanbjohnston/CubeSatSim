@@ -2,14 +2,12 @@ These spreadsheets are for analyzing the CubeSat Simulator telemetry.
 
 Instructions:
 
-Copy your raw telemetry data into the tab/sheet "Paste Raw Data Here".
+Copy your raw telemetry data into the Data Input tab.  If you don't have any data, copy data from the Sample Data tab.
 
-If it is AFSK telemetry from AFSK 1200 Decoder, you will need to delete every other row which has the timestamp.  You can use a macro to do this.  Select a row at the top that has a timestamp, and type Control-t and every other line will be deleted.
+The odd rows should be a time timestamp (which is ignored) while the even rows should contain frames of telemetry data (beginning with "hi hi" then a series of 3 digit numbers).  If this isn't the case, you will need to edit until even lines starting at row 2 contain frames of telemetry.
 
-Once you have one frame of telemetry per line and no extra lines, copy and paste into the tab/sheet, "Data Input"
+The telemetry starting in Row 2 will be automatically calculated and plotted.
 
-The telemetry starting in Row 2 will be calculated and plotted.
+See plots in Voltage Graphs, Current Graphs, and Temperature Graph tabs.
 
-See plots in "Voltage Graphs", "Current Graphs", and "Temperature Graphs"
-
-To see raw data or create a new plot, go to "Graphs"
+To see raw data or create a new plot, go to Graphs tab
