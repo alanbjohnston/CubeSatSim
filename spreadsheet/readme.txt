@@ -1,5 +1,8 @@
 These spreadsheets are for analyzing the CubeSat Simulator telemetry.
 
+A version for Google Docs is available for copying and download at  https://docs.google.com/spreadsheets/d/1JvvqCAMaiAT45BoUndiS_DKVOUskV6dXG9W9Ys_21Gw/edit?usp=sharing
+
+
 Instructions:
 
 Copy your raw telemetry data into the Data Input tab.  If you don't have any data, copy data from the Sample Data tab.
