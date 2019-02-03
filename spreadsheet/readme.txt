@@ -1,11 +1,10 @@
 This spreadsheet is for analyzing the CubeSat Simulator telemetry.
 
-It has been tested with Office 365 (Windows) and (Mac) and LibreOffice Calc Version: 6.1.4.2 (Windows)
+It has been tested with Office 365 (Windows) and Office Excel for Mac (Version: 16.16.6) and LibreOffice Calc Version: 6.1.4.2 (Windows)
 
 A version for Google Docs is available for copying and download at:
 
  https://docs.google.com/spreadsheets/d/1JvvqCAMaiAT45BoUndiS_DKVOUskV6dXG9W9Ys_21Gw/edit?usp=sharing
-
 
 Instructions:
 
