@@ -34,6 +34,8 @@
 #include <wiringPiI2C.h>
 #include <time.h>
 
+// Put your callsign here
+#define CALLSIGN "KU2Y"
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -112,7 +114,8 @@ int main(void) {
 
     init_rf();
 
-    ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
+//    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
+    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '1', (uint8_t *) CALLSIGN, '1',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
         
