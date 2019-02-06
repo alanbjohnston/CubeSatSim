@@ -1,6 +1,61 @@
 EESchema-LIBRARY Version 2.4
 #encoding utf-8
 #
+# 35RAPC4BH3_35RAPC4BH3
+#
+DEF 35RAPC4BH3_35RAPC4BH3 J 0 40 Y N 1 L N
+F0 "J" -300 300 50 H V L BNN
+F1 "35RAPC4BH3_35RAPC4BH3" -300 -400 50 H V L BNN
+F2 "SWITCHCRAFT_35RAPC4BH3" 0 0 50 H I L BNN
+F3 "None" 0 0 50 H I L BNN
+F4 "35RAPC4BH3" 0 0 50 H I L BNN
+F5 "3.5mm Threaded Right Angle Stereo Jack" 0 0 50 H I L BNN
+F6 "https://www.digikey.com/product-detail/en/switchcraft-inc/35RAPC4BH3/SC1464-ND/1288781?utm_source=snapeda&utm_medium=aggregator&utm_campaign=symbol" 0 0 50 H I L BNN
+F7 "SC1464-ND" 0 0 50 H I L BNN
+F8 "Switchcraft Inc." 0 0 50 H I L BNN
+DRAW
+P 2 0 0 10 -300 -300 -300 300 N
+P 2 0 0 10 -300 300 300 300 N
+P 2 0 0 6 -210 -100 -90 -100 N
+P 2 0 0 6 -210 100 -210 -100 N
+P 2 0 0 6 -150 100 -210 100 N
+P 2 0 0 6 -150 200 -150 100 N
+P 2 0 0 6 -90 -100 -90 100 N
+P 2 0 0 6 -90 100 -150 100 N
+P 2 0 0 6 0 50 -50 100 N
+P 2 0 0 6 50 -200 100 -150 N
+P 2 0 0 6 50 100 0 50 N
+P 2 0 0 6 100 -150 150 -200 N
+P 2 0 0 6 150 -200 200 -200 N
+P 2 0 0 6 180 -170 200 -200 N
+P 2 0 0 6 180 70 200 70 N
+P 2 0 0 6 200 -200 200 -170 N
+P 2 0 0 6 200 -200 220 -170 N
+P 2 0 0 6 200 -200 300 -200 N
+P 2 0 0 6 200 -170 180 -170 N
+P 2 0 0 6 200 -170 200 -100 N
+P 2 0 0 6 200 -100 300 -100 N
+P 2 0 0 6 200 0 300 0 N
+P 2 0 0 6 200 70 200 0 N
+P 2 0 0 6 200 70 200 100 N
+P 2 0 0 6 200 70 220 70 N
+P 2 0 0 6 200 100 50 100 N
+P 2 0 0 6 200 100 180 70 N
+P 2 0 0 6 220 -170 200 -170 N
+P 2 0 0 6 220 70 200 100 N
+P 2 0 0 10 300 -300 -300 -300 N
+P 2 0 0 10 300 -200 300 -300 N
+P 2 0 0 6 300 100 200 100 N
+P 2 0 0 6 300 200 -150 200 N
+P 2 0 0 10 300 300 300 -200 N
+X 1 1 500 200 200 L 40 40 0 0 P
+X 2 2 500 100 200 L 40 40 0 0 P
+X 3 3 500 0 200 L 40 40 0 0 P
+X 4 4 500 -100 200 L 40 40 0 0 P
+X 5 5 500 -200 200 L 40 40 0 0 P
+ENDDRAW
+ENDDEF
+#
 # pihat_template-rescue_+3.3V-PiHatAx5043-cache
 #
 DEF pihat_template-rescue_+3.3V-PiHatAx5043-cache #PWR 0 0 Y Y 1 F P
@@ -31,46 +86,23 @@ X +5V 1 0 0 0 U 50 50 1 1 W N
 ENDDRAW
 ENDDEF
 #
-# pihat_template-rescue_Audio-Jack-3_2Switches-conn2
+# pihat_template-rescue_CONN_01X01-conn2
 #
-DEF pihat_template-rescue_Audio-Jack-3_2Switches-conn2 J 0 40 Y Y 1 F N
-F0 "J" 0 290 50 H V C CNN
-F1 "pihat_template-rescue_Audio-Jack-3_2Switches-conn2" -150 -200 50 H V L CNN
-F2 "" 250 100 50 H I C CNN
-F3 "" 250 100 50 H I C CNN
+DEF pihat_template-rescue_CONN_01X01-conn2 J 0 40 Y N 1 F N
+F0 "J" 0 100 50 H V C CNN
+F1 "pihat_template-rescue_CONN_01X01-conn2" 100 0 50 V V C CNN
+F2 "" 0 0 50 H I C CNN
+F3 "" 0 0 50 H I C CNN
+$FPLIST
+ Pin_Header_Straight_1X*
+ Pin_Header_Angled_1X*
+ Socket_Strip_Straight_1X*
+ Socket_Strip_Angled_1X*
+$ENDFPLIST
 DRAW
-T 0 -25 50 30 0 0 0 1 Normal 0 C C
-T 0 -100 50 30 0 0 0 2 Normal 0 C C
-S -180 240 100 -140 0 0 10 f
-S -175 0 -205 100 0 1 0 F
-P 2 0 0 0 -200 -100 -200 0 N
-P 2 0 0 0 -50 110 -40 130 N
-P 2 0 0 0 40 -30 30 -10 N
-P 4 0 0 0 100 -100 30 -100 30 -10 20 -30 N
-P 4 0 0 0 100 200 -50 200 -50 110 -60 130 N
-P 4 0 1 10 -50 0 -25 25 0 0 100 0 N
-P 4 0 1 10 100 100 -75 100 -100 75 -125 100 N
-X ~ 1 200 0 100 L 50 50 1 1 P
-X ~ 2 200 100 100 L 50 50 1 1 P
-X ~ 3 -200 -200 100 U 50 50 1 1 P
-X ~ 4 200 -100 100 L 50 50 1 1 P
-X ~ 5 200 200 100 L 50 50 1 1 P
-ENDDRAW
-ENDDEF
-#
-# pihat_template-rescue_BoostConverter-New_Library
-#
-DEF pihat_template-rescue_BoostConverter-New_Library U 0 40 Y Y 1 F N
-F0 "U" 0 50 50 H V C CNN
-F1 "pihat_template-rescue_BoostConverter-New_Library" 0 -50 50 H V C CNN
-F2 "" 0 50 50 H I C CNN
-F3 "" 0 50 50 H I C CNN
-DRAW
-S -300 400 400 150 0 1 0 f
-X IN+ 1 -400 350 100 R 50 50 1 1 I
-X IN- 2 -400 200 100 R 50 50 1 1 I
-X OUT+ 3 500 350 100 L 50 50 1 1 O
-X OUT- 4 500 200 100 L 50 50 1 1 O
+S -50 5 10 -5 0 1 0 N
+S -50 50 50 -50 0 1 0 N
+X P1 1 -200 0 150 R 50 50 1 1 P
 ENDDRAW
 ENDDEF
 #

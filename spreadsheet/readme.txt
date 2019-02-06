@@ -1,23 +1,19 @@
-These spreadsheets are for analyzing the CubeSat Simulator telemetry.
+This spreadsheet is for analyzing the CubeSat Simulator telemetry.
 
-There is one VisualBasic Macro called "cleanup" which cleans up the raw telemetry copied from AFSK 1200 Decoder by removing the timestamps by deleting every other line.
+It has been tested with Office 365 (Windows) and Office Excel for Mac (Version: 16.16.6) and LibreOffice Calc Version: 6.1.4.2 (Windows)
 
-You can either open the spreadsheet with the macros (CubeSatSim TLM Analysis.xls) and select Enable Macros when you open it.  Or, you could open the spreadsheet without the macros (CubeSatSim TLM Analysis No Macros.xls) and then import the VB macro cleanup.bas.  If you choose not the use macros, you can just manually delete rows to get the telemetry data in the right format.
+A version for Google Docs is available for copying and download at:
 
-The instructions for using the spreadsheets are as follows:
+ https://docs.google.com/spreadsheets/d/1JvvqCAMaiAT45BoUndiS_DKVOUskV6dXG9W9Ys_21Gw/edit?usp=sharing
 
 Instructions:
 
-Copy your raw telemetry data into the tab/sheet "Paste Raw Data Here".
+Copy your raw telemetry data into the Data Input tab.  If you don't have any data, copy data from the Sample Data tab.
 
-If it is CW telemetry, you will need to edit so that it is one frame of telemetry per row
+The odd rows should be a time timestamp (which is ignored) while the even rows should contain frames of telemetry data (beginning with "hi hi" then a series of 3 digit numbers).  If this isn't the case, you will need to edit until even lines starting at row 2 contain frames of telemetry.
 
-If it is AFSK telemetry from AFSK 1200 Decoder, you will need to delete every other row which has the timestamp.  You can use a macro to do this.  Select a row at the top that has a timestamp, and type Control-t and every other line will be deleted.
+The telemetry starting in Row 2 will be automatically calculated and plotted.
 
-Once you have one frame of telemetry per line and no extra lines, copy and paste into the tab/sheet, "Data Input"
+See plots in Voltage Graphs, Current Graphs, and Temperature Graph tabs.
 
-The telemetry starting in Row 2 will be calculated and plotted.
-
-See plots in "Voltage Graphs", "Current Graphs", and "Temperature Graphs"
-
-To see raw data or create a new plot, go to "Graphs"
+To see raw data or create a new plot, go to Graphs tab
