@@ -99,6 +99,10 @@ int main(void) {
 
     printf("tempSensor: %d \n",tempSensor);	
 
+    int arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
+    printf("Arduio write: %d \n", wiringPiI2CWrite(arduinoI2C,42));
+    printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
+
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
     initializeSpi();
