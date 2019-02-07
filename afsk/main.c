@@ -212,7 +212,7 @@ int upper_digit(int number) {
 	return digit;
 }
 int get_tlm(int tlm[][5]) {
-
+	
 //  Reading I2C voltage and current sensors	
 	
       char cmdbuffer[1000];
@@ -231,6 +231,31 @@ int get_tlm(int tlm[][5]) {
           data2 = strtok (NULL, " ");
           i++;
       }
+	
+  // Reading MoPower telemetry info
+	
+      file = popen("sudo mpcmd show all", "r"); 
+      fgets(cmdbuffer, 1000, file);
+      pclose(file);
+      printf("MoPower data: %s\n", cmdbuffer);
+
+    char mopower[64][14];
+//  char str[] ="- This, a sample string.";
+    char * pch;
+//  printf ("Splitting string \"%s\" into tokens:\n",str);
+//  pch = strtok (str," ");
+    int i = 0;
+    pch = strtok (cmdbuffer," ,.-");
+    while (pch != NULL)
+    {
+      strcpy(mopower[i], pch);
+      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
+      pch = strtok (NULL, " ");
+      i++;
+    }
+    printf("Battery voltage = %s\n", mopower[16]);	
+
+	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
