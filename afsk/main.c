@@ -72,6 +72,7 @@ int tempSensor;
 
 int upper_digit(int number);
 int lower_digit(int number);
+int charging = 0;
 
 uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
@@ -156,6 +157,15 @@ int main(void) {
 	  strcat(str, tlm_str);
 	}	
         
+	char cmdbuffer[1000];
+
+        if (charging) {
+      	   FILE* file1 = popen("mpcmd LED_STAT=1", "r"); 
+      	   fgets(cmdbuffer, 1000, file1);
+      	   pclose(file1);
+
+      	   printf("LED state: %s\n", cmdbuffer);
+        }
 	printf("INFO: Transmitting X.25 packet\n");
 
         memcpy(data, str, strnlen(str, 256));
@@ -167,6 +177,12 @@ int main(void) {
             exit(EXIT_FAILURE);
         }
         ax5043_wait_for_transmit();
+      	FILE* file2 = popen("mpcmd LED_STAT=0", "r"); 
+      	fgets(cmdbuffer, 1000, file2);
+      	pclose(file2);
+
+      	printf("LED state: %s\n", cmdbuffer);
+
         if (ret) {
             fprintf(stderr,
                     "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
@@ -234,7 +250,7 @@ int get_tlm(int tlm[][5]) {
 	
   // Reading MoPower telemetry info
 	
-      file = popen("sudo mpcmd show all", "r"); 
+      file = popen("mpcmd show data", "r"); 
       fgets(cmdbuffer, 1000, file);
       pclose(file);
       printf("MoPower data: %s\n", cmdbuffer);
@@ -254,7 +270,15 @@ int get_tlm(int tlm[][5]) {
       i++;
     }
     printf("Battery voltage = %s\n", mopower[16]);	
+    if (strtof(mopower[17],NULL) > -0.5) {
+	charging = 1;
+        printf("Charging on");
+    }
+    else {
+ 	charging = 0;
+        printf("Charging off");
 
+    }
 	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
