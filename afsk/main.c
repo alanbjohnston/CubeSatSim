@@ -244,14 +244,14 @@ int get_tlm(int tlm[][5]) {
     char * pch;
 //  printf ("Splitting string \"%s\" into tokens:\n",str);
 //  pch = strtok (str," ");
-    int i = 0;
+    int j = 0;
     pch = strtok (cmdbuffer," ,.-");
     while (pch != NULL)
     {
-      strcpy(mopower[i], pch);
-      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
+      strcpy(mopower[j], pch);
+      printf ("mopwer[%d]=%s\n",j,mopower[j]); // pch);
       pch = strtok (NULL, " ");
-      i++;
+      j++;
     }
     printf("Battery voltage = %s\n", mopower[16]);	
 
