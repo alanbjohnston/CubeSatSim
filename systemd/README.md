@@ -1,10 +1,10 @@
 cd systemd
 
-sudo mv custom.target /etc/systemd/system/custom.target
+sudo cp custom.target /etc/systemd/system/custom.target
 
 sudo mkdir /etc/systemd/system/custom.target.wants
 
-sudo mv new.service /etc/systemd/system/custom.target.wants/new.service
+sudo cp new.service /etc/systemd/system/custom.target.wants/new.service
 
 sudo systemctl list-units --type target --all
 
