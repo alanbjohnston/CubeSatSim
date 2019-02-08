@@ -1,7 +1,10 @@
 #!/bin/bash
 
-echo -e "\nDemo of CubeSatSim sends CW telemetry once then AFSK continuously\n\n"
-sleep 20
+echo -e "\nDemo of CubeSatSim sends AFSK telemetry at 440 MHz continuously\n\n"
+
+#sleep 1
+
+echo $(date '+%Y %b %d %H:%M') Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
 
 echo 'sleep over' >> /home/pi/CubeSatSim/log.txt
 
