@@ -160,7 +160,7 @@ int main(void) {
 	char cmdbuffer[1000];
 
         if (charging) {
-      	   FILE* file1 = popen("mpcmd LED_STAT=1", "r"); 
+      	   FILE* file1 = popen("/home/pi/mopower/mpcmd LED_STAT=1", "r"); 
       	   fgets(cmdbuffer, 1000, file1);
       	   pclose(file1);
 
@@ -177,7 +177,7 @@ int main(void) {
             exit(EXIT_FAILURE);
         }
         ax5043_wait_for_transmit();
-      	FILE* file2 = popen("mpcmd LED_STAT=0", "r"); 
+      	FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
       	fgets(cmdbuffer, 1000, file2);
       	pclose(file2);
 
@@ -250,7 +250,7 @@ int get_tlm(int tlm[][5]) {
 	
   // Reading MoPower telemetry info
 	
-      file = popen("mpcmd show data", "r"); 
+      file = popen("/home/pi/mopower/mpcmd show data", "r"); 
       fgets(cmdbuffer, 1000, file);
       pclose(file);
       printf("MoPower data: %s\n", cmdbuffer);
