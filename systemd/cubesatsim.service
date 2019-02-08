@@ -1,10 +1,10 @@
- [Unit]
- Description=CubeSatSim Service
- After=multi-user.target
+[Unit]
+Description=My last command
+After=multi-user.target
 
- [Service]
- Type=idle
- ExecStart=/home/pi/CubeSatSim/radioafsk > /home/pi/CubeSatSim/log.txt 2>&1
+[Service]
+Type=simple
+ExecStart=/home/pi/CubeSatSim/demo.sh > /home/pi/CubeSatSim/log.txt 2>&1
 
- [Install]
- WantedBy=multi-user.target
+[Install]
+WantedBy=custom.target
