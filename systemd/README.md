@@ -4,7 +4,6 @@ sudo cp custom.target /etc/systemd/system/custom.target
 
 sudo mkdir /etc/systemd/system/custom.target.wants
 
-sudo cp new.service /etc/systemd/system/custom.target.wants/new.service
 sudo cp cubesatsim.service /etc/systemd/system/custom.target.wants/cubesatsim.service
 
 sudo systemctl list-units --type target --all
