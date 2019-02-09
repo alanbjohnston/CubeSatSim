@@ -164,7 +164,7 @@ int main(void) {
       	   fgets(cmdbuffer, 1000, file1);
       	   pclose(file1);
 
-      	   printf("LED state: %s\n", cmdbuffer);
+//      	   printf("LED state: %s\n", cmdbuffer);
         }
 	printf("INFO: Transmitting X.25 packet\n");
 
@@ -181,7 +181,7 @@ int main(void) {
       	fgets(cmdbuffer, 1000, file2);
       	pclose(file2);
 
-      	printf("LED state: %s\n", cmdbuffer);
+//      	printf("LED state: %s\n", cmdbuffer);
 
         if (ret) {
             fprintf(stderr,
@@ -253,7 +253,7 @@ int get_tlm(int tlm[][5]) {
       file = popen("/home/pi/mopower/mpcmd show data", "r"); 
       fgets(cmdbuffer, 1000, file);
       pclose(file);
-      printf("MoPower data: %s\n", cmdbuffer);
+//      printf("MoPower data: %s\n", cmdbuffer);
 
     char mopower[64][14];
 //  char str[] ="- This, a sample string.";
@@ -265,18 +265,18 @@ int get_tlm(int tlm[][5]) {
     while (pch != NULL)
     {
       strcpy(mopower[i], pch);
-      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
+//      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
       pch = strtok (NULL, " ");
       i++;
     }
     printf("Battery voltage = %s\n", mopower[16]);	
     if (strtof(mopower[17],NULL) > -0.5) {
 	charging = 1;
-        printf("Charging on");
+        printf("Charging on\n");
     }
     else {
  	charging = 0;
-        printf("Charging off");
+        printf("Charging off\n");
 
     }
 	
