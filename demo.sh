@@ -2,7 +2,7 @@
 
 echo -e "\nDemo of CubeSatSim sends AFSK telemetry at 440 MHz continuously\n\n"
 
-sleep 10
+sleep 20
 
 #echo 'sleep over' >> /home/pi/CubeSatSim/log.txt
 
