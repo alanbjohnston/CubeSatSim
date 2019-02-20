@@ -22,7 +22,8 @@ Here are the basic steps:
 - Run AX-RADIOLAB
 - You only need to configure the PHY and Framing tabs.  Make sure you set the Fxtal to 16 MHz in the PHY tab
 (if you forget, you will get AX initialization failure messages when you run your code). You can view and
-change the registers by clicking the Expert Settings button.
+change the registers by clicking the Expert Settings button.  Here's the documentation on the registers:
+   https://www.onsemi.com/pub/Collateral/AND9347-D.PDF
 - When you are done, click Calculate Registers then Save and Write Output. 
 - Click on the Edit Master button - this will launch Code::Blocks (if Code::Blocks is already open, you might get an error
 close Code::Blocks then click on Edit Master again.)
