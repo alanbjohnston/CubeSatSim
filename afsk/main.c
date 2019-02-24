@@ -78,12 +78,11 @@ int charging = 0;
 uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
 int x_fd;	// I2C bus 0
-int x_address;	// I2C address of INA219
 int x_powerMultiplier;
 int x_currentDivider;
 int x_calValue;
 int y_fd;	// I2C bus 0
-int y_address;	// I2C address of INA219
+
 
 int main(void) {
     
@@ -329,7 +328,7 @@ int get_tlm(int tlm[][5]) {
 	tlm[1][C] = (int) (99.5 - strtof(current, NULL)/10) % 100;  			// X- current [10] 
 	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // Y+ current [7]
 	
-	tlm[2][A] = (int) (99.5 - strtof(current_y, NULL)/10) % 100;  			// Y- current [10] 
+	tlm[2][A] = (int) (99.5 - strtof(y_current, NULL)/10) % 100;  			// Y- current [10] 
 	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
 	
 	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
