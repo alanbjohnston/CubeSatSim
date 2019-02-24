@@ -114,6 +114,24 @@ int main(void) {
     int arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
     printf("Arduio write: %d \n", wiringPiI2CWrite(arduinoI2C,42));
     printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
+	
+// new INA219 current reading code
+
+    x_calValue = 8192;
+    x_powerMultiplier = 1;
+    x_currentDivider = 20;
+    config = INA219_CONFIG_BVOLTAGERANGE_16V |
+                 INA219_CONFIG_GAIN_40MV |
+                 INA219_CONFIG_BADCRES_12BIT |
+                 INA219_CONFIG_SADCRES_12BIT_4S_2130US |
+               //INA219_CONFIG_SADCRES_12BIT_1S_532US |
+                 INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
+  
+    x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+    printf("Opening of X- fd %d\n", x_fd);
+
+    y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
+    printf("Opening of Y- fd %d\n", y_fd);
 
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
