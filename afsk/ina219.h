@@ -9,9 +9,10 @@
  *
  * Author: Mark Riddoch
  */
-#/**
+
+/**
  * Values for the gain setting
- */;
+ */
 enum {
 	INA219_CONFIG_GAIN_40MV  =       0x0000,  // 40mV Range
 	INA219_CONFIG_GAIN_80MV  =       0x0800,  // 80mV Range
