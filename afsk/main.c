@@ -307,6 +307,21 @@ int get_tlm(int tlm[][5]) {
 
     }
 	
+// read i2c current sensors //
+	
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+	double current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+	double power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
+	double y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
+	double y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
+	
+	printf("0x40 current %4.2f power %4.2f 0x41 current %4.2f power %4.2f \n", current, power, y_current, y_power);
+	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
