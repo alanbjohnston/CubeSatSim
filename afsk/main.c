@@ -325,10 +325,10 @@ int get_tlm(int tlm[][5]) {
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10) % 100;  // X+ current [4]
-	tlm[1][C] = (int) (99.5 - strtof(current, NULL)/10) % 100;  			// X- current [10] 
+	tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
 	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // Y+ current [7]
 	
-	tlm[2][A] = (int) (99.5 - strtof(y_current, NULL)/10) % 100;  			// Y- current [10] 
+	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// Y- current [10] 
 	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
 	
 	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
