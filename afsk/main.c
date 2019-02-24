@@ -33,6 +33,7 @@
 #include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <time.h>
+#include "ina219.h"
 
 // Put your callsign here
 #define CALLSIGN "KU2Y"
@@ -75,6 +76,14 @@ int lower_digit(int number);
 int charging = 0;
 
 uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
+
+int x_fd;	// I2C bus 0
+int x_address;	// I2C address of INA219
+int x_powerMultiplier;
+int x_currentDivider;
+int x_calValue;
+int y_fd;	// I2C bus 0
+int y_address;	// I2C address of INA219
 
 int main(void) {
     
