@@ -72,7 +72,7 @@ typedef enum {
 /*
  * INA219 Registers
  */
-#define INA219_REG_CONFIG 	                   0x00
+#define INA219_REG_CONFIG 	               0x00
 #define INA219_REG_SHUNTVOLTAGE                0x01
 #define INA219_REG_BUSVOLTAGE                  0x02
 #define INA219_REG_POWER                       0x03

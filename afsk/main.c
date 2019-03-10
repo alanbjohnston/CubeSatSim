@@ -86,7 +86,9 @@ int y_fd;	// I2C bus 0
 
 int main(void) {
     
-//    sleep(20);
+    setSpiChannel(SPI_CHANNEL);
+    setSpiSpeed(SPI_SPEED);
+    initializeSpi();
 
     int tlm[7][5];
     int i, j;
@@ -131,10 +133,6 @@ int main(void) {
 
     y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
     printf("Opening of Y- fd %d\n", y_fd);
-
-    setSpiChannel(SPI_CHANNEL);
-    setSpiSpeed(SPI_SPEED);
-    initializeSpi();
 
     int ret;
     uint8_t data[1024];
@@ -222,6 +220,8 @@ int main(void) {
 
 static void init_rf() {
     int ret;
+    printf("Initializing AX5043\n");
+
     ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
     if (ret != PQWS_SUCCESS) {
         fprintf(stderr,
