@@ -147,7 +147,7 @@ int main(void) {
         
     /* Infinite loop */
     for (;;) {
-        sleep(2);
+        //sleep(2);
     	
 	// send X.25 packet
 
