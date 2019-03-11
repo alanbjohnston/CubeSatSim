@@ -77,11 +77,12 @@ int charging = 0;
 
 uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
-int x_fd;	// I2C bus 0
+int x_fd;	// I2C bus 0 address 0x40
 int x_powerMultiplier;
 int x_currentDivider;
 int x_calValue;
-int y_fd;	// I2C bus 0
+int y_fd;	// I2C bus 0 address 0x41
+int z_fd; 	// I2C bos 0 address 0x44
 
 
 int main(void) {
@@ -129,11 +130,12 @@ int main(void) {
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
   
     x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-    printf("Opening of X- fd %d\n", x_fd);
-
+    printf("Opening of -X fd %d\n", x_fd);
     y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
-    printf("Opening of Y- fd %d\n", y_fd);
-
+    printf("Opening of -Y fd %d\n", y_fd);
+    z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+    printf("Opening of -Z fd %d\n", z_fd);
+	
     int ret;
     uint8_t data[1024];
 
@@ -318,20 +320,27 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
 	double y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
 	double y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
+	double z_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
+	double z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
 	
-	printf("0x40 current %4.2f power %4.2f 0x41 current %4.2f power %4.2f \n", current, power, y_current, y_power);
+	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
+	       current, power, y_current, y_power, z_current, z_power);
 	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
-	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10) % 100;  // X+ current [4]
+	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10) % 100;  // +X current [4]
 	tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
-	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // Y+ current [7]
+	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // +Y current [7]
 	
-	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// Y- current [10] 
+	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
 	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
 	
-	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
+//	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0) % 100;   // NiMH Battery current
 	
 	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
