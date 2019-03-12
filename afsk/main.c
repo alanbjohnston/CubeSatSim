@@ -32,6 +32,7 @@
 #include "ax25.h"
 #include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
+#include <wiringPi.h>
 #include <time.h>
 #include "ina219.h"
 
@@ -85,6 +86,16 @@ int y_fd;	// I2C bus 0
 
 
 int main(void) {
+
+  wiringPiSetup () ;
+  pinMode (0, OUTPUT) ;
+  int blink;
+  for (blink = 1; blink < 10 ;blink++)
+  {
+    digitalWrite (0, HIGH) ; delay (500) ;
+    digitalWrite (0,  LOW) ; delay (500) ;
+  }
+    digitalWrite (0, HIGH) ; 
     
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
