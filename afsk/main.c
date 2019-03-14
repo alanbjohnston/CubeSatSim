@@ -124,9 +124,15 @@ int main(void) {
 
     printf("tempSensor: %d \n",tempSensor);	
 
-    int arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
-    printf("Arduio write: %d \n", wiringPiI2CWrite(arduinoI2C,42));
-    printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
+    int arduinoI2C;
+    if ((arduinoI2C = open("/dev/i2c-0", O_RDWR)) < 0)
+    {
+	    printf"ERROR: /dev/i2c-0 bus not present\n");    
+    } else {    
+	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
+    	printf("Arduio write: %d \n", wiringPiI2CWrite(arduinoI2C,42));
+    	printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
+    }
 	
 // new INA219 current reading code
 
