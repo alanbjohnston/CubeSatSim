@@ -91,7 +91,7 @@ int main(void) {
   wiringPiSetup () ;
   pinMode (0, OUTPUT) ;
   int blink;
-  for (blink = 1; blink < 10 ;blink++)
+  for (blink = 1; blink < 2 ;blink++)
   {
     digitalWrite (0, HIGH) ; delay (500) ;
     digitalWrite (0,  LOW) ; delay (500) ;
@@ -130,9 +130,27 @@ int main(void) {
 	    printf("ERROR: /dev/i2c-0 bus not present\n");    
     } else {    
 	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
-    	printf("Arduio write: %d \n", wiringPiI2CWrite(arduinoI2C,42));
+  for (blink = 1; blink < 20 ;blink++) {
+    	printf("Arduio write 0: %d \n", wiringPiI2CWrite(arduinoI2C,0));
+        sleep(1);
+    	printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,0));
+        sleep(1);
+    	printf("Arduio write 1: %d \n", wiringPiI2CWrite(arduinoI2C,0));
+        sleep(1);
     	printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
-    }
+        sleep(1);
+    	printf("Arduio write 2: %d \n", wiringPiI2CWrite(arduinoI2C,1));
+        sleep(1);
+    	printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,1));
+        sleep(1);
+    	printf("Arduio write 3: %d \n", wiringPiI2CWrite(arduinoI2C,3));
+        sleep(1);
+    	printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,2));
+        sleep(1);
+     }
+  }
+
+exit(0);
 	
 // new INA219 current reading code
 
