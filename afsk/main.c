@@ -130,28 +130,23 @@ int main(void) {
 	    printf("ERROR: /dev/i2c-0 bus not present\n");    
     } else {    
 	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
-  for (blink = 1; blink < 20 ;blink++) {
-    	printf("Arduio write 0: %d \n", wiringPiI2CWrite(arduinoI2C,0));
-        sleep(1);
-    	printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,0));
-        sleep(1);
-    	printf("Arduio write 1: %d \n", wiringPiI2CWrite(arduinoI2C,0));
-        sleep(1);
-    	printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
-        sleep(1);
-    	printf("Arduio write 2: %d \n", wiringPiI2CWrite(arduinoI2C,1));
-        sleep(1);
-    	printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,1));
-        sleep(1);
-    	printf("Arduio write 3: %d \n", wiringPiI2CWrite(arduinoI2C,3));
-        sleep(1);
-    	printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,2));
-        sleep(1);
-     }
+          if (arduinoI2C > 0) {
+   //  	    for (blink = 1; blink < 20 ;blink++) {
+       		 sleep(1);
+    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,0));
+       		 sleep(1);
+    		printf("Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
+   	    	 sleep(1);
+    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,1));
+       	 	sleep(1);
+    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,2));
+        	sleep(1);
+// 	   }
+         } else {
+		printf("Arduino payload not present\n");
+       	}
   }
 
-exit(0);
-	
 // new INA219 current reading code
 
     x_calValue = 8192;
@@ -231,7 +226,7 @@ exit(0);
 
         if (charging) {
       	   FILE* file1 = popen("/home/pi/mopower/mpcmd LED_STAT=1", "r"); 
-      	   fgets(cmdbuffer, 1000, file1);
+      	   fgets(cmdbuffer, 999, file1);
       	   pclose(file1);
 
 //      	   printf("LED state: %s\n", cmdbuffer);
@@ -248,7 +243,7 @@ exit(0);
         }
         ax5043_wait_for_transmit();
       	FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
-      	fgets(cmdbuffer, 1000, file2);
+      	fgets(cmdbuffer, 999, file2);
       	pclose(file2);
 
 //      	printf("LED state: %s\n", cmdbuffer);
@@ -305,7 +300,7 @@ int get_tlm(int tlm[][5]) {
 	
       char cmdbuffer[1000];
       FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
-      fgets(cmdbuffer, 1000, file);
+      fgets(cmdbuffer, 999, file);
       pclose(file);
       printf("I2C Sensor data: %s\n", cmdbuffer);
 
@@ -323,7 +318,7 @@ int get_tlm(int tlm[][5]) {
   // Reading MoPower telemetry info
 	
       file = popen("/home/pi/mopower/mpcmd show data", "r"); 
-      fgets(cmdbuffer, 1000, file);
+      fgets(cmdbuffer, 999, file);
       pclose(file);
 //      printf("MoPower data: %s\n", cmdbuffer);
 
