@@ -161,7 +161,7 @@ int main(void) {
 
         if (charging) {
       	   FILE* file1 = popen("/home/pi/mopower/mpcmd LED_STAT=1", "r"); 
-      	   fgets(cmdbuffer, 1000, file1);
+      	   fgets(cmdbuffer, 999, file1);
       	   pclose(file1);
 
 //      	   printf("LED state: %s\n", cmdbuffer);
@@ -178,7 +178,7 @@ int main(void) {
         }
         ax5043_wait_for_transmit();
       	FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
-      	fgets(cmdbuffer, 1000, file2);
+      	fgets(cmdbuffer, 999, file2);
       	pclose(file2);
 
 //      	printf("LED state: %s\n", cmdbuffer);
@@ -233,7 +233,7 @@ int get_tlm(int tlm[][5]) {
 	
       char cmdbuffer[1000];
       FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
-      fgets(cmdbuffer, 1000, file);
+      fgets(cmdbuffer, 999, file);
       pclose(file);
       printf("I2C Sensor data: %s\n", cmdbuffer);
 
@@ -251,7 +251,7 @@ int get_tlm(int tlm[][5]) {
   // Reading MoPower telemetry info
 	
       file = popen("/home/pi/mopower/mpcmd show data", "r"); 
-      fgets(cmdbuffer, 1000, file);
+      fgets(cmdbuffer, 999 file);
       pclose(file);
 //      printf("MoPower data: %s\n", cmdbuffer);
 
