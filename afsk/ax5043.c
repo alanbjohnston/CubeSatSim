@@ -222,11 +222,12 @@ int ax5043_init(ax5043_conf_t *conf, uint32_t f_xtal, vco_mode_t vco) {
     }
 
     /* Setup TX only related parameters */
+/*
     ret = ax5043_conf_tx_path(conf);
     if (ret) {
         return ret;
     }
-
+*/
     /* Set an internal copy for the ax5042_wait_for_transmit function */
     __ax5043_conf = conf;
 

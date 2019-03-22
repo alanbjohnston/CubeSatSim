@@ -1,3 +1,5 @@
+import time
+
 SHUNT_OHMS = 0.01
 MAX_EXPECTED_AMPS = 2.5
 SHUNT_OHMS45 = 0.1
@@ -26,6 +28,8 @@ try:
     INA219DISABLE=-1
 except:
     INA219DISABLE=1
+
+print "+X v\t+X i\t+X p\t+Y v\t+Y i\t+Y p\t+Z v\t+Z i\t+Z p\tVbatt\tibatt\tpbatt\tV5\ti5\tp5\t+X v\t+X i\t+X p\t"
     
 while True:
   time.sleep(1)
@@ -59,7 +63,8 @@ while True:
           ina44.busnum = 1;
           ina44v = ina44.voltage()
           ina44i = ina44.current()
-         ina44p = ina44.power()
+          ina44p = ina44.power()
+
           ina44.sleep();
       except:
           FAIL = 1
@@ -72,7 +77,7 @@ while True:
           ina45i = ina45.current()
           ina45p = ina45.power()
           ina45.sleep();
-        except:
+      except:
           FAIL = 1
       try:
           ina4a = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)        
@@ -85,4 +90,5 @@ while True:
           ina4a.sleep();
       except:
           FAIL = 1
-  print ina40v, ",", ina40i,",", ina40p,",", ina41v,",", ina41i,",", ina41p,",", ina44v,",", ina44i,",", ina44p,",", ina45v,",", ina45i,",", ina45p,",", ina4av,",", ina4ai,",", ina4ap
+      print ina40v, "\t", ina40i,"\t", ina40p,"\t", ina41v,"\t", ina41i,"\t", ina41p,"\t", ina44v,"\t", ina44i,"\t", ina44p,"\t", ina45v,"\t", ina45i,"\t", ina45p,"\t", ina4av,"\t", ina4ai,"\t", ina4ap
+
