@@ -219,7 +219,7 @@ int main(void) {
  	  channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
 	  channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
 	  channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-//	  printf("%s \n",tlm_str);
+	  printf("%s \n",tlm_str);
 	  strcat(str, tlm_str);
 	}
 	
