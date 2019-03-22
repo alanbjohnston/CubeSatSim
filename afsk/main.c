@@ -201,7 +201,7 @@ int main(void) {
         
 	fprintf(stderr,"INFO: Getting TLM Data\n");
 	    
-	//get_tlm(tlm);
+	get_tlm(tlm);
 
 	fprintf(stderr,"INFO: Preparing X.25 packet\n");
 	
@@ -210,7 +210,7 @@ int main(void) {
 	
 	char header_str[] = "\x03\x0fhi hi ";
 	strcpy(str, header_str);
-/*	
+	
         int channel;
 	for (channel = 1; channel < 7; channel++) {
 //        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
@@ -222,7 +222,7 @@ int main(void) {
 //	  printf("%s \n",tlm_str);
 	  strcat(str, tlm_str);
 	}
-*/	
+	
 /*        
 	char cmdbuffer[1000];
 
