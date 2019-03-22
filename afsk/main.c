@@ -322,7 +322,9 @@ int get_tlm(int tlm[][5]) {
   // Reading MoPower telemetry info
 /*	
       file = popen("/home/pi/mopower/mpcmd show data", "r"); 
+
       fgets(cmdbuffer, 999, file);
+
       pclose(file);
 //      printf("MoPower data: %s\n", cmdbuffer);
 

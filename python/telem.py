@@ -84,9 +84,9 @@ if INA219DISABLE !=1:
     except:
         FAIL = 1
 print
-print "X+ (0x40) v=",ina40v, "V i=", ina40i, "mA p=", ina40p, "mW "
-print "Y+ (0x41) v=",ina41v, "V i=", ina41i, "mA p=", ina41p, "mW "
-print "Z+ (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
-print "X- (0x45) v=",ina45v, "V i=", ina45i, "mA p=", ina45p, "mW "
+print "+X (0x40) v=",ina40v, "V i=", ina40i, "mA p=", ina40p, "mW "
+print "+Y (0x41) v=",ina41v, "V i=", ina41i, "mA p=", ina41p, "mW "
+print "+Z (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
+print "-X (0x45) v=",ina45v, "V i=", ina45i, "mA p=", ina45p, "mW "
 print "5V Supply(0x4a) v=",ina4av, "V i=", ina4ai, "mA p=", ina4ap, "mW "
 print

@@ -28,6 +28,7 @@ try:
     INA219DISABLE=-1
 except:
     INA219DISABLE=1
+
 print "+X v\t+X i\t+X p\t+Y v\t+Y i\t+Y p\t+Z v\t+Z i\t+Z p\tVbatt\tibatt\tpbatt\tV5\ti5\tp5\t+X v\t+X i\t+X p\t"
     
 while True:
@@ -63,6 +64,7 @@ while True:
           ina44v = ina44.voltage()
           ina44i = ina44.current()
           ina44p = ina44.power()
+
           ina44.sleep();
       except:
           FAIL = 1
@@ -89,3 +91,4 @@ while True:
       except:
           FAIL = 1
       print ina40v, "\t", ina40i,"\t", ina40p,"\t", ina41v,"\t", ina41i,"\t", ina41p,"\t", ina44v,"\t", ina44i,"\t", ina44p,"\t", ina45v,"\t", ina45i,"\t", ina45p,"\t", ina4av,"\t", ina4ai,"\t", ina4ap
+
