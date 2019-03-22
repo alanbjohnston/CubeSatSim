@@ -193,11 +193,11 @@ int main(void) {
     	
 	// send X.25 packet
 
- //   	init_rf();
+    	init_rf();
 
- //   	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
- //   		AX25_PREAMBLE_LEN,
- //  		 AX25_POSTAMBLE_LEN);
+    	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
+    		AX25_PREAMBLE_LEN,
+   		 AX25_POSTAMBLE_LEN);
         
 	fprintf(stderr,"INFO: Getting TLM Data\n");
 	    
