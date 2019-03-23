@@ -222,12 +222,11 @@ int ax5043_init(ax5043_conf_t *conf, uint32_t f_xtal, vco_mode_t vco) {
     }
 
     /* Setup TX only related parameters */
-/*
     ret = ax5043_conf_tx_path(conf);
     if (ret) {
         return ret;
     }
-*/
+
     /* Set an internal copy for the ax5042_wait_for_transmit function */
     __ax5043_conf = conf;
 
@@ -446,10 +445,11 @@ int ax5043_set_tx_freq(ax5043_conf_t *conf, uint32_t freq) {
     conf->tx_freq = freq;
 
     /* If the frequency difference is great enough perform autoranging */
+/*
     if (freq + 25000000 > prev_freq || freq - 25000000 < prev_freq) {
         ax5043_autoranging(conf);
     }
-
+*/
     return PQWS_SUCCESS;
 }
 
