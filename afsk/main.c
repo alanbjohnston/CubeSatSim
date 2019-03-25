@@ -91,12 +91,12 @@ int main(void) {
   wiringPiSetup () ;
   pinMode (0, OUTPUT) ;
   int blink;
-  for (blink = 1; blink < 2 ;blink++)
+  for (blink = 1; blink < 4 ;blink++)
   {
     digitalWrite (0, HIGH) ; delay (500) ;
     digitalWrite (0,  LOW) ; delay (500) ;
   }
-//    digitalWrite (0, HIGH) ; 
+    digitalWrite (0, HIGH) ; 
     
     setSpiChannel(SPI_CHANNEL);
     setSpiSpeed(SPI_SPEED);
@@ -189,16 +189,8 @@ int main(void) {
         
     /* Infinite loop */
     for (;;) {
-        sleep(2);
+        sleep(1);
     	
-	// send X.25 packet
-
-    	init_rf();
-
-    	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
-    		AX25_PREAMBLE_LEN,
-   		 AX25_POSTAMBLE_LEN);
-        
 	fprintf(stderr,"INFO: Getting TLM Data\n");
 	    
 	get_tlm(tlm);
@@ -222,7 +214,8 @@ int main(void) {
 	  printf("%s \n",tlm_str);
 	  strcat(str, tlm_str);
 	}
-	
+    	digitalWrite (0, LOW); 
+		
 /*        
 	char cmdbuffer[1000];
 
@@ -245,6 +238,8 @@ int main(void) {
             exit(EXIT_FAILURE);
         }
         ax5043_wait_for_transmit();
+    	digitalWrite (0, HIGH);
+		
 /*
       	FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
       	fgets(cmdbuffer, 999, file2);
