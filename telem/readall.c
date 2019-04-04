@@ -84,7 +84,7 @@ int x_currentDivider;
 int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
-
+int x_fd1;	// I2C bus 1 address 0x40
 
 int main(void) {
 
@@ -110,7 +110,7 @@ int main(void) {
 	}
     }
     //timestamp = time(NULL);
-	*/
+	
     int file_i2c;
     //char *filenam1e = (char*)"/dev/i2c-3";
     if ((file_i2c = open("/dev/i2c-3", O_RDWR)) < 0)
@@ -147,6 +147,7 @@ int main(void) {
 		fprintf(stderr,"Arduino payload not present\n");
        	}
   }
+*/
 
 // new INA219 current reading code
 
@@ -159,7 +160,7 @@ int main(void) {
                  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                //INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
-
+     int file_i2c;
      if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
      {
             fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
@@ -169,12 +170,23 @@ int main(void) {
      } else
      {  
          x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-         fprintf(stderr,"Opening of -X fd %d\n", x_fd);
+//         fprintf(stderr,"Opening of -X fd %d\n", x_fd);
          y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
-        printf("Opening of -Y fd %d\n", y_fd);
+//        printf("Opening of -Y fd %d\n", y_fd);
         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
-        printf("Opening of -Z fd %d\n", z_fd);
+ //       printf("Opening of -Z fd %d\n", z_fd);
     }
+     int file_i2c1;
+     if ((file_i2c1 = open("/dev/i2c-1", O_RDWR)) < 0)
+     {
+            fprintf(stderr,"ERROR: /dev/i2c-1 bus not present\n");
+            x_fd1 = -1;
+     } else
+     {  
+         x_fd1  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
+         fprintf(stderr,"Opening of +X fd %d\n", x_fd);
+    }
+	
 	
  //   int ret;
  //   uint8_t data[1024];
@@ -300,6 +312,7 @@ int get_tlm(int tlm[][5]) {
 	
       char cmdbuffer[1000];
       FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
+      //FILE* file = popen("sudo python /home/pi/CubeSatSim/python/telem.py 2>&1", "r"); 
       fgets(cmdbuffer, 999, file);
       pclose(file);
       fprintf(stderr,"I2C Sensor data: %s\n", cmdbuffer);
@@ -351,6 +364,7 @@ int get_tlm(int tlm[][5]) {
 */	
 // read i2c current sensors //
     double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
+    double currentx1 = 0, powerx1 = 0;
     if (x_fd != -1) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
@@ -367,7 +381,18 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
 	z_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
 	z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
-    }	
+    }
+    
+    if (x_fd1 != -1) {	
+	wiringPiI2CWriteReg16(x_fd1, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(x_fd1, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(x_fd1, INA219_REG_CALIBRATION, x_calValue);
+	currentx1 = wiringPiI2CReadReg16(x_fd1, INA219_REG_CURRENT) / x_currentDivider;
+	powerx1  = wiringPiI2CReadReg16(x_fd1, INA219_REG_POWER) * x_powerMultiplier;	
+        printf("Reading x_fd1\n");
+     }	
+	printf("+X 0x40 current %4.2f power %4.2f  \n",currentx1, powerx1);
+
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
 	       current, power, y_current, y_power, z_current, z_power);
 /*	
