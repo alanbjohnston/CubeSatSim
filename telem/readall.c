@@ -19,15 +19,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include <unistd.h>                             //Needed for I2C port
+#include <stdint.h>                             
 #include <fcntl.h>                              //Needed for I2C port
-//#include <sys/ioctl.h>                  //Needed for I2C port
+#include <sys/ioctl.h>                  //Needed for I2C port
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "status.h"
+//#include "status.h"
 //#include "ax5043.h"
 //#include "ax25.h"
 //#include "spi/ax5043spi.h"
@@ -66,7 +66,7 @@
 
 //static void init_rf();
 //int get_tlm(int tlm[][5]);
-long int timestamp;
+//long int timestamp;
 //void config_x25();
 //void trans_x25();
 //long int timestamp;
@@ -109,7 +109,7 @@ int main(void) {
 		tlm[i][j] = 0;
 	}
     }
-    timestamp = time(NULL);
+    //timestamp = time(NULL);
 	*/
     int file_i2c;
     //char *filenam1e = (char*)"/dev/i2c-3";
