@@ -129,7 +129,7 @@ int main(void) {
     {
 	    fprintf(stderr,"ERROR: /dev/i2c-0 bus not present\n");    
     } else {    
-	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
+	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4B);
  	fprintf(stderr,"arduinoI2C: %d\n", arduinoI2C);
           if (arduinoI2C > 0) {
    //  	    for (blink = 1; blink < 20 ;blink++) {
