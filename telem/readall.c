@@ -150,16 +150,26 @@ int main(void) {
 */
 
 // new INA219 current reading code
-
+/*
     x_calValue = 8192;
-    x_powerMultiplier = 1;
+    x_powerMultiplier = 100;
     x_currentDivider = 20;
     config = INA219_CONFIG_BVOLTAGERANGE_16V |
                  INA219_CONFIG_GAIN_40MV |
                  INA219_CONFIG_BADCRES_12BIT |
-                 INA219_CONFIG_SADCRES_12BIT_4S_2130US |
-               //INA219_CONFIG_SADCRES_12BIT_1S_532US |
+      //           INA219_CONFIG_SADCRES_12BIT_4S_2130US |
+               INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
+*/
+		x_calValue = 4096;
+		x_powerMultiplier = 2;
+		x_currentDivider = 10;
+		config = INA219_CONFIG_BVOLTAGERANGE_32V |
+                    INA219_CONFIG_GAIN_320MV |
+                    INA219_CONFIG_BADCRES_12BIT |
+                    INA219_CONFIG_SADCRES_12BIT_1S_532US |
+                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
+
      int file_i2c;
      if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
      {
@@ -365,11 +375,22 @@ int get_tlm(int tlm[][5]) {
 // read i2c current sensors //
     double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
     double currentx1 = 0, powerx1 = 0;
+    double shuntVolts = 0, busVolts, volts = 0;
+    long bV = 0;
+
     if (x_fd != -1) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);
+	sleep(1);
+	shuntVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_SHUNTVOLTAGE) * 0.01;
+	bV  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE);
+	busVolts = ((bV >> 3) * 4)* 0.001;	
+
+volts = busVolts + (shuntVolts / 1000);
+		
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
@@ -391,9 +412,11 @@ int get_tlm(int tlm[][5]) {
 	powerx1  = wiringPiI2CReadReg16(x_fd1, INA219_REG_POWER) * x_powerMultiplier;	
         printf("Reading x_fd1\n");
      }	
-	printf("+X 0x40 current %4.2f power %4.2f  \n",currentx1, powerx1);
+	
+	printf("bus:  %4.8f shunt %4.8f  total: %4.8f \n", shuntVolts, busVolts, volts);
+	printf("+X 0x40 current %4.8f power %4.8f  \n",currentx1, powerx1);
 
-	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
+	printf("-X 0x40 current %4.8f power %4.8f -Y 0x41 current %4.8f power %4.8f -Z 0x44 current %4.8f power %4.8f \n",
 	       current, power, y_current, y_power, z_current, z_power);
 /*	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
