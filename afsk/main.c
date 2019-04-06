@@ -130,23 +130,16 @@ int main(void) {
 	    fprintf(stderr,"ERROR: /dev/i2c-0 bus not present\n");    
     } else {    
 	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4B);
- 	fprintf(stderr,"arduinoI2C: %d\n", arduinoI2C);
-          if (arduinoI2C > 0) {
-   //  	    for (blink = 1; blink < 20 ;blink++) {
-       		 sleep(1);
-    		fprintf(stderr,"Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,0));
-		 sleep(1);
-    		fprintf(stderr,"Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
-   	    	 sleep(1);
-    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,1));
-       	 	sleep(1);
-    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,2));
-        	sleep(1);
-// 	   }
-         } else {
-		fprintf(stderr,"Arduino payload not present\n");
+// 	fprintf(stderr,"arduinoI2C: %d\n", arduinoI2C);
+        if (arduinoI2C > 0) {
+    	  if(wiringPiI2CReadReg16(arduinoI2C,0) < 0) {
+       	    arduinoI2C = -1;  // Disable reading of Arduino payload information 
+	    fprintf(stderr,"Arduino payload not present\n");
+	  }
+        } else {
+	  fprintf(stderr,"Arduino payload not present\n");
        	}
-  }
+    }
 
 // new INA219 current reading code
 
@@ -163,17 +156,17 @@ int main(void) {
      if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
      {
             fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
-            x_fd = -1;
+            x_fd = -1;  // Disable reading -X, -Y, and -Z telemetry
 	    y_fd = -1;
 	    z_fd = -1;
      } else
      {  
          x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-         fprintf(stderr,"Opening of -X fd %d\n", x_fd);
+//         fprintf(stderr,"Opening of -X fd %d\n", x_fd);
          y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
-        printf("Opening of -Y fd %d\n", y_fd);
+//        printf("Opening of -Y fd %d\n", y_fd);
         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
-        printf("Opening of -Z fd %d\n", z_fd);
+//        printf("Opening of -Z fd %d\n", z_fd);
     }
 	
     int ret;
@@ -182,7 +175,7 @@ int main(void) {
     init_rf();
 
 //    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
-    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '1', (uint8_t *) CALLSIGN, '1',
+    ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
         
@@ -214,6 +207,16 @@ int main(void) {
 	  printf("%s \n",tlm_str);
 	  strcat(str, tlm_str);
 	}
+
+        if (arduinoI2C > 0) {  /* Read Arduino payload */
+	  for(int reg = 0; reg < 4; reg++) {
+	    sprintf(tlm_str, " %04x",wiringPiI2CReadReg16(arduinoI2C,reg));
+	    printf("%s \n",tlm_str);
+            strcat(str,tlm_str); /* Append payload telemetry */		
+	    usleep(500);
+	  }
+	}
+
     	digitalWrite (0, LOW); 
 		
 /*        
