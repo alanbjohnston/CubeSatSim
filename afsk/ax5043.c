@@ -34,6 +34,8 @@ static size_t __tx_buf_idx = 0;
 static uint8_t __tx_fifo_chunk[AX5043_FIFO_MAX_SIZE];
 static uint32_t __tx_remaining = 0;
 
+extern uint32_t tx_freq_hz;
+
 /**
  * FIFO command for the preamble. The third byte corresponds the length of
  * the preamble and is set by the TX routine for every frame
@@ -255,7 +257,7 @@ int ax5043_conf_tx_path(ax5043_conf_t *conf) {
         return ret;
     }
 
-    ret = ax5043_set_tx_freq(conf, TX_FREQ_HZ);
+    ret = ax5043_set_tx_freq(conf, tx_freq_hz);
     if (ret) {
         return ret;
     }
