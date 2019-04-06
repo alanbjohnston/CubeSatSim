@@ -62,7 +62,7 @@
 #define VBATT 15
 
 uint32_t tx_freq_hz = 440310000;
-uint32_t tx_channel = 2;
+uint32_t tx_channel = 0;
 
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
