@@ -11,6 +11,8 @@
 
 // modified by Alan Johnston to show reading registers 0 - 3
 // code based on https://forum.arduino.cc/index.php?topic=211587.0
+//
+// This code is to simulate the Raspberry Pi acting as I2C bus master 
 
 #include <Wire.h>
 #define I2C_ADDRESS 0x4B
@@ -46,7 +48,7 @@ void loop() {
     uint16_t register_value = ((MSB << 8) | LSB);
     
     Serial.print("Read ");
-    Serial.print(register_value);
+    Serial.print(register_value, HEX); // display register value in HEXADECIMAL
     Serial.print(" from register ");
     Serial.println(reg);
   }
