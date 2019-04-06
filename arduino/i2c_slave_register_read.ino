@@ -13,7 +13,7 @@
 
 uint8_t reg; // I2C read register
 
-int reg_0_value, reg_1_value, reg_2_value, reg_3_value;  // register variables
+unsigned int reg_0_value, reg_1_value, reg_2_value, reg_3_value;  // register variables
 
 void setup() {
 
