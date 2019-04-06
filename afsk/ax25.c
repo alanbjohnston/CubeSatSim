@@ -92,7 +92,7 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     printf("\n");
     int jj;
     for(jj = 0; jj < 256; jj++) {
-	printf("%x",__tx_buffer[jj]);
+	printf("%02x",__tx_buffer[jj]);
     }
     printf("\n");
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
