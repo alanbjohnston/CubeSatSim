@@ -129,21 +129,34 @@ int main(void) {
     {
 	    fprintf(stderr,"ERROR: /dev/i2c-0 bus not present\n");    
     } else {    
-	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4B);
+	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4b);
  	fprintf(stderr,"arduinoI2C: %d\n", arduinoI2C);
           if (arduinoI2C > 0) {
-   //  	    for (blink = 1; blink < 20 ;blink++) {
+/*   //  	    for (blink = 1; blink < 20 ;blink++) {
        		 sleep(1);
     		fprintf(stderr,"Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,0));
 		 sleep(1);
-    		fprintf(stderr,"Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
-   	    	 sleep(1);
+  //  		fprintf(stderr,"Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
+   //	    	 sleep(1);
     		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,1));
        	 	sleep(1);
     		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,2));
         	sleep(1);
 // 	   }
-         } else {
+*/
+        int reg;
+	int value;
+	for (reg = 0; reg < 4; reg++) {
+  	    usleep(100000); // wait 100ms for Arduino 
+	    value = wiringPiI2CReadReg16(arduinoI2C, reg);
+	    if (value < 0) {
+		fprintf(stderr,"Error reading from register %d on Arduino\n", reg);
+	    } else {
+  	        fprintf(stderr,"Read from register %d on Arduino value of %d\n", reg, value); 
+    	    }
+	}		  
+
+	} else {
 		fprintf(stderr,"Arduino payload not present\n");
        	}
   }

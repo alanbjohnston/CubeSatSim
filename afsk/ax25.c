@@ -17,7 +17,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
+#include <stdio.h>
 #include "ax25.h"
 #include <string.h>
 #include "ax5043.h"
@@ -89,6 +89,12 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     memcpy(__tx_buffer, hax25->addr_field, hax25->addr_field_len);
     memcpy(__tx_buffer + hax25->addr_field_len, payload, len);
 
+    printf("\n");
+    int jj;
+    for(jj = 0; jj < 256; jj++) {
+	printf("%x",__tx_buffer[jj]);
+    }
+    printf("\n");
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
             hax25->preamble_len, hax25->postable_len, 1000);
 }
