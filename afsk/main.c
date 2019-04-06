@@ -122,7 +122,7 @@ int main(void) {
             tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
     }
 
-    fprintf(stderr,"tempSensor: %d \n",tempSensor);	
+//    fprintf(stderr,"tempSensor: %d \n",tempSensor);	
 
     int arduinoI2C;
     if ((arduinoI2C = open("/dev/i2c-0", O_RDWR)) < 0)
@@ -213,7 +213,7 @@ int main(void) {
 	    sprintf(tlm_str, " %04x",wiringPiI2CReadReg16(arduinoI2C,reg));
 	    printf("%s \n",tlm_str);
             strcat(str,tlm_str); /* Append payload telemetry */		
-	    usleep(500);
+	    usleep(100000);
 	  }
 	}
 
