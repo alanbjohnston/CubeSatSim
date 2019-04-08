@@ -106,12 +106,8 @@ int main(void) {
     initializeSpi();
 
     int tlm[7][5];
-    int i, j;
-    for (i = 1; i < 7; i++) {
-        for (j = 1; j < 5; j++) {
-		tlm[i][j] = 0;
-	}
-    }
+    memset(tlm, 0, sizeof tlm);
+
     timestamp = time(NULL);
 	
     int file_i2c;
