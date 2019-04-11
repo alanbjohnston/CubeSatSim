@@ -109,7 +109,7 @@ int main(void) {
 
   timestamp = time(NULL);
 
-  int file_i2c = open("/dev/i2c-3", O_RDWR);
+  int file_i2c = access("/dev/i2c-3", W_OK | R_OK);
   //char *filenam1e = (char*)"/dev/i2c-3";
   if (file_i2c < 0)
   {
@@ -124,7 +124,7 @@ int main(void) {
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
 
-  int arduinoI2C = open("dev/i2c-0", O_RDWR);
+  int arduinoI2C = access("dev/i2c-0", W_OK | R_OK);
   if (arduinoI2C < 0)
   {
     fprintf(stderr,"ERROR: /dev/i2c-0 bus not present\n");    
@@ -157,7 +157,8 @@ int main(void) {
          //INA219_CONFIG_SADCRES_12BIT_1S_532US |
            INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
 
-  if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
+  file_i2c = access("/dev/i2c-0", W_OK | R_OK);
+  if (file_i2c < 0)
   {
     fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
     x_fd = -1;  // Disable reading -X, -Y, and -Z telemetry
