@@ -24,6 +24,8 @@ try:
     from ina219 import INA219
     from ina219 import DeviceRangeError
     INA219DISABLE=-1
+    print"python package ina219 import failed! Install by typing: sudo pip install pi-ina219==1.1.0"
+    
 except:
     INA219DISABLE=1
     
