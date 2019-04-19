@@ -51,7 +51,7 @@ radiocw: cw/cw_main.o
 radiocw: afsk/ax25.o
 radiocw: afsk/ax5043.o
 radiocw: afsk/send_afsk.o
-	gcc -o radiocw -L./ afsk/ax25.o afsk/ax5043.o afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
+	gcc -o radiocw -L./ afsk/ax25.o afsk/ax5043.o afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043 -lcurl
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -59,32 +59,32 @@ radiopiglatin: piglatin/piglatin_main.o
 
 testax5043tx: libax5043.a
 testax5043tx: transmit/transmit_main.o
-	gcc -o testax5043tx -pedantic -Wall -Wextra -L./ transmit/transmit_main.o -lwiringPi -lax5043
+	gcc -o testax5043tx -pedantic -Wall -Wextra -L./ transmit/transmit_main.o -lwiringPi -lax5043 
 
 testax5043rx: libax5043.a
 testax5043rx: receive/receive_main.o
-	gcc -o testax5043rx -pedantic -Wall -Wextra -L./ receive/receive_main.o -lwiringPi -lax5043
+	gcc -o testax5043rx -pedantic -Wall -Wextra -L./ receive/receive_main.o -lwiringPi -lax5043 -lcurl
 
 testax5043init: libax5043.a
 testax5043init: init/init_main.o
-	gcc -o testax5043init -pedantic -Wall -Wextra -L./ init/init_main.o -lwiringPi -lax5043
+	gcc -o testax5043init -pedantic -Wall -Wextra -L./ init/init_main.o -lwiringPi -lax5043 -lcurl
 
 testax50432freq: libax5043.a
 testax50432freq: transmit2freq/transmit2freq_main.o
-	gcc -o testax50432freq -pedantic -Wall -Wextra -L./ transmit2freq/transmit2freq_main.o -lwiringPi -lax5043
+	gcc -o testax50432freq -pedantic -Wall -Wextra -L./ transmit2freq/transmit2freq_main.o -lwiringPi -lax5043 -lcurl
 
 testafsktx: libax5043.a
 testafsktx: afsktx/ax25.o
 testafsktx: afsktx/ax5043.o
 testafsktx: afsktx/main.o
-	gcc -o testafsktx -pedantic -Wall -Wextra -L./ afsktx/ax25.o afsktx/ax5043.o afsktx/main.o -lwiringPi -lax5043
+	gcc -o testafsktx -pedantic -Wall -Wextra -L./ afsktx/ax25.o afsktx/ax5043.o afsktx/main.o -lwiringPi -lax5043 -lcurl
 
 radioafsk: libax5043.a
 radioafsk: afsk/ax25.o
 radioafsk: afsk/ax5043.o
 radioafsk: afsk/main.o
 radioafsk: afsk/ina219.h
-	gcc -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043
+	gcc -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lcurl
 
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
