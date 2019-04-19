@@ -119,6 +119,7 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
      CURL *curl;
   CURLcode res;
  
+  curl_global_init(CURL_GLOBAL_ALL);
   curl = curl_easy_init();
   if(curl) {
     //curl_easy_setopt(curl, CURLOPT_URL, "https://example.com");
