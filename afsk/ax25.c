@@ -20,6 +20,7 @@
 
 #include "ax25.h"
 #include <string.h>
+#include <time.h>
 #include "ax5043.h"
 #include "status.h"
 
@@ -88,6 +89,19 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
 
     memcpy(__tx_buffer, hax25->addr_field, hax25->addr_field_len);
     memcpy(__tx_buffer + hax25->addr_field_len, payload, len);
+        
+        printf("\n");
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+
+     printf("curl --data \"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour + 4, tm.tm_min, tm.tm_sec);
+    int jj;
+    for(jj = 0; jj < 118; jj++) {
+        printf("%02x",__tx_buffer[jj]);
+    }
+    printf("&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0\" https://db.satnogs.org/api/telemetry/\n\n");
+
+    
 
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
             hax25->preamble_len, hax25->postable_len, 1000);
