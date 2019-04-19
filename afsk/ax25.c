@@ -21,6 +21,7 @@
 #include "ax25.h"
 #include <string.h>
 #include <time.h>
+#include <stdio.h>
 #include "ax5043.h"
 #include "status.h"
 
