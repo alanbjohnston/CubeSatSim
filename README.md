@@ -27,4 +27,4 @@ This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP
  - spreadsheet - Spreadsheets and macros for analyzing the Simulator telemetry
  - wav - Wave audio files of CW or AFSK telemetry for listening or transmitting usng a CubeSat Simulator Lite
 
-See the Wiki for more details
+See the Wiki for more details https://github.com/alanbjohnston/CubeSatSim/wiki
