@@ -20,7 +20,7 @@ To stop, Ctrl-C.  To hear AFSK telemetry (X.25 data), your radio or SDR to 440.3
 
 `./radioafsk`
 
-This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/- 
+This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ 
 
 This repository contains:
      
