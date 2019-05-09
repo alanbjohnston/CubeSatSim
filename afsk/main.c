@@ -368,8 +368,8 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CONFIG, config);	
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
-	z_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
-	z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
+	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
+	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
     }	
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
 	       current, power, y_current, y_power, z_current, z_power);
