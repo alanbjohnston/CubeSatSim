@@ -4,7 +4,7 @@ It has been tested with Office 365 (Windows) and Office Excel for Mac (Version: 
 
 A version for Google Docs is available for copying and download at:
 
- https://countingfromzero.net/cubesatsim/telem
+ http://cubesatsim.org/telem
 
 Instructions:
 
