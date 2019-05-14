@@ -36,8 +36,8 @@
 #include <time.h>
 #include "ina219.h"
 
-// Put your callsign here
-#define CALLSIGN "KU2Y"
+
+#define CALLSIGN "" // Put your callsign here!
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
