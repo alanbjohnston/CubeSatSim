@@ -112,7 +112,7 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     //printf("2:%s\n",post_data);
 
     //sprintf(post_data,"curl --data \"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0\" https://db.satnogs.org/api/telemetry/", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour + 4, tm.tm_min, tm.tm_sec, hex_data);
-    sprintf(post_data,"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour + 4, tm.tm_min, tm.tm_sec, hex_data);
+    sprintf(post_data,"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, (tm.tm_hour + 4) % 24, tm.tm_min, tm.tm_sec, hex_data);
     //printf("%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0\" https://db.satnogs.org/api/telemetry/\n\n", hex_data);
      printf("curl post data: %s\n",post_data);
 
