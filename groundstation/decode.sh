@@ -2,7 +2,7 @@
 # script to auto decode CubeSat Simulator telemetry
 
 # kill openwebrx if it is running
-ps -ef | grep openwebrx | grep -v grep | awk '{print $2}' | sudo xargs kill
+ps -ef | grep rtl | grep -v grep | awk '{print $2}' | sudo xargs kill
 
 echo -e "Script to auto decode CubeSat Simulator telemetry\n"
 
