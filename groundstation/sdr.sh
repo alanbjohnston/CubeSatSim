@@ -3,10 +3,12 @@
 
 echo -e "\nScript to run SDR for CubeSat Simulator\n"
 
+echo -e "IP Address to use in web browsers is: "
+
+hostname -I|cut -f1 -d ' '
+
 # kill openwebrx if running
 ps -ef | grep rtl | grep -v grep | awk '{print $2}' | sudo xargs kill
-
-echo -e "Connect to CubeSatSim WiFi and open browser to http://192.168.8.245:8073\n"
 
 cd ../openwebrx
 
