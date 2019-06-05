@@ -13,6 +13,6 @@ ps -ef | grep rtl | grep -v grep | awk '{print $2}' | sudo xargs kill
 # kill openwebrx process if running
 ps -ef | grep openwebrx | grep -v grep | awk '{print $2}' | sudo xargs kill
 
-cd ../openwebrx
+cd ~/openwebrx
 
 sudo python openwebrx.py
