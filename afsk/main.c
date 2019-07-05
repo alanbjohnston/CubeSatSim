@@ -37,7 +37,7 @@
 #include "ina219.h"
 
 
-#define CALLSIGN "" // Put your callsign here!
+#define CALLSIGN "KU2Y" // Put your callsign here!
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -299,6 +299,7 @@ int upper_digit(int number) {
 }
 int get_tlm(int tlm[][5]) {
 	
+
 //  Reading I2C voltage and current sensors	
 	
       char cmdbuffer[1000];
@@ -400,6 +401,27 @@ int get_tlm(int tlm[][5]) {
 
 		tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 	}	
+	FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+        if (cpuTempSensor) {
+		double cpuTemp;
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+		printf("CPU Temp Read: %6.1f\n", cpuTemp);
+		tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
+		fclose (cpuTempSensor);
+	}
+/*
+FILE *temperatureFile;
+double T;
+temperatureFile = fopen ("/sys/class/thermal/thermal_zone0/temp", "r");
+if (temperatureFile == NULL)
+  ; //print some message
+fscanf (temperatureFile, "%lf", &T);
+T /= 1000;
+printf ("The temperature is %6.3f C.\n", T);
+fclose (temperatureFile);
+tlm[4][B] = (int)((95.8 - T)/1.48 + 0.5) % 100;
+*/
 	tlm[6][B] = 0 ;
 	tlm[6][D] = 49 + rand() % 3; 
 
