@@ -84,8 +84,11 @@ radioafsk: afsk/ax25.o
 radioafsk: afsk/ax5043.o
 radioafsk: afsk/main.o
 radioafsk: afsk/ina219.h
-	gcc -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043
+radioafsk: Adafruit_INA219/Adafruit_INA219.o
+	gcc -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o Adafruit_INA219/Adafruit_INA219.o -lwiringPi -lax5043
 
+Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.h
+	cd Adafruit_INA219; gcc -I -pedantic -Wconversion -Wall -Wextra -c Adafruit_INA219.c; cd ..
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
