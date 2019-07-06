@@ -437,7 +437,8 @@ int get_tlm(int tlm[][5]) {
 	{
 		if (sensor[count] != OFF)
 		{
-			voltsShunt[count] = getShuntVoltage_mV(sensor[count]);
+			setCalibration_16V_400mA(sensor[count]);
+			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			voltsBus[count] = getBusVoltage_V(sensor[count]);
 			current[count] = getCurrent_mA(sensor[count]; 
 			power[count] = getPower_mW(sensor[count]);
@@ -449,11 +450,10 @@ int get_tlm(int tlm[][5]) {
 			current[count] = 0;
 			power[count] = 0;
 		}
-						       }
-						       
-						
-						     
-	    
+		printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+		       count, busVolts[count], voltsShunt[count], current[count], power[count]); 				       
+	}
+
 	    
 //	delay(500);
  //     }	
@@ -470,11 +470,10 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
 	z_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
 	z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
-*/
     }	
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
 	       current, power, y_current, y_power, z_current, z_power);
-	
+*/	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
