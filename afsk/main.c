@@ -457,7 +457,7 @@ int get_tlm(int tlm[][5]) {
 			power[count] = 0;
 		}
 		printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
-		       count, busVolts[count], voltsShunt[count], current[count], power[count]); 				       
+		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 				       
 	}
 
 	    
