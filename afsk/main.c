@@ -35,7 +35,6 @@
 #include <wiringPi.h>
 #include <time.h>
 #include "ina219.h"
-#include "../Adafruit_INA219/Adafruit_INA219.h"
 
 // Put your callsign here
 #define CALLSIGN "KU2Y"
@@ -70,6 +69,15 @@ int get_tlm(int tlm[][5]);
 long int timestamp;
 void config_x25();
 void trans_x25();
+void setCalibration_32V_2A(int fd);
+void setCalibration_32V_1A(int fd);
+void setCalibration_16V_400mA(int fd);
+float getBusVoltage_V(int fd);
+float getShuntVoltage_mV(int fd);
+float getCurrent_mA(int fd);
+float getPower_mW(int fd);
+void powerSave(int fd, int on);
+
 //long int timestamp;
 int tempSensor; 
 
