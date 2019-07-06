@@ -104,7 +104,10 @@ int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-float voltsBus[8], voltsShunt[8], current[8], power[8];
+float voltsBus[8];
+float voltsShunt[8];
+float current[8];
+float power[8];
 
 
 int main(void) {
@@ -410,7 +413,7 @@ int get_tlm(int tlm[][5]) {
     }
 */	
 // read i2c current sensors //
-    double current = 0, voltage = 0, power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
+    double x_current = 0, voltage = 0, power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
     if (x_fd != -1) {	
 //	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 //	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
@@ -430,10 +433,10 @@ int get_tlm(int tlm[][5]) {
 */
         float shuntVolts = getShuntVoltage_mV(x_fd);
 	float busVolts = getBusVoltage_V(x_fd);
-	current = getCurrent_mA(x_fd); 
+	x_current = getCurrent_mA(x_fd); 
 	power = getPower_mW(x_fd);
 	voltage = shuntVolts + busVolts;
-	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, current, power); 
+	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, power); 
 	  
 	int count;
 	for (count = 0; count < 8; count++)
@@ -461,7 +464,7 @@ int get_tlm(int tlm[][5]) {
 //	delay(500);
  //     }	
 /*	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+	x_current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
 	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
@@ -475,13 +478,13 @@ int get_tlm(int tlm[][5]) {
 	z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
     }	
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
-	       current, power, y_current, y_power, z_current, z_power);
+	       x_current, power, y_current, y_power, z_current, z_power);
 */	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
-	tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
+	tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
 	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
 	
 	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
