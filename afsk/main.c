@@ -177,7 +177,9 @@ int main(void) {
 	    z_fd = -1;
      } else
      {  
-         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+//         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+	 x_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
+
          fprintf("stderr,Opening of -X fd %d\n", x_fd);
          y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
         printf("Opening of -Y fd %d\n", y_fd);
