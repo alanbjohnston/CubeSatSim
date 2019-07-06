@@ -434,9 +434,9 @@ int get_tlm(int tlm[][5]) {
         float shuntVolts = getShuntVoltage_mV(x_fd);
 	float busVolts = getBusVoltage_V(x_fd);
 	x_current = getCurrent_mA(x_fd); 
-	power = getPower_mW(x_fd);
+	x_power = getPower_mW(x_fd);
 	voltage = shuntVolts + busVolts;
-	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, power); 
+	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, x_power); 
 	 
     }
 	int count;
