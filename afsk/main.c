@@ -437,7 +437,8 @@ int get_tlm(int tlm[][5]) {
 	power = getPower_mW(x_fd);
 	voltage = shuntVolts + busVolts;
 	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, power); 
-	  
+	 
+    }
 	int count;
 	for (count = 0; count < 8; count++)
 	{
