@@ -413,7 +413,7 @@ int get_tlm(int tlm[][5]) {
     }
 */	
 // read i2c current sensors //
-    double x_current = 0, voltage = 0, power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
+    double x_current = 0, voltage = 0, x_power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
     if (x_fd != -1) {	
 //	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 //	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
@@ -465,7 +465,7 @@ int get_tlm(int tlm[][5]) {
  //     }	
 /*	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 	x_current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
-	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
+	x_power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
@@ -478,7 +478,7 @@ int get_tlm(int tlm[][5]) {
 	z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
     }	
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
-	       x_current, power, y_current, y_power, z_current, z_power);
+	       x_current, x_power, y_current, y_power, z_current, z_power);
 */	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
