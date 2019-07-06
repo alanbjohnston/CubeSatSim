@@ -356,23 +356,34 @@ int get_tlm(int tlm[][5]) {
 // read i2c current sensors //
     double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
     if (x_fd != -1) {	
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
+//	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+//	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
+	    
+     setCalibration_16V_400mA(x_fd);	
+	    
      int blink; 
      for (blink = 1; blink < 20 ;blink++) {
-	delay(500);
+/*	delay(500);
 	int shuntVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
 	delay(500);
 	int busVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE); //  * 0.001;
 	busVolts = (int16_t)((busVolts >> 3) * 4);
 	double volts = busVolts * 0.001 + shuntVolts * 0.01;
-
+	     
 	printf("********** -X 0x40 volts %4.2f busvoltage %d shutVoltage %d\n", volts, busVolts, shuntVolts); 
+*/
+        float shuntVolts = getShuntVoltage_mV(x_fd);
+	float busVolts = getBusVoltage_V(x_fd);
+	current = getCurrent_mA(x_fd); 
+	power = getPower_mW(x_fd);
+
+	printf("********** -X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, current, power); 
+	     
 	delay(500);
       }	
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
-	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
+//	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+//	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+//	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
