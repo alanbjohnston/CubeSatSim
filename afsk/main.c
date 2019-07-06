@@ -35,7 +35,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include "ina219.h"
-#include "Adafruit_INA219/Adafruit_INA219.h"
+#include "../Adafruit_INA219/Adafruit_INA219.h"
 
 // Put your callsign here
 #define CALLSIGN "KU2Y"
