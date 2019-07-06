@@ -197,9 +197,11 @@ int main(void) {
         printf("Opening of -Y fd %d\n", y_fd);
         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
         printf("Opening of -Z fd %d\n", z_fd);
-	 
-	if ((open("/dev/i2c-1", O_RDWR)) > 0)  // Test if I2C Bus 1 is present
+	
+	int test;
+	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
+		close(test);
 		sensor[PLUS_X] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
 		sensor[PLUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41);
 		sensor[PLUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44);
@@ -213,8 +215,9 @@ int main(void) {
 		sensor[BAT] = OFF;
 		sensor[BUS] = OFF;
 	}
-	if ((open("/dev/i2c-0", O_RDWR)) > 0)  // Test if I2C Bus 0 is present
+	if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
 	{
+		close(test);
 		sensor[MINUS_X] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
 		sensor[MINUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
 		sensor[MINUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
