@@ -61,6 +61,16 @@
 #define POWER 2
 #define VBATT 15
 
+#define PLUS_X 0
+#define PLUS_Y 1
+#define PLUS_Z 2
+#define BAT 3
+#define MINUS_X 4
+#define MINUS_Y 5
+#define MINUS_Z 6
+#define BUS 7
+#define OFF -1
+
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
@@ -93,6 +103,7 @@ int x_currentDivider;
 int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
+int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
 
 
 int main(void) {
@@ -185,6 +196,36 @@ int main(void) {
         printf("Opening of -Y fd %d\n", y_fd);
         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
         printf("Opening of -Z fd %d\n", z_fd);
+	 
+	if (open("/dev/i2c-1", O_RDWR)) > 0)  // Test if I2C Bus 1 is present
+	{
+		sensor[PLUS_X] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
+		sensor[PLUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41);
+		sensor[PLUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44);
+		sensor[BAT] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x45);
+		sensor[BUS] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a);
+	} else
+	{
+		sensor[PLUS_X] = OFF;
+		sensor[PLUS_Y] = OFF;
+		sensor[PLUS_Z] = OFF;
+		sensor[BAT] = OFF;
+		sensor[BUS] = OFF;
+	}
+	if (open("/dev/i2c-0", O_RDWR)) > 0)  // Test if I2C Bus 0 is present
+	{
+		sensor[MINUS_X] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+		sensor[MINUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
+		sensor[MINUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+
+	} else
+	{
+		sensor[MINUS_X] = OFF;
+		sensor[MINUS_Y] = OFF;
+		sensor[MINUS_Z] = OFF;
+	}
+
+	     
     }
 	
     int ret;
@@ -365,15 +406,15 @@ int get_tlm(int tlm[][5]) {
     }
 */	
 // read i2c current sensors //
-    double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
+    double current = 0, voltage = 0, power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
     if (x_fd != -1) {	
 //	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 //	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
 	    
      setCalibration_16V_400mA(x_fd);	
 	    
-     int blink; 
-     for (blink = 1; blink < 20 ;blink++) {
+//     int blink; 
+//     for (blink = 1; blink < 20 ;blink++) {
 /*	delay(500);
 	int shuntVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
 	delay(500);
@@ -387,14 +428,14 @@ int get_tlm(int tlm[][5]) {
 	float busVolts = getBusVoltage_V(x_fd);
 	current = getCurrent_mA(x_fd); 
 	power = getPower_mW(x_fd);
-
-	printf("********** -X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, current, power); 
+	voltage = shuntVolts + busVolts;
+	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, current, power); 
 	     
-	delay(500);
-      }	
-//	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-//	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
-//	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
+//	delay(500);
+ //     }	
+/*	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
@@ -405,6 +446,7 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
 	z_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
 	z_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
+*/
     }	
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
 	       current, power, y_current, y_power, z_current, z_power);
