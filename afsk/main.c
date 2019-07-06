@@ -150,14 +150,14 @@ int main(void) {
 
 // new INA219 current reading code
 
-    x_calValue = 8192;
-    x_powerMultiplier = 1;
-    x_currentDivider = 20;
-    config = INA219_CONFIG_BVOLTAGERANGE_16V |
-                 INA219_CONFIG_GAIN_40MV |
+    x_calValue = 4096; //8192;
+    x_powerMultiplier = 2;
+    x_currentDivider = 10;
+    config = INA219_CONFIG_BVOLTAGERANGE_32V |
+                 INA219_CONFIG_GAIN_320MV | // 40MV |
                  INA219_CONFIG_BADCRES_12BIT |
-                 INA219_CONFIG_SADCRES_12BIT_4S_2130US |
-               //INA219_CONFIG_SADCRES_12BIT_1S_532US |
+               //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
+               INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
 
      if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
@@ -201,7 +201,7 @@ int main(void) {
         
 	fprintf(stderr,"INFO: Getting TLM Data\n");
 	    
-	//get_tlm(tlm);
+	get_tlm(tlm);
 
 	fprintf(stderr,"INFO: Preparing X.25 packet\n");
 	
@@ -358,6 +358,18 @@ int get_tlm(int tlm[][5]) {
     if (x_fd != -1) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
+     int blink; 
+     for (blink = 1; blink < 20 ;blink++) {
+	delay(500);
+	int shuntVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
+	delay(500);
+	int busVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE); //  * 0.001;
+	busVolts = (int16_t)((busVolts >> 3) * 4);
+	double volts = busVolts * 0.001 + shuntVolts * 0.01;
+
+	printf("********** -X 0x40 volts %4.2f busvoltage %d shutVoltage %d\n", volts, busVolts, shuntVolts); 
+	delay(500);
+      }	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
 	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
 	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
