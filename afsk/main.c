@@ -104,6 +104,7 @@ int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
+float voltsBus[8], voltsShunt[8], current[8], power[8];
 
 
 int main(void) {
@@ -430,7 +431,30 @@ int get_tlm(int tlm[][5]) {
 	power = getPower_mW(x_fd);
 	voltage = shuntVolts + busVolts;
 	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, current, power); 
-	     
+	  
+	int count;
+	for (count = 0; count < 8; count++)
+	{
+		if (sensor[count] != OFF)
+		{
+			voltsShunt[count] = getShuntVoltage_mV(sensor[count]);
+			voltsBus[count] = getBusVoltage_V(sensor[count]);
+			current[count] = getCurrent_mA(sensor[count]; 
+			power[count] = getPower_mW(sensor[count]);
+		}
+	    	else
+		{
+			voltsShunt[count] = 0;
+			voltsBus[count] = 0;
+			current[count] = 0;
+			power[count] = 0;
+		}
+						       }
+						       
+						
+						     
+	    
+	    
 //	delay(500);
  //     }	
 /*	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
