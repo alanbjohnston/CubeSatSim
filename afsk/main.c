@@ -466,8 +466,8 @@ int get_tlm(int tlm[][5]) {
 		setCalibration_16V_2A(sensor[BUS]);
 		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
 		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
-		current[BUS] = getCurrent_mA(sensor[BUS]) * 4; 
-		power[BUS] = getPower_mW(sensor[BUS]) *2;
+		current[BUS] = getCurrent_mA(sensor[BUS]); //  * 4; 
+		power[BUS] = getPower_mW(sensor[BUS]); // *2;
 	}
    	else
 	{
