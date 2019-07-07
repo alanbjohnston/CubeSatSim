@@ -82,6 +82,7 @@ void trans_x25();
 void setCalibration_32V_2A(int fd);
 void setCalibration_32V_1A(int fd);
 void setCalibration_16V_400mA(int fd);
+void setCalibration_16V_2A(int fd);
 float getBusVoltage_V(int fd);
 float getShuntVoltage_mV(int fd);
 float getCurrent_mA(int fd);
@@ -460,23 +461,23 @@ int get_tlm(int tlm[][5]) {
 		printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
 		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 				       
 	}
-	if (sensor[count] != OFF)  // count = 7 MoPower V2 INA219
+	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
 	{
-		setCalibration_16V_400mA(sensor[count]);
-		voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
-		voltsBus[count] = getBusVoltage_V(sensor[count]);
-		current[count] = getCurrent_mA(sensor[count]) * 4; 
-		power[count] = getPower_mW(sensor[count]) *2;
+		setCalibration_16V_2A(sensor[BUS]);
+		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
+		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
+		current[BUS] = getCurrent_mA(sensor[BUS]) * 4; 
+		power[BUS] = getPower_mW(sensor[BUS]) *2;
 	}
    	else
 	{
-		voltsShunt[count] = 0;
-		voltsBus[count] = 0;
-		current[count] = 0;
-		power[count] = 0;
+		voltsShunt[BUS] = 0;
+		voltsBus[BUS] = 0;
+		current[BUS] = 0;
+		power[BUS] = 0;
 	}
 	printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
-		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 				       
+		       count, voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
 
 	
 	
