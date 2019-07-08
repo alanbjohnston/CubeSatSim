@@ -631,7 +631,7 @@ int ax5043_autoranging(ax5043_conf_t *conf) {
             printf("ERROR: AX5043 Autoranging Read Failure\n\n");
             return ret;
         }
-        if ((clock() - start) > 500000) {
+        if ((clock() - start) > 1000000) {
              timeout = 1;
         }
     }
