@@ -619,9 +619,9 @@ int ax5043_autoranging(ax5043_conf_t *conf) {
     }
 
     usleep(10);
-    val = 0;
+    //val = 0;
     /* Wait until the autoranging is complete */
-    while ((val & BIT(4)) == 1) {  // changed to 1 from 0, since https://www.onsemi.com/pub/Collateral/AND9347-D.PDF says BIT(4) RNG START clears when autoranging done
+    while ((val & BIT(4)) != 0) {  // changed to !=, since https://www.onsemi.com/pub/Collateral/AND9347-D.PDF says BIT(4) RNG START clears when autoranging done
         ret = ax5043_spi_read_8(conf, &val, pllranging_reg);
         if (ret) {
             return ret;
