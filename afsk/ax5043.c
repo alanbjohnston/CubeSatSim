@@ -616,6 +616,7 @@ int ax5043_autoranging(ax5043_conf_t *conf) {
     val = BIT(4) | AX5043_VCOR_INIT;
     ret = ax5043_spi_write_8(conf, pllranging_reg, val);
     if (ret) {
+        printf("ERROR: AX5043 Autoranging Write Failure\n\n");
         return ret;
     }
 
@@ -627,6 +628,7 @@ int ax5043_autoranging(ax5043_conf_t *conf) {
     while (((val & BIT(4)) != 0) && !timeout ) {  // changed to !=, since https://www.onsemi.com/pub/Collateral/AND9347-D.PDF says BIT(4) RNG START clears when autoranging done
         ret = ax5043_spi_read_8(conf, &val, pllranging_reg);
         if (ret) {
+            printf("ERROR: AX5043 Autoranging Read Failure\n\n");
             return ret;
         }
         if ((clock() - start) > 500000) {
@@ -634,10 +636,13 @@ int ax5043_autoranging(ax5043_conf_t *conf) {
         }
     }
 
-    if ((val & BIT(5))  || timeout) {
+    if (val & BIT(5)) {
+        printf("ERROR: AX5043 Autoranging Error\n\n");
         return -PQWS_AX5043_AUTORANGING_ERROR;
+    } else if (timeout) {
+        printf("ERROR: AX5043 Autoranging Timeout\n\n");
+        return -1;           
     }
-
     return PQWS_SUCCESS;
 }
 
