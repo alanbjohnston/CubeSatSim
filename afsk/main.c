@@ -37,7 +37,7 @@
 #include "ina219.h"
 
 
-#define CALLSIGN "KU2Y" // Put your callsign here!
+#define CALLSIGN "" // Put your callsign here!
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
