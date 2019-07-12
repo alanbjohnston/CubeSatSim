@@ -391,37 +391,22 @@ int get_tlm(int tlm[][5]) {
     }
 */	
 // read i2c current sensors //
-    double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
-    if (x_fd != -1) {	
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
-	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
-	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
-	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
-	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
-	y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
-	y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
-	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
-	wiringPiI2CWriteReg16(z_fd, INA219_REG_CONFIG, config);	
-	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
-	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
-	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
-    }	
+    struct SensorData x_data = read_sensor_data(x_fd);
+    struct SensorData y_data = read_sensor_data(y_fd);
+    struct SensorData z_data = read_sensor_data(z_fd);
 	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
-	       current, power, y_current, y_power, z_current, z_power);
+	       x_data.current, x_data.power, y_data.current, y_data.power, z_data.current, z_data.power);
 	
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10) % 100;  // +X current [4]
-	tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
+	tlm[1][C] = (int) (99.5 - x_data.current/10) % 100;  			// X- current [10]
 	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // +Y current [7]
 	
-	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
+	tlm[2][A] = (int) (99.5 - y_data.current/10) % 100;  			// -Y current [10]
 	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
+	tlm[2][C] = (int) (99.5 - z_data.current/10) % 100;  			// -Z current (was timestamp)
 	
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0) % 100;   // NiMH Battery current
