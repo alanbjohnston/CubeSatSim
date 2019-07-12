@@ -35,6 +35,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include "ina219.h"
+#include <math.h>
 
 
 #define CALLSIGN "" // Put your callsign here!
@@ -88,6 +89,42 @@ int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 
+struct SensorData {
+    double power;
+    double current;
+};
+
+/**
+ * @brief Read the data from one of the i2c current sensors.
+ *
+ * Reads the current data from the requested i2c current sensor and
+ * stores it into a SensorData struct. An invalid file descriptor (i.e. less than zero)
+ * results in a SensorData struct being returned that has both its #current and #power members
+ * set to NAN.
+ *
+ * WARNING: This function currently relies on the global variables x_calValue, config, x_currentDivider, and x_powerMultiplier.
+ *
+ * @param sensor A file descriptor that can be used to read from the sensor.
+ * @return struct SensorData A struct that contains the power and current reading from the requested sensor.
+ */
+struct SensorData read_sensor_data(int sensor) {
+    struct SensorData data = {
+        .power = NAN,
+        .current = NAN
+    };
+
+    if (sensor < 0) {
+        return data;
+    }
+
+	wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(sensor, INA219_REG_CONFIG, config);
+	wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
+	data.current = wiringPiI2CReadReg16(sensor, INA219_REG_CURRENT) / x_currentDivider;
+	data.power = wiringPiI2CReadReg16(sensor, INA219_REG_POWER) * x_powerMultiplier;
+
+    return data;
+}
 
 int main(void) {
 
