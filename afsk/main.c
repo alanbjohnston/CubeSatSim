@@ -117,11 +117,11 @@ struct SensorData read_sensor_data(int sensor) {
         return data;
     }
 
-	wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
-	wiringPiI2CWriteReg16(sensor, INA219_REG_CONFIG, config);
-	wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
-	data.current = wiringPiI2CReadReg16(sensor, INA219_REG_CURRENT) / x_currentDivider;
-	data.power = wiringPiI2CReadReg16(sensor, INA219_REG_POWER) * x_powerMultiplier;
+    wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
+    wiringPiI2CWriteReg16(sensor, INA219_REG_CONFIG, config);
+    wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
+    data.current = wiringPiI2CReadReg16(sensor, INA219_REG_CURRENT) / x_currentDivider;
+    data.power = wiringPiI2CReadReg16(sensor, INA219_REG_POWER) * x_powerMultiplier;
 
     return data;
 }
