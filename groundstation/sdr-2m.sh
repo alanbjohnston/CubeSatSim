@@ -12,4 +12,6 @@ hostname -I|cut -f1 -d ' '
 
 cd ~/openwebrx
 
+chromium-browser http://localhost:8073 &
+
 sudo python openwebrx.py config_webrx_145

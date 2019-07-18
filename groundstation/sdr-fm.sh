@@ -12,4 +12,7 @@ hostname -I|cut -f1 -d ' '
 
 cd ~/openwebrx
 
-sudo python openwebrx.py config_webrx_107
+chromium-browser http://localhost:8073 &
+
+sudo python openwebrx.py config_webrx_107 
+

@@ -10,6 +10,10 @@ hostname -I|cut -f1 -d ' '
 
 ./kill_all.sh
 
+./kill_all.sh
+
 cd ~/openwebrx
+
+chromium-browser http://localhost:8073 &
 
 sudo python openwebrx.py config_webrx_440
