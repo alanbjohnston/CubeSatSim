@@ -19,10 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include <unistd.h>                             //Needed for I2C port
 #include <fcntl.h>                              //Needed for I2C port
-//#include <sys/ioctl.h>                  //Needed for I2C port
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -36,8 +33,7 @@
 #include <time.h>
 #include "ina219.h"
 
-// Put your callsign here
-#define CALLSIGN "KU2Y"
+#define CALLSIGN "" // Put your callsign here!
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -60,7 +56,6 @@
 #define CURRENTV 1
 #define POWER 2
 #define VBATT 15
-
 #define PLUS_X 0
 #define PLUS_Y 1
 #define PLUS_Z 2
@@ -70,6 +65,8 @@
 #define MINUS_Z 6
 #define BUS 7
 #define OFF -1
+uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+uint32_t tx_channel = 0;
 
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
@@ -109,71 +106,47 @@ float voltsBus[8];
 float voltsShunt[8];
 float current[8];
 float power[8];
+char src_addr[5] = "";
+char dest_addr[5] = "CQ";
 
-
-int main(void) {
-
+int main(int argc, char *argv[]) {
+	
+  if (argc > 1) {
+	strcpy(src_addr, argv[1]);  
+  }
   wiringPiSetup () ;
   pinMode (0, OUTPUT) ;
   int blink;
-  for (blink = 1; blink < 2 ;blink++)
+  for (blink = 1; blink < 4 ;blink++)
   {
     digitalWrite (0, HIGH) ; delay (500) ;
     digitalWrite (0,  LOW) ; delay (500) ;
   }
-//    digitalWrite (0, HIGH) ; 
-    
-    setSpiChannel(SPI_CHANNEL);
-    setSpiSpeed(SPI_SPEED);
-    initializeSpi();
+  digitalWrite (0, HIGH) ; 
+  
+  setSpiChannel(SPI_CHANNEL);
+  setSpiSpeed(SPI_SPEED);
+  initializeSpi();
 
-    int tlm[7][5];
-    int i, j;
-    for (i = 1; i < 7; i++) {
-        for (j = 1; j < 5; j++) {
-		tlm[i][j] = 0;
-	}
-    }
-    timestamp = time(NULL);
-	
-    int file_i2c;
-    //char *filenam1e = (char*)"/dev/i2c-3";
-    if ((file_i2c = open("/dev/i2c-3", O_RDWR)) < 0)
-    {
-            fprintf(stderr,"ERROR: /dev/ic2-3 bus not present\n");
-            tempSensor = -1;
-    } else
-    {
-            tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-    }
+  int tlm[7][5];
+  memset(tlm, 0, sizeof tlm);
 
-    fprintf(stderr,"tempSensor: %d \n",tempSensor);	
+  timestamp = time(NULL);
 
-    int arduinoI2C;
-    if ((arduinoI2C = open("/dev/i2c-0", O_RDWR)) < 0)
-    {
-	    fprintf(stderr,"ERROR: /dev/i2c-0 bus not present\n");    
-    } else {    
-	arduinoI2C = wiringPiI2CSetupInterface("/dev/i2c-0", 0x4c);
- 	fprintf(stderr,"arduinoI2C: %d\n", arduinoI2C);
-          if (arduinoI2C > 0) {
-   //  	    for (blink = 1; blink < 20 ;blink++) {
-       		 sleep(1);
-    		fprintf(stderr,"Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,0));
-		 sleep(1);
-    		fprintf(stderr,"Arduio: %d \n", wiringPiI2CRead(arduinoI2C));
-   	    	 sleep(1);
-    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,1));
-       	 	sleep(1);
-    		printf("Arduio: %d \n", wiringPiI2CReadReg16(arduinoI2C,2));
-        	sleep(1);
-// 	   }
-         } else {
-		fprintf(stderr,"Arduino payload not present\n");
-       	}
+  int file_i2c = access("/dev/i2c-3", W_OK | R_OK);
+  //char *filenam1e = (char*)"/dev/i2c-3";
+  if (file_i2c < 0)
+  {
+    fprintf(stderr,"ERROR: /dev/ic2-3 bus not present\n");
+    tempSensor = -1;
+  } else
+  {
+    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
   }
 
-// new INA219 current reading code
+  #ifdef DEBUG_LOGGING
+      fprintf(stderr,"tempSensor: %d \n",tempSensor);	
+  #endif
 
     x_calValue = 4096; //8192;
     x_powerMultiplier = 2;
@@ -232,107 +205,163 @@ int main(void) {
 		sensor[MINUS_Y] = OFF;
 		sensor[MINUS_Z] = OFF;
 	}
-
-	     
     }
-	
-    int ret;
-    uint8_t data[1024];
+  }
 
-    init_rf();
+// new INA219 current reading code
+
+  x_calValue = 8192;
+  x_powerMultiplier = 1;
+  x_currentDivider = 20;
+  config = INA219_CONFIG_BVOLTAGERANGE_16V |
+           INA219_CONFIG_GAIN_40MV |
+           INA219_CONFIG_BADCRES_12BIT |
+           INA219_CONFIG_SADCRES_12BIT_4S_2130US |
+         //INA219_CONFIG_SADCRES_12BIT_1S_532US |
+           INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
+
+  file_i2c = access("/dev/i2c-0", W_OK | R_OK);
+  if (file_i2c < 0)
+  {
+    fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
+    x_fd = -1;  // Disable reading -X, -Y, and -Z telemetry
+    y_fd = -1;
+    z_fd = -1;
+  } else
+  {  
+    x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+    y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
+    z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr, "Opening of -X fd %d\n", x_fd);
+      fprintf(stderr, "Opening of -Y fd %d\n", y_fd);
+      fprintf(stderr, "Opening of -Z fd %d\n", z_fd);
+    #endif
+  }
+
+  int ret;
+  uint8_t data[1024];
+
+  tx_freq_hz -= tx_channel * 50000 + 85000; // subtracting rx offset of 90kHz
+
+  init_rf();
 
 //    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
-    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '1', (uint8_t *) CALLSIGN, '1',
-    		AX25_PREAMBLE_LEN,
-   		 AX25_POSTAMBLE_LEN);
-        
-        
-    /* Infinite loop */
-    for (;;) {
-        sleep(2);
-    	
-	// send X.25 packet
+//  ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
 
- //   	init_rf();
+ ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
+            AX25_PREAMBLE_LEN,
+            AX25_POSTAMBLE_LEN);  
+      
+  /* Infinite loop */
+  for (;;) {
+    sleep(1);  // Delay 1 second
+    
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Getting TLM Data\n");
+    #endif
+	  
+    get_tlm(tlm);
 
- //   	ax25_init(&hax25, (uint8_t *) "CQ", '2', (uint8_t *) "DX", '2',
- //   		AX25_PREAMBLE_LEN,
- //  		 AX25_POSTAMBLE_LEN);
-        
-	fprintf(stderr,"INFO: Getting TLM Data\n");
-	    
-	get_tlm(tlm);
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Preparing X.25 packet\n");
+    #endif
+	  
+    char str[1000];
+    char tlm_str[1000];
 
-	fprintf(stderr,"INFO: Preparing X.25 packet\n");
-	
-	char str[1000];
-	char tlm_str[1000];
-	
-	char header_str[] = "\x03\x0fhi hi ";
-	strcpy(str, header_str);
-/*	
-        int channel;
-	for (channel = 1; channel < 7; channel++) {
-//        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
-          sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
-	  channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
- 	  channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
-	  channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
-	  channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-//	  printf("%s \n",tlm_str);
-	  strcat(str, tlm_str);
-	}
-*/	
+    char header_str[] = "\x03\xf0hi hi ";
+    strcpy(str, header_str);
+ //   printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
+    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
+
+	  
+    int channel;
+    for (channel = 1; channel < 7; channel++) {
+      #ifdef DEBUG_LOGGING
+        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
+      #endif
+
+      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+        channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
+        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+        printf("%s",tlm_str);
+        strcat(str, tlm_str);
+    }
+
+    if (arduinoI2C > 0) {  /* Read Arduino payload */
+      for(int reg = 0; reg < 4; reg++) {
+        sprintf(tlm_str, " %04x",wiringPiI2CReadReg16(arduinoI2C,reg));
+	#ifdef DEBUG_LOGGING
+	  printf("%s \n",tlm_str);
+        #endif
+	strcat(str,tlm_str); /* Append payload telemetry */	
+	printf("%s",tlm_str);
+        usleep(100000);
+      }
+    }
+    printf("\n");
+	  
+    digitalWrite (0, LOW); 
+  
 /*        
-	char cmdbuffer[1000];
+char cmdbuffer[1000];
 
-        if (charging) {
-      	   FILE* file1 = popen("/home/pi/mopower/mpcmd LED_STAT=1", "r"); 
-      	   fgets(cmdbuffer, 999, file1);
-      	   pclose(file1);
+      if (charging) {
+          FILE* file1 = popen("/home/pi/mopower/mpcmd LED_STAT=1", "r"); 
+          fgets(cmdbuffer, 999, file1);
+          pclose(file1);
 
 //      	   printf("LED state: %s\n", cmdbuffer);
-        }
+      }
 */
-	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+    #endif
+    memcpy(data, str, strnlen(str, 256));
+    ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
+    if (ret) {
+      fprintf(stderr,
+              "ERROR: Failed to transmit AX.25 frame with error code %d\n",
+              ret);
+      exit(EXIT_FAILURE);
+    }
 
-        memcpy(data, str, strnlen(str, 256));
-        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
-        if (ret) {
-            fprintf(stderr,
-                    "ERROR: Failed to transmit AX.25 frame with error code %d\n",
-                    ret);
-            exit(EXIT_FAILURE);
-        }
-        ax5043_wait_for_transmit();
+    ax5043_wait_for_transmit();
+    digitalWrite (0, HIGH);
+  
 /*
-      	FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
-      	fgets(cmdbuffer, 999, file2);
-      	pclose(file2);
+      FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
+      fgets(cmdbuffer, 999, file2);
+      pclose(file2);
 
 //      	printf("LED state: %s\n", cmdbuffer);
 */
-        if (ret) {
-            fprintf(stderr,
-                    "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
-                    ret);
-            exit(EXIT_FAILURE);
-	}
+    if (ret) {
+      fprintf(stderr,
+              "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
+              ret);
+      exit(EXIT_FAILURE);
     }
+  }
 
-    return 0;
+  return 0;
 }
 
 static void init_rf() {
-    int ret;
+  int ret;
+  #ifdef DEBUG_LOGGING  
     fprintf(stderr,"Initializing AX5043\n");
-
-    ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
-    if (ret != PQWS_SUCCESS) {
-        fprintf(stderr,
-                "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
-        exit(EXIT_FAILURE);
-    }
+  #endif
+  ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
+  if (ret != PQWS_SUCCESS) {
+      fprintf(stderr,
+              "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
+      exit(EXIT_FAILURE);
+  }
 }
 
 //  Returns lower digit of a number which must be less than 99
@@ -358,61 +387,30 @@ int upper_digit(int number) {
 		fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
 	return digit;
 }
+
 int get_tlm(int tlm[][5]) {
+  //  Reading I2C voltage and current sensors	
+  char cmdbuffer[1000];
+  FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
+  fgets(cmdbuffer, 999, file);
+  pclose(file);
+  #ifdef DEBUG_LOGGING
+    fprintf(stderr,"I2C Sensor data: %s\n", cmdbuffer);
+  #endif
 	
-//  Reading I2C voltage and current sensors	
-	
-      char cmdbuffer[1000];
-      FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
-      fgets(cmdbuffer, 999, file);
-      pclose(file);
-      fprintf(stderr,"I2C Sensor data: %s\n", cmdbuffer);
+  char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
+  int i = 0;
+  char * data2 = strtok (cmdbuffer," ");
 
-      char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
-      int i = 0;
-      char * data2 = strtok (cmdbuffer," ");
+  while (data2 != NULL) {
+    strcpy(ina219[i], data2);
+    #ifdef DEBUG_LOGGING
+      printf ("ina219[%d]=%s\n",i,ina219[i]);
+    #endif
+    data2 = strtok (NULL, " ");
+    i++;
+  }	
 
-      while (data2 != NULL) {
-          strcpy(ina219[i], data2);
-  //        printf ("ina219[%d]=%s\n",i,ina219[i]);
-          data2 = strtok (NULL, " ");
-          i++;
-      }
-	
-  // Reading MoPower telemetry info
-/*	
-      file = popen("/home/pi/mopower/mpcmd show data", "r"); 
-
-      fgets(cmdbuffer, 999, file);
-
-      pclose(file);
-//      printf("MoPower data: %s\n", cmdbuffer);
-
-    char mopower[64][14];
-//  char str[] ="- This, a sample string.";
-    char * pch;
-//  printf ("Splitting string \"%s\" into tokens:\n",str);
-//  pch = strtok (str," ");
-    i = 0;
-    pch = strtok (cmdbuffer," ,.-");
-    while (pch != NULL)
-    {
-      strcpy(mopower[i], pch);
-//      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
-      pch = strtok (NULL, " ");
-      i++;
-    }
-    printf("Battery voltage = %s\n", mopower[16]);	
-    if (strtof(mopower[17],NULL) > -0.5) {
-	charging = 1;
-        printf("Charging on\n");
-    }
-    else {
- 	charging = 0;
-        printf("Charging off\n");
-
-    }
-*/	
 // read i2c current sensors //
     double x_current = 0, voltage = 0, x_power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
     if (x_fd != -1) {	
@@ -437,8 +435,9 @@ int get_tlm(int tlm[][5]) {
 	x_current = getCurrent_mA(x_fd); 
 	x_power = getPower_mW(x_fd);
 	voltage = shuntVolts + busVolts;
-	printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, x_power); 
-	 
+  #ifdef DEBUG_LOGGING
+	  printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, x_power); 
+	#endif 
     }
 	int count;
 	for (count = 0; count < 7; count++)
@@ -458,8 +457,10 @@ int get_tlm(int tlm[][5]) {
 			current[count] = 0;
 			power[count] = 0;
 		}
-		printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
-		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 				       
+    #ifdef DEBUG_LOGGING
+		  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 
+    #endif
 	}
 	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
 	{
@@ -476,9 +477,10 @@ int get_tlm(int tlm[][5]) {
 		current[BUS] = 0;
 		power[BUS] = 0;
 	}
-	printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+  #ifdef DEBUG_LOGGING
+	  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
 		       count, voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
-
+  #endif
 	
 	
 	
@@ -519,25 +521,44 @@ int get_tlm(int tlm[][5]) {
 	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
 		   	
-        if (tempSensor != -1) {
-		int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
-//		printf("Read: %x\n", tempValue);
-	        uint8_t upper = (uint8_t) (tempValue >> 8);
-        	uint8_t lower = (uint8_t) (tempValue & 0xff);
-        	float temp = (float)lower + ((float)upper / 0x100);
+  if (tempSensor != -1) {
+    int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
+    #ifdef DEBUG_LOGGING
+      printf("Temp Sensor Read: %x\n", tempValue);
+    #endif
 
-		tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
-	}	
-	tlm[6][B] = 0 ;
-	tlm[6][D] = 49 + rand() % 3; 
+    uint8_t upper = (uint8_t) (tempValue >> 8);
+    uint8_t lower = (uint8_t) (tempValue & 0xff);
+    float temp = (float)lower + ((float)upper / 0x100);
 
+    tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
+  }
+  
+  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  if (cpuTempSensor) {
+		double cpuTemp;
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+    #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+    #endif
+    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
+		fclose (cpuTempSensor);
+  }
+  
+  tlm[6][B] = 0 ;
+  tlm[6][D] = 49 + rand() % 3; 
+
+  #ifdef DEBUG_LOGGING
 // Display tlm
     int k, j;
     for (k = 1; k < 7; k++) {
-        for (j = 1; j < 5; j++) {
-	printf(" %2d ",	tlm[k][j]);
-	}
-    printf("\n");
+      for (j = 1; j < 5; j++) {
+        printf(" %2d ",	tlm[k][j]);
+      }
+      printf("\n");
     }	
-       return 0;
+  #endif
+
+  return 0;
 }

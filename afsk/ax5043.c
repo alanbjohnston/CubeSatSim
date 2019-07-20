@@ -21,6 +21,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdio.h>
+#include <time.h>
 #include "ax25.h"
 #include "ax5043.h"
 #include "status.h"
@@ -33,6 +34,8 @@ static uint8_t __tx_buf[MAX_FRAME_LEN];
 static size_t __tx_buf_idx = 0;
 static uint8_t __tx_fifo_chunk[AX5043_FIFO_MAX_SIZE];
 static uint32_t __tx_remaining = 0;
+
+extern uint32_t tx_freq_hz;
 
 /**
  * FIFO command for the preamble. The third byte corresponds the length of
@@ -222,12 +225,11 @@ int ax5043_init(ax5043_conf_t *conf, uint32_t f_xtal, vco_mode_t vco) {
     }
 
     /* Setup TX only related parameters */
-/*
     ret = ax5043_conf_tx_path(conf);
     if (ret) {
         return ret;
     }
-*/
+
     /* Set an internal copy for the ax5042_wait_for_transmit function */
     __ax5043_conf = conf;
 
@@ -256,7 +258,7 @@ int ax5043_conf_tx_path(ax5043_conf_t *conf) {
         return ret;
     }
 
-    ret = ax5043_set_tx_freq(conf, TX_FREQ_HZ);
+    ret = ax5043_set_tx_freq(conf, tx_freq_hz);
     if (ret) {
         return ret;
     }
@@ -449,7 +451,7 @@ int ax5043_set_tx_freq(ax5043_conf_t *conf, uint32_t freq) {
     if (freq + 25000000 > prev_freq || freq - 25000000 < prev_freq) {
         ax5043_autoranging(conf);
     }
-
+        
     return PQWS_SUCCESS;
 }
 
@@ -614,23 +616,33 @@ int ax5043_autoranging(ax5043_conf_t *conf) {
     val = BIT(4) | AX5043_VCOR_INIT;
     ret = ax5043_spi_write_8(conf, pllranging_reg, val);
     if (ret) {
+        printf("ERROR: AX5043 Autoranging Write Failure\n\n");
         return ret;
     }
 
     usleep(10);
-    val = 0;
+    //val = 0;
     /* Wait until the autoranging is complete */
-    while ((val & BIT(4)) == 0) {
+    int timeout = 0;
+    clock_t start = clock();
+    while (((val & BIT(4)) != 0) && !timeout ) {  // changed to !=, since https://www.onsemi.com/pub/Collateral/AND9347-D.PDF says BIT(4) RNG START clears when autoranging done
         ret = ax5043_spi_read_8(conf, &val, pllranging_reg);
         if (ret) {
+            printf("ERROR: AX5043 Autoranging Read Failure\n\n");
             return ret;
+        }
+        if ((clock() - start) > 1000000) {
+             timeout = 1;
         }
     }
 
     if (val & BIT(5)) {
+        printf("ERROR: AX5043 Autoranging Error\n\n");
         return -PQWS_AX5043_AUTORANGING_ERROR;
+    } else if (timeout) {
+        printf("ERROR: AX5043 Autoranging Timeout\n\n");
+        return -1;           
     }
-
     return PQWS_SUCCESS;
 }
 
@@ -1059,7 +1071,9 @@ int ax5043_wait_for_transmit() {
                 /* tx is done */
                 __tx_frame_end(__ax5043_conf);
                 transmittedPostamble = 0;
-                printf("INFO: TX done\n");
+                #ifdef DEBUG_LOGGING
+                  printf("INFO: TX done\n");
+                #endif
                 return PQWS_SUCCESS;
             }
     
@@ -1118,7 +1132,9 @@ int ax5043_wait_for_transmit() {
             if (radiostate == 0) {
                 /* tx is done */
                 __tx_active = 0;
-                printf("INFO: TX done\n");
+                #ifdef DEBUG_LOGGING
+                  printf("INFO: TX done\n");
+                #endif
             }
         }
     }

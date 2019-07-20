@@ -62,6 +62,8 @@
 #define CURRENT 1
 #define POWER 2
 
+uint32_t tx_freq_hz = 440390000;
+
 long int timestamp = 0;
 extern uint8_t axradio_rxbuffer[];
 void *transmit(void *arg);
