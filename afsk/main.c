@@ -83,9 +83,14 @@ int x_currentDivider;
 int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
+char src_addr[] = "";
+char dest_addr[] = "CQ";
 
-
-int main(void) {
+int main(int argc, *argv[]) {
+	
+  if (argc > 1) {
+	strcpy(src_addr, argv[1]);  
+  }`
   wiringPiSetup () ;
   pinMode (0, OUTPUT) ;
   int blink;
@@ -181,7 +186,9 @@ int main(void) {
   init_rf();
 
 //    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
-  ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
+//  ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
+
+ ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
             AX25_POSTAMBLE_LEN);  
       
@@ -204,7 +211,9 @@ int main(void) {
 
     char header_str[] = "\x03\xf0hi hi ";
     strcpy(str, header_str);
-    printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
+ //   printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
+    printf("%s-1>%s-1:hi hi ", src_addr, dest_addr);     
+
 	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
