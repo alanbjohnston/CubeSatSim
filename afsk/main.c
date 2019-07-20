@@ -53,9 +53,18 @@
 #define SENSOR_45 9
 #define SENSOR_4A 12
 #define VOLTAGE 0
-#define CURRENT 1
+#define CURRENTV 1
 #define POWER 2
 #define VBATT 15
+#define PLUS_X 0
+#define PLUS_Y 1
+#define PLUS_Z 2
+#define BAT 3
+#define MINUS_X 4
+#define MINUS_Y 5
+#define MINUS_Z 6
+#define BUS 7
+#define OFF -1
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
@@ -74,7 +83,20 @@ int tempSensor;
 int upper_digit(int number);
 int lower_digit(int number);
 int charging = 0;
-
+void setCalibration_32V_2A(int fd);
+void setCalibration_32V_1A(int fd);
+void setCalibration_16V_400mA(int fd);
+void setCalibration_16V_2A(int fd);
+float getBusVoltage_V(int fd);
+float getShuntVoltage_mV(int fd);
+float getCurrent_mA(int fd);
+float getPower_mW(int fd);
+void powerSave(int fd, int on);
+int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
+float voltsBus[8];
+float voltsShunt[8];
+float current[8];
+float power[8];
 uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
 int x_fd;	// I2C bus 0 address 0x40
@@ -176,6 +198,37 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Opening of -Y fd %d\n", y_fd);
       fprintf(stderr, "Opening of -Z fd %d\n", z_fd);
     #endif
+	  
+	int test;
+	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
+	{
+		close(test);
+		sensor[PLUS_X] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
+		sensor[PLUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41);
+		sensor[PLUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44);
+		sensor[BAT] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x45);
+		sensor[BUS] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a);
+	} else
+	{
+		sensor[PLUS_X] = OFF;
+		sensor[PLUS_Y] = OFF;
+		sensor[PLUS_Z] = OFF;
+		sensor[BAT] = OFF;
+		sensor[BUS] = OFF;
+	}
+	if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
+	{
+		close(test);
+		sensor[MINUS_X] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+		sensor[MINUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
+		sensor[MINUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+
+	} else
+	{
+		sensor[MINUS_X] = OFF;
+		sensor[MINUS_Y] = OFF;
+		sensor[MINUS_Z] = OFF;
+	}	  
   }
 
   int ret;
@@ -378,20 +431,20 @@ int get_tlm(int tlm[][5]) {
           y_power, 
           z_current, 
           z_power);
-    printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL)); 
+    printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENTV, ina219[SENSOR_40 + CURRENTV], strtof(ina219[SENSOR_40 + CURRENTV], NULL)); 
   #endif
 
-  tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENT], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
-  tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENT], NULL)/10) % 100;  // +X current [4]
+  tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
+  tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
   tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
-  tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENT], NULL)/10) % 100;  // +Y current [7]
+  tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
 
   tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
-  tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENT], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+  tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENTV], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
   tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
 
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
-  tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0) % 100;   // NiMH Battery current
+  tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENTV], NULL)/10.0) % 100;   // NiMH Battery current
 
   tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
   tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
