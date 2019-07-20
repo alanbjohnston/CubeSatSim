@@ -235,7 +235,7 @@ int main(void) {
       }
     }
 	 
-    print("%s\n", str[3]);
+    printf("%s\n", str[3]);
 	  
     digitalWrite (0, LOW); 
   
