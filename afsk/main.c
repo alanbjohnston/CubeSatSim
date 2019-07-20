@@ -434,6 +434,49 @@ int get_tlm(int tlm[][5]) {
     printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENTV, ina219[SENSOR_40 + CURRENTV], strtof(ina219[SENSOR_40 + CURRENTV], NULL)); 
   #endif
 
+	int count;
+	for (count = 0; count < 7; count++)
+	{
+		if (sensor[count] != OFF)
+		{
+			setCalibration_16V_400mA(sensor[count]);
+			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
+			voltsBus[count] = getBusVoltage_V(sensor[count]);
+			current[count] = getCurrent_mA(sensor[count]); 
+			power[count] = getPower_mW(sensor[count]);
+		}
+	    	else
+		{
+			voltsShunt[count] = 0;
+			voltsBus[count] = 0;
+			current[count] = 0;
+			power[count] = 0;
+		}
+    #ifdef DEBUG_LOGGING
+		  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 
+    #endif
+	}
+	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
+	{
+		setCalibration_16V_2A(sensor[BUS]);
+		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
+		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
+		current[BUS] = getCurrent_mA(sensor[BUS]); //  * 4; 
+		power[BUS] = getPower_mW(sensor[BUS]); // *2;
+	}
+   	else
+	{
+		voltsShunt[BUS] = 0;
+		voltsBus[BUS] = 0;
+		current[BUS] = 0;
+		power[BUS] = 0;
+	}
+  #ifdef DEBUG_LOGGING
+	  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+		       count, voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
+  #endif	
+	
   tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
   tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
