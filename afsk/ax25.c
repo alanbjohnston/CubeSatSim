@@ -79,7 +79,7 @@ int ax25_init(ax25_conf_t *conf, const uint8_t *dest_addr, uint8_t dest_ssid,
     //*out++ = ((0b1111 & src_ssid) << 1) | 0b01100001;
     conf->addr_field_len = AX25_MIN_ADDR_LEN;
         
-    printf(%s>%s:", src_addr, dst_addr);   
+    printf("%s>%s:", src_addr, dst_addr);   
 
     return PQWS_SUCCESS;
 }
