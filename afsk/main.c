@@ -84,7 +84,7 @@ uint16_t config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 int x_fd;	// I2C bus 0 address 0x40
 int x_powerMultiplier;
 int x_currentDivider;
-int x_calValue;
+int x_calValue_x;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 
@@ -142,7 +142,7 @@ int main(void) {
 
 // new INA219 current reading code
 
-    x_calValue = 8192;
+    x_calValue_x = 8192;
     x_powerMultiplier = 1;
     x_currentDivider = 20;
     config = INA219_CONFIG_BVOLTAGERANGE_16V |
@@ -356,19 +356,19 @@ int get_tlm(int tlm[][5]) {
 // read i2c current sensors //
     double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
     if (x_fd != -1) {	
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
-	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
 	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
-	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
-	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
 	y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
-	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CONFIG, config);	
-	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
 	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
     }	
