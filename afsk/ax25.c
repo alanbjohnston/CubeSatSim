@@ -88,6 +88,18 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
 
     memcpy(__tx_buffer, hax25->addr_field, hax25->addr_field_len);
     memcpy(__tx_buffer + hax25->addr_field_len, payload, len);
+        
+       
+    int jj;
+    for(jj = 0; jj < 118; jj++) {
+  /*      sprintf(hex_octet, "%02x",__tx_buffer[jj]);
+        strcat(hex_data, hex_octet);  */
+        printf("%c",__tx_buffer[jj]);
+    }
+    printf("\n");
+        
+        
+
 
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
             hax25->preamble_len, hax25->postable_len, 1000);
