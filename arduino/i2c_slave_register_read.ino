@@ -18,6 +18,9 @@ unsigned int reg_0_value, reg_1_value, reg_2_value, reg_3_value;  // register va
 void setup() {
 
   Wire.begin(I2C_ADDRESS);
+  Wire.setClock(400000); // set I2C clock for full speed
+  digitalWrite(A4, LOW); 
+  digitalWrite(A5, LOW);
   Wire.onRequest(requestEvent);
   Wire.onReceive(receiveEvent);
   pinMode(LED_BUILTIN, OUTPUT);

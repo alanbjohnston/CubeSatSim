@@ -36,8 +36,8 @@
 #include <time.h>
 #include "ina219.h"
 
-// Put your callsign here
-#define CALLSIGN "KU2Y"
+
+#define CALLSIGN "" // Put your callsign here!
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -427,19 +427,33 @@ charging = 0;
     float temp = (float)lower + ((float)upper / 0x100);
 
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
-  }	
-
+  }
+  
+  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  if (cpuTempSensor) {
+		double cpuTemp;
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+    #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+    #endif
+    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
+		fclose (cpuTempSensor);
+  }
+  
   tlm[6][B] = 0 ;
   tlm[6][D] = 49 + rand() % 3; 
 
+  #ifdef DEBUG_LOGGING
 // Display tlm
-  int k, j;
-  for (k = 1; k < 7; k++) {
-    for (j = 1; j < 5; j++) {
-      printf(" %2d ",	tlm[k][j]);
-    }
-    printf("\n");
-  }	
+    int k, j;
+    for (k = 1; k < 7; k++) {
+      for (j = 1; j < 5; j++) {
+        printf(" %2d ",	tlm[k][j]);
+      }
+      printf("\n");
+    }	
+  #endif
 
   return 0;
 }
