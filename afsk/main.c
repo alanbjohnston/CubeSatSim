@@ -83,8 +83,8 @@ int x_currentDivider;
 int x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
-char src_addr[] = "";
-char dest_addr[] = "CQ";
+char src_addr[5] = "";
+char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
@@ -212,7 +212,7 @@ int main(int argc, char *argv[]) {
     char header_str[] = "\x03\xf0hi hi ";
     strcpy(str, header_str);
  //   printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
-    printf("%s %s hi hi ", src_addr, dest_addr);     
+    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
 
 	  
     int channel;
