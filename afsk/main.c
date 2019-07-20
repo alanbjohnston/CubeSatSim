@@ -403,12 +403,12 @@ int get_tlm(int tlm[][5]) {
   }	
 
 // read i2c current sensors //
-  double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
+  double x_current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
   if (x_fd != -1) {	
     wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
     wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
     wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-    current = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+    x_current = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
     power = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 
     wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue);
