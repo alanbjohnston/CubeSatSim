@@ -19,10 +19,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-//#include <unistd.h>                             //Needed for I2C port
 #include <fcntl.h>                              //Needed for I2C port
-//#include <sys/ioctl.h>                  //Needed for I2C port
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -35,7 +32,6 @@
 #include <wiringPi.h>
 #include <time.h>
 #include "ina219.h"
-
 
 #define CALLSIGN "" // Put your callsign here!
 #define VBATT 15
@@ -192,14 +188,18 @@ int main(void) {
       
   /* Infinite loop */
   for (;;) {
-    sleep(1);
+    sleep(1);  // Delay 1 second
     
-    fprintf(stderr,"INFO: Getting TLM Data\n");
-    
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Getting TLM Data\n");
+    #endif
+	  
     get_tlm(tlm);
 
-    fprintf(stderr,"INFO: Preparing X.25 packet\n");
-
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Preparing X.25 packet\n");
+    #endif
+	  
     char str[1000];
     char tlm_str[1000];
 
@@ -224,8 +224,10 @@ int main(void) {
     if (arduinoI2C > 0) {  /* Read Arduino payload */
       for(int reg = 0; reg < 4; reg++) {
         sprintf(tlm_str, " %04x",wiringPiI2CReadReg16(arduinoI2C,reg));
-        printf("%s \n",tlm_str);
-        strcat(str,tlm_str); /* Append payload telemetry */		
+	#ifdef DEBUG_LOGGING
+	  printf("%s \n",tlm_str);
+        #endif
+	strcat(str,tlm_str); /* Append payload telemetry */		
         usleep(100000);
       }
     }
@@ -243,9 +245,9 @@ char cmdbuffer[1000];
 //      	   printf("LED state: %s\n", cmdbuffer);
       }
 */
-
-    fprintf(stderr,"INFO: Transmitting X.25 packet\n");
-
+    #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+    #endif
     memcpy(data, str, strnlen(str, 256));
     ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
     if (ret) {
@@ -278,8 +280,9 @@ char cmdbuffer[1000];
 
 static void init_rf() {
   int ret;
-  fprintf(stderr,"Initializing AX5043\n");
-
+  #ifdef DEBUG_LOGGING  
+    fprintf(stderr,"Initializing AX5043\n");
+  #endif
   ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
   if (ret != PQWS_SUCCESS) {
       fprintf(stderr,
@@ -318,8 +321,10 @@ int get_tlm(int tlm[][5]) {
   FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
   fgets(cmdbuffer, 999, file);
   pclose(file);
-  fprintf(stderr,"I2C Sensor data: %s\n", cmdbuffer);
-
+  #ifdef DEBUG_LOGGING
+    fprintf(stderr,"I2C Sensor data: %s\n", cmdbuffer);
+  #endif
+	
   char ina219[16][20];  // voltage, currents, and power from the INA219 current sensors x4a, x40, x41, x44, and x45.
   int i = 0;
   char * data2 = strtok (cmdbuffer," ");
@@ -331,42 +336,7 @@ int get_tlm(int tlm[][5]) {
     #endif
     data2 = strtok (NULL, " ");
     i++;
-  }
-
-// Reading MoPower telemetry info
-/*	
-    file = popen("/home/pi/mopower/mpcmd show data", "r"); 
-
-    fgets(cmdbuffer, 999, file);
-
-    pclose(file);
-//      printf("MoPower data: %s\n", cmdbuffer);
-
-  char mopower[64][14];
-//  char str[] ="- This, a sample string.";
-  char * pch;
-//  printf ("Splitting string \"%s\" into tokens:\n",str);
-//  pch = strtok (str," ");
-  i = 0;
-  pch = strtok (cmdbuffer," ,.-");
-  while (pch != NULL)
-  {
-    strcpy(mopower[i], pch);
-//      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
-    pch = strtok (NULL, " ");
-    i++;
-  }
-  printf("Battery voltage = %s\n", mopower[16]);	
-  if (strtof(mopower[17],NULL) > -0.5) {
-charging = 1;
-      printf("Charging on\n");
-  }
-  else {
-charging = 0;
-      printf("Charging off\n");
-
-  }
-*/	
+  }	
 
 // read i2c current sensors //
   double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
@@ -388,16 +358,15 @@ charging = 0;
     wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue);
     z_current = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
     z_power = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
-  }	
-  printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
+  }
+  #ifdef DEBUG_LOGGING
+    printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
           current, 
           power, 
           y_current, 
           y_power, 
           z_current, 
           z_power);
-
-  #ifdef DEBUG_LOGGING
     printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL)); 
   #endif
 
@@ -419,7 +388,7 @@ charging = 0;
   if (tempSensor != -1) {
     int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
     #ifdef DEBUG_LOGGING
-      printf("Read: %x\n", tempValue);
+      printf("Temp Sensor Read: %x\n", tempValue);
     #endif
 
     uint8_t upper = (uint8_t) (tempValue >> 8);
