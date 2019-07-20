@@ -183,9 +183,7 @@ int main(void) {
 //    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
   ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
             AX25_PREAMBLE_LEN,
-            AX25_POSTAMBLE_LEN);
-	
-   printf("%s-1>CQ-1:", CALLSIGN);       
+            AX25_POSTAMBLE_LEN);  
       
   /* Infinite loop */
   for (;;) {
@@ -206,7 +204,7 @@ int main(void) {
 
     char header_str[] = "\x03\xf0hi hi ";
     strcpy(str, header_str);
-    printf("hi hi ");
+    printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
 	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
