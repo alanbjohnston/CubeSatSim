@@ -90,6 +90,7 @@ radioafsk: afsk/ax25.o
 radioafsk: afsk/ax5043.o
 radioafsk: afsk/main.o
 radioafsk: afsk/ina219.h
+radioafsk: Adafruit_INA219/Adafruit_INA219.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o Adafruit_INA219/Adafruit_INA219.o -lwiringPi -lax5043
 
 Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.c
