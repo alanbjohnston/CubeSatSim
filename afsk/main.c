@@ -212,7 +212,7 @@ int main(int argc, char *argv[]) {
     char header_str[] = "\x03\xf0hi hi ";
     strcpy(str, header_str);
  //   printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
-    printf("%s-1>%s-1:hi hi ", src_addr, dest_addr);     
+    printf("%s>%s:hi hi ", src_addr, dest_addr);     
 
 	  
     int channel;
