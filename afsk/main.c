@@ -90,7 +90,7 @@ int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
 	strcpy(src_addr, argv[1]);  
-  }`
+  }
   wiringPiSetup () ;
   pinMode (0, OUTPUT) ;
   int blink;
