@@ -120,7 +120,7 @@ int main(void) {
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
 
-  int arduinoI2C = access("dev/i2c-0", W_OK | R_OK);
+  int arduinoI2C = access("/dev/i2c-0", W_OK | R_OK);
   if (arduinoI2C < 0)
   {
     fprintf(stderr,"ERROR: /dev/i2c-0 bus not present\n");    
