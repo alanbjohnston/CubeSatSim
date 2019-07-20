@@ -184,7 +184,8 @@ int main(void) {
   ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
             AX25_PREAMBLE_LEN,
             AX25_POSTAMBLE_LEN);
-      
+	
+   printf("%s-1>CQ-1:", CALLSIGN);       
       
   /* Infinite loop */
   for (;;) {
@@ -233,7 +234,9 @@ int main(void) {
         usleep(100000);
       }
     }
-
+	 
+    print("%s\n", str[3]);
+	  
     digitalWrite (0, LOW); 
   
 /*        
