@@ -86,7 +86,7 @@ int z_fd; 	// I2C bos 0 address 0x44
 char src_addr[] = "";
 char dest_addr[] = "CQ";
 
-int main(int argc, *argv[]) {
+int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
 	strcpy(src_addr, argv[1]);  
