@@ -206,7 +206,8 @@ int main(void) {
 
     char header_str[] = "\x03\xf0hi hi ";
     strcpy(str, header_str);
-
+    printf("hi hi ");
+	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
       #ifdef DEBUG_LOGGING
@@ -218,10 +219,8 @@ int main(void) {
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-      #ifdef DEBUG_LOGGING	    
-        printf("%s \n",tlm_str);
-      #endif
-      strcat(str, tlm_str);
+        printf("%s",tlm_str);
+        strcat(str, tlm_str);
     }
 
     if (arduinoI2C > 0) {  /* Read Arduino payload */
@@ -230,12 +229,12 @@ int main(void) {
 	#ifdef DEBUG_LOGGING
 	  printf("%s \n",tlm_str);
         #endif
-	strcat(str,tlm_str); /* Append payload telemetry */		
+	strcat(str,tlm_str); /* Append payload telemetry */	
+	printf("%s",tlm_str);
         usleep(100000);
       }
     }
-	 
-    printf("%s\n", str[3]);
+    printf("\n");
 	  
     digitalWrite (0, LOW); 
   
