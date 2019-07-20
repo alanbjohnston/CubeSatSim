@@ -78,6 +78,9 @@ int ax25_init(ax25_conf_t *conf, const uint8_t *dest_addr, uint8_t dest_ssid,
     *out++ = (uint8_t) ((0x0F & src_ssid) << 1) | 0x61;
     //*out++ = ((0b1111 & src_ssid) << 1) | 0b01100001;
     conf->addr_field_len = AX25_MIN_ADDR_LEN;
+        
+    printf(%s>%s:", src_addr, dst_addr);   
+
     return PQWS_SUCCESS;
 }
 
@@ -90,7 +93,6 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     memcpy(__tx_buffer, hax25->addr_field, hax25->addr_field_len);
     memcpy(__tx_buffer + hax25->addr_field_len, payload, len);
         
-       
     int jj;
     for(jj = 0; jj < 118; jj++) {
   /*      sprintf(hex_octet, "%02x",__tx_buffer[jj]);
