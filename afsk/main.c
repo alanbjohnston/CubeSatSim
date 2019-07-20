@@ -57,7 +57,7 @@
 #define POWER 2
 #define VBATT 15
 
-uint32_t tx_freq_hz = 440310000;
+uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
 
 ax5043_conf_t hax5043;
@@ -181,7 +181,7 @@ int main(int argc, char *argv[]) {
   int ret;
   uint8_t data[1024];
 
-  tx_freq_hz -= tx_channel * 50000;
+  tx_freq_hz -= tx_channel * 50000 + 85000; // subtracting rx offset of 90kHz
 
   init_rf();
 
