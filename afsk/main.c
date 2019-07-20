@@ -479,7 +479,7 @@ int get_tlm(int tlm[][5]) {
 	
   tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
-  tlm[1][C] = (int) (99.5 - current/10) % 100;  			// X- current [10] 
+  tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
   tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
 
   tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
