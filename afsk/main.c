@@ -31,7 +31,7 @@
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <time.h>
-#include "ina219.h"
+//#include "ina219.h"
 #include "../Adafruit_INA219/Adafruit_INA219.h"
 
 #define VBATT 15
