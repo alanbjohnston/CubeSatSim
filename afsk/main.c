@@ -213,7 +213,7 @@ int main(int argc, char *argv[]) {
   x_calValue = 8192;
   x_powerMultiplier = 1;
   x_currentDivider = 20;
-  config = INA219_CONFIG_BVOLTAGERANGE_16V |
+  x_config = INA219_CONFIG_BVOLTAGERANGE_16V |
            INA219_CONFIG_GAIN_40MV |
            INA219_CONFIG_BADCRES_12BIT |
            INA219_CONFIG_SADCRES_12BIT_4S_2130US |
@@ -291,8 +291,8 @@ int main(int argc, char *argv[]) {
         printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
-
-    if (arduinoI2C > 0) {  /* Read Arduino payload */
+/*
+    if (arduinoI2C > 0) {  // Read Arduino payload 
       for(int reg = 0; reg < 4; reg++) {
         sprintf(tlm_str, " %04x",wiringPiI2CReadReg16(arduinoI2C,reg));
 	#ifdef DEBUG_LOGGING
@@ -303,6 +303,7 @@ int main(int argc, char *argv[]) {
         usleep(100000);
       }
     }
+*/
     printf("\n");
 	  
     digitalWrite (0, LOW); 
