@@ -33,7 +33,6 @@
 #include <time.h>
 #include "ina219.h"
 
-#define CALLSIGN "" // Put your callsign here!
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -246,9 +245,6 @@ int main(int argc, char *argv[]) {
   tx_freq_hz -= tx_channel * 50000 + 85000; // subtracting rx offset of 90kHz
 
   init_rf();
-
-//    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
-//  ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
 
  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
