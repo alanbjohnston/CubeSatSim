@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
     x_powerMultiplier = 2;
     x_currentDivider = 10;
     x_config = INA219_CONFIG_BVOLTAGERANGE_32V |
-                 INA219_CONFIG_GAIN_320MV | // 40MV |
+                 INA219_CONFIG_GAIN_8_320MV | // 40MV |
                  INA219_CONFIG_BADCRES_12BIT |
                //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
