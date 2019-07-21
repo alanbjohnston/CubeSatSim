@@ -422,7 +422,7 @@ int get_tlm(int tlm[][5]) {
 	busVolts = (int16_t)((busVolts >> 3) * 4);
 	double volts = busVolts * 0.001 + shuntVolts * 0.01;
 	     
-	printf("********** -X 0x40 volts %4.2f busvoltage %d shutVoltage %d\n", volts, busVolts, shuntVolts); 
+//	printf("********** -X 0x40 volts %4.2f busvoltage %d shutVoltage %d\n", volts, busVolts, shuntVolts); 
 /*
         float shuntVolts = getShuntVoltage_mV(x_fd);
 	float busVolts = getBusVoltage_V(x_fd);
@@ -431,7 +431,7 @@ int get_tlm(int tlm[][5]) {
 	voltage = shuntVolts + busVolts;
 */	    
   #ifdef DEBUG_LOGGING
-	  printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n\n", busVolts, shuntVolts, x_current, x_power); 
+	  printf("-X 0x40 volts %4.2f busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n\n", volts, busVolts, shuntVolts, x_current, x_power); 
   #endif 
   }
      }
