@@ -487,7 +487,9 @@ int get_tlm(int tlm[][5]) {
   #ifdef DEBUG_LOGGING
 	  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
 		       count, voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
-  #endif	
+  #endif
+	
+  sleep(1);
 	
 //  tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 //  tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
@@ -509,7 +511,7 @@ int get_tlm(int tlm[][5]) {
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 //  tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENTV], NULL)/10.0) % 100;   // NiMH Battery current
 	
-  tlm[2][D] = (int) (99.5 - current[BAT]/10) % 100; 
+  tlm[2][D] = (int) (50.5 - current[BAT]/10) % 100; 
 
 //  tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
 //  tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
