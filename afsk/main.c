@@ -407,17 +407,18 @@ int get_tlm(int tlm[][5]) {
 // read i2c current sensors //
     double x_current = 0, voltage = 0, x_power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
     if (x_fd != -1) {	
-//	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue);
-//	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, x_config);	
+	wireWriteRegister(x_fd, INA219_REG_CALIBRATION, x_calValue);
+	wireWriteRegister(x_fd, INA219_REG_CONFIG, x_config);	
 	    
      setCalibration_16V_400mA(x_fd);	
 	    
      int blink; 
-     for (blink = 1; blink < 20 ;blink++) {
+     for (blink = 1; blink < 4 ;blink++) {
 	delay(500);
-	int shuntVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
+	int shuntVolts  = wireReadRegister(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
+	     
 	delay(500);
-	int busVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE); //  * 0.001;
+	int busVolts  = wireReadRegister(x_fd, INA219_REG_BUSVOLTAGE); //  * 0.001;
 	busVolts = (int16_t)((busVolts >> 3) * 4);
 	double volts = busVolts * 0.001 + shuntVolts * 0.01;
 	     
