@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
 
   tx_freq_hz -= tx_channel * 50000 + 85000; // subtracting rx offset of 90kHz
   #ifdef DEBUG_LOGGING
-	print ("INFO: Transmit frequency %3.5f MHz\n", tx_freq_hz/1000000)
+	print ("INFO: Transmit frequency %3.5f MHz\n", tx_freq_hz/1000000);
 
   init_rf();
 
