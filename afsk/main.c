@@ -98,7 +98,7 @@ uint16_t x_config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 int x_fd;	// I2C bus 0 address 0x40
 int x_powerMultiplier;
 int x_currentDivider;
-int x_calValue;
+uint16_t x_calValue;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
@@ -432,7 +432,7 @@ int get_tlm(int tlm[][5]) {
 	voltage = shuntVolts + busVolts;
 */	    
   #ifdef DEBUG_LOGGING
-	  printf("-X 0x40 volts %4.2f busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n\n", volts, busVolts, shuntVolts, x_current, x_power); 
+	  printf("-X 0x40 volts %4.2f busVolts %d shuntVolts %d current %4.2f power %4.2f \n\n", volts, busVolts, shuntVolts); 
   #endif 
   }
      }
