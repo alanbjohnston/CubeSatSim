@@ -236,7 +236,7 @@ int main(int argc, char *argv[]) {
   int ret;
   uint8_t data[1024];
 
-  tx_freq_hz -= tx_channel * 50000 + 85000; // subtracting rx offset of 90kHz
+  tx_freq_hz -= tx_channel * 50000;
   #ifdef DEBUG_LOGGING
 	printf("INFO: Transmit frequency %3.5f MHz\n", ((float)tx_freq_hz)/1000000);
   #endif
