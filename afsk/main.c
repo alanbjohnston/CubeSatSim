@@ -432,7 +432,7 @@ int get_tlm(int tlm[][5]) {
 	voltage = shuntVolts + busVolts;
 */	    
   #ifdef DEBUG_LOGGING
-	  printf("-X 0x40 volts %4.2f busVolts %d shuntVolts %d current %4.2f power %4.2f \n\n", volts, busVolts, shuntVolts); 
+	  printf("-X 0x40 volts %4.2f busVolts %d shuntVolts %d \n\n", volts, busVolts, shuntVolts); 
   #endif 
   }
      }
