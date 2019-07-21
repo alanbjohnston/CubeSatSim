@@ -412,9 +412,9 @@ int get_tlm(int tlm[][5]) {
 	    
      setCalibration_16V_400mA(x_fd);	
 	    
-//     int blink; 
-//     for (blink = 1; blink < 20 ;blink++) {
-/*	delay(500);
+     int blink; 
+     for (blink = 1; blink < 20 ;blink++) {
+	delay(500);
 	int shuntVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
 	delay(500);
 	int busVolts  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE); //  * 0.001;
@@ -422,21 +422,24 @@ int get_tlm(int tlm[][5]) {
 	double volts = busVolts * 0.001 + shuntVolts * 0.01;
 	     
 	printf("********** -X 0x40 volts %4.2f busvoltage %d shutVoltage %d\n", volts, busVolts, shuntVolts); 
-*/
+/*
         float shuntVolts = getShuntVoltage_mV(x_fd);
 	float busVolts = getBusVoltage_V(x_fd);
 	x_current = getCurrent_mA(x_fd); 
 	x_power = getPower_mW(x_fd);
 	voltage = shuntVolts + busVolts;
+*/	    
   #ifdef DEBUG_LOGGING
-	  printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n", busVolts, shuntVolts, x_current, x_power); 
-	#endif 
-    }
+	  printf("-X 0x40 busVolts %4.2f shuntVolts %4.2f current %4.2f power %4.2f \n\n", busVolts, shuntVolts, x_current, x_power); 
+  #endif 
+  }
+     }
 	int count;
 	for (count = 0; count < 7; count++)
 	{
 		if (sensor[count] != OFF)
 		{
+			printf("Reading of sensnsor[%d]\n", count);
 			setCalibration_16V_400mA(sensor[count]);
 			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			voltsBus[count] = getBusVoltage_V(sensor[count]);
@@ -457,6 +460,7 @@ int get_tlm(int tlm[][5]) {
 	}
 	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
 	{
+		printf("Reading of sensnsor[%d] \n", BUS);
 		setCalibration_16V_2A(sensor[BUS]);
 		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
 		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
