@@ -298,7 +298,7 @@ int main(int argc, char *argv[]) {
 	#ifdef DEBUG_LOGGING
 	  printf("%s \n",tlm_str);
         #endif
-	strcat(str,tlm_str); /* Append payload telemetry */	
+	strcat(str,tlm_str); // Append payload telemetry 	
 	printf("%s",tlm_str);
         usleep(100000);
       }
