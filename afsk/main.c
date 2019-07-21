@@ -210,6 +210,7 @@ int main(int argc, char *argv[]) {
 		sensor[BUS] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a);
 	} else
 	{
+		fprintf(stderr,"ERROR: /dev/ic2-1 bus not present\n");
 		sensor[PLUS_X] = OFF;
 		sensor[PLUS_Y] = OFF;
 		sensor[PLUS_Z] = OFF;
@@ -225,6 +226,7 @@ int main(int argc, char *argv[]) {
 
 	} else
 	{
+		fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
 		sensor[MINUS_X] = OFF;
 		sensor[MINUS_Y] = OFF;
 		sensor[MINUS_Z] = OFF;
@@ -439,6 +441,9 @@ int get_tlm(int tlm[][5]) {
 	{
 		if (sensor[count] != OFF)
 		{
+  			#ifdef DEBUG_LOGGING
+    				printf("Calibrating sensor %d \n",count);
+			#endif
 			setCalibration_16V_400mA(sensor[count]);
 			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			voltsBus[count] = getBusVoltage_V(sensor[count]);
@@ -459,6 +464,10 @@ int get_tlm(int tlm[][5]) {
 	}
 	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
 	{
+  		#ifdef DEBUG_LOGGING
+    			printf("Calibrating sensor %d \n",BUS);
+		#endif
+
 		setCalibration_16V_2A(sensor[BUS]);
 		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
 		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
@@ -482,7 +491,7 @@ int get_tlm(int tlm[][5]) {
 //  tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
 //  tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
 
-  tlm[1][A] = (int) (99.5 - current[BUS]/10) % 100; 
+  tlm[1][A] = (int) (current[BUS] / 15 + 0.5) % 100;
   tlm[1][B] = (int) (99.5 - current[PLUS_X]/10) % 100; 
   tlm[1][C] = (int) (99.5 - current[MINUS_X]/10) % 100; 
   tlm[1][D] = (int) (99.5 - current[PLUS_Y]/10) % 100; 
