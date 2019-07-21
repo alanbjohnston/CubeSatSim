@@ -272,9 +272,9 @@ int main(int argc, char *argv[]) {
 	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      #ifdef DEBUG_LOGGING
-        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
-      #endif
+//      #ifdef DEBUG_LOGGING
+//        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
+//      #endif
 
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
@@ -382,6 +382,8 @@ int upper_digit(int number) {
 }
 
 int get_tlm(int tlm[][5]) {
+  return 0;
+	
   //  Reading I2C voltage and current sensors	
   char cmdbuffer[1000];
   FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
