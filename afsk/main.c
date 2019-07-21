@@ -381,8 +381,7 @@ int upper_digit(int number) {
 	return digit;
 }
 
-int get_tlm(int tlm[][5]) {
-/*	
+int get_tlm(int tlm[][5]) {	
   //  Reading I2C voltage and current sensors	
   char cmdbuffer[1000];
   FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
@@ -553,7 +552,7 @@ int get_tlm(int tlm[][5]) {
       printf("\n");
     }	
   #endif
-*/
+  
   return 0;
  
 }
