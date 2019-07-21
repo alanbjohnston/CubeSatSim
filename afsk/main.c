@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
            INA219_CONFIG_SADCRES_12BIT_4S_2130US |
          //INA219_CONFIG_SADCRES_12BIT_1S_532US |
            INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
-#ifdef WIRING_PI
+
   file_i2c = access("/dev/i2c-0", W_OK | R_OK);
   if (file_i2c < 0)
   {
@@ -188,16 +188,17 @@ int main(int argc, char *argv[]) {
     y_fd = -1;
     z_fd = -1;
   } else
-  {  
+  { 
+#ifdef WIRING_PI  
     x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
     y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
     z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
 
-//    #ifdef DEBUG_LOGGING
+    #ifdef DEBUG_LOGGING
       fprintf(stderr, "Opening of -X fd %d\n", x_fd);
       fprintf(stderr, "Opening of -Y fd %d\n", y_fd);
       fprintf(stderr, "Opening of -Z fd %d\n", z_fd);
-//    #endif
+    #endif
 #endif	  
 	int test;
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
@@ -428,7 +429,7 @@ int get_tlm(int tlm[][5]) {
     z_current = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
     z_power = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
   }
-//  #ifdef DEBUG_LOGGING
+  #ifdef DEBUG_LOGGING
     printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
           x_current, 
           x_power, 
@@ -437,7 +438,7 @@ int get_tlm(int tlm[][5]) {
           z_current, 
           z_power);
     printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENTV, ina219[SENSOR_40 + CURRENTV], strtof(ina219[SENSOR_40 + CURRENTV], NULL)); 
-//  #endif
+  #endif
 #endif
 	int count;
 	for (count = 0; count < 7; count++)
