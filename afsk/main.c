@@ -441,7 +441,7 @@ int get_tlm(int tlm[][5]) {
 	{
 		if (sensor[count] != OFF)
 		{
-			printf("Reading of sensnsor[%d]\n", count);
+			printf("Read sensnsor[%d] ", count);
 			setCalibration_16V_400mA(sensor[count]);
 			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			voltsBus[count] = getBusVoltage_V(sensor[count]);
@@ -456,7 +456,7 @@ int get_tlm(int tlm[][5]) {
 			power[count] = 0;
 		}
     #ifdef DEBUG_LOGGING
-		  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+		  printf("voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
 		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 
     #endif
 	}
