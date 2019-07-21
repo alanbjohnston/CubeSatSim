@@ -502,8 +502,8 @@ int get_tlm(int tlm[][5]) {
 //  tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
 //  tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
 
-  tlm[3][A] = abs((int)(voltBus[BAT] * 10) - 65.5) % 100)
-  tlm[3][B] = (int)(voltBus[BUS] * 10.0) % 100;
+  tlm[3][A] = abs((int)(voltsBus[BAT] * 10 - 65.5) % 100);
+  tlm[3][B] = (int)(voltsBus[BUS] * 10.0) % 100;
       
   if (tempSensor != -1) {
     int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
