@@ -32,6 +32,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include "ina219.h"
+#include "Adafruit_INA219/Adafruit_INA219.h"
 
 #define VBATT 15
 #define ADC5 17
