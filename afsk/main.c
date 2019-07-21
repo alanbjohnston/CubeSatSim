@@ -179,7 +179,7 @@ int main(int argc, char *argv[]) {
            INA219_CONFIG_SADCRES_12BIT_4S_2130US |
          //INA219_CONFIG_SADCRES_12BIT_1S_532US |
            INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
-
+#ifdef WIRING_PI
   file_i2c = access("/dev/i2c-0", W_OK | R_OK);
   if (file_i2c < 0)
   {
@@ -198,7 +198,7 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Opening of -Y fd %d\n", y_fd);
       fprintf(stderr, "Opening of -Z fd %d\n", z_fd);
     #endif
-	  
+#endif	  
 	int test;
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
@@ -406,7 +406,7 @@ int get_tlm(int tlm[][5]) {
     data2 = strtok (NULL, " ");
     i++;
   }	
-
+#ifdef WIRING_PI
 // read i2c current sensors //
   double x_current = 0, x_power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
   if (x_fd != -1) {	
@@ -438,7 +438,7 @@ int get_tlm(int tlm[][5]) {
           z_power);
     printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENTV, ina219[SENSOR_40 + CURRENTV], strtof(ina219[SENSOR_40 + CURRENTV], NULL)); 
   #endif
-
+#endif
 	int count;
 	for (count = 0; count < 7; count++)
 	{
