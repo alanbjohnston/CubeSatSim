@@ -213,7 +213,7 @@ int main(int argc, char *argv[]) {
   x_calValue = 8192;
   x_powerMultiplier = 1;
   x_currentDivider = 20;
-  x_config = INA219_CONFIG_BVOLTAGERANGE_16V |
+  config = INA219_CONFIG_BVOLTAGERANGE_16V |
            INA219_CONFIG_GAIN_40MV |
            INA219_CONFIG_BADCRES_12BIT |
            INA219_CONFIG_SADCRES_12BIT_4S_2130US |
