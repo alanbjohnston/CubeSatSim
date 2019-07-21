@@ -205,7 +205,7 @@ int main(int argc, char *argv[]) {
 		sensor[MINUS_Y] = OFF;
 		sensor[MINUS_Z] = OFF;
 	}
-    }
+//    }   Extra close bracket??
   }
 
 // new INA219 current reading code
