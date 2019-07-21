@@ -165,9 +165,7 @@ int main(int argc, char *argv[]) {
 	    z_fd = -1;
      } else
      {  
-//         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-	 x_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
-
+         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
          fprintf(stderr,"Opening of -X fd %d\n", x_fd);
          y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
         printf("Opening of -Y fd %d\n", y_fd);
@@ -185,6 +183,7 @@ int main(int argc, char *argv[]) {
 		sensor[BUS] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a);
 	} else
 	{
+		printf("ERROR: /dev/i2c-1 not present \n");
 		sensor[PLUS_X] = OFF;
 		sensor[PLUS_Y] = OFF;
 		sensor[PLUS_Z] = OFF;
@@ -200,6 +199,7 @@ int main(int argc, char *argv[]) {
 
 	} else
 	{
+		printf("ERROR: /dev/i2c-0 not present \n");
 		sensor[MINUS_X] = OFF;
 		sensor[MINUS_Y] = OFF;
 		sensor[MINUS_Z] = OFF;
@@ -208,7 +208,7 @@ int main(int argc, char *argv[]) {
   }
 
 // new INA219 current reading code
-
+/*
   x_calValue = 8192;
   x_powerMultiplier = 1;
   x_currentDivider = 20;
@@ -238,11 +238,11 @@ int main(int argc, char *argv[]) {
       fprintf(stderr, "Opening of -Z fd %d\n", z_fd);
     #endif
   }
-
+*/
   int ret;
   uint8_t data[1024];
 
-  tx_freq_hz -= tx_channel * 50000 + 85000; // subtracting rx offset of 90kHz
+  tx_freq_hz -= tx_channel * 50000;
 
   init_rf();
 
@@ -275,10 +275,6 @@ int main(int argc, char *argv[]) {
 	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      #ifdef DEBUG_LOGGING
-        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
-      #endif
-
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
