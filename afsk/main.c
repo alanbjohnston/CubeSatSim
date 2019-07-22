@@ -167,11 +167,11 @@ int main(int argc, char *argv[]) {
      } else
      {  
          x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-         fprintf(stderr,"Opening of -X fd %d\n", x_fd);
          y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
-        printf("Opening of -Y fd %d\n", y_fd);
-        z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
-        printf("Opening of -Z fd %d\n", z_fd);
+         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+	 #ifdef DEBUG_LOGGING
+           fprintf(stderr, "Opening of -X %d, -Y %d, -Z %d\n", x_fd, y_fd, z_fd);
+	 #endif
 	
 	int test;
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
