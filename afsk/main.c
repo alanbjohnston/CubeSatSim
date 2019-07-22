@@ -466,9 +466,9 @@ int get_tlm(int tlm[][5]) {
 			  printf("Read sensor[%d] ", count);
 			#endif
 			setCalibration_16V_400mA(sensor[count]);
-			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
-			voltsBus[count] = getBusVoltage_V(sensor[count]);
 			current[count] = getCurrent_mA(sensor[count]); 
+			voltsBus[count] = getBusVoltage_V(sensor[count]);
+			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			power[count] = getPower_mW(sensor[count]);
 		}
 	    	else
@@ -489,9 +489,9 @@ int get_tlm(int tlm[][5]) {
 		  printf("Read sensor[%d] ", BUS);
 		#endif
 		setCalibration_16V_2A(sensor[BUS]);
-		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
-		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
 		current[BUS] = getCurrent_mA(sensor[BUS]); //  * 4; 
+		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
+		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
 		power[BUS] = getPower_mW(sensor[BUS]); // *2;
 	}
    	else
