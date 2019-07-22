@@ -388,7 +388,8 @@ int upper_digit(int number) {
 }
 
 int get_tlm(int tlm[][5]) {
-  //  Reading I2C voltage and current sensors	
+  //  Reading I2C voltage and current sensors
+/*	
   char cmdbuffer[1000];
   FILE* file = popen("sudo python /home/pi/CubeSatSim/python/readcurrent.py 2>&1", "r"); 
   fgets(cmdbuffer, 999, file);
@@ -409,7 +410,8 @@ int get_tlm(int tlm[][5]) {
     data2 = strtok (NULL, " ");
     i++;
   }	
-
+*/
+	
 // read i2c current sensors //
 // code added back from master
     double x_current, y_current, z_current;	
