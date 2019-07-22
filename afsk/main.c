@@ -98,7 +98,7 @@ uint16_t x_config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 int x_fd;	// I2C bus 0 address 0x40
 int x_powerMultiplier;
 int x_currentDivider;
-uint16_t x_calValue;
+int x_calValue_x;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
@@ -148,11 +148,11 @@ int main(int argc, char *argv[]) {
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
 
-    x_calValue = 4096; //8192;
-    x_powerMultiplier = 2;
-    x_currentDivider = 10;
+    x_calValue_x = 8192;
+    x_powerMultiplier = 1;
+    x_currentDivider = 20;
     x_config = INA219_CONFIG_BVOLTAGERANGE_32V |
-                 INA219_CONFIG_GAIN_8_320MV | // 40MV |
+                 INA219_CONFIG_GAIN_1_40MV | 
                  INA219_CONFIG_BADCRES_12BIT |
                //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
