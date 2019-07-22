@@ -429,7 +429,7 @@ int get_tlm(int tlm[][5]) {
 	z_voltage  = wiringPiI2CReadReg16(z_fd, INA219_REG_BUSVOLTAGE) / 1000;
 	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
      }	
-	printf("-X %4.2f V %4.2f mA power %4.2f mW -Y %4.2f V %4.2f mA %4.2f mW -Z %4.2f V %4.2f mA %4.2f mW \n",
+	printf("-X %4.2f V %4.2fmA %4.2fmW -Y %4.2fV %4.2fmA %4.2fmW -Z %4.2fV %4.2fmA %4.2fmW \n",
 	       x_voltage, x_current, x_power, y_voltage, y_current, y_power, z_voltage, z_current, z_power);
 // end of master code
 	
@@ -453,7 +453,7 @@ int get_tlm(int tlm[][5]) {
 			power[count] = 0;
 		}
     #ifdef DEBUG_LOGGING
-		  printf("voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
+		  printf("%4.2fV %4.2fV %4.2fmA %4.2fmW \n", 
 		       voltsBus[count], voltsShunt[count], current[count], power[count]); 
     #endif
 	}
@@ -474,8 +474,8 @@ int get_tlm(int tlm[][5]) {
 		power[BUS] = 0;
 	}
   #ifdef DEBUG_LOGGING
-	  printf("   sensor[%d] voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
-		       count, voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
+	  printf("%4.2fV %4.2fmA %4.2fmW \n", 
+		       voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
   #endif
 	
 	
