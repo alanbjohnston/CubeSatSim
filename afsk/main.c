@@ -150,7 +150,8 @@ int main(int argc, char *argv[]) {
   #ifdef DEBUG_LOGGING
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
-
+	
+/* start of old master code
     x_calValue_x = 8192;
     x_powerMultiplier = 1;
     x_currentDivider = 20;
@@ -176,6 +177,7 @@ int main(int argc, char *argv[]) {
            fprintf(stderr, "Opening of -X %d, -Y %d, -Z %d\n", x_fd, y_fd, z_fd);
 	 #endif
      }  // moved here	
+end of old code */
 	int test;
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
