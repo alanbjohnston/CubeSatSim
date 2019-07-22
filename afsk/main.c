@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
 
-     if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
+     if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0) 
      {
             fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
             x_fd = OFF;
@@ -169,9 +169,9 @@ int main(int argc, char *argv[]) {
 	    z_fd = OFF;
      } else
      {  
-         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-         y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
-         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40); // switched to 1 from 0
+         y_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41); // switched to 1 from 0
+         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44); // switched to 1 from 0
 	 #ifdef DEBUG_LOGGING
            fprintf(stderr, "Opening of -X %d, -Y %d, -Z %d\n", x_fd, y_fd, z_fd);
 	 #endif
@@ -180,7 +180,7 @@ int main(int argc, char *argv[]) {
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
 		close(test);
-		sensor[PLUS_X] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40);
+		sensor[PLUS_X] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40); 
 		sensor[PLUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41);
 		sensor[PLUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44);
 		sensor[BAT] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x45);
