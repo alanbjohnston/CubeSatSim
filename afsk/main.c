@@ -407,26 +407,30 @@ int get_tlm(int tlm[][5]) {
 
 // read i2c current sensors //
 // code added back from master
-	double x_current = 0, x_power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
+	double x_current = 0, x_voltage = 0, x_power = 0, y_current = 0, y_voltage = 0, y_power = 0,
+							z_current = 0, z_voltage = 0, z_power = 0;	
     if (x_fd != -1) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, x_config);	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	x_current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+	x_voltage  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE) / 1000;	
 	x_power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, x_config);	
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
+	y_voltage  = wiringPiI2CReadReg16(y_fd, INA219_REG_BUSVOLTAGE) / 1000;
 	y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CONFIG, x_config);	
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
+	z_voltage  = wiringPiI2CReadReg16(z_fd, INA219_REG_BUSVOLTAGE) / 1000;
 	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
-    }	
-	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
-	       x_current, x_power, y_current, y_power, z_current, z_power);
+     }	
+	printf("-X %4.2f V %4.2f mA power %4.2f mW -Y %4.2f V %4.2f mA %4.2f mW -Z %4.2f V %4.2f mA %4.2f mW \n",
+	       x_voltage, x_current, x_power, y_voltage, y_current, y_power, z_voltage, z_current, z_power);
 // end of master code
 	
 	int count;
