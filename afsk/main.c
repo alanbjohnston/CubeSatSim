@@ -415,6 +415,7 @@ int get_tlm(int tlm[][5]) {
       double x_voltage, x_power, y_voltage, y_power, z_voltage, z_power;
       uint16_t value;
     #endif
+/* Disable old code 	
     if (x_fd != OFF) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, x_config);	
@@ -451,7 +452,7 @@ int get_tlm(int tlm[][5]) {
 	  printf("-X %+4.2f V %+4.2fmA %+4.2fmW -Y %+4.2fV %+4.2fmA %+4.2fmW -Z %+4.2fV %+4.2fmA %+4.2fmW \n",
 	       x_voltage, x_current, x_power, y_voltage, y_current, y_power, z_voltage, z_current, z_power);
 	#endif
-	
+*/	
 // end of master code
 	
 	int count;
