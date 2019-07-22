@@ -97,7 +97,7 @@ radioafsk: Adafruit_INA219/Adafruit_INA219.h
 
 Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.c
 Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.h
-	cd Adafruit_INA219; gcc -I -pedantic -Wconversion -Wall -Wextra -c Adafruit_INA219.c; cd ..
+	cd Adafruit_INA219; gcc $(DEBUG_BEHAVIOR) -I -pedantic -Wconversion -Wall -Wextra -c Adafruit_INA219.c; cd ..
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
