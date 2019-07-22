@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
 
-     if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0) 
+     if (1) // ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0) // turning off
      {
             fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
             x_fd = OFF;
@@ -175,7 +175,7 @@ int main(int argc, char *argv[]) {
 	 #ifdef DEBUG_LOGGING
            fprintf(stderr, "Opening of -X %d, -Y %d, -Z %d\n", x_fd, y_fd, z_fd);
 	 #endif
-	
+     }  // moved here	
 	int test;
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
@@ -209,7 +209,7 @@ int main(int argc, char *argv[]) {
 		sensor[MINUS_Z] = OFF;
 	}
 //    }   Extra close bracket??
-  }
+//  }  // move up!
 
 // new INA219 current reading code
 /*
