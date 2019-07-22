@@ -406,36 +406,29 @@ int get_tlm(int tlm[][5]) {
   }	
 
 // read i2c current sensors //
-    double x_current = 0, voltage = 0, x_power = 0, y_current = 0, y_voltage, y_power = 0, z_current = 0, z_voltage = 0, z_power = 0;	
+// code added back from master
+	double x_current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
     if (x_fd != -1) {	
-	wireWriteRegister(x_fd, INA219_REG_CALIBRATION, x_calValue);
-	wireWriteRegister(x_fd, INA219_REG_CONFIG, x_config);	
-	    
-     setCalibration_16V_400mA(x_fd);	
-	    
-     int blink; 
-     for (blink = 1; blink < 4 ;blink++) {
-	delay(500);
-	int shuntVolts  = wireReadRegister(x_fd, INA219_REG_SHUNTVOLTAGE); //  * 0.01;
-	     
-	delay(500);
-	int busVolts  = wireReadRegister(x_fd, INA219_REG_BUSVOLTAGE); //  * 0.001;
-	busVolts = (int16_t)((busVolts >> 3) * 4);
-	double volts = busVolts * 0.001 + shuntVolts * 0.01;
-	     
-//	printf("********** -X 0x40 volts %4.2f busvoltage %d shutVoltage %d\n", volts, busVolts, shuntVolts); 
-/*
-        float shuntVolts = getShuntVoltage_mV(x_fd);
-	float busVolts = getBusVoltage_V(x_fd);
-	x_current = getCurrent_mA(x_fd); 
-	x_power = getPower_mW(x_fd);
-	voltage = shuntVolts + busVolts;
-*/	    
-  #ifdef DEBUG_LOGGING
-	  printf("-X 0x40 volts %4.2f busVolts %d shuntVolts %d \n\n", volts, busVolts, shuntVolts); 
-  #endif 
-  }
-     }
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
+	x_current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
+	power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
+	y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
+	y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CONFIG, config);	
+	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
+	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
+	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
+    }	
+	printf("-X 0x40 current %4.2f power %4.2f -Y 0x41 current %4.2f power %4.2f -Z 0x44 current %4.2f power %4.2f \n",
+	       x_current, power, y_current, y_power, z_current, z_power);
+// end of master code
+	
 	int count;
 	for (count = 0; count < 7; count++)
 	{
