@@ -450,7 +450,7 @@ int get_tlm(int tlm[][5]) {
 		}
     #ifdef DEBUG_LOGGING
 		  printf("voltsBus %4.2f voltsShunt %4.2f current %4.2f power %4.2f \n", 
-		       count, voltsBus[count], voltsShunt[count], current[count], power[count]); 
+		       voltsBus[count], voltsShunt[count], current[count], power[count]); 
     #endif
 	}
 	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
