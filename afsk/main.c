@@ -33,7 +33,7 @@
 #include <time.h>
 //#include "ina219.h"
 #include "../Adafruit_INA219/Adafruit_INA219.h"
-
+/*
 #define VBATT 15
 #define ADC5 17
 #define ADC6 18
@@ -42,11 +42,12 @@
 #define TIME 8
 #define UCTEMP 30
 #define UPTIME_SEC 8 
+*/
 #define A 1
 #define B 2
 #define C 3
 #define D 4
-
+/*
 #define SENSOR_40 0
 #define SENSOR_41 3
 #define SENSOR_44 6
@@ -55,6 +56,7 @@
 #define VOLTAGE 0
 #define CURRENTV 1
 #define POWER 2
+*/
 #define VBATT 15
 #define PLUS_X 0
 #define PLUS_Y 1
