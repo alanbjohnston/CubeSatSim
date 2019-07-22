@@ -398,9 +398,9 @@ int get_tlm(int tlm[][5]) {
 
   while (data2 != NULL) {
     strcpy(ina219[i], data2);
-    #ifdef DEBUG_LOGGING
-      printf ("ina219[%d]=%s\n",i,ina219[i]);
-    #endif
+//    #ifdef DEBUG_LOGGING
+//      printf ("ina219[%d]=%s\n",i,ina219[i]);
+//    #endif
     data2 = strtok (NULL, " ");
     i++;
   }	
