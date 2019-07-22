@@ -413,7 +413,7 @@ int get_tlm(int tlm[][5]) {
     double x_current, y_current, z_current;	
     #ifdef DEBUG_LOGGING
       double x_voltage, x_power, y_voltage, y_power, z_voltage, z_power;
-      uint16_t value;
+      int value;
     #endif
     if (x_fd != OFF) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
