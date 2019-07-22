@@ -438,7 +438,7 @@ int get_tlm(int tlm[][5]) {
 	{
 		if (sensor[count] != OFF)
 		{
-			printf("Read sensnsor[%d] ", count);
+			printf("Read sensor[%d] ", count);
 			setCalibration_16V_400mA(sensor[count]);
 			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			voltsBus[count] = getBusVoltage_V(sensor[count]);
@@ -459,7 +459,7 @@ int get_tlm(int tlm[][5]) {
 	}
 	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
 	{
-		printf("Reading of sensnsor[%d] \n", BUS);
+		printf("Reading of sensor[%d] ", BUS);
 		setCalibration_16V_2A(sensor[BUS]);
 		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
 		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
