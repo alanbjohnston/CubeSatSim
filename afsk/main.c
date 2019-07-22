@@ -441,7 +441,7 @@ int get_tlm(int tlm[][5]) {
 	#endif
       }
 	#ifdef DEBUG_LOGGING
-	  printf("-X %4.2f V %4.2fmA %4.2fmW -Y %4.2fV %4.2fmA %4.2fmW -Z %4.2fV %4.2fmA %4.2fmW \n",
+	  printf("-X %+4.2f V %+4.2fmA %+4.2fmW -Y %+4.2fV %+4.2fmA %+4.2fmW -Z %+4.2fV %+4.2fmA %+4.2fmW \n",
 	       x_voltage, x_current, x_power, y_voltage, y_current, y_power, z_voltage, z_current, z_power);
 	#endif
 	
@@ -469,7 +469,7 @@ int get_tlm(int tlm[][5]) {
 			power[count] = 0;
 		}
     #ifdef DEBUG_LOGGING
-		  printf("%4.2fV %4.2fV %4.2fmA %4.2fmW \n", 
+		  printf("%+4.2fV %+4.2fV %+4.2fmA %+4.2fmW \n", 
 		       voltsBus[count], voltsShunt[count], current[count], power[count]); 
     #endif
 	}
@@ -492,7 +492,7 @@ int get_tlm(int tlm[][5]) {
 		power[BUS] = 0;
 	}
   #ifdef DEBUG_LOGGING
-	  printf("%4.2fV %4.2fV %4.2fmA %4.2fmW \n", 
+	  printf("%+4.2fV %+4.2fV %+4.2fmA %+4.2fmW \n", 
 		       voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
   #endif
 	
