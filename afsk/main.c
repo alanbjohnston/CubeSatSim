@@ -474,7 +474,7 @@ int get_tlm(int tlm[][5]) {
 		power[BUS] = 0;
 	}
   #ifdef DEBUG_LOGGING
-	  printf("%4.2fV %4.2fmA %4.2fmW \n", 
+	  printf("%4.2fV %4.2fV %4.2fmA %4.2fmW \n", 
 		       voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
   #endif
 	
