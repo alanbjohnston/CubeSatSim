@@ -67,6 +67,7 @@
 #define MINUS_Z 6
 #define BUS 7
 #define OFF -1
+
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
 
@@ -140,7 +141,7 @@ int main(int argc, char *argv[]) {
   if (file_i2c < 0)
   {
     fprintf(stderr,"ERROR: /dev/ic2-3 bus not present\n");
-    tempSensor = -1;
+    tempSensor = OFF;
   } else
   {
     tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
@@ -163,9 +164,9 @@ int main(int argc, char *argv[]) {
      if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
      {
             fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
-            x_fd = -1;
-	    y_fd = -1;
-	    z_fd = -1;
+            x_fd = OFF;
+	    y_fd = OFF;
+	    z_fd = OFF;
      } else
      {  
          x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
@@ -413,7 +414,7 @@ int get_tlm(int tlm[][5]) {
     #ifdef DEBUG_LOGGING
       double x_voltage, x_power, y_voltage, y_power, z_voltage, z_power;
     #endif
-    if (x_fd != -1) {	
+    if (x_fd != OFF) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, x_config);	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
@@ -541,7 +542,7 @@ int get_tlm(int tlm[][5]) {
 //	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
 	tlm[3][B] = (int)(voltsBus[BUS] * 10.0) % 100;      // 5V supply to Pi
 		   	
-  if (tempSensor != -1) {
+  if (tempSensor != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
 
     uint8_t upper = (uint8_t) (tempValue >> 8);
