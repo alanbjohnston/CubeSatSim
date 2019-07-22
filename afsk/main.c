@@ -428,9 +428,12 @@ int get_tlm(int tlm[][5]) {
 	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
 	z_voltage  = wiringPiI2CReadReg16(z_fd, INA219_REG_BUSVOLTAGE) / 1000;
 	z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
-     }	
-	printf("-X %4.2f V %4.2fmA %4.2fmW -Y %4.2fV %4.2fmA %4.2fmW -Z %4.2fV %4.2fmA %4.2fmW \n",
+     }
+	#ifdef DEBUG_LOGGING
+	  printf("-X %4.2f V %4.2fmA %4.2fmW -Y %4.2fV %4.2fmA %4.2fmW -Z %4.2fV %4.2fmA %4.2fmW \n",
 	       x_voltage, x_current, x_power, y_voltage, y_current, y_power, z_voltage, z_current, z_power);
+	#endif
+	
 // end of master code
 	
 	int count;
@@ -438,7 +441,9 @@ int get_tlm(int tlm[][5]) {
 	{
 		if (sensor[count] != OFF)
 		{
-			printf("Read sensor[%d] ", count);
+   			#ifdef DEBUG_LOGGING
+			  printf("Read sensor[%d] ", count);
+			#endif
 			setCalibration_16V_400mA(sensor[count]);
 			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
 			voltsBus[count] = getBusVoltage_V(sensor[count]);
@@ -459,7 +464,9 @@ int get_tlm(int tlm[][5]) {
 	}
 	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
 	{
-		printf("Reading of sensor[%d] ", BUS);
+    		#ifdef DEBUG_LOGGING
+		  printf("Read sensor[%d] ", BUS);
+		#endif
 		setCalibration_16V_2A(sensor[BUS]);
 		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
 		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
