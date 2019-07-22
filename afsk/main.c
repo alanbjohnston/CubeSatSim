@@ -413,7 +413,7 @@ int get_tlm(int tlm[][5]) {
     double x_current, y_current, z_current;	
     #ifdef DEBUG_LOGGING
       double x_voltage, x_power, y_voltage, y_power, z_voltage, z_power;
-      int value;
+      uint16_t value;
     #endif
     if (x_fd != OFF) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
@@ -422,7 +422,7 @@ int get_tlm(int tlm[][5]) {
 	x_current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
         #ifdef DEBUG_LOGGING
 //	  x_voltage  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE) / 1000;
-	  value = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE);
+	  value = (uint16_t)wireReadRegister(x_fd, INA219_REG_BUSVOLTAGE);
 	  x_voltage  =  ((double)(value >> 3) * 4) / 1000;
 	  x_power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	#endif
@@ -431,7 +431,9 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	y_current  = wiringPiI2CReadReg16(y_fd, INA219_REG_CURRENT) / x_currentDivider;
 	#ifdef DEBUG_LOGGING
-	  y_voltage  = wiringPiI2CReadReg16(y_fd, INA219_REG_BUSVOLTAGE) / 1000;
+//	  y_voltage  = wiringPiI2CReadReg16(y_fd, INA219_REG_BUSVOLTAGE) / 1000;
+	  value = (uint16_t)wireReadRegister(y_fd, INA219_REG_BUSVOLTAGE);
+	  y_voltage  =  ((double)(value >> 3) * 4) / 1000;
 	  y_power  = wiringPiI2CReadReg16(y_fd, INA219_REG_POWER) * x_powerMultiplier;
 	#endif
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
@@ -439,7 +441,9 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(z_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	z_current  = wiringPiI2CReadReg16(z_fd, INA219_REG_CURRENT) / x_currentDivider;
 	#ifdef DEBUG_LOGGING
-	  z_voltage  = wiringPiI2CReadReg16(z_fd, INA219_REG_BUSVOLTAGE) / 1000;
+//	  z_voltage  = wiringPiI2CReadReg16(z_fd, INA219_REG_BUSVOLTAGE) / 1000;
+	  value = (uint16_t)wireReadRegister(z_fd, INA219_REG_BUSVOLTAGE);
+	  z_voltage  =  ((double)(value >> 3) * 4) / 1000;
 	  z_power  = wiringPiI2CReadReg16(z_fd, INA219_REG_POWER) * x_powerMultiplier;
 	#endif
       }
