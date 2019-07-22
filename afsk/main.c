@@ -161,7 +161,7 @@ int main(int argc, char *argv[]) {
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
 
-     if (1) // ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0) // turning off
+     if ((file_i2c = open("/dev/i2c-0", O_RDWR)) < 0)
      {
             fprintf(stderr,"ERROR: /dev/ic2-0 bus not present\n");
             x_fd = OFF;
@@ -169,9 +169,9 @@ int main(int argc, char *argv[]) {
 	    z_fd = OFF;
      } else
      {  
-         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40); // switched to 1 from 0
-         y_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41); // switched to 1 from 0
-         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44); // switched to 1 from 0
+         x_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
+         y_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
+         z_fd  = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
 	 #ifdef DEBUG_LOGGING
            fprintf(stderr, "Opening of -X %d, -Y %d, -Z %d\n", x_fd, y_fd, z_fd);
 	 #endif
@@ -413,6 +413,7 @@ int get_tlm(int tlm[][5]) {
     double x_current, y_current, z_current;	
     #ifdef DEBUG_LOGGING
       double x_voltage, x_power, y_voltage, y_power, z_voltage, z_power;
+      uint16_t value;
     #endif
     if (x_fd != OFF) {	
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
@@ -420,7 +421,9 @@ int get_tlm(int tlm[][5]) {
 	wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, x_calValue_x);
 	x_current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / x_currentDivider;
         #ifdef DEBUG_LOGGING
-	  x_voltage  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE) / 1000;	
+//	  x_voltage  = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE) / 1000;
+	  value = wiringPiI2CReadReg16(x_fd, INA219_REG_BUSVOLTAGE);
+	  x_voltage  =  ((double)(value >> 3) * 4) / 1000;
 	  x_power  = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * x_powerMultiplier;	
 	#endif
 	wiringPiI2CWriteReg16(y_fd, INA219_REG_CALIBRATION, x_calValue_x);
