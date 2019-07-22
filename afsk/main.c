@@ -526,14 +526,15 @@ int get_tlm(int tlm[][5]) {
 		   	
   if (tempSensor != -1) {
     int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
-    #ifdef DEBUG_LOGGING
-      printf("Temp Sensor Read: %x\n", tempValue);
-    #endif
 
     uint8_t upper = (uint8_t) (tempValue >> 8);
     uint8_t lower = (uint8_t) (tempValue & 0xff);
     float temp = (float)lower + ((float)upper / 0x100);
-
+	  
+    #ifdef DEBUG_LOGGING
+      printf("Temp Sensor Read: %6.1f\n", temp);
+    #endif
+	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
   }
   
