@@ -538,7 +538,7 @@ int get_tlm(int tlm[][5]) {
 	
     		#ifdef DEBUG_LOGGING
 	      	  printf("%+4.2fV %+4.2fmA %+4.2fmW \n", 
-		       sensor[count].volts, sensor[count].current, sensor[count].power); 
+		       data[count].volts, data[count].current, data[count].power); 
    	        #endif
 	}
 	    
