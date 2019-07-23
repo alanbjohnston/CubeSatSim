@@ -422,7 +422,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 	
       printf("##############    val: %d", val);
 	
-      if(val & (1 << len - 1))
+      if(val & (1 << (len - 1)))
          val = val - (1 << len);
       printf("len: %d  return: %d \n", len, val);
 
