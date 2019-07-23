@@ -40,7 +40,7 @@ server_hostname="localhost" # If this contains an incorrect value, the web UI ma
 max_clients=20
 
 # ==== Web GUI configuration ====
-receiver_name="AMSAT CubeSat Simulator Ground Station"
+receiver_name="ARISS Ground Station"
 receiver_location=""
 receiver_qra=""
 receiver_asl=0
@@ -49,7 +49,7 @@ receiver_device="RTL-SDR"
 receiver_admin="ku2y@amsat.org"
 receiver_gps=(39.0302,-77.0747)
 photo_height=350
-photo_title="Panorama of Budapest from Schönherz Zoltán Dormitory"
+photo_title="ARISS - Amateur Radio on the International Space Station"
 photo_desc="""
 You can add your own background photo and receiver information.<br />
 Receiver is operated by: <a href="mailto:%[RX_ADMIN]">%[RX_ADMIN]</a><br/>

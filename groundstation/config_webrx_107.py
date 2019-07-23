@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 """
 config_webrx: configuration options for OpenWebRX
@@ -40,7 +40,7 @@ server_hostname="localhost" # If this contains an incorrect value, the web UI ma
 max_clients=20
 
 # ==== Web GUI configuration ====
-receiver_name="AMSAT CubeSat Simulator Ground Station"
+receiver_name="ARISS Ground Station"
 receiver_location=""
 receiver_qra=""
 receiver_asl=0
@@ -49,7 +49,7 @@ receiver_device="RTL-SDR"
 receiver_admin="ku2y@amsat.org"
 receiver_gps=(39.0302,-77.0747)
 photo_height=350
-photo_title="Panorama of Budapest from Schönherz Zoltán Dormitory"
+photo_title="ARISS - Amateur Radio on the International Space Station"
 photo_desc="""
 You can add your own background photo and receiver information.<br />
 Receiver is operated by: <a href="mailto:%[RX_ADMIN]">%[RX_ADMIN]</a><br/>
@@ -71,9 +71,9 @@ fft_fps=9
 fft_size=4096 #Should be power of 2
 fft_voverlap_factor=0.3 #If fft_voverlap_factor is above 0, multiple FFTs will be used for creating a line on the diagram.
 
-samp_rate = 250000
-# samp_rate = 2400000
-center_freq = 440450000
+#samp_rate = 250000
+samp_rate = 2400000
+center_freq = 107000000
 rf_gain = 37 #in dB. For an RTL-SDR, rf_gain=0 will set the tuner to auto gain mode, else it will be in manual gain mode.
 ppm = 0
 
