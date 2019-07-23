@@ -142,10 +142,16 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     if (sensor.fd < 0) {
         return data;
     }
-    
-    data.current = 2000 / sensor.currentDivider;
-    data.voltage = 10;
-    data.power = 3 * sensor.powerMultiplier;
+	
+    wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, sensor.calValue);
+    wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, sensor.config);	
+    wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, sensor.calValue);
+    data.current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / sensor.currentDivider;
+    #ifdef DEBUG_LOGGING
+      value = (uint16_t)wireReadRegister(x_fd, INA219_REG_BUSVOLTAGE);
+      data.voltage  =  ((double)(value >> 3) * 4) / 1000;
+      data.power   = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * sensor.powerMultiplier;	
+    #endif
 
     return data;
 }
@@ -169,7 +175,7 @@ struct SensorConfig config_sensor(int sensor) {
 
 
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-struct SensorData data[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2float 
+struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2float 
 voltsBus[8];
 float voltsShunt[8];
 float current[8];
@@ -535,11 +541,11 @@ int get_tlm(int tlm[][5]) {
   		#ifdef DEBUG_LOGGING
 		  printf("Read sensor[%d] ", count);
 		#endif
-		data[count] = read_sensor_data(sensor[count]);
+		reading[count] = read_sensor_data(sensor[count]);
 	
     		#ifdef DEBUG_LOGGING
 	      	  printf("%+4.2fV %+4.2fmA %+4.2fmW \n", 
-		       data[count].voltage, data[count].current, data[count].power); 
+		       reading[count].voltage, reading[count].current, reading[count].power); 
    	        #endif
 	}
 	    
@@ -565,28 +571,28 @@ int get_tlm(int tlm[][5]) {
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 //	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
-	tlm[1][A] = (int)(voltsBus[BUS] / 15 + 0.5) % 100;  // Current of 5V supply to Pi
+	tlm[1][A] = (int)(reading[BUS].voltage / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 //	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
-	tlm[1][B] = (int) (99.5 - current[PLUS_X]/10) % 100;  // +X current [4]
+	tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10) % 100;  // +X current [4]
 //	tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
-	tlm[1][C] = (int) (99.5 - current[MINUS_X]/10) % 100;  			// X- current [10] 
+	tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10) % 100;  			// X- current [10] 
 //	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
-	tlm[1][D] = (int) (99.5 - current[PLUS_Y]/10) % 100;  // +Y current [7]
+	tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10) % 100;  // +Y current [7]
 	
 //	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
-	tlm[2][A] = (int) (99.5 - current[MINUS_Y]/10) % 100;  			// -Y current [10] 
+	tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10) % 100;  			// -Y current [10] 
 //	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENTV], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-	tlm[2][B] = (int) (99.5 - current[PLUS_Z]/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+	tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
 //	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
-	tlm[2][C] = (int) (99.5 - current[MINUS_Z]/10) % 100;  			// -Z current (was timestamp)
+	tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10) % 100;  			// -Z current (was timestamp)
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 //	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENTV], NULL)/10.0) % 100;   // NiMH Battery current
-	tlm[2][D] = (int)(50.5 + current[BAT]/10.0) % 100;   // NiMH Battery current
+	tlm[2][D] = (int)(50.5 + reading[BAT].current/10.0) % 100;   // NiMH Battery current
 	
 //	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
-	tlm[3][A] = abs((int)((voltsBus[BAT] * 10) - 65.5) % 100);
+	tlm[3][A] = abs((int)((reading[BAT].voltage * 10) - 65.5) % 100);
 //	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
-	tlm[3][B] = (int)(voltsBus[BUS] * 10.0) % 100;      // 5V supply to Pi
+	tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
 		   	
   if (tempSensor != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
