@@ -136,7 +136,7 @@ struct SensorData {
 struct SensorData read_sensor_data(struct SensorConfig sensor) {
     struct SensorData data = {
         .current = NAN,
-        .voltage = NAN
+        .voltage = NAN,
         .power = NAN    };
 
     if (sensor.fd < 0) {
