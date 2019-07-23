@@ -143,7 +143,7 @@ struct SensorConfig config_sensor(int sensor, int milliAmps) {
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
 struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
 
-/char src_addr[5] = "";
+char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
