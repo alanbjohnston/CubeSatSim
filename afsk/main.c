@@ -336,7 +336,7 @@ int get_tlm(int tlm[][5]) {
   {
     reading[count] = read_sensor_data(sensor[count]);	
     #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] %+4.2fV %+4.2fmA %+4.2fmW \n", 
+      printf("Read sensor[%d] % 05.1fV % 05.1fmA % 05.1fmW \n", 
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
