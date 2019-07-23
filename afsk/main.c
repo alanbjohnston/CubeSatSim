@@ -156,7 +156,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     return data;
 }
 
-struct SensorConfig config_sensor(int sensor) {
+struct SensorConfig config_sensor(int sensor, int milliAmps) {
     struct SensorConfig data;
 	
     data.fd = sensor;	
@@ -166,10 +166,16 @@ struct SensorConfig config_sensor(int sensor) {
                //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;;
-    data.calValue = 8192;    
-    data.powerMultiplier = 2;
-    data.currentDivider = 20;
-	
+    if (milliAmps = 400) {	// 16V 400mA configuration
+      data.calValue = 8192;    
+      data.powerMultiplier = 1;  // 2;
+      data.currentDivider = 40;  // 20;
+    }
+    else  {                     // 16V 2A configuration
+      data.calValue = 40960;    
+      data.powerMultiplier = 2;  // 2;
+      data.currentDivider = 20;  // 20;
+    }	
     return data;
 }
 
@@ -254,11 +260,11 @@ end of old code */
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
 		close(test);
-		sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40)); 
-		sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41));
-		sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44));
-		sensor[BAT] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45));
-		sensor[BUS] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a));
+		sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40) 400); 
+		sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41) 400);
+		sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44) 400);
+		sensor[BAT] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45) 400);
+		sensor[BUS] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a), 2400);
 	} else
 	{
 		printf("ERROR: /dev/i2c-1 not present \n");
@@ -271,9 +277,9 @@ end of old code */
 	if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
 	{
 		close(test);
-		sensor[MINUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x40));
-		sensor[MINUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x41));
-		sensor[MINUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x44));
+		sensor[MINUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x40), 400);
+		sensor[MINUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x41), 400);
+		sensor[MINUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x44), 400);
 
 	} else
 	{
@@ -285,7 +291,9 @@ end of old code */
     	#ifdef DEBUG_LOGGING
 	   printf("Sensor[0] config %d %d %d %d %d\n", 
 	       sensor[0].fd, sensor[0].config, sensor[0].calValue, sensor[0].currentDivider, sensor[0].powerMultiplier); 
-   	#endif
+ 	   printf("Sensor[BUS] config %d %d %d %d %d\n", 
+	       sensor[BUS].fd, sensor[BUS].config, sensor[BUS].calValue, sensor[BUS].currentDivider, sensor[BUS].powerMultiplier); 
+  	#endif
 // new INA219 current reading code
 /*
   x_calValue = 8192;
