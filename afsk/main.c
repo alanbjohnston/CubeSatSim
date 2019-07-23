@@ -112,11 +112,11 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-    uint16_t valuec2 = (uint16_t)valuec1;
+    //uint16_t valuec2 = (uint16_t)valuec1;
     int twos = twosToInt(valuec1, 16);
     float valuec3  = (float)(twos);
     data.current  = valuec3 / (float)sensor.currentDivider;
-    printf("****** valuec1 %d   valuec2 %d  valuec3 %f  current %f  two's %d \n", valuec1, valuec2, valuec3, data.current, twos);
+    //printf("****** valuec1 %d   valuec2 %d  valuec3 %f  current %f  two's %d \n", valuec1, valuec2, valuec3, data.current, twos);
 			
 	/*	
     int16_t value0  = 1; // (int16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
@@ -419,12 +419,13 @@ int get_tlm(int tlm[][5]) {
 }
 
 int twosToInt(int val,int len) {   // Convert twos compliment to integer
+// from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
 	
-      printf("##############    val: %d", val);
+//      printf("##############    val: %d", val);
 	
       if(val & (1 << (len - 1)))
          val = val - (1 << len);
-      printf("len: %d  return: %d \n", len, val);
+//      printf("len: %d  return: %d \n", len, val);
 
       return(val);
 }		 
