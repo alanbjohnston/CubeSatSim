@@ -169,7 +169,8 @@ struct SensorConfig config_sensor(int sensor) {
 
 
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-struct SensorData data[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2float voltsBus[8];
+struct SensorData data[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2float 
+voltsBus[8];
 float voltsShunt[8];
 float current[8];
 float power[8];
@@ -538,7 +539,7 @@ int get_tlm(int tlm[][5]) {
 	
     		#ifdef DEBUG_LOGGING
 	      	  printf("%+4.2fV %+4.2fmA %+4.2fmW \n", 
-		       data[count].volts, data[count].current, data[count].power); 
+		       data[count].voltage, data[count].current, data[count].power); 
    	        #endif
 	}
 	    
