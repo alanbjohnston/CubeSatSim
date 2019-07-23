@@ -91,9 +91,9 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
 
     memcpy(__tx_buffer, hax25->addr_field, hax25->addr_field_len);
     memcpy(__tx_buffer + hax25->addr_field_len, payload, len);
-        
-        printf("\n");
-
+   
+#ifdef SATNOGS
+    printf("\n");
     char post_data[1024];
     char hex_data[512];
     char hex_octet[4];
@@ -107,16 +107,12 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     for(jj = 0; jj < 118; jj++) {
         sprintf(hex_octet, "%02x",__tx_buffer[jj]);
         strcat(hex_data, hex_octet); 
-    }
-    //memset(post_data,0,strlen(post_data));
-    //printf("2:%s\n",post_data);
-
-    //sprintf(post_data,"curl --data \"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0\" https://db.satnogs.org/api/telemetry/", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, tm.tm_hour + 4, tm.tm_min, tm.tm_sec, hex_data);
+    }  // Note assumes EDT, change offset (+4) to UTC 
     sprintf(post_data,"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, (tm.tm_hour + 4) % 24, tm.tm_min, tm.tm_sec, hex_data);
-    //printf("%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0\" https://db.satnogs.org/api/telemetry/\n\n", hex_data);
-     printf("curl post data: %s\n",post_data);
 
-     CURL *curl;
+        printf("curl post data: %s\n",post_data);
+
+  CURL *curl;
   CURLcode res;
  
   curl_global_init(CURL_GLOBAL_ALL);
@@ -137,12 +133,13 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     res = curl_easy_perform(curl);
     /* Check for errors */ 
     if(res != CURLE_OK)
-      fprintf(stderr, "curl_easy_perform() failed: %s\n",
-              curl_easy_strerror(res));
+      fprintf(stderr, "ERROR: AX25.C curl_easy_perform() failed: %s\n",
+                        curl_easy_strerror(res));
  
     /* always cleanup */ 
     curl_easy_cleanup(curl); 
-    }
+  }
+#endif        
 
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
             hax25->preamble_len, hax25->postable_len, 1000);
