@@ -113,8 +113,8 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //    data.current  = (float)((int16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT)) / (float)sensor.currentDivider;
     int16_t value = (int16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));
     data.current  = (float)value / (float)sensor.currentDivider;;
-    uint16_t value = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
-    data.voltage  =  ((double)(value >> 3) * 4) / 1000;
+    uint16_t value2 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
+    data.voltage  =  ((double)(value2 >> 3) * 4) / 1000;
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;	
 
     return data;
