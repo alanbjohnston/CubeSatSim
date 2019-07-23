@@ -268,11 +268,11 @@ end of old code */
 	} else
 	{
 		printf("ERROR: /dev/i2c-1 not present \n");
-		sensor[PLUS_X] = config_sensor(OFF);
-		sensor[PLUS_Y] = config_sensor(OFF);
-		sensor[PLUS_Z] = config_sensor(OFF);
-		sensor[BAT] = config_sensor(OFF);
-		sensor[BUS] = config_sensor(OFF);
+		sensor[PLUS_X] = config_sensor(OFF, 0);
+		sensor[PLUS_Y] = config_sensor(OFF, 0);
+		sensor[PLUS_Z] = config_sensor(OFF, 0);
+		sensor[BAT] = config_sensor(OFF, 0);
+		sensor[BUS] = config_sensor(OFF, 0);
 	}
 	if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
 	{
@@ -284,9 +284,9 @@ end of old code */
 	} else
 	{
 		printf("ERROR: /dev/i2c-0 not present \n");
-		sensor[MINUS_X] = config_sensor(OFF);
-		sensor[MINUS_Y] = config_sensor(OFF);
-		sensor[MINUS_Z] = config_sensor(OFF);
+		sensor[MINUS_X] = config_sensor(OFF, 0);
+		sensor[MINUS_Y] = config_sensor(OFF, 0);
+		sensor[MINUS_Z] = config_sensor(OFF, 0);
 	}
     	#ifdef DEBUG_LOGGING
 	   printf("Sensor[0] config %d %d %d %d %d\n", 
