@@ -173,8 +173,8 @@ struct SensorConfig config_sensor(int sensor, int milliAmps) {
                     INA219_CONFIG_SADCRES_12BIT_1S_532US |
                     INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
       data.calValue = 8192;    
-      data.powerMultiplier = 1;  // 2;
-      data.currentDivider = 40;  // 20;
+      data.powerMultiplier = 1; 
+      data.currentDivider = 20;  // 40; in Adafruit config
     }
     else  {                     // 16V 2A configuration
       data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
@@ -183,7 +183,7 @@ struct SensorConfig config_sensor(int sensor, int milliAmps) {
                     INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;	    
       data.calValue = 40960;    
       data.powerMultiplier = 2;  // 2;
-      data.currentDivider = 20;  // 20;
+      data.currentDivider = 10;  // 20; in Adafruit config
     }	
     return data;
 }
