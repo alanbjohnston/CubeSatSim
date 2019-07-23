@@ -175,8 +175,8 @@ struct SensorConfig config_sensor(int sensor) {
 
 
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2float 
-voltsBus[8];
+struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
+float voltsBus[8];
 float voltsShunt[8];
 float current[8];
 float power[8];
