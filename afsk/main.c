@@ -114,7 +114,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
     uint16_t valuec2 = (uint16_t)valuec1;
     int twos = twosToInt(valuec1, 16);
-    float valuec3  = (float)(valuec2);
+    float valuec3  = (float)(twos);
     data.current  = valuec2 / (float)sensor.currentDivider;
     printf("****** valuec1 %d   valuec2 %d  valuec3 %f  current %f  two's %d \n", valuec1, valuec2, valuec3, data.current, twos);
 			
