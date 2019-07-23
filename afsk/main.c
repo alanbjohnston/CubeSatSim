@@ -160,18 +160,27 @@ struct SensorConfig config_sensor(int sensor, int milliAmps) {
     struct SensorConfig data;
 	
     data.fd = sensor;	
-    data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
+/*    data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
                  INA219_CONFIG_GAIN_1_40MV | 
                  INA219_CONFIG_BADCRES_12BIT |
                //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;;
+*/		 
     if (milliAmps == 400) {	// 16V 400mA configuration
+      data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
+                    INA219_CONFIG_GAIN_1_40MV | INA219_CONFIG_BADCRES_12BIT |
+                    INA219_CONFIG_SADCRES_12BIT_1S_532US |
+                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
       data.calValue = 8192;    
       data.powerMultiplier = 1;  // 2;
       data.currentDivider = 40;  // 20;
     }
     else  {                     // 16V 2A configuration
+      data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
+                    INA219_CONFIG_GAIN_1_40MV | INA219_CONFIG_BADCRES_12BIT |
+                    INA219_CONFIG_SADCRES_12BIT_1S_532US |
+                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;	    
       data.calValue = 40960;    
       data.powerMultiplier = 2;  // 2;
       data.currentDivider = 20;  // 20;
