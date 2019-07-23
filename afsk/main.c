@@ -166,7 +166,7 @@ struct SensorConfig config_sensor(int sensor, int milliAmps) {
                //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;;
-    if (milliAmps = 400) {	// 16V 400mA configuration
+    if (milliAmps == 400) {	// 16V 400mA configuration
       data.calValue = 8192;    
       data.powerMultiplier = 1;  // 2;
       data.currentDivider = 40;  // 20;
@@ -260,10 +260,10 @@ end of old code */
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
 		close(test);
-		sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40) 400); 
-		sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41) 400);
-		sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44) 400);
-		sensor[BAT] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45) 400);
+		sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40), 400); 
+		sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41), 400);
+		sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44), 400);
+		sensor[BAT] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45), 400);
 		sensor[BUS] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a), 2400);
 	} else
 	{
