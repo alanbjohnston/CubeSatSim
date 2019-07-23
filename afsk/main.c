@@ -105,10 +105,20 @@ int x_calValue_x;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
 
-struct SensorData {
-    double power;
-    double current;
+struct SensorConfig {
+    int fd;
+    uint16_t  config;
+    int calValue;    
+    int powerMultiplier;
+    int currentDivider;
 };
+
+struct SensorData {
+    double current;
+    double voltage;
+    double power;
+};
+
 
 /**
  * @brief Read the data from one of the i2c current sensors.
@@ -123,27 +133,43 @@ struct SensorData {
  * @param sensor A file descriptor that can be used to read from the sensor.
  * @return struct SensorData A struct that contains the power and current reading from the requested sensor.
  */
-struct SensorData read_sensor_data(int sensor) {
+struct SensorData read_sensor_data(struct SensorConfig sensor) {
     struct SensorData data = {
-        .power = NAN,
-        .current = NAN
-    };
+        .current = NAN,
+        .voltage = NAN
+        .power = NAN    };
 
-    if (sensor < 0) {
+    if (sensor.fd < 0) {
         return data;
     }
-
-    wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
-    wiringPiI2CWriteReg16(sensor, INA219_REG_CONFIG, config);
-    wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
-    data.current = wiringPiI2CReadReg16(sensor, INA219_REG_CURRENT) / x_currentDivider;
-    data.power = wiringPiI2CReadReg16(sensor, INA219_REG_POWER) * x_powerMultiplier;
+    
+    data.current = 2000 / sensor.currentDivider;
+    data.voltage = 10;
+    data.power = 3 * sensor.powerMultiplier;
 
     return data;
 }
 
-int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-float voltsBus[8];
+struct SensorConfig config_sensor(int sensor) {
+    struct SensorConfig data;
+	
+    data.fd = sensor;	
+    data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
+                 INA219_CONFIG_GAIN_1_40MV | 
+                 INA219_CONFIG_BADCRES_12BIT |
+               //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
+               INA219_CONFIG_SADCRES_12BIT_1S_532US |
+                 INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;;
+    data.calValue = 8192;    
+    data.powerMultiplier = 2;
+    data.currentDivider = 20;
+	
+    return data;
+}
+
+
+struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
+struct SensorData data[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2float voltsBus[8];
 float voltsShunt[8];
 float current[8];
 float power[8];
@@ -189,7 +215,7 @@ int main(int argc, char *argv[]) {
   #ifdef DEBUG_LOGGING
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
-	
+		
 /* start of old master code
     x_calValue_x = 8192;
     x_powerMultiplier = 1;
@@ -221,37 +247,38 @@ end of old code */
 	if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
 	{
 		close(test);
-		sensor[PLUS_X] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x40); 
-		sensor[PLUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x41);
-		sensor[PLUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x44);
-		sensor[BAT] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x45);
-		sensor[BUS] = wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a);
+		sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40)); 
+		sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41));
+		sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44));
+		sensor[BAT] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45));
+		sensor[BUS] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a));
 	} else
 	{
 		printf("ERROR: /dev/i2c-1 not present \n");
-		sensor[PLUS_X] = OFF;
-		sensor[PLUS_Y] = OFF;
-		sensor[PLUS_Z] = OFF;
-		sensor[BAT] = OFF;
-		sensor[BUS] = OFF;
+		sensor[PLUS_X] = config_sensor(OFF);
+		sensor[PLUS_Y] = config_sensor(OFF);
+		sensor[PLUS_Z] = config_sensor(OFF);
+		sensor[BAT] = config_sensor(OFF);
+		sensor[BUS] = config_sensor(OFF);
 	}
 	if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
 	{
 		close(test);
-		sensor[MINUS_X] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x40);
-		sensor[MINUS_Y] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x41);
-		sensor[MINUS_Z] = wiringPiI2CSetupInterface("/dev/i2c-0", 0x44);
+		sensor[MINUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x40));
+		sensor[MINUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x41));
+		sensor[MINUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x44));
 
 	} else
 	{
 		printf("ERROR: /dev/i2c-0 not present \n");
-		sensor[MINUS_X] = OFF;
-		sensor[MINUS_Y] = OFF;
-		sensor[MINUS_Z] = OFF;
+		sensor[MINUS_X] = config_sensor(OFF);
+		sensor[MINUS_Y] = config_sensor(OFF);
+		sensor[MINUS_Z] = config_sensor(OFF);
 	}
-//    }   Extra close bracket??
-//  }  // move up!
-
+    	#ifdef DEBUG_LOGGING
+	   printf("Sensor[0] config %d %d %d %d %d\n", 
+	       sensor[0].fd, sensor[0].config, sensor[0].calValue, sensor[0].currentDivider, sensor[0].powerMultiplier); 
+   	#endif
 // new INA219 current reading code
 /*
   x_calValue = 8192;
@@ -497,61 +524,23 @@ int get_tlm(int tlm[][5]) {
 	#endif
 */	
 
-    struct SensorData x_data = read_sensor_data(x_fd);
-    struct SensorData y_data = read_sensor_data(y_fd);
-    struct SensorData z_data = read_sensor_data(z_fd);
+ //   struct SensorData x_data = read_sensor_data(x_fd);
+ //   struct SensorData y_data = read_sensor_data(y_fd);
+ //   struct SensorData z_data = read_sensor_data(z_fd);
 	
 	int count;
-	for (count = 0; count < 7; count++)
+	for (count = 0; count < 8; count++)
 	{
-		if (sensor[count] != OFF)
-		{
-   			#ifdef DEBUG_LOGGING
-			  printf("Read sensor[%d] ", count);
-			#endif
-			setCalibration_16V_400mA(sensor[count]);
-			current[count] = getCurrent_mA(sensor[count]); 
-			voltsBus[count] = getBusVoltage_V(sensor[count]);
-			voltsShunt[count] = getShuntVoltage_mV(sensor[count])/1000;
-			power[count] = getPower_mW(sensor[count]);
-		}
-	    	else
-		{
-			voltsShunt[count] = 0;
-			voltsBus[count] = 0;
-			current[count] = 0;
-			power[count] = 0;
-		}
-    #ifdef DEBUG_LOGGING
-		  printf("%+4.2fV %+4.2fV %+4.2fmA %+4.2fmW \n", 
-		       voltsBus[count], voltsShunt[count], current[count], power[count]); 
-    #endif
-	}
-	if (sensor[BUS] != OFF)  // For MoPower V2 INA219
-	{
-    		#ifdef DEBUG_LOGGING
-		  printf("Read sensor[%d] ", BUS);
+  		#ifdef DEBUG_LOGGING
+		  printf("Read sensor[%d] ", count);
 		#endif
-		setCalibration_16V_2A(sensor[BUS]);
-		current[BUS] = getCurrent_mA(sensor[BUS]); //  * 4; 
-		voltsBus[BUS] = getBusVoltage_V(sensor[BUS]);
-		voltsShunt[BUS] = getShuntVoltage_mV(sensor[BUS])/1000;
-		power[BUS] = getPower_mW(sensor[BUS]); // *2;
+		data[count] = read_sensor_data(sensor[count]);
+	
+    		#ifdef DEBUG_LOGGING
+	      	  printf("%+4.2fV %+4.2fmA %+4.2fmW \n", 
+		       sensor[count].volts, sensor[count].current, sensor[count].power); 
+   	        #endif
 	}
-   	else
-	{
-		voltsShunt[BUS] = 0;
-		voltsBus[BUS] = 0;
-		current[BUS] = 0;
-		power[BUS] = 0;
-	}
-  #ifdef DEBUG_LOGGING
-	  printf("%+4.2fV %+4.2fV %+4.2fmA %+4.2fmW \n", 
-		       voltsBus[BUS], voltsShunt[BUS], current[BUS], power[BUS]); 				       
-  #endif
-	
-	
-	
 	    
 //	delay(500);
  //     }	
