@@ -536,14 +536,17 @@ int get_tlm(int tlm[][5]) {
 	tlm[1][A] = (int)(voltsBus[BUS] / 15 + 0.5) % 100;  // Current of 5V supply to Pi
 //	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
 	tlm[1][B] = (int) (99.5 - current[PLUS_X]/10) % 100;  // +X current [4]
-	tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
+//	tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
+	tlm[1][C] = (int) (99.5 - current[MINUS_X]/10) % 100;  			// X- current [10] 
 //	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
 	tlm[1][D] = (int) (99.5 - current[PLUS_Y]/10) % 100;  // +Y current [7]
 	
-	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
+//	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
+	tlm[2][A] = (int) (99.5 - current[MINUS_Y]/10) % 100;  			// -Y current [10] 
 //	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENTV], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
 	tlm[2][B] = (int) (99.5 - current[PLUS_Z]/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
+//	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
+	tlm[2][C] = (int) (99.5 - current[MINUS_Z]/10) % 100;  			// -Z current (was timestamp)
 	
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 //	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENTV], NULL)/10.0) % 100;   // NiMH Battery current
