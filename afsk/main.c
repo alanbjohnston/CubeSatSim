@@ -110,7 +110,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
-    int16_t valuec1  = (wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+    int16_t valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
     float valuec3  = (float)(valuec2);
     data.current  = valuec3 / (float)sensor.currentDivider;
     printf("****** valuec1 %d   valuec2 %f  valuec3 %f \n", valuec1, valuec2, valuec3);
