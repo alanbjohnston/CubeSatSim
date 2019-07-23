@@ -112,7 +112,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
     uint16_t valuec2 = (uint16_t)valuec1;
-    int twos = ((2 ^ 16) - valuec2) * (-1);
+    int twos = twosToInt(valuec2, 16);
     float valuec3  = (float)(valuec2);
     data.current  = valuec2 / (float)sensor.currentDivider;
     printf("****** valuec1 %d   valuec2 %d  valuec3 %f  current %f  two's %d \n", valuec1, valuec2, valuec3, data.current, twos);
@@ -416,3 +416,14 @@ int get_tlm(int tlm[][5]) {
 
   return 0;
 }
+
+int twosToInt( val, len) {   // Convert twos compliment to integer
+	
+      printf("##############    val: %d", val);
+	
+      if(val & (1 << len - 1))
+         val = val - (1 << len);
+      printf("len: %d  return: %d \n", len, val);
+
+      return(val);
+}		 
