@@ -31,7 +31,7 @@
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <time.h>
-//#include "ina219.h"
+#include <math.h>
 #include "../Adafruit_INA219/Adafruit_INA219.h"
 /*
 #define VBATT 15
@@ -104,6 +104,44 @@ int x_currentDivider;
 int x_calValue_x;
 int y_fd;	// I2C bus 0 address 0x41
 int z_fd; 	// I2C bos 0 address 0x44
+
+struct SensorData {
+    double power;
+    double current;
+};
+
+/**
+ * @brief Read the data from one of the i2c current sensors.
+ *
+ * Reads the current data from the requested i2c current sensor and
+ * stores it into a SensorData struct. An invalid file descriptor (i.e. less than zero)
+ * results in a SensorData struct being returned that has both its #current and #power members
+ * set to NAN.
+ *
+ * WARNING: This function currently relies on the global variables x_calValue, config, x_currentDivider, and x_powerMultiplier.
+ *
+ * @param sensor A file descriptor that can be used to read from the sensor.
+ * @return struct SensorData A struct that contains the power and current reading from the requested sensor.
+ */
+struct SensorData read_sensor_data(int sensor) {
+    struct SensorData data = {
+        .power = NAN,
+        .current = NAN
+    };
+
+    if (sensor < 0) {
+        return data;
+    }
+
+    wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
+    wiringPiI2CWriteReg16(sensor, INA219_REG_CONFIG, config);
+    wiringPiI2CWriteReg16(sensor, INA219_REG_CALIBRATION, x_calValue);
+    data.current = wiringPiI2CReadReg16(sensor, INA219_REG_CURRENT) / x_currentDivider;
+    data.power = wiringPiI2CReadReg16(sensor, INA219_REG_POWER) * x_powerMultiplier;
+
+    return data;
+}
+
 int sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
 float voltsBus[8];
 float voltsShunt[8];
@@ -115,8 +153,9 @@ char dest_addr[5] = "CQ";
 int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
-	strcpy(src_addr, argv[1]);  
+	  strcpy(src_addr, argv[1]);  
   }
+
   wiringPiSetup () ;
   pinMode (0, OUTPUT) ;
   int blink;
@@ -457,7 +496,10 @@ int get_tlm(int tlm[][5]) {
 	       x_voltage, x_current, x_power, y_voltage, y_current, y_power, z_voltage, z_current, z_power);
 	#endif
 */	
-// end of master code
+
+    struct SensorData x_data = read_sensor_data(x_fd);
+    struct SensorData y_data = read_sensor_data(y_fd);
+    struct SensorData z_data = read_sensor_data(z_fd);
 	
 	int count;
 	for (count = 0; count < 7; count++)
@@ -547,7 +589,6 @@ int get_tlm(int tlm[][5]) {
 	tlm[2][B] = (int) (99.5 - current[PLUS_Z]/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
 //	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
 	tlm[2][C] = (int) (99.5 - current[MINUS_Z]/10) % 100;  			// -Z current (was timestamp)
-	
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 //	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENTV], NULL)/10.0) % 100;   // NiMH Battery current
 	tlm[2][D] = (int)(50.5 + current[BAT]/10.0) % 100;   // NiMH Battery current
