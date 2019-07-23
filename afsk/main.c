@@ -56,6 +56,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 static void init_rf();
+int twosToInt( val, len);
 int get_tlm(int tlm[][5]);
 long int timestamp;
 void config_x25();
