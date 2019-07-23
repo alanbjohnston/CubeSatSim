@@ -147,54 +147,53 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     data.current  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT) / sensor.currentDivider;
-    #ifdef DEBUG_LOGGING
-      uint16_t value = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
-      data.voltage  =  ((double)(value >> 3) * 4) / 1000;
-      data.power   = wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * sensor.powerMultiplier;	
-    #endif
+    uint16_t value = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
+    data.voltage  =  ((double)(value >> 3) * 4) / 1000;
+    data.power   = wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * sensor.powerMultiplier;	
 
     return data;
 }
-
 struct SensorConfig config_sensor(int sensor, int milliAmps) {
     struct SensorConfig data;
 	
     data.fd = sensor;	
-/*    data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
+    data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
                  INA219_CONFIG_GAIN_1_40MV | 
                  INA219_CONFIG_BADCRES_12BIT |
                //  INA219_CONFIG_SADCRES_12BIT_4S_2130US |
                INA219_CONFIG_SADCRES_12BIT_1S_532US |
                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;;
-*/		 
+		 
     if (milliAmps == 400) {	// 16V 400mA configuration
-      data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
+/*      data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
                     INA219_CONFIG_GAIN_1_40MV | INA219_CONFIG_BADCRES_12BIT |
                     INA219_CONFIG_SADCRES_12BIT_1S_532US |
-                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
+                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS; */
       data.calValue = 8192;    
       data.powerMultiplier = 1; 
       data.currentDivider = 20;  // 40; in Adafruit config
     }
     else  {                     // 16V 2A configuration
-      data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
+/*      data.config = INA219_CONFIG_BVOLTAGERANGE_16V |
                     INA219_CONFIG_GAIN_1_40MV | INA219_CONFIG_BADCRES_12BIT |
                     INA219_CONFIG_SADCRES_12BIT_1S_532US |
-                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;	    
+                    INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;	 */   
       data.calValue = 40960;    
-      data.powerMultiplier = 2;  // 2;
+      data.powerMultiplier = 2;  
       data.currentDivider = 10;  // 20; in Adafruit config
     }	
     return data;
 }
 
-
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
 struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
+
+/*
 float voltsBus[8];
 float voltsShunt[8];
 float current[8];
 float power[8];
+*/
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 
@@ -204,15 +203,15 @@ int main(int argc, char *argv[]) {
 	  strcpy(src_addr, argv[1]);  
   }
 
-  wiringPiSetup () ;
-  pinMode (0, OUTPUT) ;
-  int blink;
-  for (blink = 1; blink < 4 ;blink++)
-  {
-    digitalWrite (0, HIGH) ; delay (500) ;
-    digitalWrite (0,  LOW) ; delay (500) ;
-  }
-  digitalWrite (0, HIGH) ; 
+  wiringPiSetup ();
+  pinMode (0, OUTPUT);
+//  int blink;
+//  for (blink = 1; blink < 4 ;blink++)
+//  {
+//    digitalWrite (0, HIGH) ; delay (500) ;
+//    digitalWrite (0,  LOW) ; delay (500) ;
+//  }
+//  digitalWrite (0, HIGH) ; 
   
   setSpiChannel(SPI_CHANNEL);
   setSpiSpeed(SPI_SPEED);
@@ -272,16 +271,16 @@ end of old code */
 		sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40), 400); 
 		sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41), 400);
 		sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44), 400);
-		sensor[BAT] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45), 400);
-		sensor[BUS] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a), 2400);
+		sensor[BAT]    = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45), 400);
+		sensor[BUS]    = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a), 2400);
 	} else
 	{
 		printf("ERROR: /dev/i2c-1 not present \n");
 		sensor[PLUS_X] = config_sensor(OFF, 0);
 		sensor[PLUS_Y] = config_sensor(OFF, 0);
 		sensor[PLUS_Z] = config_sensor(OFF, 0);
-		sensor[BAT] = config_sensor(OFF, 0);
-		sensor[BUS] = config_sensor(OFF, 0);
+		sensor[BAT]    = config_sensor(OFF, 0);
+		sensor[BUS]    = config_sensor(OFF, 0);
 	}
 	if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
 	{
@@ -555,14 +554,10 @@ int get_tlm(int tlm[][5]) {
 	int count;
 	for (count = 0; count < 8; count++)
 	{
-  		#ifdef DEBUG_LOGGING
-		  printf("Read sensor[%d] ", count);
-		#endif
-		reading[count] = read_sensor_data(sensor[count]);
-	
+		reading[count] = read_sensor_data(sensor[count]);	
     		#ifdef DEBUG_LOGGING
-	      	  printf("%+4.2fV %+4.2fmA %+4.2fmW \n", 
-		       reading[count].voltage, reading[count].current, reading[count].power); 
+	      	  printf("Read sensor[%d] %+4.2fV %+4.2fmA %+4.2fmW \n", 
+		       count, reading[count].voltage, reading[count].current, reading[count].power); 
    	        #endif
 	}
 	    
@@ -588,32 +583,31 @@ int get_tlm(int tlm[][5]) {
 //	printf("1B: ina219[%d]: %s val: %f \n", SENSOR_40 + CURRENT, ina219[SENSOR_40 + CURRENT], strtof(ina219[SENSOR_40 + CURRENT], NULL));
 
 //	tlm[1][A] = (int)(strtof(ina219[SENSOR_4A + CURRENTV], NULL) / 15 + 0.5) % 100;  // Current of 5V supply to Pi
-	tlm[1][A] = (int)(reading[BUS].voltage / 15 + 0.5) % 100;  // Current of 5V supply to Pi
+	tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
 //	tlm[1][B] = (int) (99.5 - strtof(ina219[SENSOR_40 + CURRENTV], NULL)/10) % 100;  // +X current [4]
-	tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10) % 100;  // +X current [4]
+	tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
 //	tlm[1][C] = (int) (99.5 - x_current/10) % 100;  			// X- current [10] 
-	tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10) % 100;  			// X- current [10] 
+	tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
 //	tlm[1][D] = (int) (99.5 - strtof(ina219[SENSOR_41 + CURRENTV], NULL)/10) % 100;  // +Y current [7]
-	tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10) % 100;  // +Y current [7]
+	tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10.0) % 100;  // +Y current [7]
 	
 //	tlm[2][A] = (int) (99.5 - y_current/10) % 100;  			// -Y current [10] 
-	tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10) % 100;  			// -Y current [10] 
+	tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10.0) % 100;  			// -Y current [10] 
 //	tlm[2][B] = (int) (99.5 - strtof(ina219[SENSOR_44 + CURRENTV], NULL)/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-	tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+	tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
 //	tlm[2][C] = (int) (99.5 - z_current/10) % 100;  			// -Z current (was timestamp)
-	tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10) % 100;  			// -Z current (was timestamp)
+	tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10.0) % 100;  			// -Z current (was timestamp)
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 //	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENTV], NULL)/10.0) % 100;   // NiMH Battery current
 	tlm[2][D] = (int)(50.5 + reading[BAT].current/10.0) % 100;   // NiMH Battery current
 	
 //	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
-	tlm[3][A] = abs((int)((reading[BAT].voltage * 10) - 65.5) % 100);
+	tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
 //	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
 	tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
 		   	
   if (tempSensor != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
-
     uint8_t upper = (uint8_t) (tempValue >> 8);
     uint8_t lower = (uint8_t) (tempValue & 0xff);
     float temp = (float)lower + ((float)upper / 0x100);
@@ -630,9 +624,11 @@ int get_tlm(int tlm[][5]) {
 		double cpuTemp;
 		fscanf (cpuTempSensor, "%lf", &cpuTemp);
 		cpuTemp /= 1000;
+	  
     #ifdef DEBUG_LOGGING
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
+	  
     tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
 		fclose (cpuTempSensor);
   }
