@@ -143,14 +143,14 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
         return data;
     }
 	
-    wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, sensor.calValue);
-    wiringPiI2CWriteReg16(x_fd, INA219_REG_CONFIG, sensor.config);	
-    wiringPiI2CWriteReg16(x_fd, INA219_REG_CALIBRATION, sensor.calValue);
-    data.current  = wiringPiI2CReadReg16(x_fd, INA219_REG_CURRENT) / sensor.currentDivider;
+    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
+    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
+    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
+    data.current  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT) / sensor.currentDivider;
     #ifdef DEBUG_LOGGING
-      value = (uint16_t)wireReadRegister(x_fd, INA219_REG_BUSVOLTAGE);
+      uint16_t value = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
       data.voltage  =  ((double)(value >> 3) * 4) / 1000;
-      data.power   = wiringPiI2CReadReg16(x_fd, INA219_REG_POWER) * sensor.powerMultiplier;	
+      data.power   = wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * sensor.powerMultiplier;	
     #endif
 
     return data;
