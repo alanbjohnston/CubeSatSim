@@ -134,7 +134,6 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     data.voltage  =  ((double)(valueV >> 3) * 4) / 1000;
 	
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;
-
     return data;
 }
 
