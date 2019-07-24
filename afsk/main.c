@@ -117,7 +117,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
     float valuec3  = (float)(twos);
     data.current  = valuec3 / (float)sensor.currentDivider;
-    uint16_t value2 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
+    uint16_t value2 = (uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_BUSVOLTAGE);
     data.voltage  =  ((double)(value2 >> 3) * 4) / 1000;
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;	
 
