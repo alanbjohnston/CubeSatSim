@@ -144,10 +144,11 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
       data.currentDivider = 10;  // 20; in Adafruit config
     }	
 	
-    #ifdef DEBUG_LOGGING
-	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
-	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
-    #endif	
+    //#ifdef DEBUG_LOGGING
+//	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
+//	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
+	printf("Sensor %s %x configuration: %d %d %d %d %d | ", bus, address); 
+    //#endif	
     return data;
 }
 
@@ -165,13 +166,26 @@ int main(int argc, char *argv[]) {
   
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400);
+  read_sensor_data(sensor[]);
+  printf("+X | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+	        PLUS_X, reading[PLUS_X].voltage, reading[PLUS_X].current, reading[PLUS_X].power); 	
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  read_sensor_data(sensor[]);
+  printf("+Y | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+	      PLUS_Y , reading[PLUS_Y].voltage, reading[PLUS_Y].current, reading[PLUS_Y].power); 	
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+//  read_sensor_data(sensor[]);
+//  printf("+ | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+//	        , reading[].voltage, reading[].current, reading[].power); 	
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+	
   sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
+	
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
+	
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
+	
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
 
 //  Reading I2C voltage and current sensors
