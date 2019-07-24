@@ -17,6 +17,9 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire code
+ *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
 #include <fcntl.h>                              
@@ -32,7 +35,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include <math.h>
-#include "../Adafruit_INA219/Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
+#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
 
 #define A 1
 #define B 2
@@ -416,11 +419,8 @@ int get_tlm(int tlm[][5]) {
 int twosToInt(int val,int len) {   // Convert twos compliment to integer
 // from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
 	
-//      printf("##############    val: %d", val);
-	
       if(val & (1 << (len - 1)))
          val = val - (1 << len);
-//      printf("len: %d  return: %d \n", len, val);
 
       return(val);
 }		 
