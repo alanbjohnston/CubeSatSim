@@ -147,7 +147,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     //#ifdef DEBUG_LOGGING
 //	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
 //	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
-	printf("Sensor %s %x configuration: %d %d %d %d %d | ", bus, address); 
+	printf("Sensor %s %x | ", bus, address); 
     //#endif	
     return data;
 }
@@ -167,11 +167,11 @@ int main(int argc, char *argv[]) {
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400);
-  read_sensor_data(sensor[]);
+  read_sensor_data(sensor[PLUS_X]);
   printf("+X | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 	        PLUS_X, reading[PLUS_X].voltage, reading[PLUS_X].current, reading[PLUS_X].power); 	
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  read_sensor_data(sensor[]);
+  read_sensor_data(sensor[PLUS_Y]);
   printf("+Y | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 	      PLUS_Y , reading[PLUS_Y].voltage, reading[PLUS_Y].current, reading[PLUS_Y].power); 	
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
