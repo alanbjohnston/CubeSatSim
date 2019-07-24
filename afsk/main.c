@@ -142,6 +142,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
     if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
+	    printf("ERROR: % bus not present \n", bus);
 	    data.fd = OFF;
 	    return (data);
     }
@@ -164,6 +165,11 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
       data.powerMultiplier = 2;  
       data.currentDivider = 10;  // 20; in Adafruit config
     }	
+	
+    #ifdef DEBUG_LOGGING
+	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd
+	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
+    #endif	
     return data;
 }
 
@@ -191,6 +197,8 @@ int main(int argc, char *argv[]) {
 
   timestamp = time(NULL);
 
+  tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
+/*	
   int file_i2c = access("/dev/i2c-3", W_OK | R_OK);
  
   if (file_i2c < 0)
@@ -201,7 +209,8 @@ int main(int argc, char *argv[]) {
   {
     tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
   }
-
+*/
+	
   #ifdef DEBUG_LOGGING
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
@@ -248,13 +257,6 @@ int main(int argc, char *argv[]) {
 	sensor[MINUS_Z] = config_sensor(OFF, 0);
   }
 */
-#ifdef DEBUG_LOGGING
-	printf("Sensor[0] config %d %d %d %d %d\n", 
-	       sensor[0].fd, sensor[0].config, sensor[0].calValue, sensor[0].currentDivider, sensor[0].powerMultiplier); 
- 	printf("Sensor[BUS] config %d %d %d %d %d\n", 
-	       sensor[BUS].fd, sensor[BUS].config, sensor[BUS].calValue, sensor[BUS].currentDivider, sensor[BUS].powerMultiplier); 
-  #endif
-
   int ret;
   uint8_t data[1024];
 
