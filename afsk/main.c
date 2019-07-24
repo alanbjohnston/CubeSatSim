@@ -131,13 +131,6 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //    uint16_t value3 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
 //    data.voltage  =  ((double)(value3 >> 3) * 4) / 1000;
 	
-    wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
-    delay(1); // Max 12-bit conversion time is 586us per sample
-//   uint16_t valueV = (uint16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));	
-//   data.voltage  =  ((double)(valueV >> 3) * 4) / 1000;
-    value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);	
-    data.voltage  =  ((float)(value >> 3) * 4) / 1000;
-	
 //    data.power   = (float) wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * (float) sensor.powerMultiplier;
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);		
@@ -146,6 +139,16 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     delay(1); // Max 12-bit conversion time is 586us per sample	
     value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);		
     data.power   = (float) value * (float) sensor.powerMultiplier;
+	
+    wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
+    delay(1); // Max 12-bit conversion time is 586us per sample
+//   uint16_t valueV = (uint16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));	
+//   data.voltage  =  ((double)(valueV >> 3) * 4) / 1000;
+    value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);	
+    data.voltage  =  ((float)(value >> 3) * 4) / 1000;
+	
+	
+	
     return data;
 }
 
