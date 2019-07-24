@@ -118,9 +118,13 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //    float valuec3  = (float)(twos);
 //    data.current  = valuec3 / (float)sensor.currentDivider;
 
-    uint16_t valuex = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_CURRENT);
+  wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
+  delay(1); // Max 12-bit conversion time is 586us per sample
+  int16_t valuex = (int16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));
+	
+//    uint16_t valuex = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_CURRENT);
     data.current  =  (double)valuex / (double)sensor.currentDivider;
- 
+    printf("&&&&&&&& valuex %d  current %f \n", valuex, data.current);
 
     uint16_t value2 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
     data.voltage  =  ((double)(value2 >> 3) * 4) / 1000;
