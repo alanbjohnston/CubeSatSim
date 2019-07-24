@@ -114,15 +114,15 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
 	
-//    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-//    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
-//    float valuec3  = (float)(twos);
-    delay(50);
-    wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
-    delay(50); // Max 12-bit conversion time is 586us per sample
-    int valueC = ((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));		
-    int twos = twosToInt(valueC, 16);	
+    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
     float valuec3  = (float)(twos);
+//    delay(50);
+//    wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
+//    delay(50); // Max 12-bit conversion time is 586us per sample
+//    int valueC = ((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));		
+//    int twos = twosToInt(valueC, 16);	
+//    float valuec3  = (float)(twos);
     data.current  = valuec3 / (float)sensor.currentDivider;
 	
 //    uint16_t value3 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
