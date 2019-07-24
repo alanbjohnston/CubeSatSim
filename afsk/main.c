@@ -131,6 +131,11 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     data.current  = value1 / (float)sensor.currentDivider; 
     printf("********* value0 %d value1 %f value %d data.current %f \n", value0, value1, value, data.current);
 */    
+    valuec1 = wireReadRegister(sensor.fd, INA219_REG_SHUNTVOLTAGE);
+    twos = twosToInt(valuec1, 16);
+    valuec3 = ((float)twos)/sensor.calValue);
+    printf("@@@@@@@ Register: %d Shunt: %d Calc Current: %f \n", valuec1, twos, valuec3);	
+	
     uint16_t value2 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
     data.voltage  =  ((double)(value2 >> 3) * 4) / 1000;
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;	
