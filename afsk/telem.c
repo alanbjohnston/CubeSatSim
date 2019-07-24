@@ -163,16 +163,16 @@ int main(int argc, char *argv[]) {
   }
 
   wiringPiSetup ();
+		
+  printf"\n");
   
-  tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
-	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400);
   read_sensor_data(sensor[PLUS_X]);
-  printf("+X | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("+X | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 	        PLUS_X, reading[PLUS_X].voltage, reading[PLUS_X].current, reading[PLUS_X].power); 	
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   read_sensor_data(sensor[PLUS_Y]);
-  printf("+Y | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("+Y | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 	      PLUS_Y , reading[PLUS_Y].voltage, reading[PLUS_Y].current, reading[PLUS_Y].power); 	
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
 //  read_sensor_data(sensor[]);
@@ -187,17 +187,10 @@ int main(int argc, char *argv[]) {
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
 	
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
-
-//  Reading I2C voltage and current sensors
-  int count;
-  for (count = 0; count < 8; count++)
-  {
-    reading[count] = read_sensor_data(sensor[count]);	
-//    #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        count, reading[count].voltage, reading[count].current, reading[count].power); 
-//    #endif
-  }
+	
+  tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
+	
+  printf"\n\n");
 
   return 0;
 }
