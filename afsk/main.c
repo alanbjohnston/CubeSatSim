@@ -122,7 +122,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
   delay(1); // Max 12-bit conversion time is 586us per sample
   int value1 = wiringPiI2CRead(sensor.fd);
   int value2 = wiringPiI2CRead(sensor.fd);
-  int16_t valuex = (int16_t)(value1 << 8 ) | value2);
+  int16_t valuex = (int16_t)((value1 << 8) | value2);
 	
 //    uint16_t valuex = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_CURRENT);
     data.current  =  (double)valuex / (double)sensor.currentDivider;
