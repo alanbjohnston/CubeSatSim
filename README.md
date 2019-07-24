@@ -2,6 +2,11 @@
 
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that run on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
+Requires:
+- wiringpi
+- libcurl4-openssl-dev
+- git
+
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W:
 
 `git clone http://github.com/alanbjohnston/CubeSatSim.git`
@@ -12,15 +17,11 @@ Edit the afsk/main.c file to set your amateur radio callsign, then
 
 `make rebuild`
 
-To hear CW telemetry (Morse code), tune your radio or SDR to 435.297 MHz and enter:
-
-`./radiocw`
-
-To stop, Ctrl-C.  To hear AFSK telemetry (X.25 data), your radio or SDR to 440.389 MHz FM, and you should receive telemetry from the CubeSat Sim:
+To hear AFSK telemetry (X.25 data), your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSat Sim:
 
 `./radioafsk`
 
-This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ 
+This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ If you don't have the SPI Interface enabled and the board plugged in, you will get an error.
 
 This repository contains:
      

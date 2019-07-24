@@ -35,7 +35,7 @@
 #include <wiringPi.h>
 #include <time.h>
 #include <math.h>
-#include "../Adafruit_INA219/Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
+#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
 
 #define A 1
 #define B 2
