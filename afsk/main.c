@@ -114,26 +114,31 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
 	
-    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
-    float valuec3  = (float)(twos);
+//    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+//    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
+//    float valuec3  = (float)(twos);
+
 //    delay(50);
 //    wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
 //    delay(50); // Max 12-bit conversion time is 586us per sample
 //    int valueC = ((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));		
 //    int twos = twosToInt(valueC, 16);	
 //    float valuec3  = (float)(twos);
-    data.current  = valuec3 / (float)sensor.currentDivider;
+//    data.current  = valuec3 / (float)sensor.currentDivider;
+    int value  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+    data.current  = (float) twosToInt(value, 16) / (float) sensor.currentDivider;
 	
 //    uint16_t value3 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
 //    data.voltage  =  ((double)(value3 >> 3) * 4) / 1000;
 	
     wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
     delay(1); // Max 12-bit conversion time is 586us per sample
-    uint16_t valueV = (uint16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));	
-    data.voltage  =  ((double)(valueV >> 3) * 4) / 1000;
+//   uint16_t valueV = (uint16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));	
+//   data.voltage  =  ((double)(valueV >> 3) * 4) / 1000;
+    value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);	
+    data.voltage  =  ((float)(value >> 3) * 4) / 1000;
 	
-    data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;
+    data.power   = (float) wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * (float) sensor.powerMultiplier;
     return data;
 }
 
