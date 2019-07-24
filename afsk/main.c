@@ -72,7 +72,7 @@ int upper_digit(int number);
 int lower_digit(int number);
 int charging = 0;
 
-uint16_t x_config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
+//uint16_t x_config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
 struct SensorConfig {
     int fd;
@@ -137,10 +137,17 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
  * @param milliAmps The mA configuration, either 400mA or 2A are supported.
  * @return struct SensorConfig A struct that contains the configuraton of the sensor.
  */
-struct SensorConfig config_sensor(int sensor, int milliAmps) {
+//struct SensorConfig config_sensor(int sensor, int milliAmps) {
+struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
-    data.fd = sensor;	
+    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
+	    data.fd = OFF;
+	    return (data);
+    }
+	
+    data.fd = wiringPiI2CSetupInterface(bus, address);	
+	
     data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
                   INA219_CONFIG_GAIN_1_40MV | 
                   INA219_CONFIG_BADCRES_12BIT |
@@ -198,17 +205,27 @@ int main(int argc, char *argv[]) {
   #ifdef DEBUG_LOGGING
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
-		
+	
+	sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+	sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+	sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+	sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+	sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2400);
+	sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
+	sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
+	sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
+
+/*		
   int test;
   if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
   {
-	close(test);
+        close(test);
 	sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40), 400); 
 	sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41), 400);
 	sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44), 400);
 	sensor[BAT]    = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45), 400);
 	sensor[BUS]    = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a), 2400);
-  } else
+} else
   {
 	printf("ERROR: /dev/i2c-1 not present \n");
 	sensor[PLUS_X] = config_sensor(OFF, 0);
@@ -223,7 +240,6 @@ int main(int argc, char *argv[]) {
 	sensor[MINUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x40), 400);
 	sensor[MINUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x41), 400);
 	sensor[MINUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x44), 400);
-
   } else
   {
 	printf("ERROR: /dev/i2c-0 not present \n");
@@ -231,7 +247,8 @@ int main(int argc, char *argv[]) {
 	sensor[MINUS_Y] = config_sensor(OFF, 0);
 	sensor[MINUS_Z] = config_sensor(OFF, 0);
   }
-  #ifdef DEBUG_LOGGING
+*/
+#ifdef DEBUG_LOGGING
 	printf("Sensor[0] config %d %d %d %d %d\n", 
 	       sensor[0].fd, sensor[0].config, sensor[0].calValue, sensor[0].currentDivider, sensor[0].powerMultiplier); 
  	printf("Sensor[BUS] config %d %d %d %d %d\n", 
