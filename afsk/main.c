@@ -142,7 +142,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
     if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: % bus not present \n", bus);
+	    printf("ERROR: %s bus not present \n", bus);
 	    data.fd = OFF;
 	    return (data);
     }
@@ -167,7 +167,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     }	
 	
     #ifdef DEBUG_LOGGING
-	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd
+	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
 	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
     #endif	
     return data;
