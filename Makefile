@@ -2,11 +2,13 @@ all: DEBUG_BEHAVIOR=
 all: libax5043.a
 all: radioafsk 
 all: radiocw 
+all: telem
 
 debug: DEBUG_BEHAVIOR = -DDEBUG_LOGGING
 debug: libax5043.a
 debug: radioafsk
 debug: radiocw
+debug: telem
 
 rebuild: clean
 rebuild: all
