@@ -28,6 +28,7 @@ clean:
 	rm -f */*/*.o
 	rm -rf ax5043/doc/html
 	rm -rf ax5043/doc/latex
+	rm -f telem
 
 docs:
 	mkdir -p ax5043/doc; cd ax5043; doxygen Doxyfile
@@ -89,12 +90,10 @@ radioafsk: libax5043.a
 radioafsk: afsk/ax25.o
 radioafsk: afsk/ax5043.o
 radioafsk: afsk/main.o
-radioafsk: Adafruit_INA219/Adafruit_INA219.o
-	gcc $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o Adafruit_INA219/Adafruit_INA219.o -lwiringPi -lax5043 -lcurl
+	gcc $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lcurl
 
-Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.c
-Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.h
-	cd Adafruit_INA219; gcc $(DEBUG_BEHAVIOR) -I -pedantic -Wconversion -Wall -Wextra -c Adafruit_INA219.c; cd ..
+telem: afsk/telem.o
+	gcc $(DEBUG_BEHAVIOR) -o telem -pedantic -Wall -Wextra -L./ afsk/telem.o -lwiringPi 
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
@@ -235,8 +234,12 @@ afsk/main.o: afsk/status.h
 afsk/main.o: afsk/ax5043.h
 afsk/main.o: afsk/ax25.h
 afsk/main.o: ax5043/spi/ax5043spi.h
-afsk/main.o: Adafruit_INA219/Adafruit_INA219.h
+afsk/main.o: Adafruit_INA219.h
 	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
+
+afsk/telem.o: afsk/telem.c
+afsk/telem.o: Adafruit_INA219.h
+	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c telem.c; cd ..
 
 afsk/send_afsk.o: afsk/send_afsk.c
 afsk/send_afsk.o: afsk/send_afsk.h
