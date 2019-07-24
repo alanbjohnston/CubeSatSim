@@ -234,11 +234,11 @@ afsk/main.o: afsk/status.h
 afsk/main.o: afsk/ax5043.h
 afsk/main.o: afsk/ax25.h
 afsk/main.o: ax5043/spi/ax5043spi.h
-afsk/main.o: Adafruit_INA219.h
+afsk/main.o: afsk/Adafruit_INA219.h
 	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
 
 afsk/telem.o: afsk/telem.c
-afsk/telem.o: Adafruit_INA219.h
+afsk/telem.o: afsk/Adafruit_INA219.h
 	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c telem.c; cd ..
 
 afsk/send_afsk.o: afsk/send_afsk.c
