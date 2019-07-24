@@ -61,15 +61,10 @@ ax25_conf_t hax25;
 static void init_rf();
 int twosToInt(int val, int len);
 int get_tlm(int tlm[][5]);
-long int timestamp;
 void config_x25();
 void trans_x25();
-
 int upper_digit(int number);
 int lower_digit(int number);
-int charging = 0;
-
-//uint16_t x_config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
 
 struct SensorConfig {
     int fd;
@@ -192,8 +187,6 @@ int main(int argc, char *argv[]) {
 
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
-
-  timestamp = time(NULL);
 
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
