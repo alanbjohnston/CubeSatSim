@@ -50,18 +50,7 @@
 #define BUS 7
 #define OFF -1
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
-uint32_t tx_channel = 0;
-
-ax5043_conf_t hax5043;
-ax25_conf_t hax25;
-
-static void init_rf();
 int twosToInt(int val, int len);
-int get_tlm(int tlm[][5]);
-long int timestamp;
-void config_x25();
-void trans_x25();
 
 struct SensorConfig {
     int fd;
@@ -166,9 +155,6 @@ struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus on
 struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
 struct SensorConfig tempSensor; 
 
-char src_addr[5] = "";
-char dest_addr[5] = "CQ";
-
 int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
@@ -176,7 +162,6 @@ int main(int argc, char *argv[]) {
   }
 
   wiringPiSetup ();
-  pinMode (0, OUTPUT);
   
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
