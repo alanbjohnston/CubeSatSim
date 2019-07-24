@@ -139,7 +139,8 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     data.voltage  =  ((float)(value >> 3) * 4) / 1000;
 	
 //    data.power   = (float) wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * (float) sensor.powerMultiplier;
-
+	a
+    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWrite(sensor.fd, INA219_REG_POWER);
     delay(1); // Max 12-bit conversion time is 586us per sample	
     value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);		
