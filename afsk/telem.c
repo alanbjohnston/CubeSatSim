@@ -207,12 +207,12 @@ int main(int argc, char *argv[]) {
   printf("Bus | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 	        BUS, readingV.voltage, readingV.current, readingV.power);
 	
-  tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
+  sensorV = config_sensor("/dev/i2c-3", 0x48, 0);
 	
   sensorV     = config_sensor("/dev/i2c-1", 0x45, 400);
 	
   if (sensorV.fd != OFF) {
-    int tempValue = wiringPiI2CReadReg16(SensorV.fd, 0); 
+    int tempValue = wiringPiI2CReadReg16(sensorV.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
     uint8_t lower = (uint8_t) (tempValue & 0xff);
     float temp = (float)lower + ((float)upper / 0x100);	  
