@@ -167,13 +167,15 @@ int main(int argc, char *argv[]) {
   printf("\n");
   
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400);
-  read_sensor_data(sensor[PLUS_X]);
+  reading = read_sensor_data(sensor[PLUS_X]);
   printf("+X | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        PLUS_X, reading[PLUS_X].voltage, reading[PLUS_X].current, reading[PLUS_X].power); 	
+	        PLUS_X, reading[PLUS_X].voltage, reading[PLUS_X].current, reading[PLUS_X].power);
+	
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  read_sensor_data(sensor[PLUS_Y]);
+  reading = read_sensor_data(sensor[PLUS_Y]);
   printf("+Y | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	      PLUS_Y , reading[PLUS_Y].voltage, reading[PLUS_Y].current, reading[PLUS_Y].power); 	
+	      PLUS_Y , reading[PLUS_Y].voltage, reading[PLUS_Y].current, reading[PLUS_Y].power);
+	
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
 //  read_sensor_data(sensor[]);
 //  printf("+ | [%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
