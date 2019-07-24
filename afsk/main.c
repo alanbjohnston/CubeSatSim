@@ -196,65 +196,16 @@ int main(int argc, char *argv[]) {
   timestamp = time(NULL);
 
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
-/*	
-  int file_i2c = access("/dev/i2c-3", W_OK | R_OK);
- 
-  if (file_i2c < 0)
-  {
-    fprintf(stderr,"ERROR: /dev/ic2-3 bus not present\n");
-    tempSensor = OFF;
-  } else
-  {
-    tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-  }
-*/
-/*	
-  #ifdef DEBUG_LOGGING
-      fprintf(stderr,"tempSensor: %d \n",tempSensor);	
-  #endif
-*/	
-	sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
-	sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-	sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
-	sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
-	sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2400);
-	sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
-	sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
-	sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
+	
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
 
-/*		
-  int test;
-  if (((test = open("/dev/i2c-1", O_RDWR))) > 0)  // Test if I2C Bus 1 is present
-  {
-        close(test);
-	sensor[PLUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x40), 400); 
-	sensor[PLUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x41), 400);
-	sensor[PLUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x44), 400);
-	sensor[BAT]    = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x45), 400);
-	sensor[BUS]    = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-1", 0x4a), 2400);
-} else
-  {
-	printf("ERROR: /dev/i2c-1 not present \n");
-	sensor[PLUS_X] = config_sensor(OFF, 0);
-	sensor[PLUS_Y] = config_sensor(OFF, 0);
-	sensor[PLUS_Z] = config_sensor(OFF, 0);
-	sensor[BAT]    = config_sensor(OFF, 0);
-	sensor[BUS]    = config_sensor(OFF, 0);
-  }
-  if (((test = open("/dev/i2c-0", O_RDWR))) > 0)  // Test if I2C Bus 0 is present
-  {
-	close(test);
-	sensor[MINUS_X] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x40), 400);
-	sensor[MINUS_Y] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x41), 400);
-	sensor[MINUS_Z] = config_sensor(wiringPiI2CSetupInterface("/dev/i2c-0", 0x44), 400);
-  } else
-  {
-	printf("ERROR: /dev/i2c-0 not present \n");
-	sensor[MINUS_X] = config_sensor(OFF, 0);
-	sensor[MINUS_Y] = config_sensor(OFF, 0);
-	sensor[MINUS_Z] = config_sensor(OFF, 0);
-  }
-*/
   int ret;
   uint8_t data[1024];
 
@@ -285,7 +236,6 @@ int main(int argc, char *argv[]) {
 
     char header_str[] = "\x03\xf0hi hi ";
     strcpy(str, header_str);
- //   printf("%s-1>CQ-1:hi hi ", CALLSIGN);     
     printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
 
 	  
