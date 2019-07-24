@@ -117,7 +117,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
 //    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
 //    float valuec3  = (float)(twos);
-
+    delay(50);
     wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
     delay(1); // Max 12-bit conversion time is 586us per sample
     int valueC = ((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));		
