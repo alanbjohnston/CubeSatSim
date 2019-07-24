@@ -18,7 +18,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define SATNOGS;
 #include <curl/curl.h>
 #include "ax25.h"
 #include <string.h>
