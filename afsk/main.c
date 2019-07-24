@@ -85,18 +85,17 @@ struct SensorData {
     double power;
 };
 
-
 /**
  * @brief Read the data from one of the i2c current sensors.
  *
- * Reads the current data from the requested i2c current sensor and
+ * Reads the current data from the requested i2c current sensor configuration and
  * stores it into a SensorData struct. An invalid file descriptor (i.e. less than zero)
  * results in a SensorData struct being returned that has both its #current and #power members
  * set to NAN.
  *
- *
- * @param sensor A file descriptor that can be used to read from the sensor.
- * @return struct SensorData A struct that contains the power and current reading from the requested sensor.
+ * @param sensor A structure containing sensor configuration including the file descriptor.
+ * @return struct SensorData A struct that contains the current, voltage, and power readings
+ * from the requested sensor.
  */
 struct SensorData read_sensor_data(struct SensorConfig sensor) {
     struct SensorData data = {
@@ -112,36 +111,27 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-    //uint16_t valuec2 = (uint16_t)valuec1;
-    int twos = twosToInt(valuec1, 16);
+    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
     float valuec3  = (float)(twos);
     data.current  = valuec3 / (float)sensor.currentDivider;
-    //printf("****** valuec1 %d   valuec2 %d  valuec3 %f  current %f  two's %d \n", valuec1, valuec2, valuec3, data.current, twos);
-			
-	/*	
-    int16_t value0  = 1; // (int16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-    wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
-    delay(1); // Max 12-bit conversion time is 586us per sample	
-    int byte = wiringPiI2CRead(sensor.fd);
-    delay(1); // Max 12-bit conversion time is 586us per sample	
-   //int16_t value = (int16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));
-  //int16_t value = (( ((int16_t)byte) << 8 ) | (int16_t)wiringPiI2CRead (sensor.fd));
-    int16_t value = (int16_t)(( ((uint8_t)byte) << 8 ) | (uint8_t)wiringPiI2CRead (sensor.fd));
-    float value1 = (float) value;	
-    data.current  = value1 / (float)sensor.currentDivider; 
-    printf("********* value0 %d value1 %f value %d data.current %f \n", value0, value1, value, data.current);
-*/    
-    valuec1 = wireReadRegister(sensor.fd, INA219_REG_SHUNTVOLTAGE);
-    twos = twosToInt(valuec1, 16);
-    valuec3 = ((float)twos) * (float) sensor.calValue / 4096.0;
-    printf("@@@@@@@ Register: %d Shunt: %d Calc Current: %f \n", valuec1, twos, valuec3);	
-	
     uint16_t value2 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
     data.voltage  =  ((double)(value2 >> 3) * 4) / 1000;
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;	
 
     return data;
 }
+
+/**
+ * @brief Configures an i2c current sensor.
+ *
+ * Calculates the configuration values of the i2c sensor so that
+ * current, voltage, and power can be read using read_sensor_data.
+ * Supports 16V 400mA and 16V 2.0A settings.
+ *
+ * @param sensor A file descriptor that can be used to read from the sensor.
+ * @param milliAmps The mA configuration, either 400mA or 2A are supported.
+ * @return struct SensorConfig A struct that contains the configuraton of the sensor.
+ */
 struct SensorConfig config_sensor(int sensor, int milliAmps) {
     struct SensorConfig data;
 	
