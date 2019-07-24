@@ -113,21 +113,10 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
-//    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-//    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
-//    float valuec3  = (float)(twos);
-//    data.current  = valuec3 / (float)sensor.currentDivider;
-
-  wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
-  delay(1); // Max 12-bit conversion time is 586us per sample
-  int value1 = wiringPiI2CRead(sensor.fd);
-  int value2 = wiringPiI2CRead(sensor.fd);
-  int16_t valuex = (int16_t)((value1 << 8) | value2);
-	
-//    uint16_t valuex = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_CURRENT);
-    data.current  =  (double)valuex / (double)sensor.currentDivider;
-    printf("&&&&&&&& value1 %d  value2 %d  valuex %d  current %f \n", value1, value2, valuex, data.current);
-
+    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
+    float valuec3  = (float)(twos);
+    data.current  = valuec3 / (float)sensor.currentDivider;
     uint16_t value3 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
     data.voltage  =  ((double)(value3 >> 3) * 4) / 1000;
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;	
