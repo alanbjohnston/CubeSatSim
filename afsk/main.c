@@ -113,25 +113,24 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
-    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
-    float valuec3  = (float)(twos);
+	
+//    int valuec1  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+//    int twos = twosToInt(valuec1, 16);  // currently doesn't read negative currents correctly
+//    float valuec3  = (float)(twos);
+
+    wiringPiI2CWrite(sensor.fd, INA219_REG_CURRENT);
+    delay(1); // Max 12-bit conversion time is 586us per sample
+    int16_t valueC = (int16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));		
+		
+    float valuec3  = (float)(valueC);
     data.current  = valuec3 / (float)sensor.currentDivider;
 	
 //    uint16_t value3 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
 //    data.voltage  =  ((double)(value3 >> 3) * 4) / 1000;
 	
-  // _i2c->beginTransmission(ina219_i2caddr);
- // _i2c->write(reg); // Register
- // _i2c->endTransmission();
-  wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
-  
-  delay(1); // Max 12-bit conversion time is 586us per sample
-
-  // _i2c->requestFrom(ina219_i2caddr, (uint8_t)2);
-  // Shift values to create properly formed integer
- // *value = ((_i2c->read() << 8) | _i2c->read());
-  uint16_t valueV = (uint16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));	
+    wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
+    delay(1); // Max 12-bit conversion time is 586us per sample
+    uint16_t valueV = (uint16_t)((wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd));	
     data.voltage  =  ((double)(valueV >> 3) * 4) / 1000;
 	
     data.power   = (float)((uint16_t)wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER)) * (float)sensor.powerMultiplier;
