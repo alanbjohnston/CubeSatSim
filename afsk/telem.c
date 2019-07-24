@@ -174,7 +174,16 @@ int main(int argc, char *argv[]) {
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
 
-
+//  Reading I2C voltage and current sensors
+  int count;
+  for (count = 0; count < 8; count++)
+  {
+    reading[count] = read_sensor_data(sensor[count]);	
+//    #ifdef DEBUG_LOGGING
+      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+//    #endif
+  }
 
   return 0;
 }
