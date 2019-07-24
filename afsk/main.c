@@ -65,9 +65,6 @@ long int timestamp;
 void config_x25();
 void trans_x25();
 
-//long int timestamp;
-int tempSensor; 
-
 int upper_digit(int number);
 int lower_digit(int number);
 int charging = 0;
@@ -175,6 +172,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
 struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
+struct tempSensor; 
 
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
@@ -210,11 +208,11 @@ int main(int argc, char *argv[]) {
     tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
   }
 */
-	
+/*	
   #ifdef DEBUG_LOGGING
       fprintf(stderr,"tempSensor: %d \n",tempSensor);	
   #endif
-	
+*/	
 	sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
 	sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
 	sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
@@ -393,8 +391,8 @@ int get_tlm(int tlm[][5]) {
   tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
 		   	
-  if (tempSensor != OFF) {
-    int tempValue = wiringPiI2CReadReg16(tempSensor, 0); 
+  if (tempSensor.fd != OFF) {
+    int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
     uint8_t lower = (uint8_t) (tempValue & 0xff);
     float temp = (float)lower + ((float)upper / 0x100);
