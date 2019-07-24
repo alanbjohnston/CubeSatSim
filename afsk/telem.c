@@ -168,49 +168,46 @@ int main(int argc, char *argv[]) {
   
   sensorV = config_sensor("/dev/i2c-1", 0x40, 400);
   readingV = read_sensor_data(sensorV);
-  printf("+X  | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("+X  | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        PLUS_X, readingV.voltage, readingV.current, readingV.power);
 	
   sensorV  = config_sensor("/dev/i2c-1", 0x41, 400);
   readingV = read_sensor_data(sensorV);
-  printf("+Y  | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("+Y  | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        PLUS_Y, readingV.voltage, readingV.current, readingV.power);
 	
   sensorV  = config_sensor("/dev/i2c-1", 0x44, 400);
   readingV = read_sensor_data(sensorV);
-  printf("+Z  | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("+Z  | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        PLUS_Z, readingV.voltage, readingV.current, readingV.power);
 	
   sensorV = config_sensor("/dev/i2c-0", 0x40, 400);
   readingV = read_sensor_data(sensorV);
-  printf("-X  | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("-X  | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        MINUS_X, readingV.voltage, readingV.current, readingV.power);
 		
   sensorV = config_sensor("/dev/i2c-0", 0x41, 400);
   readingV = read_sensor_data(sensorV);
-  printf("-Y  | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("-Y  | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        MINUS_Y, readingV.voltage, readingV.current, readingV.power);
 		
   sensorV = config_sensor("/dev/i2c-0", 0x44, 400); 
   readingV = read_sensor_data(sensorV);
-  printf("-Z  | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("-Z  | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        MINUS_Z, readingV.voltage, readingV.current, readingV.power);
 
 		
   sensorV     = config_sensor("/dev/i2c-1", 0x45, 400);
   readingV = read_sensor_data(sensorV);
-  printf("Bat | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("Bat | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        BAT, readingV.voltage, readingV.current, readingV.power);
 		
   sensorV     = config_sensor("/dev/i2c-1", 0x4a, 2000);
   readingV = read_sensor_data(sensorV);
-  printf("Bus | sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+  printf("Bus | sensor[%d] % 4.2fV % 6.1fmA %  6.1fmW \n", 
 	        BUS, readingV.voltage, readingV.current, readingV.power);
 	
   sensorV = config_sensor("/dev/i2c-3", 0x48, 0);
-	
-  sensorV     = config_sensor("/dev/i2c-1", 0x45, 400);
-	
   if (sensorV.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(sensorV.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
