@@ -164,7 +164,7 @@ int main(int argc, char *argv[]) {
 
   wiringPiSetup ();
 		
-  printf"\n");
+  printf("\n");
   
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400);
   read_sensor_data(sensor[PLUS_X]);
@@ -190,7 +190,7 @@ int main(int argc, char *argv[]) {
 	
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
-  printf"\n\n");
+  printf("\n\n");
 
   return 0;
 }
