@@ -89,7 +89,12 @@ radioafsk: libax5043.a
 radioafsk: afsk/ax25.o
 radioafsk: afsk/ax5043.o
 radioafsk: afsk/main.o
-	gcc $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lcurl
+radioafsk: Adafruit_INA219/Adafruit_INA219.o
+	gcc $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o Adafruit_INA219/Adafruit_INA219.o -lwiringPi -lax5043 -lcurl
+
+Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.c
+Adafruit_INA219/Adafruit_INA219.o: Adafruit_INA219/Adafruit_INA219.h
+	cd Adafruit_INA219; gcc $(DEBUG_BEHAVIOR) -I -pedantic -Wconversion -Wall -Wextra -c Adafruit_INA219.c; cd ..
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
@@ -230,7 +235,7 @@ afsk/main.o: afsk/status.h
 afsk/main.o: afsk/ax5043.h
 afsk/main.o: afsk/ax25.h
 afsk/main.o: ax5043/spi/ax5043spi.h
-afsk/main.o: afsk/Adafruit_INA219.h
+afsk/main.o: Adafruit_INA219/Adafruit_INA219.h
 	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c main.c; cd ..
 
 afsk/send_afsk.o: afsk/send_afsk.c
