@@ -121,9 +121,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //    uint16_t value3 = (uint16_t)wireReadRegister(sensor.fd, INA219_REG_BUSVOLTAGE);
 //    data.voltage  =  ((double)(value3 >> 3) * 4) / 1000;
 	
-  value;
-  
- // _i2c->beginTransmission(ina219_i2caddr);
+  // _i2c->beginTransmission(ina219_i2caddr);
  // _i2c->write(reg); // Register
  // _i2c->endTransmission();
   wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
