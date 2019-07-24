@@ -63,12 +63,6 @@ long int timestamp;
 void config_x25();
 void trans_x25();
 
-int upper_digit(int number);
-int lower_digit(int number);
-int charging = 0;
-
-//uint16_t x_config = (0x2000 | 0x1800 | 0x0180 | 0x0018 | 0x0007 );
-
 struct SensorConfig {
     int fd;
     uint16_t  config;
