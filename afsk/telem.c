@@ -158,7 +158,7 @@ struct SensorConfig tempSensor;
 int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
-	  strcpy(src_addr, argv[1]);  
+	  ;
   }
 
   wiringPiSetup ();
