@@ -388,8 +388,8 @@ int get_tlm(char *str) {
 
 int get_tlm_fox(char *str) {
 	
-  int tlm[7][5];
-  memset(tlm, 0, sizeof tlm);
+//  int tlm[7][5];
+//  memset(tlm, 0, sizeof tlm);
 	
 //  Reading I2C voltage and current sensors
   int count;
@@ -401,7 +401,10 @@ int get_tlm_fox(char *str) {
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-	    
+  int id = 7; 
+
+  str[0] = str[0] | (id & 0x07)  // 3 bits
+/*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
   tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
@@ -414,7 +417,7 @@ int get_tlm_fox(char *str) {
 	
   tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
-		   	
+*/		   	
   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
@@ -424,8 +427,9 @@ int get_tlm_fox(char *str) {
     #ifdef DEBUG_LOGGING
       printf("Temp Sensor Read: %6.1f\n", temp);
     #endif
-	  
+/*	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
+*/
   }
 return 0;
 	
