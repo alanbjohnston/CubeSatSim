@@ -181,9 +181,9 @@ int main(int argc, char *argv[]) {
   wiringPiSetup ();
   pinMode (0, OUTPUT);
   
-  setSpiChannel(SPI_CHANNEL);
-  setSpiSpeed(SPI_SPEED);
-  initializeSpi();
+  //setSpiChannel(SPI_CHANNEL);
+  //setSpiSpeed(SPI_SPEED);
+  //initializeSpi();
 
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
@@ -204,7 +204,7 @@ int main(int argc, char *argv[]) {
 
   tx_freq_hz -= tx_channel * 50000;
 
-  init_rf();
+  //init_rf();
 
   ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
@@ -245,7 +245,7 @@ int main(int argc, char *argv[]) {
     printf("\n");
 	  
     digitalWrite (0, LOW); 
-  
+/*  
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Transmitting X.25 packet\n");
     #endif
@@ -259,6 +259,7 @@ int main(int argc, char *argv[]) {
     }
 
     ax5043_wait_for_transmit();
+*/    
     digitalWrite (0, HIGH);
   
     if (ret) {
