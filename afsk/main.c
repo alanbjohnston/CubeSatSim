@@ -393,7 +393,6 @@ int get_tlm(char *str) {
 
 int get_tlm_fox(uint8_t *b) {
 	
-//  int tlm[7][5];
    memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
@@ -423,52 +422,8 @@ int get_tlm_fox(uint8_t *b) {
   encodeA(b, 15 + head_offset,pos_y_panel_v);	
   encodeB(b, 16 + head_offset,neg_y_panel_v);	
   encodeA(b, 18 + head_offset,pos_z_panel_v);	
-  encodeB(b, 19 + head_offset,neg_z_panel_v);	
-
-/*
-	batt_a_v    0  A
-
-batt_b_v    1  B
-
-batt_c_v    3  A
-
-total_batt_i  9  A 
-
-pos_x_panel_v  12 A
-
-neg_x_panel_v  13 B
-
-pos_y_panel_v  15 A
-
-neg_y_panel_v  16 B
-
-pos_z_panel_v  18 A
-
-neg_z_panel_v  19 B
-
-tx_temp 34 B
-
-ihu_cpu_temp  39 A
-	
-  encodeA(b, 10, 0xfff);
-  encodeA(b, 12, 0x5a5);
-  encodeB(b, 14, 0xfff);
-  encodeB(b, 16, 0x152);
-*/	
-/*	    
-  tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
-  tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
-  tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
-  tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10.0) % 100;  // +Y current [7]
-
-  tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10.0) % 100;  			// -Y current [10] 
-  tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-  tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10.0) % 100;  			// -Z current (was timestamp)
-  tlm[2][D] = (int)(50.5 + reading[BAT].current/10.0) % 100;   // NiMH Battery current
-	
-  tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
-  tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
-*/		   	
+  encodeB(b, 19 + head_offset,neg_z_panel_v);		
+		   	
   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
@@ -478,9 +433,7 @@ ihu_cpu_temp  39 A
     #ifdef DEBUG_LOGGING
       printf("Temp Sensor Read: %6.1f\n", temp);
     #endif
-/*	  
-    tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
-*/
+
     tx_temp = (int)((temp * 10.0) + 0.5);
     encodeB(b, 34 + head_offset,  tx_temp);
 
@@ -495,12 +448,8 @@ ihu_cpu_temp  39 A
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
 	  
-//    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
-//		fclose (cpuTempSensor);
     ihu_cpu_temp = (int)((cpuTemp * 10.0) + 0.5);
     encodeA(b, 39 + head_offset,  ihu_cpu_temp);
-
-
   }
 
   for (count = 0; count < 64; count++) {
@@ -508,8 +457,7 @@ ihu_cpu_temp  39 A
   }
   printf("\n");
 	
-return 0;
-	
+return 0;	
 }
 
 int encodeA(uint8_t *b, int index, int val) {
