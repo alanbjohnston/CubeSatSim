@@ -413,7 +413,7 @@ int get_tlm_fox(char *str) {
 	  
   encodeA(str, 10, 4096);
   encodeA(str, 12, 0xa5a5a5);
-  encodeB(str  14, 0xffffff);
+  encodeB(str, 14, 0xffffff);
   encodeB(str, 16, 0x515253);
 /*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
