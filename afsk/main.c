@@ -407,14 +407,53 @@ int get_tlm_fox(uint8_t *b) {
     #endif
   }
   int id = 7, frm_type = 0x01, tx_temp; 
-
+  int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, total_batt_i = 48.6 * 10;
+  int pos_x_panel_v = 2.95 * 100, neg_x_panel_v = 0.45 * 100, pos_y_panel_v = 2.3 * 100, neg_y_panel_v = 0.68 * 100, pos_z_panel_v = 2.8 * 100, neg_z_panel_v = 0.78 * 100;
+ 
   b[0] = b[0] | (id & 0x07);  // 3 bits
   b[5] = b[5] | (frm_type << 4);  
+
+  encodeA(b, 0, batt_a_v);
+  encodeB(b, 1, batt_b_v);
+  encodeA(b, 3, batt_c_v);
+  encodeA(b, 9, total_batt_i);
+  encodeA(b, 12,pos_x_panel_v);	
+  encodeB(b, 13,neg_x_panel_v);	
+  encodeA(b, 15,pos_y_panel_v);	
+  encodeB(b, 16,neg_y_panel_v);	
+  encodeA(b, 18,pos_z_panel_v);	
+  encodeB(b, 19,neg_z_panel_v);	
+
+/*
+	batt_a_v    0  A
+
+batt_b_v    1  B
+
+batt_c_v    3  A
+
+total_batt_i  9  A 
+
+pos_x_panel_v  12 A
+
+neg_x_panel_v  13 B
+
+pos_y_panel_v  15 A
+
+neg_y_panel_v  16 B
+
+pos_z_panel_v  18 A
+
+neg_z_panel_v  19 B
+
+tx_temp 34 B
+
+ihu_cpu_temp  39 A
 	
   encodeA(b, 10, 0xfff);
   encodeA(b, 12, 0x5a5);
   encodeB(b, 14, 0xfff);
   encodeB(b, 16, 0x152);
+*/	
 /*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
@@ -441,6 +480,9 @@ int get_tlm_fox(uint8_t *b) {
 /*	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 */
+    tx_temp = (int)((temp * 10.0) + 0.5);
+    encodeB(b, 34,  tx_temp);
+
   }
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
@@ -454,8 +496,8 @@ int get_tlm_fox(uint8_t *b) {
 	  
 //    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
 //		fclose (cpuTempSensor);
-    tx_temp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeB(b, 34,  tx_temp);
+    ihu_cpu_temp = (int)((cpuTemp * 10.0) + 0.5);
+    encodeB(b, 39,  ihu_cpu_temp);
 
 
   }
