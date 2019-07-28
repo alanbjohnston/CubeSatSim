@@ -406,11 +406,12 @@ int get_tlm_fox(uint8_t *b) {
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-  int id = 7, frm_type = 0x01; 
+  int id = 7, frm_type = 0x01, tx_temp; 
 
   b[0] = b[0] | (id & 0x07);  // 3 bits
   b[5] = b[5] | (frm_type << 4);  
-	  
+
+	
   encodeA(b, 10, 0xfff);
   encodeA(b, 12, 0x5a5);
   encodeB(b, 14, 0xfff);
@@ -441,6 +442,9 @@ int get_tlm_fox(uint8_t *b) {
 /*	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 */
+    tx_temp = (int)((temp * 10.0) + 0.5);
+    encodeB(tx_temp, 34,  tx_temp);
+
   }
   for (count = 0; count < 64; count++) {
       printf("%02X", b[count]);
