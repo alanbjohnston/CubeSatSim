@@ -452,14 +452,14 @@ return 0;
 }
 
 int encodeA(char *str, int index, int val) {
-    str[index] = (val & 0xff)
-    str[index + 1] = str[index + 1] | (val >> 8)
+    str[index] = (val & 0xff);
+    str[index + 1] = str[index + 1] | (val >> 8);
     return 0;	
 }
 
 int encodeB(char *str, int index, int val) {
-    str[index] = str[index]  |  (val << 4)
-    str[index + 1] = str[index + 1]  |  ((val >> 4 ) & 0xff)
+    str[index] = str[index]  |  (val << 4);
+    str[index + 1] = str[index + 1]  |  ((val >> 4 ) & 0xff);
     return 0;	
 }
 
