@@ -218,12 +218,13 @@ int main(int argc, char *argv[]) {
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
 	  
-    get_tlm(tlm);
+    char str[1000];	  
+    get_tlm(&str);
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Preparing X.25 packet\n");
     #endif
-	  
+/*	  
     char str[1000];
     char tlm_str[1000];
 
@@ -243,6 +244,8 @@ int main(int argc, char *argv[]) {
         strcat(str, tlm_str);
     }
     printf("\n");
+*/
+	  printf("Tlm: %s \n", str);
 /*	  
     digitalWrite (0, LOW); 
   
@@ -311,7 +314,11 @@ int upper_digit(int number) {
 	return digit;
 }
 
-int get_tlm(int tlm[][5]) {
+int get_tlm(*char str) {
+	
+  int tlm[7][5];
+  memset(tlm, 0, sizeof tlm);
+	
 //  Reading I2C voltage and current sensors
   int count;
   for (count = 0; count < 8; count++)
@@ -376,6 +383,25 @@ int get_tlm(int tlm[][5]) {
       printf("\n");
     }	
   #endif
+
+    char tlm_str[1000];
+
+    char header_str[] = "\x03\xf0hi hi ";
+    strcpy(str, header_str);
+    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
+
+	  
+    int channel;
+    for (channel = 1; channel < 7; channel++) {
+      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+        channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
+        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+        printf("%s",tlm_str);
+        strcat(str, tlm_str);
+    }
+    printf("\n");
 
   return 0;
 }
