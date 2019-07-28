@@ -62,6 +62,8 @@ static void init_rf();
 int twosToInt(int val, int len);
 int get_tlm(char *str);
 int get_tlm_fox(char *str);
+int encodeA(char *str, int index, int val);
+int encodeB(char *str, int index, int val);
 void config_x25();
 void trans_x25();
 int upper_digit(int number);
@@ -406,6 +408,13 @@ int get_tlm_fox(char *str) {
 
   str[0] = str[0] | (id & 0x07);  // 3 bits
   str[5] = str[5] | (frm_type << 4)
+	  
+	  
+	  
+  encodeA(str, 10, 4096);
+  encodeA(str, 12, 0xa5a5a5);
+  encodeB(str  14, 0xffffff);
+  encodeB(str, 16, 0x515253);
 /*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
@@ -442,14 +451,15 @@ return 0;
 	
 }
 
-int encodeA(char *str, int index) {
-    b[index] = (val & 0xff)
-    b[index + 1] = b[index + 1] | (val >> 8)
+int encodeA(char *str, int index, int val) {
+    str[index] = (val & 0xff)
+    str[index + 1] = str[index + 1] | (val >> 8)
     return 0;	
 }
 
-int encodeB(char *str, int index) {
-
+int encodeB(char *str, int index, int val) {
+    str[index] = str[index]  |  (val << 4)
+    str[index + 1] = str[index + 1]  |  ((val >> 4 ) & 0xff)
     return 0;	
 }
 
