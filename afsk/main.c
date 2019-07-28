@@ -219,7 +219,11 @@ int main(int argc, char *argv[]) {
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
 	  
-    char str[1000];	  
+    char str[1000];
+    char header_str[] = "\x03\xf0";
+    strcpy(str, header_str);
+    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
+	  
     get_tlm(&str);
 
     #ifdef DEBUG_LOGGING
@@ -387,10 +391,9 @@ int get_tlm(char *str) {
 
     char tlm_str[1000];
 
-    char header_str[] = "\x03\xf0hi hi ";
+    char header_str[] = "hi hi ";
     strcpy(str, header_str);
-    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
-
+//    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
 	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
