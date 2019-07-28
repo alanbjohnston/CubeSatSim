@@ -409,20 +409,21 @@ int get_tlm_fox(uint8_t *b) {
   int id = 7, frm_type = 0x01, tx_temp = 0, ihu_cpu_temp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, total_batt_i = 48.6 * 10;
   int pos_x_panel_v = 2.95 * 100, neg_x_panel_v = 0.45 * 100, pos_y_panel_v = 2.3 * 100, neg_y_panel_v = 0.68 * 100, pos_z_panel_v = 2.8 * 100, neg_z_panel_v = 0.78 * 100;
- 
+  int head_offset = 6;
+	
   b[0] = b[0] | (id & 0x07);  // 3 bits
   b[5] = b[5] | (frm_type << 4);  
 
-  encodeA(b, 0 + 6, batt_a_v);
-  encodeB(b, 1 + 6, batt_b_v);
-  encodeA(b, 3 + 6, batt_c_v);
-  encodeA(b, 9 + 6, total_batt_i);
-  encodeA(b, 12 + 6,pos_x_panel_v);	
-  encodeB(b, 13 + 6,neg_x_panel_v);	
-  encodeA(b, 15 + 6,pos_y_panel_v);	
-  encodeB(b, 16 + 6,neg_y_panel_v);	
-  encodeA(b, 18 + 6,pos_z_panel_v);	
-  encodeB(b, 19 + 6,neg_z_panel_v);	
+  encodeA(b, 0 + head_offset, batt_a_v);
+  encodeB(b, 1 + head_offset, batt_b_v);
+  encodeA(b, 3 + head_offset, batt_c_v);
+  encodeA(b, 9 + head_offset, total_batt_i);
+  encodeA(b, 12 + head_offset,pos_x_panel_v);	
+  encodeB(b, 13 + head_offset,neg_x_panel_v);	
+  encodeA(b, 15 + head_offset,pos_y_panel_v);	
+  encodeB(b, 16 + head_offset,neg_y_panel_v);	
+  encodeA(b, 18 + head_offset,pos_z_panel_v);	
+  encodeB(b, 19 + head_offset,neg_z_panel_v);	
 
 /*
 	batt_a_v    0  A
@@ -481,7 +482,7 @@ ihu_cpu_temp  39 A
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 */
     tx_temp = (int)((temp * 10.0) + 0.5);
-    encodeB(b, 34,  tx_temp);
+    encodeB(b, 34 + head_offset,  tx_temp);
 
   }
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
@@ -497,7 +498,7 @@ ihu_cpu_temp  39 A
 //    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
 //		fclose (cpuTempSensor);
     ihu_cpu_temp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeA(b, 39,  ihu_cpu_temp);
+    encodeA(b, 39 + head_offset,  ihu_cpu_temp);
 
 
   }
