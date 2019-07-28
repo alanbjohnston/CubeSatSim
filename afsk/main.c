@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
     #endif
 	  
     char str[1000];
-    unit_t b[64];
+    uint_t b[64];
     char header_str[] = "\x03\xf0";
     strcpy(str, header_str);
 	
@@ -391,7 +391,7 @@ int get_tlm(char *str) {
   return 0;
 }
 
-int get_tlm_fox(unit_t *b) {
+int get_tlm_fox(uint_t *b) {
 	
 //  int tlm[7][5];
    memset(b, 0, 64);
