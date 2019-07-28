@@ -413,16 +413,16 @@ int get_tlm_fox(uint8_t *b) {
   b[0] = b[0] | (id & 0x07);  // 3 bits
   b[5] = b[5] | (frm_type << 4);  
 
-  encodeA(b, 0, batt_a_v);
-  encodeB(b, 1, batt_b_v);
-  encodeA(b, 3, batt_c_v);
-  encodeA(b, 9, total_batt_i);
-  encodeA(b, 12,pos_x_panel_v);	
-  encodeB(b, 13,neg_x_panel_v);	
-  encodeA(b, 15,pos_y_panel_v);	
-  encodeB(b, 16,neg_y_panel_v);	
-  encodeA(b, 18,pos_z_panel_v);	
-  encodeB(b, 19,neg_z_panel_v);	
+  encodeA(b, 0 + 6, batt_a_v);
+  encodeB(b, 1 + 6, batt_b_v);
+  encodeA(b, 3 + 6, batt_c_v);
+  encodeA(b, 9 + 6, total_batt_i);
+  encodeA(b, 12 + 6,pos_x_panel_v);	
+  encodeB(b, 13 + 6,neg_x_panel_v);	
+  encodeA(b, 15 + 6,pos_y_panel_v);	
+  encodeB(b, 16 + 6,neg_y_panel_v);	
+  encodeA(b, 18 + 6,pos_z_panel_v);	
+  encodeB(b, 19 + 6,neg_z_panel_v);	
 
 /*
 	batt_a_v    0  A
