@@ -315,7 +315,7 @@ int upper_digit(int number) {
 	return digit;
 }
 
-int get_tlm(*char str) {
+int get_tlm(char *str) {
 	
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
