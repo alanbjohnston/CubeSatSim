@@ -410,13 +410,12 @@ int get_tlm_fox(uint8_t *b) {
 
   b[0] = b[0] | (id & 0x07);  // 3 bits
   b[5] = b[5] | (frm_type << 4);  
-
-/*	
+	
   encodeA(b, 10, 0xfff);
   encodeA(b, 12, 0x5a5);
   encodeB(b, 14, 0xfff);
   encodeB(b, 16, 0x152);
-	    
+/*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
   tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
@@ -443,11 +442,11 @@ int get_tlm_fox(uint8_t *b) {
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 */
     tx_temp = (int)((temp * 10.0) + 0.5);
-    encodeB(tx_temp, 34,  tx_temp);
+    encodeB(b, 34,  tx_temp);
 
   }
     tx_temp = (int)((45.3 * 10.0) + 0.5);
-    encodeB(tx_temp, 15,  tx_temp);
+    encodeB(b, 34,  tx_temp);
 
   for (count = 0; count < 64; count++) {
       printf("%02X", b[count]);
