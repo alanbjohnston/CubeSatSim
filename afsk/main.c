@@ -221,7 +221,8 @@ int main(int argc, char *argv[]) {
     strcpy(str, header_str);
     printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 	  
-    get_tlm(str);
+//    get_tlm(str);
+    get_tlm_fox(str);
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Preparing X.25 packet\n");
@@ -403,7 +404,7 @@ int get_tlm_fox(char *str) {
   }
   int id = 7; 
 
-  str[0] = str[0] | (id & 0x07)  // 3 bits
+  str[0] = str[0] | (id & 0x07);  // 3 bits
 /*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
