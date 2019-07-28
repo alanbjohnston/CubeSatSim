@@ -407,7 +407,7 @@ int get_tlm_fox(char *str) {
   int id = 7, frm_type = 0x01; 
 
   str[0] = str[0] | (id & 0x07);  // 3 bits
-  str[5] = str[5] | (frm_type << 4)  
+  str[5] = str[5] | (frm_type << 4);  
 	  
   encodeA(str, 10, 4096);
   encodeA(str, 12, 0xa5a5a5);
