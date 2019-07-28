@@ -243,9 +243,9 @@ int main(int argc, char *argv[]) {
         strcat(str, tlm_str);
     }
     printf("\n");
-	  
+/*	  
     digitalWrite (0, LOW); 
-/*  
+  
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Transmitting X.25 packet\n");
     #endif
@@ -259,7 +259,7 @@ int main(int argc, char *argv[]) {
     }
 
     ax5043_wait_for_transmit();
-*/    
+    
     digitalWrite (0, HIGH);
   
     if (ret) {
@@ -268,6 +268,7 @@ int main(int argc, char *argv[]) {
               ret);
       exit(EXIT_FAILURE);
     }
+*/    
   }
 
   return 0;
