@@ -443,7 +443,7 @@ int get_tlm_fox(uint8_t *b) {
 */
   }
   for (count = 0; count < 64; count++) {
-      printf("%2x ", b[count]);
+      printf("%02X", b[count]);
   }
   printf("\n");
 	
