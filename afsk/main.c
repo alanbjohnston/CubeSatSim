@@ -441,12 +441,24 @@ int get_tlm_fox(uint8_t *b) {
 /*	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 */
-    tx_temp = (int)((temp * 10.0) + 0.5);
+  }
+  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  if (cpuTempSensor) {
+		double cpuTemp;
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+	  
+    #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+    #endif
+	  
+//    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
+//		fclose (cpuTempSensor);
+    tx_temp = (int)((cpuTemp * 10.0) + 0.5);
     encodeB(b, 34,  tx_temp);
 
+
   }
-    tx_temp = (int)((45.3 * 10.0) + 0.5);
-    encodeB(b, 34,  tx_temp);
 
   for (count = 0; count < 64; count++) {
       printf("%02X", b[count]);
@@ -458,14 +470,14 @@ return 0;
 }
 
 int encodeA(uint8_t *b, int index, int val) {
-    printf("Encoding A\n");
+//    printf("Encoding A\n");
     b[index] = (val & 0xff);
     b[index + 1] = b[index + 1] | (val >> 8);
     return 0;	
 }
 
 int encodeB(uint8_t *b, int index, int val) {
-    printf("Encoding B\n");
+//    printf("Encoding B\n");
     b[index] = b[index]  |  (val << 4);
     b[index + 1] = b[index + 1]  |  ((val >> 4 ) & 0xff);
     return 0;	
