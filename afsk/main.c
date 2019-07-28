@@ -454,7 +454,7 @@ return 0;
 int encodeA(uint8_t *b, int index, int val) {
     printf("Encoding A\n");
     b[index] = (val & 0xff);
-    b[index + 1] = str[index + 1] | (val >> 8);
+    b[index + 1] = b[index + 1] | (val >> 8);
     return 0;	
 }
 
