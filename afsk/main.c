@@ -497,7 +497,7 @@ ihu_cpu_temp  39 A
 //    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
 //		fclose (cpuTempSensor);
     ihu_cpu_temp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeB(b, 39,  ihu_cpu_temp);
+    encodeA(b, 39,  ihu_cpu_temp);
 
 
   }
