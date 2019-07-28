@@ -402,9 +402,10 @@ int get_tlm_fox(char *str) {
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-  int id = 7; 
+  int id = 7, frm_type = 0x01; 
 
   str[0] = str[0] | (id & 0x07);  // 3 bits
+  str[5] = str[5] | (frm_type << 4)
 /*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
@@ -439,6 +440,17 @@ int get_tlm_fox(char *str) {
 	
 return 0;
 	
+}
+
+int encodeA(char *str, int index) {
+    b[index] = (val & 0xff)
+    b[index + 1] = b[index + 1] | (val >> 8)
+    return 0;	
+}
+
+int encodeB(char *str, int index) {
+
+    return 0;	
 }
 
 int twosToInt(int val,int len) {   // Convert twos compliment to integer
