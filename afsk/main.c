@@ -224,7 +224,8 @@ int main(int argc, char *argv[]) {
     strcpy(str, header_str);
     printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 	  
-    get_tlm(&str);
+//    get_tlm(&str);
+    get_tlm(str);
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Preparing X.25 packet\n");
