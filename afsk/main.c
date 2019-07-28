@@ -390,7 +390,7 @@ int get_tlm(char *str) {
 int get_tlm_fox(char *str) {
 	
 //  int tlm[7][5];
-//  memset(tlm, 0, sizeof tlm);
+   memset(str, 0, 64);
 	
 //  Reading I2C voltage and current sensors
   int count;
