@@ -61,9 +61,9 @@ ax25_conf_t hax25;
 static void init_rf();
 int twosToInt(int val, int len);
 int get_tlm(char *str);
-int get_tlm_fox(char *str);
-int encodeA(char *str, int index, int val);
-int encodeB(char *str, int index, int val);
+int get_tlm_fox(uint_t *b);
+int encodeA(uint_t *b, int index, int val);
+int encodeB(uint_t *b, int index, int val);
 void config_x25();
 void trans_x25();
 int upper_digit(int number);
@@ -219,17 +219,19 @@ int main(int argc, char *argv[]) {
     #endif
 	  
     char str[1000];
+    unit_t b[64];
     char header_str[] = "\x03\xf0";
     strcpy(str, header_str);
+	
     printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 	  
 //    get_tlm(str);
-    get_tlm_fox(str);
+    get_tlm_fox(b);
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Preparing X.25 packet\n");
     #endif
-	  printf("%s \n", str);
+	  printf("%s \n", b);
 /*	  
     digitalWrite (0, LOW); 
   
@@ -389,10 +391,10 @@ int get_tlm(char *str) {
   return 0;
 }
 
-int get_tlm_fox(char *str) {
+int get_tlm_fox(unit_t *b) {
 	
 //  int tlm[7][5];
-   memset(str, 0, 64);
+   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
   int count;
@@ -406,13 +408,13 @@ int get_tlm_fox(char *str) {
   }
   int id = 7, frm_type = 0x01; 
 
-  str[0] = str[0] | (id & 0x07);  // 3 bits
-  str[5] = str[5] | (frm_type << 4);  
+  b[0] = b[0] | (id & 0x07);  // 3 bits
+  b[5] = b[5] | (frm_type << 4);  
 	  
-  encodeA(str, 10, 0xfff);
-  encodeA(str, 12, 0x5a5);
-  encodeB(str, 14, 0xfff);
-  encodeB(str, 16, 0x152);
+  encodeA(b, 10, 0xfff);
+  encodeA(b, 12, 0x5a5);
+  encodeB(b, 14, 0xfff);
+  encodeB(b, 16, 0x152);
 /*	    
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
@@ -441,7 +443,7 @@ int get_tlm_fox(char *str) {
 */
   }
   for (count = 0; count < 64; count++) {
-      printf("%x", str[count]);
+      printf("%x", b[count]);
   }
   printf("\n");
 	
@@ -449,17 +451,17 @@ return 0;
 	
 }
 
-int encodeA(char *str, int index, int val) {
+int encodeA(uint_t *b, int index, int val) {
     printf("Encoding A\n");
-    str[index] = (val & 0xff);
-    str[index + 1] = str[index + 1] | (val >> 8);
+    b[index] = (val & 0xff);
+    b[index + 1] = str[index + 1] | (val >> 8);
     return 0;	
 }
 
-int encodeB(char *str, int index, int val) {
+int encodeB(uint_t *b, int index, int val) {
     printf("Encoding B\n");
-    str[index] = str[index]  |  (val << 4);
-    str[index + 1] = str[index + 1]  |  ((val >> 4 ) & 0xff);
+    b[index] = b[index]  |  (val << 4);
+    b[index + 1] = b[index + 1]  |  ((val >> 4 ) & 0xff);
     return 0;	
 }
 
