@@ -447,7 +447,7 @@ int get_tlm_fox(uint8_t *b) {
 
   }
     tx_temp = (int)((45.3 * 10.0) + 0.5);
-    encodeB(tx_temp, 34,  tx_temp);
+    encodeB(tx_temp, 15,  tx_temp);
 
   for (count = 0; count < 64; count++) {
       printf("%02X", b[count]);
