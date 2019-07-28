@@ -60,7 +60,8 @@ ax25_conf_t hax25;
 
 static void init_rf();
 int twosToInt(int val, int len);
-int get_tlm(int tlm[][5]);
+//int get_tlm(int tlm[][5]);
+int get_tlm(char *str);
 void config_x25();
 void trans_x25();
 int upper_digit(int number);
@@ -185,8 +186,8 @@ int main(int argc, char *argv[]) {
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
 
-  int tlm[7][5];
-  memset(tlm, 0, sizeof tlm);
+//  int tlm[7][5];
+//  memset(tlm, 0, sizeof tlm);
 
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
