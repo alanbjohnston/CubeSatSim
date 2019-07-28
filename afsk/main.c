@@ -406,7 +406,7 @@ int get_tlm_fox(uint8_t *b) {
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-  int id = 7, frm_type = 0x01, tx_temp; 
+  int id = 7, frm_type = 0x01, tx_temp = 0, ihu_cpu_temp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, total_batt_i = 48.6 * 10;
   int pos_x_panel_v = 2.95 * 100, neg_x_panel_v = 0.45 * 100, pos_y_panel_v = 2.3 * 100, neg_y_panel_v = 0.68 * 100, pos_z_panel_v = 2.8 * 100, neg_z_panel_v = 0.78 * 100;
  
