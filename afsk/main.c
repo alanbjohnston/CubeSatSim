@@ -432,6 +432,11 @@ int get_tlm_fox(char *str) {
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
 */
   }
+  for (count = 0; count < 64; count++) {
+      printf("%x", str[count]);
+  }
+  printf("\n");
+	
 return 0;
 	
 }
