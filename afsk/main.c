@@ -61,9 +61,9 @@ ax25_conf_t hax25;
 static void init_rf();
 int twosToInt(int val, int len);
 int get_tlm(char *str);
-int get_tlm_fox(uint_t *b);
-int encodeA(uint_t *b, int index, int val);
-int encodeB(uint_t *b, int index, int val);
+int get_tlm_fox(uint8_t *b);
+int encodeA(uint8_t *b, int index, int val);
+int encodeB(uint8_t *b, int index, int val);
 void config_x25();
 void trans_x25();
 int upper_digit(int number);
@@ -219,7 +219,7 @@ int main(int argc, char *argv[]) {
     #endif
 	  
     char str[1000];
-    uint_t b[64];
+    uint8_t b[64];
     char header_str[] = "\x03\xf0";
     strcpy(str, header_str);
 	
@@ -391,7 +391,7 @@ int get_tlm(char *str) {
   return 0;
 }
 
-int get_tlm_fox(uint_t *b) {
+int get_tlm_fox(uint8_t *b) {
 	
 //  int tlm[7][5];
    memset(b, 0, 64);
@@ -451,14 +451,14 @@ return 0;
 	
 }
 
-int encodeA(uint_t *b, int index, int val) {
+int encodeA(uint8_t *b, int index, int val) {
     printf("Encoding A\n");
     b[index] = (val & 0xff);
     b[index + 1] = str[index + 1] | (val >> 8);
     return 0;	
 }
 
-int encodeB(uint_t *b, int index, int val) {
+int encodeB(uint8_t *b, int index, int val) {
     printf("Encoding B\n");
     b[index] = b[index]  |  (val << 4);
     b[index + 1] = b[index + 1]  |  ((val >> 4 ) & 0xff);
