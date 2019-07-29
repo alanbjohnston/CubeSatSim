@@ -434,7 +434,7 @@ int get_tlm_fox(uint8_t *b) {
       printf("Temp Sensor Read: %6.1f\n", temp);
     #endif
 
-    tx_temp = (int)((temp * 10.0) + 0.5);
+    TxTemp = (int)((temp * 10.0) + 0.5);
     encodeB(b, 34 + head_offset,  TxTemp);
 
   }
