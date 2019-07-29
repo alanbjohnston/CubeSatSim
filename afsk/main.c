@@ -405,9 +405,9 @@ int get_tlm_fox(uint8_t *b) {
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-  int id = 7, frm_type = 0x01, tx_temp = 0, ihu_cpu_temp = 0; 
-  int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, total_batt_i = 48.6 * 10;
-  int pos_x_panel_v = 2.95 * 100, neg_x_panel_v = 0.45 * 100, pos_y_panel_v = 2.3 * 100, neg_y_panel_v = 0.68 * 100, pos_z_panel_v = 2.8 * 100, neg_z_panel_v = 0.78 * 100;
+  int id = 5, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
+  int posXv = 2.95 * 100, negXv = 0.45 * 100, posYv = 2.3 * 100, negYv = 0.68 * 100, posZv = 2.8 * 100, negZv = 0.78 * 100;
   int head_offset = 6;
 	
   b[0] = b[0] | (id & 0x07);  // 3 bits
@@ -416,13 +416,13 @@ int get_tlm_fox(uint8_t *b) {
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
-  encodeA(b, 9 + head_offset, total_batt_i);
-  encodeA(b, 12 + head_offset,pos_x_panel_v);	
-  encodeB(b, 13 + head_offset,neg_x_panel_v);	
-  encodeA(b, 15 + head_offset,pos_y_panel_v);	
-  encodeB(b, 16 + head_offset,neg_y_panel_v);	
-  encodeA(b, 18 + head_offset,pos_z_panel_v);	
-  encodeB(b, 19 + head_offset,neg_z_panel_v);		
+  encodeA(b, 9 + head_offset, battCurr);
+  encodeA(b, 12 + head_offset,posXv);	
+  encodeB(b, 13 + head_offset,negXv);	
+  encodeA(b, 15 + head_offset,posYv);	
+  encodeB(b, 16 + head_offset,negYv);	
+  encodeA(b, 18 + head_offset,posZv);	
+  encodeB(b, 19 + head_offset,negZv);		
 		   	
   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
@@ -435,7 +435,7 @@ int get_tlm_fox(uint8_t *b) {
     #endif
 
     tx_temp = (int)((temp * 10.0) + 0.5);
-    encodeB(b, 34 + head_offset,  tx_temp);
+    encodeB(b, 34 + head_offset,  TxTemp);
 
   }
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
@@ -448,8 +448,8 @@ int get_tlm_fox(uint8_t *b) {
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
 	  
-    ihu_cpu_temp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeA(b, 39 + head_offset,  ihu_cpu_temp);
+    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+    encodeA(b, 39 + head_offset,  IHUcpuTemp);
   }
 
   for (count = 0; count < 64; count++) {
