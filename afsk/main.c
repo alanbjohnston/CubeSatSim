@@ -180,7 +180,19 @@ int main(int argc, char *argv[]) {
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
-  
+
+  pinMode (15, INPUT);
+  pullUpDnControl (15, PUD_UP);
+
+  if (!digitalRead(15)) 
+{
+	printf("Resistor present!\n");
+}
+  else
+{
+	printf("Resistor not present!\n");
+}
+
   setSpiChannel(SPI_CHANNEL);
   setSpiSpeed(SPI_SPEED);
   initializeSpi();
