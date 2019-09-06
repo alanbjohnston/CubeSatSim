@@ -69,6 +69,53 @@ void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
 
+#define S_RATE  (48000)     // (44100)
+#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
+
+// BPSK Settings
+#define BIT_RATE	1200 // 200 for DUV
+#define DUV	0 // 1 for DUV
+#define RS_FRAMES 3 // 3 frames for BPSK, 1 for DUV
+#define PAYLOADS 6 // 1 for DUV
+#define DATA_LEN 78  // 56 for DUV  
+#define RS_FRAME_LEN 159  // 64 for DUV
+#define SYNC_BITS 31  // 10 for DUV
+#define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
+#define HEADER_LEN 8  // 6 for DUV
+/*
+// DUV Settings
+#define BIT_RATE 200 
+#define DUV	1
+#define RS_FRAMES 1
+#define PAYLOADS 1
+#define RS_FRAME_LEN 64
+#define HEADER_LEN 6
+#define DATA_LEN 58
+#define SYNC_BITS 10
+#define SYNC_WORD 0b0011111010
+*/
+
+#define PARITY_LEN 32
+
+float amplitude = 32767/3; // 20000; // 32767/(10%amp+5%amp+100%amp)
+float freq_Hz = 3000;  // 1200
+	
+int smaller;
+int flip_ctr = 0;
+int phase = 1;
+int ctr = 0;
+void write_to_buffer(int i, int symbol, int val);	
+void write_wave();
+#define SAMPLES (S_RATE / BIT_RATE)
+#define FRAME_CNT 5	
+
+//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
+#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
+short int buffer[BUF_LEN];
+short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
+short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
+
+
 struct SensorConfig {
     int fd;
     uint16_t  config;
@@ -1460,51 +1507,7 @@ void write_wav(char * filename, unsigned long num_samples, short int * data, int
 }
 
 
-#define S_RATE  (48000)     // (44100)
-#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
 
-// BPSK Settings
-#define BIT_RATE	1200 // 200 for DUV
-#define DUV	0 // 1 for DUV
-#define RS_FRAMES 3 // 3 frames for BPSK, 1 for DUV
-#define PAYLOADS 6 // 1 for DUV
-#define DATA_LEN 78  // 56 for DUV  
-#define RS_FRAME_LEN 159  // 64 for DUV
-#define SYNC_BITS 31  // 10 for DUV
-#define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
-#define HEADER_LEN 8  // 6 for DUV
-/*
-// DUV Settings
-#define BIT_RATE 200 
-#define DUV	1
-#define RS_FRAMES 1
-#define PAYLOADS 1
-#define RS_FRAME_LEN 64
-#define HEADER_LEN 6
-#define DATA_LEN 58
-#define SYNC_BITS 10
-#define SYNC_WORD 0b0011111010
-*/
-
-#define PARITY_LEN 32
-
-float amplitude = 32767/3; // 20000; // 32767/(10%amp+5%amp+100%amp)
-float freq_Hz = 3000;  // 1200
-	
-int smaller;
-int flip_ctr = 0;
-int phase = 1;
-int ctr = 0;
-void write_to_buffer(int i, int symbol, int val);	
-void write_wave();
-#define SAMPLES (S_RATE / BIT_RATE)
-#define FRAME_CNT 5	
-
-//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
-#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
-short int buffer[BUF_LEN];
-short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
-short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
 //int main(int argc, char * argv[])
 //{
  
