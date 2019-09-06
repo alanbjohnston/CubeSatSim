@@ -388,8 +388,6 @@ int get_tlm(char *str) {
     }
 //    printf("\n");
 
-  return 0;
-}
 
 int (uint8_t *b) {
 	
