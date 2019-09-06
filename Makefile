@@ -92,7 +92,7 @@ radioafsk: libax5043.a
 radioafsk: afsk/ax25.o
 radioafsk: afsk/ax5043.o
 radioafsk: afsk/main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lcurl
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radioafsk -pedantic -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lcurl -lm
 
 telem: afsk/telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -pedantic -Wall -Wextra -L./ afsk/telem.o -lwiringPi 
