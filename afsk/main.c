@@ -274,7 +274,7 @@ int main(int argc, char *argv[]) {
     printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 	  
 //    get_tlm(str);
-    get_tlm_fox(b);
+    get_tlm_fox();
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Preparing X.25 packet\n");
@@ -439,9 +439,9 @@ int get_tlm(char *str) {
 return;
 }
 
-int get_tlm_fox(uint8_t *b) {
+int get_tlm_fox() {
 	
-   memset(b, 0, 64);
+//   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
   int count;
