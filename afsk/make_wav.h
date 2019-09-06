@@ -40,7 +40,7 @@ void update_rs(
 
 #endif /* TELEMENCODING_H_ */
 
-	 static  int Encode_8b10b[][256] = {
+int Encode_8b10b[][256] = {
 		   // RD = -1 cases
 		{
 		   /* 00 */ 0x274,
