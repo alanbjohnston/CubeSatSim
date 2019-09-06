@@ -763,9 +763,9 @@ return 0;
 #define false 0
 #define true 1
 
-static int twosToInt(int val,int len);
-static int encodeB(short int  *b, int index, int val);
-static int encodeA(short int  *b, int index, int val);
+//static int twosToInt(int val,int len);
+//static int encodeB(short int  *b, int index, int val);
+//static int encodeA(short int  *b, int index, int val);
 
 	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
 	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
