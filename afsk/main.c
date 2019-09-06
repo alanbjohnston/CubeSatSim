@@ -388,8 +388,10 @@ int get_tlm(char *str) {
     }
 //    printf("\n");
 
+return;
+}
 
-int (uint8_t *b) {
+int get_tlm_fox(uint8_t *b) {
 	
    memset(b, 0, 64);
 	
