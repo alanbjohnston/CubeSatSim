@@ -62,9 +62,9 @@ ax25_conf_t hax25;
 static void init_rf();
 int twosToInt(int val, int len);
 int get_tlm(char *str);
-int get_tlm_fox(uint8_t *b);
-int encodeA(uint8_t *b, int index, int val);
-int encodeB(uint8_t *b, int index, int val);
+int get_tlm_fox();
+int encodeA(short int *b, int index, int val);
+int encodeB(short int *b, int index, int val);
 void config_x25();
 void trans_x25();
 int upper_digit(int number);
@@ -279,7 +279,7 @@ int main(int argc, char *argv[]) {
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Preparing X.25 packet\n");
     #endif
-	  printf("%s \n", b);
+//	  printf("%s \n", b);
 /*	  
     digitalWrite (0, LOW); 
   
