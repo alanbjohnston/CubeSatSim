@@ -36,6 +36,7 @@
 #include <time.h>
 #include <math.h>
 #include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
+#include "make_wav.h"
 
 #define A 1
 #define B 2
