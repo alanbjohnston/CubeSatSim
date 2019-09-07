@@ -279,8 +279,17 @@ int main(int argc, char *argv[]) {
     get_tlm_fox();
 
     #ifdef DEBUG_LOGGING
-      fprintf(stderr,"INFO: Preparing X.25 packet\n");
+      fprintf(stderr,"INFO: Getting ready to send\n");
     #endif
+	  
+           char cmdbuffer[1000];
+      FILE* transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float 2>&1", "r"); 
+      fgets(cmdbuffer, 1000, file);
+      pclose(transmit);
+      printf("Results of transmit command: %s\n", cmdbuffer);
+	  
+	  
+	  
 //	  printf("%s \n", b);
 /*	  
     digitalWrite (0, LOW); 
@@ -691,7 +700,7 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
-	write_wav("make_wav_gen7.wav", BUF_LEN, buffer, S_RATE);
+	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 
   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
