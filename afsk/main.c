@@ -485,15 +485,6 @@ int get_tlm_fox() {
 //   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
-  int count;
-  for (count = 0; count < 8; count++)
-  {
-    reading[count] = read_sensor_data(sensor[count]);	
-    #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        count, reading[count].voltage, reading[count].current, reading[count].power); 
-    #endif
-  }
 	
    FILE* uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
@@ -540,7 +531,16 @@ int get_tlm_fox() {
 
   for (int frames = 0; frames < FRAME_CNT; frames++) 
   {
-
+    int count;
+    for (count = 0; count < 8; count++)
+    {
+      reading[count] = read_sensor_data(sensor[count]);	
+    #ifdef DEBUG_LOGGING
+      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+    #endif
+    }
+/*
     if (tempSensor.fd != OFF) {
       int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
       uint8_t upper = (uint8_t) (tempValue >> 8);
@@ -554,6 +554,7 @@ int get_tlm_fox() {
       TxTemp = (int)((temp * 10.0) + 0.5);
       encodeB(b, 34 + head_offset,  TxTemp);
   }
+*/  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -569,7 +570,7 @@ int get_tlm_fox() {
   }
 
 	  
-    sleep(2);
+    sleep(0.5);
 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
