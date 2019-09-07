@@ -485,13 +485,13 @@ int get_tlm_fox() {
 //   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
-	
+/*	
    FILE* uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
     uptime = (int) uptime_sec;
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
     fclose(uptime_file);
-	
+*/	
 	int i;
 	long int sync = SYNC_WORD;
 
@@ -509,10 +509,10 @@ int get_tlm_fox() {
 */	
 
 	short int b[DATA_LEN * PAYLOADS];  // for each payload
-	memset(b, 0, sizeof(b));
+//	memset(b, 0, sizeof(b));
 
 	short int h[HEADER_LEN];
-	memset(h, 0, sizeof(h));
+//	memset(h, 0, sizeof(h));
 	
 	short int b10[DATA_LEN], h10[HEADER_LEN];
 	short int rs_frame[RS_FRAMES][223];
@@ -531,7 +531,78 @@ int get_tlm_fox() {
 
   for (int frames = 0; frames < FRAME_CNT; frames++) 
   {
-    int count;
+    memset(rs_frame,0,sizeof(rs_frame));
+    memset(parities,0,sizeof(parities));
+	  
+    FILE *uptime_file = fopen("/proc/uptime", "r");
+    fscanf(uptime_file, "%f", &uptime_sec);
+    uptime = (int) uptime_sec;
+    fclose(uptime_file);
+    printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+	  
+    h[0] = (h[0] & 0xf8) | (id & 0x07);  // 3 bits
+    printf("h[0] %x\n", h[0]);
+    h[0] = (h[0] & 0x07)| ((reset_count & 0x1f) << 3);
+    printf("h[0] %x\n", h[0]);
+    h[1] = (reset_count >> 5) & 0xff;
+    printf("h[1] %x\n", h[1]);
+    h[2] = (h[2] & 0xf8) | ((reset_count >> 13) & 0x07);
+    printf("h[2] %x\n", h[2]);
+    h[2] = (h[2] & 0x0e) | ((uptime & 0x1f) << 3);
+    printf("h[2] %x\n", h[2]);
+    h[3] = (uptime >> 5) & 0xff;
+    h[4] = (uptime >> 13) & 0xff;
+    h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
+    h[5] = (h[5] & 0x0f) | (frm_type << 4);  
+	  
+
+	  
+/*	batt_c_v += 10;
+	battCurr -= 10;
+	encodeA(b, 3 + head_offset, batt_c_v);
+ 	encodeA(b, 9 + head_offset, battCurr);
+*/       
+	  
+	int ctr1 = 0;
+	int ctr3 = 0;
+	for (i = 0; i < RS_FRAME_LEN; i++) 
+	{
+        for (int j  = 0; j < RS_FRAMES ; j++)
+		{
+		
+			if ((ctr3 % DATA_LEN) == 0) 
+			{
+		// sleep
+		// clear b and h
+		// get uptime and encode in h
+		// read telem data and encode in b
+				sleep(1);
+				
+				memset(b, 0, sizeof(b));
+				memset(h, 0, sizeof(h));
+				
+				FILE *uptime_file = fopen("/proc/uptime", "r");
+   				fscanf(uptime_file, "%f", &uptime_sec);
+    				uptime = (int) uptime_sec;
+    				fclose(uptime_file);
+   				printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+	  
+				h[0] = (h[0] & 0xf8) | (id & 0x07);  // 3 bits
+				printf("h[0] %x\n", h[0]);
+    				h[0] = (h[0] & 0x07)| ((reset_count & 0x1f) << 3);
+    				printf("h[0] %x\n", h[0]);
+   				h[1] = (reset_count >> 5) & 0xff;
+   				printf("h[1] %x\n", h[1]);
+    				h[2] = (h[2] & 0xf8) | ((reset_count >> 13) & 0x07);
+    				printf("h[2] %x\n", h[2]);
+    				h[2] = (h[2] & 0x0e) | ((uptime & 0x1f) << 3);
+    				printf("h[2] %x\n", h[2]);
+    				h[3] = (uptime >> 5) & 0xff;
+   				h[4] = (uptime >> 13) & 0xff;
+   				h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
+	    			h[5] = (h[5] & 0x0f) | (frm_type << 4);
+				
+				    int count;
     for (count = 0; count < 8; count++)
     {
       reading[count] = read_sensor_data(sensor[count]);	
@@ -568,31 +639,7 @@ int get_tlm_fox() {
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
     encodeA(b, 39 + head_offset,  IHUcpuTemp);
   }	  
-    sleep(1);
-	  
-    memset(rs_frame,0,sizeof(rs_frame));
-    memset(parities,0,sizeof(parities));
-	  
-    FILE *uptime_file = fopen("/proc/uptime", "r");
-    fscanf(uptime_file, "%f", &uptime_sec);
-    uptime = (int) uptime_sec;
-    fclose(uptime_file);
-    printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-	  
-    h[0] = (h[0] & 0xf8) | (id & 0x07);  // 3 bits
-    printf("h[0] %x\n", h[0]);
-    h[0] = (h[0] & 0x07)| ((reset_count & 0x1f) << 3);
-    printf("h[0] %x\n", h[0]);
-    h[1] = (reset_count >> 5) & 0xff;
-    printf("h[1] %x\n", h[1]);
-    h[2] = (h[2] & 0xf8) | ((reset_count >> 13) & 0x07);
-    printf("h[2] %x\n", h[2]);
-    h[2] = (h[2] & 0x0e) | ((uptime & 0x1f) << 3);
-    printf("h[2] %x\n", h[2]);
-    h[3] = (uptime >> 5) & 0xff;
-    h[4] = (uptime >> 13) & 0xff;
-    h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
-    h[5] = (h[5] & 0x0f) | (frm_type << 4);  
+//    sleep(1);
 	  
   posXv = reading[PLUS_X].current * 10;
   posYv = reading[PLUS_Y].current * 10;
@@ -614,27 +661,6 @@ int get_tlm_fox() {
   encodeB(b, 16 + head_offset,negXv);	
   encodeA(b, 18 + head_offset,negYv);	
   encodeB(b, 19 + head_offset,negZv);	
-	  
-/*	batt_c_v += 10;
-	battCurr -= 10;
-	encodeA(b, 3 + head_offset, batt_c_v);
- 	encodeA(b, 9 + head_offset, battCurr);
-*/       
-	  
-	int ctr1 = 0;
-	int ctr3 = 0;
-	for (i = 0; i < RS_FRAME_LEN; i++) 
-	{
-        for (int j  = 0; j < RS_FRAMES ; j++)
-		{
-		
-			if ((ctr3 % DATA_LEN) == 0) {  // or is it ctr1?
-		// sleep
-		// clear b and h
-		// get uptime and encode in h
-		// read telem data and encode in b
-
-				
 			}
 		
 			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
