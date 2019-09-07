@@ -259,10 +259,10 @@ int main(int argc, char *argv[]) {
             AX25_POSTAMBLE_LEN);  
       
   /* Infinite loop */
-  for (;;) 
+  //for (;;) 
   
   {
-    sleep(3);  // Delay 1 second
+  //  sleep(1);  // Delay 1 second
     
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting TLM Data\n");
@@ -282,7 +282,7 @@ int main(int argc, char *argv[]) {
       fprintf(stderr,"INFO: Getting ready to send\n");
     #endif
 	  
-           char cmdbuffer[1000];
+      char cmdbuffer[1000];
       FILE* transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float 2>&1", "r"); 
       fgets(cmdbuffer, 1000, transmit);
       pclose(transmit);
