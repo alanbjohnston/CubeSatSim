@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire code
+ *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire codeF
  *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
@@ -297,7 +297,7 @@ int main(int argc, char *argv[]) {
 		write_wave(j, phase1);
 	}
 	phase = -1;
-	for ji = 0; j < SAMPLES; j++)
+	for (j = 0; j < SAMPLES; j++)
 	{
 		write_wave(j, phase0);
 	} 
