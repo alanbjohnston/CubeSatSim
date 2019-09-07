@@ -283,7 +283,7 @@ int main(int argc, char *argv[]) {
     #endif
 	  
       char cmdbuffer[1000];
-      FILE* transmit
+      FILE* transmit;
       if (DUV == 1) {
       	  transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1", "r"); 
       } else {
