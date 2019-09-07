@@ -752,7 +752,8 @@ int get_tlm_fox() {
 	 }   
 	}
 	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
-
+	
+  int count;
   for (count = 0; count < DATA_LEN; count++) {
       printf("%02X", b[count]);
   }
