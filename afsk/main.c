@@ -592,7 +592,7 @@ int get_tlm_fox() {
              				rs_frame[j][i] = b[ctr3 % DATA_LEN];
 		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
           //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
-            					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
+          //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
 					data8[ctr1++] = rs_frame[j][i];
 		//			printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
 					ctr3++;
