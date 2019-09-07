@@ -701,7 +701,7 @@ int get_tlm_fox() {
 	{
 		write_wave(i, phase1);
 	}
-	phase = 0
+	phase = 0;
 	for (i = 0; i < SAMPLES; i++)
 	{
 		write_wave(i, phase0);
@@ -1069,9 +1069,9 @@ void write_wave(int i, short int *buf)
 void copy_samples() 
 {
 	if (phase == 0)
-		memcpy(buffer[ptr], phase0, size_of_phase);
+		memcpy(&buffer[ptr], &phase0, size_of_phase);
 	else
-		memcpy(buffer[ptr], phase1, size_of_phase);
+		memcpy(&buffer[ptr], &phase1, size_of_phase);
 	
 	ptr += size_of_phase;	
 }
