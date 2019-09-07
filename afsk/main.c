@@ -108,14 +108,14 @@ int ctr = 0;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
-#define FRAME_CNT 5	
+#define FRAME_CNT 2 // 5	
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 #define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
 short int buffer[BUF_LEN];
 short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
 short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
-
+ 
 
 struct SensorConfig {
     int fd;
@@ -581,20 +581,20 @@ int get_tlm_fox() {
 			{
 				if (ctr1 < HEADER_LEN)
 				{
-             		rs_frame[j][i] = h[ctr1];
-		     		update_rs(parities[j], h[ctr1]);
-            		printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
+             				rs_frame[j][i] = h[ctr1];
+		     			update_rs(parities[j], h[ctr1]);
+      //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
 					data8[ctr1++] = rs_frame[j][i];
-					printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
+	//				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
 				}
 				else
 				{
-             		rs_frame[j][i] = b[ctr3 % DATA_LEN];
-		     		update_rs(parities[j], b[ctr3 % DATA_LEN]);
-            		printf("%d rs_frame[%d][%d] = %x %d \n", 
-            			ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
+             				rs_frame[j][i] = b[ctr3 % DATA_LEN];
+		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
+          //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
+            					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
 					data8[ctr1++] = rs_frame[j][i];
-					printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
+		//			printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
 					ctr3++;
 				}								
 			}
@@ -616,8 +616,8 @@ int get_tlm_fox() {
 	{
 				data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
 				nrd = (Encode_8b10b[rd][((int)data8[ctr2])] >> 10) & 1;
-				printf ("data10[%d] = encoded data8[%d] = %x \n",
-				 	ctr2, ctr2, data10[ctr2]); 
+		//		printf ("data10[%d] = encoded data8[%d] = %x \n",
+		//		 	ctr2, ctr2, data10[ctr2]); 
 
 				rd = nrd; // ^ nrd;
 				ctr2++;
@@ -629,8 +629,8 @@ int get_tlm_fox() {
 		{
 			data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
 			nrd = (Encode_8b10b[rd][((int)parities[j][i])] >> 10) & 1;
-			printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
-				 ctr2 - 1, j, i, data10[ctr2 - 1]); 
+		//	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
+		//		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
 
 			rd = nrd; 
 		}	
@@ -647,12 +647,12 @@ int get_tlm_fox() {
   			int bit = SYNC_BITS - i/SAMPLES + 1;
   			val = sync;
 			data = val & 1 << (bit - 1);	
-		    printf ("%d i: %d new frame %d sync bit %d = %d \n",
-		    		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
+		 //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
 			if (DUV)
 			{
 				phase = ((data != 0) * 2) - 1; 
-				printf("Sending a %d\n", phase);
+		//		printf("Sending a %d\n", phase);
 			}
 			else
 			{
@@ -678,12 +678,12 @@ int get_tlm_fox() {
 			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
 			val = data10[symbol];
 			data = val & 1 << (bit - 1);	
-			printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-		    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
+	//	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
 		    if (DUV)
 			{
 				phase = ((data != 0) * 2) - 1; 
-				printf("Sending a %d\n", phase);
+	//			printf("Sending a %d\n", phase);
 			}
 			else
 			{	 
@@ -730,7 +730,7 @@ int get_tlm_fox() {
     encodeA(b, 39 + head_offset,  IHUcpuTemp);
   }
 
-  for (count = 0; count < 64; count++) {
+  for (count = 0; count < DATA_LEN; count++) {
       printf("%02X", b[count]);
   }
   printf("\n");
