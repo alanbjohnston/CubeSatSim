@@ -108,15 +108,18 @@ int ctr = 0;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
-#define FRAME_CNT 3 // 5	
+#define FRAME_CNT 5	
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 #define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
 short int buffer[BUF_LEN];
 short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
 short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
+int reset_count;
+float uptime_sec;
+long int uptime;
+char call[5];
  
-
 struct SensorConfig {
     int fd;
     uint16_t  config;
@@ -235,7 +238,29 @@ int main(int argc, char *argv[]) {
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
-
+	
+  FILE* config_file = fopen("sim.cfg","r"); 
+  if (config_file == NULL) 
+  { 
+       printf("Creating config file."); 
+       config_file = fopen("sim.cfg","w");
+	fprintf(config_file, "%s %d", "KU2Y", 100);
+	fclose(config_file);
+	config_file = fopen("sim.cfg","r"); 
+    } 
+  
+    char* cfg_buf[100]; 
+    fscanf(config_file, "%s %d", call, &reset_count);
+    fclose(config_file);
+    printf("%s %d\n", call, reset_count); 
+	
+    reset_count = (reset_count + 1) % 0xffff;
+	
+    config_file = fopen("sim.cfg","w");
+    fprintf(config_file, "%s %d", call, reset_count);
+    fclose(config_file);
+    config_file = fopen("sim.cfg","r"); 
+	
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
 	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
@@ -469,34 +494,8 @@ int get_tlm_fox() {
 	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-    int reset_count;
-    float uptime_sec;
-    long int uptime;
-    char call[5];
 	
-    FILE* config_file = fopen("sim.cfg","r"); 
-    if (config_file == NULL) 
-    { 
-        printf("Creating config file."); 
-        config_file = fopen("sim.cfg","w");
-		fprintf(config_file, "%s %d", "KU2Y", 100);
-		fclose(config_file);
-		config_file = fopen("sim.cfg","r"); 
-    } 
-  
-    char* cfg_buf[100]; 
-    fscanf(config_file, "%s %d", call, &reset_count);
-    fclose(config_file);
-    printf("%s %d\n", call, reset_count); 
-	
-    reset_count = (reset_count + 1) % 0xffff;
-	
-    config_file = fopen("sim.cfg","w");
-    fprintf(config_file, "%s %d", call, reset_count);
-    fclose(config_file);
-    config_file = fopen("sim.cfg","r"); 
-	
-    FILE* uptime_file = fopen("/proc/uptime", "r");
+   FILE* uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
     uptime = (int) uptime_sec;
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
@@ -527,26 +526,51 @@ int get_tlm_fox() {
 	short int b10[DATA_LEN], h10[HEADER_LEN];
 	short int rs_frame[RS_FRAMES][223];
 	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
-
+/*	
   int id = 5, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
   int posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
   		posZv = 280, negZv = 78;
-  int head_offset = 0; // 6;
-
-  encodeA(b, 0 + head_offset, batt_a_v);
-  encodeB(b, 1 + head_offset, batt_b_v);
-  encodeA(b, 3 + head_offset, batt_c_v);
-  encodeA(b, 9 + head_offset, battCurr);
-  encodeA(b, 12 + head_offset,posXv);  	
-  encodeB(b, 13 + head_offset,posYv);	
-  encodeA(b, 15 + head_offset,posZv);	
-  encodeB(b, 16 + head_offset,negXv);	
-  encodeA(b, 18 + head_offset,negYv);	
-  encodeB(b, 19 + head_offset,negZv);		
+*/	
+  int id = 5, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
+  int posXv = 0, negXv = 0, posYv = 0, negYv = 0, 
+  		posZv = 0, negZv = 0;
+  int head_offset = 0; 	
 
   for (int frames = 0; frames < FRAME_CNT; frames++) 
   {
+
+    if (tempSensor.fd != OFF) {
+      int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
+      uint8_t upper = (uint8_t) (tempValue >> 8);
+      uint8_t lower = (uint8_t) (tempValue & 0xff);
+      float temp = (float)lower + ((float)upper / 0x100);
+	  
+    #ifdef DEBUG_LOGGING
+      printf("Temp Sensor Read: %6.1f\n", temp);
+    #endif
+
+      TxTemp = (int)((temp * 10.0) + 0.5);
+      encodeB(b, 34 + head_offset,  TxTemp);
+  }
+  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  if (cpuTempSensor) {
+		double cpuTemp;
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+	  
+    #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+    #endif
+	  
+    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+    encodeA(b, 39 + head_offset,  IHUcpuTemp);
+  }
+
+	  
+    sleep(2);
+	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
 	  
@@ -570,12 +594,27 @@ int get_tlm_fox() {
     h[4] = (uptime >> 13) & 0xff;
     h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
     h[5] = (h[5] & 0x0f) | (frm_type << 4);  
-	    
-	batt_c_v += 10;
+	  
+  posXv = reading[PLUS_X].voltage * 100;
+  posYv = reading[PLUS_Y].voltage * 100;
+  posZv = reading[PLUS_Z].voltage * 100;
+	
+  encodeA(b, 0 + head_offset, batt_a_v);
+  encodeB(b, 1 + head_offset, batt_b_v);
+  encodeA(b, 3 + head_offset, batt_c_v);
+  encodeA(b, 9 + head_offset, battCurr);
+  encodeA(b, 12 + head_offset,posXv);  	
+  encodeB(b, 13 + head_offset,posYv);	
+  encodeA(b, 15 + head_offset,posZv);	
+  encodeB(b, 16 + head_offset,negXv);	
+  encodeA(b, 18 + head_offset,negYv);	
+  encodeB(b, 19 + head_offset,negZv);	
+	  
+/*	batt_c_v += 10;
 	battCurr -= 10;
 	encodeA(b, 3 + head_offset, batt_c_v);
  	encodeA(b, 9 + head_offset, battCurr);
-       
+*/       
 	int ctr1 = 0;
 	int ctr3 = 0;
 	for (i = 0; i < RS_FRAME_LEN; i++) 
@@ -706,34 +745,6 @@ int get_tlm_fox() {
 	 }   
 	}
 	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
-
-  if (tempSensor.fd != OFF) {
-    int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
-    uint8_t upper = (uint8_t) (tempValue >> 8);
-    uint8_t lower = (uint8_t) (tempValue & 0xff);
-    float temp = (float)lower + ((float)upper / 0x100);
-	  
-    #ifdef DEBUG_LOGGING
-      printf("Temp Sensor Read: %6.1f\n", temp);
-    #endif
-
-    TxTemp = (int)((temp * 10.0) + 0.5);
-    encodeB(b, 34 + head_offset,  TxTemp);
-
-  }
-  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-  if (cpuTempSensor) {
-		double cpuTemp;
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
-	  
-    #ifdef DEBUG_LOGGING
-      printf("CPU Temp Read: %6.1f\n", cpuTemp);
-    #endif
-	  
-    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  }
 
   for (count = 0; count < DATA_LEN; count++) {
       printf("%02X", b[count]);
