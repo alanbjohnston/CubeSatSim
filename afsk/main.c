@@ -567,10 +567,8 @@ int get_tlm_fox() {
 	  
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
     encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  }
-
-	  
-    sleep(0.5);
+  }	  
+//    sleep(1);
 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
