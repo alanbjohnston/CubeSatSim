@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire codeF
+ *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire code
  *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
@@ -105,9 +105,6 @@ int smaller;
 int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
-long int ptr = 0;
-
-void copy_samples();
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
@@ -116,8 +113,6 @@ void write_wave();
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 #define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
 short int buffer[BUF_LEN];
-short int phase0[SAMPLES], phase1[SAMPLES];
-int size_of_phase;
 short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
 short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
 int reset_count;
@@ -287,21 +282,6 @@ int main(int argc, char *argv[]) {
   ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
             AX25_POSTAMBLE_LEN);  
-	
-    ptr = 0;
-    size_of_phase = sizeof(phase0);
-    int j;  
-	phase = 1;
-	for (j = 0; j < SAMPLES; j++)
-	{
-		write_wave(j, phase1);
-	}
-	phase = -1;
-	for (j = 0; j < SAMPLES; j++)
-	{
-		write_wave(j, phase0);
-	} 
-	  
       
   /* Infinite loop */
   //for (;;) 
@@ -708,16 +688,16 @@ int get_tlm_fox() {
     int data;
     int val;
     int offset = 0;
-
-	  for (i = 1; i <= SYNC_BITS; i++)
+      
+ 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
 	{
-		copy_samples();	
+		write_wave(ctr);	
 		if ( (i % SAMPLES) == 0) {
-  			int bit = SYNC_BITS - i + 1;
+  			int bit = SYNC_BITS - i/SAMPLES + 1;
   			val = sync;
 			data = val & 1 << (bit - 1);	
 		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-		 //  		 ctr, i, frames, bit, (data > 0) );
+		 //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
 			if (DUV)
 			{
 				phase = ((data != 0) * 2) - 1; 
@@ -727,24 +707,24 @@ int get_tlm_fox() {
 			{
 				if (data == 0)  {
 					phase *= -1;
-//					if ( (ctr - smaller) > 0)
-//					{
-//						for (int j = 1; j <= smaller; j++)
-//				     		buffer[ctr - j] = buffer[ctr - j] * 0.4;
-//					}
-//					flip_ctr = ctr;
+					if ( (ctr - smaller) > 0)
+					{
+						for (int j = 1; j <= smaller; j++)
+				     		buffer[ctr - j] = buffer[ctr - j] * 0.4;
+					}
+					flip_ctr = ctr;
 				}
 			}
 		}
 	}
 
 	for (i = 1; 
-	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * 1); i++) // 572   
+	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	{
-		copy_samples();
-//		if ( (i % SAMPLES) == 0) {
-			int symbol = (int)((i - 1)/ 10);
-			int bit = 10 - (i - symbol * 10);	
+		write_wave(ctr);
+		if ( (i % SAMPLES) == 0) {
+			int symbol = (int)((i - 1)/ (SAMPLES * 10));
+			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
 			val = data10[symbol];
 			data = val & 1 << (bit - 1);	
 	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
@@ -758,15 +738,15 @@ int get_tlm_fox() {
 			{	 
 				if (data == 0)  {
 					phase *= -1;
-//					if ( (ctr - smaller) > 0)
-//					{
-//						for (int j = 1; j <= smaller; j ++)
-//				    	 	buffer[ctr - j] = buffer[ctr - j] * 0.4;
-//					}
-//					flip_ctr = ctr;
+					if ( (ctr - smaller) > 0)
+					{
+						for (int j = 1; j <= smaller; j ++)
+				    	 	buffer[ctr - j] = buffer[ctr - j] * 0.4;
+					}
+					flip_ctr = ctr;
 				}
 			}	
-//		}
+		}
 	 }   
 	}
 	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
@@ -1048,34 +1028,26 @@ void write_wav(char * filename, unsigned long num_samples, short int * data, int
 //	return 0;
 //}
 
-void write_wave(int i, short int *buf)
+void write_wave(int i)
 {
 		if (DUV)
 		{
 //			if ((ctr - flip_ctr) < smaller)
 //				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
 //			else
-				buf[i] = 0.25 * amplitude * phase;			
+				buffer[ctr++] = 0.25 * amplitude * phase;			
 		}
 		else
 		{
-//			if ((ctr - flip_ctr) < smaller)
- // 		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * 
-  //		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
- //			else
- 		 		buf[i] = (int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+			if ((ctr - flip_ctr) < smaller)
+  		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * 
+  		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+ 			else
+ 		 		buffer[ctr++] = (int)(amplitude * phase * 		
+ 		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
  		 } 			
-		printf("%d %d \n", i, buf[i]);
-}
+//		printf("%d %d \n", i, buffer[ctr - 1]);
 
-void copy_samples() 
-{
-	if (phase == 0)
-		memcpy(&buffer[ptr], &phase0, size_of_phase);
-	else
-		memcpy(&buffer[ptr], &phase1, size_of_phase);
-	
-	ptr += size_of_phase;	
 }
 
 /**
