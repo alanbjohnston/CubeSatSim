@@ -595,12 +595,12 @@ int get_tlm_fox() {
     h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
     h[5] = (h[5] & 0x0f) | (frm_type << 4);  
 	  
-  posXv = reading[PLUS_X].voltage * 100;
-  posYv = reading[PLUS_Y].voltage * 100;
-  posZv = reading[PLUS_Z].voltage * 100;
-  negXv = reading[MINUS_X].voltage * 100;
-  negYv = reading[MINUS_Y].voltage * 100;
-  negZv = reading[MINUS_Z].voltage * 100;
+  posXv = reading[PLUS_X].current * 10;
+  posYv = reading[PLUS_Y].current * 10;
+  posZv = reading[PLUS_Z].current * 10;
+  negXv = reading[MINUS_X].current * 10;
+  negYv = reading[MINUS_Y].current * 10;
+  negZv = reading[MINUS_Z].current * 10;
 	
   batt_c_v = reading[BAT].voltage * 100;
   battCurr = reading[BAT].current * 10;
