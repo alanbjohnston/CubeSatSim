@@ -72,7 +72,7 @@ int lower_digit(int number);
 
 #define S_RATE  (48000)     // (44100)
 #define BUF_SIZE (S_RATE*10) /* 2 second buffer */
-/*
+
 // BPSK Settings
 #define BIT_RATE	1200 // 200 for DUV
 #define DUV	0 // 1 for DUV
@@ -83,7 +83,7 @@ int lower_digit(int number);
 #define SYNC_BITS 31  // 10 for DUV
 #define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
 #define HEADER_LEN 8  // 6 for DUV
-*/
+/*
 // DUV Settings
 #define BIT_RATE 200 
 #define DUV	1
@@ -94,7 +94,7 @@ int lower_digit(int number);
 #define DATA_LEN 58
 #define SYNC_BITS 10
 #define SYNC_WORD 0b0011111010
-
+*/
 
 #define PARITY_LEN 32
 
