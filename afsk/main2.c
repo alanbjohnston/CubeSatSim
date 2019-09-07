@@ -508,7 +508,7 @@ int get_tlm_fox() {
 	short int h[HEADER_LEN] = {0x05,0x00,0x00,0x00,0x00,0x10,0x00,0x00};	
 */	
 
-	short int b[DATA_LEN];
+	short int b[DATA_LEN * PAYLOADS];  // for each payload
 	memset(b, 0, sizeof(b));
 
 	short int h[HEADER_LEN];
@@ -620,12 +620,23 @@ int get_tlm_fox() {
 	encodeA(b, 3 + head_offset, batt_c_v);
  	encodeA(b, 9 + head_offset, battCurr);
 */       
+	  
 	int ctr1 = 0;
 	int ctr3 = 0;
 	for (i = 0; i < RS_FRAME_LEN; i++) 
 	{
         for (int j  = 0; j < RS_FRAMES ; j++)
 		{
+		
+			if ((ctr3 % DATA_LEN) == 0) {  // or is it ctr1?
+		// sleep
+		// clear b and h
+		// get uptime and encode in h
+		// read telem data and encode in b
+
+				
+			}
+		
 			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
 			{
 				if (ctr1 < HEADER_LEN)
