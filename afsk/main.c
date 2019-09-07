@@ -287,6 +287,22 @@ int main(int argc, char *argv[]) {
   ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
             AX25_POSTAMBLE_LEN);  
+	
+    ptr = 0;
+    size_of_phase = sizeof(phase0);
+	  
+	phase = 1;
+	for (i = 0; i < SAMPLES; i++)
+	{
+		write_wave(i, phase1);
+	}
+	phase = -1;
+	for (i = 0; i < SAMPLES; i++)
+	{
+		write_wave(i, phase0);
+	} 
+	  
+
       
   /* Infinite loop */
   //for (;;) 
@@ -693,21 +709,8 @@ int get_tlm_fox() {
     int data;
     int val;
     int offset = 0;
-    ptr = 0;
-    size_of_phase = sizeof(phase0);
-	  
-	phase = 1;
-	for (i = 0; i < SAMPLES; i++)
-	{
-		write_wave(i, phase1);
-	}
-	phase = 0;
-	for (i = 0; i < SAMPLES; i++)
-	{
-		write_wave(i, phase0);
-	} 
-	  
- 	for (i = 1; i <= SYNC_BITS; i++)
+
+	  for (i = 1; i <= SYNC_BITS; i++)
 	{
 		copy_samples();	
 		if ( (i % SAMPLES) == 0) {
