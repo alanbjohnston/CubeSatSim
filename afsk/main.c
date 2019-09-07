@@ -290,19 +290,18 @@ int main(int argc, char *argv[]) {
 	
     ptr = 0;
     size_of_phase = sizeof(phase0);
-	  
+    int j;  
 	phase = 1;
-	for (i = 0; i < SAMPLES; i++)
+	for (j = 0; j < SAMPLES; j++)
 	{
-		write_wave(i, phase1);
+		write_wave(j, phase1);
 	}
 	phase = -1;
-	for (i = 0; i < SAMPLES; i++)
+	for ji = 0; j < SAMPLES; j++)
 	{
-		write_wave(i, phase0);
+		write_wave(j, phase0);
 	} 
 	  
-
       
   /* Infinite loop */
   //for (;;) 
