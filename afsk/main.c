@@ -602,8 +602,8 @@ int get_tlm_fox() {
   negYv = reading[MINUS_Y].voltage * 100;
   negZv = reading[MINUS_Z].voltage * 100;
 	
-  batt_c_v = reading[BATT].voltage * 100;
-  battCurr = reading[BATT].current * 10;
+  batt_c_v = reading[BAT].voltage * 100;
+  battCurr = reading[BAT].current * 10;
 	  	  
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
