@@ -323,7 +323,7 @@ int main(int argc, char *argv[]) {
     } 	
       
   /* Infinite loop */
-  for (;;) 
+  //for (;;) 
   
   {
   //  sleep(1);  // Delay 1 second
