@@ -808,7 +808,7 @@ int get_tlm_fox() {
 	send(sock, buffer, sizeof(buffer), 0);    	    
     }
 	
-sleep(5);
+sleep(10);
 
 return 0;	
 }
