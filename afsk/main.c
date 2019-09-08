@@ -111,6 +111,8 @@ int smaller;
 int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
+int sock = 0;
+
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
@@ -290,8 +292,9 @@ int main(int argc, char *argv[]) {
             AX25_POSTAMBLE_LEN);  
 	
 // socket open	
+    int error = 0;
     struct sockaddr_in address; 
-    int sock = 0, valread; 
+    int valread; 
     struct sockaddr_in serv_addr; 
 //    char *hello = "Hello from client"; 
 //    char buffer[1024] = {0}; 
