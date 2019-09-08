@@ -72,10 +72,10 @@ int lower_digit(int number);
 
 #define S_RATE  (48000)     // (44100)
 #define BUF_SIZE (S_RATE*10) /* 2 second buffer */
-
+/*
 // BPSK Settings
 #define BIT_RATE	1200 // 200 for DUV
-#define DUV	0 // 1 for DUV
+#define FSK	0 // 1 for DUV
 #define RS_FRAMES 3 // 3 frames for BPSK, 1 for DUV
 #define PAYLOADS 6 // 1 for DUV
 #define DATA_LEN 78  // 56 for DUV  
@@ -83,10 +83,10 @@ int lower_digit(int number);
 #define SYNC_BITS 31  // 10 for DUV
 #define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
 #define HEADER_LEN 8  // 6 for DUV
-/*
-// DUV Settings
+*/
+// FSK Settings
 #define BIT_RATE 200 
-#define DUV	1
+#define FSK	1
 #define RS_FRAMES 1
 #define PAYLOADS 1
 #define RS_FRAME_LEN 64
@@ -94,7 +94,7 @@ int lower_digit(int number);
 #define DATA_LEN 58
 #define SYNC_BITS 10
 #define SYNC_WORD 0b0011111010
-*/
+
 
 #define PARITY_LEN 32
 
@@ -309,7 +309,7 @@ int main(int argc, char *argv[]) {
 	  
       char cmdbuffer[1000];
       FILE* transmit;
-      if (DUV == 1) {
+      if (FSK == 1) {
       	  transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1", "r"); 
       } else {
       	   transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float 2>&1", "r"); 
@@ -698,7 +698,7 @@ int get_tlm_fox() {
 			data = val & 1 << (bit - 1);	
 		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
 		 //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
-			if (DUV)
+			if (FSK)
 			{
 				phase = ((data != 0) * 2) - 1; 
 		//		printf("Sending a %d\n", phase);
@@ -729,7 +729,7 @@ int get_tlm_fox() {
 			data = val & 1 << (bit - 1);	
 	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
 	//	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-		    if (DUV)
+		    if (FSK)
 			{
 				phase = ((data != 0) * 2) - 1; 
 	//			printf("Sending a %d\n", phase);
@@ -1030,7 +1030,7 @@ void write_wav(char * filename, unsigned long num_samples, short int * data, int
 
 void write_wave(int i)
 {
-		if (DUV)
+		if (FSK)
 		{
 //			if ((ctr - flip_ctr) < smaller)
 //				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
