@@ -312,7 +312,7 @@ int main(int argc, char *argv[]) {
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
     #endif
-	  
+/*	  
       char cmdbuffer[1000];
       FILE* transmit;
       if (FSK == 1) {
@@ -323,7 +323,7 @@ int main(int argc, char *argv[]) {
       fgets(cmdbuffer, 1000, transmit);
       pclose(transmit);
       printf("Results of transmit command: %s\n", cmdbuffer);
-	  
+*/	  
 	  
 	  
 //	  printf("%s \n", b);
