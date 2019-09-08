@@ -774,7 +774,7 @@ int get_tlm_fox() {
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
     { 
         printf("\n Socket creation error \n"); 
-        dataviz = 0; 
+        error = 1; 
     } 
    
     memset(&serv_addr, '0', sizeof(serv_addr)); 
