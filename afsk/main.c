@@ -793,8 +793,6 @@ int get_tlm_fox() {
 	}
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 	
-  sleep(5);
-
   int error = 0;
   int count;
   for (count = 0; count < DATA_LEN; count++) {
@@ -810,6 +808,8 @@ int get_tlm_fox() {
 	send(sock, buffer, sizeof(buffer), 0);    	    
     }
 	
+sleep(5);
+
 return 0;	
 }
 
