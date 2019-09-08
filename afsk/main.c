@@ -114,7 +114,7 @@ int ctr = 0;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
-#define FRAME_CNT 11 //33 // Add 3 frames to the count	
+#define FRAME_CNT 3//  //33 // Add 3 frames to the count	
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 #define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
