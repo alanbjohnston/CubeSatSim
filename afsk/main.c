@@ -792,6 +792,8 @@ int get_tlm_fox() {
 	 }   
 	}
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
+	
+  sleep(5);
 
   int error = 0;
   int count;
