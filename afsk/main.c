@@ -694,7 +694,10 @@ int get_tlm_fox() {
     int data;
     int val;
     int offset = 0;
-      
+    ctr = 0;
+    flip_ctr = 0;
+    phase = 1;
+	  
  	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
 	{
 		write_wave(ctr);	
