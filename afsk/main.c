@@ -76,6 +76,7 @@ void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
 int socket_open = 0;
+int sock = 0;
 
 #define S_RATE  (48000)     // (44100)
 #define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -770,7 +771,7 @@ int get_tlm_fox() {
   if (!socket_open)
     {
     struct sockaddr_in address; 
-    int sock = 0, valread; 
+    int valread; 
     struct sockaddr_in serv_addr; 
 //    char *hello = "Hello from client"; 
 //    char buffer[1024] = {0}; 
@@ -797,7 +798,7 @@ int get_tlm_fox() {
         printf("\nConnection Failed \n"); 
         error = 1; 
     }
-    if (errror != 1)
+    if (error != 1)
 	 socket_open = 1;
   }
 	
