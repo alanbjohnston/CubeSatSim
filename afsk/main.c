@@ -22,7 +22,7 @@
  *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
-#include <fcntl.h>                              
+#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -37,10 +37,10 @@
 #include <math.h>
 #include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
 #include "make_wav.h"
-#include <sys/socket.h> 
-#include <stdlib.h> 
-#include <netinet/in.h> 
-#include <string.h> 
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <string.h>
 #include <arpa/inet.h>
 #define PORT 8080
 
@@ -80,19 +80,19 @@ int lower_digit(int number);
 #define BUF_SIZE (S_RATE*10) /* 2 second buffer */
 /*
 // BPSK Settings
-#define BIT_RATE	1200 // 200 for DUV
-#define FSK	0 // 1 for DUV
+#define BIT_RATE        1200 // 200 for DUV
+#define FSK     0 // 1 for DUV
 #define RS_FRAMES 3 // 3 frames for BPSK, 1 for DUV
 #define PAYLOADS 6 // 1 for DUV
-#define DATA_LEN 78  // 56 for DUV  
+#define DATA_LEN 78  // 56 for DUV
 #define RS_FRAME_LEN 159  // 64 for DUV
 #define SYNC_BITS 31  // 10 for DUV
 #define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
 #define HEADER_LEN 8  // 6 for DUV
 */
 // FSK Settings
-#define BIT_RATE 200 
-#define FSK	1
+#define BIT_RATE 200
+#define FSK     1
 #define RS_FRAMES 1
 #define PAYLOADS 1
 #define RS_FRAME_LEN 64
@@ -106,30 +106,36 @@ int lower_digit(int number);
 
 float amplitude = 32767/3; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000;  // 1200
-	
+
 int smaller;
 int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
-void write_to_buffer(int i, int symbol, int val);	
+int sock = 0;
+
+void write_to_buffer(int i, int symbol, int val);
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
-#define FRAME_CNT 60// 11 //33 // Add 3 frames to the count	
+<<<<<<< HEAD
+#define FRAME_CNT 60// 11 //33 // Add 3 frames to the count
+=======
+#define FRAME_CNT 11//  //33 // Add 3 frames to the count
+>>>>>>> 363442c3e93a3058a0bb88473dc4fa192b6425ad
 
-//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
-#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
+//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)
+#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)
 short int buffer[BUF_LEN];
 short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
-short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
+short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
 int reset_count;
 float uptime_sec;
 long int uptime;
 char call[5];
- 
+
 struct SensorConfig {
     int fd;
     uint16_t  config;
-    int calValue;    
+    int calValue;
     int powerMultiplier;
     int currentDivider;
 };
@@ -161,20 +167,20 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     if (sensor.fd < 0) {
         return data;
     }
-    // doesn't read negative currents accurately, shows -0.1mA	
+    // doesn't read negative currents accurately, shows -0.1mA
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
-    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
+    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     int value  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
     data.current  = (float) twosToInt(value, 16) / (float) sensor.currentDivider;
-	
+
     wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
     delay(1); // Max 12-bit conversion time is 586us per sample
-    value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);	
-    data.voltage  =  ((float)(value >> 3) * 4) / 1000;	
-    // power has very low resolution, seems to step in 512mW values	
+    value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);
+    data.voltage  =  ((float)(value >> 3) * 4) / 1000;
+    // power has very low resolution, seems to step in 512mW values
     data.power   = (float) wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * (float) sensor.powerMultiplier;
- 	
+
     return data;
 }
 
@@ -192,91 +198,91 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //struct SensorConfig config_sensor(int sensor, int milliAmps) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
-	
-    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: %s bus not present \n", bus);
-	    data.fd = OFF;
-	    return (data);
+
+    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing
+            printf("ERROR: %s bus not present \n", bus);
+            data.fd = OFF;
+            return (data);
     }
-	
-    data.fd = wiringPiI2CSetupInterface(bus, address);	
-	
+
+    data.fd = wiringPiI2CSetupInterface(bus, address);
+
     data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
-                  INA219_CONFIG_GAIN_1_40MV | 
+                  INA219_CONFIG_GAIN_1_40MV |
                   INA219_CONFIG_BADCRES_12BIT |
                   INA219_CONFIG_SADCRES_12BIT_1S_532US |
                   INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
-		 
-    if (milliAmps == 400) {	// INA219 16V 400mA configuration
-      data.calValue = 8192;    
-      data.powerMultiplier = 1; 
+
+    if (milliAmps == 400) {     // INA219 16V 400mA configuration
+      data.calValue = 8192;
+      data.powerMultiplier = 1;
       data.currentDivider = 20;  // 40; in Adafruit config
     }
     else  {                     // INA219 16V 2A configuration
-      data.calValue = 40960;    
-      data.powerMultiplier = 2;  
+      data.calValue = 40960;
+      data.powerMultiplier = 2;
       data.currentDivider = 10;  // 20; in Adafruit config
-    }	
-	
+    }
+
     #ifdef DEBUG_LOGGING
-	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
-	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
-    #endif	
+        printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
+               data.config, data.calValue, data.currentDivider, data.powerMultiplier);
+    #endif
     return data;
 }
 
 struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
-struct SensorConfig tempSensor; 
+struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
+struct SensorConfig tempSensor;
 
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
-	
+
   if (argc > 1) {
-	  strcpy(src_addr, argv[1]);  
+          strcpy(src_addr, argv[1]);
   }
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
-  
+
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
-	
-  FILE* config_file = fopen("sim.cfg","r"); 
-  if (config_file == NULL) 
-  { 
-       printf("Creating config file."); 
+
+  FILE* config_file = fopen("sim.cfg","r");
+  if (config_file == NULL)
+  {
+       printf("Creating config file.");
        config_file = fopen("sim.cfg","w");
-	fprintf(config_file, "%s %d", "KU2Y", 100);
-	fclose(config_file);
-	config_file = fopen("sim.cfg","r"); 
-    } 
-  
-    char* cfg_buf[100]; 
+        fprintf(config_file, "%s %d", "KU2Y", 100);
+        fclose(config_file);
+        config_file = fopen("sim.cfg","r");
+    }
+
+    char* cfg_buf[100];
     fscanf(config_file, "%s %d", call, &reset_count);
     fclose(config_file);
-    printf("%s %d\n", call, reset_count); 
-	
+    printf("%s %d\n", call, reset_count);
+
     reset_count = (reset_count + 1) % 0xffff;
-	
+
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
-    config_file = fopen("sim.cfg","r"); 
-	
+    config_file = fopen("sim.cfg","r");
+
   tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
-	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400);
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
 
   int ret;
   uint8_t data[1024];
@@ -287,49 +293,80 @@ int main(int argc, char *argv[]) {
 
   ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
-            AX25_POSTAMBLE_LEN);  
-      
+            AX25_POSTAMBLE_LEN);
+
+// socket open
+    int error = 0;
+    struct sockaddr_in address;
+    int valread;
+    struct sockaddr_in serv_addr;
+//    char *hello = "Hello from client";
+//    char buffer[1024] = {0};
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
+    {
+        printf("\n Socket creation error \n");
+        error = 1;
+    }
+
+    memset(&serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+
+    // Convert IPv4 and IPv6 addresses from text to binary form
+    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)
+    {
+        printf("\nInvalid address/ Address not supported \n");
+        error = 1;
+    }
+
+    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
+    {
+        printf("\nConnection Failed \n");
+        error = 1;
+    }
+
   /* Infinite loop */
-  //for (;;) 
-  
+  //for (;;)
+
   {
   //  sleep(1);  // Delay 1 second
-    
+
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
-	  
+
     char str[1000];
    // uint8_t b[64];
     char header_str[] = "\x03\xf0";
     strcpy(str, header_str);
-	
-    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
-	  
+
+    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);
+
 //    get_tlm(str);
     get_tlm_fox();
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
     #endif
-/*	  
+/*
       char cmdbuffer[1000];
       FILE* transmit;
       if (FSK == 1) {
-      	  transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1", "r"); 
+          transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1", "r");
       } else {
-      	   transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float 2>&1", "r"); 
+           transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float 2>&1", "r");
       }
       fgets(cmdbuffer, 1000, transmit);
       pclose(transmit);
       printf("Results of transmit command: %s\n", cmdbuffer);
-*/	  
-	  
-	  
-//	  printf("%s \n", b);
-/*	  
-    digitalWrite (0, LOW); 
-  
+*/
+
+
+//        printf("%s \n", b);
+/*
+    digitalWrite (0, LOW);
+
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Transmitting X.25 packet\n");
     #endif
@@ -343,16 +380,16 @@ int main(int argc, char *argv[]) {
     }
 
     ax5043_wait_for_transmit();
-    
+
     digitalWrite (0, HIGH);
-  
+
     if (ret) {
       fprintf(stderr,
               "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
               ret);
       exit(EXIT_FAILURE);
     }
-*/    
+*/
   }
 
   return 0;
@@ -360,7 +397,7 @@ int main(int argc, char *argv[]) {
 
 static void init_rf() {
   int ret;
-  #ifdef DEBUG_LOGGING  
+  #ifdef DEBUG_LOGGING
     fprintf(stderr,"Initializing AX5043\n");
   #endif
   ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
@@ -375,108 +412,108 @@ static void init_rf() {
 //
 int lower_digit(int number) {
 
-	int digit = 0;
-	if (number < 100) 
-		digit = number - ((int)(number/10) * 10);
-	else
-		fprintf(stderr,"ERROR: Not a digit in lower_digit!\n");
-	return digit;
+        int digit = 0;
+        if (number < 100)
+                digit = number - ((int)(number/10) * 10);
+        else
+                fprintf(stderr,"ERROR: Not a digit in lower_digit!\n");
+        return digit;
 }
 
 // Returns upper digit of a number which must be less than 99
 //
 int upper_digit(int number) {
 
-	int digit = 0;
-	if (number < 100) 
-		digit = (int)(number/10);
-	else
-		fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
-	return digit;
+        int digit = 0;
+        if (number < 100)
+                digit = (int)(number/10);
+        else
+                fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
+        return digit;
 }
 
 int get_tlm(char *str) {
-	
+
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
-	
+
 //  Reading I2C voltage and current sensors
   int count;
   for (count = 0; count < 8; count++)
   {
-    reading[count] = read_sensor_data(sensor[count]);	
+    reading[count] = read_sensor_data(sensor[count]);
     #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n",
+                count, reading[count].voltage, reading[count].current, reading[count].power);
     #endif
   }
-	    
+
   tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
-  tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
+  tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;              // X- current [10]
   tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10.0) % 100;  // +Y current [7]
 
-  tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10.0) % 100;  			// -Y current [10] 
+  tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10.0) % 100;              // -Y current [10]
   tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-  tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10.0) % 100;  			// -Z current (was timestamp)
+  tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10.0) % 100;              // -Z current (was timestamp)
   tlm[2][D] = (int)(50.5 + reading[BAT].current/10.0) % 100;   // NiMH Battery current
-	
+
   tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
-		   	
+
   if (tempSensor.fd != OFF) {
-    int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
+    int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0);
     uint8_t upper = (uint8_t) (tempValue >> 8);
     uint8_t lower = (uint8_t) (tempValue & 0xff);
     float temp = (float)lower + ((float)upper / 0x100);
-	  
+
     #ifdef DEBUG_LOGGING
       printf("Temp Sensor Read: %6.1f\n", temp);
     #endif
-	  
+
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
   }
-  
+
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
-		double cpuTemp;
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
-	  
+                double cpuTemp;
+                fscanf (cpuTempSensor, "%lf", &cpuTemp);
+                cpuTemp /= 1000;
+
     #ifdef DEBUG_LOGGING
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
-	  
+
     tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
-		fclose (cpuTempSensor);
+                fclose (cpuTempSensor);
   }
-  
+
   tlm[6][B] = 0 ;
-  tlm[6][D] = 49 + rand() % 3; 
+  tlm[6][D] = 49 + rand() % 3;
 
   #ifdef DEBUG_LOGGING
 // Display tlm
     int k, j;
     for (k = 1; k < 7; k++) {
       for (j = 1; j < 5; j++) {
-        printf(" %2d ",	tlm[k][j]);
+        printf(" %2d ", tlm[k][j]);
       }
       printf("\n");
-    }	
+    }
   #endif
 
     char tlm_str[1000];
 
     char header_str[] = "hi hi ";
     strcpy(str, header_str);
-//    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
-	  
+//    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);    
+
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
-        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
-        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
+        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
@@ -487,72 +524,72 @@ return;
 }
 
 int get_tlm_fox() {
-	
+
 //   memset(b, 0, 64);
-	
+
 //  Reading I2C voltage and current sensors
-	
+
    FILE* uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
     uptime = (int) uptime_sec;
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
     fclose(uptime_file);
-	
-	int i;
-	long int sync = SYNC_WORD;
 
-	smaller = S_RATE/(2 * freq_Hz);
-/*	
-	short int b[DATA_LEN] = {0x00,0x7E,0x03,
-				0x00,0x00,0x00,0x00,0xE6,0x01,0x00,0x27,0xD1,0x02,
-		        0xE5,0x40,0x04,0x18,0xE1,0x04,0x00,0x00,0x00,0x00,0x00,0x00,
-		        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	        		
-		        0x00,0x00,0x00,0x03,0x02,0x00,0x00,0x00,0x00,0x00,0x00,
-		        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-		         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-		         
-	short int h[HEADER_LEN] = {0x05,0x00,0x00,0x00,0x00,0x10,0x00,0x00};	
-*/	
+        int i;
+        long int sync = SYNC_WORD;
 
-	short int b[DATA_LEN];
-	memset(b, 0, sizeof(b));
+        smaller = S_RATE/(2 * freq_Hz);
+/*
+        short int b[DATA_LEN] = {0x00,0x7E,0x03,
+                                0x00,0x00,0x00,0x00,0xE6,0x01,0x00,0x27,0xD1,0x02,
+                        0xE5,0x40,0x04,0x18,0xE1,0x04,0x00,0x00,0x00,0x00,0x00,0x00,
+                        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+                        0x00,0x00,0x00,0x03,0x02,0x00,0x00,0x00,0x00,0x00,0x00,
+                        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
+                         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
 
-	short int h[HEADER_LEN];
-	memset(h, 0, sizeof(h));
-	
-	short int b10[DATA_LEN], h10[HEADER_LEN];
-	short int rs_frame[RS_FRAMES][223];
-	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
-/*	
-  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+        short int h[HEADER_LEN] = {0x05,0x00,0x00,0x00,0x00,0x10,0x00,0x00};
+*/
+
+        short int b[DATA_LEN];
+        memset(b, 0, sizeof(b));
+
+        short int h[HEADER_LEN];
+        memset(h, 0, sizeof(h));
+
+        short int b10[DATA_LEN], h10[HEADER_LEN];
+        short int rs_frame[RS_FRAMES][223];
+        unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
+/*
+  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
-  int posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
-  		posZv = 280, negZv = 78;
-*/	
-  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int posXv = 296, negXv = 45, posYv = 220, negYv = 68,
+                posZv = 280, negZv = 78;
+*/
+  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
-  int posXv = 0, negXv = 0, posYv = 0, negYv = 0, 
-  		posZv = 0, negZv = 0;
-  int head_offset = 0; 	
+  int posXv = 0, negXv = 0, posYv = 0, negYv = 0,
+                posZv = 0, negZv = 0;
+  int head_offset = 0;
 
-  for (int frames = 0; frames < FRAME_CNT; frames++) 
+  for (int frames = 0; frames < FRAME_CNT; frames++)
   {
     int count;
     for (count = 0; count < 8; count++)
     {
-      reading[count] = read_sensor_data(sensor[count]);	
+      reading[count] = read_sensor_data(sensor[count]);
     #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n",
+                count, reading[count].voltage, reading[count].current, reading[count].power);
     #endif
     }
 /*
     if (tempSensor.fd != OFF) {
-      int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
+      int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0);
       uint8_t upper = (uint8_t) (tempValue >> 8);
       uint8_t lower = (uint8_t) (tempValue & 0xff);
       float temp = (float)lower + ((float)upper / 0x100);
-	  
+
     #ifdef DEBUG_LOGGING
       printf("Temp Sensor Read: %6.1f\n", temp);
     #endif
@@ -560,31 +597,31 @@ int get_tlm_fox() {
       TxTemp = (int)((temp * 10.0) + 0.5);
       encodeB(b, 34 + head_offset,  TxTemp);
   }
-*/  
+*/
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
-		double cpuTemp;
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
-	  
+                double cpuTemp;
+                fscanf (cpuTempSensor, "%lf", &cpuTemp);
+                cpuTemp /= 1000;
+
     #ifdef DEBUG_LOGGING
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
-	  
+
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
     encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  }	  
+  }
     sleep(1);
-	  
+
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
-	  
+
     FILE *uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
     uptime = (int) uptime_sec;
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-	  
+
     h[0] = (h[0] & 0xf8) | (id & 0x07);  // 3 bits
     printf("h[0] %x\n", h[0]);
     h[0] = (h[0] & 0x07)| ((reset_count & 0x1f) << 3);
@@ -598,164 +635,167 @@ int get_tlm_fox() {
     h[3] = (uptime >> 5) & 0xff;
     h[4] = (uptime >> 13) & 0xff;
     h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
-    h[5] = (h[5] & 0x0f) | (frm_type << 4);  
-	  
+    h[5] = (h[5] & 0x0f) | (frm_type << 4);
+
   posXv = reading[PLUS_X].current * 10;
   posYv = reading[PLUS_Y].current * 10;
   posZv = reading[PLUS_Z].current * 10;
   negXv = reading[MINUS_X].current * 10;
   negYv = reading[MINUS_Y].current * 10;
   negZv = reading[MINUS_Z].current * 10;
-	
+
   batt_c_v = reading[BAT].voltage * 100;
   battCurr = reading[BAT].current * 10;
-	  	  
+
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
   encodeA(b, 9 + head_offset, battCurr);
-  encodeA(b, 12 + head_offset,posXv);  	
-  encodeB(b, 13 + head_offset,posYv);	
-  encodeA(b, 15 + head_offset,posZv);	
-  encodeB(b, 16 + head_offset,negXv);	
-  encodeA(b, 18 + head_offset,negYv);	
-  encodeB(b, 19 + head_offset,negZv);	
-	  
-/*	batt_c_v += 10;
-	battCurr -= 10;
-	encodeA(b, 3 + head_offset, batt_c_v);
- 	encodeA(b, 9 + head_offset, battCurr);
-*/       
-	int ctr1 = 0;
-	int ctr3 = 0;
-	for (i = 0; i < RS_FRAME_LEN; i++) 
-	{
+  encodeA(b, 12 + head_offset,posXv);
+  encodeB(b, 13 + head_offset,posYv);
+  encodeA(b, 15 + head_offset,posZv);
+  encodeB(b, 16 + head_offset,negXv);
+  encodeA(b, 18 + head_offset,negYv);
+  encodeB(b, 19 + head_offset,negZv);
+
+/*      batt_c_v += 10;
+        battCurr -= 10;
+        encodeA(b, 3 + head_offset, batt_c_v);
+        encodeA(b, 9 + head_offset, battCurr);
+*/
+        int ctr1 = 0;
+        int ctr3 = 0;
+        for (i = 0; i < RS_FRAME_LEN; i++)
+        {
         for (int j  = 0; j < RS_FRAMES ; j++)
-		{
-			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
-			{
-				if (ctr1 < HEADER_LEN)
-				{
-             				rs_frame[j][i] = h[ctr1];
-		     			update_rs(parities[j], h[ctr1]);
-      //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
-					data8[ctr1++] = rs_frame[j][i];
-	//				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
-				}
-				else
-				{
-             				rs_frame[j][i] = b[ctr3 % DATA_LEN];
-		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
-          //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
-          //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
-					data8[ctr1++] = rs_frame[j][i];
-		//			printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
-					ctr3++;
-				}								
-			}
-		}	
-	}    
-	    	    
-    	printf("Parities ");
-		for (int m = 0; m < PARITY_LEN; m++) {
-		 	printf("%d ", parities[0][m]);
-		}
-		printf("\n");
- 
-  	int ctr2 = 0;    
- 	memset(data10,0,sizeof(data10));  
-  	int rd = 0;
-	int nrd;	
- 
+                {
+                        if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
+                        {
+                                if (ctr1 < HEADER_LEN)
+                                {
+                                        rs_frame[j][i] = h[ctr1];
+                                        update_rs(parities[j], h[ctr1]);
+      //                                printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
+                                        data8[ctr1++] = rs_frame[j][i];
+        //                              printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
+                                }
+                                else
+                                {
+                                        rs_frame[j][i] = b[ctr3 % DATA_LEN];
+                                        update_rs(parities[j], b[ctr3 % DATA_LEN]);
+          //                            printf("%d rs_frame[%d][%d] = %x %d \n",
+          //                                    ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
+                                        data8[ctr1++] = rs_frame[j][i];
+                //                      printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
+                                        ctr3++;
+                                }
+                        }
+                }
+        }
+
+        printf("Parities ");
+                for (int m = 0; m < PARITY_LEN; m++) {
+                        printf("%d ", parities[0][m]);
+                }
+                printf("\n");
+
+        int ctr2 = 0;
+        memset(data10,0,sizeof(data10));
+        int rd = 0;
+        int nrd;
+
     for (i = 0; i < DATA_LEN * PAYLOADS + HEADER_LEN; i++) // 476 for BPSK
-	{
-				data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
-				nrd = (Encode_8b10b[rd][((int)data8[ctr2])] >> 10) & 1;
-		//		printf ("data10[%d] = encoded data8[%d] = %x \n",
-		//		 	ctr2, ctr2, data10[ctr2]); 
+        {
+                                data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
+                                nrd = (Encode_8b10b[rd][((int)data8[ctr2])] >> 10) & 1;
+                //              printf ("data10[%d] = encoded data8[%d] = %x \n",
+                //                      ctr2, ctr2, data10[ctr2]);
 
-				rd = nrd; // ^ nrd;
-				ctr2++;
-	}
-  
-    for (i = 0; i < PARITY_LEN; i++) 
-	{
-		for (int j  = 0; j < RS_FRAMES; j++)
-		{
-			data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
-			nrd = (Encode_8b10b[rd][((int)parities[j][i])] >> 10) & 1;
-		//	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
-		//		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
+                                rd = nrd; // ^ nrd;
+                                ctr2++;
+        }
 
-			rd = nrd; 
-		}	
-	}
-     
+    for (i = 0; i < PARITY_LEN; i++)
+        {
+                for (int j  = 0; j < RS_FRAMES; j++)
+                {
+                        data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
+                        nrd = (Encode_8b10b[rd][((int)parities[j][i])] >> 10) & 1;
+                //      printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
+                //               ctr2 - 1, j, i, data10[ctr2 - 1]);
+
+                        rd = nrd;
+                }
+        }
+
     int data;
     int val;
     int offset = 0;
-      
- 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
-	{
-		write_wave(ctr);	
-		if ( (i % SAMPLES) == 0) {
-  			int bit = SYNC_BITS - i/SAMPLES + 1;
-  			val = sync;
-			data = val & 1 << (bit - 1);	
-		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-		 //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
-			if (FSK)
-			{
-				phase = ((data != 0) * 2) - 1; 
-		//		printf("Sending a %d\n", phase);
-			}
-			else
-			{
-				if (data == 0)  {
-					phase *= -1;
-					if ( (ctr - smaller) > 0)
-					{
-						for (int j = 1; j <= smaller; j++)
-				     		buffer[ctr - j] = buffer[ctr - j] * 0.4;
-					}
-					flip_ctr = ctr;
-				}
-			}
-		}
-	}
+    ctr = 0;
+    flip_ctr = 0;
+    phase = 1;
 
-	for (i = 1; 
-	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
-	{
-		write_wave(ctr);
-		if ( (i % SAMPLES) == 0) {
-			int symbol = (int)((i - 1)/ (SAMPLES * 10));
-			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
-			val = data10[symbol];
-			data = val & 1 << (bit - 1);	
-	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-	//	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-		    if (FSK)
-			{
-				phase = ((data != 0) * 2) - 1; 
-	//			printf("Sending a %d\n", phase);
-			}
-			else
-			{	 
-				if (data == 0)  {
-					phase *= -1;
-					if ( (ctr - smaller) > 0)
-					{
-						for (int j = 1; j <= smaller; j ++)
-				    	 	buffer[ctr - j] = buffer[ctr - j] * 0.4;
-					}
-					flip_ctr = ctr;
-				}
-			}	
-		}
-	 }   
-	}
-//	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
+        for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
+        {
+                write_wave(ctr);
+                if ( (i % SAMPLES) == 0) {
+                        int bit = SYNC_BITS - i/SAMPLES + 1;
+                        val = sync;
+                        data = val & 1 << (bit - 1);
+                 //     printf ("%d i: %d new frame %d sync bit %d = %d \n",
+                 //              ctr/SAMPLES, i, frames, bit, (data > 0) );
+                        if (FSK)
+                        {
+                                phase = ((data != 0) * 2) - 1;
+                //              printf("Sending a %d\n", phase);
+                        }
+                        else
+                        {
+                                if (data == 0)  {
+                                        phase *= -1;
+                                        if ( (ctr - smaller) > 0)
+                                        {
+                                                for (int j = 1; j <= smaller; j++)
+                                                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+                                        }
+                                        flip_ctr = ctr;
+                                }
+                        }
+                }
+        }
+
+        for (i = 1;
+          i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572
+        {
+                write_wave(ctr);
+                if ( (i % SAMPLES) == 0) {
+                        int symbol = (int)((i - 1)/ (SAMPLES * 10));
+                        int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;
+                        val = data10[symbol];
+                        data = val & 1 << (bit - 1);
+        //              printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
+        //                       ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+                    if (FSK)
+                        {
+                                phase = ((data != 0) * 2) - 1;
+        //                      printf("Sending a %d\n", phase);
+                        }
+                        else
+                        {
+                                if (data == 0)  {
+                                        phase *= -1;
+                                        if ( (ctr - smaller) > 0)
+                                        {
+                                                for (int j = 1; j <= smaller; j ++)
+                                                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+                                        }
+                                        flip_ctr = ctr;
+                                }
+                        }
+                }
+         }
+        }
+//      write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 
   int error = 0;
   int count;
@@ -763,45 +803,18 @@ int get_tlm_fox() {
       printf("%02X", b[count]);
   }
   printf("\n");
-	
+
 // socket write
-	
-    struct sockaddr_in address; 
-    int sock = 0, valread; 
-    struct sockaddr_in serv_addr; 
-//    char *hello = "Hello from client"; 
-//    char buffer[1024] = {0}; 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
-    { 
-        printf("\n Socket creation error \n"); 
-        error = 1; 
-    } 
-   
-    memset(&serv_addr, '0', sizeof(serv_addr)); 
-   
-    serv_addr.sin_family = AF_INET; 
-    serv_addr.sin_port = htons(PORT); 
-       
-    // Convert IPv4 and IPv6 addresses from text to binary form 
-    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
-    { 
-        printf("\nInvalid address/ Address not supported \n"); 
-        error = 1; 
-    } 
-   
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
-    { 
-        printf("\nConnection Failed \n"); 
-        error = 1; 
-    } 
-	
+
     if (!error)
     {
-	printf("Sending buffer over socket!\n");
-	send(sock, buffer, sizeof(buffer), 0);    	    
+        printf("Sending buffer over socket!\n");
+        send(sock, buffer, sizeof(buffer), 0);
     }
-	
-return 0;	
+
+sleep(20);
+
+return 0;
 }
 
 // wav file generation code
@@ -813,21 +826,21 @@ return 0;
  * Fri Jun 18 16:36:23 PDT 2010 Kevin Karplus
  * Creative Commons license Attribution-NonCommercial
  *  http://creativecommons.org/licenses/by-nc/3.0/
- * 
+ *
  * Edited by Dolin Sergey. dlinyj@gmail.com
  * April 11 12:58 2014
  */
- 
+
  // gcc -o make_enc_wav make_enc_wav.c -lm
  // ./make_enc_wav
- 
+
  /*
  * TelemEncoding.h
  *
  *  Created on: Feb 3, 2014
  *      Author: fox
  */
- 
+
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
@@ -844,9 +857,9 @@ return 0;
 //static int encodeB(short int  *b, int index, int val);
 //static int encodeA(short int  *b, int index, int val);
 
-	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
-	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
-	
+         static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
+         static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
+
 /*
  * TelemEncoding.c
  *
@@ -999,103 +1012,103 @@ void update_rs(
   //taskYIELD();
 }
 
-#define SYNC  (0x0fa) // K.28.5, RD=-1 
- 
+#define SYNC  (0x0fa) // K.28.5, RD=-1
+
 void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 {
-	unsigned buf;
-	while(num_bytes>0)
-	{   buf = word & 0xff;
-		fwrite(&buf, 1,1, wav_file);
-		num_bytes--;
-	word >>= 8;
-	}
+        unsigned buf;
+        while(num_bytes>0)
+        {   buf = word & 0xff;
+                fwrite(&buf, 1,1, wav_file);
+                num_bytes--;
+        word >>= 8;
+        }
 }
- 
+
 /* information about the WAV file format from
- 
+
 http://ccrma.stanford.edu/courses/422/projects/WaveFormat/
- 
+
  */
- 
+
 void write_wav(char * filename, unsigned long num_samples, short int * data, int s_rate)
 {
-	FILE* wav_file;
-	unsigned int sample_rate;
-	unsigned int num_channels;
-	unsigned int bytes_per_sample;
-	unsigned int byte_rate;
-	unsigned long i;    /* counter for samples */
-	
-	num_channels = 1;   /* monoaural */
-	bytes_per_sample = 2;
- 
-	if (s_rate<=0) sample_rate = 44100;
-	else sample_rate = (unsigned int) s_rate;
- 
-	byte_rate = sample_rate*num_channels*bytes_per_sample;
- 
-	wav_file = fopen(filename, "w");
-	assert(wav_file);   /* make sure it opened */
- 
-	/* write RIFF header */
-	fwrite("RIFF", 1, 4, wav_file);
-	write_little_endian(36 + bytes_per_sample* num_samples*num_channels, 4, wav_file);
-	fwrite("WAVE", 1, 4, wav_file);
- 
-	/* write fmt  subchunk */
-	fwrite("fmt ", 1, 4, wav_file);
-	write_little_endian(16, 4, wav_file);   /* SubChunk1Size is 16 */
-	write_little_endian(1, 2, wav_file);    /* PCM is format 1 */
-	write_little_endian(num_channels, 2, wav_file);
-	write_little_endian(sample_rate, 4, wav_file);
-	write_little_endian(byte_rate, 4, wav_file);
-	write_little_endian(num_channels*bytes_per_sample, 2, wav_file);  /* block align */
-	write_little_endian(8*bytes_per_sample, 2, wav_file);  /* bits/sample */
- 
-	/* write data subchunk */
-	fwrite("data", 1, 4, wav_file);
-	write_little_endian(bytes_per_sample* num_samples*num_channels, 4, wav_file);
-	
-	for (i=0; i< num_samples; i++)
-	{   write_little_endian((unsigned int)(data[i]),bytes_per_sample, wav_file);
-	}
- 
-	fclose(wav_file);
+        FILE* wav_file;
+        unsigned int sample_rate;
+        unsigned int num_channels;
+        unsigned int bytes_per_sample;
+        unsigned int byte_rate;
+        unsigned long i;    /* counter for samples */
+
+        num_channels = 1;   /* monoaural */
+        bytes_per_sample = 2;
+
+        if (s_rate<=0) sample_rate = 44100;
+        else sample_rate = (unsigned int) s_rate;
+
+        byte_rate = sample_rate*num_channels*bytes_per_sample;
+
+        wav_file = fopen(filename, "w");
+        assert(wav_file);   /* make sure it opened */
+
+        /* write RIFF header */
+        fwrite("RIFF", 1, 4, wav_file);
+        write_little_endian(36 + bytes_per_sample* num_samples*num_channels, 4, wav_file);
+        fwrite("WAVE", 1, 4, wav_file);
+
+        /* write fmt  subchunk */
+        fwrite("fmt ", 1, 4, wav_file);
+        write_little_endian(16, 4, wav_file);   /* SubChunk1Size is 16 */
+        write_little_endian(1, 2, wav_file);    /* PCM is format 1 */
+        write_little_endian(num_channels, 2, wav_file);
+        write_little_endian(sample_rate, 4, wav_file);
+        write_little_endian(byte_rate, 4, wav_file);
+        write_little_endian(num_channels*bytes_per_sample, 2, wav_file);  /* block align */
+        write_little_endian(8*bytes_per_sample, 2, wav_file);  /* bits/sample */
+
+        /* write data subchunk */
+        fwrite("data", 1, 4, wav_file);
+        write_little_endian(bytes_per_sample* num_samples*num_channels, 4, wav_file);
+
+        for (i=0; i< num_samples; i++)
+        {   write_little_endian((unsigned int)(data[i]),bytes_per_sample, wav_file);
+        }
+
+        fclose(wav_file);
 }
 
 
 
 //int main(int argc, char * argv[])
 //{
- 
-//	return 0;
+
+//      return 0;
 //}
 
 void write_wave(int i)
 {
-		if (FSK)
-		{
-//			if ((ctr - flip_ctr) < smaller)
-//				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
-//			else
-				buffer[ctr++] = 0.25 * amplitude * phase;			
-		}
-		else
-		{
-			if ((ctr - flip_ctr) < smaller)
-  		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * 
-  		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
- 			else
- 		 		buffer[ctr++] = (int)(amplitude * phase * 		
- 		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
- 		 } 			
-//		printf("%d %d \n", i, buffer[ctr - 1]);
+                if (FSK)
+                {
+//                      if ((ctr - flip_ctr) < smaller)
+//                              buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
+//                      else
+                                buffer[ctr++] = 0.25 * amplitude * phase;
+                }
+                else
+                {
+                        if ((ctr - flip_ctr) < smaller)
+                                buffer[ctr++] = (int)(amplitude * 0.4 * phase *
+                                                                               sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+                        else
+                                buffer[ctr++] = (int)(amplitude * phase *
+                                                                               sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+                 }
+//              printf("%d %d \n", i, buffer[ctr - 1]);
 
 }
 
 /**
- * 
+ *
  * FOX 1 Telemetry Decoder
  * @author chris.e.thompson g0kla/ac2cz
  *
@@ -1114,29 +1127,29 @@ void write_wave(int i)
  * You should have received a copy of the GNU General  License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- * 
+ *
  * Static variables and methods to encode and decode 8b10b
- * 
+ *
  *
  */
-	
+
 int encodeA(short int  *b, int index, int val) {
 //    printf("Encoding A\n");
     b[index] = val & 0xff;
     b[index + 1] = (b[index + 1] & 0xf0) | ((val >> 8) & 0x0f);
-    return 0;	
+    return 0;
 }
 
 int encodeB(short int  *b, int index, int val) {
 //    printf("Encoding B\n");
     b[index] = (b[index] & 0x0f)  |  ((val << 4) & 0xf0);
     b[index + 1] = (val >> 4 ) & 0xff;
-    return 0;	
+    return 0;
 }
 
 int twosToInt(int val,int len) {   // Convert twos compliment to integer
 // from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
-	
+
       if(val & (1 << (len - 1)))
          val = val - (1 << len);
 
