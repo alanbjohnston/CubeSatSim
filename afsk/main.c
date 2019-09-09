@@ -765,7 +765,9 @@ int get_tlm_fox() {
       printf("%02X", b[count]);
   }
   printf("\n");
-	
+
+for (int k = 0; k < 5; k++)
+{
 // socket write
 
   if (!socket_open)
@@ -807,6 +809,8 @@ int get_tlm_fox() {
 	printf("Sending buffer over socket!\n");
 	send(sock, buffer, sizeof(buffer), 0);    	    
     }
+   sleep(3);
+}
 	
 return 0;	
 }
