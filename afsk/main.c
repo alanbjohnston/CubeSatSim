@@ -114,7 +114,7 @@ int ctr = 0;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave();
 #define SAMPLES (S_RATE / BIT_RATE)
-#define FRAME_CNT 11 //33 // Add 3 frames to the count	
+#define FRAME_CNT 60// 11 //33 // Add 3 frames to the count	
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 #define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
@@ -524,12 +524,12 @@ int get_tlm_fox() {
 	short int rs_frame[RS_FRAMES][223];
 	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
 /*	
-  int id = 5, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
   int posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
   		posZv = 280, negZv = 78;
 */	
-  int id = 5, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, 
   		posZv = 0, negZv = 0;
