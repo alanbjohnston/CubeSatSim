@@ -105,7 +105,7 @@ int sock = 0;
 
 #define PARITY_LEN 32
 
-float amplitude = 32767/3; // 20000; // 32767/(10%amp+5%amp+100%amp)
+float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000;  // 1200
 	
 int smaller;
@@ -120,8 +120,8 @@ void write_wave();
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 #define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
 short int buffer[BUF_LEN];
-short int data10[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
-short int data8[8 + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
+short int data10[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
+short int data8[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
 int reset_count;
 float uptime_sec;
 long int uptime;
@@ -241,6 +241,11 @@ int main(int argc, char *argv[]) {
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
+	
+  if (FSK)
+    amplitude = 32767/3;
+  else  // BPSK
+    amplitude = 32767;
   
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
