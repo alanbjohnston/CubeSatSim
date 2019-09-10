@@ -65,7 +65,6 @@ uint32_t tx_channel = 0;
 ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
-static void init_rf();
 int twosToInt(int val, int len);
 int get_tlm(char *str);
 int get_tlm_fox();
@@ -285,11 +284,9 @@ int main(int argc, char *argv[]) {
 
   tx_freq_hz -= tx_channel * 50000;
 
-  //init_rf();
-
-  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
-            AX25_PREAMBLE_LEN,
-            AX25_POSTAMBLE_LEN);  
+//  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
+//            AX25_PREAMBLE_LEN,
+//            AX25_POSTAMBLE_LEN);  
       
   /* Infinite loop */
   for (;;) 
@@ -328,19 +325,6 @@ int main(int argc, char *argv[]) {
  }
 
   return 0;
-}
-
-static void init_rf() {
-  int ret;
-  #ifdef DEBUG_LOGGING  
-    fprintf(stderr,"Initializing AX5043\n");
-  #endif
-  ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
-  if (ret != PQWS_SUCCESS) {
-      fprintf(stderr,
-              "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
-      exit(EXIT_FAILURE);
-  }
 }
 
 //  Returns lower digit of a number which must be less than 99
