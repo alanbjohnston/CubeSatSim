@@ -324,37 +324,8 @@ int main(int argc, char *argv[]) {
       fgets(cmdbuffer, 1000, transmit);
       pclose(transmit);
       printf("Results of transmit command: %s\n", cmdbuffer);
-*/	  
-	  
-	  
-//	  printf("%s \n", b);
-/*	  
-    digitalWrite (0, LOW); 
-  
-    #ifdef DEBUG_LOGGING
-      fprintf(stderr,"INFO: Transmitting X.25 packet\n");
-    #endif
-    memcpy(data, str, strnlen(str, 256));
-    ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
-    if (ret) {
-      fprintf(stderr,
-              "ERROR: Failed to transmit AX.25 frame with error code %d\n",
-              ret);
-      exit(EXIT_FAILURE);
-    }
-
-    ax5043_wait_for_transmit();
-    
-    digitalWrite (0, HIGH);
-  
-    if (ret) {
-      fprintf(stderr,
-              "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
-              ret);
-      exit(EXIT_FAILURE);
-    }
-*/    
-  }
+*/	     
+ }
 
   return 0;
 }
