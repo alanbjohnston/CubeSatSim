@@ -80,7 +80,7 @@ int sock = 0;
 
 #define S_RATE  (48000)     // (44100)
 #define BUF_SIZE (S_RATE*10) /* 2 second buffer */
-/*
+
 // BPSK Settings
 #define BIT_RATE	1200 // 200 for DUV
 #define FSK	0 // 1 for DUV
@@ -91,7 +91,7 @@ int sock = 0;
 #define SYNC_BITS 31  // 10 for DUV
 #define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
 #define HEADER_LEN 8  // 6 for DUV
-*/
+/*
 // FSK Settings
 #define BIT_RATE 200 
 #define FSK	1
@@ -102,7 +102,7 @@ int sock = 0;
 #define DATA_LEN 58
 #define SYNC_BITS 10
 #define SYNC_WORD 0b0011111010
-
+*/
 
 #define PARITY_LEN 32
 
