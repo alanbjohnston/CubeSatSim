@@ -173,7 +173,7 @@ int main(void) {
 //        printf("Opening of -Z fd %d\n", z_fd);
     }
 	
-    int ret;
+    int ret = 0;
     uint8_t data[1024];
 
     tx_freq_hz -= tx_channel * 50000;
