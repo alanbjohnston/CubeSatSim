@@ -246,12 +246,12 @@ int main(int argc, char *argv[]) {
   if (FSK) 
   {
     amplitude = 32767/3;
-    printf("\n FSK Mode, %d bits per frame, % bits per second\n\n", DATA_LEN/(SAMPLES * FRAME_CNT), BIT_RATE);
+    printf("\n FSK Mode, %d bits per frame, %d bits per second\n\n", BUF_LEN/(SAMPLES * FRAME_CNT), BIT_RATE);
   }
   else  // BPSK
    {
     amplitude = 32767;
-    printf("\n BPSK Mode, %d bits per frame, % bits per second\n\n", DATA_LEN/(SAMPLES * FRAME_CNT), BIT_RATE);   
+    printf("\n BPSK Mode, %d bits per frame, %d bits per second\n\n", BUF_LEN/(SAMPLES * FRAME_CNT), BIT_RATE);   
   }  
   
   //setSpiChannel(SPI_CHANNEL);
