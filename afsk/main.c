@@ -124,6 +124,8 @@ int main(void) {
     } else
     {
             tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+	    if (wiringPiI2CReadReg16(tempSensor, 0) < 0)
+		    tempSensor = -1;
     }
 
 //    fprintf(stderr,"tempSensor: %d \n",tempSensor);	
@@ -239,7 +241,7 @@ int main(void) {
 	{
 	  char cmdbuffer[1000];
 	  strcat(str,footer_str);
-	  fprintf("String to execute: %s\n", str);
+//	  fprintf("String to execute: %s\n", str);
 	  FILE* file2 = popen(str, "r"); 
       	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
