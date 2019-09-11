@@ -245,7 +245,8 @@ int main(void) {
 	  FILE* file2 = popen(str, "r"); 
       	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
-	  printf("Response: %s\n", cmdbuffer);
+//	printf("Response: %s\n", cmdbuffer);
+	  fprintf(stderr, "Response\n");
 	}
 	else
 	{
@@ -274,6 +275,7 @@ int main(void) {
                     ret);
             exit(EXIT_FAILURE);
 	}
+	fprintf(stderr, "Continuing \n");
     }
 
     return 0;
