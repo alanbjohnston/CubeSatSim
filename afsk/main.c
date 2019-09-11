@@ -239,7 +239,7 @@ int main(void) {
 	{
 	  char cmdbuffer[1000];
 	  strcat(str,footer_str);
-	  fprint("String to execute: %s\n", str);
+	  fprintf("String to execute: %s\n", str);
 	  FILE* file2 = popen(str, "r"); 
       	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
