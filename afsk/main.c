@@ -61,6 +61,8 @@
 #define POWER 2
 #define VBATT 15
 
+#define RPITX 1  // Use rpitx instead of ax5043 transmitter
+
 uint32_t tx_freq_hz = 440310000;
 uint32_t tx_channel = 0;
 
@@ -101,10 +103,13 @@ int main(void) {
   }
     digitalWrite (0, HIGH) ; 
     
-    setSpiChannel(SPI_CHANNEL);
-    setSpiSpeed(SPI_SPEED);
-    initializeSpi();
-
+    if (!RPITX)
+    {
+      setSpiChannel(SPI_CHANNEL);
+      setSpiSpeed(SPI_SPEED);
+      initializeSpi();
+    }
+	
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 
@@ -173,13 +178,15 @@ int main(void) {
 
     tx_freq_hz -= tx_channel * 50000;
 
-    init_rf();
+    if (!RPITX)
+    {
+    	init_rf();
 
 //    ax25_init(&hax25, (uint8_t *) "CubeSatSim", '2', (uint8_t *) CALLSIGN, '2',
-    ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
+       ax25_init(&hax25, (uint8_t *) "CQ", '1', (uint8_t *) CALLSIGN, '1',
     		AX25_PREAMBLE_LEN,
    		 AX25_POSTAMBLE_LEN);
-        
+    }    
         
     /* Infinite loop */
     for (;;) {
@@ -195,7 +202,13 @@ int main(void) {
 	char tlm_str[1000];
 	
 	char header_str[] = "\x03\xf0hi hi ";
-	strcpy(str, header_str);
+	char header_str2[] = "echo -e 'KU2Y>CQ:hi hi ";
+	char footer_str[] = "' | gen_packets -o telem.wav - && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3"
+	    
+	if (RPITX)
+	  strcpy(str, header_str2);
+        else		
+	  strcpy(str, header_str);
 	
         int channel;
 	for (channel = 1; channel < 7; channel++) {
@@ -220,29 +233,31 @@ int main(void) {
 
     	digitalWrite (0, LOW); 
 		
-/*        
-	char cmdbuffer[1000];
-
-        if (charging) {
-      	   FILE* file1 = popen("/home/pi/mopower/mpcmd LED_STAT=1", "r"); 
-      	   fgets(cmdbuffer, 999, file1);
-      	   pclose(file1);
-
-//      	   printf("LED state: %s\n", cmdbuffer);
-        }
-*/
 	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
-
-        memcpy(data, str, strnlen(str, 256));
-        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
-        if (ret) {
+	    
+        if (RPITX)
+	{
+	  char cmdbuffer[1000];
+	  strcat(str,footer_str);
+	  fprint("String to execute: %s\n", str);
+	  FILE* file2 = popen(str, "r"); 
+      	  fgets(cmdbuffer, 999, file2);
+      	  pclose(file2);
+	  printf("Response: %s\n", cmdbuffer);
+	}
+	else
+	{
+          memcpy(data, str, strnlen(str, 256));
+          ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
+          if (ret) {
             fprintf(stderr,
                     "ERROR: Failed to transmit AX.25 frame with error code %d\n",
                     ret);
             exit(EXIT_FAILURE);
-        }
-        ax5043_wait_for_transmit();
-    	digitalWrite (0, HIGH);
+          }
+          ax5043_wait_for_transmit();
+	}
+	digitalWrite (0, HIGH);
 		
 /*
       	FILE* file2 = popen("/home/pi/mopower/mpcmd LED_STAT=0", "r"); 
