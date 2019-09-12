@@ -210,7 +210,7 @@ int main(void) {
 	  strcpy(str, header_str2);
         else		
 	  strcpy(str, header_str);
-	"
+	
         int channel;
 	for (channel = 1; channel < 7; channel++) {
 //        printf("%d %d %d %d \n", tlm[channel][1], tlm[channel][2], tlm[channel][3], tlm[channel][4]); 
