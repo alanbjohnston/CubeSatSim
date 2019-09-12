@@ -206,7 +206,7 @@ int main(void) {
 //	char header_str2[] = "echo 'KU2Y>CQ:hi' > t.txt && echo 'KU2Y>CQ:hi hi ";
 //	char footer_str[] = "\' >> t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 &>/dev/null";
 	char header_str2[] = "echo 'KU2Y>CQ:hi hi ";
-	char footer_str[] = "\' > t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 &>/dev/null && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 &>/dev/null";
+	char footer_str[] = "\' > t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
 	    
 	if (RPITX)
 	  strcpy(str, header_str2);
@@ -247,7 +247,7 @@ int main(void) {
 //     	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
 //	printf("Response: %s\n", cmdbuffer);
-	  fprintf(stderr, "Response\n");
+//	  fprintf(stderr, "Response\n");
 	}
 	else
 	{
@@ -277,7 +277,7 @@ int main(void) {
                     ret);
             exit(EXIT_FAILURE);
 	}
-	fprintf(stderr, "Continuing \n");
+//	fprintf(stderr, "Continuing \n");
      }
 
     return 0;
