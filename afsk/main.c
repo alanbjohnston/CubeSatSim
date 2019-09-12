@@ -191,7 +191,7 @@ int main(void) {
         
     /* Infinite loop */
     for (;;) {
-        sleep(1);
+        sleep(2);
     	
 	fprintf(stderr,"INFO: Getting TLM Data\n");
 	    
