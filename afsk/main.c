@@ -206,7 +206,7 @@ int main(void) {
 //	char header_str2[] = "echo 'KU2Y>CQ:hi' > t.txt && echo 'KU2Y>CQ:hi hi ";
 //	char footer_str[] = "\' >> t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 &>/dev/null";
 	char header_str2[] = "echo 'KU2Y>CQ:hi hi ";
-	char footer_str[] = "\' > t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1";
+	char footer_str[] = "\' > t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3";
 	    
 	if (RPITX)
 	  strcpy(str, header_str2);
