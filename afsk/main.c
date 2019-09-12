@@ -239,12 +239,12 @@ int main(void) {
         if (RPITX)
 	{
 	  char cmdbuffer[1000];
-	  strcat(str,footer_str);
+//	  strcat(str,footer_str);
 	//  fprintf(stderr, "String to execute: %s\n", str);
 	  FILE* file2 = popen(str, "r"); 
       	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
-//	printf("Response: %s\n", cmdbuffer);
+	printf("Response: %s\n", cmdbuffer);
 	  fprintf(stderr, "Response\n");
 	}
 	else
