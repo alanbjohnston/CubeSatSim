@@ -22,7 +22,6 @@
 //#include <unistd.h>                             //Needed for I2C port
 #include <fcntl.h>                              //Needed for I2C port
 //#include <sys/ioctl.h>                  //Needed for I2C port
-F
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
