@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
 //            AX25_POSTAMBLE_LEN);  
       
   /* Infinite loop */
-  for (;;) 
+  //for (;;) 
   {
   //  sleep(1);  // Delay 1 second
     ctr = 0;
