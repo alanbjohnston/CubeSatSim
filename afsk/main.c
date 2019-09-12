@@ -239,7 +239,7 @@ int main(void) {
         if (RPITX)
 	{
 //	  char cmdbuffer[1000];
-	  strcat(str,footer_str;
+	  strcat(str,footer_str);
           sleep(2);
 	  fprintf(stderr, "String to execute: %s\n", str);
           sleep(2);
