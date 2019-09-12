@@ -204,11 +204,11 @@ int main(void) {
 	
 	char header_str[] = "\x03\xf0hi hi ";
 	char header_str2[] = "echo -e \'KU2Y>CQ:hi hi ";
-	char footer_str[] = "\'"; // | gen_packets -o telem.wav - && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 &>/dev/null";
+	char footer_str[] = "\' | gen_packets -o telem.wav - "; // && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 &>/dev/null";
 	    
 	if (RPITX)
 	  strcpy(str, header_str2);
-        else		
+        else
 	  strcpy(str, header_str);
 	
         int channel;
