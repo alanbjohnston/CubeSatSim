@@ -238,17 +238,22 @@ int main(void) {
 	    
         if (RPITX)
 	{
-	  char cmdbuffer[1000];
-	  strcat(str,footer_str);
+//	  char cmdbuffer[1000];
+	  strcat(str,footer_str;
+          sleep(2);
 	  fprintf(stderr, "String to execute: %s\n", str);
+          sleep(2);
 	  FILE* file2 = popen(str, "r"); 
 //     	  fgets(cmdbuffer, 999, file2);
+          sleep(2);
       	  pclose(file2);
 //	printf("Response: %s\n", cmdbuffer);
 	  fprintf(stderr, "Response\n");
+          sleep(2);
 	}
 	else
 	{
+	  fprintf(stderr,"Transmitting via AX5043\n");
           memcpy(data, str, strnlen(str, 256));
           ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
           if (ret) {
@@ -259,6 +264,7 @@ int main(void) {
           }
           ax5043_wait_for_transmit();
 	}
+          sleep(2);
 	digitalWrite (0, HIGH);
 		
 /*
@@ -274,7 +280,9 @@ int main(void) {
                     ret);
             exit(EXIT_FAILURE);
 	}
+          sleep(2);
 	fprintf(stderr, "Continuing \n");
+          sleep(2);
     }
 
     return 0;
