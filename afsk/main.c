@@ -204,7 +204,7 @@ int main(void) {
 	
 	char header_str[] = "\x03\xf0hi hi ";
 	char header_str2[] = "echo -e \'KU2Y>CQ:hi hi ";
-	char footer_str[] = "\' | gen_packets -o telem.wav - && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3";
+	char footer_str[] = "\' | gen_packets -o telem.wav - && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1";
 	    
 	if (RPITX)
 	  strcpy(str, header_str2);
@@ -239,8 +239,8 @@ int main(void) {
         if (RPITX)
 	{
 	  char cmdbuffer[1000];
-//	  strcat(str,footer_str);
-	//  fprintf(stderr, "String to execute: %s\n", str);
+	  strcat(str,footer_str);
+	  fprintf(stderr, "String to execute: %s\n", str);
 	  FILE* file2 = popen(str, "r"); 
       	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
