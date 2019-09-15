@@ -104,7 +104,7 @@ int sock = 0;
 #define SYNC_BITS 10
 #define SYNC_WORD 0b0011111010
 #define PARITY_LEN 32
-#define FRAME_CNT 60 // 2 //14 // 3 33 // Add 3 frames to the count	
+#define FRAME_CNT 3 // 2 //14 // 3 33 // Add 3 frames to the count	
 
 #define SAMPLES (S_RATE / BIT_RATE)
 
@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
 //            AX25_POSTAMBLE_LEN);  
       
   /* Infinite loop */
-  //for (;;) 
+  for (;;) 
   {
   //  sleep(1);  // Delay 1 second
     ctr = 0;
