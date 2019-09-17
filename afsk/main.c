@@ -156,9 +156,9 @@ struct SensorData {
  */
 struct SensorData read_sensor_data(struct SensorConfig sensor) {
     struct SensorData data = {
-        .current = NAN,
-        .voltage = NAN,
-        .power = NAN    };
+        .current = 0,
+        .voltage = 0,
+        .power = 0    };
 
     if (sensor.fd < 0) {
         return data;
@@ -168,6 +168,11 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     int value  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
+    if (value == -1)
+    {
+	sensor.fd = -1;
+	return data;
+    }
     data.current  = (float) twosToInt(value, 16) / (float) sensor.currentDivider;
 	
     wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
