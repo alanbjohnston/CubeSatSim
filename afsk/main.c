@@ -247,6 +247,7 @@ int main(int argc, char *argv[]) {
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
+  digitalWrite (0, HIGH);
 	
   if (FSK) 
   {
