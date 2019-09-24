@@ -778,11 +778,12 @@ int get_tlm_fox() {
 	
     if (!error)
     {
+	digitalWrite (0, LOW);
 	printf("Sending buffer over socket!\n");
 	send(sock, buffer, sizeof(buffer), 0);    	    
     }
+    digitalWrite (0, HIGH);
 
-	
 return 0;	
 }
 
