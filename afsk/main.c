@@ -131,6 +131,8 @@ int reset_count;
 float uptime_sec;
 long int uptime;
 char call[5];
+
+int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt;
  
 struct SensorConfig {
     int fd;
@@ -245,7 +247,6 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
-  int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, syncBits, syncWord, parityLen, frameCnt;
 
 	
   bitRate = 200;
@@ -260,7 +261,8 @@ int main(int argc, char *argv[]) {
   syncWord = 0b0011111010;
   parityLen = 32;
   frameCnt = 3;	
-  bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFramesLen + parityLen))) * samples);
+  samples = S_RATE/bitRate;
+  bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 	
   short int buffer[bufLen];
   short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
@@ -272,7 +274,7 @@ int main(int argc, char *argv[]) {
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
-  digitalWr;ite (0, HIGH);
+  digitalWrite (0, HIGH);
 	
   if (mode == FSK) 
   {
