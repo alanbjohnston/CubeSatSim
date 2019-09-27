@@ -642,7 +642,8 @@ int get_tlm_fox() {
 */       
 	int ctr1 = 0;
 	int ctr3 = 0;
-	for (i = 0; i < RS_FRAME_LEN; i++) 
+//	for (i = 0; i < RS_FRAME_LEN; i++) 
+	for (i = 0; i < rsFrameLen; i++) 
 	{
 //        for (int j  = 0; j < RS_FRAMES ; j++)
         for (int j  = 0; j < rsFrames ; j++)
@@ -755,7 +756,8 @@ int get_tlm_fox() {
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
 		write_wave(ctr);
-		if ( (i % SAMPLES) == 0) {
+//		if ( (i % SAMPLES) == 0) {
+		if ( (i % samples) == 0) {
 			int symbol = (int)((i - 1)/ (SAMPLES * 10));
 			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
 			val = data10[symbol];
