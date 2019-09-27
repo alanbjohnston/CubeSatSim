@@ -247,20 +247,33 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
-
+  mode = FSK;
 	
-  bitRate = 200;
-  mode = FSK;	
-  bufLen; 
-  rsFrames = 1;
-  payloads = 1;
-  rsFrameLen = 64;
-  headerLen = 6;
-  dataLen = 58;
-  syncBits = 10;
-  syncWord = 0b0011111010;
-  parityLen = 32;
-  frameCnt = 3;	
+  if (mode == FSK) {	
+    bitRate = 200;
+    rsFrames = 1;
+    payloads = 1;
+    rsFrameLen = 64;
+    headerLen = 6;
+    dataLen = 58;
+    syncBits = 10;
+    syncWord = 0b0011111010;
+    parityLen = 32;
+    frameCnt = 3;	
+  }
+  else  {
+    bitRate = 1200;
+    rsFrames = 3;
+    payloads = 6;
+    rsFrameLen = 159;
+    headerLen = 8;
+    dataLen = 78;
+    syncBits = 31;
+    syncWord = 0b1000111110011010010000101011101;
+    parityLen = 32;
+    frameCnt = 3;		  
+  }
+	
   samples = S_RATE/bitRate;
   bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 	
