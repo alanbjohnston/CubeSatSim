@@ -256,7 +256,7 @@ int main(int argc, char *argv[]) {
   payloads = 1;
   rsFrameLen = 64;
   headerLen = 6;
-  dataLen = 6;
+  dataLen = 58;
   syncBits = 10;
   syncWord = 0b0011111010;
   parityLen = 32;
