@@ -1113,9 +1113,9 @@ void write_wav(char * filename, unsigned long num_samples, short int * data, int
 //	return 0;
 //}
 
-void write_wave(int i)
+void write_wave(int i, short int *buffer)
 {
-		if (FSK)
+		if (mode == FSK)
 		{
 //			if ((ctr - flip_ctr) < smaller)
 //				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
@@ -1125,11 +1125,9 @@ void write_wave(int i)
 		else
 		{
 			if ((ctr - flip_ctr) < smaller)
-  		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * 
-  		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+  		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
  			else
- 		 		buffer[ctr++] = (int)(amplitude * phase * 		
- 		 								sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+ 		 		buffer[ctr++] = (int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
  		 } 			
 //		printf("%d %d \n", i, buffer[ctr - 1]);
 
