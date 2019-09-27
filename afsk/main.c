@@ -120,7 +120,7 @@ int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
 void write_to_buffer(int i, int symbol, int val);	
-void write_wave();
+void write_wave(int i, short int *buffer);
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
@@ -723,7 +723,7 @@ int get_tlm_fox() {
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
-		write_wave(ctr);	
+		write_wave(ctr, buffer);	
 //		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
 //  			int bit = SYNC_BITS - i/SAMPLES + 1;
@@ -756,7 +756,7 @@ int get_tlm_fox() {
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
-		write_wave(ctr);
+		write_wave(ctr, buffer);
 //		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
 //			int symbol = (int)((i - 1)/ (SAMPLES * 10));
