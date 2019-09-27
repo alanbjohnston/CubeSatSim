@@ -541,7 +541,7 @@ int get_tlm_fox() {
 //	short int b10[DATA_LEN], h10[HEADER_LEN];
 //	short int rs_frame[RS_FRAMES][223];
 //	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
-	short int b10[dataLen], h10[headerLen];
+//	short int b10[dataLen], h10[headerLen];
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
