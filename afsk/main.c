@@ -647,7 +647,8 @@ int get_tlm_fox() {
 //        for (int j  = 0; j < RS_FRAMES ; j++)
         for (int j  = 0; j < rsFrames ; j++)
 		{
-			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
+//			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
+			if (!((i == (rsFrameLen - 1)) && (j == 2))) // skip last one for BPSK
 			{
 //				if (ctr1 < HEADER_LEN)
 				if (ctr1 < headerLen)
@@ -721,7 +722,8 @@ int get_tlm_fox() {
  	for (i = 1; i <= syncBits * samples; i++)
 	{
 		write_wave(ctr);	
-		if ( (i % SAMPLES) == 0) {
+//		if ( (i % SAMPLES) == 0) {
+		if ( (i % samples) == 0) {
 //  			int bit = SYNC_BITS - i/SAMPLES + 1;
   			int bit = syncBits - i/samples + 1;
   			val = sync;
@@ -780,7 +782,8 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
-	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
+//	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
+	write_wav("transmit.wav", bufLen, buffer, S_RATE);
 
   int error = 0;
   int count;
