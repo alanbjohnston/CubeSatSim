@@ -503,7 +503,8 @@ int get_tlm_fox() {
     fclose(uptime_file);
 	
 	int i;
-	long int sync = SYNC_WORD;
+//	long int sync = SYNC_WORD;
+	long int sync = syncWord;
 
 	smaller = S_RATE/(2 * freq_Hz);
 /*	
@@ -545,7 +546,8 @@ int get_tlm_fox() {
   		posZv = 0, negZv = 0;
   int head_offset = 0; 	
 
-  for (int frames = 0; frames < FRAME_CNT; frames++) 
+//  for (int frames = 0; frames < FRAME_CNT; frames++) 
+  for (int frames = 0; frames < frameCnt; frames++) 
   {
     int count;
     for (count = 0; count < 8; count++)
@@ -645,7 +647,8 @@ int get_tlm_fox() {
 		{
 			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
 			{
-				if (ctr1 < HEADER_LEN)
+//				if (ctr1 < HEADER_LEN)
+				if (ctr1 < headerLen)
 				{
              				rs_frame[j][i] = h[ctr1];
 		     			update_rs(parities[j], h[ctr1]);
@@ -655,8 +658,10 @@ int get_tlm_fox() {
 				}
 				else
 				{
-             				rs_frame[j][i] = b[ctr3 % DATA_LEN];
-		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
+//             				rs_frame[j][i] = b[ctr3 % DATA_LEN];
+             				rs_frame[j][i] = b[ctr3 % dataLen];
+//		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
+		     			update_rs(parities[j], b[ctr3 % dataLen]);
           //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
           //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
 					data8[ctr1++] = rs_frame[j][i];
@@ -668,7 +673,8 @@ int get_tlm_fox() {
 	}    
 	    	    
     	printf("Parities ");
-		for (int m = 0; m < PARITY_LEN; m++) {
+//		for (int m = 0; m < PARITY_LEN; m++) {
+		for (int m = 0; m < parityLen; m++) {
 		 	printf("%d ", parities[0][m]);
 		}
 		printf("\n");
@@ -678,7 +684,8 @@ int get_tlm_fox() {
   	int rd = 0;
 	int nrd;	
  
-    for (i = 0; i < DATA_LEN * PAYLOADS + HEADER_LEN; i++) // 476 for BPSK
+//    for (i = 0; i < DATA_LEN * PAYLOADS + HEADER_LEN; i++) // 476 for BPSK
+    for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
 	{
 				data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
 				nrd = (Encode_8b10b[rd][((int)data8[ctr2])] >> 10) & 1;
@@ -689,7 +696,8 @@ int get_tlm_fox() {
 				ctr2++;
 	}
   
-    for (i = 0; i < PARITY_LEN; i++) 
+//    for (i = 0; i < PARITY_LEN; i++) 
+    for (i = 0; i < parityLen; i++) 
 	{
 //		for (int j  = 0; j < RS_FRAMES; j++)
 		for (int j  = 0; j < rsFrames; j++)
@@ -707,11 +715,13 @@ int get_tlm_fox() {
     int val;
     int offset = 0;
       
- 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
+// 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
+ 	for (i = 1; i <= syncBits * samples; i++)
 	{
 		write_wave(ctr);	
 		if ( (i % SAMPLES) == 0) {
-  			int bit = SYNC_BITS - i/SAMPLES + 1;
+//  			int bit = SYNC_BITS - i/SAMPLES + 1;
+  			int bit = syncBits - i/samples + 1;
   			val = sync;
 			data = val & 1 << (bit - 1);	
 		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
@@ -738,7 +748,7 @@ int get_tlm_fox() {
 
 	for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
-	  i <= (10 * (headerLen + dataLen * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
+	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
 		write_wave(ctr);
 		if ( (i % SAMPLES) == 0) {
@@ -772,7 +782,8 @@ int get_tlm_fox() {
 
   int error = 0;
   int count;
-  for (count = 0; count < DATA_LEN; count++) {
+//  for (count = 0; count < DATA_LEN; count++) {
+  for (count = 0; count < dataLen; count++) {
       printf("%02X", b[count]);
   }
   printf("\n");
