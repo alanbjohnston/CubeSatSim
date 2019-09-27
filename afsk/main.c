@@ -264,10 +264,6 @@ int main(int argc, char *argv[]) {
   samples = S_RATE/bitRate;
   bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 	
-  short int buffer[bufLen];
-  short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
-  short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
-	
   if (argc > 1) {
 	  strcpy(src_addr, argv[1]);  
   }
@@ -639,7 +635,11 @@ int get_tlm_fox() {
 	battCurr -= 10;
 	encodeA(b, 3 + head_offset, batt_c_v);
  	encodeA(b, 9 + head_offset, battCurr);
-*/       
+*/     
+	short int buffer[bufLen];
+  	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
+  	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
+	  
 	int ctr1 = 0;
 	int ctr3 = 0;
 //	for (i = 0; i < RS_FRAME_LEN; i++) 
