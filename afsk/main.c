@@ -551,13 +551,18 @@ int get_tlm_fox() {
   int posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
   		posZv = 280, negZv = 78;
 */	
-  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, 
   		posZv = 0, negZv = 0;
   int head_offset = 0; 	
 	
   short int buffer[bufLen];
+	
+  if (mode == FSK)
+    id = 7;
+  else
+    id = 99;
 
 //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) 
