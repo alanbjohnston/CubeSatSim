@@ -78,7 +78,7 @@ int socket_open = 0;
 int sock = 0;
 
 #define S_RATE  (48000)     // (44100)
-#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
+//#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
 /*
 // BPSK Settings
 #define BIT_RATE	1200 // 200 for DUV
@@ -92,7 +92,7 @@ int sock = 0;
 #define HEADER_LEN 8  // 6 for DUV
 #define PARITY_LEN 32
 #define FRAME_CNT 3 //33 // Add 3 frames to the count	
-*/
+
 // FSK Settings
 #define BIT_RATE 200 
 #define FSK	1
@@ -107,6 +107,10 @@ int sock = 0;
 #define FRAME_CNT 3 // 2 //14 // 3 33 // Add 3 frames to the count	
 
 #define SAMPLES (S_RATE / BIT_RATE)
+*/
+
+#define FSK 1
+#define BPSK 2
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000;  // 1200
@@ -119,10 +123,10 @@ void write_to_buffer(int i, int symbol, int val);
 void write_wave();
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
-#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
-short int buffer[BUF_LEN];
-short int data10[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
-short int data8[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
+//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
+//short int buffer[BUF_LEN];
+//short int data10[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
+//short int data8[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
 int reset_count;
 float uptime_sec;
 long int uptime;
@@ -241,25 +245,48 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
+  int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, syncBits, syncWord, parityLen, frameCnt;
+
+	
+  bitRate = 200;
+  mode = FSK;	
+  bufLen; 
+  rsFrames = 1;
+  payloads = 1;
+  rsFrameLen = 64;
+  headerLen = 6;
+  dataLen = 6;
+  syncBits = 10;
+  syncWord = 0b0011111010;
+  parityLen = 32;
+  frameCnt = 3;	
+  bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFramesLen + parityLen))) * samples);
+	
+  short int buffer[bufLen];
+  short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
+  short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
+	
   if (argc > 1) {
 	  strcpy(src_addr, argv[1]);  
   }
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
-  digitalWrite (0, HIGH);
+  digitalWr;ite (0, HIGH);
 	
-  if (FSK) 
+  if (mode == FSK) 
   {
     amplitude = 32767/3;
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
-	   BUF_LEN/(SAMPLES * FRAME_CNT), BIT_RATE, BUF_LEN/(SAMPLES * FRAME_CNT * BIT_RATE));
+//	   BUF_LEN/(SAMPLES * FRAME_CNT), BIT_RATE, BUF_LEN/(SAMPLES * FRAME_CNT * BIT_RATE));
+	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
   }
   else  // BPSK
    {
     amplitude = 32767;
     printf("\n BPSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
-	   BUF_LEN/(SAMPLES * FRAME_CNT), BIT_RATE, BUF_LEN/(SAMPLES * FRAME_CNT * BIT_RATE));
+//	   BUF_LEN/(SAMPLES * FRAME_CNT), BIT_RATE, BUF_LEN/(SAMPLES * FRAME_CNT * BIT_RATE));
+	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
   }
 	  
   
@@ -491,15 +518,21 @@ int get_tlm_fox() {
 	short int h[HEADER_LEN] = {0x05,0x00,0x00,0x00,0x00,0x10,0x00,0x00};	
 */	
 
-	short int b[DATA_LEN];
+//	short int b[DATA_LEN];
+	short int b[dataLen];
 	memset(b, 0, sizeof(b));
 
-	short int h[HEADER_LEN];
+//	short int h[HEADER_LEN];
+	short int h[headerLen];
 	memset(h, 0, sizeof(h));
 	
-	short int b10[DATA_LEN], h10[HEADER_LEN];
-	short int rs_frame[RS_FRAMES][223];
-	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
+//	short int b10[DATA_LEN], h10[HEADER_LEN];
+//	short int rs_frame[RS_FRAMES][223];
+//	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
+	short int b10[dataLen], h10[headerLen];
+	short int rs_frame[rsFrames][223];
+	unsigned char parities[rsFrames][parityLen], inputByte;
+
 /*	
   int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
@@ -607,7 +640,8 @@ int get_tlm_fox() {
 	int ctr3 = 0;
 	for (i = 0; i < RS_FRAME_LEN; i++) 
 	{
-        for (int j  = 0; j < RS_FRAMES ; j++)
+//        for (int j  = 0; j < RS_FRAMES ; j++)
+        for (int j  = 0; j < rsFrames ; j++)
 		{
 			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
 			{
@@ -657,7 +691,8 @@ int get_tlm_fox() {
   
     for (i = 0; i < PARITY_LEN; i++) 
 	{
-		for (int j  = 0; j < RS_FRAMES; j++)
+//		for (int j  = 0; j < RS_FRAMES; j++)
+		for (int j  = 0; j < rsFrames; j++)
 		{
 			data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
 			nrd = (Encode_8b10b[rd][((int)parities[j][i])] >> 10) & 1;
@@ -681,7 +716,7 @@ int get_tlm_fox() {
 			data = val & 1 << (bit - 1);	
 		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
 		 //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
-			if (FSK)
+			if (mode == FSK)
 			{
 				phase = ((data != 0) * 2) - 1; 
 		//		printf("Sending a %d\n", phase);
@@ -702,7 +737,8 @@ int get_tlm_fox() {
 	}
 
 	for (i = 1; 
-	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
+//	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
+	  i <= (10 * (headerLen + dataLen * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	{
 		write_wave(ctr);
 		if ( (i % SAMPLES) == 0) {
@@ -712,7 +748,7 @@ int get_tlm_fox() {
 			data = val & 1 << (bit - 1);	
 	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
 	//	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-		    if (FSK)
+		    if (mode == FSK)
 			{
 				phase = ((data != 0) * 2) - 1; 
 	//			printf("Sending a %d\n", phase);
