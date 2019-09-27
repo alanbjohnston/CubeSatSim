@@ -326,7 +326,7 @@ int main(int argc, char *argv[]) {
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
 
   int ret;
-  uint8_t data[1024];
+  //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
 
