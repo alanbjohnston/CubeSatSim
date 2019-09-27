@@ -247,7 +247,7 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
-  mode = FSK;
+  mode = BPSK;
 	
   if (mode == FSK) {	
     bitRate = 200;
