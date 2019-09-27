@@ -543,6 +543,8 @@ int get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, 
   		posZv = 0, negZv = 0;
   int head_offset = 0; 	
+	
+  short int buffer[bufLen];
 
 //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) 
@@ -636,7 +638,6 @@ int get_tlm_fox() {
 	encodeA(b, 3 + head_offset, batt_c_v);
  	encodeA(b, 9 + head_offset, battCurr);
 */     
-	short int buffer[bufLen];
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
 	  
@@ -758,8 +759,10 @@ int get_tlm_fox() {
 		write_wave(ctr);
 //		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
-			int symbol = (int)((i - 1)/ (SAMPLES * 10));
-			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
+//			int symbol = (int)((i - 1)/ (SAMPLES * 10));
+//			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
+			int symbol = (int)((i - 1)/ (samples * 10));
+			int bit = 10 - (i - symbol * samples * 10) / samples + 1;	
 			val = data10[symbol];
 			data = val & 1 << (bit - 1);	
 	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
