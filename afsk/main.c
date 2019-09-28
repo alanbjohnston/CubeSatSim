@@ -247,7 +247,13 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
-  mode = BPSK;
+  mode = FSK;
+	
+  if (argc > 1) {
+	  strcpy(src_addr, argv[1]);
+	  if (argv[1] == 'b')
+		  mode = BPSK;
+  }
 	
   if (mode == FSK) {	
     bitRate = 200;
@@ -276,10 +282,7 @@ int main(int argc, char *argv[]) {
 	
   samples = S_RATE/bitRate;
   bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-	
-  if (argc > 1) {
-	  strcpy(src_addr, argv[1]);  
-  }
+
 
   wiringPiSetup ();
   pinMode (0, OUTPUT);
