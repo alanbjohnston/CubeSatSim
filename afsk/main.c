@@ -256,7 +256,7 @@ int main(int argc, char *argv[]) {
 		  mode = BPSK;
 	  
 	  if (argc > 3)
-		  loop = atoi(*argv[2]);
+		  loop = atoi(argv[2]);
 	  printf("Looping %d times \n", loop);
   }
 	
