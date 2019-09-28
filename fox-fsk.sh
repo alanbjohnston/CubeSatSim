@@ -4,6 +4,7 @@
 # kill rpitx or sendiq if running
 ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill
 ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill
+sudo fuser -k 8080/tcp
 
 echo -e "Script to run CubeSat Simulator in Fox FSK Mode\n"
 
