@@ -76,6 +76,7 @@ int upper_digit(int number);
 int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
+int loop = 0;
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -250,9 +251,13 @@ int main(int argc, char *argv[]) {
   mode = FSK;
 	
   if (argc > 1) {
-	  strcpy(src_addr, argv[1]);
+//	  strcpy(src_addr, argv[1]);
 	  if (*argv[1] == 'b')
 		  mode = BPSK;
+	  
+	  if (argc > 3)
+		  loop = atoi(*argv[2]);
+	  printf("Looping %d times \n", loop);
   }
 	
   if (mode == FSK) {	
