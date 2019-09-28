@@ -17,3 +17,4 @@ echo $(date '+%Y %b %d %H:%M') Stopping Hostname $HOSTNAME  >> /home/pi/CubeSatS
 #sleep 30
 
 #/home/pi/CubeSatSim/configax
+/home/pi/CubeSatSim/fox-demo.sh 2
