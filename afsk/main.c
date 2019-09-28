@@ -255,8 +255,10 @@ int main(int argc, char *argv[]) {
 	  if (*argv[1] == 'b')
 		  mode = BPSK;
 	  
-	  if (argc > 3)
+	  if (argc > 2)  {
+//		  printf("String is %s %s\n", *argv[2], argv[2]);
 		  loop = atoi(argv[2]);
+	  }
 	  printf("Looping %d times \n", loop);
   }
 	
