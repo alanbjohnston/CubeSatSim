@@ -76,7 +76,7 @@ int upper_digit(int number);
 int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
-int loop = 0;
+int loop = -1;
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -358,7 +358,8 @@ int main(int argc, char *argv[]) {
 //            AX25_POSTAMBLE_LEN);  
       
   /* Infinite loop */
-  for (;;) 
+ // for (;;) 
+ while (loop-- != 0)
   {
   //  sleep(1);  // Delay 1 second
     ctr = 0;
