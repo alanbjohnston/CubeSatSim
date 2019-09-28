@@ -573,7 +573,7 @@ int get_tlm_fox() {
   if (mode == FSK)
     id = 7;
   else
-    id = 0;  // 99 in h[6]
+    id = 0;  // 99 in h[7]
 
 //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) 
@@ -642,7 +642,7 @@ int get_tlm_fox() {
     h[5] = (h[5] & 0x0f) | (frm_type << 4);  
 	  
     if (mode == BPSK)
-      h[6] = 99;
+      h[7] = 99;
 	  
   posXv = reading[PLUS_X].current * 10;
   posYv = reading[PLUS_Y].current * 10;
