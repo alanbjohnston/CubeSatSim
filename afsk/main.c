@@ -110,8 +110,11 @@ int loop = -1;
 #define SAMPLES (S_RATE / BIT_RATE)
 */
 
+#define AFSK 0
 #define FSK 1
 #define BPSK 2
+
+int rpitxStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000;  // 1200
@@ -374,8 +377,10 @@ int main(int argc, char *argv[]) {
 	
     printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 	  
-//    get_tlm(str);
-    get_tlm_fox();
+    if (mode == AFSK)
+      get_tlm(str);
+    else // FSK or BPSK
+      get_tlm_fox();
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
@@ -829,6 +834,29 @@ int get_tlm_fox() {
       printf("%02X", b[count]);
   }
   printf("\n");
+	
+	
+// rpitx
+	
+      char cmdbuffer[1000];
+      FILE* transmit;
+      if (rpitx != mode) {  // change rpitx mode
+	      
+	  printf("Changing rpitx mode!\n");
+      	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill", "r"); 
+      	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill", "r"); 
+	  transmit = popen("sudo fuser -k 8080/tcp", "r"); 
+	      
+	  if (mode == FSK)  {  
+      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
+      `   } else if (mode == BPSK) {
+      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1& 
+", "r"); 
+     	 }
+//      fgets(cmdbuffer, 1000, transmit);
+      pclose(transmit);
+//      printf("Results of transmit command: %s\n", cmdbuffer);
+      }
 	
 // socket write
 
