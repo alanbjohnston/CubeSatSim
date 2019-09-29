@@ -854,6 +854,7 @@ int get_tlm_fox() {
        }
 //      fgets(cmdbuffer, 1000, transmit);
       pclose(transmit);
+      sleep(1);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
 	
