@@ -364,6 +364,9 @@ int main(int argc, char *argv[]) {
  // for (;;) 
  while (loop-- != 0)
   {
+	 
+    mode = (mode++) % 3;
+	 
   //  sleep(1);  // Delay 1 second
     ctr = 0;
     #ifdef DEBUG_LOGGING
