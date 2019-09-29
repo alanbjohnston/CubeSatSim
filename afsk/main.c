@@ -319,8 +319,9 @@ int main(int argc, char *argv[]) {
  // for (;;) 
  while (loop-- != 0)
   {
-	 
+    printf("Mode before: %d \n", mode); 
     mode = (mode++) % 3;
+    printf("Mode after: %d \n", mode); 
 	 
   if (mode == FSK) {	
     bitRate = 200;
