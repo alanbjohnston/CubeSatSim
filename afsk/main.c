@@ -320,7 +320,7 @@ int main(int argc, char *argv[]) {
  while (loop-- != 0)
   {
     printf("Mode before: %d \n", mode); 
-    mode = (mode++) % 3;
+    mode = (++mode) % 3;
     printf("Mode after: %d \n", mode); 
 	 
   if (mode == FSK) {	
