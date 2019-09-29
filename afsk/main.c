@@ -508,7 +508,7 @@ int get_tlm(char *str) {
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
-//    printf("\n");
+    printf("End of get_tlm\n");
 
 return;
 }
