@@ -845,13 +845,13 @@ int get_tlm_fox() {
 	  printf("Changing rpitx mode!\n");
       	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill", "r"); 
 	  printf("1\n");
-          sleep(1);
+//          sleep(1);
       	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill", "r"); 
 	  printf("2\n");
-          sleep(1);
+//          sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp", "r"); 
 	  printf("3\n");
-          sleep(1);
+//          sleep(1);
 	      
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
@@ -898,9 +898,11 @@ int get_tlm_fox() {
         printf("\nConnection Failed \n"); 
         error = 1; 
     }
-    if (error != 1)
+    if (error == 1)
+	rpitxStatus = -1;
+    else
 	 socket_open = 1;
-  }
+    }
 	
     if (!error)
     {
