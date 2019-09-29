@@ -843,10 +843,10 @@ int get_tlm_fox() {
       if (rpitxStatus != mode) {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
-      	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill", "r"); 
+      	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1", "r"); 
 	  printf("1\n");
 //          sleep(1);
-      	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill", "r"); 
+      	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1", "r"); 
 	  printf("2\n");
 //          sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp", "r"); 
