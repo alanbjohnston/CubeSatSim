@@ -849,7 +849,7 @@ int get_tlm_fox() {
       	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1", "r"); 
 	  printf("2\n");
 //          sleep(1);
-	  transmit = popen("sudo fuser -k 8080/tcp", "r"); 
+	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  printf("3\n");
 //          sleep(1);
 	      
