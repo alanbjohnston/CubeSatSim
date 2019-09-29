@@ -334,9 +334,11 @@ int main(int argc, char *argv[]) {
     parityLen = 32;
     frameCnt = 3;
     amplitude = 32767/3;
+    samples = S_RATE/bitRate;
+    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
 	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
-
   }
   else  {
     bitRate = 1200;
@@ -350,14 +352,12 @@ int main(int argc, char *argv[]) {
     parityLen = 32;
     frameCnt = 3;		  
     amplitude = 32767;
+    samples = S_RATE/bitRate;
+    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+
     printf("\n BPSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
 	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
-
   }
-	
-  samples = S_RATE/bitRate;
-  bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-	 
 	 
   //  sleep(1);  // Delay 1 second
     ctr = 0;
