@@ -900,6 +900,7 @@ int get_tlm_fox() {
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
     { 
         printf("\nConnection Failed \n"); 
+	printf("Error: %s \n", strerror(errno));
         error = 1; 
     }
     if (error == 1)
@@ -914,9 +915,11 @@ int get_tlm_fox() {
 	printf("Sending buffer over socket!\n");
 	int sock_ret = send(sock, buffer[alt], buffSize, 0);
 	printf("Result of socket send: %d \n", sock_ret);
-	if (sock_ret == -1)
+	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
-	alt = (++alt) % 2;
+		socket_open = 0;
+	}
+//	alt = (++alt) % 2;
 	printf("Alternate value is %d \n", alt);
     }
     digitalWrite (0, HIGH);
