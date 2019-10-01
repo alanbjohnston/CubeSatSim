@@ -915,7 +915,7 @@ int get_tlm_fox() {
 	int sock_ret = send(sock, buffer[alt], buffSize, 0);
 	printf("Result of socket send: %d \n", sock_ret);
 	if (sock_ret == -1)
-		printf("Error: %s \n", sock_ret, strerror(errno));
+		printf("Error: %s \n", strerror(errno));
 	alt = (++alt) % 2;
 	printf("Alternate value is %d \n", alt);
     }
