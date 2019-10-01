@@ -574,7 +574,7 @@ int get_tlm_fox() {
   int buffSize;
   buffSize = sizeof(buffer_test);
   short int buffer[1][bufLen];
-  memset(buffer, 0, sizeof(buffer);
+  memset(buffer, 0, sizeof(buffer));
 	
   if (mode == FSK)
     id = 7;
