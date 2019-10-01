@@ -919,6 +919,7 @@ int get_tlm_fox() {
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
 		socket_open = 0;
+		rpitxStatus = -1;
 	}
 //	alt = (++alt) % 2;
 	printf("Alternate value is %d \n", alt);
