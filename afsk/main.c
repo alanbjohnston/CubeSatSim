@@ -717,14 +717,14 @@ int get_tlm_fox() {
 			}
 		}	
 	}    
-	    	    
+    #ifdef DEBUG_LOGGING	    	    
     	printf("Parities ");
 //		for (int m = 0; m < PARITY_LEN; m++) {
 		for (int m = 0; m < parityLen; m++) {
 		 	printf("%d ", parities[0][m]);
 		}
 		printf("\n");
- 
+     #endif
   	int ctr2 = 0;    
  	memset(data10,0,sizeof(data10));  
   	int rd = 0;
@@ -834,12 +834,11 @@ int get_tlm_fox() {
   int error = 0;
   int count;
 //  for (count = 0; count < DATA_LEN; count++) {
-  for (count = 0; count < dataLen; count++) {
-      printf("%02X", b[count]);
-  }
-  printf("\n");
-	
-	
+//  for (count = 0; count < dataLen; count++) {
+//      printf("%02X", b[count]);
+//  }
+//  printf("\n");
+		
 // rpitx
 	
       char cmdbuffer[1000];
