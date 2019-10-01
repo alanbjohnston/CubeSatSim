@@ -42,6 +42,8 @@
 #include <netinet/in.h> 
 #include <string.h> 
 #include <arpa/inet.h>
+#include <errno.h>
+
 #define PORT 8080
 
 #define A 1
