@@ -874,6 +874,7 @@ int get_tlm_fox() {
 
   if (!socket_open)
     {
+    printf("Opening socket!\n");
     struct sockaddr_in address; 
     int valread; 
     struct sockaddr_in serv_addr; 
