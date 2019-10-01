@@ -78,6 +78,7 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1;
 int alt = 0;  // alternates between 0 and 1 for buffer
+short int buffer[1][5841];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -269,6 +270,8 @@ int main(int argc, char *argv[]) {
   wiringPiSetup ();
   pinMode (0, OUTPUT);
   digitalWrite (0, HIGH);
+	
+  memset(buffer, 0, sizeof(buffer));
 	  
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
@@ -573,9 +576,6 @@ int get_tlm_fox() {
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = sizeof(buffer_test);
-  short int buffer[1][bufLen];
-  pt
-  memset(buffer, 0, sizeof(buffer));
 	
   if (mode == FSK)
     id = 7;
