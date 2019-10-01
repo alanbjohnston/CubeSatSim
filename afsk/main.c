@@ -910,7 +910,8 @@ int get_tlm_fox() {
     {
 	digitalWrite (0, LOW);
 	printf("Sending buffer over socket!\n");
-	send(sock, buffer[alt], buffSize, 0);
+	int sock_ret = send(sock, buffer[alt], buffSize, 0);
+	printf("Result of socket send: %d\n", sock_ret);
 	alt = (++alt) % 2;
 	printf("Alternate value is %d \n", alt);
     }
