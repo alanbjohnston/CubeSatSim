@@ -77,6 +77,7 @@ int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
+int alt = 0;  // alternates between 0 and 1 for buffer
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -569,7 +570,10 @@ int get_tlm_fox() {
   		posZv = 0, negZv = 0;
   int head_offset = 0; 	
 	
-  short int buffer[bufLen];
+  short int buffer_test[bufLen];
+  int buffSize;
+  buffSize = sizeof(buffer_test);
+  short int buffer[1][bufLen];
 	
   if (mode == FSK)
     id = 7;
@@ -777,7 +781,7 @@ int get_tlm_fox() {
 					if ( (ctr - smaller) > 0)
 					{
 						for (int j = 1; j <= smaller; j++)
-				     		buffer[ctr - j] = buffer[ctr - j] * 0.4;
+				     		buffer[alt][ctr - j] = buffer[alt][ctr - j] * 0.4;
 					}
 					flip_ctr = ctr;
 				}
@@ -812,7 +816,7 @@ int get_tlm_fox() {
 					if ( (ctr - smaller) > 0)
 					{
 						for (int j = 1; j <= smaller; j ++)
-				    	 	buffer[ctr - j] = buffer[ctr - j] * 0.4;
+				    	 	buffer[alt][ctr - j] = buffer[alt][ctr - j] * 0.4;
 					}
 					flip_ctr = ctr;
 				}
@@ -904,7 +908,8 @@ int get_tlm_fox() {
     {
 	digitalWrite (0, LOW);
 	printf("Sending buffer over socket!\n");
-	send(sock, buffer, sizeof(buffer), 0);    	    
+	send(sock, buffer[alt], buffSize, 0);
+	alt = (++alt) % 2;
     }
     digitalWrite (0, HIGH);
 
