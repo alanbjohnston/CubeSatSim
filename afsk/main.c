@@ -78,7 +78,7 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1;
 int alt = 0;  // alternates between 0 and 1 for buffer
-short int buffer[1][5841];  // max size for 10 frames count of BPSK
+short int buffer[1][2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -355,7 +355,7 @@ int main(int argc, char *argv[]) {
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-    frameCnt = 10;   //3		  
+    frameCnt = 3;		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
