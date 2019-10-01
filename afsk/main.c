@@ -352,13 +352,13 @@ int main(int argc, char *argv[]) {
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-    frameCnt = 3;		  
+    frameCnt = 10;   //3		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-    printf("\n BPSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
-	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
+    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
+	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
   }
 	 
   //  sleep(1);  // Delay 1 second
@@ -574,6 +574,7 @@ int get_tlm_fox() {
   int buffSize;
   buffSize = sizeof(buffer_test);
   short int buffer[1][bufLen];
+  pt
   memset(buffer, 0, sizeof(buffer));
 	
   if (mode == FSK)
