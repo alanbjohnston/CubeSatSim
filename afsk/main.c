@@ -339,7 +339,7 @@ int main(int argc, char *argv[]) {
     syncBits = 10;
     syncWord = 0b0011111010;
     parityLen = 32;
-    frameCnt = 1;  //3
+    frameCnt = 3;
     amplitude = 32767/3;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -357,7 +357,7 @@ int main(int argc, char *argv[]) {
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-    frameCnt = 1; // 3		  
+    frameCnt = 3;		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
