@@ -852,7 +852,7 @@ int get_tlm_fox() {
 //          sleep(1);
       	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
-//          sleep(1);
+          sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 //	  printf("3\n");
           sleep(1);
@@ -860,13 +860,12 @@ int get_tlm_fox() {
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
 //	  	printf("4\n");
-          	sleep(1);
-          } else if (mode == BPSK) {
+         } else if (mode == BPSK) {
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
        }
 //      fgets(cmdbuffer, 1000, transmit);
       pclose(transmit);
-      sleep(1);
+      sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
 	
