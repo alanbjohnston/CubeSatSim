@@ -574,6 +574,7 @@ int get_tlm_fox() {
   int buffSize;
   buffSize = sizeof(buffer_test);
   short int buffer[1][bufLen];
+  memset(buffer, 0, sizeof(buffer);
 	
   if (mode == FSK)
     id = 7;
@@ -825,7 +826,7 @@ int get_tlm_fox() {
 	 }   
 	}
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
-	write_wav("transmit.wav", bufLen, buffer, S_RATE);
+//	write_wav("transmit.wav", bufLen, buffer, S_RATE);
 
   int error = 0;
   int count;
@@ -910,6 +911,7 @@ int get_tlm_fox() {
 	printf("Sending buffer over socket!\n");
 	send(sock, buffer[alt], buffSize, 0);
 	alt = (++alt) % 2;
+	printf("Alternate value is %d \n", alt);
     }
     digitalWrite (0, HIGH);
 
