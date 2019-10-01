@@ -78,7 +78,7 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1;
 int alt = 0;  // alternates between 0 and 1 for buffer
-short int buffer[1][2336400];  // max size for 10 frames count of BPSK
+short int buffer[2][2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
