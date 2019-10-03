@@ -828,7 +828,7 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
-	printf("\nValue of i after looping: %d Buffer Len: %d \n\n", i, buffSize);
+	printf("\nValue of i after looping: %d Buffer Len: %d \n\n", ctr, buffSize);
 	
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 //	write_wav("transmit.wav", bufLen, buffer, S_RATE);
@@ -915,7 +915,7 @@ int get_tlm_fox() {
 	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", buffSize);
 //	int sock_ret = send(sock, buffer[alt], buffSize, 0);
-	int sock_ret = send(sock, buffer[alt], i, 0);
+	int sock_ret = send(sock, buffer[alt], ctr, 0);
 	printf("Result of socket send: %d \n", sock_ret);
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
