@@ -919,7 +919,7 @@ int get_tlm_fox() {
 		socket_open = 0;
 		rpitxStatus = -1;
 	}
-//	alt = (++alt) % 2;
+	alt = (++alt) % 2;
 	printf("Alternate value is %d \n", alt);
     }
     digitalWrite (0, HIGH);
