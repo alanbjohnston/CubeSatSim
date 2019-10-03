@@ -913,7 +913,7 @@ int get_tlm_fox() {
     if (!error)
     {
 	digitalWrite (0, LOW);
-	printf("Sending %d buffer bytes over socket!\n", buffSize);
+	printf("Sending %d buffer bytes over socket!\n", ctr);
 //	int sock_ret = send(sock, buffer[alt], buffSize, 0);
 	int sock_ret = send(sock, buffer[alt], ctr, 0);
 	printf("Result of socket send: %d \n", sock_ret);
