@@ -828,6 +828,8 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
+	printf("\nValue of i after looping: %d Buffer Len: %d \n\n", i, buffSize);
+	
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 //	write_wav("transmit.wav", bufLen, buffer, S_RATE);
 
@@ -919,8 +921,8 @@ int get_tlm_fox() {
 		socket_open = 0;
 		rpitxStatus = -1;
 	}
-	alt = (++alt) % 2;
-	printf("Alternate value is %d \n", alt);
+//	alt = (++alt) % 2;
+//	printf("Alternate value is %d \n", alt);
     }
     digitalWrite (0, HIGH);
 
