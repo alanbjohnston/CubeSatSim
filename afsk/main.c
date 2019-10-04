@@ -716,7 +716,9 @@ int get_tlm_fox() {
 				}								
 			}
 		}	
-	}    
+	} 
+	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
+		
     #ifdef DEBUG_LOGGING	    	    
     	printf("Parities ");
 //		for (int m = 0; m < PARITY_LEN; m++) {
@@ -741,7 +743,6 @@ int get_tlm_fox() {
 				rd = nrd; // ^ nrd;
 				ctr2++;
 	}
-  
 //    for (i = 0; i < PARITY_LEN; i++) 
     for (i = 0; i < parityLen; i++) 
 	{
@@ -756,7 +757,8 @@ int get_tlm_fox() {
 			rd = nrd; 
 		}	
 	}
-     
+ 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
+      
     int data;
     int val;
     int offset = 0;
@@ -828,7 +830,7 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
-	printf("\nValue of i after looping: %d Buffer Len: %d \n\n", ctr, buffSize);
+	printf("\nValue of i after looping: %d Buffer Len: %d\n\n", ctr, buffSize);
 	
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 //	write_wav("transmit.wav", bufLen, buffer, S_RATE);
