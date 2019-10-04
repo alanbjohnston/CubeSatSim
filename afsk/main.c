@@ -762,11 +762,14 @@ int get_tlm_fox() {
     int data;
     int val;
     int offset = 0;
+	  
+	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
       
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
 		write_wave(ctr, buffer[alt]);	
+		printf("%d ",ctr);
 //		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
 //  			int bit = SYNC_BITS - i/SAMPLES + 1;
@@ -794,7 +797,7 @@ int get_tlm_fox() {
 			}
 		}
 	}
-	printf("\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
+	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 
 	for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
