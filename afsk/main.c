@@ -794,6 +794,7 @@ int get_tlm_fox() {
 			}
 		}
 	}
+	printf("\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 
 	for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
@@ -830,7 +831,8 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
-	printf("\nValue of i after looping: %d Buffer Len: %d\n\n", ctr, buffSize);
+	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
+	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
 	
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
 //	write_wav("transmit.wav", bufLen, buffer, S_RATE);
