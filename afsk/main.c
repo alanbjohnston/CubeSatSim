@@ -764,7 +764,9 @@ int get_tlm_fox() {
     int offset = 0;
 	  
 	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
-      
+	  
+     for (int sync_words = 0; sync_words < 2; sync_words++)  {
+	     
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
@@ -798,7 +800,7 @@ int get_tlm_fox() {
 		}
 	}
 	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
-
+       }
 	for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
