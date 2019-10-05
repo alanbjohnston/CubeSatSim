@@ -1208,9 +1208,9 @@ void write_wave(int i, short int *buffer)
 {
 		if (mode == FSK)
 		{
-//			if ((ctr - flip_ctr) < smaller)
-//				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
-//			else
+			if ((ctr - flip_ctr) < smaller)
+				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
+			else
 				buffer[ctr++] = 0.25 * amplitude * phase;
 		}
 		else
