@@ -1212,7 +1212,6 @@ void write_wave(int i, short int *buffer)
 //				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
 //			else
 				buffer[ctr++] = 0.25 * amplitude * phase;
-			        printf("*** buffer[%d] = %d \n", ctr - 1, buffer[ctr - 1]);
 		}
 		else
 		{
