@@ -340,7 +340,7 @@ int main(int argc, char *argv[]) {
     parityLen = 32;
     frameCnt = 3; //6; // 4; // ;
     amplitude = 32767/3;
-    samples = S_RATE/bitRate;
+    samples = 1; // S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
@@ -1209,7 +1209,7 @@ void write_wave(int i, short int *buffer)
 //			if ((ctr - flip_ctr) < smaller)
 //				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
 //			else
-				buffer[ctr++] = 0.25 * amplitude * phase;	
+				buffer[ctr++] = 0.25 * amplitude * phase;
 			        printf("*** buffer[%d] = %d \n", ctr - 1, buffer[ctr - 1]);
 		}
 		else
