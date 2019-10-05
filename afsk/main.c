@@ -555,7 +555,7 @@ int get_tlm_fox() {
 	short int h[headerLen];
 	memset(h, 0, sizeof(h));
 		
-        memset(buffer, a5, sizeof(buffer));
+        memset(buffer, 0xa5, sizeof(buffer));
 	
 //	short int b10[DATA_LEN], h10[HEADER_LEN];
 //	short int rs_frame[RS_FRAMES][223];
