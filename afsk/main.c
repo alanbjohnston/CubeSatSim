@@ -126,6 +126,8 @@ int smaller;
 int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
+int rd = 0;
+int nrd;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave(int i, short int *buffer);
 
@@ -340,7 +342,7 @@ int main(int argc, char *argv[]) {
     parityLen = 32;
     frameCnt = 3; //6; // 4; // ;
     amplitude = 32767/3;
-    samples = 1; // S_RATE/bitRate;
+    samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
@@ -727,16 +729,9 @@ int get_tlm_fox() {
 		printf("\n");
      #endif
 	  
-	  // set parities to sequential count
-		for (int m = 0; m < parityLen; m++) {
-		 	parities[0][m] = m;
-		 	printf("%d ", parities[0][m]);
-		}
-
   	int ctr2 = 0;    
  	memset(data10,0,sizeof(data10));  
-  	int rd = 0;
-	int nrd;	
+	
  
 //    for (i = 0; i < DATA_LEN * PAYLOADS + HEADER_LEN; i++) // 476 for BPSK
     for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
