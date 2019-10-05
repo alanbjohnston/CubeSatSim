@@ -837,7 +837,7 @@ int get_tlm_fox() {
 	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
 	
 //	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
-//	write_wav("transmit.wav", bufLen, buffer, S_RATE);
+	write_wav("transmit.wav", ctr, buffer, S_RATE);
 
   int error = 0;
   int count;
