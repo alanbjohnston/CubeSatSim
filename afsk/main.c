@@ -79,8 +79,7 @@ int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
-int alt = 0;  // alternates between 0 and 1 for buffer
-short int buffer[2][2336400];  // max size for 10 frames count of BPSK
+short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
 //#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
@@ -767,7 +766,7 @@ int get_tlm_fox() {
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
-		write_wave(ctr, buffer[alt]);	
+		write_wave(ctr, buffer);	
 //		printf("%d ",ctr);
 //		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
@@ -789,7 +788,7 @@ int get_tlm_fox() {
 					if ( (ctr - smaller) > 0)
 					{
 						for (int j = 1; j <= smaller; j++)
-				     		buffer[alt][ctr - j] = buffer[alt][ctr - j] * 0.4;
+				     		buffer[ctr - j] = buffer[ctr - j] * 0.4;
 					}
 					flip_ctr = ctr;
 				}
@@ -824,7 +823,7 @@ int get_tlm_fox() {
 					if ( (ctr - smaller) > 0)
 					{
 						for (int j = 1; j <= smaller; j ++)
-				    	 	buffer[alt][ctr - j] = buffer[alt][ctr - j] * 0.4;
+				    	 	buffer[ctr - j] = buffer[ctr - j] * 0.4;
 					}
 					flip_ctr = ctr;
 				}
@@ -921,16 +920,14 @@ int get_tlm_fox() {
     {
 	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", ctr);
-//	int sock_ret = send(sock, buffer[alt], buffSize, 0);
-	int sock_ret = send(sock, buffer[alt], ctr, 0);
+//	int sock_ret = send(sock, buffer, buffSize, 0);
+	int sock_ret = send(sock, buffer, ctr, 0);
 	printf("Result of socket send: %d \n", sock_ret);
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
 		socket_open = 0;
 		rpitxStatus = -1;
 	}
-//	alt = (++alt) % 2;
-//	printf("Alternate value is %d \n", alt);
     }
     digitalWrite (0, HIGH);
 
