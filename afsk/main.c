@@ -726,6 +726,13 @@ int get_tlm_fox() {
 		}
 		printf("\n");
      #endif
+	  
+	  // set parities to sequential count
+		for (int m = 0; m < parityLen; m++) {
+		 	parities[0][m] = m;
+		 	printf("%d ", parities[0][m]);
+		}
+
   	int ctr2 = 0;    
  	memset(data10,0,sizeof(data10));  
   	int rd = 0;
