@@ -273,8 +273,6 @@ int main(int argc, char *argv[]) {
   wiringPiSetup ();
   pinMode (0, OUTPUT);
   digitalWrite (0, HIGH);
-	
-  memset(buffer, 0, sizeof(buffer));
 	  
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
@@ -556,6 +554,8 @@ int get_tlm_fox() {
 //	short int h[HEADER_LEN];
 	short int h[headerLen];
 	memset(h, 0, sizeof(h));
+		
+        memset(buffer, a5, sizeof(buffer));
 	
 //	short int b10[DATA_LEN], h10[HEADER_LEN];
 //	short int rs_frame[RS_FRAMES][223];
