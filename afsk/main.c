@@ -765,7 +765,7 @@ int get_tlm_fox() {
 	  
 	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
 	  
-     for (int sync_words = 0; sync_words < 2; sync_words++)  {
+     for (int sync_words = 0; sync_words < 1; sync_words++)  {
 	     
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
