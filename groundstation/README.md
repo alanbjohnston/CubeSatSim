@@ -1,6 +1,4 @@
-In the spacecraft directory, there are .MASTER files which are spacecraft configuration files for FoxTelem.  Download them into the spacecraft folder of your FoxTelem software and add the spacecraft.
-
-The rest of the files relate to the optional Raspberry Pi Ground Station.
+The files relate to the optional Raspberry Pi Ground Station.
 
 The Ground Station can be installed on any Windows or Linux PC or laptop, but it does require drivers to be installed (RTL-SDR)
 and virtual audio cable (for sound) to be installed.  This requires administrator privileges on the computer.
