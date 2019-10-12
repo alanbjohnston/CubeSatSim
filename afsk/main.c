@@ -356,7 +356,7 @@ int main(int argc, char *argv[]) {
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-    frameCnt = 4; // 3;		  
+    frameCnt = 3; // 3;		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -513,7 +513,7 @@ int get_tlm(char *str) {
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
-    printf("End of get_tlm\n");
+    printf("End of get_tlm =========================================================\n");
 
 return;
 }
@@ -758,13 +758,18 @@ int get_tlm_fox() {
 			rd = nrd; 
 		}	
 	}
+    #ifdef DEBUG_LOGGING	    	    
  	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
-      
+    #endif
+	  
     int data;
     int val;
     int offset = 0;
 	  
+    #ifdef DEBUG_LOGGING	    	    
 	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
+    #endif
+	  
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
@@ -797,8 +802,10 @@ int get_tlm_fox() {
 			}
 		}
 	}
+    #ifdef DEBUG_LOGGING	    	    
 	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
- 	for (i = 1; 
+    #endif
+	  for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
@@ -833,11 +840,11 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
+    #ifdef DEBUG_LOGGING	    	    
 	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
 	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
-	
-//	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
-	write_wav("transmit.wav", ctr, buffer, S_RATE);
+    #endif	
+//	write_wav("transmit.wav", ctr, buffer, S_RATE);
 
   int error = 0;
   int count;
