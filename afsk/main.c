@@ -527,7 +527,9 @@ int get_tlm_fox() {
    FILE* uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
     uptime = (int) uptime_sec;
+  #ifdef DEBUG_LOGGING
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+  #endif
     fclose(uptime_file);
 	
 	int i;
@@ -718,10 +720,11 @@ int get_tlm_fox() {
 			}
 		}	
 	} 
-	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
 		
     #ifdef DEBUG_LOGGING	    	    
-    	printf("Parities ");
+	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
+
+	  printf("Parities ");
 //		for (int m = 0; m < PARITY_LEN; m++) {
 		for (int m = 0; m < parityLen; m++) {
 		 	printf("%d ", parities[0][m]);
