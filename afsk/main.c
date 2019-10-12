@@ -422,7 +422,10 @@ int upper_digit(int number) {
 
 int get_tlm(void) {
 
+sleep(2);
+
 for (int j = 0; j < 3; j++);	
+{	
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
@@ -523,7 +526,7 @@ for (int j = 0; j < 3; j++);
 //	  fprintf(stderr, "Response\n");
   
 	sleep(2);
-}
+   }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
 
