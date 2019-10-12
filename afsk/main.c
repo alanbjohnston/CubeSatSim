@@ -424,7 +424,7 @@ int get_tlm(void) {
 
 sleep(2);
 
-for (int j = 0; j < 3; j++);	
+for (int j = 0; j < 3; j++)	
 {	
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
