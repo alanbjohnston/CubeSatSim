@@ -256,13 +256,14 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
-  mode = BPSK;
+  mode = FSK;
 	
   if (argc > 1) {
 //	  strcpy(src_addr, argv[1]);
 	  if (*argv[1] == 'b')
 		  mode = BPSK;
-	  
+	  else if (*argv[1] == 'a')
+		  mode = AFSK;
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
 		  loop = atoi(argv[2]);
