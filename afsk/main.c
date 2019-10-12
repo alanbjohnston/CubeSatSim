@@ -372,9 +372,14 @@ int main(int argc, char *argv[]) {
     #endif
 	  	  
     if (mode == AFSK)
-      get_tlm();
+    {
+       sleep(10);
+       get_tlm();
+    }
     else // FSK or BPSK
+    {
       get_tlm_fox();
+    }
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
@@ -421,8 +426,6 @@ int upper_digit(int number) {
 }
 
 int get_tlm(void) {
-
-sleep(2);
 
 for (int j = 0; j < 3; j++)	
 {	
@@ -525,7 +528,8 @@ for (int j = 0; j < 3; j++)
 //	printf("Response: %s\n", cmdbuffer);
 //	  fprintf(stderr, "Response\n");
   
-	sleep(2);
+      if (j != 2)  // Don't sleep if the last packet - go straight to next mode
+	sleep(3);
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
