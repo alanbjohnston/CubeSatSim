@@ -10,7 +10,7 @@ while true; do
       sleep 1;
       echo -e "\n Changing mode ********************************************************************************\n\n"
       
-      timeout 31 /home/pi/CubeSatSim/radioafsk fsk 3
+      timeout 30 /home/pi/CubeSatSim/radioafsk fsk 3
       sudo killall -9 rpitx
       sudo killall -9 sendiq
       sudo fuser -k 8080/tcp
@@ -18,7 +18,7 @@ while true; do
       sleep 1;
       echo -e "\n Changing mode ********************************************************************************\n\n"
       
-      timeout 24 /home/pi/CubeSatSim/radioafsk bpsk 3
+      timeout 34 /home/pi/CubeSatSim/radioafsk bpsk 3
       sudo killall -9 rpitx
       sudo killall -9 sendiq
       sudo fuser -k 8080/tcp     
