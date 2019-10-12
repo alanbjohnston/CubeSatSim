@@ -1,20 +1,18 @@
 #!/bin/bash
 
-echo -e "\nDemo of CubeSatSim sends AFSK telemetry at 440 MHz continuously\n\n"
+echo -e "\nDemo of CubeSatSim sends FSK and BPSK telemetry alternately at 434.9 MHz continuously\n\n"
 
-sleep 30
+sudo killall rpitx
+sudo killall sendiq
+sudo fuser -k 8080/tcp
 
-#echo 'sleep over' >> /home/pi/CubeSatSim/log.txt
-
-echo $(date '+%Y %b %d %H:%M') Starting Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
-
-#/home/pi/CubeSatSim/radioafsk >> /home/pi/CubeSatSim/log.txt 
-#/home/pi/DigitalTxRxRPi/testafsktx  >> /home/pi/CubeSatSim/log.txt
-
-echo $(date '+%Y %b %d %H:%M') Stopping Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
-
-#/home/pi/mopower/mpcmd LED_STAT=0
-#sleep 30
-
-#/home/pi/CubeSatSim/configax
-/home/pi/CubeSatSim/fox-demo.sh 2
+while true; do
+      timeout 33 /home/pi/CubeSatSim/radioafsk.sh fsk 3
+      sudo killall rpitx
+      sudo killall sendiq
+      sudo fuser -k 8080/tcp
+      timeout 33 /home/pi/CubeSatSim/radioafsk.sh bpsk 3
+      sudo killall rpitx
+      sudo killall sendiq
+      sudo fuser -k 8080/tcp     
+done
