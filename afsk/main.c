@@ -370,18 +370,11 @@ int main(int argc, char *argv[]) {
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
-	  
-    char str[1000];
-   // uint8_t b[64];
-    char header_str[] = "\x03\xf0";
-    strcpy(str, header_str);
-	
-    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
-	  
+	  	  
     if (mode == AFSK)
       get_tlm(str);
     else // FSK or BPSK
-      get_tlm_fox();
+      get_tlm_fox();strcpy(str, header_str2);
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
@@ -497,10 +490,14 @@ int get_tlm(char *str) {
     }	
   #endif
 
+    char header_str2[] = "echo 'KU2Y>CQ:hi hi ";
+    char footer_str[] = "\' > t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
+
+//    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
+	
     char tlm_str[1000];
 
-    char header_str[] = "hi hi ";
-    strcpy(str, header_str);
+     strcpy(str, header_str2);
 //    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
 	  
     int channel;
@@ -513,7 +510,16 @@ int get_tlm(char *str) {
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
-    printf("End of get_tlm =========================================================\n");
+	
+//	  char cmdbuffer[1000];
+	  strcat(tlm_str,footer_str);
+	  fprintf(stderr, "String to execute: %s\n", tlm_str);
+	  FILE* file2 = popen(tlm_str, "r"); 
+//     	  fgets(cmdbuffer, 999, file2);
+      	  pclose(file2);
+//	printf("Response: %s\n", cmdbuffer);
+//	  fprintf(stderr, "Response\n");
+    printf("End of get_tlm and rpitx =========================================================\n");
 
 return;
 }
