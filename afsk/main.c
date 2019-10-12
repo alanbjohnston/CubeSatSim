@@ -373,7 +373,6 @@ int main(int argc, char *argv[]) {
 	  	  
     if (mode == AFSK)
     {
-       sleep(10);
        get_tlm();
     }
     else // FSK or BPSK
@@ -427,6 +426,18 @@ int upper_digit(int number) {
 
 int get_tlm(void) {
 
+    sleep(10);
+      FILE* transmit;
+      if (rpitxStatus != mode) {  // change rpitx mode
+	  rpitxStatus = mode;    
+	  printf("Killing all\n");
+      	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+      	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  socket_open = 0;
+
+  sleep(3);
+	      
 for (int j = 0; j < 3; j++)	
 {	
   int tlm[7][5];
