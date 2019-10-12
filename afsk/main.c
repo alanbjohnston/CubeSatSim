@@ -430,11 +430,13 @@ int get_tlm(void) {
       FILE* transmit;
 	  printf("Killing all\n");
       	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+	sleep(1);
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
-	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	sleep(1);  
+	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 
-  sleep(3);
+  sleep(1);
 	      
 for (int j = 0; j < 3; j++)	
 {	
