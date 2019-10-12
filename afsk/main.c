@@ -913,7 +913,7 @@ int get_tlm_fox() {
         error = 1; 
     }
     if (error == 1)
-	rpitxStatus = -1;
+	; //rpitxStatus = -1;
     else
 	 socket_open = 1;
     }
@@ -928,7 +928,7 @@ int get_tlm_fox() {
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
 		socket_open = 0;
-		rpitxStatus = -1;
+		//rpitxStatus = -1;
 	}
     }
     digitalWrite (0, HIGH);
