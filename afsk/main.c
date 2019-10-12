@@ -68,7 +68,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
-int get_tlm(char *str);
+int get_tlm(void);
 int get_tlm_fox();
 int encodeA(short int *b, int index, int val);
 int encodeB(short int *b, int index, int val);
@@ -372,9 +372,9 @@ int main(int argc, char *argv[]) {
     #endif
 	  	  
     if (mode == AFSK)
-      get_tlm(str);
+      get_tlm();
     else // FSK or BPSK
-      get_tlm_fox();strcpy(str, header_str2);
+      get_tlm_fox();
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
@@ -420,7 +420,7 @@ int upper_digit(int number) {
 	return digit;
 }
 
-int get_tlm(char *str) {
+int get_tlm(void) {
 	
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
