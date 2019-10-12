@@ -8,7 +8,7 @@ sleep 30
 
 echo $(date '+%Y %b %d %H:%M') Starting Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
 
-/home/pi/CubeSatSim/radioafsk >> /home/pi/CubeSatSim/log.txt 
+#/home/pi/CubeSatSim/radioafsk >> /home/pi/CubeSatSim/log.txt 
 #/home/pi/DigitalTxRxRPi/testafsktx  >> /home/pi/CubeSatSim/log.txt
 
 echo $(date '+%Y %b %d %H:%M') Stopping Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
