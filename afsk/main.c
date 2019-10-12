@@ -256,7 +256,7 @@ char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
 	
-  mode = FSK;
+  mode = BPSK;
 	
   if (argc > 1) {
 //	  strcpy(src_addr, argv[1]);
@@ -873,6 +873,8 @@ int get_tlm_fox() {
 //	  printf("2\n");
           sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  socket_open = 0;
+	      
 //	  printf("3\n");
           sleep(1);
 	      
