@@ -18,7 +18,7 @@ while true; do
       sleep 1;
       echo -e "\n Changing mode ********************************************************************************\n\n"
       
-      timeout 41 /home/pi/CubeSatSim/radioafsk bpsk 3
+      timeout 24 /home/pi/CubeSatSim/radioafsk bpsk 3
       sudo killall -9 rpitx
       sudo killall -9 sendiq
       sudo fuser -k 8080/tcp     
