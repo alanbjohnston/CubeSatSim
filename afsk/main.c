@@ -428,8 +428,6 @@ int get_tlm(void) {
 
     sleep(10);
       FILE* transmit;
-      if (rpitxStatus != mode) {  // change rpitx mode
-	  rpitxStatus = mode;    
 	  printf("Killing all\n");
       	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
