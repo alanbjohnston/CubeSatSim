@@ -497,7 +497,7 @@ int get_tlm(void) {
 	
     char tlm_str[1000];
 
-     strcpy(str, header_str2);
+     strcpy(tlm_str, header_str2);
 //    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
 	  
     int channel;
