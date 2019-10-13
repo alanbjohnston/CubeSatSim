@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
       
  while (loop-- != 0)
   {
-    if (cycle)
+    if (cycle == TRUE)
     	mode = (++mode) % 3;
 	 
   if (mode == FSK) {	
