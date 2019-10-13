@@ -958,7 +958,8 @@ int get_tlm_fox() {
 	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", ctr);
 //	int sock_ret = send(sock, buffer, buffSize, 0);
-	int sock_ret = send(sock, buffer, ctr * 2 + 1, 0);
+//	int sock_ret = send(sock, buffer, ctr * 2 + 1, 0);
+	int sock_ret = send(sock, buffer, ctr, 0);
 	printf("Result of socket send: %d \n", sock_ret);
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
