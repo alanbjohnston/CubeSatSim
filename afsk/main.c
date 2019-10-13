@@ -235,13 +235,24 @@ int main(int argc, char *argv[]) {
   if (argc > 1) {
 //	  strcpy(src_addr, argv[1]);
 	  if (*argv[1] == 'b')
+	  {
 		  mode = BPSK;
+		  printf("Mode BPSK\n");
+	  }
 	  else if (*argv[1] == 'a')
+	  {
 		  mode = AFSK;
+		  printf("Mode AFSK\n");
+	  }
 	  else if (*argv[1] == 'c')
 	  {
 		  cycle = ON;
 		  mode = AFSK;
+		  printf("Mode cycle on\n");
+	  {
+	  else
+	  {
+		  printf("Mode FSK\n");
 	  }
 
 	  if (argc > 2)  {
@@ -304,9 +315,11 @@ int main(int argc, char *argv[]) {
       
  while (loop-- != 0)
   {
-    if (cycle == ON)
+    if (cycle == ON) 
+    {
     	mode = (++mode) % 3;
-	 
+	printf("Cycling mode %d \n", cycle);
+    } 
   if (mode == FSK) {	
     bitRate = 200;
     rsFrames = 1;
