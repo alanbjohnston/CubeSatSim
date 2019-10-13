@@ -249,7 +249,7 @@ int main(int argc, char *argv[]) {
 		  cycle = ON;
 		  mode = AFSK;
 		  printf("Mode cycle on\n");
-	  {
+	  }
 	  else
 	  {
 		  printf("Mode FSK\n");
