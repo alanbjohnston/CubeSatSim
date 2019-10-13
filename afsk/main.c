@@ -267,6 +267,7 @@ int main(int argc, char *argv[]) {
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
 		  loop = atoi(argv[2]);
+		  mode = AFSK;
 	  }
 	  printf("Looping %d times \n", loop);
   }
