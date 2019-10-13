@@ -258,7 +258,6 @@ int main(int argc, char *argv[]) {
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
 		  frameCnt = atoi(argv[2]);
-		  mode = AFSK;
 	  }
 	  printf("Looping %d times \n", loop);
   }
@@ -338,7 +337,7 @@ int main(int argc, char *argv[]) {
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
 	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
   }
-  else  {
+  else if (mode == BPSK) {
     bitRate = 1200;
     rsFrames = 3;
     payloads = 6;
