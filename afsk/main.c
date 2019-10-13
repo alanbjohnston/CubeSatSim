@@ -276,10 +276,13 @@ int main(int argc, char *argv[]) {
   { 
        printf("Creating config file."); 
        config_file = fopen("sim.cfg","w");
-	fprintf(config_file, "%s %d", "KU2Y", 100);
+	fprintf(config_file, "%s %d", "W3ZM", 100);
 	fclose(config_file);
 	config_file = fopen("sim.cfg","r"); 
     } 
+	
+   if (cycle == ON)
+      mode = (reset_count) % 3;  // alternate between the three modes
   
     char* cfg_buf[100]; 
     fscanf(config_file, "%s %d", call, &reset_count);
@@ -315,11 +318,12 @@ int main(int argc, char *argv[]) {
       
  while (loop-- != 0)
   {
-    if (cycle == ON) 
+/*    if (cycle == ON) 
     {
     	mode = (++mode) % 2; //;
 	printf("Cycling mode %d \n", cycle);
     } 
+*/
   if (mode == FSK) {	
     bitRate = 200;
     rsFrames = 1;
@@ -500,8 +504,8 @@ for (int j = 0; j < frameCnt; j++)
     }	
   #endif
 
-    char header_str2[] = "echo 'KU2Y>CQ:hi hi ";
-    char footer_str[] = "\' > t.txt && echo \'KU2Y>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
+    char header_str2[] = "echo 'W3ZM>CQ:hi hi ";
+    char footer_str[] = "\' > t.txt && echo \'W3ZM>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
 
 //    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 
