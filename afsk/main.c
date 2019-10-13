@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
 		  cycle = TRUE;
 		  mode = AFSK;
 	  }
-	  else if (
+
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
 		  frameCnt = atoi(argv[2]);
