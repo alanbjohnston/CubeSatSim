@@ -431,8 +431,7 @@ int get_tlm(void) {
 	sleep(1);  
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
-
-//  sleep(1);
+  sleep(1);
 	      
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -462,7 +461,8 @@ for (int j = 0; j < frameCnt; j++)
 	
   tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
-		   	
+
+/*	
   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
@@ -475,7 +475,7 @@ for (int j = 0; j < frameCnt; j++)
 	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
   }
-  
+*/  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -535,8 +535,8 @@ for (int j = 0; j < frameCnt; j++)
 //	printf("Response: %s\n", cmdbuffer);
 //	  fprintf(stderr, "Response\n");
   
-//      if (j != 2)  // Don't sleep if the last packet - go straight to next mode
-//	sleep(3);
+      if (j != 2)  // Don't sleep if the last packet - go straight to next mode
+	sleep(3);
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
