@@ -422,7 +422,7 @@ int upper_digit(int number) {
 
 int get_tlm(void) {
 
-    sleep(10);
+//    sleep(10);
       FILE* transmit;
 	  printf("Killing all\n");
       	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
@@ -432,7 +432,7 @@ int get_tlm(void) {
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 
-  sleep(1);
+//  sleep(1);
 	      
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -535,8 +535,8 @@ for (int j = 0; j < frameCnt; j++)
 //	printf("Response: %s\n", cmdbuffer);
 //	  fprintf(stderr, "Response\n");
   
-      if (j != 2)  // Don't sleep if the last packet - go straight to next mode
-	sleep(3);
+//      if (j != 2)  // Don't sleep if the last packet - go straight to next mode
+//	sleep(3);
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
