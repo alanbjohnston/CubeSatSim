@@ -7,7 +7,7 @@
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or/
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -691,6 +691,10 @@ int get_tlm_fox() {
 	
   batt_c_v = reading[BAT].voltage * 100;
   battCurr = reading[BAT].current * 10;
+	  
+  batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
+  posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
+  		posZv = 280, negZv = 78;
 	  	  
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
