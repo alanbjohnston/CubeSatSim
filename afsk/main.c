@@ -86,9 +86,10 @@ short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
 
-#define AFSK 0
-#define FSK 1
-#define BPSK 2
+
+#define FSK 0
+#define BPSK 1
+#define AFSK 2
 
 int rpitxStatus = -1;
 
@@ -316,7 +317,7 @@ int main(int argc, char *argv[]) {
   {
     if (cycle == ON) 
     {
-    	mode = (++mode) % 3;
+    	mode = (++mode) % 2; //;
 	printf("Cycling mode %d \n", cycle);
     } 
   if (mode == FSK) {	
