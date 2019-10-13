@@ -882,7 +882,8 @@ int get_tlm_fox() {
 	
       char cmdbuffer[1000];
       FILE* transmit;
-      if (rpitxStatus != mode) {  // change rpitx mode
+//      if (rpitxStatus != mode) 
+      {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
 //     	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
