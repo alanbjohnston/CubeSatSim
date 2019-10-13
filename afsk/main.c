@@ -113,7 +113,7 @@ long int uptime;
 char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt;
-int cycle = FALSE;
+int cycle = false;
 
 struct SensorConfig {
     int fd;
@@ -238,7 +238,7 @@ int main(int argc, char *argv[]) {
 		  mode = AFSK;
 	  else if (*argv[1] == 'c')
 	  {
-		  cycle = TRUE;
+		  cycle = true;
 		  mode = AFSK;
 	  }
 
@@ -302,7 +302,7 @@ int main(int argc, char *argv[]) {
       
  while (loop-- != 0)
   {
-    if (cycle == TRUE)
+    if (cycle)
     	mode = (++mode) % 3;
 	 
   if (mode == FSK) {	
