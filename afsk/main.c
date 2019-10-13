@@ -61,6 +61,8 @@
 #define BUS 7
 #define OFF -1
 
+#define ON 1
+
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
 
@@ -113,7 +115,7 @@ long int uptime;
 char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt;
-int cycle = false;
+int cycle = OFF;
 
 struct SensorConfig {
     int fd;
@@ -238,7 +240,7 @@ int main(int argc, char *argv[]) {
 		  mode = AFSK;
 	  else if (*argv[1] == 'c')
 	  {
-		  cycle = true;
+		  cycle = ON;
 		  mode = AFSK;
 	  }
 
