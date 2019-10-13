@@ -281,15 +281,15 @@ int main(int argc, char *argv[]) {
 	config_file = fopen("sim.cfg","r"); 
     } 
 	
-   if (cycle == ON)
-      mode = (reset_count) % 3;  // alternate between the three modes
-  
     char* cfg_buf[100]; 
     fscanf(config_file, "%s %d", call, &reset_count);
     fclose(config_file);
     printf("%s %d\n", call, reset_count); 
 	
     reset_count = (reset_count + 1) % 0xffff;
+	
+    if (cycle == ON)
+      mode = (reset_count) % 3;  // alternate between the three modes	
 	
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
