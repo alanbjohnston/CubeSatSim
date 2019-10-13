@@ -248,7 +248,7 @@ int main(int argc, char *argv[]) {
 	  else if (*argv[1] == 'c')
 	  {
 		  cycle = ON;
-		  mode = AFSK;
+		  mode = BPSK;
 		  printf("Mode cycle on\n");
 	  }
 	  else
