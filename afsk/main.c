@@ -79,39 +79,10 @@ int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
+
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
-//#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
-/*
-// BPSK Settings
-#define BIT_RATE	1200 // 200 for DUV
-#define FSK	0 // 1 for DUV
-#define RS_FRAMES 3 // 3 frames for BPSK, 1 for DUV
-#define PAYLOADS 6 // 1 for DUV
-#define DATA_LEN 78  // 56 for DUV  
-#define RS_FRAME_LEN 159  // 64 for DUV
-#define SYNC_BITS 31  // 10 for DUV
-#define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
-#define HEADER_LEN 8  // 6 for DUV
-#define PARITY_LEN 32
-#define FRAME_CNT 3 //33 // Add 3 frames to the count	
-
-// FSK Settings
-#define BIT_RATE 200 
-#define FSK	1
-#define RS_FRAMES 1
-#define PAYLOADS 1
-#define RS_FRAME_LEN 64
-#define HEADER_LEN 6
-#define DATA_LEN 58
-#define SYNC_BITS 10
-#define SYNC_WORD 0b0011111010
-#define PARITY_LEN 32
-#define FRAME_CNT 3 // 2 //14 // 3 33 // Add 3 frames to the count	
-
-#define SAMPLES (S_RATE / BIT_RATE)
-*/
 
 #define AFSK 0
 #define FSK 1
@@ -142,7 +113,8 @@ long int uptime;
 char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt;
- 
+int cycle = FALSE;
+
 struct SensorConfig {
     int fd;
     uint16_t  config;
@@ -264,9 +236,15 @@ int main(int argc, char *argv[]) {
 		  mode = BPSK;
 	  else if (*argv[1] == 'a')
 		  mode = AFSK;
+	  else if (*argv[1] == 'c')
+	  {
+		  cycle = TRUE;
+		  mode = AFSK;
+	  }
+	  else if (
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
-		  loop = atoi(argv[2]);
+		  frameCnt = atoi(argv[2]);
 		  mode = AFSK;
 	  }
 	  printf("Looping %d times \n", loop);
@@ -322,13 +300,10 @@ int main(int argc, char *argv[]) {
 //            AX25_PREAMBLE_LEN,
 //            AX25_POSTAMBLE_LEN);  
       
-  /* Infinite loop */
- // for (;;) 
  while (loop-- != 0)
   {
-    printf("Mode before: %d \n", mode); 
-    mode = (++mode) % 3;
-    printf("Mode after: %d \n", mode); 
+    if (cycle)
+    	mode = (++mode) % 3;
 	 
   if (mode == FSK) {	
     bitRate = 200;
@@ -340,7 +315,7 @@ int main(int argc, char *argv[]) {
     syncBits = 10;
     syncWord = 0b0011111010;
     parityLen = 32;
-    frameCnt = 3; //6; // 4; // ;
+//    frameCnt = loop; 3; //6; // 4; // ;  Now set by command linke
     amplitude = 32767/3;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -358,7 +333,7 @@ int main(int argc, char *argv[]) {
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-    frameCnt = 3; // 3;		  
+//    frameCnt = 3; // 3;		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -440,7 +415,7 @@ int get_tlm(void) {
 
   sleep(1);
 	      
-for (int j = 0; j < 3; j++)	
+for (int j = 0; j < frameCnt; j++)	
 {	
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
