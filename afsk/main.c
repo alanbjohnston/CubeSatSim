@@ -269,7 +269,7 @@ int main(int argc, char *argv[]) {
   pinMode (3, OUTPUT);
 
   digitalWrite (0, HIGH);
-  digitalWrite (3, HIGH);
+  digitalWrite (3, LOW);
 	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
