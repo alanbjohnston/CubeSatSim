@@ -81,6 +81,7 @@ int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
+int firstTime = ON;
 
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
@@ -265,6 +266,8 @@ int main(int argc, char *argv[]) {
 	
   wiringPiSetup ();
   pinMode (0, OUTPUT);
+  pinMode (3, OUTPUT);
+
   digitalWrite (0, HIGH);
 	  
   //setSpiChannel(SPI_CHANNEL);
@@ -431,8 +434,10 @@ int get_tlm(void) {
 	sleep(1);  
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
+digitalWrite (0, HIGH);	
   sleep(3);
-	      
+digitalWrite (0, LOW);
+	
 for (int j = 0; j < frameCnt; j++)	
 {	
   int tlm[7][5];
@@ -536,7 +541,10 @@ for (int j = 0; j < frameCnt; j++)
 //	  fprintf(stderr, "Response\n");
   
       if (j != 2)  // Don't sleep if the last packet - go straight to next mode
-	sleep(3);
+      {
+	      sleep(3);
+      }
+      digitalWrite (0, HIGH);	
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
@@ -651,10 +659,8 @@ int get_tlm_fox() {
     #endif
 	  
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  }	  
-    sleep(3); 
-	  
+   }	  
+ 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
 	  
@@ -697,7 +703,9 @@ int get_tlm_fox() {
   posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
   		posZv = 280, negZv = 78;
 */
-	  	  
+
+if (firstTime != ON) 
+{
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
@@ -707,7 +715,12 @@ int get_tlm_fox() {
   encodeA(b, 15 + head_offset,posYv);	
   encodeB(b, 16 + head_offset,negYv);	
   encodeA(b, 18 + head_offset,posZv);	
-  encodeB(b, 19 + head_offset,negZv);	
+  encodeB(b, 19 + head_offset,negZv);
+  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+  digitalWrite (0, HIGH);	
+  sleep(3); 
+  digitalWrite (0, HIGH);	
+}
 	  
 /*	batt_c_v += 10;
 	battCurr -= 10;
@@ -965,7 +978,7 @@ int get_tlm_fox() {
 	
     if (!error)
     {
-	digitalWrite (0, LOW);
+//	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", ctr);
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 1, 0);
@@ -976,7 +989,8 @@ int get_tlm_fox() {
 		//rpitxStatus = -1;
 	}
     }
-    digitalWrite (0, HIGH);
+//    digitalWrite (0, HIGH);
+    firstTime = 0;
 
 return 0;	
 }
