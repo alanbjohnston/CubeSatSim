@@ -437,7 +437,8 @@ int get_tlm(void) {
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 
-	sleep(3);
+//	sleep(3);
+	sleep(1);
 	
 for (int j = 0; j < frameCnt; j++)	
 {	
