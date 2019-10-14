@@ -269,7 +269,7 @@ int main(int argc, char *argv[]) {
   pinMode (3, OUTPUT);
 
   digitalWrite (0, HIGH);
-  digitalWrite (3, LOW);
+  digitalWrite (3, HIGH);
 	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
@@ -546,7 +546,7 @@ for (int j = 0; j < frameCnt; j++)
       {
 	      sleep(3);
       }
-      digitalWrite (3, HIGH);	
+ //     digitalWrite (3, HIGH);	
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
@@ -719,9 +719,9 @@ if (firstTime != ON)
   encodeA(b, 18 + head_offset,posZv);	
   encodeB(b, 19 + head_offset,negZv);
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  digitalWrite (3, HIGH);	
+//  digitalWrite (3, HIGH);	
   sleep(3); 
-  digitalWrite (3, LOW);	
+//  digitalWrite (3, LOW);	
 }
 	  
 /*	batt_c_v += 10;
@@ -919,12 +919,14 @@ if (firstTime != ON)
 //     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
-          sleep(1);
+  digitalWrite (3, HIGH);	
+	      sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 	      
 //	  printf("3\n");
           sleep(1);
+  digitalWrite (3, LOW);
 	      
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
