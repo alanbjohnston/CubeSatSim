@@ -418,6 +418,7 @@ int upper_digit(int number) {
 
 	int digit = 0;
 	if (number < 100) 
+		
 		digit = (int)(number/10);
 	else
 		fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
@@ -720,7 +721,7 @@ if (firstTime != ON)
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
   digitalWrite (3, HIGH);	
   sleep(3); 
-  digitalWrite (3, HIGH);	
+  digitalWrite (3, LOW);	
 }
 	  
 /*	batt_c_v += 10;
