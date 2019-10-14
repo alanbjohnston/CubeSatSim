@@ -436,9 +436,9 @@ int get_tlm(void) {
 	sleep(1);  
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
-digitalWrite (3, HIGH);	
+//digitalWrite (3, HIGH);	
   sleep(3);
-digitalWrite (3, LOW);
+//digitalWrite (3, LOW);
 	
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -544,9 +544,13 @@ for (int j = 0; j < frameCnt; j++)
   
       if (j != 2)  // Don't sleep if the last packet - go straight to next mode
       {
+      	  digitalWrite (3, HIGH);	
 	      sleep(3);
+        digitalWrite (3, LOW);	
+      } else
+      {
+	   digitalWrite(3, HIGH);
       }
- //     digitalWrite (3, HIGH);	
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
