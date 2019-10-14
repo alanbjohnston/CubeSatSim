@@ -682,15 +682,15 @@ int get_tlm_fox() {
     if (mode == BPSK)
       h[6] = 99;
 	  
-  posXv = reading[PLUS_X].current * 10;
-  posYv = reading[PLUS_Y].current * 10;
-  posZv = reading[PLUS_Z].current * 10;
-  negXv = reading[MINUS_X].current * 10;
-  negYv = reading[MINUS_Y].current * 10;
-  negZv = reading[MINUS_Z].current * 10;
+  posXv = reading[PLUS_X].current;
+  posYv = reading[PLUS_Y].current;
+  posZv = reading[PLUS_Z].current;
+  negXv = reading[MINUS_X].current;
+  negYv = reading[MINUS_Y].current;
+  negZv = reading[MINUS_Z].current;
 	
-  batt_c_v = reading[BAT].voltage * 100;
-  battCurr = reading[BAT].current * 10;
+  batt_c_v = reading[BAT].voltage * 10;
+  battCurr = reading[BAT].current;
 	  
   /*
    batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
@@ -703,10 +703,10 @@ int get_tlm_fox() {
   encodeA(b, 3 + head_offset, batt_c_v);
   encodeA(b, 9 + head_offset, battCurr);
   encodeA(b, 12 + head_offset,posXv);  	
-  encodeB(b, 13 + head_offset,posYv);	
-  encodeA(b, 15 + head_offset,posZv);	
-  encodeB(b, 16 + head_offset,negXv);	
-  encodeA(b, 18 + head_offset,negYv);	
+  encodeB(b, 13 + head_offset,negXv);	
+  encodeA(b, 15 + head_offset,posYv);	
+  encodeB(b, 16 + head_offset,negYv);	
+  encodeA(b, 18 + head_offset,posZv);	
   encodeB(b, 19 + head_offset,negZv);	
 	  
 /*	batt_c_v += 10;
