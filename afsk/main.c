@@ -438,7 +438,7 @@ int get_tlm(void) {
 	  socket_open = 0;
 //digitalWrite (3, HIGH);	
   sleep(3);
-//digitalWrite (3, LOW);
+digitalWrite (3, LOW);
 	
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -542,7 +542,7 @@ for (int j = 0; j < frameCnt; j++)
 //	printf("Response: %s\n", cmdbuffer);
 //	  fprintf(stderr, "Response\n");
   
-      if (j != 2)  // Don't sleep if the last packet - go straight to next mode
+      if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
       {
       	  digitalWrite (3, HIGH);	
 	      sleep(3);
