@@ -269,7 +269,8 @@ int main(int argc, char *argv[]) {
   pinMode (3, OUTPUT);
 
   digitalWrite (0, HIGH);
-	  
+  digitalWrite (3, HIGH);
+	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
@@ -434,9 +435,9 @@ int get_tlm(void) {
 	sleep(1);  
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
-digitalWrite (0, HIGH);	
+digitalWrite (3, HIGH);	
   sleep(3);
-digitalWrite (0, LOW);
+digitalWrite (3, LOW);
 	
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -544,7 +545,7 @@ for (int j = 0; j < frameCnt; j++)
       {
 	      sleep(3);
       }
-      digitalWrite (0, HIGH);	
+      digitalWrite (3, HIGH);	
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
@@ -717,9 +718,9 @@ if (firstTime != ON)
   encodeA(b, 18 + head_offset,posZv);	
   encodeB(b, 19 + head_offset,negZv);
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  digitalWrite (0, HIGH);	
+  digitalWrite (3, HIGH);	
   sleep(3); 
-  digitalWrite (0, HIGH);	
+  digitalWrite (3, HIGH);	
 }
 	  
 /*	batt_c_v += 10;
