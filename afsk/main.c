@@ -436,12 +436,12 @@ int get_tlm(void) {
 	sleep(1);  
 	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
-//digitalWrite (3, HIGH);	
-  sleep(3);
-digitalWrite (3, LOW);
+
+	sleep(3);
 	
 for (int j = 0; j < frameCnt; j++)	
 {	
+   digitalWrite (3, LOW);
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
