@@ -2,6 +2,8 @@
 
 echo -e "\nDemo of CubeSatSim sends FSK, BPSK, and AFSK telemetry alternately at 434.9 MHz continuously\n\n"
 
+exit
+
 sudo killall -9 rpitx
 sudo killall -9 sendiq
 sudo fuser -k 8080/tcp
