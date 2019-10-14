@@ -555,6 +555,8 @@ for (int j = 0; j < frameCnt; j++)
 	
 printf("End of get_tlm and rpitx =========================================================\n");
 
+digitalWrite(3, HIGH);
+
 return;
 }
 
