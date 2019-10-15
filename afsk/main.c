@@ -713,8 +713,7 @@ int get_tlm_fox() {
   		posZv = 280, negZv = 78;
 */
 
-if (firstTime != ON) 
-{
+
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
@@ -726,7 +725,9 @@ if (firstTime != ON)
   encodeA(b, 18 + head_offset,posZv);	
   encodeB(b, 19 + head_offset,negZv);
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
-//  digitalWrite (3, HIGH);	
+	  
+if (firstTime != ON) 
+{//  digitalWrite (3, HIGH);	
   sleep(3); 
 //  digitalWrite (3, LOW);	
 }
