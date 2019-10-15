@@ -7,7 +7,7 @@
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
+ *  the Free Software Foundation, either version 3 of the License, or/
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -61,6 +61,8 @@
 #define BUS 7
 #define OFF -1
 
+#define ON 1
+
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
 
@@ -68,7 +70,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
-int get_tlm(char *str);
+int get_tlm(void);
 int get_tlm_fox();
 int encodeA(short int *b, int index, int val);
 int encodeB(short int *b, int index, int val);
@@ -79,43 +81,16 @@ int lower_digit(int number);
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
+int firstTime = ON;
+
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
-//#define BUF_SIZE (S_RATE*10) /* 2 second buffer */
-/*
-// BPSK Settings
-#define BIT_RATE	1200 // 200 for DUV
-#define FSK	0 // 1 for DUV
-#define RS_FRAMES 3 // 3 frames for BPSK, 1 for DUV
-#define PAYLOADS 6 // 1 for DUV
-#define DATA_LEN 78  // 56 for DUV  
-#define RS_FRAME_LEN 159  // 64 for DUV
-#define SYNC_BITS 31  // 10 for DUV
-#define SYNC_WORD 0b1000111110011010010000101011101 // 0b0011111010 for DUV
-#define HEADER_LEN 8  // 6 for DUV
-#define PARITY_LEN 32
-#define FRAME_CNT 3 //33 // Add 3 frames to the count	
 
-// FSK Settings
-#define BIT_RATE 200 
-#define FSK	1
-#define RS_FRAMES 1
-#define PAYLOADS 1
-#define RS_FRAME_LEN 64
-#define HEADER_LEN 6
-#define DATA_LEN 58
-#define SYNC_BITS 10
-#define SYNC_WORD 0b0011111010
-#define PARITY_LEN 32
-#define FRAME_CNT 3 // 2 //14 // 3 33 // Add 3 frames to the count	
 
-#define SAMPLES (S_RATE / BIT_RATE)
-*/
-
-#define AFSK 0
-#define FSK 1
-#define BPSK 2
+#define FSK 0
+#define BPSK 1
+#define AFSK 2
 
 int rpitxStatus = -1;
 
@@ -142,7 +117,8 @@ long int uptime;
 char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt;
- 
+int cycle = OFF;
+
 struct SensorConfig {
     int fd;
     uint16_t  config;
@@ -261,19 +237,40 @@ int main(int argc, char *argv[]) {
   if (argc > 1) {
 //	  strcpy(src_addr, argv[1]);
 	  if (*argv[1] == 'b')
+	  {
 		  mode = BPSK;
-	  
+		  printf("Mode BPSK\n");
+	  }
+	  else if (*argv[1] == 'a')
+	  {
+		  mode = AFSK;
+		  printf("Mode AFSK\n");
+	  }
+	  else if (*argv[1] == 'c')
+	  {
+		  cycle = ON;
+		  mode = BPSK;
+		  printf("Mode cycle on\n");
+	  }
+	  else
+	  {
+		  printf("Mode FSK\n");
+	  }
+
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
-		  loop = atoi(argv[2]);
+		  frameCnt = atoi(argv[2]);
 	  }
 	  printf("Looping %d times \n", loop);
   }
 	
   wiringPiSetup ();
   pinMode (0, OUTPUT);
+  pinMode (3, OUTPUT);
+
   digitalWrite (0, HIGH);
-	  
+  digitalWrite (3, HIGH);
+	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
@@ -283,17 +280,20 @@ int main(int argc, char *argv[]) {
   { 
        printf("Creating config file."); 
        config_file = fopen("sim.cfg","w");
-	fprintf(config_file, "%s %d", "KU2Y", 100);
+	fprintf(config_file, "%s %d", "W3ZM", 100);
 	fclose(config_file);
 	config_file = fopen("sim.cfg","r"); 
     } 
-  
+	
     char* cfg_buf[100]; 
     fscanf(config_file, "%s %d", call, &reset_count);
     fclose(config_file);
     printf("%s %d\n", call, reset_count); 
 	
     reset_count = (reset_count + 1) % 0xffff;
+	
+    if (cycle == ON)
+      mode = (reset_count) % 3;  // alternate between the three modes	
 	
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
@@ -320,14 +320,14 @@ int main(int argc, char *argv[]) {
 //            AX25_PREAMBLE_LEN,
 //            AX25_POSTAMBLE_LEN);  
       
-  /* Infinite loop */
- // for (;;) 
  while (loop-- != 0)
   {
-    printf("Mode before: %d \n", mode); 
-//    mode = (++mode) % 3;
-    printf("Mode after: %d \n", mode); 
-	 
+/*    if (cycle == ON) 
+    {
+    	mode = (++mode) % 2; //;
+	printf("Cycling mode %d \n", cycle);
+    } 
+*/
   if (mode == FSK) {	
     bitRate = 200;
     rsFrames = 1;
@@ -338,7 +338,7 @@ int main(int argc, char *argv[]) {
     syncBits = 10;
     syncWord = 0b0011111010;
     parityLen = 32;
-    frameCnt = 3; //6; // 4; // ;
+//    frameCnt = loop; 3; //6; // 4; // ;  Now set by command linke
     amplitude = 32767/3;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -346,7 +346,7 @@ int main(int argc, char *argv[]) {
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
 	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
   }
-  else  {
+  else if (mode == BPSK) {
     bitRate = 1200;
     rsFrames = 3;
     payloads = 6;
@@ -356,7 +356,7 @@ int main(int argc, char *argv[]) {
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-    frameCnt = 4; // 3;		  
+//    frameCnt = 3; // 3;		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -370,18 +370,15 @@ int main(int argc, char *argv[]) {
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
-	  
-    char str[1000];
-   // uint8_t b[64];
-    char header_str[] = "\x03\xf0";
-    strcpy(str, header_str);
-	
-    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
-	  
+	  	  
     if (mode == AFSK)
-      get_tlm(str);
+    {
+       get_tlm();
+    }
     else // FSK or BPSK
+    {
       get_tlm_fox();
+    }
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
@@ -421,14 +418,31 @@ int upper_digit(int number) {
 
 	int digit = 0;
 	if (number < 100) 
+		
 		digit = (int)(number/10);
 	else
 		fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
 	return digit;
 }
 
-int get_tlm(char *str) {
+int get_tlm(void) {
+
+//    sleep(10);
+      FILE* transmit;
+	  printf("Killing all\n");
+      	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+	sleep(1);
+      	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+	sleep(1);  
+	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  socket_open = 0;
+
+//	sleep(3);
+	sleep(1);
 	
+for (int j = 0; j < frameCnt; j++)	
+{	
+   digitalWrite (3, LOW);
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
@@ -455,7 +469,8 @@ int get_tlm(char *str) {
 	
   tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
-		   	
+
+/*	
   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
@@ -468,7 +483,7 @@ int get_tlm(char *str) {
 	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
   }
-  
+*/  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -497,10 +512,15 @@ int get_tlm(char *str) {
     }	
   #endif
 
+    char header_str2[] = "echo 'W3ZM>CQ:hi hi ";
+    char footer_str[] = "\' > t.txt && echo \'W3ZM>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
+
+//    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
+
+    char str[1000];
     char tlm_str[1000];
 
-    char header_str[] = "hi hi ";
-    strcpy(str, header_str);
+     strcpy(str, header_str2);
 //    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
 	  
     int channel;
@@ -513,7 +533,30 @@ int get_tlm(char *str) {
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
-    printf("End of get_tlm\n");
+	
+//	  char cmdbuffer[1000];
+	  strcat(str,footer_str);
+	  fprintf(stderr, "String to execute: %s\n", str);
+	  FILE* file2 = popen(str, "r"); 
+//     	  fgets(cmdbuffer, 999, file2);
+      	  pclose(file2);
+//	printf("Response: %s\n", cmdbuffer);
+//	  fprintf(stderr, "Response\n");
+  
+      if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
+      {
+      	  digitalWrite (3, HIGH);	
+	      sleep(3);
+        digitalWrite (3, LOW);	
+      } else
+      {
+	   digitalWrite(3, HIGH);
+      }
+   }
+	
+printf("End of get_tlm and rpitx =========================================================\n");
+
+digitalWrite(3, HIGH);
 
 return;
 }
@@ -527,7 +570,9 @@ int get_tlm_fox() {
    FILE* uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", &uptime_sec);
     uptime = (int) uptime_sec;
+  #ifdef DEBUG_LOGGING
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+  #endif
     fclose(uptime_file);
 	
 	int i;
@@ -623,10 +668,8 @@ int get_tlm_fox() {
     #endif
 	  
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-    encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  }	  
-    sleep(3); 
-	  
+   }	  
+ 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
 	  
@@ -654,26 +697,40 @@ int get_tlm_fox() {
     if (mode == BPSK)
       h[6] = 99;
 	  
-  posXv = reading[PLUS_X].current * 10;
-  posYv = reading[PLUS_Y].current * 10;
-  posZv = reading[PLUS_Z].current * 10;
-  negXv = reading[MINUS_X].current * 10;
-  negYv = reading[MINUS_Y].current * 10;
-  negZv = reading[MINUS_Z].current * 10;
+  posXv = reading[PLUS_X].current;
+  posYv = reading[PLUS_Y].current;
+  posZv = reading[PLUS_Z].current;
+  negXv = reading[MINUS_X].current;
+  negYv = reading[MINUS_Y].current;
+  negZv = reading[MINUS_Z].current;
 	
-  batt_c_v = reading[BAT].voltage * 100;
-  battCurr = reading[BAT].current * 10;
-	  	  
+  batt_c_v = reading[BAT].voltage * 10;
+  battCurr = reading[BAT].current;
+	  
+  /*
+   batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
+  posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
+  		posZv = 280, negZv = 78;
+*/
+
+
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
   encodeA(b, 9 + head_offset, battCurr);
   encodeA(b, 12 + head_offset,posXv);  	
-  encodeB(b, 13 + head_offset,posYv);	
-  encodeA(b, 15 + head_offset,posZv);	
-  encodeB(b, 16 + head_offset,negXv);	
-  encodeA(b, 18 + head_offset,negYv);	
-  encodeB(b, 19 + head_offset,negZv);	
+  encodeB(b, 13 + head_offset,negXv);	
+  encodeA(b, 15 + head_offset,posYv);	
+  encodeB(b, 16 + head_offset,negYv);	
+  encodeA(b, 18 + head_offset,posZv);	
+  encodeB(b, 19 + head_offset,negZv);
+  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+	  
+if (firstTime != ON) 
+{//  digitalWrite (3, HIGH);	
+  sleep(3); 
+//  digitalWrite (3, LOW);	
+}
 	  
 /*	batt_c_v += 10;
 	battCurr -= 10;
@@ -718,10 +775,11 @@ int get_tlm_fox() {
 			}
 		}	
 	} 
-	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
 		
     #ifdef DEBUG_LOGGING	    	    
-    	printf("Parities ");
+	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
+
+	  printf("Parities ");
 //		for (int m = 0; m < PARITY_LEN; m++) {
 		for (int m = 0; m < parityLen; m++) {
 		 	printf("%d ", parities[0][m]);
@@ -758,13 +816,18 @@ int get_tlm_fox() {
 			rd = nrd; 
 		}	
 	}
+    #ifdef DEBUG_LOGGING	    	    
  	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
-      
+    #endif
+	  
     int data;
     int val;
     int offset = 0;
 	  
+    #ifdef DEBUG_LOGGING	    	    
 	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
+    #endif
+	  
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
@@ -797,8 +860,10 @@ int get_tlm_fox() {
 			}
 		}
 	}
+    #ifdef DEBUG_LOGGING	    	    
 	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
- 	for (i = 1; 
+    #endif
+	  for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
@@ -833,11 +898,11 @@ int get_tlm_fox() {
 		}
 	 }   
 	}
+    #ifdef DEBUG_LOGGING	    	    
 	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
 	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
-	
-//	write_wav("transmit.wav", BUF_LEN, buffer, S_RATE);
-	write_wav("transmit.wav", ctr, buffer, S_RATE);
+    #endif	
+//	write_wav("transmit.wav", ctr, buffer, S_RATE);
 
   int error = 0;
   int count;
@@ -851,7 +916,8 @@ int get_tlm_fox() {
 	
       char cmdbuffer[1000];
       FILE* transmit;
-      if (rpitxStatus != mode) {  // change rpitx mode
+//      if (rpitxStatus != mode) 
+      {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
 //     	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
@@ -861,10 +927,14 @@ int get_tlm_fox() {
 //     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
-          sleep(1);
+  digitalWrite (3, HIGH);	
+	      sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  socket_open = 0;
+	      
 //	  printf("3\n");
           sleep(1);
+  digitalWrite (3, LOW);
 	      
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
@@ -920,7 +990,7 @@ int get_tlm_fox() {
 	
     if (!error)
     {
-	digitalWrite (0, LOW);
+//	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", ctr);
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 1, 0);
@@ -931,7 +1001,8 @@ int get_tlm_fox() {
 		//rpitxStatus = -1;
 	}
     }
-    digitalWrite (0, HIGH);
+//    digitalWrite (0, HIGH);
+    firstTime = 0;
 
 return 0;	
 }
