@@ -268,6 +268,7 @@ int main(int argc, char *argv[]) {
   pinMode (0, OUTPUT);
   pinMode (2, OUTPUT);
   pinMode (3, INPUT);
+  pullUpDnControl (3, PUD_UP);
 
   printf("Reading: %d\n", digitalRead(3));
 
