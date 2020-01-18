@@ -266,10 +266,10 @@ int main(int argc, char *argv[]) {
 	
   wiringPiSetup ();
   pinMode (0, OUTPUT);
-  pinMode (3, OUTPUT);
+  pinMode (2, OUTPUT);
 
   digitalWrite (0, HIGH);
-  digitalWrite (3, HIGH);
+  digitalWrite (2, LOW);
 	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
@@ -545,12 +545,12 @@ for (int j = 0; j < frameCnt; j++)
   
       if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
       {
-      	  digitalWrite (3, HIGH);	
+      	  digitalWrite (2, LOW);	
 	      sleep(3);
-        digitalWrite (3, LOW);	
+        digitalWrite (2, HIGH);	
       } else
       {
-	   digitalWrite(3, HIGH);
+	   digitalWrite(2, LOW);
       }
    }
 	
@@ -927,14 +927,14 @@ if (firstTime != ON)
 //     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
-  digitalWrite (3, HIGH);	
+  digitalWrite (2, LOW);	
 	      sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 	      
 //	  printf("3\n");
           sleep(1);
-  digitalWrite (3, LOW);
+  digitalWrite (2, HIGH);
 	      
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
