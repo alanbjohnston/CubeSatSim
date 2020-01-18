@@ -74,22 +74,10 @@ if INA219DISABLE !=1:
         ina45.sleep();
     except:
         FAIL = 1
-    try:
-        ina4a = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)        
-        ina4a.wake();
-        ina4a.configure(ina4a.RANGE_16V)
-        ina4a.busnum = 1;
-        ina4av = ina4a.voltage()
-        ina4ai = ina4a.current()
-        ina4ap = ina4a.power()
-        ina4a.sleep();
-    except:
-        FAIL = 1
 if INA219DISABLE !=1:
 	print
 	print "+X (0x40) v=",ina40v, "V i=", ina40i, "mA p=", ina40p, "mW "
 	print "+Y (0x41) v=",ina41v, "V i=", ina41i, "mA p=", ina41p, "mW "
-	print "+Z (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
+	print "5V Supply (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
 	print "Battery (0x45) v=",ina45v, "V i=", ina45i, "mA p=", ina45p, "mW "
-	print "5V Supply(0x4a) v=",ina4av, "V i=", ina4ai, "mA p=", ina4ap, "mW "
 	print
