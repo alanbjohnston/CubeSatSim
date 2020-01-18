@@ -270,7 +270,10 @@ int main(int argc, char *argv[]) {
   pinMode (3, INPUT);
   pullUpDnControl (3, PUD_UP);
 
-  printf("Reading: %d\n", digitalRead(3));
+  if (digitalRead(3) != 0)
+  {
+	  printf("Band Pass Filter not present, so no transmit possible\n");
+  }
 
   digitalWrite (0, HIGH);
   digitalWrite (2, LOW);
