@@ -267,6 +267,9 @@ int main(int argc, char *argv[]) {
   wiringPiSetup ();
   pinMode (0, OUTPUT);
   pinMode (2, OUTPUT);
+  pinMode (3, INPUT);
+
+  printf("Reading: %d\n", digitalRead(3));
 
   digitalWrite (0, HIGH);
   digitalWrite (2, LOW);
