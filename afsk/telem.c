@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
   printf("Bat | sensor[%d] % 4.2fV % 6.1fmA  % 6.1fmW \n", 
 	        BAT, readingV.voltage, readingV.current, readingV.power);
 		
-  sensorV     = config_sensor("/dev/i2c-0", 0x44, 400);
+  sensorV     = config_sensor("/dev/i2c-1", 0x44, 400);
   readingV = read_sensor_data(sensorV);
   printf("Bus | sensor[%d] % 4.2fV % 6.1fmA  % 6.1fmW \n", 
 	        BUS, readingV.voltage, readingV.current, readingV.power);
