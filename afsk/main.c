@@ -306,7 +306,7 @@ int main(int argc, char *argv[]) {
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
-  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x40, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-0", 0x40, 400);
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
