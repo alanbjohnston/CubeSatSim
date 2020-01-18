@@ -223,8 +223,8 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     return data;
 }
 
-struct SensorConfig sensor[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2
-struct SensorData reading[8];   // 7 current sensors in Solar Power PCB plus one in MoPower UPS V2 
+struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4
+struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4
 struct SensorConfig tempSensor; 
 
 char src_addr[5] = "";
@@ -304,12 +304,12 @@ int main(int argc, char *argv[]) {
 	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
-  sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
-  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
-  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400); 
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x40, 400);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
 
   int ret;
   //uint8_t data[1024];
