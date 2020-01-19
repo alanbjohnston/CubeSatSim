@@ -233,6 +233,7 @@ char dest_addr[5] = "CQ";
 int main(int argc, char *argv[]) {
 	
   mode = FSK;
+  frameCnt = 3;
 	
   if (argc > 1) {
 //	  strcpy(src_addr, argv[1]);
