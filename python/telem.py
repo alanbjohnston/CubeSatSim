@@ -103,8 +103,8 @@ if INA219DISABLE !=1:
         ina413p = ina413.power()
         ina413.sleep();
     except:
-        FAIL = 1
-	    try:
+        FAIL = 1	
+    try:
         ina443 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x44)
         ina443.wake();
         ina443.configure(ina443.RANGE_16V)
@@ -115,7 +115,7 @@ if INA219DISABLE !=1:
         ina443.sleep();
     except:
         FAIL = 1
-	    try:
+    try:
         ina453 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x45)
         ina453.wake();
         ina453.configure(ina453.RANGE_16V)
