@@ -14,9 +14,9 @@ ina44p = 0
 ina45v = 0
 ina45i = 0
 ina45p = 0
-ina4av = 0
-ina4ai = 0
-ina4ap = 0
+ina403v = 0
+ina403i = 0
+ina403p = 0
 
 FAIL = -1
 
@@ -74,10 +74,22 @@ if INA219DISABLE !=1:
         ina45.sleep();
     except:
         FAIL = 1
+    try:
+        ina403 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
+        ina45.wake();
+        ina45.configure(ina403.RANGE_16V)
+        ina45.busnum = 3;
+        ina403v = ina403.voltage()
+        ina403i = ina403.current()
+        ina403p = ina403.power()
+        ina403.sleep();
+    except:
+        FAIL = 1
 if INA219DISABLE !=1:
 	print
 	print "+X (0x40) v=",ina40v, "V i=", ina40i, "mA p=", ina40p, "mW "
 	print "+Y (0x41) v=",ina41v, "V i=", ina41i, "mA p=", ina41p, "mW "
 	print "5V Supply (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
 	print "Battery (0x45) v=",ina45v, "V i=", ina45i, "mA p=", ina45p, "mW "
+	print "+Z (0x40 3) v=",ina403v, "V i=", ina403i, "mA p=", ina403p, "mW "
 	print
