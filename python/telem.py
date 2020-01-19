@@ -76,9 +76,9 @@ if INA219DISABLE !=1:
         FAIL = 1
     try:
         ina403 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
-        ina45.wake();
-        ina45.configure(ina403.RANGE_16V)
-        ina45.busnum = 3;
+        ina403.wake();
+        ina403.configure(ina403.RANGE_16V)
+        ina403.busnum = 3;
         ina403v = ina403.voltage()
         ina403i = ina403.current()
         ina403p = ina403.power()
