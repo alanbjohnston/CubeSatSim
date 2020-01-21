@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <curl/curl.h>
+//#include <curl/curl.h>
 #include "ax25.h"
 #include <string.h>
 #include <time.h>
@@ -108,7 +108,8 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
         sprintf(hex_octet, "%02x",__tx_buffer[jj]);
         strcat(hex_data, hex_octet); 
     }  // Note assumes EDT, change offset (+4) to UTC 
-    sprintf(post_data,"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, (tm.tm_hour + 4) % 24, tm.tm_min, tm.tm_sec, hex_data);
+/*
+  sprintf(post_data,"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, (tm.tm_hour + 4) % 24, tm.tm_min, tm.tm_sec, hex_data);
 
         printf("curl post data: %s\n",post_data);
 
@@ -122,23 +123,18 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
     curl_easy_setopt(curl, CURLOPT_URL, "https://db.satnogs.org/api/telemetry/");
     curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data);
  
-    /* if we don't provide POSTFIELDSIZE, libcurl will strlen() by
-       itself */ 
-    curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_data));
+     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_data));
 
-    /* example.com is redirected, so we tell libcurl to follow redirection */ 
     curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
  
-    /* Perform the request, res will get the return code */ 
     res = curl_easy_perform(curl);
-    /* Check for errors */ 
     if(res != CURLE_OK)
       fprintf(stderr, "ERROR: AX25.C curl_easy_perform() failed: %s\n",
                         curl_easy_strerror(res));
  
-    /* always cleanup */ 
     curl_easy_cleanup(curl); 
   }
+  */
 #endif        
 
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
