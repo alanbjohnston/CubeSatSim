@@ -58,6 +58,12 @@ Note that this last command may fail if you are using Raspbian Lite since there 
 
 `./pi-power-button/script/install`
 
+To make the demo.sh script run automatically on boot:
+
+`sudo cp /CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service`
+
+`sudo systemctl enable cubesatsim`
+
 Now reboot for all the changes to take effect:
 
 `sudo reboot now`
@@ -66,11 +72,9 @@ After rebooting, to hear AFSK telemetry (X.25 data), tune your radio or SDR to 4
 
 `CubeSatSim/radioafsk`
 
-This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ If you don't have the SPI Interface enabled and the board plugged in, you will get an error.
-
 This repository contains:
      
-  - afsk - Code that sends telemetry in 1k2 AFSK X.25 format
+ - afsk - Code that sends telemetry in 1k2 AFSK X.25 format
  - arduino - Sample Arduino sketches to show how payload sensors can be interfaced to CubeSat Simulator
  - ax5043 - Source for a library of functions to communicate with the AX5043 and configure the AX5043.
  - cw - Code that sends telemetry in CW (Morse code) using AO-7 format
