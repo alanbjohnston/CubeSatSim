@@ -57,7 +57,7 @@ Note that this last command may fail if you are using Raspbian Lite since there 
 
 `cp ../python/listen-for-shutdown.py listen-for-shutdown.py`
 
-`./pi-power-button/script/install`
+`./script/install`
 
 To make the demo.sh script run automatically on boot:
 
