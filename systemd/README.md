@@ -1,19 +1,15 @@
-To make the CubeSat Simulator transmit automatically on boot, follow these steps, which were derived from https://www.mauras.ch/systemd-run-it-last.html
+To make the CubeSat Simulator transmit automatically on boot, follow these steps, which were derived from https://www.raspberrypi.org/documentation/linux/usage/systemd.md
 
-On the Pi, if you are not already in this directory:
+Log into the Pi and type:
 
-cd ~/CubeSatSim/systemd
+sudo cp ~/CubeSatSim/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
-sudo cp custom.target /etc/systemd/system/custom.target
+sudo systemctl service enable cubesatsim
 
-sudo mkdir /etc/systemd/system/custom.target.wants
+Reboot to start the autoboot service:
 
-sudo cp cubesatsim.service /etc/systemd/system/custom.target.wants/cubesatsim.service
+sudo reboot now
 
-sudo systemctl isolate custom.target
-
-sudo ln -sf /etc/systemd/system/custom.target /etc/systemd/system/default.target
-
-Now after a reboot (sudo reboot now), the demo.sh script will run automatically, and the console will log to ~/CubeSatSim/log.txt  To see it:
+Now after the Pi starts up, the demo.sh script will run automatically, and the console will log to ~/CubeSatSim/log.txt  To see it:
 
 tail ~/CubeSatSim/log.txt
