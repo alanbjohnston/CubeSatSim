@@ -5,7 +5,7 @@ Log into the Pi and type:
 
 sudo cp ~/CubeSatSim/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
-sudo systemctl service enable cubesatsim
+sudo systemctl enable cubesatsim
 
 Reboot to start the autoboot service:
 
