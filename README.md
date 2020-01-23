@@ -12,11 +12,11 @@ Requires:
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W:
 
-'sudo apt-get install wiringpi, git, libasound2-dev'
+`sudo apt-get install wiringpi, git, libasound2-dev`
 
 `git clone http://github.com/alanbjohnston/CubeSatSim.git`
 
-'git checkout aprs-rpitx-v4'
+`git checkout aprs-rpitx-v4`
 
 `cd CubeSatSim`
 
@@ -24,11 +24,45 @@ Edit the afsk/main.c file to set your amateur radio callsign, then
 
 `make rebuild`
 
+`git clone https://www.github.com/wb2osz/direwolf`
 
+`cd direwolf`
 
-To hear AFSK telemetry (X.25 data), your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSat Sim:
+`make -j`
 
-`./radioafsk`
+(takes a while)
+
+`sudo make install`
+
+`make install-rpi`
+
+`cd ~/CubeSatSim`
+
+`git clone https://github.com/F5OEO/rpitx.git`
+
+`cd rpitx`
+
+`./install.sh`
+
+(Takes a while).  It will prompt you if you want to modify /boot/config.txt file.  Type a `y` and the script will complete.
+
+`cd ~/CubeSatSim`
+
+`git clone https://github.com/Howchoo/pi-power-button.git`
+
+`cd pi-power-button`
+
+`cp ../python/listen-for-shutdown.py listen-for-shutdown.py`
+
+`./pi-power-button/script/install`
+
+Now reboot for all the changes to take effect:
+
+`sudo reboot now`
+
+After rebooting, to hear AFSK telemetry (X.25 data), tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSat Sim:
+
+`CubeSatSim/radioafsk`
 
 This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ If you don't have the SPI Interface enabled and the board plugged in, you will get an error.
 
