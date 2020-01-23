@@ -1,6 +1,5 @@
 [Unit]
 Description=My service
-After=network.target
 
 [Service]
 ExecStart=/home/pi/CubeSatSim/demo.sh > /home/pi/CubeSatSim/log.txt 2>&1
@@ -8,7 +7,7 @@ WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
-User=pi
+User=root
 
 [Install]
 WantedBy=multi-user.target
