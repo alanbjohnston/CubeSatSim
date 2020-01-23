@@ -7,7 +7,7 @@ Requires:
 - git
 - libasound2-dev
 - pi-power-button
-- Soundmodem
+- Direwolf
 - rpitx
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W:
