@@ -4,18 +4,27 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 Requires:
 - wiringpi
-- libcurl4-openssl-dev
 - git
+- libasound2-dev
+- pi-power-button
+- Soundmodem
+- rpitx
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W:
 
+'sudo apt-get install wiringpi, git, libasound2-dev'
+
 `git clone http://github.com/alanbjohnston/CubeSatSim.git`
+
+'git checkout aprs-rpitx-v4'
 
 `cd CubeSatSim`
 
 Edit the afsk/main.c file to set your amateur radio callsign, then 
 
 `make rebuild`
+
+
 
 To hear AFSK telemetry (X.25 data), your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSat Sim:
 
