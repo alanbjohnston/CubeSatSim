@@ -36,6 +36,8 @@ Edit the afsk/main.c file to set your amateur radio callsign, then
 
 `make install-rpi`
 
+Note that this last command may fail if you are using Raspbian Lite since there is no Desktop.
+
 `cd ~/CubeSatSim`
 
 `git clone https://github.com/F5OEO/rpitx.git`
