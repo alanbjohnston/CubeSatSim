@@ -13,13 +13,45 @@ Requires:
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet):
 
-`sudo apt-get install wiringpi git libasound2-dev`
+`sudo apt-get install -y wiringpi git libasound2-dev i2c-tools`
 
 Run raspi-config and enable the I2C bus by selecting Option 5 Interfacing Options and then Option 5 I2C and selecting Y to enable the ARM I2C bus:
 
 `sudo raspi-config`
 
-Select Finish at the bottom to exit raspi-config, then type:
+Select Finish at the bottom to exit raspi-config. Then type:
+
+`sudo cp /boot/config.txt /bootconfig.txt.0`
+
+`sudo nano /boot/config.txt`
+
+Use the down arrow key to go down in the file until you find this line:
+
+`# Additional overlays and parameters are documented /boot/overlays/README `
+
+Add the following two lines under it:
+
+`dtoverlay=i2c-gpio`
+
+`dtparam=i2c_vc=on`
+
+Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt. Reboot by typing:
+
+`sudo reboot`
+
+after logging back into the Pi, type:
+
+`ls -a /dev/i2c*`
+
+you should see three I2C buses:
+
+`i2c-0 i2c-1  i2c-3`
+
+Continue the install by typing:
+
+`cd`
+
+Then type:
 
 `git clone http://github.com/alanbjohnston/CubeSatSim.git`
 
