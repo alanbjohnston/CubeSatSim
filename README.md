@@ -13,13 +13,19 @@ Requires:
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet):
 
-`sudo apt-get install wiringpi, git, libasound2-dev`
+`sudo apt-get install wiringpi git libasound2-dev`
+
+Run raspi-config and enable the I2C bus by selecting Option 5 Interfacing Options and then Option 5 I2C and selecting Y to enable the ARM I2C bus:
+
+`sudo raspi-config`
+
+Select Finish at the bottom to exit raspi-config, then type:
 
 `git clone http://github.com/alanbjohnston/CubeSatSim.git`
 
-`git checkout aprs-rpitx-v4`
-
 `cd CubeSatSim`
+
+`git checkout aprs-rpitx-v4`
 
 Edit the afsk/main.c file to set your amateur radio callsign, then 
 
