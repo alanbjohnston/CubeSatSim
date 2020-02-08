@@ -351,7 +351,7 @@ int main(int argc, char *argv[]) {
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
+    printf("\n FSK Mode, %d bits per frame, %d bits per second, %f seconds per frame\n\n", 
 	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
   }
   else if (mode == BPSK) {
@@ -460,8 +460,8 @@ for (int j = 0; j < frameCnt; j++)
   {
     reading[count] = read_sensor_data(sensor[count]);	
     #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+//      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+//	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
 	    
@@ -646,8 +646,8 @@ int get_tlm_fox() {
     {
       reading[count] = read_sensor_data(sensor[count]);	
     #ifdef DEBUG_LOGGING
-      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+//      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+//	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
     }
 /*
@@ -737,7 +737,7 @@ int get_tlm_fox() {
 if (firstTime != ON) 
 {//  digitalWrite (3, HIGH);	
   //sleep(3); 
-  sleep(1); 
+  sleep(3.5); 
 //  digitalWrite (3, LOW);	
 }
 	  
@@ -786,7 +786,7 @@ if (firstTime != ON)
 	} 
 		
     #ifdef DEBUG_LOGGING	    	    
-	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
+//	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
 
 	  printf("Parities ");
 //		for (int m = 0; m < PARITY_LEN; m++) {
@@ -826,7 +826,7 @@ if (firstTime != ON)
 		}	
 	}
     #ifdef DEBUG_LOGGING	    	    
- 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
+// 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
     #endif
 	  
     int data;
@@ -834,7 +834,7 @@ if (firstTime != ON)
     int offset = 0;
 	  
     #ifdef DEBUG_LOGGING	    	    
-	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
+//	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
     #endif
 	  
 // 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
@@ -870,7 +870,7 @@ if (firstTime != ON)
 		}
 	}
     #ifdef DEBUG_LOGGING	    	    
-	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
+//	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
     #endif
 	  for (i = 1; 
 //	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
@@ -908,8 +908,8 @@ if (firstTime != ON)
 	 }   
 	}
     #ifdef DEBUG_LOGGING	    	    
-	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
-	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
+//	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
+//	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
     #endif	
 //	write_wav("transmit.wav", ctr, buffer, S_RATE);
 
@@ -1001,9 +1001,18 @@ if (firstTime != ON)
     {
 //	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", ctr);
+	long start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Result of socket send: %d \n", sock_ret);
+	printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
+
+ 	if (sock_ret < (ctr * 2 + 2))
+	{
+       		printf("Resending\n");
+//	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
+       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	}
+
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
 		socket_open = 0;
