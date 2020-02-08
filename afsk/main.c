@@ -83,6 +83,8 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1;
 int firstTime = ON;
+long start;
+int testCount = 0;
 
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
@@ -117,7 +119,8 @@ float uptime_sec;
 long int uptime;
 char call[5];
 
-int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt;
+int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
+int sampleTime = 0;
 int cycle = OFF;
 
 struct SensorConfig {
@@ -367,8 +370,10 @@ if (vB4)
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-    printf("\n FSK Mode, %d bits per frame, %d bits per second, %f seconds per frame\n\n", 
-	   bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
+   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+
+    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n", 
+	   bufLen/(samples * frameCnt), bitRate, samplePeriod);
   }
   else if (mode == BPSK) {
     bitRate = 1200;
@@ -586,7 +591,7 @@ return;
 }
 
 int get_tlm_fox() {
-	
+
 //   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
@@ -657,6 +662,14 @@ int get_tlm_fox() {
 //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) 
   {
+// delay for sample period
+
+    while ((millis() - sampleTime) < samplePeriod)
+        sleep(0.05);
+
+    printf("Sample period: %d\n",millis() - sampleTime);
+    sampleTime = millis();
+	
     int count;
     for (count = 0; count < 8; count++)
     {
@@ -721,7 +734,8 @@ int get_tlm_fox() {
     if (mode == BPSK)
       h[6] = 99;
 	  
-  posXv = reading[PLUS_X].current;
+//  posXv = reading[PLUS_X].current;
+  posXv = testCount++;
   posYv = reading[PLUS_Y].current;
   posZv = reading[PLUS_Z].current;
   negXv = reading[MINUS_X].current;
@@ -753,7 +767,7 @@ int get_tlm_fox() {
 if (firstTime != ON) 
 {//  digitalWrite (3, HIGH);	
   //sleep(3); 
-  sleep(3.5); 
+ // sleep(3.5); 
 //  digitalWrite (3, LOW);	
 }
 	  
@@ -1016,11 +1030,11 @@ if (firstTime != ON)
     if (!error)
     {
 //	digitalWrite (0, LOW);
-	printf("Sending %d buffer bytes over socket!\n", ctr);
-	long start = millis();
+	printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis()-start);
+	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis1: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
