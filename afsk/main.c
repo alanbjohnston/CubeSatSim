@@ -60,8 +60,9 @@
 #define MINUS_Z 6
 #define BUS 7
 #define OFF -1
-
 #define ON 1
+
+#define vB4 0
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
@@ -271,9 +272,12 @@ int main(int argc, char *argv[]) {
   pinMode (3, INPUT);
   pullUpDnControl (3, PUD_UP);
 
-  if (digitalRead(3) != 0)
+  if (digitalRead(3) == HIGH)
   {
-	  printf("Band Pass Filter not present, so no transmit possible\n");
+	  printf("TFB Not Present\n");
+  } else
+  {
+	  printf("TFB Present\n");
   }
 
   digitalWrite (0, HIGH);
@@ -309,7 +313,8 @@ int main(int argc, char *argv[]) {
     config_file = fopen("sim.cfg","r"); 
 	
   //tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
-	
+if (vB4)
+{	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
@@ -318,6 +323,17 @@ int main(int argc, char *argv[]) {
   sensor[MINUS_X] = config_sensor("/dev/i2c-4", 0x41, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-4", 0x44, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-4", 0x45, 400); 
+} else
+{	
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
+ }
 
   int ret;
   //uint8_t data[1024];
