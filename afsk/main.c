@@ -736,7 +736,8 @@ int get_tlm_fox() {
 	  
 if (firstTime != ON) 
 {//  digitalWrite (3, HIGH);	
-  sleep(3); 
+  //sleep(3); 
+  sleep(1); 
 //  digitalWrite (3, LOW);	
 }
 	  
@@ -924,7 +925,7 @@ if (firstTime != ON)
 	
       char cmdbuffer[1000];
       FILE* transmit;
-//      if (rpitxStatus != mode) 
+      if (rpitxStatus != mode) 
       {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
@@ -1001,7 +1002,7 @@ if (firstTime != ON)
 //	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket!\n", ctr);
 //	int sock_ret = send(sock, buffer, buffSize, 0);
-	int sock_ret = send(sock, buffer, ctr * 2 + 1, 0);
+	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
 	printf("Result of socket send: %d \n", sock_ret);
 	if (sock_ret == -1)  {
 		printf("Error: %s \n", strerror(errno));
