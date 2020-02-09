@@ -390,8 +390,10 @@ if (vB4)
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame\n\n", 
-	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate));
+   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+
+    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
+	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
   }
 	 
   //  sleep(1);  // Delay 1 second
@@ -665,7 +667,7 @@ int get_tlm_fox() {
 // delay for sample period
 
     while ((millis() - sampleTime) < samplePeriod)
-        sleep(0.05);
+        sleep(0.1);
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
