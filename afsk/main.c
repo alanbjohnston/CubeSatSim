@@ -577,8 +577,8 @@ for (int j = 0; j < frameCnt; j++)
       if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
       {
       	  digitalWrite (2, LOW);	
-	      sleep(3);
-        digitalWrite (2, HIGH);	
+	  sleep(3);
+          digitalWrite (2, HIGH);	
       } else
       {
 	   digitalWrite(2, LOW);
@@ -664,6 +664,9 @@ int get_tlm_fox() {
 //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) 
   {
+
+  if (mode == FSK)
+ {
 // delay for sample period
 
     while ((millis() - sampleTime) < samplePeriod)
@@ -671,7 +674,7 @@ int get_tlm_fox() {
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
-	
+  }	
     int count;
     for (count = 0; count < 8; count++)
     {
@@ -768,7 +771,8 @@ int get_tlm_fox() {
 	  
 if (firstTime != ON) 
 {//  digitalWrite (3, HIGH);	
-  //sleep(3); 
+  if (mode == BPSK)
+	sleep(3); 
  // sleep(3.5); 
 //  digitalWrite (3, LOW);	
 }
@@ -957,7 +961,7 @@ if (firstTime != ON)
 	
       char cmdbuffer[1000];
       FILE* transmit;
-      if (rpitxStatus != mode) 
+      if ((rpitxStatus != mode) || (mode == BPSK)) 
       {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
