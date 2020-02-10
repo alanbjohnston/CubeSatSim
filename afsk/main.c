@@ -390,7 +390,7 @@ if (vB4)
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
 
     printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
 	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
@@ -665,12 +665,22 @@ int get_tlm_fox() {
   for (int frames = 0; frames < frameCnt; frames++) 
   {
 
+if (firstTime != ON)
+/* 
+{//  digitalWrite (3, HIGH);	
+  if (mode == BPSK)
+	sleep(3); 
+ // sleep(3.5); 
+//  digitalWrite (3, LOW);	
+}
+	  
   if (mode == FSK)
+*/
  {
 // delay for sample period
 
-    while ((millis() - sampleTime) < samplePeriod)
-        sleep(0.1);
+    while ((millis() - sampleTime) < 3000) // samplePeriod)
+        sleep(3);
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
@@ -768,14 +778,6 @@ int get_tlm_fox() {
   encodeA(b, 18 + head_offset,posZv);	
   encodeB(b, 19 + head_offset,negZv);
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
-	  
-if (firstTime != ON) 
-{//  digitalWrite (3, HIGH);	
-  if (mode == BPSK)
-	sleep(3); 
- // sleep(3.5); 
-//  digitalWrite (3, LOW);	
-}
 	  
 /*	batt_c_v += 10;
 	battCurr -= 10;
@@ -961,7 +963,7 @@ if (firstTime != ON)
 	
       char cmdbuffer[1000];
       FILE* transmit;
-      if ((rpitxStatus != mode) || (mode == BPSK)) 
+      if ((rpitxStatus != mode)) // || (mode == BPSK)) 
       {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
@@ -1040,7 +1042,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis1: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis8: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
