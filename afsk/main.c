@@ -349,12 +349,12 @@ if (vB4)
       
  while (loop-- != 0)
   {
-/*    if (cycle == ON) 
+/**/    if (cycle == ON) 
     {
     	mode = (++mode) % 2; //;
 	printf("Cycling mode %d \n", cycle);
     } 
-*/
+/**/
   if (mode == FSK) {	
     bitRate = 200;
     rsFrames = 1;
@@ -679,8 +679,8 @@ if (firstTime != ON)
  {
 // delay for sample period
 
-    while ((millis() - sampleTime) < 3000) // samplePeriod)
-        sleep(3);
+    while ((millis() - sampleTime) < samplePeriod) // 3000) // samplePeriod)
+        sleep(0.5); // 3);
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
@@ -1042,7 +1042,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis8: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis9: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
