@@ -237,7 +237,7 @@ char dest_addr[5] = "CQ";
 int main(int argc, char *argv[]) {
 	
   mode = FSK;
-  frameCnt = 3;
+  frameCnt = 1;
 	
   if (argc > 1) {
 //	  strcpy(src_addr, argv[1]);
@@ -254,7 +254,6 @@ int main(int argc, char *argv[]) {
 	  else if (*argv[1] == 'c')
 	  {
 		  cycle = ON;
-		  mode = BPSK;
 		  printf("Mode cycle on\n");
 	  }
 	  else
@@ -264,7 +263,7 @@ int main(int argc, char *argv[]) {
 
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
-		  frameCnt = atoi(argv[2]);
+		  loop = atoi(argv[2]);
 	  }
 	  printf("Looping %d times \n", loop);
   }
@@ -349,12 +348,12 @@ if (vB4)
       
  while (loop-- != 0)
   {
-/**/    if (cycle == ON) 
+/*    if (cycle == ON) 
     {
-    	mode = (++mode) % 2; //;
+    	mode = (++mode) % 3; //;
 	printf("Cycling mode %d \n", cycle);
     } 
-/**/
+*/
   if (mode == FSK) {	
     bitRate = 200;
     rsFrames = 1;
@@ -365,7 +364,6 @@ if (vB4)
     syncBits = 10;
     syncWord = 0b0011111010;
     parityLen = 32;
-//    frameCnt = loop; 3; //6; // 4; // ;  Now set by command linke
     amplitude = 32767/3;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -386,7 +384,6 @@ if (vB4)
     syncBits = 31;
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
-//    frameCnt = 3; // 3;		  
     amplitude = 32767;
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
@@ -463,7 +460,7 @@ int get_tlm(void) {
 
 //    sleep(10);
       FILE* transmit;
-	  printf("Killing all\n");
+/*	  printf("Killing all\n");
       	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
 	sleep(1);
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
@@ -473,7 +470,7 @@ int get_tlm(void) {
 
 //	sleep(3);
 	sleep(1);
-	
+*/	
 for (int j = 0; j < frameCnt; j++)	
 {	
    digitalWrite (3, LOW);
@@ -1045,7 +1042,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis1: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis2: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
