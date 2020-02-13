@@ -119,7 +119,7 @@ float uptime_sec;
 long int uptime;
 char call[5];
 
-int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
+int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod, sleepTime;
 int sampleTime = 0;
 int cycle = OFF;
 
@@ -371,6 +371,7 @@ if (vB4)
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+   sleepTime = 0.1;
 
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n", 
 	   bufLen/(samples * frameCnt), bitRate, samplePeriod);
@@ -390,7 +391,9 @@ if (vB4)
     samples = S_RATE/bitRate;
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+//   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+    samplePeriod = 3000;
+    sleepTime = 3;
 
     printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
 	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
@@ -679,8 +682,8 @@ if (firstTime != ON)
  {
 // delay for sample period
 
-    while ((millis() - sampleTime) < samplePeriod) // 3000) // samplePeriod)
-        sleep(0.5); // 3);
+    while ((millis() - sampleTime) < samplePeriod)
+        sleep(sleepTime);
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
@@ -1042,7 +1045,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis9: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis1: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
