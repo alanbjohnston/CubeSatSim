@@ -122,6 +122,7 @@ char call[5];
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod, sleepTime;
 int sampleTime = 0;
 int cycle = OFF;
+int txLed, txLedOn, txLedOff;
 
 struct SensorConfig {
     int fd;
@@ -269,22 +270,25 @@ int main(int argc, char *argv[]) {
   }
 	
   wiringPiSetup ();
-  pinMode (0, OUTPUT);
-  pinMode (2, OUTPUT);
-  pinMode (3, INPUT);
-  pullUpDnControl (3, PUD_UP);
+  pinMode (2, INPUT);
+//  pinMode (2, OUTPUT);
+  pullUpDnControl (2, PUD_UP);
 
-  if (digitalRead(3) == HIGH)
+  if (digitalRead(2) == HIGH)
   {
 	  printf("TFB Not Present\n");
   } else
   {
 	  printf("TFB Present\n");
+  	  txLed = 3;
+	  txLedOn = LOW;
+ 	  txLedOff = HIGH;
   }
-
-  digitalWrite (0, HIGH);
-  digitalWrite (2, LOW);
-	
+  pinMode (txLed, OUTPUT);
+  digitalWrite (txLed, txLedOff);
+//  digitalWrite (3, HIGH);
+//  digitalWrite (3, LOW);
+  	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
@@ -473,7 +477,7 @@ int get_tlm(void) {
 */	
 for (int j = 0; j < frameCnt; j++)	
 {	
-   digitalWrite (3, LOW);
+   digitalWrite (txLed, txLedOn);
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
@@ -574,20 +578,20 @@ for (int j = 0; j < frameCnt; j++)
 //	printf("Response: %s\n", cmdbuffer);
 //	  fprintf(stderr, "Response\n");
   
-      if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
-      {
-      	  digitalWrite (2, LOW);	
+//      if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
+//      {
+   digitalWrite (txLed, txLedOff);
 	  sleep(3);
-          digitalWrite (2, HIGH);	
-      } else
-      {
-	   digitalWrite(2, LOW);
-      }
+   digitalWrite (txLed, txLedOn);
+ //     } else
+ //     {
+ //  digitalWrite (txLed, txLedOff);
+  //    }
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
 
-digitalWrite(3, HIGH);
+   digitalWrite (txLed, txLedOff);
 
 return;
 }
@@ -678,9 +682,12 @@ if (firstTime != ON)
 */
  {
 // delay for sample period
+  digitalWrite (txLed, txLedOn);
 
     while ((millis() - sampleTime) < samplePeriod)
         sleep(sleepTime);
+  
+  digitalWrite (txLed, txLedOff);
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
@@ -974,14 +981,14 @@ if (firstTime != ON)
 //     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
-  digitalWrite (2, LOW);	
+  digitalWrite (txLed, txLedOn);
 	      sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 	      
 //	  printf("3\n");
           sleep(1);
-  digitalWrite (2, HIGH);
+  digitalWrite (txLed, txLedOff);
 	      
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
@@ -1042,7 +1049,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis2: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis6: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
