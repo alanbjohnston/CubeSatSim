@@ -117,7 +117,8 @@ float uptime_sec;
 long int uptime;
 char call[5];
 
-int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod, sleepTime;
+int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
+float sleepTime;
 int sampleTime = 0;
 int cycle = OFF;
 int vB4 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
@@ -277,27 +278,22 @@ int main(int argc, char *argv[]) {
   pinMode (2, INPUT);
   pullUpDnControl (2, PUD_UP);
 
-  if (digitalRead(2) == HIGH)
+  if (digitalRead(2) != HIGH)
   {
-	  printf("TFB Not Present\n");
-  } else
-  {
-	  printf("TFB Present\n");
+	  printf("vB3 with TFB Present\n");
   	  txLed = 3;
 	  txLedOn = LOW;
  	  txLedOff = HIGH;
 	  onLed = 0;
           onLedOn = LOW;
 	  onLedOff = HIGH;
-  }
-  pinMode (3, INPUT);
-  pullUpDnControl (3, PUD_UP);
-
-  if (digitalRead(3) == HIGH)
-  {
-	  printf("vB4 Not Present\n");
   } else
   {
+  	pinMode (3, INPUT);
+  	pullUpDnControl (3, PUD_UP);
+
+  	if (digitalRead(3) != HIGH)
+  	{
 	  printf("vB4 Present\n");
   	  txLed = 2;
 	  txLedOn = HIGH;
@@ -306,13 +302,16 @@ int main(int argc, char *argv[]) {
 	  onLed = 0;
           onLedOn = HIGH;
 	  onLedOff = LOW;
-	  batteryThreshold = 3.1;
+	  batteryThreshold = 3.0;
+  	}
+	else
+	  printf("vB3 Present\n");
   }
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
-  	
+	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
   //initializeSpi();
@@ -1080,7 +1079,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis1: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
