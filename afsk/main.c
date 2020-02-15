@@ -268,6 +268,11 @@ int main(int argc, char *argv[]) {
   }
 	
   wiringPiSetup ();
+
+  txLed = 0;	// defaults for vB3 board without TFB
+  txLedOn = LOW;
+  txLedOff = HIGH;
+
   pinMode (2, INPUT);
   pullUpDnControl (2, PUD_UP);
 
@@ -997,14 +1002,14 @@ if (firstTime != ON)
 //     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
-  digitalWrite (txLed, txLedOn);
+//  digitalWrite (txLed, txLedOn);
 	      sleep(1);
 	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 	      
 //	  printf("3\n");
           sleep(1);
-  digitalWrite (txLed, txLedOff);
+//  digitalWrite (txLed, txLedOff);
 	      
 	  if (mode == FSK)  {  
       	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
