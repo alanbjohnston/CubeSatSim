@@ -120,7 +120,7 @@ char call[5];
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod, sleepTime;
 int sampleTime = 0;
 int cycle = OFF;
-int vB4 = FALSE,onLed, txLed, txLedOn, txLedOff;
+int vB4 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
 
 struct SensorConfig {
     int fd;
@@ -285,6 +285,9 @@ int main(int argc, char *argv[]) {
   	  txLed = 3;
 	  txLedOn = LOW;
  	  txLedOff = HIGH;
+	  onLed = 0;
+          onLedOn = LOW;
+	  onLedOff = HIGH;
   }
   pinMode (3, INPUT);
   pullUpDnControl (3, PUD_UP);
@@ -300,13 +303,13 @@ int main(int argc, char *argv[]) {
  	  txLedOff = LOW;
  	  vB4 = TRUE;
 	  onLed = 0;
-          pinMode (onLed, OUTPUT);
-  	  digitalWrite (onLed, HIGH);
+          onLedOn = HIGH;
+	  onLedOff = LOW;
   }
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
-//  digitalWrite (3, HIGH);
-//  digitalWrite (3, LOW);
+  pinMode (onLed, OUTPUT);
+  digitalWrite (onLed, onLedOn);
   	
   //setSpiChannel(SPI_CHANNEL);
   //setSpiSpeed(SPI_SPEED);
@@ -450,8 +453,8 @@ if (vB4)
       printf("Results of transmit command: %s\n", cmdbuffer);
 */	     
  }
- if(vB4)
-   digitalWrite (onLed, LOW);
+// if(vB4)
+   digitalWrite (onLed, onLedOff);
 
   return 0;
 }
@@ -1070,7 +1073,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis8: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis1: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
