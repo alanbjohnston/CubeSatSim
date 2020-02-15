@@ -62,8 +62,6 @@
 #define OFF -1
 #define ON 1
 
-#define vB4 0
-
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint32_t tx_channel = 0;
 
@@ -122,7 +120,7 @@ char call[5];
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod, sleepTime;
 int sampleTime = 0;
 int cycle = OFF;
-int txLed, txLedOn, txLedOff;
+int vB4 = FALSE,onLed, txLed, txLedOn, txLedOff;
 
 struct SensorConfig {
     int fd;
@@ -271,7 +269,6 @@ int main(int argc, char *argv[]) {
 	
   wiringPiSetup ();
   pinMode (2, INPUT);
-//  pinMode (2, OUTPUT);
   pullUpDnControl (2, PUD_UP);
 
   if (digitalRead(2) == HIGH)
@@ -283,6 +280,23 @@ int main(int argc, char *argv[]) {
   	  txLed = 3;
 	  txLedOn = LOW;
  	  txLedOff = HIGH;
+  }
+  pinMode (3, INPUT);
+  pullUpDnControl (3, PUD_UP);
+
+  if (digitalRead(3) == HIGH)
+  {
+	  printf("vB4 Not Present\n");
+  } else
+  {
+	  printf("vB4 Present\n");
+  	  txLed = 2;
+	  txLedOn = HIGH;
+ 	  txLedOff = LOW;
+ 	  vB4 = TRUE;
+	  onLed = 0;
+          pinMode (onLed, OUTPUT);
+  	  digitalWrite (onLed, HIGH);
   }
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
@@ -325,10 +339,10 @@ if (vB4)
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
-  sensor[PLUS_Z]  = config_sensor("/dev/i2c-4", 0x40, 400);
-  sensor[MINUS_X] = config_sensor("/dev/i2c-4", 0x41, 400);
-  sensor[MINUS_Y] = config_sensor("/dev/i2c-4", 0x44, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-4", 0x45, 400); 
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-0", 0x40, 400);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
 } else
 {	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
@@ -431,6 +445,8 @@ if (vB4)
       printf("Results of transmit command: %s\n", cmdbuffer);
 */	     
  }
+ if(vB4)
+   digitalWrite (onLed, LOW);
 
   return 0;
 }
@@ -1049,7 +1065,7 @@ if (firstTime != ON)
 	start = millis();
 //	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis6: %d Result of socket send: %d \n", millis() - start, sock_ret);
+	printf("Millis8: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
