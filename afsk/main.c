@@ -377,7 +377,7 @@ if (vB4)
  while (loop-- != 0)
   {
 
-   float batteryVoltage = read_sensor_data(sensor[BAT]);
+   float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
