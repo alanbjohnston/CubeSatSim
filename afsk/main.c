@@ -121,6 +121,7 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 int sampleTime = 0;
 int cycle = OFF;
 int vB4 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
+float batteryThreshold = 0;
 
 struct SensorConfig {
     int fd;
@@ -305,6 +306,7 @@ int main(int argc, char *argv[]) {
 	  onLed = 0;
           onLedOn = HIGH;
 	  onLedOff = LOW;
+	  batteryThreshold = 3.1;
   }
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
@@ -374,12 +376,17 @@ if (vB4)
       
  while (loop-- != 0)
   {
-/*    if (cycle == ON) 
-    {
-    	mode = (++mode) % 3; //;
-	printf("Cycling mode %d \n", cycle);
-    } 
-*/
+
+   float batteryVoltage = read_sensor_data(sensor[BAT]);
+   #ifdef DEBUG_LOGGING
+      fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
+   #endif	 
+   if ((batteryVoltage > 0) && (batteryVoltage < batteryThreshold))
+   {
+	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
+	popen("sudo shutdown -h now > /dev/null 2>&1", "r"); 
+   }
+			  
   if (mode == FSK) {	
     bitRate = 200;
     rsFrames = 1;
