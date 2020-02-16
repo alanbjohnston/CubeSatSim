@@ -804,10 +804,10 @@ if (firstTime != ON)
   batt_c_v = reading[BAT].voltage * 100;
   battCurr = reading[BAT].current;
 	  
-  
+/*  
   posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
   posXi = 110, negXi = 120, posYi = 130, negYi = 140, posZi = 150, negZi = 160;
-	  
+*/	  
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
