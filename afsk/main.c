@@ -794,12 +794,12 @@ if (firstTime != ON)
   negYi = reading[MINUS_Y].current;
   negZi = reading[MINUS_Z].current;
 
-  posXv = reading[PLUS_X].voltage;
-  posYv = reading[PLUS_Y].voltage;
-  posZv = reading[PLUS_Z].voltage;
-  negXv = reading[MINUS_X].voltage;
-  negYv = reading[MINUS_Y].voltage;
-  negZv = reading[MINUS_Z].voltage;
+  posXv = reading[PLUS_X].voltage * 100;
+  posYv = reading[PLUS_Y].voltage* 100;
+  posZv = reading[PLUS_Z].voltage * 100;
+  negXv = reading[MINUS_X].voltage * 100;
+  negYv = reading[MINUS_Y].voltage * 100;
+  negZv = reading[MINUS_Z].voltage * 100;
 	  
   batt_c_v = reading[BAT].voltage * 100;
   battCurr = reading[BAT].current;
