@@ -682,8 +682,8 @@ int get_tlm_fox() {
 */	
   int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
-  int posXv = 0, negXv = 0, posYv = 0, negYv = 0, 
-  		posZv = 0, negZv = 0;
+  int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
+  int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
 	
   short int buffer_test[bufLen];
@@ -787,33 +787,46 @@ if (firstTime != ON)
       h[6] = 99;
 	  
 //  posXv = reading[PLUS_X].current;
-  posXv = testCount++;
-  posYv = reading[PLUS_Y].current;
-  posZv = reading[PLUS_Z].current;
-  negXv = reading[MINUS_X].current;
-  negYv = reading[MINUS_Y].current;
-  negZv = reading[MINUS_Z].current;
-	
+  posXi = reading[PLUS_X].current;
+  posYi = reading[PLUS_Y].current;
+  posZi = reading[PLUS_Z].current;
+  negXi = reading[MINUS_X].current;
+  negYi = reading[MINUS_Y].current;
+  negZi = reading[MINUS_Z].current;
+
+  posXv = reading[PLUS_X].voltage;
+  posYv = reading[PLUS_Y].voltage;
+  posZv = reading[PLUS_Z].voltage;
+  negXv = reading[MINUS_X].voltage;
+  negYv = reading[MINUS_Y].voltage;
+  negZv = reading[MINUS_Z].voltage;
+	  
   batt_c_v = reading[BAT].voltage * 10;
   battCurr = reading[BAT].current;
 	  
-  /*
-   batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
-  posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
-  		posZv = 280, negZv = 78;
-*/
-
-
+  
+  posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
+  posXi = 110, negXi = 120, posYi = 130, negYi = 140, posZi = 150, negZi = 160;
+	  
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
   encodeA(b, 9 + head_offset, battCurr);
+	  
   encodeA(b, 12 + head_offset,posXv);  	
   encodeB(b, 13 + head_offset,negXv);	
   encodeA(b, 15 + head_offset,posYv);	
   encodeB(b, 16 + head_offset,negYv);	
   encodeA(b, 18 + head_offset,posZv);	
   encodeB(b, 19 + head_offset,negZv);
+	  
+  encodeA(b, 21 + head_offset,posXi);  	
+  encodeB(b, 22 + head_offset,negXi);	
+  encodeA(b, 24 + head_offset,posYi;	
+  encodeB(b, 25 + head_offset,negYi);	
+  encodeA(b, 27 + head_offset,posZi);	
+  encodeB(b, 28 + head_offset,negZi);
+	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 	  
 /*	batt_c_v += 10;
