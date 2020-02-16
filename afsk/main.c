@@ -801,7 +801,7 @@ if (firstTime != ON)
   negYv = reading[MINUS_Y].voltage;
   negZv = reading[MINUS_Z].voltage;
 	  
-  batt_c_v = reading[BAT].voltage * 10;
+  batt_c_v = reading[BAT].voltage * 100;
   battCurr = reading[BAT].current;
 	  
   
