@@ -577,17 +577,19 @@ for (int j = 0; j < frameCnt; j++)
     }	
   #endif
 
-    char header_str2[] = "echo 'W3ZM>CQ:hi hi ";
-    char footer_str[] = "\' > t.txt && echo \'W3ZM>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
+    char header_str3[] = "echo '";
+    char header_str2[] = ">CQ:hi hi ";
+    char footer_str[] = "\' > t.txt && echo \'>CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
 
 //    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
 
     char str[1000];
     char tlm_str[1000];
 
-     strcpy(str, header_str2);
+     strcpy(str, header_str3);
+     strcat(str, call);
+     strcat(str, header_str2);
 //    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
-	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
