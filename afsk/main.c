@@ -371,9 +371,13 @@ if (vB4)
 
 //  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
 //            AX25_PREAMBLE_LEN,
-//            AX25_POSTAMBLE_LEN);  
-      
- while (loop-- != 0)
+//            AX25_POSTAMBLE_LEN);
+	
+// Send ID in CW (Morse Code)	
+popen("gen_packets -M 20 -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1", "r"); 
+sleep(2);
+	
+while (loop-- != 0)
   {
 
    float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
