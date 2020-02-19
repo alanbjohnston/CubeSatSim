@@ -375,14 +375,14 @@ if (vB4)
 	
 // Send ID in CW (Morse Code)
 	
-  char cw_str[20];
+  char cw_str[200];
   char cw_header[] = "echo 'de ";
   char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
   strcpy(cw_str, cw_header);
-  strcat(str, call);
-  strcat(str, cw_footer);
+  strcat(cw_str, call);
+  strcat(cw_str, cw_footer);
 // popen("echo 'de KU2Y ' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1", "r"); 
-  popen(str,"r");
+  popen(cw_str,"r");
   sleep(6);
 	
 while (loop-- != 0)
