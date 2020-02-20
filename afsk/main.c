@@ -657,7 +657,7 @@ for (int j = 0; j < frameCnt; j++)
 	
   if (ax5043)
   {
-    	digitalWrite (0, LOW); 
+    	digitalWrite (txLed, txLedOn); 
 	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
         memcpy(data, str, strnlen(str, 256));
         int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
@@ -668,7 +668,7 @@ for (int j = 0; j < frameCnt; j++)
             exit(EXIT_FAILURE);
         }
         ax5043_wait_for_transmit();
-    	digitalWrite (0, HIGH);
+    	digitalWrite (txLed, txLedOff);
 
         if (ret) {
             fprintf(stderr,
@@ -676,6 +676,7 @@ for (int j = 0; j < frameCnt; j++)
                     ret);
             exit(EXIT_FAILURE);
 	}
+        sleep(2);
   }
   else
   {
@@ -690,7 +691,7 @@ for (int j = 0; j < frameCnt; j++)
    	  digitalWrite (txLed, txLedOn);	  
   }
 	
-  digitalWrite (txLed, txLedOff);
+  //digitalWrite (txLed, txLedOff);
  
    }
 	
