@@ -95,7 +95,7 @@ Note that this last command may fail if you are using Raspbian Lite since there 
 
 `cd ~/CubeSatSim`
 
-`git clone https://github.com/Howchoo/pi-power-button.git`
+`git clone https://github.com/alanbjohnston/pi-power-button.git`
 
 `cd pi-power-button`
 
