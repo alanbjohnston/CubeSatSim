@@ -364,22 +364,6 @@ int main(int argc, char *argv[]) {
     config_file = fopen("sim.cfg","r"); 
 	
 	
-  if (ax5043)
-  {
-     int file_i2c;
-     if ((file_i2c = open("/dev/i2c-3", O_RDWR)) < 0)
-    {
-            fprintf(stderr,"ERROR: /dev/ic2-3 bus not present\n");
-            tempSensor = -1;
-    } else
-    {
-//            tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
-  	      tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
-    }
-
-//    fprintf(stderr,"tempSensor: %d \n",tempSensor);
-  }	  
-	
 if (vB4)
 {	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
@@ -400,6 +384,7 @@ if (vB4)
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
+  tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);  
  }
 
   int ret;
