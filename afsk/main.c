@@ -627,17 +627,18 @@ for (int j = 0; j < frameCnt; j++)
 	
   char str[1000];
   char tlm_str[1000];
+  char header_str[] = "\x03\xf0hi hi ";	
+  char header_str3[] = "echo '";
+  char header_str2[] = ">CQ:hi hi ";
+  char footer_str1[] = "\' > t.txt && echo \'"; 
+  char footer_str[] = ">CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
+	
   if (ax5043)
   {
-	 char header_str[] = "\x03\xf0hi hi ";
 	strcpy(str, header_str);
   }
   else
   {
-    char header_str3[] = "echo '";
-    char header_str2[] = ">CQ:hi hi ";
-    char footer_str1[] = "\' > t.txt && echo \'"; 
-    char footer_str[] = ">CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
     strcpy(str, header_str3);
     strcat(str, call);
     strcat(str, header_str2);
@@ -659,7 +660,7 @@ for (int j = 0; j < frameCnt; j++)
     	digitalWrite (0, LOW); 
 	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
         memcpy(data, str, strnlen(str, 256));
-        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
+        int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
         if (ret) {
             fprintf(stderr,
                     "ERROR: Failed to transmit AX.25 frame with error code %d\n",
