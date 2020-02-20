@@ -231,7 +231,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 
 struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4
 struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4
-//struct SensorConfig tempSensor; 
+struct SensorConfig tempSensor; 
 
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
@@ -299,7 +299,7 @@ int main(int argc, char *argv[]) {
   	  setSpiSpeed(SPI_SPEED);
   	  initializeSpi();
 //	  char src_addr[5] = "KU2Y";
-          char dest_addr[5] = "CQ";
+//          char dest_addr[5] = "CQ";
 	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
 	  if (init_rf())
 	  {
@@ -363,7 +363,23 @@ int main(int argc, char *argv[]) {
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
 	
-  //tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
+	
+  if (ax5043)
+  {
+     int file_i2c;
+     if ((file_i2c = open("/dev/i2c-3", O_RDWR)) < 0)
+    {
+            fprintf(stderr,"ERROR: /dev/ic2-3 bus not present\n");
+            tempSensor = -1;
+    } else
+    {
+//            tempSensor = wiringPiI2CSetupInterface("/dev/i2c-3", 0x48);
+  	      tempSensor = config_sensor("/dev/i2c-3", 0x48, 0);
+    }
+
+//    fprintf(stderr,"tempSensor: %d \n",tempSensor);
+  }	  
+	
 if (vB4)
 {	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
@@ -580,8 +596,9 @@ for (int j = 0; j < frameCnt; j++)
   tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
 
-/*	
-  if (tempSensor.fd != OFF) {
+  if (ax5043)
+  {
+   if (tempSensor.fd != OFF) {
     int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
     uint8_t upper = (uint8_t) (tempValue >> 8);
     uint8_t lower = (uint8_t) (tempValue & 0xff);
@@ -592,8 +609,8 @@ for (int j = 0; j < frameCnt; j++)
     #endif
 	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
-  }
-*/  
+   }
+  } 
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
