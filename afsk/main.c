@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
 	  if (init_rf())
 	  {
 		printf("AX5043 successfully initialized!\n");
-		ax5043 = true;
+		ax5043 = TRUE;
 	  }	  
 	  else
 		printf("AX5043 not present!\n");
