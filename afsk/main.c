@@ -623,21 +623,25 @@ for (int j = 0; j < frameCnt; j++)
       printf("\n");
     }	
   #endif
-
+	
+  char str[1000];
+  char tlm_str[1000];
+  if (ax5043)
+  {
+	 char header_str[] = "\x03\xf0hi hi ";
+	strcpy(str, header_str);
+  }
+  else
+  {
     char header_str3[] = "echo '";
     char header_str2[] = ">CQ:hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'"; 
     char footer_str[] = ">CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
-
-//    printf("%s-1>%s-1:", (uint8_t *)src_addr, (uint8_t *)dest_addr);  
-
-    char str[1000];
-    char tlm_str[1000];
-
-     strcpy(str, header_str3);
-     strcat(str, call);
-     strcat(str, header_str2);
-//    printf("%s-1>%s-1:hi hi ", (uint8_t *)src_addr, (uint8_t *)dest_addr);     
+    strcpy(str, header_str3);
+    strcat(str, call);
+    strcat(str, header_str2);
+  }
+ 
     int channel;
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
@@ -649,26 +653,43 @@ for (int j = 0; j < frameCnt; j++)
         strcat(str, tlm_str);
     }
 	
-//	  char cmdbuffer[1000];
+  if (ax5043)
+  {
+    	digitalWrite (0, LOW); 
+	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+        memcpy(data, str, strnlen(str, 256));
+        ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
+        if (ret) {
+            fprintf(stderr,
+                    "ERROR: Failed to transmit AX.25 frame with error code %d\n",
+                    ret);
+            exit(EXIT_FAILURE);
+        }
+        ax5043_wait_for_transmit();
+    	digitalWrite (0, HIGH);
+
+        if (ret) {
+            fprintf(stderr,
+                    "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
+                    ret);
+            exit(EXIT_FAILURE);
+	}
+  }
+  else
+  {
      	  strcat(str, footer_str1);
      	  strcat(str, call);
 	  strcat(str,footer_str);
 	  fprintf(stderr, "String to execute: %s\n", str);
 	  FILE* file2 = popen(str, "r"); 
-//     	  fgets(cmdbuffer, 999, file2);
       	  pclose(file2);
-//	printf("Response: %s\n", cmdbuffer);
-//	  fprintf(stderr, "Response\n");
-  
-//      if (j != frameCnt)  // Don't sleep if the last packet - go straight to next mode
-//      {
-   digitalWrite (txLed, txLedOff);
+    	  digitalWrite (txLed, txLedOff);
 	  sleep(3);
-   digitalWrite (txLed, txLedOn);
- //     } else
- //     {
- //  digitalWrite (txLed, txLedOff);
-  //    }
+   	  digitalWrite (txLed, txLedOn);	  
+  }
+	
+  digitalWrite (txLed, txLedOff);
+ 
    }
 	
 printf("End of get_tlm and rpitx =========================================================\n");
