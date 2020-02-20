@@ -122,7 +122,7 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 float sleepTime;
 int sampleTime = 0;
 int cycle = OFF;
-int vB4 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
+int vB4 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
 float batteryThreshold = 0;
 
 struct SensorConfig {
@@ -270,48 +270,60 @@ int main(int argc, char *argv[]) {
 	  printf("Looping %d times \n", loop);
   }
 	
+// Open configuration file with callsign and reset count	
+  FILE* config_file = fopen("sim.cfg","r"); 
+  if (config_file == NULL) 
+  { 
+       printf("Creating config file."); 
+       config_file = fopen("sim.cfg","w");
+	fprintf(config_file, "%s %d", " ", 100);
+	fclose(config_file);
+	config_file = fopen("sim.cfg","r"); 
+  } 
+	
+  char* cfg_buf[100]; 
+  fscanf(config_file, "%s %d", call, &reset_count);
+  fclose(config_file);
+  printf("Config file sim.cfg contains %s %d\n", call, reset_count); 	
+  reset_count = (reset_count + 1) % 0xffff;
+	
   wiringPiSetup ();
-
-
-      FILE *file = popen("sudo raspi-config nonint get_spi", "r");
-
-//       printf("SPI result: %d\n", 48 - fgetc(file));
-       
+	
+// Check for SPI and AX-5043 Digital Transceiver Board	
+  FILE *file = popen("sudo raspi-config nonint get_spi", "r");
        if (fgetc(file) == 48) 
 	{
 	  printf("SPI is enabled!\n");	
+	       
 	  setSpiChannel(SPI_CHANNEL);
-	  printf("1\n");
   	  setSpiSpeed(SPI_SPEED);
-	  printf("2\n");
   	  initializeSpi();
-	  printf("3\n");
-	  char src_addr[5] = "KU2Y";
+//	  char src_addr[5] = "KU2Y";
           char dest_addr[5] = "CQ";
-	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
-            AX25_PREAMBLE_LEN,
-            AX25_POSTAMBLE_LEN);
-	  printf("Initialization complete\n");
-	if (init_rf())
+	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
+	  if (init_rf())
+	  {
 		printf("AX5043 successfully initialized!\n");
-	else
+		ax5043 = true;
+	  }	  
+	  else
 		printf("AX5043 not present!\n");
-
        } 
        else
-  	{
-		printf("SPI not enabled!\n");
-	}
+       {
+	  printf("SPI not enabled!\n");
+       }
 
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
-
-  pinMode (2, INPUT);
-  pullUpDnControl (2, PUD_UP);
-
-  if (digitalRead(2) != HIGH)
+  if (!ax5043)
   {
+    pinMode (2, INPUT);
+    pullUpDnControl (2, PUD_UP);
+
+    if (digitalRead(2) != HIGH)
+    {
 	  printf("vB3 with TFB Present\n");
   	  txLed = 3;
 	  txLedOn = LOW;
@@ -319,8 +331,8 @@ int main(int argc, char *argv[]) {
 	  onLed = 0;
           onLedOn = LOW;
 	  onLedOff = HIGH;
-  } else
-  {
+    } else
+    {
   	pinMode (3, INPUT);
   	pullUpDnControl (3, PUD_UP);
 
@@ -336,43 +348,12 @@ int main(int argc, char *argv[]) {
 	  onLedOff = LOW;
 	  batteryThreshold = 3.0;
   	}
-	else
-	{
-	  printf("vB3 Present\n");
-  	  setSpiChannel(SPI_CHANNEL);
-  	  setSpiSpeed(SPI_SPEED);
-  	  initializeSpi();
-	  char src_addr[5] = "KU2Y";
-          char dest_addr[5] = "CQ";
-	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
-            AX25_PREAMBLE_LEN,
-            AX25_POSTAMBLE_LEN);
-	  printf("Initialization complete\n");
-	}
-  }
+    }
+  }	
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
-	
-
-	
-  FILE* config_file = fopen("sim.cfg","r"); 
-  if (config_file == NULL) 
-  { 
-       printf("Creating config file."); 
-       config_file = fopen("sim.cfg","w");
-	fprintf(config_file, "%s %d", "W3ZM", 100);
-	fclose(config_file);
-	config_file = fopen("sim.cfg","r"); 
-    } 
-	
-    char* cfg_buf[100]; 
-    fscanf(config_file, "%s %d", call, &reset_count);
-    fclose(config_file);
-    printf("%s %d\n", call, reset_count); 
-	
-    reset_count = (reset_count + 1) % 0xffff;
 	
     if (cycle == ON)
       mode = (reset_count) % 3;  // alternate between the three modes	
