@@ -77,7 +77,7 @@ void config_x25();
 void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
-static void init_rf();
+static int init_rf();
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
@@ -292,6 +292,11 @@ int main(int argc, char *argv[]) {
             AX25_PREAMBLE_LEN,
             AX25_POSTAMBLE_LEN);
 	  printf("Initialization complete\n");
+	if (init_rf())
+		printf("AX5043 successfully initialized!\n");
+	else
+		printf("AX5043 not present!\n");
+
        } 
        else
   	{
@@ -533,6 +538,21 @@ int upper_digit(int number) {
 		fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
 	return digit;
 }
+
+static int init_rf() {
+    int ret;
+    fprintf(stderr,"Initializing AX5043\n");
+
+    ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
+    if (ret != PQWS_SUCCESS) {
+        fprintf(stderr,
+                "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
+ //       exit(EXIT_FAILURE);
+        return(0);
+    }
+    return(1);
+}
+
 
 int get_tlm(void) {
 
