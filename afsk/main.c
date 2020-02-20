@@ -77,6 +77,7 @@ void config_x25();
 void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
+static void init_rf();
 int socket_open = 0;
 int sock = 0;
 int loop = -1;
@@ -305,16 +306,25 @@ int main(int argc, char *argv[]) {
 	  batteryThreshold = 3.0;
   	}
 	else
+	{
 	  printf("vB3 Present\n");
+  	  setSpiChannel(SPI_CHANNEL);
+  	  setSpiSpeed(SPI_SPEED);
+  	  initializeSpi();
+	  char src_addr[5] = "KU2Y";
+          char dest_addr[5] = "CQ";
+	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
+            AX25_PREAMBLE_LEN,
+            AX25_POSTAMBLE_LEN);
+	  printf("Initialization complete\n");
+	}
   }
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
 	
-  //setSpiChannel(SPI_CHANNEL);
-  //setSpiSpeed(SPI_SPEED);
-  //initializeSpi();
+
 	
   FILE* config_file = fopen("sim.cfg","r"); 
   if (config_file == NULL) 
@@ -368,10 +378,6 @@ if (vB4)
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
-
-//  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
-//            AX25_PREAMBLE_LEN,
-//            AX25_POSTAMBLE_LEN);
 	
 // Send ID in CW (Morse Code)
 	
