@@ -271,6 +271,16 @@ int main(int argc, char *argv[]) {
   }
 	
   wiringPiSetup ();
+	
+	   setSpiChannel(SPI_CHANNEL);
+  	  setSpiSpeed(SPI_SPEED);
+  	  initializeSpi();
+	  char src_addr[5] = "KU2Y";
+          char dest_addr[5] = "CQ";
+	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
+            AX25_PREAMBLE_LEN,
+            AX25_POSTAMBLE_LEN);
+	  printf("Initialization complete\n");
 
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
