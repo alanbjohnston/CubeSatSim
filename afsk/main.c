@@ -271,16 +271,32 @@ int main(int argc, char *argv[]) {
   }
 	
   wiringPiSetup ();
-	
-	   setSpiChannel(SPI_CHANNEL);
+
+
+      FILE *file = popen("sudo raspi-config nonint get_spi", "r");
+
+//       printf("SPI result: %d\n", 48 - fgetc(file));
+       
+       if (fgetc(file) == 48) 
+	{
+	  printf("SPI is enabled!\n");	
+	  setSpiChannel(SPI_CHANNEL);
+	  printf("1\n");
   	  setSpiSpeed(SPI_SPEED);
+	  printf("2\n");
   	  initializeSpi();
+	  printf("3\n");
 	  char src_addr[5] = "KU2Y";
           char dest_addr[5] = "CQ";
 	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) src_addr, '1',
             AX25_PREAMBLE_LEN,
             AX25_POSTAMBLE_LEN);
 	  printf("Initialization complete\n");
+       } 
+       else
+  	{
+		printf("SPI not enabled!\n");
+	}
 
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
