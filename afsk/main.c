@@ -356,7 +356,7 @@ int main(int argc, char *argv[]) {
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
 	
-    if (cycle == ON)
+    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
       mode = (reset_count) % 3;  // alternate between the three modes	
 	
     config_file = fopen("sim.cfg","w");
