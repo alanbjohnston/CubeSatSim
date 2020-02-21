@@ -403,7 +403,6 @@ if (!ax5043)
   strcpy(cw_str, cw_header);
   strcat(cw_str, call);
   strcat(cw_str, cw_footer);
-// popen("echo 'de KU2Y ' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1", "r"); 
   digitalWrite (txLed, txLedOn);
   popen(cw_str,"r");
   sleep(6);
@@ -483,19 +482,7 @@ while (loop-- != 0)
 
     #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Getting ready to send\n");
-    #endif
-/*	  
-      char cmdbuffer[1000];
-      FILE* transmit;
-      if (FSK == 1) {
-      	  transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.9e3 2>&1", "r"); 
-      } else {
-      	   transmit = popen("sudo cat /home/pi/CubeSatSim/transmit.wav | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float 2>&1", "r"); 
-      }
-      fgets(cmdbuffer, 1000, transmit);
-      pclose(transmit);
-      printf("Results of transmit command: %s\n", cmdbuffer);
-*/	     
+    #endif	     
  }
 // if(vB4)
    digitalWrite (onLed, onLedOff);
@@ -542,22 +529,10 @@ static int init_rf() {
     return(1);
 }
 
-
 int get_tlm(void) {
 
-//    sleep(10);
       FILE* transmit;
-/*	  printf("Killing all\n");
-      	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
-	sleep(1);
-      	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
-	sleep(1);  
-	transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
-	  socket_open = 0;
 
-//	sleep(3);
-	sleep(1);
-*/	
 for (int j = 0; j < frameCnt; j++)	
 {	
    digitalWrite (txLed, txLedOn);
@@ -727,17 +702,6 @@ int get_tlm_fox() {
 	long int sync = syncWord;
 
 	smaller = S_RATE/(2 * freq_Hz);
-/*	
-	short int b[DATA_LEN] = {0x00,0x7E,0x03,
-				0x00,0x00,0x00,0x00,0xE6,0x01,0x00,0x27,0xD1,0x02,
-		        0xE5,0x40,0x04,0x18,0xE1,0x04,0x00,0x00,0x00,0x00,0x00,0x00,
-		        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,	        		
-		        0x00,0x00,0x00,0x03,0x02,0x00,0x00,0x00,0x00,0x00,0x00,
-		        0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
-		         0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00};
-		         
-	short int h[HEADER_LEN] = {0x05,0x00,0x00,0x00,0x00,0x10,0x00,0x00};	
-*/	
 
 //	short int b[DATA_LEN];
 	short int b[dataLen];
@@ -1081,7 +1045,6 @@ if (firstTime != ON)
 //	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
 //	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
     #endif	
-//	write_wav("transmit.wav", ctr, buffer, S_RATE);
 
   int error = 0;
   int count;
@@ -1194,23 +1157,6 @@ if (firstTime != ON)
 
 return 0;	
 }
-
-// wav file generation code
-
-/* make_wav.c
- * Creates a WAV file from an array of ints.
- * Output is monophonic, signed 16-bit samples
- * copyright
- * Fri Jun 18 16:36:23 PDT 2010 Kevin Karplus
- * Creative Commons license Attribution-NonCommercial
- *  http://creativecommons.org/licenses/by-nc/3.0/
- * 
- * Edited by Dolin Sergey. dlinyj@gmail.com
- * April 11 12:58 2014
- */
- 
- // gcc -o make_enc_wav make_enc_wav.c -lm
- // ./make_enc_wav
  
  /*
  * TelemEncoding.h
@@ -1225,8 +1171,6 @@ return 0;
 #include <math.h>
 #include <stdlib.h>
 #include <time.h>
-
-//#include "make_wav.h"
 
 #define false 0
 #define true 1
@@ -1350,7 +1294,6 @@ static unsigned char CCSDS_poly[] = {
   24,
 };
 
-
 static inline int modnn(int x){
   while (x >= NN) {
     x -= NN;
@@ -1358,7 +1301,6 @@ static inline int modnn(int x){
   }
   return x;
 }
-
 
 // Update Reed-Solomon encoder
 // parity -> 32-byte reed-solomon encoder state; clear this to zero before each frame
@@ -1402,66 +1344,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 	word >>= 8;
 	}
 }
- 
-/* information about the WAV file format from
- 
-http://ccrma.stanford.edu/courses/422/projects/WaveFormat/
- 
- */
- 
-void write_wav(char * filename, unsigned long num_samples, short int * data, int s_rate)
-{
-	FILE* wav_file;
-	unsigned int sample_rate;
-	unsigned int num_channels;
-	unsigned int bytes_per_sample;
-	unsigned int byte_rate;
-	unsigned long i;    /* counter for samples */
-	
-	num_channels = 1;   /* monoaural */
-	bytes_per_sample = 2;
- 
-	if (s_rate<=0) sample_rate = 44100;
-	else sample_rate = (unsigned int) s_rate;
- 
-	byte_rate = sample_rate*num_channels*bytes_per_sample;
- 
-	wav_file = fopen(filename, "w");
-	assert(wav_file);   /* make sure it opened */
- 
-	/* write RIFF header */
-	fwrite("RIFF", 1, 4, wav_file);
-	write_little_endian(36 + bytes_per_sample* num_samples*num_channels, 4, wav_file);
-	fwrite("WAVE", 1, 4, wav_file);
- 
-	/* write fmt  subchunk */
-	fwrite("fmt ", 1, 4, wav_file);
-	write_little_endian(16, 4, wav_file);   /* SubChunk1Size is 16 */
-	write_little_endian(1, 2, wav_file);    /* PCM is format 1 */
-	write_little_endian(num_channels, 2, wav_file);
-	write_little_endian(sample_rate, 4, wav_file);
-	write_little_endian(byte_rate, 4, wav_file);
-	write_little_endian(num_channels*bytes_per_sample, 2, wav_file);  /* block align */
-	write_little_endian(8*bytes_per_sample, 2, wav_file);  /* bits/sample */
- 
-	/* write data subchunk */
-	fwrite("data", 1, 4, wav_file);
-	write_little_endian(bytes_per_sample* num_samples*num_channels, 4, wav_file);
-	
-	for (i=0; i< num_samples; i++)
-	{   write_little_endian((unsigned int)(data[i]),bytes_per_sample, wav_file);
-	}
- 
-	fclose(wav_file);
-}
 
-
-
-//int main(int argc, char * argv[])
-//{
- 
-//	return 0;
-//}
 
 void write_wave(int i, short int *buffer)
 {
@@ -1483,32 +1366,6 @@ void write_wave(int i, short int *buffer)
 
 }
 
-/**
- * 
- * FOX 1 Telemetry Decoder
- * @author chris.e.thompson g0kla/ac2cz
- *
- * Copyright (C) 2015 amsat.org
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General  License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General  License for more details.
- *
- * You should have received a copy of the GNU General  License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- * 
- * Static variables and methods to encode and decode 8b10b
- * 
- *
- */
-	
 int encodeA(short int  *b, int index, int val) {
 //    printf("Encoding A\n");
     b[index] = val & 0xff;
