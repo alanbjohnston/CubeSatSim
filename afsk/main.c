@@ -720,13 +720,8 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-/*	
-  int id = 7, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
-  int batt_a_v = 0, batt_b_v = 0, batt_c_v = 8.95 * 100, battCurr = 48.6 * 10;
-  int posXv = 296, negXv = 45, posYv = 220, negYv = 68, 
-  		posZv = 280, negZv = 78;
-*/	
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0; 
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16;
+  int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
@@ -849,6 +844,8 @@ if (firstTime != ON)
 	  
   batt_c_v = (int)(reading[BAT].voltage * 100);
   battCurr = (int)reading[BAT].current + 2048;
+  PSUVoltage = (int)reading[BUS].voltage * 100;
+  PSUCurrent = (int)reading[BUS].current + 2048;
 	  
 /*  
   posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
@@ -872,8 +869,14 @@ if (firstTime != ON)
   encodeB(b, 25 + head_offset,negYi);	
   encodeA(b, 27 + head_offset,posZi);	
   encodeB(b, 28 + head_offset,negZi);
+
+  encodeA(b, 30 + head_offset,PSUVoltage);
+  encodeB(b, 46 + head_offset,PSUCurrent);
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
+
+  encodeB(b, 51 + head_offset, STEMBoardFailure);
+
 	  
 /*	batt_c_v += 10;
 	battCurr -= 10;
