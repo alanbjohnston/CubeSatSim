@@ -833,22 +833,22 @@ if (firstTime != ON)
       h[6] = 99;
 	  
 //  posXv = reading[PLUS_X].current;
-  posXi = reading[PLUS_X].current;
-  posYi = reading[PLUS_Y].current;
-  posZi = reading[PLUS_Z].current;
-  negXi = reading[MINUS_X].current;
-  negYi = reading[MINUS_Y].current;
-  negZi = reading[MINUS_Z].current;
+  posXi = (int)reading[PLUS_X].current + 2048;
+  posYi = (int)reading[PLUS_Y].current + 2048;
+  posZi = (int)reading[PLUS_Z].current + 2048;
+  negXi = (int)reading[MINUS_X].current + 2048;
+  negYi = (int)reading[MINUS_Y].current + 2048;
+  negZi = (int)reading[MINUS_Z].current + 2048;
 
-  posXv = reading[PLUS_X].voltage * 100;
-  posYv = reading[PLUS_Y].voltage* 100;
-  posZv = reading[PLUS_Z].voltage * 100;
-  negXv = reading[MINUS_X].voltage * 100;
-  negYv = reading[MINUS_Y].voltage * 100;
-  negZv = reading[MINUS_Z].voltage * 100;
+  posXv = (int)(reading[PLUS_X].voltage * 100);
+  posYv = (int)(reading[PLUS_Y].voltage* 100);
+  posZv = (int)(reading[PLUS_Z].voltage * 100);
+  negXv = (int)(reading[MINUS_X].voltage * 100);
+  negYv = (int)(reading[MINUS_Y].voltage * 100);
+  negZv = (int)(reading[MINUS_Z].voltage * 100);
 	  
-  batt_c_v = reading[BAT].voltage * 100;
-  battCurr = reading[BAT].current;
+  batt_c_v = (int)(reading[BAT].voltage * 100);
+  battCurr = (int)reading[BAT].current + 2048;
 	  
 /*  
   posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
