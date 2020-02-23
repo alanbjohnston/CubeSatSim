@@ -272,7 +272,10 @@ int main(int argc, char *argv[]) {
 	  
 	  if (argc > 3) {
 		if (*argv[3] == 'n')
+		{
 			cw_id = OFF;
+			printf("No CW id\n");
+		}
 	  }
   }
 	
@@ -401,7 +404,7 @@ if (vB4)
 	
 // Send ID in CW (Morse Code)
 
-if (cw_id)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
+if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
 {
   char cw_str[200];
   char cw_header[] = "echo 'de ";
@@ -767,7 +770,9 @@ if (firstTime != ON)
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
-  }	
+  }  else
+	printf("first time - no sleep\n");
+	
     int count;
     for (count = 0; count < 8; count++)
     {

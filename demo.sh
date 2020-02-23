@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nDemo of CubeSatSim at 434.9 MHz continuously\n\n"
+echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
 #exit
 
@@ -18,6 +18,7 @@ else
 	while true; do
        		echo -e "\n Changing mode ******\n\n"
  		/home/pi/CubeSatSim/radioafsk fsk 5 n
+		sleep 8
 		/home/pi/CubeSatSim/radioafsk bpsk 5 n
 		/home/pi/CubeSatSim/radioafsk afsk 5 n
 	done
