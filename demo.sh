@@ -18,8 +18,10 @@ else
 	while true; do
        		echo -e "\n Changing mode ******\n\n"
  		/home/pi/CubeSatSim/radioafsk fsk 5 n
-		sleep 8
 		/home/pi/CubeSatSim/radioafsk bpsk 5 n
+		sleep 24 
+		sudo killall -9 sendiq
+		sleep 6
 		/home/pi/CubeSatSim/radioafsk afsk 5 n
 	done
 fi
