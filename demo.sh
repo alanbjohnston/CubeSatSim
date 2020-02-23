@@ -14,11 +14,11 @@ then
 else
 
 	echo -e "\n Alternating FSK, BPSK, and AFSK telemetry Mode \n\n"
+      	/home/pi/CubeSatSim/radioafsk afsk 5 y
 	while true; do
        		echo -e "\n Changing mode ******\n\n"
-    
-      		/home/pi/CubeSatSim/radioafsk a 5
-		/home/pi/CubeSatSim/radioafsk f 5
-		/home/pi/CubeSatSim/radioafsk b 5
+ 		/home/pi/CubeSatSim/radioafsk fsk 5 n
+		/home/pi/CubeSatSim/radioafsk bpsk 5 n
+		/home/pi/CubeSatSim/radioafsk afsk 5 n
 	done
 fi
