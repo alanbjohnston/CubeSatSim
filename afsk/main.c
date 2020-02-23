@@ -395,7 +395,7 @@ if (vB4)
 	
 // Send ID in CW (Morse Code)
 
-if (!ax5043)	
+if (!ax5043 && !cycle)	// Don't send CW if using AX5043 or in mode cycling
 {
   char cw_str[200];
   char cw_header[] = "echo 'de ";
