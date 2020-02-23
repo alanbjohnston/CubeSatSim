@@ -122,7 +122,7 @@ char call[5];
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
 float sleepTime;
 int sampleTime = 0;
-int cycle = OFF;
+int cycle = OFF, cw_id = ON;
 int vB4 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
 float batteryThreshold = 0;
 
@@ -269,6 +269,11 @@ int main(int argc, char *argv[]) {
 		  loop = atoi(argv[2]);
 	  }
 	  printf("Looping %d times \n", loop);
+	  
+	  if (argc > 3) {
+		if (*argv[3] == 'n')
+			cw_id = OFF;
+	  }
   }
 	
 // Open configuration file with callsign and reset count	
@@ -306,6 +311,7 @@ int main(int argc, char *argv[]) {
 	  {
 		printf("AX5043 successfully initialized!\n");
 		ax5043 = TRUE;
+		cw_id = OFF;
 	  }	  
 	  else
 		printf("AX5043 not present!\n");
@@ -395,7 +401,7 @@ if (vB4)
 	
 // Send ID in CW (Morse Code)
 
-if (!ax5043 && !cycle)	// Don't send CW if using AX5043 or in mode cycling
+if (cw_id)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
 {
   char cw_str[200];
   char cw_header[] = "echo 'de ";
@@ -407,7 +413,6 @@ if (!ax5043 && !cycle)	// Don't send CW if using AX5043 or in mode cycling
   popen(cw_str,"r");
   sleep(6);
   digitalWrite (txLed, txLedOn);
-
 }
 	
 while (loop-- != 0)
