@@ -43,7 +43,7 @@ Add the following two lines under it:
 
 Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt. Reboot by typing:
 
-`sudo reboot`
+`sudo reboot now`
 
 after logging back into the Pi, type:
 
