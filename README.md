@@ -63,7 +63,9 @@ Then type:
 
 `cd CubeSatSim`
 
-`git checkout fox-v4`
+Where <branch> is the name of this branch of the software, type:
+
+`git checkout <branch>`
 
 Edited the sim.cfg file to set your amateur radio callsign, then 
 
