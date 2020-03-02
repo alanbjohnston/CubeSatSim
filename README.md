@@ -109,7 +109,7 @@ Note that this last command may fail if you are using Raspbian Lite since there 
 
 To make the demo.sh script run automatically on boot:
 
-`sudo cp /CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service`
+`sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service`
 
 `sudo systemctl enable cubesatsim`
 
