@@ -67,7 +67,11 @@ Where <branch> is the name of this branch of the software, type:
 
 `git checkout <branch>`
 
-Edited the sim.cfg file to set your amateur radio callsign, then 
+Create a sim.cfg configuration file with your amateur radio callsign by typing:
+     
+`echo "callsign" >> sim.cfg`
+
+Compile the code:
 
 `make rebuild`
 
