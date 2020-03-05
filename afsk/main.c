@@ -82,7 +82,7 @@ int lower_digit(int number);
 static int init_rf();
 int socket_open = 0;
 int sock = 0;
-int loop = -1;
+int loop = -1, loop_count = 0;
 int firstTime = ON;
 long start;
 int testCount = 0;
@@ -268,6 +268,7 @@ int main(int argc, char *argv[]) {
 	  if (argc > 2)  {
 //		  printf("String is %s %s\n", *argv[2], argv[2]);
 		  loop = atoi(argv[2]);
+		  loop_count = loop;
 	  }
 	  printf("Looping %d times \n", loop);
 	  
@@ -545,8 +546,19 @@ while (loop-- != 0)
   if (mode == BPSK)
   {
 	printf("Sleeping to allow BPSK transmission to finish.\n");
-	sleep(loop * 5);
+	sleep(loop_count * 5);
+	printf("Done sleeping\n");
   }
+  else if (mode == FSK)
+  {
+	printf("Sleeping to allow FSK transmission to finish.\n");
+	sleep(loop_count);
+	printf("Done sleeping\n");
+  }
+  int transmit = popen("timeout 1 sudo /home/pi/CubeSatSim/rpitx/rpitx -i- -m RF -f 434.897e3","r");
+  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	
   return 0;
 }

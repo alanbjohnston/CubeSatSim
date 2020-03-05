@@ -20,6 +20,8 @@ else
  		/home/pi/CubeSatSim/radioafsk fsk 5 n
 		/home/pi/CubeSatSim/radioafsk bpsk 5 n
 #		sleep 24 
+		sleep 1 
+		sudo killall -9 sendiq
 		sudo killall -9 sendiq
 		sleep 1
 		/home/pi/CubeSatSim/radioafsk afsk 5 n
