@@ -21,7 +21,7 @@ else
 		/home/pi/CubeSatSim/radioafsk bpsk 5 n
 #		sleep 24 
 		sudo killall -9 sendiq
-		sleep 6
+		sleep 1
 		/home/pi/CubeSatSim/radioafsk afsk 5 n
 	done
 fi
