@@ -33,6 +33,7 @@
 #include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
+#include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
 #include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
@@ -62,7 +63,7 @@
 #define OFF -1
 #define ON 1
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET + 100000;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
 
@@ -238,7 +239,7 @@ char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 
 int main(int argc, char *argv[]) {
-	
+
   mode = FSK;
   frameCnt = 1;
 	
@@ -297,6 +298,8 @@ int main(int argc, char *argv[]) {
   reset_count = (reset_count + 1) % 0xffff;
 	
   wiringPiSetup ();
+
+/* temporarily disable checking
 	
 // Check for SPI and AX-5043 Digital Transceiver Board	
   FILE *file = popen("sudo raspi-config nonint get_spi", "r");
@@ -323,6 +326,7 @@ int main(int argc, char *argv[]) {
        {
 	  printf("SPI not enabled!\n");
        }
+*/
 
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
@@ -396,6 +400,37 @@ if (vB4)
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
   tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);  
  }
+
+// try connecting to Arduino payload using UART
+
+  int uart_fd;
+  int payload = OFF;
+
+  if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
+  {
+     serialPutchar (uart_fd, '?') ;
+     unsigned int waitTime;
+     waitTime = millis() + 1000;
+     while (millis() < waitTime) 
+     { 
+        if (serialDataAvail (uart_fd))
+        {
+          printf ("%c", serialGetchar (uart_fd)) ;
+          fflush (stdout) ;
+          payload = ON;
+        }
+      }
+    if (payload == ON)
+	  printf ("\nPayload is present!\n") ;
+    else
+	  printf ("\nPayload not present!\n") ;
+  }
+   else 
+  {
+    fprintf (stderr, "Unable to open UART: %s\n", strerror (errno)) ;
+  }
+
+
 
   int ret;
   //uint8_t data[1024];
