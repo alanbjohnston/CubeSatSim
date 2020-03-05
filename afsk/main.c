@@ -326,6 +326,9 @@ int main(int argc, char *argv[]) {
 		printf("AX5043 successfully initialized!\n");
 		ax5043 = TRUE;
 		cw_id = OFF;
+		mode = AFSK;
+		cycle = OFF;
+		printf("Mode AFSK with AX5043\n");  
 	  }	  
 	  else
 		printf("AX5043 not present!\n");
