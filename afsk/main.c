@@ -422,18 +422,31 @@ if (vB4)
 
   if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
   {
-     serialPutchar (uart_fd, '?') ;
+     char c;
      unsigned int waitTime;
-     waitTime = millis() + 1000;
-     while (millis() < waitTime) 
+     int i;
+    for(i = 0; i < 2; i++)
+    {
+     serialPutchar (uart_fd, '?');
+     printf("Querying payload with ?\n");
+     waitTime = millis() + 500;
+     while ((millis() < waitTime) && (payload != ON)) 
      { 
         if (serialDataAvail (uart_fd))
         {
-          printf ("%c", serialGetchar (uart_fd)) ;
-          fflush (stdout) ;
-          payload = ON;
+          printf ("%c", c = serialGetchar (uart_fd));
+          fflush (stdout);
+	  if (c == 'O')
+	  {
+             printf ("%c", c = serialGetchar (uart_fd));
+             fflush (stdout);
+             if (c == 'K')
+         	 payload = ON;
+          }
         }
-      }
+//        sleep(0.75);
+     }
+    }
     if (payload == ON)
 	  printf ("\nPayload is present!\n") ;
     else
