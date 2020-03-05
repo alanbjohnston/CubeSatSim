@@ -414,6 +414,8 @@ if (vB4)
 
 // try connecting to Arduino payload using UART
 
+ if (!ax5043)  // don't test if AX5043 is present
+ {
   int uart_fd;
   int payload = OFF;
 
@@ -440,8 +442,7 @@ if (vB4)
   {
     fprintf (stderr, "Unable to open UART: %s\n", strerror (errno)) ;
   }
-
-
+ }
 
   int ret;
   //uint8_t data[1024];
