@@ -542,6 +542,12 @@ while (loop-- != 0)
 // if(vB4)
    digitalWrite (onLed, onLedOff);
 
+  if (mode == BPSK)
+  {
+	printf("Sleeping to allow BPSK transmission to finish.\n");
+	sleep(loop * 5);
+  }
+	
   return 0;
 }
 
