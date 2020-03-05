@@ -63,7 +63,7 @@
 #define OFF -1
 #define ON 1
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET + 100000;
+uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
 
@@ -299,14 +299,22 @@ int main(int argc, char *argv[]) {
 	
   wiringPiSetup ();
 
-/* temporarily disable checking
-	
 // Check for SPI and AX-5043 Digital Transceiver Board	
   FILE *file = popen("sudo raspi-config nonint get_spi", "r");
        if (fgetc(file) == 48) 
 	{
 	  printf("SPI is enabled!\n");	
-	       
+          
+          file = popen("ls /dev/spidev0.* 2>&1", "r");
+//          printf("Result: %d char: %c \n",file, getc(file));
+
+          if (fgetc(file) != 'l')
+          {
+            printf("SPI devices present!\n");
+
+
+//	  }
+ 
 	  setSpiChannel(SPI_CHANNEL);
   	  setSpiSpeed(SPI_SPEED);
   	  initializeSpi();
@@ -321,12 +329,12 @@ int main(int argc, char *argv[]) {
 	  }	  
 	  else
 		printf("AX5043 not present!\n");
-       } 
-       else
-       {
-	  printf("SPI not enabled!\n");
-       }
-*/
+ 	}
+      } 
+//       else
+//       {
+//	  printf("SPI not enabled!\n");
+//       }
 
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
