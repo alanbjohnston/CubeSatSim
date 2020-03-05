@@ -1,3 +1,6 @@
+  // code for STM32F104C on the CubeSat Simulator STEM Payload board
+  // answers "OK" on the serial port when queried by the Pi
+
   int counter = 0;
   
   void setup() {
