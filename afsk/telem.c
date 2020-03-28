@@ -170,6 +170,40 @@ int main(int argc, char *argv[]) {
   wiringPiSetup ();
 		
   printf("\n");
+	
+    pinMode (2, INPUT);
+    pullUpDnControl (2, PUD_UP);
+
+    if (digitalRead(2) != HIGH)
+    {
+	  printf("vB3 with TFB Present\n");
+    } 
+    else
+    {
+  	pinMode (3, INPUT);
+  	pullUpDnControl (3, PUD_UP);
+
+  	if (digitalRead(3) != HIGH)
+  	{
+	  printf("vB4 Present\n");
+
+  	}
+	else
+	{
+		pinMode (26, INPUT);
+  		pullUpDnControl (26, PUD_UP);
+
+  		if (digitalRead(26) != HIGH)
+  		{
+	  		printf("vB5 Present\n");
+
+  		}
+		else
+		{
+			printf("VB3 Present\n");
+		}
+	}
+    }	
   
   sensorV = config_sensor("/dev/i2c-1", 0x40, 400);
   readingV = read_sensor_data(sensorV);
