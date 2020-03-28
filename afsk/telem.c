@@ -160,6 +160,9 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 struct SensorConfig sensorV;   
 struct SensorData readingV;  
 struct SensorConfig tempSensor; 
+struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4/5
+struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4/5
+
 
 int main(int argc, char *argv[]) {
 	
@@ -177,7 +180,14 @@ int main(int argc, char *argv[]) {
     if (digitalRead(2) != HIGH)
     {
 	  printf("vB3 with TFB Present\n");
-    } 
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);    } 
     else
     {
   	pinMode (3, INPUT);
@@ -186,7 +196,14 @@ int main(int argc, char *argv[]) {
   	if (digitalRead(3) != HIGH)
   	{
 	  printf("vB4 Present\n");
-
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-0", 0x40, 400);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
   	}
 	else
 	{
@@ -196,14 +213,38 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
 	  		printf("vB5 Present\n");
-
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
   		}
 		else
 		{
 			printf("VB3 Present\n");
-		}
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);		}
 	}
     }	
+	
+//  Reading I2C voltage and current sensors
+  int count;
+  for (count = 0; count < 8; count++)
+  {
+    reading[count] = read_sensor_data(sensor[count]);	
+      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
+	        count, reading[count].voltage, reading[count].current, reading[count].power); 
+  }	
+  printf("\n");
   
   sensorV = config_sensor("/dev/i2c-1", 0x40, 400);
   readingV = read_sensor_data(sensorV);
