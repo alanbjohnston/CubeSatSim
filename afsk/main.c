@@ -596,9 +596,11 @@ while (loop-- != 0)
 
   if (mode == BPSK)
   {
+	digitalWrite (txLed, txLedOn);
 	printf("Sleeping to allow BPSK transmission to finish.\n");
 	sleep(loop_count * 5);
 	printf("Done sleeping\n");
+	digitalWrite (txLed, txLedOff);  
   }
   else if (mode == FSK)
   {
