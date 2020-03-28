@@ -611,8 +611,8 @@ while (loop-- != 0)
   transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
   transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 
-  // if(vB4)
-   digitalWrite (onLed, onLedOff);
+  if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
+      digitalWrite (onLed, onLedOff);
 	
   return 0;
 }
