@@ -124,7 +124,7 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 float sleepTime;
 int sampleTime = 0;
 int cycle = OFF, cw_id = ON;
-int vB4 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
+int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
 float batteryThreshold = 0;
 
 struct SensorConfig {
@@ -231,8 +231,8 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     return data;
 }
 
-struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4
-struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4
+struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4/5
+struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4/5
 struct SensorConfig tempSensor; 
 
 char src_addr[5] = "";
@@ -374,6 +374,24 @@ int main(int argc, char *argv[]) {
 	  onLedOff = LOW;
 	  batteryThreshold = 3.0;
   	}
+	else
+	{
+		pinMode (26, INPUT);
+  		pullUpDnControl (26, PUD_UP);
+
+  		if (digitalRead(26) != HIGH)
+  		{
+	  		printf("vB5 Present\n");
+  	  		txLed = 2;
+	  		txLedOn = HIGH;
+ 	  		txLedOff = LOW;
+ 	  		vB5 = TRUE;
+	  		onLed = 27;
+          		onLedOn = HIGH;
+	  		onLedOff = LOW;
+	  		batteryThreshold = 3.0;
+  		}
+	}
     }
   }	
   pinMode (txLed, OUTPUT);
@@ -400,7 +418,19 @@ if (vB4)
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
-} else
+}	
+else if (vB5)
+{	
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
+  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
+  sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
+  sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
+} 
+else
 {	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
