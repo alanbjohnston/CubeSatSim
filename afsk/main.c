@@ -593,8 +593,6 @@ while (loop-- != 0)
       fprintf(stderr,"INFO: Getting ready to send\n");
     #endif	     
  }
-// if(vB4)
-   digitalWrite (onLed, onLedOff);
 
   if (mode == BPSK)
   {
@@ -612,6 +610,9 @@ while (loop-- != 0)
   transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
   transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
   transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+
+  // if(vB4)
+   digitalWrite (onLed, onLedOff);
 	
   return 0;
 }
