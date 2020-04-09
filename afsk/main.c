@@ -166,6 +166,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
+    sleep(1);
     int value  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
     if (value == -1)
     {
