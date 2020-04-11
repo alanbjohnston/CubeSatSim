@@ -3,8 +3,8 @@
 #File named .dat should be in the logfiles directory and is loaded by FoxTelem
 #File named .MASTER should not be edited and is a backup copy in the installation directory 
 foxId=7
-displayName=CubeSatSim-DUV
-name=CubeSatSim-DUV
+displayName=CubeSatSim-FSK
+name=CubeSatSim-FSK
 model=0
 IHU_SN=7
 catalogNumber=0
