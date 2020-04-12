@@ -125,13 +125,18 @@ To make the demo.sh script run automatically on boot:
 
 `sudo systemctl enable cubesatsim`
 
-`sudo systemctl start cubesatsim`
-
 Now reboot for all the changes to take effect:
 
 `sudo reboot now`
 
 After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSatSim!
 
+You can stop the service: 
+
+`sudo systemctl stop cubesatsim`
+
+After rebooting, it will start unless you disable it:
+
+`sudo systemctl disable cubesatsim`
 
 See the Wiki for more details https://github.com/alanbjohnston/CubeSatSim/wiki
