@@ -98,7 +98,8 @@ Compile the code:
 
 `make install-rpi`
 
-Note that this last command may fail if you are using Raspbian Lite since there is no Desktop.
+Note that this last command may fail if you are using Raspbian Lite since there is no Desktop (you may get an error such as this "ln: failed to create symbolic link '/home/pi/Desktop/direwolf.desktop': No such file or directory
+make: *** [Makefile.linux:727: install-rpi] Error 1"
 
 `cd`
 
