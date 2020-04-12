@@ -4,7 +4,6 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 Requires:
 - wiringpi
-- libcurl4-openssl-dev
 - git
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W:
@@ -27,7 +26,7 @@ Run raspi-config and enable the I2C bus by selecting Option 5 Interfacing Option
 
 Select Finish at the bottom to exit raspi-config. Then type:
 
-`sudo cp /boot/config.txt /bootconfig.txt.0`
+`sudo cp /boot/config.txt /boot/config.txt.0`
 
 `sudo nano /boot/config.txt`
 
@@ -39,9 +38,23 @@ Add the following two lines under it:
 
 `dtoverlay=i2c-gpio`
 
-`dtparam=i2c_vc=on`
+`dtoverlay=pi3-miniuart-bt`
 
-Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt. Reboot by typing:
+Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt.
+
+Edit the cmdline.txt file by typing:
+
+`sudo cp /boot/cmdline.txt /boot/cmdline.txt.0`
+
+`sudo nano /boot/cmdline.txt`
+
+Remove the following text in cmdline.txt to prevent a console from running on the serial port:
+
+`console=serial0,115200`
+
+Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt.
+
+Reboot by typing:
 
 `sudo reboot now`
 
@@ -49,9 +62,9 @@ after logging back into the Pi, type:
 
 `ls -a /dev/i2c*`
 
-you should see three I2C buses:
+you should see two I2C buses:
 
-`i2c-0 i2c-1  i2c-3`
+`i2c-1  i2c-3`
 
 Continue the install by typing:
 
@@ -117,21 +130,7 @@ Now reboot for all the changes to take effect:
 
 `sudo reboot now`
 
-After rebooting, to hear AFSK telemetry (X.25 data), tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSat Sim:
+After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSatSim!
 
-
-This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ If you don't have the SPI Interface enabled and the board plugged in, you will get an error.
-
-This repository contains:
-     
-  - afsk - Code that sends telemetry in 1k2 AFSK X.25 format
- - arduino - Sample Arduino sketches to show how payload sensors can be interfaced to CubeSat Simulator
- - ax5043 - Source for a library of functions to communicate with the AX5043 and configure the AX5043.
- - cw - Code that sends telemetry in CW (Morse code) using AO-7 format
- - libs - External libraries
- - python - Python code for reading I2C sensors for current and temperature
- - spreadsheet - Spreadsheets for decoding and analyzing the Simulator telemetry (see https://github.com/alanbjohnston/CubeSatSim/wiki/Decoding-Telemetry for details)
- - wav - Wave audio files of CW or AFSK telemetry for listening or transmitting usng a CubeSat Simulator Lite
- - demo.sh - a shell script to run the Simulator on boot using systemd (see https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install#autoboot-configuration for how to configure the Pi)
 
 See the Wiki for more details https://github.com/alanbjohnston/CubeSatSim/wiki
