@@ -979,6 +979,9 @@ if (firstTime != ON)
   PSUVoltage = (int)reading[BUS].voltage * 100;
   PSUCurrent = (int)reading[BUS].current + 2048;
 	  
+  if (payload == ON)
+	  STEMBoardFailure = 0;
+	  
 /*  
   posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
   posXi = 110, negXi = 120, posYi = 130, negYi = 140, posZi = 150, negZi = 160;
