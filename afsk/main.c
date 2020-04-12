@@ -283,20 +283,20 @@ int main(int argc, char *argv[]) {
   }
 	
 // Open configuration file with callsign and reset count	
-  FILE* config_file = fopen("sim.cfg","r"); 
+  FILE* config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
   if (config_file == NULL) 
   { 
        printf("Creating config file."); 
-       config_file = fopen("sim.cfg","w");
+       config_file = fopen("/home/pi/CubeSatSim/sim.cfg","w");
 	fprintf(config_file, "%s %d", " ", 100);
 	fclose(config_file);
-	config_file = fopen("sim.cfg","r"); 
+	config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
   } 
 	
   char* cfg_buf[100]; 
   fscanf(config_file, "%s %d", call, &reset_count);
   fclose(config_file);
-  printf("Config file sim.cfg contains %s %d\n", call, reset_count); 	
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d\n", call, reset_count); 	
   reset_count = (reset_count + 1) % 0xffff;
 	
   wiringPiSetup ();
