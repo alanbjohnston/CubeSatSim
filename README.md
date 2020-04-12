@@ -74,7 +74,7 @@ Then type:
 
 Where <branch> is the name of this branch of the software, type:
 
-`git checkout <branch>`
+`git checkout universal`
 
 Create a sim.cfg configuration file with your amateur radio callsign by typing:
      
@@ -83,6 +83,8 @@ Create a sim.cfg configuration file with your amateur radio callsign by typing:
 Compile the code:
 
 `make rebuild`
+
+`cd`
 
 `git clone https://www.github.com/wb2osz/direwolf`
 
@@ -98,7 +100,7 @@ Compile the code:
 
 Note that this last command may fail if you are using Raspbian Lite since there is no Desktop.
 
-`cd ~/CubeSatSim`
+`cd`
 
 `git clone https://github.com/F5OEO/rpitx.git`
 
@@ -108,7 +110,7 @@ Note that this last command may fail if you are using Raspbian Lite since there 
 
 (Takes a while).  It will prompt you if you want to modify /boot/config.txt file.  Type a `y` and the script will complete.
 
-`cd ~/CubeSatSim`
+`cd`
 
 `git clone https://github.com/alanbjohnston/pi-power-button.git`
 
