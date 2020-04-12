@@ -124,7 +124,7 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 float sleepTime;
 int sampleTime = 0;
 int cycle = OFF, cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff;
+int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
 
 struct SensorConfig {
@@ -449,7 +449,7 @@ else
  if (!ax5043)  // don't test if AX5043 is present
  {
   int uart_fd;
-  int payload = OFF;
+  payload = OFF;
 
   if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
   {
