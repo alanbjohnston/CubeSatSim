@@ -7,4 +7,4 @@ Type=simple
 ExecStart=/home/pi/CubeSatSim/demo.sh > /home/pi/CubeSatSim/log.txt 2>&1
  
 [Install]
-WantedBy=custom.target
+WantedBy=default.target
