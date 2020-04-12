@@ -125,6 +125,8 @@ To make the demo.sh script run automatically on boot:
 
 `sudo systemctl enable cubesatsim`
 
+`sudo systemctl start cubesatsim`
+
 Now reboot for all the changes to take effect:
 
 `sudo reboot now`
