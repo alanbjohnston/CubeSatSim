@@ -2,6 +2,8 @@
 
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
+There are several hardware versions and software branches to go with them - see below for information.
+
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (doesn't work on Pi 4 since rpitx doesn't work on it yet):
 Requires:
 - Raspbian Stretch or Buster, full desktop or Lite 
@@ -72,9 +74,7 @@ Then type:
 
 `cd CubeSatSim`
 
-Where <branch> is the name of this branch of the software, type:
-
-`git checkout universal`
+`git checkout master`
 
 Create a sim.cfg configuration file with your amateur radio callsign by typing:
      
@@ -140,3 +140,10 @@ After rebooting, it will start unless you disable it:
 `sudo systemctl disable cubesatsim`
 
 See the Wiki for more details https://github.com/alanbjohnston/CubeSatSim/wiki
+
+Older Versions
+
+There are several versions of the hardware and software to go with them:
+
+- The original design used a Digital Transceiver Board for the Raspberry Pi (DigitalTxRxRPi) and APRS AFSK 1200 bps telemetry only.  Use the aprs-digitaltxrx branch for this and the vB2 wiki page https://github.com/alanbjohnston/CubeSatSim/wiki/vB2-Home
+- An updated design that used the Transmitter/Filter Board (TFB) instead of the the Transceiver Board.  For the same APRS AFSK telemetry, use the aprs-rpitx branch and the vB3 wiki page https://github.com/alanbjohnston/CubeSatSim/wiki/vB3-Home.  Note that this hardware can still use the master code branch.
