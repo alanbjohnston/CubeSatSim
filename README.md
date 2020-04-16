@@ -74,7 +74,7 @@ Then type:
 
 `cd CubeSatSim`
 
-`git checkout universal`
+`git checkout master`
 
 Create a sim.cfg configuration file with your amateur radio callsign by typing:
      
