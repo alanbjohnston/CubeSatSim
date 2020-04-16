@@ -1,19 +1,29 @@
 #!/bin/bash
 
-echo -e "\nDemo of CubeSatSim sends AFSK telemetry at 440 MHz continuously\n\n"
+echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
-sleep 30
+#exit
 
-#echo 'sleep over' >> /home/pi/CubeSatSim/log.txt
+y=$(last reboot | grep ^reboot | wc -l)
+echo $y
 
-echo $(date '+%Y %b %d %H:%M') Starting Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
+if (( $y % 2 == 0 )) 
+then
+	echo -e "\n Continuous FSK Mode\n\n"
+	/home/pi/CubeSatSim/radioafsk f
+else
 
-/home/pi/CubeSatSim/radioafsk >> /home/pi/CubeSatSim/log.txt 
-#/home/pi/DigitalTxRxRPi/testafsktx  >> /home/pi/CubeSatSim/log.txt
-
-echo $(date '+%Y %b %d %H:%M') Stopping Hostname $HOSTNAME  >> /home/pi/CubeSatSim/log.txt
-
-#/home/pi/mopower/mpcmd LED_STAT=0
-#sleep 30
-
-#/home/pi/CubeSatSim/configax
+	echo -e "\n Alternating FSK, BPSK, and AFSK telemetry Mode \n\n"
+      	/home/pi/CubeSatSim/radioafsk afsk 5 y
+	while true; do
+       		echo -e "\n Changing mode ******\n\n"
+ 		/home/pi/CubeSatSim/radioafsk fsk 5 n
+		/home/pi/CubeSatSim/radioafsk bpsk 5 n
+#		sleep 24 
+		sleep 1 
+		sudo killall -9 sendiq
+		sudo killall -9 sendiq
+		sleep 1
+		/home/pi/CubeSatSim/radioafsk afsk 5 n
+	done
+fi

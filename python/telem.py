@@ -14,10 +14,18 @@ ina44p = 0
 ina45v = 0
 ina45i = 0
 ina45p = 0
-ina4av = 0
-ina4ai = 0
-ina4ap = 0
-
+ina403v = 0
+ina403i = 0
+ina403p = 0
+ina413v = 0
+ina413i = 0
+ina413p = 0
+ina443v = 0
+ina443i = 0
+ina443p = 0
+ina453v = 0
+ina453i = 0
+ina453p = 0
 FAIL = -1
 
 try:
@@ -75,21 +83,57 @@ if INA219DISABLE !=1:
     except:
         FAIL = 1
     try:
-        ina4a = INA219(SHUNT_OHMS, MAX_EXPECTED_AMPS, 0x4a)        
-        ina4a.wake();
-        ina4a.configure(ina4a.RANGE_16V)
-        ina4a.busnum = 1;
-        ina4av = ina4a.voltage()
-        ina4ai = ina4a.current()
-        ina4ap = ina4a.power()
-        ina4a.sleep();
+        ina403 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x40)
+        ina403.wake();
+        ina403.configure(ina403.RANGE_16V)
+        ina403.busnum = 3;
+        ina403v = ina403.voltage()
+        ina403i = ina403.current()
+        ina403p = ina403.power()
+        ina403.sleep();
+    except:
+        FAIL = 1
+    try:
+        ina413 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x41)
+        ina413.wake();
+        ina413.configure(ina413.RANGE_16V)
+        ina413.busnum = 3;
+        ina413v = ina413.voltage()
+        ina413i = ina413.current()
+        ina413p = ina413.power()
+        ina413.sleep();
+    except:
+        FAIL = 1	
+    try:
+        ina443 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x44)
+        ina443.wake();
+        ina443.configure(ina443.RANGE_16V)
+        ina443.busnum = 3;
+        ina443v = ina443.voltage()
+        ina443i = ina443.current()
+        ina443p = ina443.power()
+        ina443.sleep();
+    except:
+        FAIL = 1
+    try:
+        ina453 = INA219(SHUNT_OHMS45, MAX_EXPECTED_AMPS45, 0x45)
+        ina453.wake();
+        ina453.configure(ina453.RANGE_16V)
+        ina453.busnum = 3;
+        ina453v = ina453.voltage()
+        ina453i = ina453.current()
+        ina453p = ina453.power()
+        ina453.sleep();
     except:
         FAIL = 1
 if INA219DISABLE !=1:
 	print
 	print "+X (0x40) v=",ina40v, "V i=", ina40i, "mA p=", ina40p, "mW "
 	print "+Y (0x41) v=",ina41v, "V i=", ina41i, "mA p=", ina41p, "mW "
-	print "+Z (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
+	print "5V Supply (0x44) v=",ina44v, "V i=", ina44i, "mA p=", ina44p, "mW "
 	print "Battery (0x45) v=",ina45v, "V i=", ina45i, "mA p=", ina45p, "mW "
-	print "5V Supply(0x4a) v=",ina4av, "V i=", ina4ai, "mA p=", ina4ap, "mW "
+	print "+Z (0x40 3) v=",ina403v, "V i=", ina403i, "mA p=", ina403p, "mW "
+	print "-X (0x41 3) v=",ina413v, "V i=", ina413i, "mA p=", ina413p, "mW "
+	print "-Y (0x44 3) v=",ina443v, "V i=", ina443i, "mA p=", ina443p, "mW "
+	print "-Z (0x45 3) v=",ina453v, "V i=", ina453i, "mA p=", ina453p, "mW "
 	print
