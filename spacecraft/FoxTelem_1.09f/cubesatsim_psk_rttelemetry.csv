@@ -1,0 +1,61 @@
+60,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+0,realTime,BATT_A_V,12,V,4,NONE,4,1,3,Cell A,Battery pair A voltage (0-2.5V scale)
+1,realTime,BATT_B_V,12,V,4,NONE,4,2,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
+2,realTime,BATT_V,12,V,cubesatsim_ina219_voltage,Battery,4,1,3,Cell A + B + C,Cell A + B + C,Battery A+B+C voltage (0-5.0V scale)
+3,realTime,battAtemp,12,C,8,NONE,4,4,3,Temperature A,Battery pair A temperature
+4,realTime,battBtemp,12,C,8,NONE,4,5,3,Temperature B,Battery pair B temperature
+5,realTime,battCtemp,12,C,8,NONE,4,6,3,Temperature C,Battery pair C temperature
+6,realTime,battCurr,12,mA,cubesatsim_ina219_current,Battery,4,2,4,Current,Total Battery DC current
+7,realTime,battCardTemp,12,C,8,NONE,4,8,3,Board Temp,Battery Card Temperature
+8,realTime,posXv,12,V,cubesatsim_ina219_voltage,+X Panel,8,1,3,Voltage,+X solar Panel voltage
+9,realTime,posYv,12,V,cubesatsim_ina219_voltage,+Y Panel,9,1,3,Voltage,+Y solar Panel voltage
+10,realTime,posZv,12,V,cubesatsim_ina219_voltage,+Z Panel,10,1,3,Voltage,+Z solar Panel voltage
+11,realTime,negXv,12,V,cubesatsim_ina219_voltage,-X Panel,11,1,3,Voltage,-X solar Panel voltage
+12,realTime,negYv,12,V,cubesatsim_ina219_voltage,-Y Panel,12,1,3,Voltage,-Y solar Panel voltage
+13,realTime,negZv,12,V,cubesatsim_ina219_voltage,-Z Panel,13,1,3,Voltage,-Z solar Panel voltage
+14,realTime,posXi,12,mA,cubesatsim_ina219_current,+X Panel,8,2,4,Current,+X solar Panel current
+15,realTime,posYi,12,mA,cubesatsim_ina219_current,+Y Panel,9,2,4,Current,+Y solar Panel current
+16,realTime,posZi,12,mA,cubesatsim_ina219_current,+Z Panel,10,2,4,Current,+Z solar Panel current
+17,realTime,negXi,12,mA,cubesatsim_ina219_current,-X Panel,11,2,4,Current,-X solar Panel current
+18,realTime,negYi,12,mA,cubesatsim_ina219_current,-Y Panel,12,2,4,Current,-Y solar Panel current
+19,realTime,negZi,12,mA,cubesatsim_ina219_current,-Z Panel,13,2,4,Current,-Z solar Panel current
+20,realTime,PSUVoltage,12,V,cubesatsim_ina219_voltage,PSU,5,2,3,Board Voltage,Power Supply Voltage
+21,realTime,spin,12,rpm,12,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
+22,realTime,TxPAi,12,mA,38,Radio,1,2,3,PA Current,Transmit power amplifier current
+23,realTime,TxTemp,12,C,37,Radio,1,1,3,TX Temperature,Transmitter card temperature
+24,realTime,FwdPower,12,mW,40,Radio,1,4,3,Fwd Power,Receiver card temperature
+25,realTime,rssi,12,dBm,14,Radio,1,3,3,RSSI,Received Signal Strength Indication
+26,realTime,IHUcpuTemp,12,C,cubesatsim_temperature,Computer Hardware,2,1,3,Temperature,Internal Temperature of IHU
+27,realTime,SatelliteXAxisAngularVelocity,12,dps,13,+X Panel,8,3,3,Rotation,Angular Veolcity around X Axis
+28,realTime,SatelliteYAxisAngularVelocity,12,dps,13,+Y Panel,9,3,3,Rotation,Angular Veolcity around Y Axis
+29,realTime,SatelliteZAxisAngularVelocity,12,dps,13,+Z Panel,10,3,3,Rotation,Angular Veolcity around Z Axis
+30,realTime,Exp4Temp,12,C,7,Experiments,6,1,3,EXP4 Temp,Experiment 4 card temperature
+31,realTime,PSUCurrent,12,mA,cubesatsim_ina219_current,PSU,5,1,3,Current,Power Supply DC Current
+32,realTime,ReflectedPwr,12,mW,41,Radio,1,5,3,Ref Power,Reflected Power from the Transmit Antenna
+33,realTime,ICR3V,12,V,43,Command Receiver (ICR),7,1,3,3V,ICR 3V
+34,realTime,ICR3VProt,12,V,43,Command Receiver (ICR),7,2,3,3V Prot,ICR 3V Proteted
+35,realTime,ICR2dot5V,12,V,43,Command Receiver (ICR),7,3,3,2.5V,ICR 2.5V
+36,realTime,ICR2dot5VProt,12,V,43,Command Receiver (ICR),7,4,3,2.5V Prot,ICR 2.5V Protected
+37,realTime,rf6,12,-,0,NONE,0,0,0,None,None
+38,realTime,rf7,12,-,0,NONE,0,0,0,None,None
+39,realTime,MuxTest,12,V,43,Command Receiver (ICR),7,5,3,Sensor Power,Sensor Power Voltage at the ICR
+40,realTime,LtVGACtl,12,V,42,Radio,1,6,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
+41,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
+42,realTime,IHUdiagData,32,-,18,Computer Software,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
+43,realTime,expFailure0,1,-,17,Experiments,6,2,0,Vanderbilt Radiation,Vanderbilt University Vulcan Experiment Indicator
+44,realTime,expFailure1,1,-,17,Experiments,6,3,0,Exp 1,Experiment 1 Failure Indicator
+45,realTime,expFailure2,1,-,17,Experiments,6,4,0,Exp 2,Experiment 2 Failure Indicator
+46,realTime,expFailure3,1,-,17,Experiments,6,5,0,Exp 3,Experiment 3 Failure Indicator
+47,realTime,I2CfailureBatt,1,-,17,Computer Hardware,2,2,0,Battery I2C,Battery I2C Bus failure indicator
+48,realTime,I2CfailurePSU1,1,-,17,Computer Hardware,2,3,0,PSU1 I2C,PSU2 I2C Bus failure indicator
+49,realTime,I2CfailurePSU2,1,-,17,Computer Hardware,2,4,0,PSU2 I2C,PSU2 I2C Bus failure indicator
+50,realTime,TLMresets,4,-,1,Computer Hardware,2,6,0,Ground Resets,Number of times command stations reset stored telemetry
+51,realTime,RxAntDeploy,1,-,16,Radio,1,8,0,RX Antenna,2m Antenna status
+52,realTime,TxAntDeploy,2,-,16,Radio,1,7,0,TX Antenna,70cm Antenna status
+53,realTime,I2CfailureRF,1,-,17,Computer Hardware,2,5,0,RF I2C,RF I2C Bus failure indicator
+54,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
+55,realTime,wodSize,8,000s,36,Computer Software,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
+56,realTime,swCmds,32,-,35,Command Receiver (ICR),7,6,0,Diagnostic,ICR Diagnostic information
+57,realTime,hwCmdCnt,6,-,1,Command Receiver (ICR),7,7,0,HW Command Count,Number of hardware commands since last reset
+58,realTime,swCmdCnt,6,-,1,Command Receiver (ICR),7,8,0,SW Command Count,Number of software commands since last reset
+59,realTime,pad2,28,-,0,NONE,0,0,0,NONE,Filler

@@ -18,8 +18,11 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+//#include <curl/curl.h>
 #include "ax25.h"
 #include <string.h>
+#include <time.h>
+#include <stdio.h>
 #include "ax5043.h"
 #include "status.h"
 
@@ -88,6 +91,51 @@ int ax25_tx_frame(ax25_conf_t *hax25, ax5043_conf_t *hax,
 
     memcpy(__tx_buffer, hax25->addr_field, hax25->addr_field_len);
     memcpy(__tx_buffer + hax25->addr_field_len, payload, len);
+   
+#ifdef SATNOGS
+    printf("\n");
+    char post_data[1024];
+    char hex_data[512];
+    char hex_octet[4];
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    memset(post_data,0,strlen(post_data));
+    memset(hex_data,0,strlen(hex_data));
+    //printf("1:%s\n",post_data);
+
+    int jj;
+    for(jj = 0; jj < 118; jj++) {
+        sprintf(hex_octet, "%02x",__tx_buffer[jj]);
+        strcat(hex_data, hex_octet); 
+    }  // Note assumes EDT, change offset (+4) to UTC 
+/*
+  sprintf(post_data,"noradID=99999&source=KU2Y&timestamp=%d-%d-%dT%d:%d:%d.500Z&frame=%s&locator=longLat&longitude=75.3492W&latitude=40.0376N&&azimuth=360&elevation=90.0", tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday, (tm.tm_hour + 4) % 24, tm.tm_min, tm.tm_sec, hex_data);
+
+        printf("curl post data: %s\n",post_data);
+
+  CURL *curl;
+  CURLcode res;
+ 
+  curl_global_init(CURL_GLOBAL_ALL);
+  curl = curl_easy_init();
+  if(curl) {
+    //curl_easy_setopt(curl, CURLOPT_URL, "https://example.com");
+    curl_easy_setopt(curl, CURLOPT_URL, "https://db.satnogs.org/api/telemetry/");
+    curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data);
+ 
+     curl_easy_setopt(curl, CURLOPT_POSTFIELDSIZE, (long)strlen(post_data));
+
+    curl_easy_setopt(curl, CURLOPT_FOLLOWLOCATION, 1L);
+ 
+    res = curl_easy_perform(curl);
+    if(res != CURLE_OK)
+      fprintf(stderr, "ERROR: AX25.C curl_easy_perform() failed: %s\n",
+                        curl_easy_strerror(res));
+ 
+    curl_easy_cleanup(curl); 
+  }
+  */
+#endif        
 
     return ax5043_tx_frame(hax, __tx_buffer, len + hax25->addr_field_len,
             hax25->preamble_len, hax25->postable_len, 1000);

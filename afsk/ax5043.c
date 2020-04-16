@@ -1071,7 +1071,9 @@ int ax5043_wait_for_transmit() {
                 /* tx is done */
                 __tx_frame_end(__ax5043_conf);
                 transmittedPostamble = 0;
-                printf("INFO: TX done\n");
+                #ifdef DEBUG_LOGGING
+                  printf("INFO: TX done\n");
+                #endif
                 return PQWS_SUCCESS;
             }
     
@@ -1130,7 +1132,9 @@ int ax5043_wait_for_transmit() {
             if (radiostate == 0) {
                 /* tx is done */
                 __tx_active = 0;
-                printf("INFO: TX done\n");
+                #ifdef DEBUG_LOGGING
+                  printf("INFO: TX done\n");
+                #endif
             }
         }
     }

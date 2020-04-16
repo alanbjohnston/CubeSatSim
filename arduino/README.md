@@ -1,12 +1,32 @@
-This code is used on an Arduino acting as a payload to the CubeSat Simulator.
+This code is used on the STM32 acting a payload to the CubeSat Simulator.
 
-The Arduino is on the Raspberry Pi i2c bus 0, address 0x4b
+The interface is via the Serial1 port on the STM32 (pins PA9 and PA10) and the Raspberry Pi UART (pins 8 and 10)
 
-The 2c_master_register_read.ino code emulates the register reading of the Raspberry Pi.  You can connect two Arduinos back-to-back to show this.
+The STM32 can be programmed using the Arduino IDE with the Generic STM32F103C series board and STM32duino bootloader, Maple Mini port.
 
-The i2c_slave_register_read.ino code responds to register reads from a bus master such as another Arduino or the Raspberry Pi
+On the Raspberry Pi, to enable the UART:
 
-The i2c_slave_with_sensor_reading.ino code responds to register reads from a bus master and has placeholders for reading a sensor.
+sudo nano /boot/config.txt
+
+Add the following line:
+
+dtoverlay=pi3-miniuart-bt
+
+Edit cmdline.txt:
+
+sudo nano /boot/cmdline.txt
+
+Remove the following text in cmdline.txt to prevent a console from running on the serial port:
+
+console=serial0,115200
+
+then reboot.  You can test it with minicom:
+
+sudo apt-get install minicom
+
+minicom -b 9600 -o -D /dev/serial0
+
+Type Control-A, then X, then Return to exit.
 
 See https://github.com/alanbjohnston/CubeSatSim/wiki/Arduino-Payload for ideas on using the Arduino as a payload for the CubeSat Simulator.
 
