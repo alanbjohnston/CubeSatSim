@@ -130,3 +130,4 @@ After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive 
 
 
 See the Wiki for more details https://github.com/alanbjohnston/CubeSatSim/wiki
+Changed
