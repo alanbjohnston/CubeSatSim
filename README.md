@@ -36,3 +36,4 @@ This repository contains:
  - demo.sh - a shell script to run the Simulator on boot using systemd (see https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install#autoboot-configuration for how to configure the Pi)
 
 See the Wiki for more details https://github.com/alanbjohnston/CubeSatSim/wiki
+Changed
