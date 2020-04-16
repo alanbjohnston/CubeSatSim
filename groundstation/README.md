@@ -1,4 +1,4 @@
-These files relate to the optional Raspberry Pi Ground Station.
+The files relate to the optional Raspberry Pi Ground Station.
 
 The Ground Station can be installed on any Windows or Linux PC or laptop, but it does require drivers to be installed (RTL-SDR)
 and virtual audio cable (for sound) to be installed.  This requires administrator privileges on the computer.

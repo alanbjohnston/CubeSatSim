@@ -90,8 +90,6 @@ int testCount = 0;
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
-
-
 #define FSK 0
 #define BPSK 1
 #define AFSK 2

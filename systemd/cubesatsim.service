@@ -1,10 +1,13 @@
 [Unit]
-Description=My last command
-After=multi-user.target
+Description=My service
 
 [Service]
-Type=simple
 ExecStart=/home/pi/CubeSatSim/demo.sh > /home/pi/CubeSatSim/log.txt 2>&1
- 
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
 [Install]
 WantedBy=default.target
