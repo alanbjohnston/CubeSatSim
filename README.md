@@ -23,6 +23,7 @@ To hear AFSK telemetry (X.25 data), your radio or SDR to 434.9 MHz FM, and you s
 
 This code uses the Brandenburg Tech Digital Transceiver, based on DigitalTxRxRP  https://brandenburgtech.wordpress.com/ If you don't have the SPI Interface enabled and the board plugged in, you will get an error.
 
+Changed
 This repository contains:
      
   - afsk - Code that sends telemetry in 1k2 AFSK X.25 format
