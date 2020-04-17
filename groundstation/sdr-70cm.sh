@@ -16,4 +16,4 @@ cd ~/openwebrx
 
 chromium-browser http://localhost:8073 &
 
-sudo python openwebrx.py config_webrx_440
+sudo python openwebrx.py config_webrx_435
