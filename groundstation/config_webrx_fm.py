@@ -40,13 +40,13 @@ server_hostname="localhost" # If this contains an incorrect value, the web UI ma
 max_clients=20
 
 # ==== Web GUI configuration ====
-receiver_name="AMSATCubeSat Simulator Ground Station"
+receiver_name="ARISS Ground Station"
 receiver_location=""
 receiver_qra=""
 receiver_asl=0
 receiver_ant="monopole"
 receiver_device="RTL-SDR"
-receiver_admin="ku2y@amsat.org"
+receiver_admin=""
 receiver_gps=(39.0302,-77.0747)
 photo_height=350
 photo_title="ARISS - Amateur Radio on the International Space Station"
@@ -74,7 +74,7 @@ fft_voverlap_factor=0.3 #If fft_voverlap_factor is above 0, multiple FFTs will b
 samp_rate = 250000
 # samp_rate = 2400000
 center_freq = 128000000
-rf_gain = 37 #in dB. For an RTL-SDR, rf_gain=0 will set the tuner to auto gain mode, else it will be in manual gain mode.
+rf_gain = 6 #in dB. For an RTL-SDR, rf_gain=0 will set the tuner to auto gain mode, else it will be in manual gain mode.
 ppm = 0
 
 audio_compression="adpcm" #valid values: "adpcm", "none"
