@@ -607,8 +607,8 @@ while (loop-- != 0)
 	sleep(loop_count);
 	printf("Done sleeping\n");
   }
-  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
-  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+//  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
+  int transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
   transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
   transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 
