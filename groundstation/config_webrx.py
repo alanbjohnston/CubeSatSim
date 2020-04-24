@@ -16,7 +16,6 @@ config_webrx: configuration options for OpenWebRX
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU Affero General Public License for more details.
-
     You should have received a copy of the GNU Affero General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -73,8 +72,8 @@ fft_voverlap_factor=0.3 #If fft_voverlap_factor is above 0, multiple FFTs will b
 
 samp_rate = 250000
 # samp_rate = 2400000
-center_freq = 440450000
-rf_gain = 37 #in dB. For an RTL-SDR, rf_gain=0 will set the tuner to auto gain mode, else it will be in manual gain mode.
+center_freq = 434950000
+rf_gain = 7 #in dB. For an RTL-SDR, rf_gain=0 will set the tuner to auto gain mode, else it will be in manual gain mode.
 ppm = 0
 
 audio_compression="adpcm" #valid values: "adpcm", "none"
