@@ -4,16 +4,13 @@
 
 echo -e "\nKilling all SDR or RTL processes \n"
 
-# kill rtl if running
-ps -ef | grep rtl_ | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1 
+sudo killall -9 csdr
 
-# kill openwebrx process if running
-ps -ef | grep openwebrx | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1
+sudo killall -9 openwebrx
 
-# kill csdr process if running
-ps -ef | grep csdr | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1
+sudo killall -9 rtl_tcp
 
-# kill gqrx process if running
-ps -ef | grep gqrx-sdr-2.11.5-linux-rpi3/gqrx | grep -v grep | awk '{print $2}' | sudo xargs kill > /dev/null 2>&1
+sudo fuser -k 8073/tcp
 
+sudo killall -9 FoxTelem
 
