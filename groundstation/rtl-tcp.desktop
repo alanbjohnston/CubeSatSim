@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/rtl-tcp.sh
+Name=RTL-TCP
+Comment=RTL-TCP for SDR#
+Icon=/home/pi/Downloads/rtl-tcp.jpeg
+Path=/home/pi
+Terminal=true
+Categories=HamRadio
+Keywords=Ham Radio;RTL-SDR
