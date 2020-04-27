@@ -498,7 +498,7 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
 {
   char cw_str[200];
   char cw_header[] = "echo 'de ";
-  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
 
   strcpy(cw_str, cw_header);
 //printf("Before 1st strcpy\n");
