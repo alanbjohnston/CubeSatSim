@@ -508,10 +508,10 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
 //printf("Before 1st strcpy\n");
-//printf("CW String: %s\n", cw_str);
+printf("CW String: %s\n", cw_str);
   pclose(popen(cw_str,"r"));  // execute command and wait for termination before continuing
-//printf("Before 1st strcpy\n");
-//  sleep(7);
+printf("After command\n");
+  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
 //printf("After Write\n");
