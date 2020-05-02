@@ -1250,7 +1250,7 @@ if (firstTime != ON)
 	
 // socket write
 
-  if (!socket_open)
+  if (!socket_open && transmit)
     {
     printf("Opening socket!\n");
     struct sockaddr_in address; 
