@@ -1320,6 +1320,11 @@ if (firstTime != ON)
 		//rpitxStatus = -1;
 	}
     }
+    if (!transmit)
+    {
+	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+    }
 //    digitalWrite (0, HIGH);
     firstTime = 0;
 
