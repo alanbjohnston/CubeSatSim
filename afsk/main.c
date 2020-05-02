@@ -1288,7 +1288,7 @@ if (firstTime != ON)
 	 socket_open = 1;
     }
 	
-    if (!error)
+    if (!error && transmit)
     {
 //	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis()-start);
