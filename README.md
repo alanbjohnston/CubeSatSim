@@ -86,7 +86,7 @@ Compile the code:
 
 `cd`
 
-`git clone https://www.github.com/wb2osz/direwolf`
+`git clone https://github.com/alanbjohnston/direwolf.git`
 
 `cd direwolf`
 
