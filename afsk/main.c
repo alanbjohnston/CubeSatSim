@@ -811,6 +811,11 @@ for (int j = 0; j < frameCnt; j++)
 	  	FILE* file2 = popen(str, "r"); 
       	  	pclose(file2);
 	  }
+	  else
+   	  {
+		fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+		fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+   	  }
     	  digitalWrite (txLed, txLedOff);
 	  sleep(3);
    	  digitalWrite (txLed, txLedOn);	  
@@ -1244,6 +1249,11 @@ if (firstTime != ON)
 //      fgets(cmdbuffer, 1000, txResult);
            pclose(txResult);
 	  }
+	  else
+          {
+	     fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+	     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+          }
       sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
@@ -1384,7 +1394,7 @@ return 0;
      update_rs(parity,data[i]);
      transmit_word(encode_8b10b(&state,data[i]);
    }
-   // Transmit the RS parities
+   // get the RS parities
    for(i=0;i<32;i++)
      transmit_word(encode_8b10b(&state,parity[i]);
 
