@@ -621,9 +621,9 @@ while (loop-- != 0)
 	printf("Done sleeping\n");
   }
 //  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
-  int transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
-  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
-  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
@@ -672,7 +672,7 @@ static int init_rf() {
 
 int get_tlm(void) {
 
-      FILE* transmit;
+      FILE* txResult;
 
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -1209,22 +1209,22 @@ if (firstTime != ON)
 // rpitx
 	
       char cmdbuffer[1000];
-      FILE* transmit;
+      FILE* txResult;
       if ((rpitxStatus != mode)) // || (mode == BPSK)) 
 	      
       {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
-//     	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+//     	  txResult = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
+      	  txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
 //	  printf("1\n");
 //          sleep(1);
-//     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+//     	  txResult = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
+      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
 //  digitalWrite (txLed, txLedOn);
 	      sleep(1);
-	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 	      
 //	  printf("3\n");
@@ -1234,15 +1234,15 @@ if (firstTime != ON)
 	  if (transmit)
 	  {
 	    if (mode == FSK)  {  
-      	 // 	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
-      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3&", "r"); 
+      	 // 	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3&", "r"); 
 //	  	printf("4\n");
            } else if (mode == BPSK) {
-//      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
-      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1&", "r"); 
+//      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1&", "r"); 
            }
-//      fgets(cmdbuffer, 1000, transmit);
-           pclose(transmit);
+//      fgets(cmdbuffer, 1000, txResult);
+           pclose(txResult);
 	  }
       sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
