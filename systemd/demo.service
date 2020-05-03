@@ -1,0 +1,15 @@
+  
+[Unit]
+Description=Test service
+
+[Service]
+EnvironmentFile=/home/pi/CubeSatSim/.progconfig
+ExecStart=/home/pi/CubeSatSim/demo.sh $ARG1
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=default.target
