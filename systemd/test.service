@@ -1,7 +1,7 @@
 [Unit]
 Description=Test service
 
-[Service
+[Service]
 Environment="SCRIPT_ARGS=%I"
 ExecStart=/home/pi/CubeSatSim/radioafsk $SCRIPT_ARGS
 WorkingDirectory=/home/pi/CubeSatSim
