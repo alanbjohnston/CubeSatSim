@@ -1,0 +1,14 @@
+[Unit]
+Description=Test service
+
+[Service
+Environment="SCRIPT_ARGS=%I"
+ExecStart=/home/pi/CubeSatSim/radioafsk $SCRIPT_ARGS
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=default.target
