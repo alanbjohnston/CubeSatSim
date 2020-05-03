@@ -3,7 +3,7 @@ Description=Test service
 
 [Service]
 EnvironmentFile=/home/pi/CubeSatSim/.progconfig
-ExecStart=/home/pi/CubeSatSim/radioafsk $ARG1 $ARG2 >/home/pi/CubeSatSim/log.txt 2>&1
+ExecStart=/home/pi/CubeSatSim/radioafsk $ARG1 $ARG2 $ARG3
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
