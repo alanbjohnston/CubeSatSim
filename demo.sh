@@ -3,11 +3,14 @@
 echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
 if [ "$1" = "a" ]; then
-    echo "Mode is AFSK"
+    echo "Mode is continuous AFSK"
+    /home/pi/CubeSatSim/radioafsk afsk
 elif [ "$1" = "f" ]; then
-    echo "Mode is FSK"
+    echo "Mode is continuous FSK"
+    /home/pi/CubeSatSim/radioafsk fsk
 elif [ "$1" = "b" ]; then
-    echo "Mode is BPSK"
+    echo "Mode is continuous BPSK"
+    /home/pi/CubeSatSim/radioafsk bpsk
 fi
 
 #exit
