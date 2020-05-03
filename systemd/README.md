@@ -3,7 +3,7 @@ To make the CubeSat Simulator transmit automatically on boot, follow these steps
 
 Log into the Pi and type:
 
-sudo cp ~/CubeSatSim/cubesatsim.service /etc/systemd/system/cubesatsim.service
+sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
 sudo systemctl enable cubesatsim
 
