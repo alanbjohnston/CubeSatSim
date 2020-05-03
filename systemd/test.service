@@ -2,8 +2,9 @@
 Description=Test service
 
 [Service]
-Environment="SCRIPT_ARGS=%I"
-ExecStart=/home/pi/CubeSatSim/radioafsk $SCRIPT_ARGS
+EnvironmentFile=/home/pi/CubeSatSim/.progconfig
+ExecStart = /usr/bin/prog $ARG1 $ARG2
+ExecStart=/home/pi/CubeSatSim/radioafsk $ARG1 $ARG2
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
