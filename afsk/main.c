@@ -122,7 +122,7 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 float sleepTime;
 int sampleTime = 0;
 int cycle = OFF, cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
+int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
 
 struct SensorConfig {
@@ -329,6 +329,7 @@ int main(int argc, char *argv[]) {
 		mode = AFSK;
 		cycle = OFF;
 		printf("Mode AFSK with AX5043\n");  
+		transmit = TRUE;
 	  }	  
 	  else
 		printf("AX5043 not present!\n");
@@ -356,6 +357,7 @@ int main(int argc, char *argv[]) {
 	  onLed = 0;
           onLedOn = LOW;
 	  onLedOff = HIGH;
+	  transmit = TRUE;
     } else
     {
   	pinMode (3, INPUT);
@@ -372,6 +374,7 @@ int main(int argc, char *argv[]) {
           onLedOn = HIGH;
 	  onLedOff = LOW;
 	  batteryThreshold = 3.0;
+	  transmit = TRUE;
   	}
 	else
 	{
@@ -389,7 +392,8 @@ int main(int argc, char *argv[]) {
           		onLedOn = HIGH;
 	  		onLedOff = LOW;
 	  		batteryThreshold = 3.0;
-  		}
+	  		transmit = TRUE;
+		}
 	}
     }
   }	
@@ -492,13 +496,19 @@ else
 
   tx_freq_hz -= tx_channel * 50000;
 	
+   if (transmit == FALSE)
+   {
+	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+   }
+	
 // Send ID in CW (Morse Code)
 
 if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
 {
   char cw_str[200];
   char cw_header[] = "echo 'de ";
-  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
 
   strcpy(cw_str, cw_header);
 //printf("Before 1st strcpy\n");
@@ -507,11 +517,14 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
   strcat(cw_str, cw_footer);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
-//printf("Before 1st strcpy\n");
+printf("Before cmd\n");
 //printf("CW String: %s\n", cw_str);
-  popen(cw_str,"r");
-//printf("Before 1st strcpy\n");
-  sleep(6);
+//	FILE* f;
+	system(cw_str);
+//	printf("File %d \n", f);
+//  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
+printf("After command\n");
+//  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
 //printf("After Write\n");
@@ -608,9 +621,9 @@ while (loop-- != 0)
 	printf("Done sleeping\n");
   }
 //  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
-  int transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
-  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
-  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
@@ -659,7 +672,7 @@ static int init_rf() {
 
 int get_tlm(void) {
 
-      FILE* transmit;
+      FILE* txResult;
 
 for (int j = 0; j < frameCnt; j++)	
 {	
@@ -793,8 +806,16 @@ for (int j = 0; j < frameCnt; j++)
      	  strcat(str, call);
 	  strcat(str,footer_str);
 	  fprintf(stderr, "String to execute: %s\n", str);
-	  FILE* file2 = popen(str, "r"); 
-      	  pclose(file2);
+	  if (transmit)
+	  {
+	  	FILE* file2 = popen(str, "r"); 
+      	  	pclose(file2);
+	  }
+	  else
+   	  {
+		fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+		fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+   	  }
     	  digitalWrite (txLed, txLedOff);
 	  sleep(3);
    	  digitalWrite (txLed, txLedOn);	  
@@ -1193,44 +1214,53 @@ if (firstTime != ON)
 // rpitx
 	
       char cmdbuffer[1000];
-      FILE* transmit;
+      FILE* txResult;
       if ((rpitxStatus != mode)) // || (mode == BPSK)) 
+	      
       {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
-//     	  transmit = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  transmit = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+//     	  txResult = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
+      	  txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
 //	  printf("1\n");
 //          sleep(1);
-//     	  transmit = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  transmit = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+//     	  txResult = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
+      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
 //	  printf("2\n");
 //  digitalWrite (txLed, txLedOn);
 	      sleep(1);
-	  transmit = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
 	  socket_open = 0;
 	      
 //	  printf("3\n");
           sleep(1);
 //  digitalWrite (txLed, txLedOff);
-	      
-	  if (mode == FSK)  {  
-      	 // 	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
-      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3&", "r"); 
+	  
+	  if (transmit)
+	  {
+	    if (mode == FSK)  {  
+      	 // 	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3&", "r"); 
 //	  	printf("4\n");
-         } else if (mode == BPSK) {
-//      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
-      	  	transmit = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1&", "r"); 
-       }
-//      fgets(cmdbuffer, 1000, transmit);
-      pclose(transmit);
+           } else if (mode == BPSK) {
+//      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1&", "r"); 
+           }
+//      fgets(cmdbuffer, 1000, txResult);
+           pclose(txResult);
+	  }
+	  else
+          {
+	     fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+	     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+          }
       sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
 	
 // socket write
 
-  if (!socket_open)
+  if (!socket_open && transmit)
     {
     printf("Opening socket!\n");
     struct sockaddr_in address; 
@@ -1268,7 +1298,7 @@ if (firstTime != ON)
 	 socket_open = 1;
     }
 	
-    if (!error)
+    if (!error && transmit)
     {
 //	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis()-start);
@@ -1289,6 +1319,11 @@ if (firstTime != ON)
 		socket_open = 0;
 		//rpitxStatus = -1;
 	}
+    }
+    if (!transmit)
+    {
+	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
     }
 //    digitalWrite (0, HIGH);
     firstTime = 0;
@@ -1364,7 +1399,7 @@ return 0;
      update_rs(parity,data[i]);
      transmit_word(encode_8b10b(&state,data[i]);
    }
-   // Transmit the RS parities
+   // get the RS parities
    for(i=0;i<32;i++)
      transmit_word(encode_8b10b(&state,parity[i]);
 
