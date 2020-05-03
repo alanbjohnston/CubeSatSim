@@ -2,6 +2,14 @@
 
 echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
+if [ "$1" = "a" ]; then
+    echo "Mode is AFSK"
+elif [ "$1" = "f" ]; then
+    echo "Mode is FSK"
+elif [ "$1" = "b" ]; then
+    echo "Mode is BPSK"
+fi
+
 #exit
 
 y=$(last reboot | grep ^reboot | wc -l)
