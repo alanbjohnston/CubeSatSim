@@ -129,10 +129,12 @@ Now reboot for all the changes to take effect:
 
 `sudo reboot now`
 
-After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSatSim!  The green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
+After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should get a signal from the CubeSatSim!  If you just have a Pi, you will only hear your Morse Code (CW) callsign - no telemetry signal will be transmitted, since there is no Band Pass Filter installed to block interfering transmissions.  If you have built the Main Board or the TFB and it is plugged into your Pi, you will hear telemetry readio signals.
+
+On the Main Board, the green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
 
 The demo.sh script alternates between two modes:
-1. Continuous FSK telmetry, decodeable by FoxTelem
+1. Continuous DUV FSK telmetry, decodeable by FoxTelem
 2. Alternativing between APRS AFSK, FSK, and BPSK telemetry
 
 Pressing and releasing the push button will cause the Pi to reboot and change mode.  The green LED will go off as it reboots.
