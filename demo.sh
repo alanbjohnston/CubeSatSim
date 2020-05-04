@@ -4,12 +4,24 @@ echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
 if [ "$1" = "a" ]; then
     echo "Mode is continuous AFSK"
+    sleep 1 
+    sudo killall -9 sendiq
+    sudo killall -9 sendiq
+    sleep 1    
     /home/pi/CubeSatSim/radioafsk afsk
 elif [ "$1" = "f" ]; then
     echo "Mode is continuous FSK"
+    sleep 1 
+    sudo killall -9 sendiq
+    sudo killall -9 sendiq
+    sleep 1
     /home/pi/CubeSatSim/radioafsk fsk
 elif [ "$1" = "b" ]; then
     echo "Mode is continuous BPSK"
+    sleep 1 
+    sudo killall -9 sendiq
+    sudo killall -9 sendiq
+    sleep 1   
     /home/pi/CubeSatSim/radioafsk bpsk
 fi
 
