@@ -8,7 +8,9 @@ echo -e "IP Address to use in web browsers is: "
 hostname -I|cut -f1 -d ' '
 
 
-./kill_all.sh
+#./kill_all.sh
+
+sudo sytemctl stop rtl_tcp
 
 #cd ~/openwebrx
 
