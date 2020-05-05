@@ -7,8 +7,9 @@ echo -e "\nScript to run RTL-TCP Server for ARISS Ground Station\n"
 
 echo -e "IP Address to use in web browsers is: "
 
-hostname -I|cut -f1 -d ' '
+#hostname -I|cut -f1 -d ' '
 
 /home/pi/kill_all.sh
 
-/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")
+#/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")
+sudo systemctl start rtl_tcp
