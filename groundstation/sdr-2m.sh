@@ -10,7 +10,7 @@ hostname -I|cut -f1 -d ' '
 
 #./kill_all.sh
 
-sudo systemctl stop rtl_sdr
+sudo systemctl stop rtl_tcp
 
 cd ~/openwebrx
 
