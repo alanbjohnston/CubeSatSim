@@ -11,4 +11,4 @@ hostname -I|cut -f1 -d ' '
 
 /home/pi/kill_all.sh
 
-sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
+/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")
