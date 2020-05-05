@@ -9,6 +9,6 @@ echo -e "IP Address to use in web browsers is: "
 
 hostname -I|cut -f1 -d ' '
 
-./kill_all.sh
+/home/pi/kill_all.sh
 
 sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
