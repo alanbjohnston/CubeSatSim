@@ -1,0 +1,13 @@
+[Unit]
+Description=RTL-TCP
+
+[Service]
+ExecStart=/home/pi/rtl-tcp.sh > /dev/null 2>&1
+WorkingDirectory=/home/pi
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=default.target
