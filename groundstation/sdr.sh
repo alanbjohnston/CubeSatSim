@@ -1,18 +1,19 @@
 #!/bin/bash
 # script to run OpenWebRX SDR
 
-echo -e "\nScript to run SDR for CubeSat Simulator\n"
+echo -e "\nScript to run SDR for ARISS Ground Station\n"
 
 echo -e "IP Address to use in web browsers is: "
 
 hostname -I|cut -f1 -d ' '
 
-# kill rtl if running
-ps -ef | grep rtl | grep -v grep | awk '{print $2}' | sudo xargs kill
 
-# kill openwebrx process if running
-ps -ef | grep openwebrx | grep -v grep | awk '{print $2}' | sudo xargs kill
+./kill_all.sh
 
-cd ~/openwebrx
+#cd ~/openwebrx
 
-sudo python openwebrx.py
+sudo systemctl start openwebrx
+
+chromium-browser http://localhost:8073 &
+
+#sudo python openwebrx.py config_webrx_145
