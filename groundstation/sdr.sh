@@ -14,7 +14,7 @@ sudo systemctl stop rtl_tcp
 
 #cd ~/openwebrx
 
-sudo systemctl start openwebrx
+sudo systemctl restart openwebrx
 
 chromium-browser http://localhost:8073 &
 
