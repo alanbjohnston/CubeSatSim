@@ -595,7 +595,7 @@ while (loop-- != 0)
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
 	  	  
-    if ((mode == AFSK) && (mode == CW))
+    if ((mode == AFSK) || (mode == CW))
     {
        get_tlm();
     }
