@@ -1,8 +1,10 @@
 [Unit]
-Description=My service
+Description=CubeSatSim demo service
 
 [Service]
-ExecStart=/home/pi/CubeSatSim/demo.sh > /home/pi/CubeSatSim/log.txt 2>&1
+TimeoutStopSec=5
+EnvironmentFile=/home/pi/CubeSatSim/.mode
+ExecStart=/home/pi/CubeSatSim/demo.sh $ARG1
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
