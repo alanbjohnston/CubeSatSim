@@ -90,9 +90,11 @@ int testCount = 0;
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
-#define FSK 0
-#define BPSK 1
-#define AFSK 2
+
+#define AFSK 1
+#define FSK 2
+#define BPSK 3
+#define CW 4
 
 int rpitxStatus = -1;
 
@@ -121,7 +123,7 @@ char call[5];
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
 float sleepTime;
 int sampleTime = 0;
-int cycle = OFF, cw_id = ON;
+int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
 
@@ -256,8 +258,8 @@ int main(int argc, char *argv[]) {
 	  }
 	  else if (*argv[1] == 'c')
 	  {
-		  cycle = ON;
-		  printf("Mode cycle on\n");
+		  mode = CW;
+		  printf("Mode CW\n");
 	  }
 	  else
 	  {
@@ -327,7 +329,7 @@ int main(int argc, char *argv[]) {
 		ax5043 = TRUE;
 		cw_id = OFF;
 		mode = AFSK;
-		cycle = OFF;
+//		cycle = OFF;
 		printf("Mode AFSK with AX5043\n");  
 		transmit = TRUE;
 	  }	  
@@ -402,8 +404,8 @@ int main(int argc, char *argv[]) {
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
 	
-    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
-      mode = (reset_count) % 3;  // alternate between the three modes	
+//    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
+//      mode = (reset_count) % 3;  // alternate between the three modes	
 	
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
@@ -498,6 +500,7 @@ else
 	
    if (transmit == FALSE)
    {
+	   
 	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
@@ -752,6 +755,7 @@ for (int j = 0; j < frameCnt; j++)
   char header_str[] = "\x03\xf0hi hi ";	
   char header_str3[] = "echo '";
   char header_str2[] = ">CQ:hi hi ";
+  char header_str4[] = "hi hi ";	
   char footer_str1[] = "\' > t.txt && echo \'"; 
   char footer_str[] = ">CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
 	
@@ -762,8 +766,14 @@ for (int j = 0; j < frameCnt; j++)
   else
   {
     strcpy(str, header_str3);
-    strcat(str, call);
-    strcat(str, header_str2);
+    if (mode != CW) 
+    {
+    	strcat(str, call);
+    	strcat(str, header_str2);
+    } else
+    {
+	strcat(str, header_str4);
+    }
   }
  
     int channel;
@@ -784,7 +794,7 @@ for (int j = 0; j < frameCnt; j++)
 
   strcpy(cw_str2, cw_header2);
 //printf("Before 1st strcpy\n");
-  strcat(cw_str2, tlm_str);
+  strcat(cw_str2, str);
 //printf("Before 1st strcpy\n");
   strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
@@ -792,6 +802,7 @@ for (int j = 0; j < frameCnt; j++)
 printf("Before cmd\n");
 printf("CW telem String: %s\n", cw_str2);
 //	FILE* f;
+    if (mode = CW)
 	system(cw_str2);
 //	printf("File %d \n", f);
 //  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
