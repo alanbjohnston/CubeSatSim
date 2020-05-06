@@ -779,21 +779,21 @@ for (int j = 0; j < frameCnt; j++)
 // CW
 	
 	{
-  char cw_str[500];
-  char cw_header[] = "echo '";
-  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+  char cw_str2[500];
+  char cw_header2[] = "echo '";
+  char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
 
-  strcpy(cw_str, cw_header);
+  strcpy(cw_str2, cw_header2);
 //printf("Before 1st strcpy\n");
-  strcat(cw_str, str);
+  strcat(cw_str2, str2);
 //printf("Before 1st strcpy\n");
-  strcat(cw_str, cw_footer);
+  strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
 printf("Before cmd\n");
-//printf("CW String: %s\n", cw_str);
+printf("CW telem String: %s\n", cw_str2);
 //	FILE* f;
-	system(cw_str);
+	system(cw_str2);
 //	printf("File %d \n", f);
 //  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
 printf("After command\n");
