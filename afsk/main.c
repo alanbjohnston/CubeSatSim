@@ -595,7 +595,7 @@ while (loop-- != 0)
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
 	  	  
-    if (mode == AFSK)
+    if ((mode == AFSK) && (mode == CW))
     {
        get_tlm();
     }
@@ -802,7 +802,7 @@ for (int j = 0; j < frameCnt; j++)
 printf("Before cmd\n");
 printf("CW telem String: %s\n", cw_str2);
 //	FILE* f;
-    if (mode = CW)
+    if (mode == CW)
 	system(cw_str2);
 //	printf("File %d \n", f);
 //  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
