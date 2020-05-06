@@ -776,7 +776,34 @@ for (int j = 0; j < frameCnt; j++)
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
+// CW
 	
+	{
+  char cw_str[500];
+  char cw_header[] = "echo '";
+  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+
+  strcpy(cw_str, cw_header);
+//printf("Before 1st strcpy\n");
+  strcat(cw_str, str);
+//printf("Before 1st strcpy\n");
+  strcat(cw_str, cw_footer);
+//printf("Before 1st strcpy\n");
+  digitalWrite (txLed, txLedOn);
+printf("Before cmd\n");
+//printf("CW String: %s\n", cw_str);
+//	FILE* f;
+	system(cw_str);
+//	printf("File %d \n", f);
+//  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
+printf("After command\n");
+//  sleep(7);
+//printf("Before Write\n");
+  digitalWrite (txLed, txLedOn);
+//printf("After Write\n");
+}
+//printf("Done CW!\n");
+	}
   if (ax5043)
   {
     	digitalWrite (txLed, txLedOn); 
