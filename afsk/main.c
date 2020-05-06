@@ -801,7 +801,7 @@ printf("After command\n");
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
 //printf("After Write\n");
-}
+//}
 //printf("Done CW!\n");
 	}
   if (ax5043)
