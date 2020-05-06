@@ -785,7 +785,7 @@ for (int j = 0; j < frameCnt; j++)
 
   strcpy(cw_str2, cw_header2);
 //printf("Before 1st strcpy\n");
-  strcat(cw_str2, str2);
+  strcat(cw_str2, str);
 //printf("Before 1st strcpy\n");
   strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
