@@ -45,11 +45,6 @@
     "modulation": "nfm"
   },
   {
-    "name": "APRS",
-    "frequency": 144390000,
-    "modulation": "nfm"
-  },
-  {
     "name": "CAS-4A",
     "frequency": 145855000,
     "modulation": "usb"
