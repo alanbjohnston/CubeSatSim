@@ -10,11 +10,6 @@
     "modulation": "nfm"
   },
   {
-    "name": "CubeSatSim",
-    "frequency": 434900000,
-    "modulation": "nfm"
-  },
-  {
     "name": "Fox-1B AO-91",
     "frequency": 145960000,
     "modulation": "nfm"

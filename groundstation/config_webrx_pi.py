@@ -37,7 +37,7 @@ config_webrx: configuration options for OpenWebRX
 
 # ==== Server settings ====
 web_port = 8073
-max_clients = 20
+max_clients = 10
 
 # ==== Web GUI configuration ====
 receiver_name = "KU2Y"
@@ -122,6 +122,14 @@ sdrs = {
             "70cm": {
                 "name": "70cm Band",
                 "center_freq": 435500000,
+                "rf_gain": 3,
+                "samp_rate": 2400000,
+                "start_freq": 4355000000,
+                "start_mod": "nfm",
+            },
+            "70cm-hi": {
+                "name": "70cm Band High Gain",
+                "center_freq": 435500000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 4355000000,
@@ -129,6 +137,14 @@ sdrs = {
             },
             "2m": {
                 "name": "2m Band",
+                "center_freq": 145000000,
+                "rf_gain": 15,
+                "samp_rate": 2400000,
+                "start_freq": 145725000,
+                "start_mod": "nfm",
+            },
+            "2m-hi": {
+                "name": "2m Band High Gain",
                 "center_freq": 145000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -143,10 +159,26 @@ sdrs = {
                 "start_freq":  161500000,
                 "start_mod": "nfm",
             },
+            "fm": {
+                "name": "FM Band",
+                "center_freq": 91000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 90000000,
+                "start_mod": "nfm",
+            },
             "atc": {
                 "name": "Air Band - ATC",
                 "center_freq": 134000000,
                 "rf_gain": 20,
+                "samp_rate": 2400000,
+                "start_freq": 134000000,
+                "start_mod": "am",
+            },
+            "atc-hi": {
+                "name": "Air Band - ATC High Gain",
+                "center_freq": 134000000,
+                "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 134000000,
                 "start_mod": "am",
@@ -160,7 +192,7 @@ sdrs = {
                 "start_mod": "fm",
             },        
             "noaa-hi": {
-                "name": "NOAA Weather Satellites More Gain",
+                "name": "NOAA Weather Satellites High Gain",
                 "center_freq": 137000000,
                 "rf_gain": 25,
                 "samp_rate": 2400000,
