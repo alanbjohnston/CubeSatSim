@@ -1,21 +1,28 @@
 #!/bin/bash
 # script to run OpenWebRX SDR
 
-echo -e "\nScript to run SDR for ARISS Ground Station\n"
+echo "Script to run Web SDR for ARISS Radio Pi"
 
-echo -e "IP Address to use in web browsers is: "
+echo 
 
-hostname -I|cut -f1 -d ' '
+ip=$(hostname -I|cut -f1 -d ' ')
 
+echo "IP Address to use in web browsers is: $ip:8073"
 
-#./kill_all.sh
+echo
+
+ssid=$(iwgetid -r)
+
+echo "Note: you need to be on the Wifi network: $ssid"
+
+echo
+
+sudo killall -9 java &>/dev/null
 
 sudo systemctl stop rtl_tcp
 
-#cd ~/openwebrx
-
 sudo systemctl restart openwebrx
 
-chromium-browser http://localhost:8073 &
+/usr/bin/chromium-browser --noerrdialogs --disable-infobars http://localhost:8073 &>/dev/null & 
 
-#sudo python openwebrx.py config_webrx_145
+$SHELL
