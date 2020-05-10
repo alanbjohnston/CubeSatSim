@@ -45,13 +45,13 @@ receiver_location = "Philadelphia, PA"
 receiver_asl = 200
 receiver_admin = "ku2y@amsat.org"
 receiver_gps = (40.0376, -75.3492)
-photo_title = "Panorama of Budapest from Schönherz Zoltán Dormitory"
+photo_title = "ARISS"
 photo_desc = """
 You can add your own background photo and receiver information.<br />
-Receiver is operated by: <a href="mailto:%[RX_ADMIN]">%[RX_ADMIN]</a><br/>
-Device: %[RX_DEVICE]<br />
-Antenna: %[RX_ANT]<br />
-Website: <a href="http://localhost" target="_blank">http://localhost</a>
+Receiver is operated by: <a href="mailto:ku2y@amsat.org">ku2y@amsat.org</a><br/>
+Device: RTL-SDR<br />
+Antenna: <br />
+Website: <a href="http://ariss-radio:8073" target="_blank">http://ariss-radio:8073</a>
 """
 
 # ==== sdr.hu listing ====
