@@ -194,7 +194,7 @@ sdrs = {
             },        },
     },
    "rtlsdr-hf": {
-        "name": "RTL-SDR",
+        "name": "RTL-SDR-HF",
         "type": "rtl_sdr",
         "ppm": 0,
         #"direct_sampling": 2,
