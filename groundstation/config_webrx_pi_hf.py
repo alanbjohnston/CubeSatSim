@@ -104,6 +104,56 @@ Note: if you experience audio underruns while CPU usage is 100%, you can:
 # configured that have type endin in "_connector", simply remove that suffix.
 
 sdrs = {
+   "rtlsdr-hf": {
+        "name": "RTL-SDR-HF",
+        "type": "rtl_sdr",
+        "ppm": 0,
+        #"direct_sampling": 2,
+        # you can change this if you use an upconverter. formula is:
+        # center_freq + lfo_offset = actual frequency on the sdr
+        # "lfo_offset": 0,
+        "profiles": {
+            "20m": {
+                "name": "20m",
+                "center_freq": 14150000,
+                "rf_gain": 10,
+                "samp_rate": 240000,
+                "start_freq": 14070000,
+                "start_mod": "usb",
+            },
+            "30m": {
+                "name": "30m",
+                "center_freq": 10125000,
+                "rf_gain": 10,
+                "samp_rate": 240000,
+                "start_freq": 10125000,
+                "start_mod": "usb",
+            },
+            "40m": {
+                "name": "40m",
+                "center_freq": 7100000,
+                "rf_gain": 10,
+                "samp_rate": 256000,
+                "start_freq": 7070000,
+                "start_mod": "usb",
+            },
+            "80m": {
+                "name": "80m",
+                "center_freq": 3650000,
+                "rf_gain": 10,
+                "samp_rate": 768000,
+                "start_freq": 3570000,
+                "start_mod": "usb",
+            },
+            "49m": {
+                "name": "49m Broadcast",
+                "center_freq": 6000000,
+                "rf_gain": 10,
+                "samp_rate": 768000,
+                "start_freq": 6070000,
+                "start_mod": "am",
+            },        },
+    },
     "rtlsdr": {
         "name": "RTL-SDR",
         "type": "rtl_sdr",
@@ -191,56 +241,6 @@ sdrs = {
                 "samp_rate": 2400000,
                 "start_freq": 137000000,
                 "start_mod": "fm",
-            },        },
-    },
-   "rtlsdr-hf": {
-        "name": "RTL-SDR-HF",
-        "type": "rtl_sdr",
-        "ppm": 0,
-        #"direct_sampling": 2,
-        # you can change this if you use an upconverter. formula is:
-        # center_freq + lfo_offset = actual frequency on the sdr
-        # "lfo_offset": 0,
-        "profiles": {
-            "20m": {
-                "name": "20m",
-                "center_freq": 14150000,
-                "rf_gain": 10,
-                "samp_rate": 768000,
-                "start_freq": 14070000,
-                "start_mod": "usb",
-            },
-            "30m": {
-                "name": "30m",
-                "center_freq": 10125000,
-                "rf_gain": 10,
-                "samp_rate": 240000,
-                "start_freq": 10125000,
-                "start_mod": "usb",
-            },
-            "40m": {
-                "name": "40m",
-                "center_freq": 7100000,
-                "rf_gain": 10,
-                "samp_rate": 256000,
-                "start_freq": 7070000,
-                "start_mod": "usb",
-            },
-            "80m": {
-                "name": "80m",
-                "center_freq": 3650000,
-                "rf_gain": 10,
-                "samp_rate": 768000,
-                "start_freq": 3570000,
-                "start_mod": "usb",
-            },
-            "49m": {
-                "name": "49m Broadcast",
-                "center_freq": 6000000,
-                "rf_gain": 10,
-                "samp_rate": 768000,
-                "start_freq": 6070000,
-                "start_mod": "am",
             },        },
     },
     "airspy": {
