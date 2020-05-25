@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/usr/bin/gpredict
+Name=Gpredict
+Comment=ISS and Satellite Tracking for ARISS Radio Pi
+Icon=/home/pi/Downloads/gpredict.png
+Path=/home/pi
+Terminal=false
+Categories=HamRadio
+Keywords=Ham Radio;AMSAT
