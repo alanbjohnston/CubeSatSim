@@ -30,6 +30,9 @@ config_webrx: configuration options for OpenWebRX
     (It means that you do not have to redistribute config_rtl.py and
     config_webrx.py if you make any changes to these two configuration files,
     and use them for running your web service with OpenWebRX.)
+
+    portions inspired by http://gephi.michalnovak.eu/config_webrx.py
+
 """
 
 # NOTE: you can find additional information about configuring OpenWebRX in the Wiki:
@@ -119,6 +122,14 @@ sdrs = {
         # center_freq + lfo_offset = actual frequency on the sdr
         # "lfo_offset": 0,
         "profiles": {
+            "wx": {
+                "name": "Weather Band",
+                "center_freq": 162000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq":  161500000,
+                "start_mod": "nfm",
+            },
             "70cm": {
                 "name": "70cm Band",
                 "center_freq": 435500000,
@@ -149,14 +160,6 @@ sdrs = {
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 145725000,
-                "start_mod": "nfm",
-            },
-            "wx": {
-                "name": "Weather Band",
-                "center_freq": 162000000,
-                "rf_gain": 30,
-                "samp_rate": 2400000,
-                "start_freq":  161500000,
                 "start_mod": "nfm",
             },
             "fm": {
@@ -215,61 +218,7 @@ sdrs = {
                 "start_freq": 51000000,
                 "start_mod": "usb",
             },
-#            "20m": {
-#                "name": "20m",
-#                 "direct_sampling": 2,
-#                "center_freq": 14150000,
-#                "rf_gain": 30,
-#                "samp_rate": 2400000,
-#                "start_freq": 14070000,
-#                "start_mod": "usb",
-#            },
-#            "30m": {
-#                "name": "30m",
-#                "direct_sampling": 2,
-#                "center_freq": 10125000,
-#                "rf_gain": 30,
-#                "samp_rate": 2400000,
-#                "start_freq": 10142000,
-#                "start_mod": "usb",
-#            },
-#            "40m": {
-#                "name": "40m",
-#                "direct_sampling": 2,
-#                "center_freq": 7100000,
-#                "rf_gain": 30,
-#                "samp_rate": 2400000,
-#                "start_freq": 7070000,
-#                "start_mod": "usb",
-#            },
-#            "80m": {
-#                "name": "80m",
-#                "direct_sampling": 2,
-#                "center_freq": 3650000,
-#                "rf_gain": 30,
-#                "samp_rate": 2400000,
-#                "start_freq": 3570000,
-#                "start_mod": "usb",
-#            },
-#            "49m": {
-#                "name": "49m Broadcast",
-#                "direct_sampling": 2,
-#                "center_freq": 6000000,
-#                "rf_gain": 30,
-#                "samp_rate": 2400000,
-#                "start_freq": 6070000,
-#                "start_mod": "am",
-#            },
-#            "MW": {
-#                "name": "Medium Wave AM Broadcast",
-#                "direct_sampling": 2,
-#                "center_freq": 1000000,
-#                "rf_gain": 30,
-#                "samp_rate": 2400000,
-#                "start_freq": 1500000,
-#                "start_mod": "am",
-#            },            
-            "110mhz": {
+            "110MHz": {
                 "name": "110 MHz",
                 "center_freq": 110000000,
                 "rf_gain": 30,
@@ -277,7 +226,7 @@ sdrs = {
                 "start_freq": 110000000,
                 "start_mod": "nfm",
             },
-            "112mhz": {
+            "112MHz": {
                 "name": "112 MHz",
                 "center_freq": 112000000,
                 "rf_gain": 30,
@@ -285,7 +234,7 @@ sdrs = {
                 "start_freq": 112000000,
                 "start_mod": "nfm",
             },
-            "114mhz": {
+            "114MHz": {
                 "name": "114 MHz",
                 "center_freq": 114000000,
                 "rf_gain": 30,
@@ -710,7 +659,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "23cm": {
-                "name": "23cm (HAM)",
+                "name": "23cm Band",
                 "center_freq": 1270000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -718,7 +667,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "13cm": {
-                "name": "13cm (HAM)",
+                "name": "13cm Band",
                 "center_freq": 2370000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -726,7 +675,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "9cm": {
-                "name": "9cm (HAM)",
+                "name": "9cm Band",
                 "center_freq": 3440000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
