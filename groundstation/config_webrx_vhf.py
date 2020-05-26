@@ -199,6 +199,22 @@ sdrs = {
                 "start_freq": 137000000,
                 "start_mod": "fm",
             },
+            "10m": {
+                "name": "10m Band",
+                "center_freq": 28000000,
+                "rf_gain": 25,
+                "samp_rate": 2400000,
+                "start_freq": 28500000,
+                "start_mod": "usb",
+            },
+            "6m": {
+                "name": "6m Band",
+                "center_freq": 51000000,
+                "rf_gain": 25,
+                "samp_rate": 2400000,
+                "start_freq": 51000000,
+                "start_mod": "usb",
+            },
 #            "20m": {
 #                "name": "20m",
 #                 "direct_sampling": 2,
