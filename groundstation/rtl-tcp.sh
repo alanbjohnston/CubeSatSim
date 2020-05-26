@@ -3,14 +3,34 @@
 #
 # On SDR client, use 10.3.141.1:1234 to connect 
 
-echo -e "\nScript to run RTL-TCP Server for ARISS Radio Pi\n"
+echo "Script to run RTL-TCP Server for ARISS Radio Pi"
 
-echo -e "IP Address to use in your SDR application is: "
+ip=$(hostname -I|cut -f1 -d ' ')
 
-hostname -I|cut -f1 -d ' '
+echo
 
-echo -e "The port is the default 1234. "
+echo "IP Address to use in SDR application is: $ip"
 
-./kill_all.sh
+echo
 
-sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
+echo "Port to use in SDR application is the default: 1234"
+
+echo
+
+ssid=$(iwgetid -r)
+
+echo "Note: you need to be on the Wifi network: $ssid"
+
+echo
+
+pkill -o chromium &>/dev/null
+
+sudo killall -9 java &>/dev/null
+
+sudo systemctl stop openwebrx
+
+sudo killall -9 rtl_tcp &>/dev/null
+
+sudo systemctl start rtl_tcp
+
+$SHELL
