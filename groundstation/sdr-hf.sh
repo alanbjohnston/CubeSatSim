@@ -1,7 +1,7 @@
 #!/bin/bash
-# script to run OpenWebRX SDR
+# script to run OpenWebRX SDR in HF
 
-echo "Script to run Web SDR for ARISS Radio Pi"
+echo "Script to run Web SDR in HF for ARISS Radio Pi"
 
 echo 
 
@@ -25,7 +25,7 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sudo systemctl stop openwebrx
 
-sudo cp /etc/openwebrx/config_webrx_vhf.py /etc/openwebrx/config_webrx.py
+sudo cp /etc/openwebrx/config_webrx_hf.py /etc/openwebrx/config_webrx.py
 
 sudo systemctl restart openwebrx
 
