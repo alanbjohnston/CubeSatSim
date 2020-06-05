@@ -25,7 +25,7 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sudo systemctl stop openwebrx
 
-sudo cp /etc/openwebrx/config_webrx_vhf.py /etc/openwebrx/config_webrx.py
+#sudo cp /etc/openwebrx/config_webrx_vhf.py /etc/openwebrx/config_webrx.py
 
 sudo systemctl restart openwebrx
 
