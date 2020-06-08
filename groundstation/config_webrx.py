@@ -131,22 +131,6 @@ sdrs = {
                 "start_freq":  161500000,
                 "start_mod": "nfm",
             },
-            "70cm": {
-                "name": "70cm Band",
-                "center_freq": 435500000,
-                "rf_gain": 3,
-                "samp_rate": 2400000,
-                "start_freq": 4355000000,
-                "start_mod": "nfm",
-            },
-            "70cm-hi": {
-                "name": "70cm Band High Gain",
-                "center_freq": 435500000,
-                "rf_gain": 30,
-                "samp_rate": 2400000,
-                "start_freq": 4355000000,
-                "start_mod": "nfm",
-            },
             "2m": {
                 "name": "2m Band",
                 "center_freq": 145000000,
@@ -163,6 +147,22 @@ sdrs = {
                 "start_freq": 145725000,
                 "start_mod": "nfm",
             },
+             "70cm": {
+                "name": "70cm Band",
+                "center_freq": 435500000,
+                "rf_gain": 3,
+                "samp_rate": 2400000,
+                "start_freq": 4355000000,
+                "start_mod": "nfm",
+            },
+            "70cm-hi": {
+                "name": "70cm Band High Gain",
+                "center_freq": 435500000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 4355000000,
+                "start_mod": "nfm",
+            },
             "fm": {
                 "name": "FM Band",
                 "center_freq": 91000000,
@@ -170,38 +170,6 @@ sdrs = {
                 "samp_rate": 2400000,
                 "start_freq": 90000000,
                 "start_mod": "nfm",
-            },
-            "atc": {
-                "name": "Air Band - ATC",
-                "center_freq": 134000000,
-                "rf_gain": 20,
-                "samp_rate": 2400000,
-                "start_freq": 134000000,
-                "start_mod": "am",
-            },
-            "atc-hi": {
-                "name": "Air Band - ATC High Gain",
-                "center_freq": 134000000,
-                "rf_gain": 30,
-                "samp_rate": 2400000,
-                "start_freq": 134000000,
-                "start_mod": "am",
-            },
-            "noaa": {
-                "name": "NOAA Weather Satellites",
-                "center_freq": 137000000,
-                "rf_gain": 20,
-                "samp_rate": 2400000,
-                "start_freq": 137000000,
-                "start_mod": "fm",
-            },        
-            "noaa-hi": {
-                "name": "NOAA Weather Satellites High Gain",
-                "center_freq": 137000000,
-                "rf_gain": 25,
-                "samp_rate": 2400000,
-                "start_freq": 137000000,
-                "start_mod": "fm",
             },
             "10m": {
                 "name": "10m Band",
@@ -252,7 +220,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "118mhz": {
-                "name": "118 MHz",
+                "name": "118 MHz Air Band",
                 "center_freq": 118000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -260,7 +228,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "120mhz": {
-                "name": "120 MHz",
+                "name": "120 MHz Air Band",
                 "center_freq": 120000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -268,7 +236,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "122mhz": {
-                "name": "122 MHz",
+                "name": "122 MHz Air Band",
                 "center_freq": 122000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -276,7 +244,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "124mhz": {
-                "name": "124 MHz",
+                "name": "124 MHz Air Band",
                 "center_freq": 124000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -284,7 +252,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "126mhz": {
-                "name": "126 MHz",
+                "name": "126 MHz Air Band",
                 "center_freq": 126000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -292,7 +260,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "128mhz": {
-                "name": "126 MHz",
+                "name": "126 MHz Air Band",
                 "center_freq": 128000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -300,7 +268,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "130mhz": {
-                "name": "130 MHz",
+                "name": "130 MHz Air Band",
                 "center_freq": 130000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -308,7 +276,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "132mhz": {
-                "name": "132 MHz",
+                "name": "132 MHz Air Band",
                 "center_freq": 132000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -316,7 +284,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "134mhz": {
-                "name": "134 MHz",
+                "name": "134 MHz Air Band",
                 "center_freq": 134000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -324,7 +292,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "136mhz": {
-                "name": "136 MHz",
+                "name": "136 MHz Air Band",
                 "center_freq": 136000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -332,7 +300,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "138mhz": {
-                "name": "138 MHz",
+                "name": "138 MHz NOAA Weather Satellite Band",
                 "center_freq": 138000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -356,7 +324,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "144mhz": {
-                "name": "144 MHz",
+                "name": "144 MHz Ham Band",
                 "center_freq": 144000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -364,7 +332,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "146mhz": {
-                "name": "146 MHz",
+                "name": "146 MHz Ham Band",
                 "center_freq": 146000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -372,7 +340,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "148mhz": {
-                "name": "148 MHz",
+                "name": "148 MHz Ham Band",
                 "center_freq": 148000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -428,7 +396,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "162mhz": {
-                "name": "162 MHz",
+                "name": "162 MHz Weather Band",
                 "center_freq": 162000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -484,7 +452,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "433mhz": {
-                "name": "433 MHz",
+                "name": "433 MHz Ham Band",
                 "center_freq": 433000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -505,6 +473,22 @@ sdrs = {
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 460000000,
+                "start_mod": "nfm",
+            },
+            "462mhz": {
+                "name": "462 MHz FRS/GMRS",
+                "center_freq": 462000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 462000000,
+                "start_mod": "nfm",
+            },
+            "467mhz": {
+                "name": "462 MHz FRS/GMRS",
+                "center_freq": 467000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 467000000,
                 "start_mod": "nfm",
             },
             "860mhz": {
@@ -540,7 +524,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "868mhz": {
-                "name": "868 MHz",
+                "name": "868 MHz SRD Band",
                 "center_freq": 868000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -556,7 +540,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "915mhz": {
-                "name": "915 MHz",
+                "name": "915 MHz ISM Band",
                 "center_freq": 915000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -660,7 +644,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "23cm": {
-                "name": "23cm Band",
+                "name": "23cm Ham Band",
                 "center_freq": 1270000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -668,7 +652,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "13cm": {
-                "name": "13cm Band",
+                "name": "13cm Ham Band",
                 "center_freq": 2370000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -692,7 +676,7 @@ sdrs = {
         "direct_sampling": 2,
         "profiles": {
             "10m": {
-                "name": "10m Band",
+                "name": "10m Ham Band",
                 "center_freq": 29150000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
@@ -708,7 +692,7 @@ sdrs = {
                 "start_mod": "am",
             },
             "20m": {
-                "name": "20m Band",
+                "name": "20m Ham Band",
                 "center_freq": 14150000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
@@ -716,7 +700,7 @@ sdrs = {
                 "start_mod": "usb",
             },
             "30m": {
-                "name": "30m Band",
+                "name": "30m Ham Band",
                 "center_freq": 10125000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
@@ -724,7 +708,7 @@ sdrs = {
                 "start_mod": "usb",
             },
             "40m": {
-                "name": "40m Band",
+                "name": "40m Ham Band",
                 "center_freq": 7100000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
@@ -740,7 +724,7 @@ sdrs = {
                 "start_mod": "am",
             },
             "80m": {
-                "name": "80m Band",
+                "name": "80m Ham Band",
                 "center_freq": 3650000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
