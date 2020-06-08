@@ -118,5 +118,5 @@
     "name": "CubeSatSim",
     "frequency": 434900000,
     "modulation": "nfm"
-  },
+  }
 ]
