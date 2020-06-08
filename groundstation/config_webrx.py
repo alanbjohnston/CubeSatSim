@@ -125,9 +125,9 @@ sdrs = {
         "profiles": {
             "wx": {
                 "name": "Weather Band",
-                "center_freq": 162000000,
+                "center_freq": 162250000,
                 "rf_gain": 30,
-                "samp_rate": 900000,
+                "samp_rate": 1000000,
                 "start_freq":  162400000,
                 "start_mod": "nfm",
             },
