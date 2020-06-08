@@ -147,7 +147,7 @@ sdrs = {
                 "start_freq": 145725000,
                 "start_mod": "nfm",
             },
-             "70cm": {
+            "70cm": {
                 "name": "70cm Band",
                 "center_freq": 435500000,
                 "rf_gain": 3,
