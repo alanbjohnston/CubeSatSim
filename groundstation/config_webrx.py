@@ -484,7 +484,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "467mhz": {
-                "name": "462 MHz FRS/GMRS",
+                "name": "467 MHz FRS/GMRS",
                 "center_freq": 467000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
