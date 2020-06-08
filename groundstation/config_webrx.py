@@ -127,7 +127,7 @@ sdrs = {
                 "name": "Weather Band",
                 "center_freq": 162000000,
                 "rf_gain": 30,
-                "samp_rate": 2400000,
+                "samp_rate": 900000,
                 "start_freq":  161500000,
                 "start_mod": "nfm",
             },
