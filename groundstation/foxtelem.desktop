@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/FoxTelem_1.09g_linux/FoxTelem
+Exec=/home/pi/fox.sh
 Name=FoxTelem
-Comment=Test Version 1.09b for CubeSatSim
-Icon=/home/pi/Downloads/foxtelem.png
+Comment=Test Version 1.09 for CubeSatSim
+Icon=/home/pi/Downloads/amsat.jpg
 Path=/home/pi
 #Terminal=true
 Categories=HamRadio
