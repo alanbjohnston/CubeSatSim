@@ -125,7 +125,7 @@ sdrs = {
         "profiles": {
             "wx": {
                 "name": "Weather Band",
-                "center_freq": 162250000,
+                "center_freq": 162350000,
                 "rf_gain": 30,
                 "samp_rate": 1000000,
                 "start_freq":  162400000,
@@ -134,14 +134,6 @@ sdrs = {
             "2m": {
                 "name": "2m Band",
                 "center_freq": 145000000,
-                "rf_gain": 15,
-                "samp_rate": 2400000,
-                "start_freq": 145725000,
-                "start_mod": "nfm",
-            },
-            "2m-hi": {
-                "name": "2m Band High Gain",
-                "center_freq": 145000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 145725000,
@@ -149,14 +141,6 @@ sdrs = {
             },
             "70cm": {
                 "name": "70cm Band",
-                "center_freq": 435500000,
-                "rf_gain": 3,
-                "samp_rate": 2400000,
-                "start_freq": 4355000000,
-                "start_mod": "nfm",
-            },
-            "70cm-hi": {
-                "name": "70cm Band High Gain",
                 "center_freq": 435500000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
