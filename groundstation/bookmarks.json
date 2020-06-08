@@ -10,6 +10,16 @@
     "modulation": "nfm"
   },
   {
+    "name": "AO-27",
+    "frequency": 436795000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "AO-73",
+    "frequency": 145815000,
+    "modulation": "usb"
+  },
+  {
     "name": "Fox-1B AO-91",
     "frequency": 145960000,
     "modulation": "nfm"
@@ -25,23 +35,38 @@
     "modulation": "usb"
   },
   {
-    "name": "PHL ATIS",
-    "frequency": 133400000,
-    "modulation": "nfm"
-  },
-  {
-    "name": "PHL ATC",
-    "frequency": 133450000,
-    "modulation": "nfm"
-  },
-  {
-    "name": "PHL ATC",
-    "frequency": 133550000,
-    "modulation": "nfm"
-  },
-  {
-    "name": "WX",
+    "name": "NOAA WX Radio 1",
     "frequency": 162400000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 2",
+    "frequency": 162425000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 3",
+    "frequency": 162450000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 4",
+    "frequency": 162475000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 5",
+    "frequency": 162500000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 6",
+    "frequency": 162525000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 7",
+    "frequency": 162550000,
     "modulation": "nfm"
   },
   {
@@ -60,6 +85,21 @@
     "modulation": "usb"
   },
   {
+    "name": "XW-2B",
+    "frequency": 145725000,
+    "modulation": "usb"
+  },
+  {
+    "name": "XW-2C",
+    "frequency": 145790000,
+    "modulation": "usb"
+  },
+  {
+    "name": "XW-2F",
+    "frequency": 145975000,
+    "modulation": "usb"
+  },
+  {
     "name": "NOAA-19",
     "frequency": 137100000,
     "modulation": "nfm"
@@ -75,13 +115,8 @@
     "modulation": "nfm"
   },
   {
-    "name": "PHL ATC",
-    "frequency": 134300000,
-    "modulation": "am"
+    "name": "CubeSatSim",
+    "frequency": 434900000,
+    "modulation": "nfm"
   },
-  {
-    "name": "PHL ATC",
-    "frequency": 133875000,
-    "modulation": "am"
-  }
 ]
