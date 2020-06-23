@@ -155,7 +155,7 @@ sdrs = {
                 "start_freq": 90000000,
                 "start_mod": "nfm",
             },
-            "10m": {
+            "10mv": {
                 "name": "10m Band",
                 "center_freq": 28000000,
                 "rf_gain": 25,
