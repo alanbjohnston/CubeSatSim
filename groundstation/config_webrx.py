@@ -117,7 +117,7 @@ Note: if you experience audio underruns while CPU usage is 100%, you can:
 sdrs = {
     "rtlsdr": {
         "name": "RTL-SDR VHF/UHF",
-        "type": "rtl_sdr",
+        "type": "rtl_sdr_soapy",
         "ppm": 0,
         # you can change this if you use an upconverter. formula is:
         # center_freq + lfo_offset = actual frequency on the sdr
