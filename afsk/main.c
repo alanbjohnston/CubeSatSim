@@ -306,17 +306,15 @@ int main(int argc, char *argv[]) {
        if (fgetc(file) == 48) 
 	{
 	  printf("SPI is enabled!\n");	
-          
-          file = popen("ls /dev/spidev0.* 2>&1", "r");
+	       
+          FILE *file2 = popen("ls /dev/spidev0.* 2>&1", "r");
 //          printf("Result: %d char: %c \n",file, getc(file));
 
           if (fgetc(file) != 'l')
           {
             printf("SPI devices present!\n");
-
-
 //	  }
- 
+ 	  pclose(file2);
 	  setSpiChannel(SPI_CHANNEL);
   	  setSpiSpeed(SPI_SPEED);
   	  initializeSpi();
@@ -341,7 +339,7 @@ int main(int argc, char *argv[]) {
 //       {
 //	  printf("SPI not enabled!\n");
 //       }
-
+  pclose(file);
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
@@ -624,10 +622,13 @@ while (loop-- != 0)
 	printf("Done sleeping\n");
   }
 //  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
-  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r");
+  pclose(txResult);
   txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+  pclose(txResult);
   txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
-
+  pclose(txResult);
+	
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
 	
@@ -1261,14 +1262,17 @@ if (firstTime != ON)
 	  printf("Changing rpitx mode!\n");
 //     	  txResult = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+	  pclose(txResult);   
 //	  printf("1\n");
 //          sleep(1);
 //     	  txResult = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r");
+	  pclose(txResult);
 //	  printf("2\n");
 //  digitalWrite (txLed, txLedOn);
 	      sleep(1);
-	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r");
+	  pclose(txResult);
 	  socket_open = 0;
 	      
 //	  printf("3\n");
@@ -1280,13 +1284,14 @@ if (firstTime != ON)
 	    if (mode == FSK)  {  
       	 // 	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
       	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3&", "r"); 
-//	  	printf("4\n");
+  		pclose(txResult);
+	//	  	printf("4\n");
            } else if (mode == BPSK) {
 //      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
       	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1&", "r"); 
-           }
+           	pclose(txResult);           }
 //      fgets(cmdbuffer, 1000, txResult);
-           pclose(txResult);
+
 	  }
 	  else
           {
