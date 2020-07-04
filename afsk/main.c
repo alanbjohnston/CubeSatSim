@@ -733,9 +733,10 @@ for (int j = 0; j < frameCnt; j++)
     #endif
 	  
     tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
-		fclose (cpuTempSensor);
+
   }
-  
+  fclose (cpuTempSensor);
+	
   tlm[6][B] = 0 ;
   tlm[6][D] = 49 + rand() % 3; 
 
@@ -987,7 +988,8 @@ if (firstTime != ON)
 	  
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
    }	  
- 	  
+   fclose(cpuTempSensor);
+	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
 	  
