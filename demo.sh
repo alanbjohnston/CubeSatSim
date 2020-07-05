@@ -45,7 +45,7 @@ else
 		sudo killall -9 csdr
 		sudo killall -9 rpitx
 		sleep 1
-		/home/pi/CubeSatSim/radioafsk bpsk 4 n
+##		/home/pi/CubeSatSim/radioafsk bpsk 4 n
 #		sleep 24 
 		sleep 1 
 		sudo killall -9 sendiq
