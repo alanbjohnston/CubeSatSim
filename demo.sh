@@ -19,13 +19,6 @@ echo $y
     		sudo killall -9 sendiq
     		sleep 1    
     		/home/pi/CubeSatSim/radioafsk afsk
-	elif [ "$1" = "f" ]; then
-    		echo "Mode is continuous FSK"
-    		sleep 1 
-    		sudo killall -9 sendiq
-    		sudo killall -9 sendiq
-    		sleep 1
-    		/home/pi/CubeSatSim/radioafsk fsk
 	elif [ "$1" = "b" ]; then
    		 echo "Mode is continuous BPSK"
     		sleep 1 
@@ -33,4 +26,11 @@ echo $y
     		sudo killall -9 sendiq
     		sleep 1   
     		/home/pi/CubeSatSim/radioafsk bpsk
+	else 
+    		echo "Mode is continuous FSK"
+    		sleep 1 
+    		sudo killall -9 sendiq
+    		sudo killall -9 sendiq
+    		sleep 1
+    		/home/pi/CubeSatSim/radioafsk fsk
 	fi
