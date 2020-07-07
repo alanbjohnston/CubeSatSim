@@ -32,7 +32,7 @@ Use the down arrow key to go down in the file until you find this line:
 
 `# Additional overlays and parameters are documented /boot/overlays/README `
 
-Add the following two lines under it:
+Add the following two lines under it: (NOTE: there seems to be an issue with the i2c-gpio.dtbo file in the latest kernal.  I'm investigating this temporary fix: https://github.com/raspberrypi/firmware/issues/1401.  If adding dtoverlay=i2c-gpio in this step causes your Pi not to boot, then you are encountering this issue)
 
 `dtoverlay=i2c-gpio`
 
