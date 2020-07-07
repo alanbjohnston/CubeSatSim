@@ -76,7 +76,7 @@ Then type:
 
 `git checkout master`
 
-Create a sim.cfg configuration file with your amateur radio callsign by typing:
+Create a sim.cfg configuration file with your amateur radio callsign (in all caps, no lower case letters!) by typing:
      
 `echo "callsign" >> sim.cfg`
 
