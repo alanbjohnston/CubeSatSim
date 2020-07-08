@@ -1072,7 +1072,7 @@ if (firstTime != ON)
   encodeB(b, 19 + head_offset,negZv);
 	  
   encodeA(b, 21 + head_offset,posXi);  	
-  encodeB(b, 22 + head_offset,posXi);	
+  encodeB(b, 22 + head_offset,posYi);	
   encodeA(b, 24 + head_offset,posZi);	
   encodeB(b, 25 + head_offset,negXi);	
   encodeA(b, 27 + head_offset,negYi);	
