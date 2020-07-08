@@ -1040,16 +1040,14 @@ if (firstTime != ON)
 	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
-	  
-/*  
-  posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
-  posXi = 110, negXi = 120, posYi = 130, negYi = 140, posZi = 150, negZi = 160;
-*/	  
+
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
   encodeA(b, 9 + head_offset, battCurr);
 	  
+  if (mode == FSK)
+  {	  
   encodeA(b, 12 + head_offset,posXv);  	
   encodeB(b, 13 + head_offset,negXv);	
   encodeA(b, 15 + head_offset,posYv);	
@@ -1063,20 +1061,31 @@ if (firstTime != ON)
   encodeB(b, 25 + head_offset,negYi);	
   encodeA(b, 27 + head_offset,posZi);	
   encodeB(b, 28 + head_offset,negZi);
-
+  }
+  else // BPSK
+  {
+  encodeA(b, 12 + head_offset,posXv);  	
+  encodeB(b, 13 + head_offset,posYv);	
+  encodeA(b, 15 + head_offset,posZv);	
+  encodeB(b, 16 + head_offset,negXv);	
+  encodeA(b, 18 + head_offset,negYv);	
+  encodeB(b, 19 + head_offset,negZv);
+	  
+  encodeA(b, 21 + head_offset,posXi);  	
+  encodeB(b, 22 + head_offset,posXi);	
+  encodeA(b, 24 + head_offset,posZi);	
+  encodeB(b, 25 + head_offset,negXi);	
+  encodeA(b, 27 + head_offset,negYi);	
+  encodeB(b, 28 + head_offset,negZi);
+  }	  
+	  
   encodeA(b, 30 + head_offset,PSUVoltage);
   encodeB(b, 46 + head_offset,PSUCurrent);
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 
   encodeB(b, 51 + head_offset, STEMBoardFailure);
-
-	  
-/*	batt_c_v += 10;
-	battCurr -= 10;
-	encodeA(b, 3 + head_offset, batt_c_v);
- 	encodeA(b, 9 + head_offset, battCurr);
-*/     
+   
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
 	  
