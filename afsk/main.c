@@ -1382,7 +1382,7 @@ if (firstTime != ON)
 //    digitalWrite (0, HIGH);
     if (mode = FSK)
 	    firstTime = 0;
-    else (if frames_sent > 5)
+    else if (frames_sent > 5)
 	    firstTime = 0;
 
 return 0;	
