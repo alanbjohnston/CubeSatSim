@@ -1264,7 +1264,7 @@ if (firstTime != ON)
 	
       char cmdbuffer[1000];
       FILE* txResult;
-      if ((rpitxStatus != mode)) // || (mode == BPSK)) 
+      if ((rpitxStatus != mode) || ((loop % 1000) == 0))
 	      
       {  // change rpitx mode
 	  rpitxStatus = mode;    
