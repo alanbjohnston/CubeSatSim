@@ -1380,7 +1380,7 @@ if (firstTime != ON)
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
     }
 //    digitalWrite (0, HIGH);
-    if (mode = FSK)
+    if (mode == FSK)
 	    firstTime = 0;
     else if (frames_sent > 5)
 	    firstTime = 0;
