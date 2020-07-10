@@ -122,7 +122,7 @@ char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
 float sleepTime;
-int sampleTime = 0;
+int sampleTime = 0,frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
@@ -534,7 +534,8 @@ printf("After command\n");
 	
 while (loop-- != 0)
   {
-
+   frames_sent++;
+	
    float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
@@ -561,7 +562,7 @@ while (loop-- != 0)
 
    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
    sleepTime = 0.1;
-
+	
     printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n", 
 	   bufLen/(samples * frameCnt), bitRate, samplePeriod);
   }
@@ -1379,7 +1380,10 @@ if (firstTime != ON)
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
     }
 //    digitalWrite (0, HIGH);
-    firstTime = 0;
+    if (mode = FSK)
+	    firstTime = 0;
+    else (if frames_sent > 5)
+	    firstTime = 0;
 
 return 0;	
 }
