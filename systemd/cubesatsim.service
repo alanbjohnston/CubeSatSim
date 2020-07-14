@@ -1,5 +1,5 @@
 [Unit]
-Description=CubeSatSim demo service
+Description=Test demo service
 
 [Service]
 TimeoutStopSec=5
