@@ -1292,7 +1292,7 @@ if (firstTime != ON)
 	  {
 	    if (mode == FSK)  {  
       	 // 	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
-      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | while true; do sudo timeout -k 1 60m /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3 2>&1; done &", "r"); 
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | while true; do sudo timeout -k 1 60m /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3; done &", "r"); 
   		pclose(txResult);
 	//	  	printf("4\n");
            } else if (mode == BPSK) {
