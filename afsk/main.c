@@ -308,9 +308,9 @@ int main(int argc, char *argv[]) {
 	  printf("SPI is enabled!\n");	
 	       
           FILE *file2 = popen("ls /dev/spidev0.* 2>&1", "r");
-//          printf("Result: %d char: %c \n",file, getc(file));
+//          printf("Result getc: %c \n", getc(file2));
 
-          if (fgetc(file) != 'l')
+          if (fgetc(file2) != 'l')
           {
             printf("SPI devices present!\n");
 //	  }
