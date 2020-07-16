@@ -1261,7 +1261,7 @@ if (firstTime != ON)
 //  printf("\n");
 		
 // rpitx
-	
+/*	
       char cmdbuffer[1000];
       FILE* txResult;
       if ((rpitxStatus != mode)) //  || ((loop % 1000) == 0))
@@ -1287,7 +1287,7 @@ if (firstTime != ON)
 //	  printf("3\n");
           sleep(1);
 //  digitalWrite (txLed, txLedOff);
-	  
+
 	  if (transmit)
 	  {
 	    if (mode == FSK)  {  
@@ -1310,6 +1310,7 @@ if (firstTime != ON)
       sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
+*/
 	
 // socket write
 
