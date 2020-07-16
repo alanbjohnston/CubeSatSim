@@ -504,7 +504,7 @@ else
    }
 	
 // Send ID in CW (Morse Code)
-
+cw_id = OFF;
 if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
 {
   char cw_str[200];
@@ -621,6 +621,7 @@ while (loop-- != 0)
 	sleep(loop_count);
 	printf("Done sleeping\n");
   }
+/*	
 //  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
   int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r");
   pclose(txResult);
@@ -631,7 +632,7 @@ while (loop-- != 0)
 	
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
-	
+*/	
   return 0;
 }
 
