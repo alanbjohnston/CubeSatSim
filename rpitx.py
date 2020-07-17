@@ -4,6 +4,7 @@ import RPi.GPIO as GPIO
 import subprocess
 import time
 import os
+import sys
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
