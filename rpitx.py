@@ -11,7 +11,7 @@ GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 transmit = False
 if GPIO.input(12) == False:
 	transmit = True
-if GPIO.input(27) == False;
+if GPIO.input(27) == False:
 	transmit = True
 
 print(transmit)
