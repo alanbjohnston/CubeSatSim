@@ -385,8 +385,8 @@ int main(int argc, char *argv[]) {
   		{
 	  		printf("vB5 Present\n");
   	  		txLed = 2;
-	  		txLedOn = HIGH;
- 	  		txLedOff = LOW;
+	  		txLedOn = LOW; //HIGH;
+ 	  		txLedOff = HIGH; //LOW;
  	  		vB5 = TRUE;
 	  		onLed = 27;
           		onLedOn = HIGH;
