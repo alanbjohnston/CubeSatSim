@@ -495,7 +495,7 @@ else
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
-	
+/*	
    if (transmit == FALSE)
    {
 	   
@@ -531,7 +531,7 @@ printf("After command\n");
 //printf("After Write\n");
 }
 //printf("Done CW!\n");
-	
+*/	
 while (loop-- != 0)
   {
    frames_sent++;
