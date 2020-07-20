@@ -399,8 +399,14 @@ int main(int argc, char *argv[]) {
   }	
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	
 //    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
 //      mode = (reset_count) % 3;  // alternate between the three modes	
@@ -518,6 +524,9 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
   strcat(cw_str, cw_footer);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 printf("Before cmd\n");
 //printf("CW String: %s\n", cw_str);
 //	FILE* f;
@@ -528,6 +537,9 @@ printf("After command\n");
 //  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 //printf("After Write\n");
 }
 //printf("Done CW!\n");
@@ -610,10 +622,16 @@ while (loop-- != 0)
   if (mode == BPSK)
   {
 	digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	printf("Sleeping to allow BPSK transmission to finish.\n");
 	sleep(loop_count * 5);
 	printf("Done sleeping\n");
 	digitalWrite (txLed, txLedOff);  
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
   }
   else if (mode == FSK)
   {
@@ -632,6 +650,9 @@ while (loop-- != 0)
 	
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 */	
   return 0;
 }
@@ -682,6 +703,9 @@ int get_tlm(void) {
 for (int j = 0; j < frameCnt; j++)	
 {	
    digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
@@ -802,6 +826,9 @@ for (int j = 0; j < frameCnt; j++)
   strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 printf("Before cmd\n");
 printf("CW telem String: %s\n", cw_str2);
 //	FILE* f;
@@ -813,6 +840,9 @@ printf("After command\n");
 //  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 //printf("After Write\n");
 //}
 //printf("Done CW!\n");
@@ -820,6 +850,9 @@ printf("After command\n");
   if (ax5043)
   {
     	digitalWrite (txLed, txLedOn); 
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
         memcpy(data, str, strnlen(str, 256));
         int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
@@ -831,6 +864,9 @@ printf("After command\n");
         }
         ax5043_wait_for_transmit();
     	digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
         if (ret) {
             fprintf(stderr,
@@ -857,8 +893,14 @@ printf("After command\n");
 		fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    	  }
     	  digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 	  sleep(3);
    	  digitalWrite (txLed, txLedOn);	  
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
   }
 	
   //digitalWrite (txLed, txLedOff);
@@ -868,6 +910,9 @@ printf("After command\n");
 printf("End of get_tlm and rpitx =========================================================\n");
 
    digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
 return;
 }
@@ -943,11 +988,17 @@ if (firstTime != ON)
  {
 // delay for sample period
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 
     while ((millis() - sampleTime) < samplePeriod)
         sleep(sleepTime);
   
   digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();

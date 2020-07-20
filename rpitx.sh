@@ -2,7 +2,7 @@
 
 echo -e "\nrpitx for CubeSatSim at 434.9 MHz\n"
 
-python rpitx.py $1
+#python rpitx.py $1
 
 	if [ "$1" = "a" ]; then
     		echo "Mode is continuous AFSK"
