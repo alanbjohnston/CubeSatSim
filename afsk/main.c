@@ -1435,7 +1435,7 @@ if (firstTime != ON)
 	
     if (mode == FSK)
 	    firstTime = 0;
-    else if (frames_sent > 5)
+    else if (frames_sent > 0) //5)
 	    firstTime = 0;
 
 return 0;	
