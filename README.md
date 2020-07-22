@@ -4,7 +4,7 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 There are several hardware versions and software branches to go with them - see below for information.
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (doesn't work on Pi 4 since rpitx doesn't work on it yet):
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, Pi Zero or Pi Zero W (doesn't work on Pi 4 since rpitx doesn't work on it yet):
 Requires:
 - Raspbian Stretch or Buster, full desktop or Lite 
 - wiringpi
@@ -14,9 +14,15 @@ Requires:
 - Direwolf
 - rpitx
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet):
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. Runs on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet).  The Pi Zero W or Pi Zero are recommended since they are draw the least power and will result in the best performance under battery power.
 
-`sudo apt-get install -y wiringpi git libasound2-dev i2c-tools`
+These instructions assume a Pi Zero W with WiFi connectivity.  If you have a Pi Zero, follow these instructions to get connectivity: https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows
+
+To begin the software install, after logging in type:
+
+`sudo apt update -y && sudo apt dist-upgrade -y`
+
+`sudo apt install -y wiringpi git libasound2-dev i2c-tools`
 
 Run raspi-config and enable the I2C bus by selecting Option 5 Interfacing Options and then Option 5 I2C and selecting Y to enable the ARM I2C bus:
 
@@ -80,6 +86,9 @@ Create a sim.cfg configuration file with your amateur radio callsign (in all cap
      
 `echo "callsign" >> sim.cfg`
 
+`echo "ARG1=f" >> .mode`
+
+This will set the telemetry mode to FSK.  To set it to AFSK or BPSK, change it to ARG1=a or ARG1=b 
 Compile the code:
 
 `make rebuild`
@@ -125,6 +134,10 @@ To make the demo.sh script run automatically on boot:
 
 `sudo systemctl enable cubesatsim`
 
+`sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service`
+
+`sudo systemctl enable rpitx`
+
 Now reboot for all the changes to take effect:
 
 `sudo reboot now`
@@ -133,13 +146,25 @@ After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should get a si
 
 On the Main Board, the green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
 
-The demo.sh script alternates between two modes:
-1. Continuous DUV FSK telmetry, decodeable by FoxTelem
-2. Alternativing between APRS AFSK, FSK, and BPSK telemetry
+The push button with the pi-power-button software will cause the Pi to reboot, change telemetry mode, or shutdown.  Pressing and holding the pushbutton will make the green power LED blink first once, then two times, then three times, then blinks slowly.  Depending on when you release the button, different things will happen.  Here's what happens if you:
 
-Pressing and releasing the push button will cause the Pi to reboot and change mode.  The green LED will go off as it reboots.
+Press and release (don't hold button in at all): reboots CubeSatSim.  The green LED will go out, and after 30 seconds, the CubeSatSim will be transmitting again.
 
-Pressing and holding the pushbutton for 3 seconds will cause the green LED to flash, then the Pi will shutdown.  The RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the Pi to start.
+Press and release after one blink of green LED: switches to AFSK telemetry mode. After about 5 seconds, the telemetry mode will switch to AFSK.
+
+Press and release after two blinks of green LED: switches to FSK mode. After about 5 seconds, the telemetry mode will switch to FSK.
+
+Press and release after three blinks of green LED: switches to BPSK mode. After about 5 seconds, the telemetry mode will switch to BPSK.
+
+Press and release after green LED begins slow blinking: shuts down CubeSatSim.  
+
+Once the CubeSatSim shuts down, the RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the CubeSatSim to start up again.  It will use the same mode it was running when it was shutdown.
+
+You can also change the telemetry mode using the command line.  Edit the CubeSatSim/.mode file and change the value to change the mode. A value of ARG1=a will give you AFSK, ARG1=f will give you FSK, and ARG2=b gives BPSK. After saving the .mode file, restart the cubesatsim service to switch the mode by typing:
+
+`sudo systemctl restart cubesatsim`
+
+Note that to get FoxTelem to decode BPSK, you need to be in BPSK Fox/Husky mode (depending on which version of FoxTelem).  Also, you usually need to click on the center of the FFT.  For the first 30 seconds, it is just a carrier, so there will be no lock.  After that, it should lock and the Phasor will show a line that jumps around, and the Frame count should start increasing at the bottom of the FoxTelem window.
 
 You can stop the service when it is running by SSH into the Pi and typing:
 

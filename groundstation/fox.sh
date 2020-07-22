@@ -22,4 +22,3 @@ sudo killall -9 gqrx &>/dev/null
 #/usr/bin/chromium-browser --noerrdialogs --disable-infobars http://localhost:8073 &>/dev/null & 
 
 $SHELL
-

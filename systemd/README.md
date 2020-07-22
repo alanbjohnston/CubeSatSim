@@ -7,10 +7,15 @@ sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.s
 
 sudo systemctl enable cubesatsim
 
+sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
+
+sudo systemctl enable rpitx
+
 Reboot to start the autoboot service:
 
 sudo reboot now
 
-Now after the Pi starts up, the demo.sh script will run automatically, and the console will log to ~/CubeSatSim/log.txt  To see it:
+Now after the Pi starts up, the demo.sh script will run automatically, to see the console:
 
-tail ~/CubeSatSim/log.txt
+sudo journalctl -u cubesatsim
+

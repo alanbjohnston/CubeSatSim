@@ -90,9 +90,11 @@ int testCount = 0;
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
 #define S_RATE  (48000)     // (44100)
-#define FSK 0
-#define BPSK 1
-#define AFSK 2
+
+#define AFSK 1
+#define FSK 2
+#define BPSK 3
+#define CW 4
 
 int rpitxStatus = -1;
 
@@ -120,8 +122,8 @@ char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
 float sleepTime;
-int sampleTime = 0;
-int cycle = OFF, cw_id = ON;
+int sampleTime = 0, frames_sent = 0;
+int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
 
@@ -256,8 +258,8 @@ int main(int argc, char *argv[]) {
 	  }
 	  else if (*argv[1] == 'c')
 	  {
-		  cycle = ON;
-		  printf("Mode cycle on\n");
+		  mode = CW;
+		  printf("Mode CW\n");
 	  }
 	  else
 	  {
@@ -304,17 +306,15 @@ int main(int argc, char *argv[]) {
        if (fgetc(file) == 48) 
 	{
 	  printf("SPI is enabled!\n");	
-          
-          file = popen("ls /dev/spidev0.* 2>&1", "r");
-//          printf("Result: %d char: %c \n",file, getc(file));
+	       
+          FILE *file2 = popen("ls /dev/spidev0.* 2>&1", "r");
+//          printf("Result getc: %c \n", getc(file2));
 
-          if (fgetc(file) != 'l')
+          if (fgetc(file2) != 'l')
           {
             printf("SPI devices present!\n");
-
-
 //	  }
- 
+ 	  pclose(file2);
 	  setSpiChannel(SPI_CHANNEL);
   	  setSpiSpeed(SPI_SPEED);
   	  initializeSpi();
@@ -327,7 +327,7 @@ int main(int argc, char *argv[]) {
 		ax5043 = TRUE;
 		cw_id = OFF;
 		mode = AFSK;
-		cycle = OFF;
+//		cycle = OFF;
 		printf("Mode AFSK with AX5043\n");  
 		transmit = TRUE;
 	  }	  
@@ -339,7 +339,7 @@ int main(int argc, char *argv[]) {
 //       {
 //	  printf("SPI not enabled!\n");
 //       }
-
+  pclose(file);
   txLed = 0;	// defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
@@ -399,11 +399,17 @@ int main(int argc, char *argv[]) {
   }	
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	
-    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
-      mode = (reset_count) % 3;  // alternate between the three modes	
+//    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
+//      mode = (reset_count) % 3;  // alternate between the three modes	
 	
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
@@ -495,15 +501,16 @@ else
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
-	
+/*	
    if (transmit == FALSE)
    {
+	   
 	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
 	
 // Send ID in CW (Morse Code)
-
+cw_id = OFF;
 if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
 {
   char cw_str[200];
@@ -517,7 +524,10 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
   strcat(cw_str, cw_footer);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
-printf("Before cmd\n");
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+//printf("Before cmd\n");
 //printf("CW String: %s\n", cw_str);
 //	FILE* f;
 	system(cw_str);
@@ -527,13 +537,16 @@ printf("After command\n");
 //  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 //printf("After Write\n");
 }
 //printf("Done CW!\n");
-	
+*/	
 while (loop-- != 0)
   {
-
+   frames_sent++;
    float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
@@ -592,7 +605,7 @@ while (loop-- != 0)
       fprintf(stderr,"INFO: Getting TLM Data\n");
     #endif
 	  	  
-    if (mode == AFSK)
+    if ((mode == AFSK) || (mode == CW))
     {
        get_tlm();
     }
@@ -609,10 +622,16 @@ while (loop-- != 0)
   if (mode == BPSK)
   {
 	digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	printf("Sleeping to allow BPSK transmission to finish.\n");
 	sleep(loop_count * 5);
 	printf("Done sleeping\n");
 	digitalWrite (txLed, txLedOff);  
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
   }
   else if (mode == FSK)
   {
@@ -620,14 +639,21 @@ while (loop-- != 0)
 	sleep(loop_count);
 	printf("Done sleeping\n");
   }
+/*	
 //  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
-  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r");
+  pclose(txResult);
   txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+  pclose(txResult);
   txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
-
+  pclose(txResult);
+	
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
-	
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
+*/	
   return 0;
 }
 
@@ -677,6 +703,9 @@ int get_tlm(void) {
 for (int j = 0; j < frameCnt; j++)	
 {	
    digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
@@ -730,9 +759,10 @@ for (int j = 0; j < frameCnt; j++)
     #endif
 	  
     tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
-		fclose (cpuTempSensor);
+
   }
-  
+  fclose (cpuTempSensor);
+	
   tlm[6][B] = 0 ;
   tlm[6][D] = 49 + rand() % 3; 
 
@@ -752,6 +782,7 @@ for (int j = 0; j < frameCnt; j++)
   char header_str[] = "\x03\xf0hi hi ";	
   char header_str3[] = "echo '";
   char header_str2[] = ">CQ:hi hi ";
+  char header_str4[] = "hi hi ";	
   char footer_str1[] = "\' > t.txt && echo \'"; 
   char footer_str[] = ">CQ:hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3 > /dev/null 2>&1";
 	
@@ -762,8 +793,14 @@ for (int j = 0; j < frameCnt; j++)
   else
   {
     strcpy(str, header_str3);
-    strcat(str, call);
-    strcat(str, header_str2);
+    if (mode != CW) 
+    {
+    	strcat(str, call);
+    	strcat(str, header_str2);
+    } else
+    {
+	strcat(str, header_str4);
+    }
   }
  
     int channel;
@@ -776,11 +813,47 @@ for (int j = 0; j < frameCnt; j++)
 //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
+// CW
+	
+  char cw_str2[500];
+  char cw_header2[] = "echo '";
+  char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+
+  strcpy(cw_str2, cw_header2);
+//printf("Before 1st strcpy\n");
+  strcat(cw_str2, str);
+//printf("Before 1st strcpy\n");
+  strcat(cw_str2, cw_footer2);
+//printf("Before 1st strcpy\n");
+  digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+//printf("Before cmd\n");
+//printf("CW telem String: %s\n", cw_str2);
+//	FILE* f;
+    if (mode == CW)
+	system(cw_str2);
+//	printf("File %d \n", f);
+//  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
+//printf("After command\n");
+//  sleep(7);
+//printf("Before Write\n");
+  digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+//printf("After Write\n");
+//}
+//printf("Done CW!\n");
 	
   if (ax5043)
   {
     	digitalWrite (txLed, txLedOn); 
-	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+	fprintf(stderr,"INFO: Transmitting X.25 packet using AX5043\n");
         memcpy(data, str, strnlen(str, 256));
         int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
         if (ret) {
@@ -791,6 +864,9 @@ for (int j = 0; j < frameCnt; j++)
         }
         ax5043_wait_for_transmit();
     	digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
         if (ret) {
             fprintf(stderr,
@@ -817,17 +893,26 @@ for (int j = 0; j < frameCnt; j++)
 		fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    	  }
     	  digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 	  sleep(3);
    	  digitalWrite (txLed, txLedOn);	  
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
   }
 	
   //digitalWrite (txLed, txLedOff);
  
    }
 	
-printf("End of get_tlm and rpitx =========================================================\n");
+//printf("End of get_tlm and rpitx =========================================================\n");
 
    digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
 return;
 }
@@ -903,11 +988,17 @@ if (firstTime != ON)
  {
 // delay for sample period
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 
     while ((millis() - sampleTime) < samplePeriod)
         sleep(sleepTime);
   
   digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
@@ -950,7 +1041,8 @@ if (firstTime != ON)
 	  
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
    }	  
- 	  
+   fclose(cpuTempSensor);
+	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
 	  
@@ -1000,16 +1092,14 @@ if (firstTime != ON)
 	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
-	  
-/*  
-  posXv = 10, negXv = 20, posYv = 30, negYv = 40, posZv = 50, negZv = 60;
-  posXi = 110, negXi = 120, posYi = 130, negYi = 140, posZi = 150, negZi = 160;
-*/	  
+
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
   encodeA(b, 9 + head_offset, battCurr);
 	  
+  if (mode == FSK)
+  {	  
   encodeA(b, 12 + head_offset,posXv);  	
   encodeB(b, 13 + head_offset,negXv);	
   encodeA(b, 15 + head_offset,posYv);	
@@ -1023,20 +1113,31 @@ if (firstTime != ON)
   encodeB(b, 25 + head_offset,negYi);	
   encodeA(b, 27 + head_offset,posZi);	
   encodeB(b, 28 + head_offset,negZi);
-
+  }
+  else // BPSK
+  {
+  encodeA(b, 12 + head_offset,posXv);  	
+  encodeB(b, 13 + head_offset,posYv);	
+  encodeA(b, 15 + head_offset,posZv);	
+  encodeB(b, 16 + head_offset,negXv);	
+  encodeA(b, 18 + head_offset,negYv);	
+  encodeB(b, 19 + head_offset,negZv);
+	  
+  encodeA(b, 21 + head_offset,posXi);  	
+  encodeB(b, 22 + head_offset,posYi);	
+  encodeA(b, 24 + head_offset,posZi);	
+  encodeB(b, 25 + head_offset,negXi);	
+  encodeA(b, 27 + head_offset,negYi);	
+  encodeB(b, 28 + head_offset,negZi);
+  }	  
+	  
   encodeA(b, 30 + head_offset,PSUVoltage);
   encodeB(b, 46 + head_offset,PSUCurrent);
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 
   encodeB(b, 51 + head_offset, STEMBoardFailure);
-
-	  
-/*	batt_c_v += 10;
-	battCurr -= 10;
-	encodeA(b, 3 + head_offset, batt_c_v);
- 	encodeA(b, 9 + head_offset, battCurr);
-*/     
+   
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
 	  
@@ -1212,42 +1313,46 @@ if (firstTime != ON)
 //  printf("\n");
 		
 // rpitx
-	
+/*	
       char cmdbuffer[1000];
       FILE* txResult;
-      if ((rpitxStatus != mode)) // || (mode == BPSK)) 
+      if ((rpitxStatus != mode)) //  || ((loop % 1000) == 0))
 	      
       {  // change rpitx mode
 	  rpitxStatus = mode;    
 	  printf("Changing rpitx mode!\n");
 //     	  txResult = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
       	  txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
+	  pclose(txResult);   
 //	  printf("1\n");
 //          sleep(1);
 //     	  txResult = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
+      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r");
+	  pclose(txResult);
 //	  printf("2\n");
 //  digitalWrite (txLed, txLedOn);
 	      sleep(1);
-	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
+	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r");
+	  pclose(txResult);
 	  socket_open = 0;
 	      
 //	  printf("3\n");
           sleep(1);
 //  digitalWrite (txLed, txLedOff);
-	  
+
 	  if (transmit)
 	  {
 	    if (mode == FSK)  {  
       	 // 	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
-      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3&", "r"); 
-//	  	printf("4\n");
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | while true; do sudo timeout -k 1 60m /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3; done &", "r"); 
+  		pclose(txResult);
+	//	  	printf("4\n");
            } else if (mode == BPSK) {
 //      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
-      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1&", "r"); 
-           }
+      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | while true; do sudo timeout -k 1 60m /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1; done &", "r"); 
+           	pclose(txResult);           }
 //      fgets(cmdbuffer, 1000, txResult);
-           pclose(txResult);
+
 	  }
 	  else
           {
@@ -1257,6 +1362,7 @@ if (firstTime != ON)
       sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
+*/
 	
 // socket write
 
@@ -1326,7 +1432,11 @@ if (firstTime != ON)
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
     }
 //    digitalWrite (0, HIGH);
-    firstTime = 0;
+	
+    if (mode == FSK)
+	    firstTime = 0;
+    else if (frames_sent > 0) //5)
+	    firstTime = 0;
 
 return 0;	
 }

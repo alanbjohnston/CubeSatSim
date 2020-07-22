@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 # script to run RTL-TCP Server
 #
 # On SDR client, use 10.3.141.1:1234 to connect 
@@ -30,8 +30,6 @@ sudo killall -9 java &>/dev/null
 sudo systemctl stop openwebrx
 
 sudo killall -9 rtl_tcp &>/dev/null
-
-sudo killall -9 gqrx &>/dev/null
 
 sudo systemctl start rtl_tcp
 
