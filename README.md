@@ -158,7 +158,7 @@ Press and release after green LED begins slow blinking: shuts down CubeSatSim.
 
 Once the CubeSatSim shuts down, the RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the CubeSatSim to start up again.  It will use the same mode it was running when it was shutdown.
 
-You can change the telemetry mode using the pushbutton or in the command line.  Edit the .mode file and change the value to change the mode, then restart the cubesatsim service.
+You can also change the telemetry mode using the command line.  Edit the CubeSatSim/.mode file and change the value to change the mode. A value of ARG1=a will give you AFSK, ARG1=f will give you FSK, and ARG2=b gives BPSK. After saving the .mode file, restart the cubesatsim service to switch the mode by typing:
 
 `sudo systemctl restart cubesatsim`
 
