@@ -147,9 +147,13 @@ After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive 
 The push button with the pi-power-button software will cause the Pi to reboot, change telemetry mode, or shutdown.  Pressing and holding the pushbutton will make the green power LED blink first once, then two times, then three times, then blinks slowly.  Depending on when you release the button, different things will happen.  Here's what happens if you:
 
 Press and release (don't hold button in at all): reboots CubeSatSim.  The green LED will go out, and after 30 seconds, the CubeSatSim will be transmitting again.
+
 Press and release after one blink of green LED: switches to AFSK telemetry mode. After about 5 seconds, the telemetry mode will switch to AFSK.
+
 Press and release after two blinks of green LED: switches to FSK mode. After about 5 seconds, the telemetry mode will switch to FSK.
+
 Press and release after three blinks of green LED: switches to BPSK mode. After about 5 seconds, the telemetry mode will switch to BPSK.
+
 Press and release after green LED begins slow blinking: shuts down CubeSatSim.  
 
 Once the CubeSatSim shuts down, the RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the CubeSatSim to start up again.  It will use the same mode it was running when it was shutdown.
