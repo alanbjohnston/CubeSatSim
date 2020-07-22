@@ -86,8 +86,9 @@ Create a sim.cfg configuration file with your amateur radio callsign (in all cap
      
 `echo "callsign" >> sim.cfg`
 
-`echo >> .mode`
+`echo "ARG1=f" >> .mode`
 
+This will set the telemetry mode to FSK.  To set it to AFSK or BPSK, change it to ARG1=a or ARG1=b 
 Compile the code:
 
 `make rebuild`
@@ -143,13 +144,13 @@ Now reboot for all the changes to take effect:
 
 After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSatSim!  The green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
 
-The demo.sh script alternates between two modes:
-1. Continuous FSK telmetry, decodeable by FoxTelem
-2. Alternativing between APRS AFSK, FSK, and BPSK telemetry
+You can change the telemetry mode using the pushbutton or in the command line.  Edit the .mode file and change the value to change the mode, then restart the cubesatsim service.
+
+`sudo systemctl restart cubesatsim`
 
 Pressing and releasing the push button will cause the Pi to reboot and change mode.  The green LED will go off as it reboots.
 
-Pressing and holding the pushbutton for 3 seconds will cause the green LED to flash, then the Pi will shutdown.  The RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the Pi to start.
+Pressing and holding the pushbutton for 6 seconds will cause the green LED to slowly flash, then the Pi will shutdown.  The RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the Pi to start.
 
 You can stop the service when it is running by SSH into the Pi and typing:
 
