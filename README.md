@@ -95,7 +95,7 @@ Compile the code:
 
 `cd`
 
-`git clone https://www.github.com/wb2osz/direwolf`
+`git clone https://github.com/alanbjohnston/direwolf.git`
 
 `cd direwolf`
 
@@ -142,7 +142,9 @@ Now reboot for all the changes to take effect:
 
 `sudo reboot now`
 
-After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSatSim!  The green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
+After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should get a signal from the CubeSatSim!  If you just have a Pi, you will only hear your Morse Code (CW) callsign - no telemetry signal will be transmitted, since there is no Band Pass Filter installed to block interfering transmissions.  If you have built the Main Board or the TFB and it is plugged into your Pi, you will hear telemetry readio signals.
+
+On the Main Board, the green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
 
 The push button with the pi-power-button software will cause the Pi to reboot, change telemetry mode, or shutdown.  Pressing and holding the pushbutton will make the green power LED blink first once, then two times, then three times, then blinks slowly.  Depending on when you release the button, different things will happen.  Here's what happens if you:
 

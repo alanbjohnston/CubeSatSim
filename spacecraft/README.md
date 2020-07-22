@@ -4,6 +4,8 @@ To use FoxTelem with the CubeSat Simulator, you will need to download the latest
 
 https://www.g0kla.com/foxtelem/downloads/test/
 
-Next, download the .MASTER files in the correct version number directory and put them in the FoxTelem spacecraft folder.
+Install and run FoxTelem per the instructions.
 
-Run FoxTelem, then go under Spacecraft/Add and select the .MASTER files to add the CubeSat Simulator to FoxTelem.
+If version you downloaded has a directory of the same name here, download all the files in the correct version number directory and put them in the FoxTelem spacecraft folder.Run FoxTelem, then go under Spacecraft/Add and select the .MASTER files to add the CubeSat Simulator to FoxTelem.
+
+

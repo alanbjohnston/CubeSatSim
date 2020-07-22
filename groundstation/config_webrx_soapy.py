@@ -30,16 +30,10 @@ config_webrx: configuration options for OpenWebRX
     (It means that you do not have to redistribute config_rtl.py and
     config_webrx.py if you make any changes to these two configuration files,
     and use them for running your web service with OpenWebRX.)
-
-    portions inspired by http://gephi.michalnovak.eu/config_webrx.py    
-
 """
 
-# configuration version. please only modify if you're able to perform the associated migration steps.
-version = 2
-
 # NOTE: you can find additional information about configuring OpenWebRX in the Wiki:
-# https://github.com/jketterl/openwebrx/wiki/Configuration-guide
+#       https://github.com/simonyiszk/openwebrx/wiki
 
 # ==== Server settings ====
 web_port = 8073
@@ -51,7 +45,6 @@ receiver_location = "Philadelphia, PA"
 receiver_asl = 200
 receiver_admin = "ku2y@amsat.org"
 receiver_gps = (40.0376, -75.3492)
-receiver_gps = {"lat": 40.0376, "lon": -75.3492}
 photo_title = "ARISS"
 photo_desc = """
 You can add your own background photo and receiver information.<br />
@@ -60,6 +53,15 @@ Device: RTL-SDR<br />
 Antenna: <br />
 Website: <a href="http://ariss-radio:8073" target="_blank">http://ariss-radio:8073</a>
 """
+
+# ==== sdr.hu listing ====
+# If you want your ham receiver to be listed publicly on sdr.hu, then take the following steps:
+# 1. Register at: http://sdr.hu/register
+# 2. You will get an unique key by email. Copy it and paste here:
+sdrhu_key = ""
+# 3. Set this setting to True to enable listing:
+sdrhu_public_listing = False
+server_hostname = "localhost"
 
 # ==== DSP/RX settings ====
 fft_fps = 9
@@ -91,14 +93,13 @@ Note: if you experience audio underruns while CPU usage is 100%, you can:
 # ==== I/Q sources ====
 # (Uncomment the appropriate by removing # characters at the beginning of the corresponding lines.)
 
-###############################################################################
-# Is my SDR hardware supported?                                               #
-# Check here: https://github.com/jketterl/openwebrx/wiki/Supported-Hardware   #
-###############################################################################
+#################################################################################################
+# Is my SDR hardware supported?                                                                 #
+# Check here: https://github.com/simonyiszk/openwebrx/wiki#guides-for-receiver-hardware-support #
+#################################################################################################
 
 # Currently supported types of sdr receivers:
-# "rtl_sdr", "rtl_sdr_soapy", "sdrplay", "hackrf", "airspy", "airspyhf", "fifi_sdr",
-# "perseussdr", "lime_sdr", "pluto_sdr", "soapy_remote"
+# "rtl_sdr", "sdrplay", "hackrf", "airspy", "airspyhf", "fifi_sdr"
 #
 # In order to use rtl_sdr, you will need to install librtlsdr-dev and the connector.
 # In order to use sdrplay, airspy or airspyhf, you will need to install soapysdr, the corresponding driver, and the
@@ -106,45 +107,56 @@ Note: if you experience audio underruns while CPU usage is 100%, you can:
 #
 # https://github.com/jketterl/owrx_connector
 #
-# In order to use Perseus HF you need to install the libperseus-sdr
-#
-# https://github.com/Microtelecom/libperseus-sdr
-#
-# and do the proper changes to the sdrs object below
-# (see also Wiki in https://github.com/jketterl/openwebrx/wiki/Sample-configuration-for-Perseus-HF-receiver).
-#
+# NOTE: The connector sources have replaced the old piped nmux style of reading input. If you still have any sdrs
+# configured that have type endin in "_connector", simply remove that suffix.
 
 sdrs = {
     "rtlsdr": {
         "name": "RTL-SDR",
-        "type": "rtl_sdr_soapy",
+        "type": "rtl_sdr",
         "ppm": 0,
         # you can change this if you use an upconverter. formula is:
         # center_freq + lfo_offset = actual frequency on the sdr
         # "lfo_offset": 0,
         "profiles": {
-            "wx": {
-                "name": "Weather Band",
-                "center_freq": 162350000,
+            "70cm": {
+                "name": "70cm Band",
+                "center_freq": 435500000,
+                "rf_gain": 3,
+                "samp_rate": 2400000,
+                "start_freq": 4355000000,
+                "start_mod": "nfm",
+            },
+            "70cm-hi": {
+                "name": "70cm Band High Gain",
+                "center_freq": 435500000,
                 "rf_gain": 30,
-                "samp_rate": 1000000,
-                "start_freq":  162400000,
+                "samp_rate": 2400000,
+                "start_freq": 4355000000,
                 "start_mod": "nfm",
             },
             "2m": {
                 "name": "2m Band",
+                "center_freq": 145000000,
+                "rf_gain": 15,
+                "samp_rate": 2400000,
+                "start_freq": 145725000,
+                "start_mod": "nfm",
+            },
+            "2m-hi": {
+                "name": "2m Band High Gain",
                 "center_freq": 145000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 145725000,
                 "start_mod": "nfm",
             },
-            "70cm": {
-                "name": "70cm Band",
-                "center_freq": 435500000,
+            "wx": {
+                "name": "Weather Band",
+                "center_freq": 162000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
-                "start_freq": 4355000000,
+                "start_freq":  161500000,
                 "start_mod": "nfm",
             },
             "fm": {
@@ -155,23 +167,93 @@ sdrs = {
                 "start_freq": 90000000,
                 "start_mod": "nfm",
             },
-            "10mv": {
-                "name": "10m Band",
-                "center_freq": 28000000,
+            "atc": {
+                "name": "Air Band - ATC",
+                "center_freq": 134000000,
+                "rf_gain": 20,
+                "samp_rate": 2400000,
+                "start_freq": 134000000,
+                "start_mod": "am",
+            },
+            "atc-hi": {
+                "name": "Air Band - ATC High Gain",
+                "center_freq": 134000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 134000000,
+                "start_mod": "am",
+            },
+            "noaa": {
+                "name": "NOAA Weather Satellites",
+                "center_freq": 137000000,
+                "rf_gain": 20,
+                "samp_rate": 2400000,
+                "start_freq": 137000000,
+                "start_mod": "fm",
+            },        
+            "noaa-hi": {
+                "name": "NOAA Weather Satellites High Gain",
+                "center_freq": 137000000,
                 "rf_gain": 25,
                 "samp_rate": 2400000,
-                "start_freq": 28500000,
-                "start_mod": "usb",
+                "start_freq": 137000000,
+                "start_mod": "fm",
             },
-            "6m": {
-                "name": "6m Band",
-                "center_freq": 51000000,
-                "rf_gain": 25,
-                "samp_rate": 2400000,
-                "start_freq": 51000000,
-                "start_mod": "usb",
-            },
-            "110MHz": {
+#            "20m": {
+#                "name": "20m",
+#                 "direct_sampling": 2,
+#                "center_freq": 14150000,
+#                "rf_gain": 30,
+#                "samp_rate": 2400000,
+#                "start_freq": 14070000,
+#                "start_mod": "usb",
+#            },
+#            "30m": {
+#                "name": "30m",
+#                "direct_sampling": 2,
+#                "center_freq": 10125000,
+#                "rf_gain": 30,
+#                "samp_rate": 2400000,
+#                "start_freq": 10142000,
+#                "start_mod": "usb",
+#            },
+#            "40m": {
+#                "name": "40m",
+#                "direct_sampling": 2,
+#                "center_freq": 7100000,
+#                "rf_gain": 30,
+#                "samp_rate": 2400000,
+#                "start_freq": 7070000,
+#                "start_mod": "usb",
+#            },
+#            "80m": {
+#                "name": "80m",
+#                "direct_sampling": 2,
+#                "center_freq": 3650000,
+#                "rf_gain": 30,
+#                "samp_rate": 2400000,
+#                "start_freq": 3570000,
+#                "start_mod": "usb",
+#            },
+#            "49m": {
+#                "name": "49m Broadcast",
+#                "direct_sampling": 2,
+#                "center_freq": 6000000,
+#                "rf_gain": 30,
+#                "samp_rate": 2400000,
+#                "start_freq": 6070000,
+#                "start_mod": "am",
+#            },
+#            "MW": {
+#                "name": "Medium Wave AM Broadcast",
+#                "direct_sampling": 2,
+#                "center_freq": 1000000,
+#                "rf_gain": 30,
+#                "samp_rate": 2400000,
+#                "start_freq": 1500000,
+#                "start_mod": "am",
+#            },            
+            "110mhz": {
                 "name": "110 MHz",
                 "center_freq": 110000000,
                 "rf_gain": 30,
@@ -179,7 +261,7 @@ sdrs = {
                 "start_freq": 110000000,
                 "start_mod": "nfm",
             },
-            "112MHz": {
+            "112mhz": {
                 "name": "112 MHz",
                 "center_freq": 112000000,
                 "rf_gain": 30,
@@ -187,7 +269,7 @@ sdrs = {
                 "start_freq": 112000000,
                 "start_mod": "nfm",
             },
-            "114MHz": {
+            "114mhz": {
                 "name": "114 MHz",
                 "center_freq": 114000000,
                 "rf_gain": 30,
@@ -204,7 +286,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "118mhz": {
-                "name": "118 MHz Air Band",
+                "name": "118 MHz",
                 "center_freq": 118000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -212,7 +294,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "120mhz": {
-                "name": "120 MHz Air Band",
+                "name": "120 MHz",
                 "center_freq": 120000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -220,7 +302,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "122mhz": {
-                "name": "122 MHz Air Band",
+                "name": "122 MHz",
                 "center_freq": 122000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -228,7 +310,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "124mhz": {
-                "name": "124 MHz Air Band",
+                "name": "124 MHz",
                 "center_freq": 124000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -236,7 +318,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "126mhz": {
-                "name": "126 MHz Air Band",
+                "name": "126 MHz",
                 "center_freq": 126000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -244,7 +326,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "128mhz": {
-                "name": "126 MHz Air Band",
+                "name": "126 MHz",
                 "center_freq": 128000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -252,7 +334,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "130mhz": {
-                "name": "130 MHz Air Band",
+                "name": "130 MHz",
                 "center_freq": 130000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -260,7 +342,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "132mhz": {
-                "name": "132 MHz Air Band",
+                "name": "132 MHz",
                 "center_freq": 132000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -268,7 +350,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "134mhz": {
-                "name": "134 MHz Air Band",
+                "name": "134 MHz",
                 "center_freq": 134000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -276,7 +358,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "136mhz": {
-                "name": "136 MHz Air Band",
+                "name": "136 MHz",
                 "center_freq": 136000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -284,7 +366,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "138mhz": {
-                "name": "138 MHz NOAA Weather Satellite Band",
+                "name": "138 MHz",
                 "center_freq": 138000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -308,7 +390,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "144mhz": {
-                "name": "144 MHz Ham Band",
+                "name": "144 MHz",
                 "center_freq": 144000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -316,7 +398,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "146mhz": {
-                "name": "146 MHz Ham Band",
+                "name": "146 MHz",
                 "center_freq": 146000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -324,7 +406,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "148mhz": {
-                "name": "148 MHz Ham Band",
+                "name": "148 MHz",
                 "center_freq": 148000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -380,7 +462,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "162mhz": {
-                "name": "162 MHz Weather Band",
+                "name": "162 MHz",
                 "center_freq": 162000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -436,7 +518,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "433mhz": {
-                "name": "433 MHz Ham Band",
+                "name": "433 MHz",
                 "center_freq": 433000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -444,7 +526,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "446mhz": {
-                "name": "446 MHz",
+                "name": "446 MHz (PMR)",
                 "center_freq": 446000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -457,22 +539,6 @@ sdrs = {
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 460000000,
-                "start_mod": "nfm",
-            },
-            "462mhz": {
-                "name": "462 MHz FRS/GMRS",
-                "center_freq": 462000000,
-                "rf_gain": 30,
-                "samp_rate": 2400000,
-                "start_freq": 462000000,
-                "start_mod": "nfm",
-            },
-            "467mhz": {
-                "name": "467 MHz FRS/GMRS",
-                "center_freq": 467000000,
-                "rf_gain": 30,
-                "samp_rate": 2400000,
-                "start_freq": 467000000,
                 "start_mod": "nfm",
             },
             "860mhz": {
@@ -508,7 +574,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "868mhz": {
-                "name": "868 MHz SRD Band",
+                "name": "868 MHz",
                 "center_freq": 868000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -524,7 +590,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "915mhz": {
-                "name": "915 MHz ISM Band",
+                "name": "915 MHz",
                 "center_freq": 915000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -628,7 +694,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "23cm": {
-                "name": "23cm Ham Band",
+                "name": "23cm (HAM)",
                 "center_freq": 1270000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -636,7 +702,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "13cm": {
-                "name": "13cm Ham Band",
+                "name": "13cm (HAM)",
                 "center_freq": 2370000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
@@ -644,87 +710,169 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "9cm": {
-                "name": "9cm Band",
+                "name": "9cm (HAM)",
                 "center_freq": 3440000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 3440000000,
                 "start_mod": "nfm",
             },
-            "10m": {
-                "name": "10m Ham Band HF",
-                "center_freq": 29150000,
-                "rf_gain": 10,
-                "samp_rate": 2400000,
-                "start_freq": 28283000,
-                "start_mod": "usb",
-                "direct_sampling": 2,
-            },
-            "19m": {
-                "name": "19m Broadcast Band HF",
-                "center_freq": 16000000,
-                "rf_gain": 10,
-                "samp_rate": 2400000,
-                "start_freq": 15400000,
-                "start_mod": "am",
-                "direct_sampling": 2,
-            },
+        },
+    },
+    "rtl_sdr_V3": {
+        "name": "RTL-SDR V3 HF+",
+        "type": "rtl_sdr_soapy",
+        "ppm": 0,
+        "direct_sampling": 2,
+        "profiles": {
             "20m": {
-                "name": "20m Ham Band HF",
+                "name": "20m",
                 "center_freq": 14150000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
                 "start_freq": 14070000,
                 "start_mod": "usb",
-                "direct_sampling": 2,
             },
             "30m": {
-                "name": "30m Ham Band HF",
+                "name": "30m",
                 "center_freq": 10125000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
                 "start_freq": 10142000,
                 "start_mod": "usb",
-                "direct_sampling": 2,
             },
             "40m": {
-                "name": "40m Ham Band HF",
+                "name": "40m",
                 "center_freq": 7100000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
                 "start_freq": 7070000,
                 "start_mod": "lsb",
-                "direct_sampling": 2,
-            },
-            "49m": {
-                "name": "49m Broadcast Band HF",
-                "center_freq": 6000000,
-                "rf_gain": 10,
-                "samp_rate": 2400000,
-                "start_freq": 6070000,
-                "start_mod": "am",
-                "direct_sampling": 2,
             },
             "80m": {
-                "name": "80m Ham Band HF",
+                "name": "80m",
                 "center_freq": 3650000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
                 "start_freq": 3570000,
                 "start_mod": "lsb",
-                "direct_sampling": 2,
             },
             "160m": {
-                "name": "160m Band HF",
-                "center_freq": 1700000,
+                "name": "160m",
+                "center_freq": 1900000,
                 "rf_gain": 10,
                 "samp_rate": 2400000,
-                "start_freq": 1440000,
+                "start_freq": 1840000,
+                "start_mod": "lsb",
+            },
+            "49m": {
+                "name": "49m Broadcast",
+                "center_freq": 6000000,
+                "rf_gain": 10,
+                "samp_rate": 2400000,
+                "start_freq": 6070000,
                 "start_mod": "am",
-                "direct_sampling": 2,
             },
         },
-    },    
+    },
+    "airspy": {
+        "name": "Airspy HF+",
+        "type": "airspyhf",
+        "ppm": 0,
+        "profiles": {
+            "20m": {
+                "name": "20m",
+                "center_freq": 14150000,
+                "rf_gain": 10,
+                "samp_rate": 768000,
+                "start_freq": 14070000,
+                "start_mod": "usb",
+            },
+            "30m": {
+                "name": "30m",
+                "center_freq": 10125000,
+                "rf_gain": 10,
+                "samp_rate": 192000,
+                "start_freq": 10142000,
+                "start_mod": "usb",
+            },
+            "40m": {
+                "name": "40m",
+                "center_freq": 7100000,
+                "rf_gain": 10,
+                "samp_rate": 256000,
+                "start_freq": 7070000,
+                "start_mod": "usb",
+            },
+            "80m": {
+                "name": "80m",
+                "center_freq": 3650000,
+                "rf_gain": 10,
+                "samp_rate": 768000,
+                "start_freq": 3570000,
+                "start_mod": "usb",
+            },
+            "49m": {
+                "name": "49m Broadcast",
+                "center_freq": 6000000,
+                "rf_gain": 10,
+                "samp_rate": 768000,
+                "start_freq": 6070000,
+                "start_mod": "am",
+            },
+        },
+    },
+    "sdrplay": {
+        "name": "SDRPlay RSP2",
+        "type": "sdrplay",
+        "ppm": 0,
+        "profiles": {
+            "20m": {
+                "name": "20m",
+                "center_freq": 14150000,
+                "rf_gain": 0,
+                "samp_rate": 500000,
+                "start_freq": 14070000,
+                "start_mod": "usb",
+                "antenna": "Antenna A",
+            },
+            "30m": {
+                "name": "30m",
+                "center_freq": 10125000,
+                "rf_gain": 0,
+                "samp_rate": 250000,
+                "start_freq": 10142000,
+                "start_mod": "usb",
+            },
+            "40m": {
+                "name": "40m",
+                "center_freq": 7100000,
+                "rf_gain": 0,
+                "samp_rate": 500000,
+                "start_freq": 7070000,
+                "start_mod": "usb",
+                "antenna": "Antenna A",
+            },
+            "80m": {
+                "name": "80m",
+                "center_freq": 3650000,
+                "rf_gain": 0,
+                "samp_rate": 500000,
+                "start_freq": 3570000,
+                "start_mod": "usb",
+                "antenna": "Antenna A",
+            },
+            "49m": {
+                "name": "49m Broadcast",
+                "center_freq": 6000000,
+                "rf_gain": 0,
+                "samp_rate": 500000,
+                "start_freq": 6070000,
+                "start_mod": "am",
+                "antenna": "Antenna A",
+            },
+        },
+    },
 }
 
 # ==== Color themes ====
@@ -735,21 +883,21 @@ sdrs = {
 waterfall_colors = [0x000000FF, 0x0000FFFF, 0x00FFFFFF, 0x00FF00FF, 0xFFFF00FF, 0xFF0000FF, 0xFF00FFFF, 0xFFFFFFFF]
 waterfall_min_level = -88  # in dB
 waterfall_max_level = -20
-waterfall_auto_level_margin = {"min": 5, "max": 40}
+waterfall_auto_level_margin = (5, 40)
 ### old theme by HA7ILM:
 # waterfall_colors = "[0x000000ff,0x2e6893ff, 0x69a5d0ff, 0x214b69ff, 0x9dc4e0ff,  0xfff775ff, 0xff8a8aff, 0xb20000ff]"
 # waterfall_min_level = -115 #in dB
 # waterfall_max_level = 0
-# waterfall_auto_level_margin = {"min": 20, "max": 30}
+# waterfall_auto_level_margin = (20, 30)
 ##For the old colors, you might also want to set [fft_voverlap_factor] to 0.
 
 # Note: When the auto waterfall level button is clicked, the following happens:
-#   [waterfall_min_level] = [current_min_power_level] - [waterfall_auto_level_margin["min"]]
-#   [waterfall_max_level] = [current_max_power_level] + [waterfall_auto_level_margin["max"]]
+#   [waterfall_min_level] = [current_min_power_level] - [waterfall_auto_level_margin[0]]
+#   [waterfall_max_level] = [current_max_power_level] + [waterfall_auto_level_margin[1]]
 #
-#   ___|________________________________________|____________________________________|________________________________________|___> signal power
-#        \_waterfall_auto_level_margin["min"]_/ |__ current_min_power_level          | \_waterfall_auto_level_margin["max"]_/
-#                                                          current_max_power_level __|
+#   ___|____________________________________|____________________________________|____________________________________|___> signal power
+#        \_waterfall_auto_level_margin[0]_/ |__ current_min_power_level          | \_waterfall_auto_level_margin[1]_/
+#                                                      current_max_power_level __|
 
 # === Experimental settings ===
 # Warning! The settings below are very experimental.
@@ -766,29 +914,23 @@ google_maps_api_key = ""
 # in seconds; default: 2 hours
 map_position_retention_time = 2 * 60 * 60
 
-# decoder queue configuration
-# due to the nature of some operating modes (ft8, ft8, jt9, jt65, wspr and js8), the data is recorded for a given amount
-# of time (6 seconds up to 2 minutes) and decoded at the end. this can lead to very high peak loads.
+# wsjt decoder queue configuration
+# due to the nature of the wsjt operating modes (ft8, ft8, jt9, jt65 and wspr), the data is recorded for a given amount
+# of time (6.5 seconds up to 2 minutes) and decoded at the end. this can lead to very high peak loads.
 # to mitigate this, the recordings will be queued and processed in sequence.
 # the number of workers will limit the total amount of work (one worker will losely occupy one cpu / thread)
-decoding_queue_workers = 2
+wsjt_queue_workers = 2
 # the maximum queue length will cause decodes to be dumped if the workers cannot keep up
 # if you are running background services, make sure this number is high enough to accept the task influx during peaks
-# i.e. this should be higher than the number of decoding services running at the same time
-decoding_queue_length = 10
-
+# i.e. this should be higher than the number of wsjt services running at the same time
+wsjt_queue_length = 10
 # wsjt decoding depth will allow more results, but will also consume more cpu
 wsjt_decoding_depth = 3
 # can also be set for each mode separately
 # jt65 seems to be somewhat prone to erroneous decodes, this setting handles that to some extent
 wsjt_decoding_depths = {"jt65": 1}
 
-# JS8 comes in different speeds: normal, slow, fast, turbo. This setting controls which ones are enabled.
-js8_enabled_profiles = ["normal", "slow"]
-# JS8 decoding depth; higher value will get more results, but will also consume more cpu
-js8_decoding_depth = 3
-
-temporary_directory = "/tmp/openwebrx"
+temporary_directory = "/tmp"
 
 services_enabled = False
 services_decoders = ["ft8", "ft4", "wspr", "packet"]
@@ -810,8 +952,3 @@ aprs_symbols_path = "/opt/aprs-symbols/png"
 # this also uses the receiver_gps setting from above, so make sure it contains a correct locator
 pskreporter_enabled = False
 pskreporter_callsign = "N0CALL"
-
-# === Web admin settings ===
-# this feature is experimental at the moment. it should not be enabled on shared receivers since it allows remote
-# changes to the receiver settings. enable for testing in controlled environment only.
-# webadmin_enabled = False

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/sdr.sh
+Name=Web SDR
+Comment=openwebrx for Web SDR 
+Icon=/home/pi/Downloads/sdr.ico
+Path=/home/pi
+Terminal=true
+Categories=HamRadio
+Keywords=Ham Radio;SDR

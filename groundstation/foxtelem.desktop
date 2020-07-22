@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/fox.sh
+Name=FoxTelem
+Comment=Test Version 1.09 for CubeSatSim
+Icon=/home/pi/Downloads/amsat.jpg
+Path=/home/pi
+#Terminal=true
+Categories=HamRadio
+Keywords=Ham Radio;AMSAT

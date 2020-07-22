@@ -1,0 +1,122 @@
+[
+  {
+    "name": "ISS APRS",
+    "frequency": 145825000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "ISS SSTV",
+    "frequency": 145819000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "AO-27",
+    "frequency": 436795000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "AO-73",
+    "frequency": 145815000,
+    "modulation": "usb"
+  },
+  {
+    "name": "Fox-1B AO-91",
+    "frequency": 145960000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "Fox-1D AO-92",
+    "frequency": 145880000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "MAX VALIER",
+    "frequency": 145860000,
+    "modulation": "usb"
+  },
+  {
+    "name": "NOAA WX Radio 1",
+    "frequency": 162400000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 2",
+    "frequency": 162425000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 3",
+    "frequency": 162450000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 4",
+    "frequency": 162475000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 5",
+    "frequency": 162500000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 6",
+    "frequency": 162525000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA WX Radio 7",
+    "frequency": 162550000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "CAS-4A",
+    "frequency": 145855000,
+    "modulation": "usb"
+  },
+  {
+    "name": "CAS-4B",
+    "frequency": 145910000,
+    "modulation": "usb"
+  },
+  {
+    "name": "XW-2A",
+    "frequency": 145660000,
+    "modulation": "usb"
+  },
+  {
+    "name": "XW-2B",
+    "frequency": 145725000,
+    "modulation": "usb"
+  },
+  {
+    "name": "XW-2C",
+    "frequency": 145790000,
+    "modulation": "usb"
+  },
+  {
+    "name": "XW-2F",
+    "frequency": 145975000,
+    "modulation": "usb"
+  },
+  {
+    "name": "NOAA-19",
+    "frequency": 137100000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA-18",
+    "frequency": 137912500,
+    "modulation": "nfm"
+  },
+  {
+    "name": "NOAA-15",
+    "frequency": 137620000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "CubeSatSim",
+    "frequency": 434900000,
+    "modulation": "nfm"
+  }
+]
