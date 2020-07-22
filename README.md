@@ -4,7 +4,7 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 There are several hardware versions and software branches to go with them - see below for information.
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (doesn't work on Pi 4 since rpitx doesn't work on it yet):
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, Pi Zero or Pi Zero W (doesn't work on Pi 4 since rpitx doesn't work on it yet):
 Requires:
 - Raspbian Stretch or Buster, full desktop or Lite 
 - wiringpi
@@ -14,9 +14,15 @@ Requires:
 - Direwolf
 - rpitx
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet):
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. Runs on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet).  The Pi Zero W or Pi Zero are recommended since they are draw the least power and will result in the best performance under battery power.
 
-`sudo apt-get install -y wiringpi git libasound2-dev i2c-tools`
+These instructions assume a Pi Zero W with WiFi connectivity.  If you have a Pi Zero, follow these instructions to get connectivity: https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows
+
+To begin the software install, after logging in type:
+
+`sudo apt update -y && sudo apt dist-upgrade -y`
+
+`sudo apt install -y wiringpi git libasound2-dev i2c-tools`
 
 Run raspi-config and enable the I2C bus by selecting Option 5 Interfacing Options and then Option 5 I2C and selecting Y to enable the ARM I2C bus:
 
@@ -80,6 +86,8 @@ Create a sim.cfg configuration file with your amateur radio callsign (in all cap
      
 `echo "callsign" >> sim.cfg`
 
+`echo >> .mode`
+
 Compile the code:
 
 `make rebuild`
@@ -124,6 +132,10 @@ To make the demo.sh script run automatically on boot:
 `sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service`
 
 `sudo systemctl enable cubesatsim`
+
+`sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service`
+
+`sudo systemctl enable rpitx`
 
 Now reboot for all the changes to take effect:
 

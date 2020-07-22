@@ -122,7 +122,7 @@ char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
 float sleepTime;
-int sampleTime = 0;
+int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
@@ -399,8 +399,14 @@ int main(int argc, char *argv[]) {
   }	
   pinMode (txLed, OUTPUT);
   digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	
 //    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
 //      mode = (reset_count) % 3;  // alternate between the three modes	
@@ -495,7 +501,7 @@ else
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
-	
+/*	
    if (transmit == FALSE)
    {
 	   
@@ -504,7 +510,7 @@ else
    }
 	
 // Send ID in CW (Morse Code)
-
+cw_id = OFF;
 if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
 {
   char cw_str[200];
@@ -518,7 +524,10 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
   strcat(cw_str, cw_footer);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
-printf("Before cmd\n");
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+//printf("Before cmd\n");
 //printf("CW String: %s\n", cw_str);
 //	FILE* f;
 	system(cw_str);
@@ -528,13 +537,16 @@ printf("After command\n");
 //  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 //printf("After Write\n");
 }
 //printf("Done CW!\n");
-	
+*/	
 while (loop-- != 0)
   {
-
+   frames_sent++;
    float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
@@ -610,10 +622,16 @@ while (loop-- != 0)
   if (mode == BPSK)
   {
 	digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 	printf("Sleeping to allow BPSK transmission to finish.\n");
 	sleep(loop_count * 5);
 	printf("Done sleeping\n");
 	digitalWrite (txLed, txLedOff);  
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
   }
   else if (mode == FSK)
   {
@@ -621,6 +639,7 @@ while (loop-- != 0)
 	sleep(loop_count);
 	printf("Done sleeping\n");
   }
+/*	
 //  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
   int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r");
   pclose(txResult);
@@ -631,7 +650,10 @@ while (loop-- != 0)
 	
   if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
       digitalWrite (onLed, onLedOff);
-	
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
+*/	
   return 0;
 }
 
@@ -681,6 +703,9 @@ int get_tlm(void) {
 for (int j = 0; j < frameCnt; j++)	
 {	
    digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
   int tlm[7][5];
   memset(tlm, 0, sizeof tlm);
 	
@@ -801,17 +826,23 @@ for (int j = 0; j < frameCnt; j++)
   strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
   digitalWrite (txLed, txLedOn);
-printf("Before cmd\n");
-printf("CW telem String: %s\n", cw_str2);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+//printf("Before cmd\n");
+//printf("CW telem String: %s\n", cw_str2);
 //	FILE* f;
     if (mode == CW)
 	system(cw_str2);
 //	printf("File %d \n", f);
 //  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
-printf("After command\n");
+//printf("After command\n");
 //  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 //printf("After Write\n");
 //}
 //printf("Done CW!\n");
@@ -819,7 +850,10 @@ printf("After command\n");
   if (ax5043)
   {
     	digitalWrite (txLed, txLedOn); 
-	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
+	fprintf(stderr,"INFO: Transmitting X.25 packet using AX5043\n");
         memcpy(data, str, strnlen(str, 256));
         int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
         if (ret) {
@@ -830,6 +864,9 @@ printf("After command\n");
         }
         ax5043_wait_for_transmit();
     	digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
         if (ret) {
             fprintf(stderr,
@@ -856,17 +893,26 @@ printf("After command\n");
 		fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    	  }
     	  digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 	  sleep(3);
    	  digitalWrite (txLed, txLedOn);	  
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
   }
 	
   //digitalWrite (txLed, txLedOff);
  
    }
 	
-printf("End of get_tlm and rpitx =========================================================\n");
+//printf("End of get_tlm and rpitx =========================================================\n");
 
    digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
 return;
 }
@@ -942,11 +988,17 @@ if (firstTime != ON)
  {
 // delay for sample period
   digitalWrite (txLed, txLedOn);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED On\n");
+  #endif
 
     while ((millis() - sampleTime) < samplePeriod)
         sleep(sleepTime);
   
   digitalWrite (txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+	printf("Tx LED Off\n");
+  #endif
 
     printf("Sample period: %d\n",millis() - sampleTime);
     sampleTime = millis();
@@ -1261,7 +1313,7 @@ if (firstTime != ON)
 //  printf("\n");
 		
 // rpitx
-	
+/*	
       char cmdbuffer[1000];
       FILE* txResult;
       if ((rpitxStatus != mode)) //  || ((loop % 1000) == 0))
@@ -1287,7 +1339,7 @@ if (firstTime != ON)
 //	  printf("3\n");
           sleep(1);
 //  digitalWrite (txLed, txLedOff);
-	  
+
 	  if (transmit)
 	  {
 	    if (mode == FSK)  {  
@@ -1310,6 +1362,7 @@ if (firstTime != ON)
       sleep(2);
 //      printf("Results of transmit command: %s\n", cmdbuffer);
       }
+*/
 	
 // socket write
 
@@ -1379,7 +1432,11 @@ if (firstTime != ON)
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
     }
 //    digitalWrite (0, HIGH);
-    firstTime = 0;
+	
+    if (mode == FSK)
+	    firstTime = 0;
+    else if (frames_sent > 0) //5)
+	    firstTime = 0;
 
 return 0;	
 }
