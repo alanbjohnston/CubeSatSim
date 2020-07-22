@@ -144,13 +144,21 @@ Now reboot for all the changes to take effect:
 
 After rebooting, tune your radio or SDR to 434.9 MHz FM, and you should receive telemetry from the CubeSatSim!  The green LED will be on when the CubeSatSim software is running.  The red LED when charging is occuring either through the micro USB or through the solar panels.  The blue LED will illuminate when the CubeSatSim is transmitting.
 
+The push button with the pi-power-button software will cause the Pi to reboot, change telemetry mode, or shutdown.  Pressing and holding the pushbutton will make the green power LED blink first once, then two times, then three times, then blinks slowly.  Depending on when you release the button, different things will happen.  Here's what happens if you:
+
+Press and release (don't hold button in at all): reboots CubeSatSim.  The green LED will go out, and after 30 seconds, the CubeSatSim will be transmitting again.
+Press and release after one blink of green LED: switches to AFSK telemetry mode. After about 5 seconds, the telemetry mode will switch to AFSK.
+Press and release after two blinks of green LED: switches to FSK mode. After about 5 seconds, the telemetry mode will switch to FSK.
+Press and release after three blinks of green LED: switches to BPSK mode. After about 5 seconds, the telemetry mode will switch to BPSK.
+Press and release after green LED begins slow blinking: shuts down CubeSatSim.  
+
+Once the CubeSatSim shuts down, the RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the CubeSatSim to start up again.  It will use the same mode it was running when it was shutdown.
+
 You can change the telemetry mode using the pushbutton or in the command line.  Edit the .mode file and change the value to change the mode, then restart the cubesatsim service.
 
 `sudo systemctl restart cubesatsim`
 
-Pressing and releasing the push button will cause the Pi to reboot and change mode.  The green LED will go off as it reboots.
-
-Pressing and holding the pushbutton for 6 seconds will cause the green LED to slowly flash, then the Pi will shutdown.  The RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the Pi to start.
+Note that to get FoxTelem to decode BPSK, you need to be in BPSK Fox/Husky mode (depending on which version of FoxTelem).  Also, you usually need to click on the center of the FFT.  For the first 30 seconds, it is just a carrier, so there will be no lock.  After that, it should lock and the Phasor will show a line that jumps around, and the Frame count should start increasing at the bottom of the FoxTelem window.
 
 You can stop the service when it is running by SSH into the Pi and typing:
 
