@@ -527,7 +527,7 @@ if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-printf("Before cmd\n");
+//printf("Before cmd\n");
 //printf("CW String: %s\n", cw_str);
 //	FILE* f;
 	system(cw_str);
@@ -829,14 +829,14 @@ for (int j = 0; j < frameCnt; j++)
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-printf("Before cmd\n");
-printf("CW telem String: %s\n", cw_str2);
+//printf("Before cmd\n");
+//printf("CW telem String: %s\n", cw_str2);
 //	FILE* f;
     if (mode == CW)
 	system(cw_str2);
 //	printf("File %d \n", f);
 //  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
-printf("After command\n");
+//printf("After command\n");
 //  sleep(7);
 //printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
@@ -853,7 +853,7 @@ printf("After command\n");
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-	fprintf(stderr,"INFO: Transmitting X.25 packet\n");
+	fprintf(stderr,"INFO: Transmitting X.25 packet using AX5043\n");
         memcpy(data, str, strnlen(str, 256));
         int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
         if (ret) {
@@ -907,7 +907,7 @@ printf("After command\n");
  
    }
 	
-printf("End of get_tlm and rpitx =========================================================\n");
+//printf("End of get_tlm and rpitx =========================================================\n");
 
    digitalWrite (txLed, txLedOff);
   #ifdef DEBUG_LOGGING
