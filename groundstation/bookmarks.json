@@ -118,5 +118,15 @@
     "name": "CubeSatSim",
     "frequency": 434900000,
     "modulation": "nfm"
+  },
+  {
+    "name": "APRS EU",
+    "frequency": 144800000,
+    "modulation": "nfm"
+  },
+  {
+    "name": "APRS AU",
+    "frequency": 145175000,
+    "modulation": "nfm"
   }
 ]
