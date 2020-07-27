@@ -27,6 +27,9 @@ os.system("echo 'de " + callsign + "' > id.txt && gen_packets -M 20 id.txt -o mo
 time.sleep(2)
 
 if __name__ == "__main__":
+	
+  if (transmit):
+	
     print 'Length: ', len(sys.argv)
     
     if (len(sys.argv)) > 1:
@@ -44,3 +47,7 @@ if __name__ == "__main__":
     else:
         print("FSK") 
 	os.system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+  else:
+    print("No Band Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
+    while True:
+      time.sleep(5)

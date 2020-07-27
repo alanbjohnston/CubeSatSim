@@ -405,7 +405,7 @@ int main(int argc, char *argv[]) {
   pinMode (onLed, OUTPUT);
   digitalWrite (onLed, onLedOn);
   #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
+	printf("Power LED On\n");
   #endif
 	
 //    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
@@ -415,8 +415,7 @@ int main(int argc, char *argv[]) {
     fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
-	
-	
+		
 if (vB4)
 {	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
@@ -551,11 +550,23 @@ while (loop-- != 0)
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
-   if ((batteryVoltage > 0) && (batteryVoltage < batteryThreshold))
+   if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
    {
 	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
+  	digitalWrite (txLed, txLedOff);
+        digitalWrite (onLed, onLedOff);
+        sleep(1);
+        digitalWrite (onLed, onLedOn);
+        sleep(1);
+        digitalWrite (onLed, onLedOff);
+        sleep(1);
+        digitalWrite (onLed, onLedOn);
+        sleep(1);
+        digitalWrite (onLed, onLedOff);
+  
 	popen("sudo shutdown -h now > /dev/null 2>&1", "r"); 
-   }
+	sleep(10);
+  }
 			  
   if (mode == FSK) {	
     bitRate = 200;
