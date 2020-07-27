@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/fox.sh
+Exec=/home/pi/CubeSatSim/groundstation/fox.sh
 Name=FoxTelem
 Comment=Test Version 1.09 for CubeSatSim
 Icon=/home/pi/Downloads/amsat.jpg
