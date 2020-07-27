@@ -550,7 +550,7 @@ while (loop-- != 0)
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
-   if ((batteryVoltage > 0) && (batteryVoltage < batteryThreshold))
+   if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
    {
 	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
   	digitalWrite (txLed, txLedOff);
