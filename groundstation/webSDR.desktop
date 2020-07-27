@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/sdr.sh
+Exec=/home/pi/CubeSatSim/groundstation/sdr.sh
 Name=Web SDR
 Comment=openwebrx for Web SDR 
 Icon=/home/pi/Downloads/sdr.ico
