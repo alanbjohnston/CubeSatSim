@@ -19,7 +19,7 @@ echo
 
 sudo killall -9 java &>/dev/null
 
-sudo killall -9 gqrx &>/dev/null
+sudo killall -9 CubicSDR &>/dev/null
 
 sudo systemctl stop rtl_tcp
 
