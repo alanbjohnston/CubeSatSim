@@ -554,6 +554,17 @@ while (loop-- != 0)
    if ((batteryVoltage > 0) && (batteryVoltage < batteryThreshold))
    {
 	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
+
+        digitalWrite (onLed, onLedOff);
+        sleep(1);
+        digitalWrite (onLed, onLedOn);
+        sleep(1);
+        digitalWrite (onLed, onLedOff);
+        sleep(1);
+        digitalWrite (onLed, onLedOn);
+        sleep(1);
+        digitalWrite (onLed, onLedOff);
+  
 	popen("sudo shutdown -h now > /dev/null 2>&1", "r"); 
    }
 			  
