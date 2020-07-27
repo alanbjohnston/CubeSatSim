@@ -554,7 +554,7 @@ while (loop-- != 0)
    if ((batteryVoltage > 0) && (batteryVoltage < batteryThreshold))
    {
 	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
-
+  	digitalWrite (txLed, txLedOff);
         digitalWrite (onLed, onLedOff);
         sleep(1);
         digitalWrite (onLed, onLedOn);
