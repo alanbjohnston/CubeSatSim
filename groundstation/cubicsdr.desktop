@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/cubicsdr.sh
+Exec=/home/pi/CubeSatSim/groundstation/cubicsdr.sh
 Name=SDR FM Broadcast
 Comment=CubicSDR FM Broadcast 
 Icon=/home/pi/Downloads/cubicsdr.png
