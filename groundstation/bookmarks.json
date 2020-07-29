@@ -30,6 +30,16 @@
     "modulation": "nfm"
   },
   {
+    "name": "HuskySat-1 HO-107",
+    "frequency": 435800000,
+    "modulation": "usb"
+  },
+  {
+    "name": "Fox-1E",
+    "frequency": 435750000,
+    "modulation": "usb"
+  },
+  {
     "name": "MAX VALIER",
     "frequency": 145860000,
     "modulation": "usb"
