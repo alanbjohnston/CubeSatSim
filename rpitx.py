@@ -52,9 +52,9 @@ if __name__ == "__main__":
 #	    os.system("(while true; do (sleep 10 && cat /home/pi/sstv/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3); done)")
 	    while True:
 		GPIO.output(txLed, txLedOff);
-		printf("Sleeping")
+		print("Sleeping")
 		time.sleep(10)
-		printf("Transmitting SSTV")
+		print("Transmitting SSTV")
 		GPIO.output(txLed, txLedOn);
 		os.system("cat /home/pi/sstv/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
