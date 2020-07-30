@@ -1,5 +1,12 @@
 # CubeSatSim
 
+To test out SSTV:
+
+mkdir ~/sstv
+wget -O ~/sstv/sstv.wav "https://drive.google.com/uc?export=download&id=1nCJsH2Adm0pqgg2hEYzG4YYgmfBr4lxx"
+
+edit .mode to ARG1=s or use push button and release on 4 flashes.
+
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
 There are several hardware versions and software branches to go with them - see below for information.
