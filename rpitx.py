@@ -15,7 +15,16 @@ if GPIO.input(12) == False:
 	transmit = True
 if GPIO.input(27) == False:
 	transmit = True
-
+	txLed = 22
+	txLedOn = False
+ 	txLedOff = True
+else:
+	txLed = 27
+	txLedOn = True
+ 	txLedOff = False
+	
+GPIO.setup(txLed, GPIO.OUT)
+	
 print(transmit)
 
 file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -42,7 +51,9 @@ if __name__ == "__main__":
             print("SSTV")
 #	    os.system("(while true; do (sleep 10 && cat /home/pi/sstv/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3); done)")
 	    while True:
+		GPIO.output(txLed, txLedOff);
 		time.sleep(10)
+		GPIO.output(txLed, txLedOn);
 		os.system("cat /home/pi/sstv/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
             print("BPSK")
