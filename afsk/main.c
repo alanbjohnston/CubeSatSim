@@ -1098,7 +1098,7 @@ if (firstTime != ON)
 	  
   batt_c_v = (int)(reading[BAT].voltage * 100);
   battCurr = (int)reading[BAT].current + 2048;
-  PSUVoltage = (int)reading[BUS].voltage * 100;
+  PSUVoltage = (int)(reading[BUS].voltage * 100);
   PSUCurrent = (int)reading[BUS].current + 2048;
 	  
   if (payload == ON)
