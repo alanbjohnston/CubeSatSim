@@ -1,13 +1,30 @@
 # CubeSatSim
 
-To test out SSTV:
+To test out the PD120 SSTV image transmit:
 
-mkdir ~/sstv
-wget -O ~/sstv/sstv.wav "https://drive.google.com/uc?export=download&id=1nCJsH2Adm0pqgg2hEYzG4YYgmfBr4lxx"
 
-update pi-power-button to latest dev branch.
+cd ~/CubeSatSim
 
-edit .mode to ARG1=s or use push button and release on 4 flashes.
+git checkout dev
+
+git pull
+
+echo "ARG1=s" > .mode
+
+cd ~/pi-power-button
+
+git checkout dev
+
+git pull
+
+./script/install
+
+sudo systemctl restart cubesatsim
+
+
+
+
+You can also press and hold the push button and release on 4 flashes to switch to SSTV mode!
 
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
