@@ -1,25 +1,25 @@
 # CubeSatSim
 
-To test out the PD120 SSTV image transmit:
+To test out the PD120 SSTV image transmit after performing the software install steps below:
 
 
-cd ~/CubeSatSim
+`cd ~/CubeSatSim`
 
-git checkout dev
+`git checkout dev`
 
-git pull
+`git pull`
 
-echo "ARG1=s" > .mode
+`echo "ARG1=s" > .mode`
 
-cd ~/pi-power-button
+`cd ~/pi-power-button`
 
-git checkout dev
+`git checkout dev`
 
-git pull
+`git pull`
 
-./script/install
+`./script/install`
 
-sudo systemctl restart cubesatsim
+`sudo systemctl restart cubesatsim`
 
 
 
