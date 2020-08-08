@@ -234,7 +234,7 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
 	  		printf("vB5 Present\n");
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-0", 0x40, 400); // added error
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
