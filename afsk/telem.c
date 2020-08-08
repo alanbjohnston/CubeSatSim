@@ -126,6 +126,9 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
+    #define BUFSIZE 128
+    char buf[BUFSIZE];
+		
     int pos = strlen(bus) / sizeof(bus[0]) - 1;
     printf("Bus size %d \n", pos);	
     printf("Bus value %d \n", atoi(&bus[pos]));
@@ -140,6 +143,9 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 //    printf("2\n");
 //   i2cdetect = popen("echo $?", "r");
 //    printf("getc i2cdetect 1 output: %d\n", getc(i2cdetect));
+    while (fgets(buf, BUFSIZE, i2cdetect) != NULL) {
+        printf("OUTPUT: %s", buf);
+    }	
     int error = pclose(i2cdetect)/256;
     printf("%s error: %d \n", &command, error);
 	
@@ -150,6 +156,9 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 //    printf("2\n");
 //   i2cdetect = popen("echo $?", "r");
  //   printf("getc echo output: %d\n", getc(i2cdetect));
+    while (fgets(buf, BUFSIZE, i2cdetect2) != NULL) {
+        printf("OUTPUT: %s", buf);
+    }	
     error = pclose(i2cdetect2)/256;
     printf("%s error: %d \n", &command, error);	
 	
