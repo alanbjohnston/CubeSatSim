@@ -126,16 +126,22 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
     FILE *i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 0", "r");
+    pclose(i2dectect);
+    i2cdetect = open("echo $?", "r");
     printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
     int error = pclose(i2cdetect)/256;
     printf("i2cdetect 0 error: %d \n", error);
 
     i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 1", "r");
+    pclose(i2dectect);
+    i2cdetect = open("echo $?", "r");
     printf("i2cdetect 1 output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect)/256;
     printf("i2cdetect 1 error: %d \n", error);
 
     i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 3", "r");
+    pclose(i2dectect);
+    i2cdetect = open("echo $?", "r");
     printf("i2cdetect 3 output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect)/256;
     printf("i2cdetect 3 error: %d \n", error);
