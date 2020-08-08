@@ -126,24 +126,24 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
-    printf("Bus size %d   Bu[0] size: %d \n", strlen(bus), sizeof(bus[0]) ); // atoi(bus[(strlen(bus)/sizeof(bus[0])) - 1]));
+    printf("Bus lencth %d \n", atoi(bus[(strlen(bus)/sizeof(bus[0])) - 1]));
 	   
     FILE *i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 0", "r");
-    printf("1\n");
+//    printf("1\n");
     pclose(i2cdetect);
-    printf("2\n");
+//    printf("2\n");
     i2cdetect = popen("echo $?", "r");
-//    printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
+    printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
     int error = pclose(i2cdetect);
     printf("i2cdetect 0 error: %d \n", error);
     printf("3\n");
 	
     i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 1", "r");
-    printf("4\n");
+//    printf("4\n");
     pclose(i2cdetect);
-    printf("5\n");
+//    printf("5\n");
     i2cdetect = popen("echo $?", "r");
-//    printf("i2cdetect 1 output: %d\n", getc(i2cdetect));
+    printf("i2cdetect 1 output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect)/256;
     printf("i2cdetect 1 error: %d \n", error);
 
