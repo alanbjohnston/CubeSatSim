@@ -132,7 +132,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     printf("1\n");
     pclose(i2cdetect);
     printf("2\n");
-    i2cdetect = open("echo $?", "r");
+    i2cdetect = popen("echo $?", "r");
 //    printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
     int error = pclose(i2cdetect);
     printf("i2cdetect 0 error: %d \n", error);
@@ -142,14 +142,14 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     printf("4\n");
     pclose(i2cdetect);
     printf("5\n");
-    i2cdetect = open("echo $?", "r");
+    i2cdetect = popen("echo $?", "r");
 //    printf("i2cdetect 1 output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect)/256;
     printf("i2cdetect 1 error: %d \n", error);
 
     i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 3", "r");
     pclose(i2cdetect);
-    i2cdetect = open("echo $?", "r");
+    i2cdetect = popen("echo $?", "r");
     printf("i2cdetect 3 output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect)/256;
     printf("i2cdetect 3 error: %d \n", error);
