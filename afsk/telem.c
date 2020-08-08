@@ -125,72 +125,32 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //struct SensorConfig config_sensor(int sensor, int milliAmps) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
-	
-    char result[128];
-		
-    int pos = strlen(bus) / sizeof(bus[0]) - 1;
-    printf("Bus size %d \n", pos);	
-    printf("Bus value %d \n", atoi(&bus[pos]));
-    
-    char command[50] = "timeout 5 i2cdetect -y ";
-    strcat (command, &bus[pos]);
-	
-    FILE *i2cdetect = popen(command, "r");
-//    FILE *i2cdetect = popen("timeout 5 i2cdetect -y 1", "r");
-//    printf("1\n");
-//    pclose(i2cdetect);
-//    printf("2\n");
-//   i2cdetect = popen("echo $?", "r");
-//    printf("getc i2cdetect 1 output: %d\n", getc(i2cdetect));
-    while (fgets(result, 128, i2cdetect) != NULL) {
-	;
-//        printf("result: %s", result);
-    }	
-//    getc(i2cdetect);
-    int error = pclose(i2cdetect)/256;
-    printf("%s error: %d \n", &command, error);
-/*	
-//    FILE *i2cdetect2 = popen(command, "r");
-    FILE *i2cdetect2 = popen("timeout 5 i2cdetect -y 3", "r");
-//    printf("1\n");
-//    pclose(i2cdetect);
-//    printf("2\n");
-//   i2cdetect = popen("echo $?", "r");
- //   printf("getc echo output: %d\n", getc(i2cdetect));
-*    while (fgets(buf, BUFSIZE, i2cdetect2) != NULL) {
-        printf("OUTPUT: %s", buf);
-    }	
-*
-    getc(i2cdetect);
-    error = pclose(i2cdetect2)/256;
-    printf("%s error: %d \n", &command, error);	
-	
-/*    printf("3\n");
-	
-    i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 1", "r");
-//    printf("4\n");
-    pclose(i2cdetect);
-//    printf("5\n");
-    i2cdetect = popen("echo $?", "r");
-    printf("i2cdetect 1 output: %d\n", getc(i2cdetect));
-    error = pclose(i2cdetect)/256;
-    printf("i2cdetect 1 error: %d \n", error);
 
-    i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 3", "r");
-    pclose(i2cdetect);
-    i2cdetect = popen("echo $?", "r");
-    printf("i2cdetect 3 output: %d\n", getc(i2cdetect));
-    error = pclose(i2cdetect)/256;
-    printf("i2cdetect 3 error: %d \n", error);
-*/	
-    if (error != 0) 
-    {
-//    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: %s bus not present \n", bus);
+   if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
+	    printf("ERROR: %s bus not present \n  Is it enabled in /boot/config.txt? \n", bus);
 	    data.fd = OFF;
 	    return (data);
     }
 	
+    char result[128];		
+    int pos = strlen(bus) / sizeof(bus[0]) - 1;
+    printf("Bus size %d \n", pos);	
+    printf("Bus value %d \n", atoi(&bus[pos]));
+    char command[50] = "timeout 2 i2cdetect -y ";
+    strcat (command, &bus[pos]);	
+    FILE *i2cdetect = popen(command, "r");
+    while (fgets(result, 128, i2cdetect) != NULL) {
+	;
+//        printf("result: %s", result);
+    }	
+    int error = pclose(i2cdetect)/256;
+    printf("%s error: %d \n", &command, error);
+   if (error != 0) 
+   {	
+	    printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
+	    data.fd = OFF;
+	    return (data);
+    }	   
     data.fd = wiringPiI2CSetupInterface(bus, address);	
 	
     data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
