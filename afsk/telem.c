@@ -136,7 +136,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     int pos = strlen(bus) / sizeof(bus[0]) - 1;
     printf("Bus size %d \n", pos);	
     printf("Bus value %d \n", atoi(&bus[pos]));
-    char command[50] = "timeout 2 i2cdetect -y ";
+    char command[50] = "timeout 5 i2cdetect -y ";
     strcat (command, &bus[pos]);	
     FILE *i2cdetect = popen(command, "r");
     while (fgets(result, 128, i2cdetect) != NULL) {
@@ -234,7 +234,7 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
 	  		printf("vB5 Present\n");
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-0", 0x40, 400); // added error
+  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
