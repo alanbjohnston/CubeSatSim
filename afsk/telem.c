@@ -126,7 +126,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
-    print ("Bus number: %d \n", atoi(bus[strlen(bus) - 1]);
+    print ("Bus number: %d \n", atoi(bus[strlen(bus) - 1]));
 	   
     FILE *i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 0", "r");
     pclose(i2dectect);
