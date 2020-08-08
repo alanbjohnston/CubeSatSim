@@ -127,7 +127,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 
    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: %s bus not present \n  Check raspi-config Interfacing Options/I2C/Enable and /boot/config.txt  \n", bus);
+	    printf("ERROR: %s bus not present \n  Check raspi-config Interfacing Options/I2C and /boot/config.txt  \n", bus);
 	    data.fd = OFF;
 	    return (data);
     }
