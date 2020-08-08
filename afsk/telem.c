@@ -139,9 +139,19 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 //    printf("2\n");
 //   i2cdetect = popen("echo $?", "r");
     printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
-    int error = pclose(i2cdetect);
+    int error = pclose(i2cdetect)/256;
     printf("%s error: %d \n", &command, error);
-    printf("3\n");
+	
+    FILE *i2cdetect2 = popen(command, "r");
+//    printf("1\n");
+//    pclose(i2cdetect);
+//    printf("2\n");
+//   i2cdetect = popen("echo $?", "r");
+//    printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
+    int error = pclose(i2cdetect2)/256;
+    printf("%s error: %d \n", &command, error);	
+	
+/*    printf("3\n");
 	
     i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 1", "r");
 //    printf("4\n");
@@ -158,7 +168,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     printf("i2cdetect 3 output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect)/256;
     printf("i2cdetect 3 error: %d \n", error);
-	
+*/	
     if (error != 0) 
     {
 //    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
