@@ -129,7 +129,9 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     printf("Bus size %d   Bu[0] size: %d \n", strlen(bus), sizeof(bus[0]) ); // atoi(bus[(strlen(bus)/sizeof(bus[0])) - 1]));
 	   
     FILE *i2cdetect = popen("timeout --preserve-status 5 i2cdetect -y 0", "r");
+    printf("1\n");
     pclose(i2cdetect);
+    printf("2\n");
     i2cdetect = open("echo $?", "r");
     printf("i2cdetect 0 output: %d\n", getc(i2cdetect));
     int error = pclose(i2cdetect)/256;
