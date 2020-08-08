@@ -125,8 +125,20 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //struct SensorConfig config_sensor(int sensor, int milliAmps) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
+    FILE *i2cdetect = popen("timeout 5 i2cdetect -y 0");
+    int error = pclose(i2cdetect)/256;
+    printf("i2cdetect 0 error: %d \n", error);
+
+    i2cdetect = popen("timeout 5 i2cdetect -y 1");
+    error = pclose(i2cdetect)/256;
+    printf("i2cdetect 1 error: %d \n", error);
+
+    i2cdetect = popen("timeout 5 i2cdetect -y 3");
+    error = pclose(i2cdetect)/256;
+    printf("i2cdetect 3 error: %d \n", error);
 	
-    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
+    if (error != 0) 
+//    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
 	    printf("ERROR: %s bus not present \n", bus);
 	    data.fd = OFF;
 	    return (data);
