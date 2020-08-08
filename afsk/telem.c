@@ -139,10 +139,14 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     char command[50] = "timeout 5 i2cdetect -y ";
     strcat (command, &bus[pos]);	
     FILE *i2cdetect = popen(command, "r");
+/*	
     while (fgets(result, 128, i2cdetect) != NULL) {
 	;
 //        printf("result: %s", result);
-    }	
+    }
+*/
+    fgets(result, 128, i2cdetect);
+	
     int error = pclose(i2cdetect)/256;
 //    printf("%s error: %d \n", &command, error);
    if (error != 0) 
