@@ -133,21 +133,23 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     char command[50] = "timeout 5 i2cdetect -y ";
     strcat (command, &bus[pos]);
 	
-    FILE *i2cdetect = popen(command, "r");
+//    FILE *i2cdetect = popen(command, "r");
+    FILE *i2cdetect = popen("timeout 5 i2cdetect -y 1", "r");
 //    printf("1\n");
 //    pclose(i2cdetect);
 //    printf("2\n");
 //   i2cdetect = popen("echo $?", "r");
-    printf("getc i2cdetect output: %d\n", getc(i2cdetect));
+//    printf("getc i2cdetect 1 output: %d\n", getc(i2cdetect));
     int error = pclose(i2cdetect)/256;
     printf("%s error: %d \n", &command, error);
 	
-    FILE *i2cdetect2 = popen(command, "r");
+//    FILE *i2cdetect2 = popen(command, "r");
+    FILE *i2cdetect2 = popen("timeout 5 i2cdetect -y 3", "r");
 //    printf("1\n");
-    pclose(i2cdetect);
+//    pclose(i2cdetect);
 //    printf("2\n");
-   i2cdetect = popen("echo $?", "r");
-    printf("getc echo output: %d\n", getc(i2cdetect));
+//   i2cdetect = popen("echo $?", "r");
+ //   printf("getc echo output: %d\n", getc(i2cdetect));
     error = pclose(i2cdetect2)/256;
     printf("%s error: %d \n", &command, error);	
 	
