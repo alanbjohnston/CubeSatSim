@@ -572,6 +572,7 @@ while (loop-- != 0)
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
+/*
    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
    {
 	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -589,6 +590,7 @@ while (loop-- != 0)
 	popen("sudo shutdown -h now > /dev/null 2>&1", "r"); 
 	sleep(10);
   }
+*/
 			  
   if (mode == FSK) {	
     bitRate = 200;
