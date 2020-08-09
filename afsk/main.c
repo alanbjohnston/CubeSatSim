@@ -201,9 +201,31 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
 	
     if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: %s bus not present \n", bus);
+	    printf("ERROR: %s bus not present\n  Check raspi-config Interfacing Options/I2C and /boot/config.txt  \n", bus);
 	    data.fd = OFF;
 	    return (data);
+    }
+    char result[128];	
+    int pos = strlen(bus) / sizeof(bus[0]) - 1;	
+ //    printf("Bus size %d \n", pos);	
+ //    printf("Bus value %d \n", atoi(&bus[pos]));	
+    char command[50] = "timeout 10 i2cdetect -y ";	
+    strcat (command, &bus[pos]);	
+    FILE *i2cdetect = popen(command, "r");	
+ 		
+    while (fgets(result, 128, i2cdetect) != NULL) {	
+ 	;	
+ //        printf("result: %s", result);	
+ 	    }	
+ 		
+    int error = pclose(i2cdetect)/256;	
+	
+ //    printf("%s error: %d \n", &command, error);	
+    if (error != 0)	
+    {	
+ 	printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);	
+ 	data.fd = OFF;	
+ 	return (data);	
     }
 	
     data.fd = wiringPiI2CSetupInterface(bus, address);	
