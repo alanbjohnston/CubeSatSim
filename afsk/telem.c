@@ -241,7 +241,7 @@ int main(int argc, char *argv[]) {
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
 			
-  if (access("/dev/i2c-11", W_OK | R_OK) < 0)  {   // Test if I2C Bus 3 is present			
+  if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
   	sensor[PLUS_Z]  = config_sensor("/dev/i2c-11", 0x40, 400);
   	sensor[MINUS_X] = config_sensor("/dev/i2c-11", 0x41, 400);
