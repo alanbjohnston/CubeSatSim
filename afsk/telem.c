@@ -125,13 +125,34 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 //struct SensorConfig config_sensor(int sensor, int milliAmps) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
-	
-    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: %s bus not present \n", bus);
+
+   if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
+	    printf("ERROR: %s bus not present \n  Check raspi-config Interfacing Options/I2C and /boot/config.txt  \n", bus);
 	    data.fd = OFF;
 	    return (data);
     }
 	
+    char result[128];		
+    int pos = strlen(bus) / sizeof(bus[0]) - 1;
+//    printf("Bus size %d \n", pos);	
+//    printf("Bus value %d \n", atoi(&bus[pos]));
+    char command[50] = "timeout 10 i2cdetect -y ";
+    strcat (command, &bus[pos]);	
+    FILE *i2cdetect = popen(command, "r");
+	
+    while (fgets(result, 128, i2cdetect) != NULL) {
+	;
+//        printf("result: %s", result);
+    }
+	
+    int error = pclose(i2cdetect)/256;
+//    printf("%s error: %d \n", &command, error);
+   if (error != 0) 
+   {	
+	    printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
+	    data.fd = OFF;
+	    return (data);
+    }	   
     data.fd = wiringPiI2CSetupInterface(bus, address);	
 	
     data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
@@ -214,15 +235,24 @@ int main(int argc, char *argv[]) {
 
   		if (digitalRead(26) != HIGH)
   		{
-	  		printf("vB5 Present\n");
+  printf("vB5 Present\n");  // Don't print normal board detection
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
-  sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
-  sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
-  sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
+			
+  if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
+	printf("/dev/i2c-11 is present\n\n");		
+  	sensor[PLUS_Z]  = config_sensor("/dev/i2c-11", 0x40, 400);
+  	sensor[MINUS_X] = config_sensor("/dev/i2c-11", 0x41, 400);
+  	sensor[MINUS_Y] = config_sensor("/dev/i2c-11", 0x44, 400);
+  	sensor[MINUS_Z] = config_sensor("/dev/i2c-11", 0x45, 400); 
+  } else {
+  	sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
+  	sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
+  	sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
+  	sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
+  }	  
   		}
 		else
 		{
