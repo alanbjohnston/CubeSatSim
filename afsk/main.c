@@ -530,6 +530,9 @@ else
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
+	
+  if (mode == AFSK)
+	  sleep(4); // delay awaiting CW ID completion
 /*	
    if (transmit == FALSE)
    {
