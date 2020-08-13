@@ -1,12 +1,10 @@
 This code is for the STM32 or Pro Micro acting as a payload to the CubeSatSim.
 
-Code that runs on both boards is in this directory.  Code that only runs on a particular board is in the directory for that board.
-
 Code includes:
 
 i2c_scanner.ino  A handy utility for scanning the I2C bus that displays the results in the Serial Monitor at 9600 baud.  If the sensors are installed and the jumpers set to the correct position, the two sensors should be displayed.
 
-blink_stm32.ino and blink_pro_micro.ino  The usual Arduino "Hello World" application that blinks the LED.
+Blink_STM32_PC13.ino and Blink_Pro_Micro.ino  The usual Arduino "Hello World" application that blinks the LED for each board.
 
 bme280test.ino Displays the results of reading the BME280 sensor: Temperature, Pressure, Altitude, and Humidity and displays on Serial Monitor 9600 baud.  Requires the following libraries: Adadruit Unified Sensor (specify version 1.0.3), Adafruit_BME280 (specify version 1.1.0)
 
