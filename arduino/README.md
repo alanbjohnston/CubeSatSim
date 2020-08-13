@@ -1,4 +1,4 @@
-This code is for the STM32 or Pro Micro acting a payload to the CubeSatSim.
+This code is for the STM32 or Pro Micro acting as a payload to the CubeSatSim.
 
 Code that runs on both boards is in this directory.  Code that only runs on a particular board is in the directory for that board.
 
