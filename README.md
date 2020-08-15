@@ -70,6 +70,10 @@ you should see two I2C buses:
 
 `i2c-1  i2c-3`
 
+Note, you might see these two I2C buses - this is fine to:
+
+`i2c-1  i2c-11`
+
 Continue the install by typing:
 
 `cd`
