@@ -1,31 +1,5 @@
 # CubeSatSim
 
-To test out the PD120 SSTV image transmit after performing the software install steps below:
-
-
-`cd ~/CubeSatSim`
-
-`git checkout dev`
-
-`git pull`
-
-`echo "ARG1=s" > .mode`
-
-`cd ~/pi-power-button`
-
-`git checkout dev`
-
-`git pull`
-
-`./script/install`
-
-`sudo systemctl restart cubesatsim`
-
-
-
-
-You can also press and hold the push button and release on 4 flashes to switch to SSTV mode!
-
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
 There are several hardware versions and software branches to go with them - see below for information.
@@ -182,11 +156,13 @@ Press and release after two blinks of green LED: switches to FSK mode. After abo
 
 Press and release after three blinks of green LED: switches to BPSK mode. After about 5 seconds, the telemetry mode will switch to BPSK.
 
+Press and release after four blinks of green LED: switches to SSTV mode. After about 5 seconds, the telemetry mode will switch to SSTV transmitting PD120 mode SSTV.
+
 Press and release after green LED begins slow blinking: shuts down CubeSatSim.  
 
 Once the CubeSatSim shuts down, the RBF pin can then be safely inserted.  Removing the RBF pin or pressing the push button will cause the CubeSatSim to start up again.  It will use the same mode it was running when it was shutdown.
 
-You can also change the telemetry mode using the command line.  Edit the CubeSatSim/.mode file and change the value to change the mode. A value of ARG1=a will give you AFSK, ARG1=f will give you FSK, and ARG2=b gives BPSK. After saving the .mode file, restart the cubesatsim service to switch the mode by typing:
+You can also change the telemetry mode using the command line.  Edit the CubeSatSim/.mode file and change the value to change the mode. A value of ARG1=a will give you AFSK, ARG1=f will give you FSK, ARG1=b gives BPSK, and ARG1=s gives SSTV. After saving the .mode file, restart the cubesatsim service to switch the mode by typing:
 
 `sudo systemctl restart cubesatsim`
 
