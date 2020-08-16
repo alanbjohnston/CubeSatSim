@@ -5,7 +5,7 @@ import board
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 
 
-i2c_bus = board.I2C()
+i2c_bus = board.I2C(GPIO.27, GPIO.28)
 
 print(i2c_bus)
 
