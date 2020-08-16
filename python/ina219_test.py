@@ -2,14 +2,19 @@
 
 import time
 import board
+import smbus
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 
+i2c_bus2  = smbus.SMBus(3)
+b1 = i2c_bus2.read_i2c_block_data(0x45, 0x01, 2)
+print (b1)
 
-i2c_bus = board.I2C(GPIO.27, GPIO.28)
+
+i2c_bus = board.I2C()
 
 print(i2c_bus)
 
-ina219 = INA219(i2c_bus)
+ina219 = INA219(i2c_bus, 0x45)
 
 print("ina219 test")
 
