@@ -1,6 +1,6 @@
 """Sample code and test for adafruit_in219"""
 
-import time
+import sys
 import board
 import busio
 from adafruit_extended_bus import ExtendedI2C as I2C
