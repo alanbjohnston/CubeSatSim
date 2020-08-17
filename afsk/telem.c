@@ -49,6 +49,7 @@
 #define MINUS_Z 6
 #define BUS 7
 #define OFF -1
+#define ON 1
 
 int twosToInt(int val, int len);
 
@@ -58,6 +59,7 @@ struct SensorConfig {
     int calValue;    
     int powerMultiplier;
     int currentDivider;
+    char command[30];
 };
 
 struct SensorData {
@@ -82,11 +84,30 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     struct SensorData data = {
         .current = 0,
         .voltage = 0,
-        .power = 0    };
+        .power = 0 
+    };
 
     if (sensor.fd < 0) {
         return data;
     }
+	
+    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltage.py 1 0x44", "r");
+    char cmdbuffer[1000];
+    fgets(cmdbuffer, 1000, file);
+    pclose(file);  
+    data.voltage  =  atof(cmdbuffer);
+
+    printf("current: %s \n", cmdbuffer);
+	
+    file = popen("python3 /home/pi/CubeSatSim/python/current.py 1 0x44", "r");
+    fgets(cmdbuffer, 1000, file);
+    pclose(file);  
+
+    printf("current: %s \n", cmdbuffer);
+	
+    data.current  =  atof(cmdbuffer);
+
+/*	
     // doesn't read negative currents accurately, shows -0.1mA	
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
     wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
@@ -107,7 +128,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     // power has very low resolution, seems to step in 512mW values	
     delay(1);
     data.power   = (float) wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * (float) sensor.powerMultiplier;
- 	
+ */	
     return data;
 }
 
@@ -152,7 +173,9 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 	    printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
 	    data.fd = OFF;
 	    return (data);
-    }	   
+    }	
+    data.fd = ON;
+/*	
     data.fd = wiringPiI2CSetupInterface(bus, address);	
 	
     data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
@@ -177,7 +200,8 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 //	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
 //	printf("Sensor %s %x | ", bus, address); 
     //#endif	
-    return data;
+*/
+   return data;
 }
 
 struct SensorConfig sensorV;   
