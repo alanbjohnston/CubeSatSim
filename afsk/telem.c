@@ -59,7 +59,7 @@ struct SensorConfig {
     int calValue;    
     int powerMultiplier;
     int currentDivider;
-    char command[30];
+    char command[100];
 };
 
 struct SensorData {
