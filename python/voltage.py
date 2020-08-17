@@ -20,11 +20,11 @@ if __name__ == "__main__":
   else:
     bus = 1
     address = 0x40
-    
+
   # Create library object using  Extended Bus I2C port
   i2c_bus = I2C(bus) # 1 Device is /dev/i2c-1
    
-  ina219 = INA219(i2c_bus, 0x45)
+  ina219 = INA219(i2c_bus, address)
 
 #   print("ina219 test")
 
