@@ -40,5 +40,5 @@ if __name__ == "__main__":
 # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
     print("{:6.3f}".format(bus_voltage + shunt_voltage))
 
-   exception:
+  except:
     printf("0 Error\n")
