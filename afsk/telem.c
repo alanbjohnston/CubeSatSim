@@ -92,7 +92,8 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
         return data;
     }
 	
-    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltage.py 1 0x44", "r");
+//    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltage.py 1 0x44", "r");
+    FILE* file = popen(data.commandv, "r");
     char cmdbuffer[1000];
     fgets(cmdbuffer, 1000, file);
     pclose(file);  
@@ -100,7 +101,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 
     printf("voltage: %s \n", cmdbuffer);
 	
-    file = popen("python3 /home/pi/CubeSatSim/python/current.py 1 0x44", "r");
+    file = popen(data.commandi, "r");
     fgets(cmdbuffer, 1000, file);
     pclose(file);  
 
@@ -177,7 +178,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     }	
     data.fd = ON;
 	
-    char space[2] = " "; 
+    char space[4] = " 0x"; 
     char pythonv[50] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
     char pythoni[50] = "python3 /home/pi/CubeSatSim/python/current.py ";	
 	
