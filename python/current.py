@@ -34,9 +34,9 @@ if __name__ == "__main__":
 # optional : change voltage range to 16V
   ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
 
-  bus_voltage = ina219.bus_voltage  # voltage on V- (load side)
-  shunt_voltage = ina219.shunt_voltage  # voltage between V+ and V- across the shunt
-#    current = ina219.current  # current in mA
+#  bus_voltage = ina219.bus_voltage  # voltage on V- (load side)
+#  shunt_voltage = ina219.shunt_voltage  # voltage between V+ and V- across the shunt
+  current = ina219.current  # current in mA
 
     # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
 #  print("{:6.3f}".format(bus_voltage + shunt_voltage))
