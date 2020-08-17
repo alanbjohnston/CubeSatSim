@@ -15,9 +15,9 @@ if __name__ == "__main__":
     bus = int(sys.argv[1], base=10)
     if (len(sys.argv)) > 2:
       address = int(sys.argv[2], base=16)
-    elif
+    elif:
       address = 0x40
-  elfi
+  elfi:
     bus = 1
     address = 0x40
     
