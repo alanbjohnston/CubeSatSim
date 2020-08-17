@@ -41,4 +41,4 @@ if __name__ == "__main__":
     print("{:6.3f}".format(bus_voltage + shunt_voltage))
 
   except:
-    printf("0 Error\n")
+    print("0 Error\n")
