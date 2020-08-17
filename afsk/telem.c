@@ -97,7 +97,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     pclose(file);  
     data.voltage  =  atof(cmdbuffer);
 
-    printf("current: %s \n", cmdbuffer);
+    printf("voltage: %s \n", cmdbuffer);
 	
     file = popen("python3 /home/pi/CubeSatSim/python/current.py 1 0x44", "r");
     fgets(cmdbuffer, 1000, file);
@@ -175,7 +175,20 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 	    return (data);
     }	
     data.fd = ON;
-/*	
+	
+    char space[2] = " "; 
+    char python[50] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
+	    
+    strcat (python, &bus[pos]);	    
+    strcat (python, space);
+    char addr[10]; 
+    itoa(address, addr, 10);
+    strcat (python, addr);
+    strcpy (data.command, python);
+	
+    printf("Command: %s \n", data.command);
+	
+	/*	
     data.fd = wiringPiI2CSetupInterface(bus, address);	
 	
     data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
