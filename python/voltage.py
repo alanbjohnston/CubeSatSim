@@ -21,28 +21,24 @@ if __name__ == "__main__":
     bus = 1
     address = 0x40
 
+  try:  
   # Create library object using  Extended Bus I2C port
-  i2c_bus = I2C(bus) # 1 Device is /dev/i2c-1
+    i2c_bus = I2C(bus) # 1 Device is /dev/i2c-1
+    ina219 = INA219(i2c_bus, address)
    
-  ina219 = INA219(i2c_bus, address)
-
 #   print("ina219 test")
 
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
-  ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S
-  ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
+    ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S
+    ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S
 # optional : change voltage range to 16V
-  ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
+    ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
 
-  bus_voltage = ina219.bus_voltage  # voltage on V- (load side)
-  shunt_voltage = ina219.shunt_voltage  # voltage between V+ and V- across the shunt
+    bus_voltage = ina219.bus_voltage  # voltage on V- (load side)
+    shunt_voltage = ina219.shunt_voltage  # voltage between V+ and V- across the shunt
 #    current = ina219.current  # current in mA
+# INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
+    print("{:6.3f}".format(bus_voltage + shunt_voltage))
 
-    # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
-  print("{:6.3f}".format(bus_voltage + shunt_voltage))
-#    print("Shunt Voltage: {:9.6f} V".format(shunt_voltage))
-#    print("Load Voltage:  {:6.3f} V".format(bus_voltage))
-#    print("Current:       {:9.1f} mA".format(current))
-#    print("")
-
-#   time.sleep(2)
+   exception:
+    printf("0 Error\n")
