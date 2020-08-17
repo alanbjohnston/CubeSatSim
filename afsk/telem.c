@@ -182,7 +182,8 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     strcat (python, &bus[pos]);	    
     strcat (python, space);
     char addr[10]; 
-    itoa(address, addr, 10);
+    snprintf( addr, 10, "%d", address );
+//    itoa(address, addr, 10);
     strcat (python, addr);
     strcpy (data.command, python);
 	
