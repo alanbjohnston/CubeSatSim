@@ -59,7 +59,8 @@ struct SensorConfig {
     int calValue;    
     int powerMultiplier;
     int currentDivider;
-    char command[100];
+    char commandv[100];
+    char commandi[100];
 };
 
 struct SensorData {
@@ -177,17 +178,24 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     data.fd = ON;
 	
     char space[2] = " "; 
-    char python[50] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
-	    
-    strcat (python, &bus[pos]);	    
-    strcat (python, space);
-    char addr[10]; 
-    snprintf( addr, 10, "%d", address );
-//    itoa(address, addr, 10);
-    strcat (python, addr);
-    strcpy (data.command, python);
+    char pythonv[50] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
+    char pythoni[50] = "python3 /home/pi/CubeSatSim/python/current.py ";	
 	
-    printf("Command: %s \n", data.command);
+    strcat (pythonv, &bus[pos]);	    
+    strcat (pythonv, space);
+    char addr[10]; 
+    snprintf( addr, 10, "%x", address );
+    strcat (pythonv, addr);
+    strcpy (data.commandv, pythonv);
+	
+    printf("V Command: %s \n", data.vcommand);
+	
+    strcat (pythoni, &bus[pos]);	    
+    strcat (pythoni, space);
+    strcat (pythoni, addr);
+    strcpy (data.commandi, pythoni);
+	
+    printf("V Command: %s \n", data.commandi);
 	
 	/*	
     data.fd = wiringPiI2CSetupInterface(bus, address);	
