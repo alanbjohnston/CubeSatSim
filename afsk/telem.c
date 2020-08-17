@@ -188,7 +188,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     strcat (pythonv, addr);
     strcpy (data.commandv, pythonv);
 	
-    printf("V Command: %s \n", data.vcommand);
+    printf("V Command: %s \n", data.commandv);
 	
     strcat (pythoni, &bus[pos]);	    
     strcat (pythoni, space);
