@@ -178,21 +178,22 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     }	
     data.fd = ON;
 	
-    char space[] = " 0x"; 
-    char pythonv[50] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
-    char pythoni[50] = "python3 /home/pi/CubeSatSim/python/current.py ";	
+    char spacev[] = " 0x"; 
+    char pythonv[100] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
+    char pythoni[100] = "python3 /home/pi/CubeSatSim/python/current.py ";	
 	
     strcat (pythonv, &bus[pos]);	    
-    strcat (pythonv, space);
+    strcat (pythonv, spacev);
     char addr[10]; 
     snprintf( addr, 10, "%x", address );
     strcat (pythonv, addr);
     strcpy (data.commandv, pythonv);
 	
     printf("V Command: %s \n", data.commandv);
-	
+
+    char spacei[] = " 0x"; 
     strcat (pythoni, &bus[pos]);	    
-    strcat (pythoni, space);
+    strcat (pythoni, spacei);
     strcat (pythoni, addr);
     strcpy (data.commandi, pythoni);
 	
