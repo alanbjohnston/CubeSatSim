@@ -93,7 +93,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     }
 	
 //    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltage.py 1 0x44", "r");
-    FILE* file = popen(data.commandv, "r");
+    FILE* file = popen(sensor.commandv, "r");
     char cmdbuffer[1000];
     fgets(cmdbuffer, 1000, file);
     pclose(file);  
@@ -101,7 +101,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
 
     printf("voltage: %s \n", cmdbuffer);
 	
-    file = popen(data.commandi, "r");
+    file = popen(sensor.commandi, "r");
     fgets(cmdbuffer, 1000, file);
     pclose(file);  
 
