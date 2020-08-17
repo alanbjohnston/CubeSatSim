@@ -178,7 +178,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     }	
     data.fd = ON;
 	
-    char space[4] = " 0x"; 
+    char space[] = " 0x"; 
     char pythonv[50] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
     char pythoni[50] = "python3 /home/pi/CubeSatSim/python/current.py ";	
 	
