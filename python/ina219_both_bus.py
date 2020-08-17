@@ -3,15 +3,15 @@
 import time
 import board
 import busio
-import smbus
+#import smbus
 #from adafruit_blinka.microcontroller.bcm283x import pin
 from adafruit_extended_bus import ExtendedI2C as I2C
 
 from adafruit_ina219 import ADCResolution, BusVoltageRange, INA219
 
-i2c_bus2  = smbus.SMBus(3) # 3 
-b1 = i2c_bus2.read_i2c_block_data(0x45, 0x01, 2)
-print (b1)
+#i2c_bus2  = smbus.SMBus(3) # 3 
+#b1 = i2c_bus2.read_i2c_block_data(0x45, 0x01, 2)
+#print (b1)
 
 #p = busio.I2C(scl, sda)
 #p = busio.I2C(pin.D1,pin.D0)
@@ -19,7 +19,7 @@ print (b1)
 #p.deinit()
 
 # Create library object using our Extended Bus I2C port
-i2c_bus = I2C(3) # 1 Device is /dev/i2c-1
+i2c_bus = I2C(11) # 1 Device is /dev/i2c-1
 
 
 #i2c_bus = board.I2C()
@@ -56,7 +56,7 @@ while True:
     print("PSU Voltage:   {:6.3f} V".format(bus_voltage + shunt_voltage))
     print("Shunt Voltage: {:9.6f} V".format(shunt_voltage))
     print("Load Voltage:  {:6.3f} V".format(bus_voltage))
-    print("Current:       {:9.6f} A".format(current / 1000))
+    print("Current:       {:9.1f} mA".format(current))
     print("")
 
     time.sleep(2)
