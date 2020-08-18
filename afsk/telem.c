@@ -342,13 +342,14 @@ int main(int argc, char *argv[]) {
 	  
 	char *token;
     const char space[2] = " ";
-
+    token = strtok(cmdbuffer, space);
 	for (count = 0; count < 8; count++)
   {
-    token = strtok(cmdbuffer, space);
+
     printf("voltage: %s ", token);
     token = strtok(NULL, space);	
     printf("current: %s\n", token);
+    token = strtok(NULL, space);		
   }	  
 	  
 	  
