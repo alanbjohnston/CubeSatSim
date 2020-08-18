@@ -27,12 +27,13 @@ if __name__ == "__main__":
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
 #  print("buses: ", buses, " addr: ", addresses)
   for x in buses:
+    i2c_bus = I2C(x) # Device is /dev/i2c-x
     for y in addresses:
  #     print(x,y)
       try:
   # Create library object using  Extended Bus I2C port
 #        print("bus: ", x, " addr: ", y)
-        i2c_bus = I2C(x) # 1 Device is /dev/i2c-1
+
         ina219 = INA219(i2c_bus, y)
    
 #   print("ina219 test")
