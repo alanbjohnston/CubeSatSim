@@ -350,11 +350,11 @@ int main(int argc, char *argv[]) {
 	char *token;
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
-    printf(token: %s\n", token);
+    printf("token: %s\n", token);
     token = strtok(NULL, space);	
-    printf(token: %s\n", token);
+    printf("token: %s\n", token);
     token = strtok(NULL, space);	
-    printf(token: %s\n", token);	  
+    printf("token: %s\n", token);	  
 	  
 	  
 	  
