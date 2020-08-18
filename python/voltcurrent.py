@@ -49,8 +49,8 @@ if __name__ == "__main__":
         current = ina219.current  # current in mA
 # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
 #       print("{:6.3f}".format(bus_voltage + shunt_voltage))
-        print(bus_voltage, " ", current, " ", end = '')
+        print("{:6.3f} ".format(bus_voltage), "{:6.3f} ".format(current) , end = '')
       except:
-        print("0.0 0.0 ", end = '')
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')
 #        pass
   print(" ")
