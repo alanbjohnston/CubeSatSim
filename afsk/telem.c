@@ -331,16 +331,8 @@ int main(int argc, char *argv[]) {
 	
    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3 c", "r");
    pclose(file);
-	
-    char cmdbuffer[1000];
-    fgets(cmdbuffer, 1000, file);
-    printf("result: %s\n", cmdbuffer);
-    pclose(file);  
-//    data.voltage  =  atof(cmdbuffer);	
   
   int count;
-//  for (count = 0; count < 8; count++)
-  {
 
 	file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3 c", "r");
 //   	char cmdbuffer[1000];
@@ -350,12 +342,14 @@ int main(int argc, char *argv[]) {
 	  
 	char *token;
     const char space[2] = " ";
+
+	for (count = 0; count < 8; count++)
+  {
     token = strtok(cmdbuffer, space);
-    printf("token: %s\n", token);
+    printf("voltage: %s ", token);
     token = strtok(NULL, space);	
-    printf("token: %s\n", token);
-    token = strtok(NULL, space);	
-    printf("token: %s\n", token);	  
+    printf("current: %s\n", token);
+  }	  
 	  
 	  
 	  
