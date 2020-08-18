@@ -11,6 +11,7 @@ if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
   
   buses = [1, 3] # default I2C buses
+  config = False
   
   if (len(sys.argv)) > 1:
 #   print("There are arguments!")
@@ -19,7 +20,7 @@ if __name__ == "__main__":
     if (len(sys.argv)) > 2:
       buses[2] = int(sys.argv[2], base=10)
       if (len(sys.argv)) > 3:
-        if sys.argv[3] == "c"
+        if sys.argv[3] == "c":
           config = True
           from adafruit_ina219 import ADCResolution, BusVoltageRange
 
