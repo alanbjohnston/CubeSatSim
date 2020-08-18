@@ -52,4 +52,4 @@ if __name__ == "__main__":
         print(bus_voltage, " ", current, " ")
       except:
 #        print("0.0 Error)
-    
+        pass
