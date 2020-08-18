@@ -155,6 +155,14 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 	    return (data);
     }
 	
+    //char st[] ="Where there is will, there is a way.";
+    char *ch;
+    const char s[2] = "-";
+    ch = strtok(bus, "-");
+    printf("ch: %s\n", ch);
+    ch = strtok(NULL, "-");	
+    printf("ch: %s\n", ch);
+	
     char result[128];		
     int pos = strlen(bus) / sizeof(bus[0]) - 1;
 //    printf("Bus size %d \n", pos);	
