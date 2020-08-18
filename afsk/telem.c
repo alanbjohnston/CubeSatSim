@@ -339,7 +339,7 @@ int main(int argc, char *argv[]) {
    char *token;
 //   char cmdbuffer[1000];
 	
-    while (true) {	
+    while (1) {	
 	file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3", "r");
 //   	char cmdbuffer[1000];
 //   	char cmdbuffer[1000];
