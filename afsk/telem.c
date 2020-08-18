@@ -99,13 +99,13 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
     pclose(file);  
     data.voltage  =  atof(cmdbuffer);
 
-    printf("voltage: %s \n", cmdbuffer);
+//    printf("voltage: %s \n", cmdbuffer);
 	
     file = popen(sensor.commandi, "r");
     fgets(cmdbuffer, 1000, file);
     pclose(file);  
 
-    printf("current: %s \n", cmdbuffer);
+//    printf("current: %s \n", cmdbuffer);
 	
     data.current  =  atof(cmdbuffer);
 
@@ -171,7 +171,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     char command[50] = "timeout 10 i2cdetect -y ";
 //    strcat (command, &bus[pos]);	
     strcat (command, buss);
-    printf("Command: %s \n", command);
+//    printf("Command: %s \n", command);
     FILE *i2cdetect = popen(command, "r");
 	
     while (fgets(result, 128, i2cdetect) != NULL) {
@@ -200,7 +200,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     strcat (pythonv, addr);
     strcpy (data.commandv, pythonv);
 	
-    printf("V Command: %s \n", data.commandv);
+//    printf("V Command: %s \n", data.commandv);
 
     char spacei[] = " 0x"; 
     strcat (pythoni, buss);	    
@@ -208,7 +208,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     strcat (pythoni, addr);
     strcpy (data.commandi, pythoni);
 	
-    printf("V Command: %s \n", data.commandi);
+//    printf("V Command: %s \n", data.commandi);
 	
 	/*	
     data.fd = wiringPiI2CSetupInterface(bus, address);	
