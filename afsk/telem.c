@@ -334,6 +334,7 @@ int main(int argc, char *argv[]) {
   
    int count;
    char *token;
+   char cmdbuffer[100];
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
     for (count = 0; count < 8; count++)
