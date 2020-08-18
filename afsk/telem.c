@@ -331,11 +331,13 @@ int main(int argc, char *argv[]) {
    printf("Starting\n");
 	
    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3 c", "r");
+     	char cmdbuffer[1000];
+    	fgets(cmdbuffer, 1000, file);
    pclose(file);
   
    int count;
    char *token;
-   char cmdbuffer[100];
+//   char cmdbuffer[1000];
 	
 	file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3", "r");
 //   	char cmdbuffer[1000];
