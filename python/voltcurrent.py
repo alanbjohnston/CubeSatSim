@@ -28,11 +28,10 @@ if __name__ == "__main__":
   print("buses: ", buses, " addr: ", addresses)
   for x in buses:
     for y in addresses:
-      print(x,y)
-#      try:
-      if True:
+ #     print(x,y)
+      try:
   # Create library object using  Extended Bus I2C port
-        print("bus: ", x, " addr: ", y)
+#        print("bus: ", x, " addr: ", y)
         i2c_bus = I2C(x) # 1 Device is /dev/i2c-1
         ina219 = INA219(i2c_bus, y)
    
@@ -51,6 +50,6 @@ if __name__ == "__main__":
 # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
 #       print("{:6.3f}".format(bus_voltage + shunt_voltage))
         print(bus_voltage, " ", current, " ")
-#      except:
-#        print("0.0 Error")
+      except:
+#        print("0.0 Error)
     
