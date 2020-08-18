@@ -24,7 +24,7 @@ if __name__ == "__main__":
           config = True
           from adafruit_ina219 import ADCResolution, BusVoltageRange
 
-  addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
+  addresses = [40, 41, 44, 45] #INA219 addresses on the bus
   print("buses: ", buses, " addr: ", addresses)
   for x in buses:
     for y in addresses:
