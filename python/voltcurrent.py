@@ -32,9 +32,9 @@ if __name__ == "__main__":
 #      try:
       if True:
   # Create library object using  Extended Bus I2C port
-        print("bus: ", buses[x], " addr: ", addresses[y])
-        i2c_bus = I2C(buses[x]) # 1 Device is /dev/i2c-1
-        ina219 = INA219(i2c_bus, addresses[y])
+        print("bus: ", x, " addr: ", y)
+        i2c_bus = I2C(x) # 1 Device is /dev/i2c-1
+        ina219 = INA219(i2c_bus, y)
    
 #   print("ina219 test")
         if config:
