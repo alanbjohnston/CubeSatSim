@@ -328,6 +328,7 @@ int main(int argc, char *argv[]) {
     }	
 	
 //  Reading I2C voltage and current sensors
+   printf("Starting\n");
 	
    FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3 c", "r");
    pclose(file);
@@ -335,6 +336,14 @@ int main(int argc, char *argv[]) {
    int count;
    char *token;
    char cmdbuffer[100];
+	
+	file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 3", "r");
+//   	char cmdbuffer[1000];
+//   	char cmdbuffer[1000];
+    	fgets(cmdbuffer, 1000, file);
+	printf("result: %s\n", cmdbuffer);
+    	pclose(file);
+	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
     for (count = 0; count < 8; count++)
