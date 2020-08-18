@@ -48,5 +48,5 @@ if __name__ == "__main__":
 #       print("{:6.3f}".format(bus_voltage + shunt_voltage))
         print(bus_voltage, " ", current, " ")
       except:
-    print("0.0 Error")
+        print("0.0 Error")
     
