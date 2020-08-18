@@ -156,7 +156,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     }
 	
     char str[100];
-    strcpy (str, &bus);
+    strcpy (str, bus);
     char *ch;
     const char dash[2] = "-";
     ch = strtok(str, dash);
