@@ -30,11 +30,13 @@ if __name__ == "__main__":
     for y in addresses:
       try:  
   # Create library object using  Extended Bus I2C port
+        print("bus: ", buses[x], " addr: ", addresses[y])
         i2c_bus = I2C(buses[x]) # 1 Device is /dev/i2c-1
         ina219 = INA219(i2c_bus, addresses[y])
    
 #   print("ina219 test")
         if config:
+          print("Configuring")
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
           ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_1S   # 32S
           ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_1S     # 32S
