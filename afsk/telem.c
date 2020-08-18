@@ -157,19 +157,21 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 	
     char str[100];
     strcpy (str, bus);
-    char *ch;
+    char *buss;
     const char dash[2] = "-";
-    ch = strtok(str, dash);
-    printf("ch: %s\n", ch);
-    ch = strtok(NULL, dash);	
-    printf("ch: %s\n", ch);
+    buss = strtok(str, dash);
+//    printf("buss: %s\n", buss);
+    buss = strtok(NULL, dash);	
+//    printf("bus: %s\n", buss);
 	
     char result[128];		
     int pos = strlen(bus) / sizeof(bus[0]) - 1;
 //    printf("Bus size %d \n", pos);	
 //    printf("Bus value %d \n", atoi(&bus[pos]));
     char command[50] = "timeout 10 i2cdetect -y ";
-    strcat (command, &bus[pos]);	
+//    strcat (command, &bus[pos]);	
+    strcat (command, buss);
+    printf("Command: %s \n", command);
     FILE *i2cdetect = popen(command, "r");
 	
     while (fgets(result, 128, i2cdetect) != NULL) {
@@ -191,7 +193,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     char pythonv[100] = "python3 /home/pi/CubeSatSim/python/voltage.py ";
     char pythoni[100] = "python3 /home/pi/CubeSatSim/python/current.py ";	
 	
-    strcat (pythonv, &bus[pos]);	    
+    strcat (pythonv, buss);	    
     strcat (pythonv, spacev);
     char addr[10]; 
     snprintf( addr, 10, "%x", address );
@@ -201,7 +203,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     printf("V Command: %s \n", data.commandv);
 
     char spacei[] = " 0x"; 
-    strcat (pythoni, &bus[pos]);	    
+    strcat (pythoni, buss);	    
     strcat (pythoni, spacei);
     strcat (pythoni, addr);
     strcpy (data.commandi, pythoni);
