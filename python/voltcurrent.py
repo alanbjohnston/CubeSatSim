@@ -25,9 +25,10 @@ if __name__ == "__main__":
           from adafruit_ina219 import ADCResolution, BusVoltageRange
 
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
-
+  print("buses: ", buses, " addr: ", addresses)
   for x in buses:
     for y in addresses:
+      print(x,y)
       try:  
   # Create library object using  Extended Bus I2C port
         print("bus: ", buses[x], " addr: ", addresses[y])
