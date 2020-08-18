@@ -344,7 +344,7 @@ int main(int argc, char *argv[]) {
 //   	char cmdbuffer[1000];
 //   	char cmdbuffer[1000];
     	fgets(cmdbuffer, 1000, file);
-	printf("result: %s\n", cmdbuffer);
+//	printf("result: %s\n", cmdbuffer);
     	pclose(file);
 	
     const char space[2] = " ";
