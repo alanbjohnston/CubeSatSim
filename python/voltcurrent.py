@@ -39,8 +39,8 @@ if __name__ == "__main__":
         if config:
           print("Configuring")
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
-          ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_1S   # 32S
-          ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_1S     # 32S
+          ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+          ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
 
