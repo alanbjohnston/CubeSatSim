@@ -158,7 +158,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     //char st[] ="Where there is will, there is a way.";
     char *ch;
     const char dash[2] = "-";
-    ch = strtok(&bus, dash);
+    ch = strtok(bus, dash);
     printf("ch: %s\n", ch);
     ch = strtok(NULL, dash);	
     printf("ch: %s\n", ch);
