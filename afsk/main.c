@@ -1144,7 +1144,8 @@ if (firstTime != ON)
 	  
     if (mode == BPSK)
       h[6] = 99;
-	  
+
+/*
 //  posXv = reading[PLUS_X].current;
   posXi = (int)reading[PLUS_X].current + 2048;
   posYi = (int)reading[PLUS_Y].current + 2048;
@@ -1164,7 +1165,26 @@ if (firstTime != ON)
   battCurr = (int)reading[BAT].current + 2048;
   PSUVoltage = (int)(reading[BUS].voltage * 100);
   PSUCurrent = (int)reading[BUS].current + 2048;
+*/	
 	  
+  posXi = (int)current[PLUS_X] + 2048;
+  posYi = (int)cuurent[PLUS_Y] + 2048;
+  posZi = (int)current[PLUS_Z] + 2048;
+  negXi = (int)current[MINUS_X] + 2048;
+  negYi = (int)current[MINUS_Y] + 2048;
+  negZi = (int)current[MINUS_Z] + 2048;
+
+  posXv = (int)(voltage[PLUS_X] * 100);
+  posYv = (int)(voltage[PLUS_Y] * 100);
+  posZv = (int)(voltage[PLUS_Z] * 100);
+  negXv = (int)(voltage[MINUS_X] * 100);
+  negYv = (int)(voltage[MINUS_Y] * 100);
+  negZv = (int)(voltage[MINUS_Z] * 100);
+	  
+  batt_c_v = (int)(voltage[BAT] * 100);
+  battCurr = (int)current[BAT] + 2048;
+  PSUVoltage = (int)(voltage[BUS] * 100);
+  PSUCurrent = (int)current[BUS] + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
 
