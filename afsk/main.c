@@ -1063,22 +1063,27 @@ if (firstTime != ON)
 	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
+
+    float voltage[9], current[9];	
+		   
     for (count1 = 0; count1 < 8; count1++)
   	{
-    		printf("voltage: %s ", token);
+	        voltage[count1] = atof(token);				      
+    		printf("voltage: %f ", voltage[count1]);
     		token = strtok(NULL, space);	
-    		printf("current: %s\n", token);
+	        current[count1] = atof(token);
+	        printf("current: %f\n", current[count1]);
     		token = strtok(NULL, space);		
   	}	  
 	  
 	 printf("\n");
 //    }	    
 	  
-	  
+  
     int count;
     for (count = 0; count < 8; count++)
     {
-      reading[count] = read_sensor_data(sensor[count]);	
+      reading[count] = read_sensor_data(sensor[count]);	  
     #ifdef DEBUG_LOGGING
 //      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 //	        count, reading[count].voltage, reading[count].current, reading[count].power); 
