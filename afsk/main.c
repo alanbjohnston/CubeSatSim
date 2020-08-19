@@ -1051,7 +1051,7 @@ if (firstTime != ON)
   }  else
 	printf("first time - no sleep\n");
 
-int count;
+   int count1;
    char *token;
    char cmdbuffer[1000];
 	
@@ -1063,7 +1063,7 @@ int count;
 	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
-    for (count = 0; count < 8; count++)
+    for (count1 = 0; count1 < 8; count1++)
   	{
     		printf("voltage: %s ", token);
     		token = strtok(NULL, space);	
