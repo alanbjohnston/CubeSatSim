@@ -481,10 +481,10 @@ else
   tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);  
  }
 
-   FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
+   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
    char cmdbuffer[1000];
-   fgets(cmdbuffer, 1000, file);
-   pclose(file);	
+   fgets(cmdbuffer, 1000, file1);
+   pclose(file1);	
 	
 // try connecting to Arduino payload using UART
 
