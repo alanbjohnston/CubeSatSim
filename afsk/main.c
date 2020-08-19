@@ -1168,7 +1168,7 @@ if (firstTime != ON)
 */	
 	  
   posXi = (int)current[PLUS_X] + 2048;
-  posYi = (int)cuurent[PLUS_Y] + 2048;
+  posYi = (int)current[PLUS_Y] + 2048;
   posZi = (int)current[PLUS_Z] + 2048;
   negXi = (int)current[MINUS_X] + 2048;
   negYi = (int)current[MINUS_Y] + 2048;
