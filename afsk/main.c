@@ -54,12 +54,12 @@
 
 #define PLUS_X 0
 #define PLUS_Y 1
-#define PLUS_Z 2
-#define BAT 3
+#define PLUS_Z 6
+#define BAT 2
 #define MINUS_X 4
 #define MINUS_Y 5
-#define MINUS_Z 6
-#define BUS 7
+#define MINUS_Z 7
+#define BUS 3
 #define OFF -1
 #define ON 1
 
