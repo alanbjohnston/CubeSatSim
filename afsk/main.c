@@ -1053,10 +1053,10 @@ if (firstTime != ON)
 
 int count;
    char *token;
-//   char cmdbuffer[1000];
+   char cmdbuffer[1000];
 	
     while (1) {	
-	file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");
+	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
     	fgets(cmdbuffer, 1000, file);
 //	printf("result: %s\n", cmdbuffer);
     	pclose(file);
