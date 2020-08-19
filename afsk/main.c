@@ -481,6 +481,11 @@ else
   tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);  
  }
 
+   FILE* file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
+   char cmdbuffer[1000];
+   fgets(cmdbuffer, 1000, file);
+   pclose(file);	
+	
 // try connecting to Arduino payload using UART
 
  if (!ax5043)  // don't test if AX5043 is present
@@ -1045,7 +1050,31 @@ if (firstTime != ON)
     sampleTime = millis();
   }  else
 	printf("first time - no sleep\n");
+
+int count;
+   char *token;
+//   char cmdbuffer[1000];
 	
+    while (1) {	
+	file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");
+    	fgets(cmdbuffer, 1000, file);
+//	printf("result: %s\n", cmdbuffer);
+    	pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(cmdbuffer, space);
+    for (count = 0; count < 8; count++)
+  	{
+    		printf("voltage: %s ", token);
+    		token = strtok(NULL, space);	
+    		printf("current: %s\n", token);
+    		token = strtok(NULL, space);		
+  	}	  
+	  
+	 printf("\n");
+    }	    
+	  
+	  
     int count;
     for (count = 0; count < 8; count++)
     {
