@@ -883,7 +883,7 @@ if (payload == ON)
      serialPutchar (uart_fd, '?');
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
-     end = FALSE;
+     int end = FALSE;
      while ((millis() < waitTime) && !end) 
      { 
 	int chars = serialDataAvail (uart_fd);
