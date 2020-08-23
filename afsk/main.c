@@ -109,6 +109,7 @@ int rd = 0;
 int nrd;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave(int i, short int *buffer);
+  int uart_fd;
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
@@ -485,7 +486,6 @@ else
 
  if (!ax5043)  // don't test if AX5043 is present
  {
-  int uart_fd;
   payload = OFF;
 
   if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
