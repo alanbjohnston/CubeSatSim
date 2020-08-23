@@ -1043,6 +1043,7 @@ int get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
+  int xAngularVelocity = 0, yAngularVelocity = 36, zAngularVelocity = 255; // XAxisAngularVelocity
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1218,7 +1219,11 @@ if (firstTime != ON)
   encodeB(b, 46 + head_offset,PSUCurrent);
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
-
+	  
+  encodeB(b, 40 + head_offset,  xAngularVelocity);
+  encodeA(b, 42 + head_offset,  yAngularVelocity);
+  encodeB(b, 43 + head_offset,  zAngularVelocity);
+	  
   encodeB(b, 51 + head_offset, STEMBoardFailure);
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
