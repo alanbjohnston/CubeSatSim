@@ -883,15 +883,23 @@ if (payload == ON)
      serialPutchar (uart_fd, '?');
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
-     while (millis() < waitTime) 
+     end = false;
+     while ((millis() < waitTime) && !end) 
      { 
 	int chars = serialDataAvail (uart_fd);
-        while (chars-- > 0)
+        while ((chars-- > 0) && !end)
         {
           c = serialGetchar (uart_fd);
 //	  printf ("%c", c);
 //	  fflush(stdout);
-	  sensor_payload[i++] = c;
+	  if (c != '\n')
+	  {
+	  	sensor_payload[i++] = c;
+	  }
+	  else
+	  {
+		  end = true;
+	  }
         }
     }
     sensor_payload[i] = '\0';
