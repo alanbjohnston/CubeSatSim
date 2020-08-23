@@ -870,15 +870,16 @@ for (int j = 0; j < frameCnt; j++)
   strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
 	
-// read payload sensor if available	
+// read payload sensor if available
+	
+char sensor_payload[500];
 	
 if (payload == ON)
 {
      char c;
      unsigned int waitTime;
-     int i;
-//    for(i = 0; i < 2; i++)
-//    {
+     int i = 0;
+
      serialPutchar (uart_fd, '?');
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
@@ -888,9 +889,12 @@ if (payload == ON)
         while (chars-- > 0)
         {
           printf ("%c", c = serialGetchar (uart_fd));
+	  sensor_payload[i++] = c;
           fflush (stdout);
         }
     }
+    sensor_payload[i] = '\0';
+    printf("Payload string: %s\n", sensor_payload);
 }
 	
   digitalWrite (txLed, txLedOn);
