@@ -890,7 +890,7 @@ if (payload == ON)
           printf ("%c", c = serialGetchar (uart_fd));
           fflush (stdout);
         }
-//   }
+    }
 }
 	
   digitalWrite (txLed, txLedOn);
