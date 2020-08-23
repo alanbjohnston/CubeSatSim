@@ -1044,7 +1044,7 @@ int get_tlm_fox() {
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
 // AngularVelocity = 43.3 dps + 1960 
-  int xAngularVelocity = 43.3 * (-10) + 1960, yAngularVelocity = 43.3 * (-6) + 196, zAngularVelocity = 43.3 * (6) + 196; // XAxisAngularVelocity
+  int xAngularVelocity = 43.3 * (-10) + 1960, yAngularVelocity = 43.3 * (-6) + 1960, zAngularVelocity = 43.3 * (6) + 1960; // XAxisAngularVelocity
 	
   short int buffer_test[bufLen];
   int buffSize;
