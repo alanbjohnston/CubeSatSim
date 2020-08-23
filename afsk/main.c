@@ -888,14 +888,17 @@ if (payload == ON)
 	int chars = serialDataAvail (uart_fd);
         while (chars-- > 0)
         {
-          printf ("%c", c = serialGetchar (uart_fd));
+          c = serialGetchar (uart_fd);
+//	  printf ("%c", c);
+//	  fflush(stdout);
 	  sensor_payload[i++] = c;
-          fflush (stdout);
         }
     }
     sensor_payload[i] = '\0';
     printf("Payload string: %s\n", sensor_payload);
+    strcat(str, sensor_payload);  // append to telemetry string for transmission
 }
+
 	
   digitalWrite (txLed, txLedOn);
   #ifdef DEBUG_LOGGING
