@@ -40,7 +40,7 @@ Use the down arrow key to go down in the file until you find this line:
 
 Add the following two lines under it: (NOTE: there seems to be an issue with the i2c-gpio.dtbo file in the latest kernal.  I'm investigating this temporary fix: https://github.com/raspberrypi/firmware/issues/1401.  If adding dtoverlay=i2c-gpio in this step causes your Pi not to boot, then you are encountering this issue)
 
-`dtoverlay=i2c-gpio`
+`dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24`
 
 `dtoverlay=pi3-miniuart-bt`
 
