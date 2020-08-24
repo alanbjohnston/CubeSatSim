@@ -1,6 +1,6 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
-#include <Adafruit_BME280.h
+#include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
@@ -56,7 +56,7 @@ void loop() {
     Serial.print(" ");
     Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
     Serial.print(" ");
-    Serial.println(bme.readHumidity());
+    Serial.print(bme.readHumidity());
     
     mpu6050.update();
     
