@@ -904,6 +904,40 @@ if (payload == ON)
     }
     sensor_payload[i] = '\0';
     printf("Payload string: %s\n", sensor_payload);
+	
+   int count1;
+   char *token;
+//   char cmdbuffer[1000];
+		
+//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+//    	fgets(cmdbuffer, 1000, file);
+//	printf("result: %s\n", cmdbuffer);
+//    	pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(sensor_payload, space);
+
+    float gyroX, gyroY, gyroZ;	
+		   
+    for (count1 = 0; count1 < 8; count1++)
+    {
+//       voltage[count1] = atof(token);				      
+    	printf("token %s ", token);
+    	token = strtok(NULL, space);	
+//	 current[count1] = atof(token);
+//	       printf("current: %f\n", current[count1]);
+//    		token = strtok(NULL, space);		
+    }	
+    gyroX = atof(token)
+    printf("gyroX %d ", gyroX);
+    token = strtok(NULL, space);		
+    gyroY = atof(token)
+    printf("gyroY %d ", gyroY);
+    token = strtok(NULL, space);
+    gyroZ = atof(token)
+    printf("gyroZ %d \n", gyroZ);
+    token = strtok(NULL, space);
+    	
     strcat(str, sensor_payload);  // append to telemetry string for transmission
 }
 
