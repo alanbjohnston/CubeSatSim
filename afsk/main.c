@@ -905,44 +905,10 @@ if (payload == ON)
     sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
     printf("Payload string: %s", sensor_payload);
-	
-   int count1;
-   char *token;
-//   char cmdbuffer[1000];
-		
-//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-//    	fgets(cmdbuffer, 1000, file);
-//	printf("result: %s\n", cmdbuffer);
-//    	pclose(file);
-	
-    const char space[2] = " ";
-    token = strtok(sensor_payload, space);
-
-    float gyroX, gyroY, gyroZ;	
-		   
-    for (count1 = 0; count1 < 7; count1++)  // skip over BME280 data to get to X, Y, and Z Gyro data
-    {
-//       voltage[count1] = atof(token);				      
-//    	printf("token %s ", token);
-    	token = strtok(NULL, space);	
-//	 current[count1] = atof(token);
-//	       printf("current: %f\n", current[count1]);
-//    		token = strtok(NULL, space);		
-    }	
-    gyroX = atof(token);
-//    printf("gyroX %f ", gyroX);
-    token = strtok(NULL, space);		
-    gyroY = atof(token);
-//    printf("gyroY %f ", gyroY);
-    token = strtok(NULL, space);
-    gyroZ = atof(token);
-//    printf("gyroZ %f \n", gyroZ);
-    token = strtok(NULL, space);
-    	
+    
     strcat(str, sensor_payload);  // append to telemetry string for transmission
 }
 
-	
   digitalWrite (txLed, txLedOn);
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
@@ -1268,22 +1234,26 @@ if (payload == ON)
 		   
     for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
-//       voltage[count1] = atof(token);				      
-//    	printf("token %s ", token);
-    	token = strtok(NULL, space);	
-//	 current[count1] = atof(token);
-//	       printf("current: %f\n", current[count1]);
-//    		token = strtok(NULL, space);		
+	if (token != NULL)
+    		token = strtok(NULL, space);		
     }	
-    gyroX = atof(token);
-    printf("gyroX %f ", gyroX);
-    token = strtok(NULL, space);		
-    gyroY = atof(token);
-    printf("gyroY %f ", gyroY);
-    token = strtok(NULL, space);
-    gyroZ = atof(token);
-    printf("gyroZ %f \n", gyroZ);
-//    token = strtok(NULL, space);
+    if (token != NULL)
+    {
+    	gyroX = atof(token);
+    	printf("gyroX %f ", gyroX);
+    	token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	gyroY = atof(token);
+        printf("gyroY %f ", gyroY);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	gyroZ = atof(token);
+        printf("gyroZ %f \n", gyroZ);
+    }
 	
     xAngularVelocity = (-0.69)*(gyroX)*(gyroX) + 45.3 * (gyroX) + 2078;
     yAngularVelocity = (-0.69)*(gyroY)*(gyroY) + 45.3 * (gyroY) + 2078;
