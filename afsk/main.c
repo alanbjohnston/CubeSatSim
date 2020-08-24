@@ -919,7 +919,7 @@ if (payload == ON)
 
     float gyroX, gyroY, gyroZ;	
 		   
-    for (count1 = 0; count1 < 2; count1++)
+    for (count1 = 0; count1 < 6; count1++)
     {
 //       voltage[count1] = atof(token);				      
     	printf("token %s ", token);
@@ -929,13 +929,13 @@ if (payload == ON)
 //    		token = strtok(NULL, space);		
     }	
     gyroX = atof(token);
-    printf("gyroX %d ", gyroX);
+    printf("gyroX %f ", gyroX);
     token = strtok(NULL, space);		
     gyroY = atof(token);
-    printf("gyroY %d ", gyroY);
+    printf("gyroY %f ", gyroY);
     token = strtok(NULL, space);
     gyroZ = atof(token);
-    printf("gyroZ %d \n", gyroZ);
+    printf("gyroZ %f \n", gyroZ);
     token = strtok(NULL, space);
     	
     strcat(str, sensor_payload);  // append to telemetry string for transmission
