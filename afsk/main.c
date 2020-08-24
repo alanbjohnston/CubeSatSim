@@ -919,7 +919,7 @@ if (payload == ON)
 
     float gyroX, gyroY, gyroZ;	
 		   
-    for (count1 = 0; count1 < 8; count1++)  // skip over BME280 data to get to X, Y, and Z Gyro data
+    for (count1 = 0; count1 < 7; count1++)  // skip over BME280 data to get to X, Y, and Z Gyro data
     {
 //       voltage[count1] = atof(token);				      
 //    	printf("token %s ", token);
@@ -1263,7 +1263,7 @@ if (payload == ON)
 
     float gyroX, gyroY, gyroZ;	
 		   
-    for (count1 = 0; count1 < 6; count1++)
+    for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
 //       voltage[count1] = atof(token);				      
 //    	printf("token %s ", token);
