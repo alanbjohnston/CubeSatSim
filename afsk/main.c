@@ -922,20 +922,20 @@ if (payload == ON)
     for (count1 = 0; count1 < 6; count1++)
     {
 //       voltage[count1] = atof(token);				      
-    	printf("token %s ", token);
+//    	printf("token %s ", token);
     	token = strtok(NULL, space);	
 //	 current[count1] = atof(token);
 //	       printf("current: %f\n", current[count1]);
 //    		token = strtok(NULL, space);		
     }	
     gyroX = atof(token);
-    printf("gyroX %f ", gyroX);
+//    printf("gyroX %f ", gyroX);
     token = strtok(NULL, space);		
     gyroY = atof(token);
-    printf("gyroY %f ", gyroY);
+//    printf("gyroY %f ", gyroY);
     token = strtok(NULL, space);
     gyroZ = atof(token);
-    printf("gyroZ %f \n", gyroZ);
+//    printf("gyroZ %f \n", gyroZ);
     token = strtok(NULL, space);
     	
     strcat(str, sensor_payload);  // append to telemetry string for transmission
@@ -1077,8 +1077,8 @@ int get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
-// AngularVelocity = 49.7 dps + 2059
-  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
+//  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
+  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078; // XAxisAngularVelocity Y and Z set to 0
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1209,8 +1209,83 @@ if (firstTime != ON)
   PSUVoltage = (int)(reading[BUS].voltage * 100);
   PSUCurrent = (int)reading[BUS].current + 2048;
 	  
-  if (payload == ON)
-	  STEMBoardFailure = 0;
+//  if (payload == ON)
+//	  STEMBoardFailure = 0;
+	  
+// read payload sensor if available
+	
+char sensor_payload[500];
+	
+if (payload == ON)
+{
+     STEMBoardFailure = 0;
+	
+     char c;
+     unsigned int waitTime;
+     int i = 0;
+
+     serialPutchar (uart_fd, '?');
+     printf("Querying payload with ?\n");
+     waitTime = millis() + 500;
+     int end = FALSE;
+     while ((millis() < waitTime) && !end) 
+     { 
+	int chars = serialDataAvail (uart_fd);
+        while ((chars-- > 0) && !end)
+        {
+          c = serialGetchar (uart_fd);
+//	  printf ("%c", c);
+//	  fflush(stdout);
+	  if (c != '\n')
+	  {
+	  	sensor_payload[i++] = c;
+	  }
+	  else
+	  {
+		  end = TRUE;
+	  }
+        }
+    }
+    sensor_payload[i] = '\0';
+    printf("Payload string: %s\n", sensor_payload);
+	
+   int count1;
+   char *token;
+//   char cmdbuffer[1000];
+		
+//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+//    	fgets(cmdbuffer, 1000, file);
+//	printf("result: %s\n", cmdbuffer);
+//    	pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(sensor_payload, space);
+
+    float gyroX, gyroY, gyroZ;	
+		   
+    for (count1 = 0; count1 < 6; count1++)
+    {
+//       voltage[count1] = atof(token);				      
+//    	printf("token %s ", token);
+    	token = strtok(NULL, space);	
+//	 current[count1] = atof(token);
+//	       printf("current: %f\n", current[count1]);
+//    		token = strtok(NULL, space);		
+    }	
+    gyroX = atof(token);
+    printf("gyroX %f ", gyroX);
+    token = strtok(NULL, space);		
+    gyroY = atof(token);
+    printf("gyroY %f ", gyroY);
+    token = strtok(NULL, space);
+    gyroZ = atof(token);
+    printf("gyroZ %f \n", gyroZ);
+//    token = strtok(NULL, space);
+	
+    xAngularVelocity = (-0.69)*(gyroX)*(gyroX) + 45.3 * (gyroX) + 2078;
+    yAngularVelocity = (-0.69)*(gyroY)*(gyroY) + 45.3 * (gyroY) + 2078;
+    zAngularVelocity = (-0.69)*(gyroZ)*(gyroZ) + 45.3 * (gyroZ) + 2078;
+  }
 
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
