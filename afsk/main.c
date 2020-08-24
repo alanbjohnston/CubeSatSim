@@ -1277,7 +1277,7 @@ if (payload == ON)
     token = strtok(NULL, space);		
     gyroY = atof(token);
     printf("gyroY %f ", gyroY);
-    token = strtok(NULL, space);
+//    token = strtok(NULL, space);
     gyroZ = atof(token);
     printf("gyroZ %f \n", gyroZ);
 //    token = strtok(NULL, space);
