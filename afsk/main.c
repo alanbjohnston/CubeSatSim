@@ -928,13 +928,13 @@ if (payload == ON)
 //	       printf("current: %f\n", current[count1]);
 //    		token = strtok(NULL, space);		
     }	
-    gyroX = atof(token)
+    gyroX = atof(token);
     printf("gyroX %d ", gyroX);
     token = strtok(NULL, space);		
-    gyroY = atof(token)
+    gyroY = atof(token);
     printf("gyroY %d ", gyroY);
     token = strtok(NULL, space);
-    gyroZ = atof(token)
+    gyroZ = atof(token);
     printf("gyroZ %d \n", gyroZ);
     token = strtok(NULL, space);
     	
