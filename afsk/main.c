@@ -919,7 +919,7 @@ if (payload == ON)
 
     float gyroX, gyroY, gyroZ;	
 		   
-    for (count1 = 0; count1 < 8; count1++)
+    for (count1 = 0; count1 < 2; count1++)
     {
 //       voltage[count1] = atof(token);				      
     	printf("token %s ", token);
