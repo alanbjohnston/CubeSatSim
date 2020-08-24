@@ -902,8 +902,9 @@ if (payload == ON)
 	  }
         }
     }
+    sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
-    printf("Payload string: %s\n", sensor_payload);
+    printf("Payload string: %s", sensor_payload);
 	
    int count1;
    char *token;
@@ -1246,8 +1247,9 @@ if (payload == ON)
 	  }
         }
     }
+    sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
-    printf("Payload string: %s\n", sensor_payload);
+    printf("Payload string: %s", sensor_payload);
 	
    int count1;
    char *token;
@@ -1277,7 +1279,7 @@ if (payload == ON)
     token = strtok(NULL, space);		
     gyroY = atof(token);
     printf("gyroY %f ", gyroY);
-//    token = strtok(NULL, space);
+    token = strtok(NULL, space);
     gyroZ = atof(token);
     printf("gyroZ %f \n", gyroZ);
 //    token = strtok(NULL, space);
