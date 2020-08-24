@@ -1247,6 +1247,7 @@ if (payload == ON)
 	  }
         }
     }
+    sensor_payload[i++] = ' ';
     sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
     printf("Payload string: %s", sensor_payload);
