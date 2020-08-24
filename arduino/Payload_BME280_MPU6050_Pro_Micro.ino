@@ -87,7 +87,7 @@ void loop() {
     Serial1.print(" ");
     Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
     Serial1.print(" ");
-    Serial1.println(bme.readHumidity());
+    Serial1.print(bme.readHumidity());
 
     mpu6050.update();
     
