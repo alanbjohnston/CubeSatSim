@@ -1079,15 +1079,24 @@ if (firstTime != ON)
     token = strtok(cmdbuffer, space);
 
     float voltage[9], current[9];	
-		   
+    memset(voltage, 0, 9*sizeof(voltage[0]));
+    memset(current, 0, 9*sizeof(current[0]));	 
+	  
     for (count1 = 0; count1 < 8; count1++)
   	{
+	    if (token != NULL)
+	    {
 	        voltage[count1] = atof(token);				      
-    		printf("voltage: %f ", voltage[count1]);
-    		token = strtok(NULL, space);	
-	        current[count1] = atof(token);
-	        printf("current: %f\n", current[count1]);
-    		token = strtok(NULL, space);		
+    	     	printf("voltage: %f ", voltage[count1]);
+
+		token = strtok(NULL, space);	
+	    	if (token != NULL)
+	    	{
+	            current[count1] = atof(token);
+	            printf("current: %f\n", current[count1]);
+    		    token = strtok(NULL, space);	
+		}
+	    }
   	}	  
 	  
 	 printf("\n"); 
