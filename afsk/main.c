@@ -485,7 +485,7 @@ else
  }
 
    strcpy(pythonStr, pythonCmd);
-   strcat(pythonStr, "1 11 c");
+   strcat(pythonStr, "1 3 c");
 	
 //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
    FILE* file1 = popen(pythonStr, "r");
