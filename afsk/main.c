@@ -131,6 +131,7 @@ float batteryThreshold = 3.0, batteryVoltage;
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[9] = { 0, 1, 2, 3, 4, 5, 6, 7, 0x45};
+/*
 struct SensorConfig {
     int fd;
     uint16_t  config;
@@ -156,7 +157,7 @@ struct SensorData {
  * @param sensor A structure containing sensor configuration including the file descriptor.
  * @return struct SensorData A struct that contains the current, voltage, and power readings
  * from the requested sensor.
- */
+ *
 struct SensorData read_sensor_data(struct SensorConfig sensor) {
     struct SensorData data = {
         .current = 0,
@@ -199,7 +200,7 @@ struct SensorData read_sensor_data(struct SensorConfig sensor) {
  * @param sensor A file descriptor that can be used to read from the sensor.
  * @param milliAmps The mA configuration, either 400mA or 2A are supported.
  * @return struct SensorConfig A struct that contains the configuraton of the sensor.
- */
+ *
 //struct SensorConfig config_sensor(int sensor, int milliAmps) {
 struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
     struct SensorConfig data;
@@ -261,6 +262,7 @@ struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
 struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4/5
 struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4/5
 struct SensorConfig tempSensor; 
+*/
 
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
@@ -442,43 +444,43 @@ int main(int argc, char *argv[]) {
 		
 if (vB4)
 {	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+/*  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-0", 0x40, 400);
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
+  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400);  */
   map[2] = BUS;
   map[3] = BAT;
   strcpy(busStr,"1 0");
 }	
 else if (vB5)
 {	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+/*  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
-  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
+  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400); */
 
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
-  	sensor[PLUS_Z]  = config_sensor("/dev/i2c-11", 0x40, 400);
+  /*	sensor[PLUS_Z]  = config_sensor("/dev/i2c-11", 0x40, 400);
   	sensor[MINUS_X] = config_sensor("/dev/i2c-11", 0x41, 400);
   	sensor[MINUS_Y] = config_sensor("/dev/i2c-11", 0x44, 400);
-  	sensor[MINUS_Z] = config_sensor("/dev/i2c-11", 0x45, 400); 
+  	sensor[MINUS_Z] = config_sensor("/dev/i2c-11", 0x45, 400); */
 	strcpy(busStr,"1 11");
   } else {
-  	sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
+ /* 	sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
   	sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
   	sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
-  	sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
+  	sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400);  */
 	strcpy(busStr,"1 3");
   }
 } 
 else
 {	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
+/*  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
   sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
@@ -487,7 +489,7 @@ else
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
 	
-  tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);
+  tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0); */
   map[2] = PLUS_Z;
   map[3] = BAT;
   map[4] = MINUS_X;
@@ -814,7 +816,7 @@ for (int j = 0; j < frameCnt; j++)
 		}
 	    }
     }		
-	
+/*	
   int count;
   for (count = 0; count < 8; count++)
   {
@@ -824,7 +826,7 @@ for (int j = 0; j < frameCnt; j++)
 //	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
   }
-	    
+*/	    
   tlm[1][A] = (int)(voltage[map[BUS]] /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - current[map[PLUS_X]]/10.0) % 100;  // +X current [4]
   tlm[1][C] = (int) (99.5 - current[map[MINUS_X]]/10.0) % 100;  			// X- current [10] 
@@ -840,6 +842,7 @@ for (int j = 0; j < frameCnt; j++)
 
   batteryVoltage = voltage[map[BAT]];
 
+/*	
   if (ax5043)
   {
    if (tempSensor.fd != OFF) {
@@ -854,7 +857,8 @@ for (int j = 0; j < frameCnt; j++)
 	  
     tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
    }
-  } 
+  }
+*/	
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -1147,7 +1151,7 @@ if (firstTime != ON)
   	}	  
 	  
 //	 printf("\n"); 
-	  
+/*	  
     int count;
     for (count = 0; count < 8; count++)
     {
@@ -1158,6 +1162,7 @@ if (firstTime != ON)
 //	        count, reading[count].voltage, reading[count].current, reading[count].power); 
     #endif
     }
+*/    
 /*
     if (tempSensor.fd != OFF) {
       int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
