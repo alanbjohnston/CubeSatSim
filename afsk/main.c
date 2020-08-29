@@ -126,7 +126,7 @@ float sleepTime;
 int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float batteryThreshold = 0, batteryVoltage;
+float batteryThreshold = 3.0, batteryVoltage;
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
@@ -399,7 +399,6 @@ int main(int argc, char *argv[]) {
 	  onLed = 0;
           onLedOn = HIGH;
 	  onLedOff = LOW;
-	  batteryThreshold = 3.0;
 	  transmit = TRUE;
   	}
 	else
@@ -417,7 +416,6 @@ int main(int argc, char *argv[]) {
 	  		onLed = 27;
           		onLedOn = HIGH;
 	  		onLedOff = LOW;
-	  		batteryThreshold = 3.0;
 	  		transmit = TRUE;
 		}
 	}
@@ -496,6 +494,7 @@ else
   map[5] = BUS;
   map[8] = 0x4a;  // 2000 mA on bus 1
   strcpy(busStr,"1 0");
+  batteryThreshold = 8.0;
  }
 
    strcpy(pythonStr, pythonCmd);
