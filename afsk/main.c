@@ -126,7 +126,7 @@ float sleepTime;
 int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float batteryThreshold = 0;
+float batteryThreshold = 0, batteryVoltage;
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
@@ -606,7 +606,7 @@ while (loop-- != 0)
   {
    frames_sent++;
 //   float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
-   float batteryVoltage = voltage(map[BAT]);
+
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
@@ -838,6 +838,8 @@ for (int j = 0; j < frameCnt; j++)
 	
   tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100;      // 5V supply to Pi
+
+  batteryVoltage = voltage[map[BAT]];
 
   if (ax5043)
   {
@@ -1255,7 +1257,9 @@ if (firstTime != ON)
   PSUCurrent = (int)current[map[BUS]] + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
-
+	  
+  batteryVoltage = voltage[map[BAT]];
+	  
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
