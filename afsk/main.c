@@ -127,7 +127,7 @@ int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 0;
 
-char pythonCmd = "ython3 /home/pi/CubeSatSim/python/voltcurrent.py ";
+const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100];
 
 struct SensorConfig {
