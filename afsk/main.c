@@ -54,12 +54,13 @@
 
 #define PLUS_X 0
 #define PLUS_Y 1
-#define PLUS_Z 6
 #define BAT 2
+#define BUS 3
 #define MINUS_X 4
 #define MINUS_Y 5
+#define PLUS_Z 6
 #define MINUS_Z 7
-#define BUS 3
+
 #define OFF -1
 #define ON 1
 
@@ -129,7 +130,7 @@ float batteryThreshold = 0;
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
-
+int map[9] = { 0, 1, 2, 3, 4, 5, 6, 7, 0x45};
 struct SensorConfig {
     int fd;
     uint16_t  config;
@@ -451,14 +452,17 @@ if (vB4)
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
+  map[2] = BUS;
+  map[3] = BAT;
   strcpy(busStr,"1 0");
 }	
 else if (vB5)
 {	
   sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
   sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
   sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
+  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
+
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
   	sensor[PLUS_Z]  = config_sensor("/dev/i2c-11", 0x40, 400);
@@ -484,7 +488,13 @@ else
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
+	
   tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);
+  map[2] = PLUS_Z;
+  map[3] = BAT;
+  map[4] = MINUS_X;
+  map[5] = BUS;
+  map[8] = 0x4a;  // 2000 mA on bus 1
   strcpy(busStr,"1 0");
  }
 
@@ -595,7 +605,8 @@ printf("After command\n");
 while (loop-- != 0)
   {
    frames_sent++;
-   float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
+//   float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
+   float batteryVoltage = voltage(map[BAT]);
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
@@ -770,6 +781,41 @@ for (int j = 0; j < frameCnt; j++)
   memset(tlm, 0, sizeof tlm);
 	
 //  Reading I2C voltage and current sensors
+	
+   int count1;
+   char *token;
+   char cmdbuffer[1000];
+	
+//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+        FILE* file = popen(pythonStr, "r");
+	fgets(cmdbuffer, 1000, file);
+//	printf("result: %s\n", cmdbuffer);
+    	pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(cmdbuffer, space);
+
+    float voltage[9], current[9];	
+    memset(voltage, 0, sizeof(voltage));
+    memset(current, 0, sizeof(current));	 
+	  
+    for (count1 = 0; count1 < 8; count1++)
+    {
+	    if (token != NULL)
+	    {
+	        voltage[count1] = atof(token);				      
+    	     	printf("voltage: %f ", voltage[count1]);
+
+		token = strtok(NULL, space);	
+	    	if (token != NULL)
+	    	{
+	            current[count1] = atof(token);
+	            printf("current: %f\n", current[count1]);
+    		    token = strtok(NULL, space);	
+		}
+	    }
+    }		
+	
   int count;
   for (count = 0; count < 8; count++)
   {
@@ -780,18 +826,18 @@ for (int j = 0; j < frameCnt; j++)
     #endif
   }
 	    
-  tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
-  tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
-  tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
-  tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10.0) % 100;  // +Y current [7]
+  tlm[1][A] = (int)(voltage[map[BUS]] /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
+  tlm[1][B] = (int) (99.5 - current[map[PLUS_X]]/10.0) % 100;  // +X current [4]
+  tlm[1][C] = (int) (99.5 - current[map[MINUS_X]]/10.0) % 100;  			// X- current [10] 
+  tlm[1][D] = (int) (99.5 - current[map[PLUS_Y]]/10.0) % 100;  // +Y current [7]
 
-  tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10.0) % 100;  			// -Y current [10] 
-  tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-  tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10.0) % 100;  			// -Z current (was timestamp)
-  tlm[2][D] = (int)(50.5 + reading[BAT].current/10.0) % 100;   // NiMH Battery current
+  tlm[2][A] = (int) (99.5 - current[map[MINUS_Y]]/10.0) % 100;  			// -Y current [10] 
+  tlm[2][B] = (int) (99.5 - current[map[PLUS_Z]]/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+  tlm[2][C] = (int) (99.5 - current[map[MINUS_Z]]/10.0) % 100;  			// -Z current (was timestamp)
+  tlm[2][D] = (int)(50.5 + current[map[BAT]]/10.0) % 100;   // NiMH Battery current
 	
-  tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
-  tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
+  tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
+  tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100;      // 5V supply to Pi
 
   if (ax5043)
   {
@@ -1079,8 +1125,8 @@ if (firstTime != ON)
     token = strtok(cmdbuffer, space);
 
     float voltage[9], current[9];	
-    memset(voltage, 0, 9*sizeof(voltage[0]));
-    memset(current, 0, 9*sizeof(current[0]));	 
+    memset(voltage, 0, sizeof(voltage));
+    memset(current, 0, sizeof(current));	 
 	  
     for (count1 = 0; count1 < 8; count1++)
   	{
@@ -1099,11 +1145,12 @@ if (firstTime != ON)
 	    }
   	}	  
 	  
-	 printf("\n"); 
+//	 printf("\n"); 
 	  
     int count;
     for (count = 0; count < 8; count++)
     {
+      reading[count] = read_sensor_data(sensor[count]);	  
       reading[count] = read_sensor_data(sensor[count]);	  
     #ifdef DEBUG_LOGGING
 //      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
@@ -1188,24 +1235,24 @@ if (firstTime != ON)
   PSUCurrent = (int)reading[BUS].current + 2048;
 */	
 	  
-  posXi = (int)current[PLUS_X] + 2048;
-  posYi = (int)current[PLUS_Y] + 2048;
-  posZi = (int)current[PLUS_Z] + 2048;
-  negXi = (int)current[MINUS_X] + 2048;
-  negYi = (int)current[MINUS_Y] + 2048;
-  negZi = (int)current[MINUS_Z] + 2048;
+  posXi = (int)current[map[PLUS_X]] + 2048;
+  posYi = (int)current[map[PLUS_Y]] + 2048;
+  posZi = (int)current[map[PLUS_Z]] + 2048;
+  negXi = (int)current[map[MINUS_X]] + 2048;
+  negYi = (int)current[map[MINUS_Y]] + 2048;
+  negZi = (int)current[map[MINUS_Z]] + 2048;
 
-  posXv = (int)(voltage[PLUS_X] * 100);
-  posYv = (int)(voltage[PLUS_Y] * 100);
-  posZv = (int)(voltage[PLUS_Z] * 100);
-  negXv = (int)(voltage[MINUS_X] * 100);
-  negYv = (int)(voltage[MINUS_Y] * 100);
-  negZv = (int)(voltage[MINUS_Z] * 100);
+  posXv = (int)(voltage[map[PLUS_X]] * 100);
+  posYv = (int)(voltage[map[PLUS_Y]] * 100);
+  posZv = (int)(voltage[map[PLUS_Z]] * 100);
+  negXv = (int)(voltage[map[MINUS_X]] * 100);
+  negYv = (int)(voltage[map[MINUS_Y]] * 100);
+  negZv = (int)(voltage[map[MINUS_Z]] * 100);
 	  
-  batt_c_v = (int)(voltage[BAT] * 100);
-  battCurr = (int)current[BAT] + 2048;
-  PSUVoltage = (int)(voltage[BUS] * 100);
-  PSUCurrent = (int)current[BUS] + 2048;	  
+  batt_c_v = (int)(voltage[map[BAT]] * 100);
+  battCurr = (int)current[map[BAT]] + 2048;
+  PSUVoltage = (int)(voltage[map[BUS]] * 100);
+  PSUCurrent = (int)current[map[BUS]] + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
 
