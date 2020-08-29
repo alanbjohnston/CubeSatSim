@@ -128,7 +128,7 @@ int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, 
 float batteryThreshold = 0;
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
-char pythonStr[100];
+char pythonStr[100], pythonConfigStr[100], busStr[10];
 
 struct SensorConfig {
     int fd;
@@ -451,6 +451,7 @@ if (vB4)
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
+  strcpy(busStr,"1 0");
 }	
 else if (vB5)
 {	
@@ -464,11 +465,13 @@ else if (vB5)
   	sensor[MINUS_X] = config_sensor("/dev/i2c-11", 0x41, 400);
   	sensor[MINUS_Y] = config_sensor("/dev/i2c-11", 0x44, 400);
   	sensor[MINUS_Z] = config_sensor("/dev/i2c-11", 0x45, 400); 
+	strcpy(busStr,"1 11");
   } else {
   	sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
   	sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
   	sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
   	sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
+	strcpy(busStr,"1 3");
   }
 } 
 else
@@ -481,17 +484,20 @@ else
   sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
   sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
-  tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);  
+  tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);
+  strcpy(busStr,"1 0");
  }
 
    strcpy(pythonStr, pythonCmd);
-   strcat(pythonStr, "1 3 c");
+   strcat(pythonStr, busStr);
+   strcat(pythonConfigStr, pythonStr);
+   strcat(pythonConfigStr, " c");
 	
 //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
-   FILE* file1 = popen(pythonStr, "r");
+   FILE* file1 = popen(pythonConfigStr, "r");
    char cmdbuffer[1000];
    fgets(cmdbuffer, 1000, file1);
-   printf("pythonStr result: %s\n", cmdbuffer);
+//   printf("pythonStr result: %s\n", cmdbuffer);
    pclose(file1);	
 	
 // try connecting to Arduino payload using UART
@@ -1063,9 +1069,9 @@ if (firstTime != ON)
    char *token;
    char cmdbuffer[1000];
 	
-//    while (1) {	
-	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-    	fgets(cmdbuffer, 1000, file);
+//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+        FILE* file = popen(pythonStr, "r");
+	fgets(cmdbuffer, 1000, file);
 //	printf("result: %s\n", cmdbuffer);
     	pclose(file);
 	
@@ -1084,10 +1090,8 @@ if (firstTime != ON)
     		token = strtok(NULL, space);		
   	}	  
 	  
-	 printf("\n");
-//    }	    
+	 printf("\n"); 
 	  
-  
     int count;
     for (count = 0; count < 8; count++)
     {
