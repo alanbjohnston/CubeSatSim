@@ -805,14 +805,17 @@ for (int j = 0; j < frameCnt; j++)
 	    if (token != NULL)
 	    {
 	        voltage[count1] = atof(token);				      
-    	     	printf("voltage: %f ", voltage[count1]);
-
+    #ifdef DEBUG_LOGGING
+		 printf("voltage: %f ", voltage[count1]);
+    #endif
 		token = strtok(NULL, space);	
 	    	if (token != NULL)
 	    	{
 	            current[count1] = atof(token);
-	            printf("current: %f\n", current[count1]);
-    		    token = strtok(NULL, space);	
+    #ifdef DEBUG_LOGGING
+		    printf("current: %f\n", current[count1]);
+    #endif
+		    token = strtok(NULL, space);	
 		}
 	    }
     }		
@@ -1138,14 +1141,17 @@ if (firstTime != ON)
 	    if (token != NULL)
 	    {
 	        voltage[count1] = atof(token);				      
-    	     	printf("voltage: %f ", voltage[count1]);
-
+    #ifdef DEBUG_LOGGING
+		printf("voltage: %f ", voltage[count1]);
+    #endif
 		token = strtok(NULL, space);	
 	    	if (token != NULL)
 	    	{
 	            current[count1] = atof(token);
-	            printf("current: %f\n", current[count1]);
-    		    token = strtok(NULL, space);	
+     #ifdef DEBUG_LOGGING
+		 printf("current: %f\n", current[count1]);
+     #endif
+		    token = strtok(NULL, space);	
 		}
 	    }
   	}	  
