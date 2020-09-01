@@ -109,6 +109,7 @@ int rd = 0;
 int nrd;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave(int i, short int *buffer);
+  int uart_fd;
 
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
 //#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
@@ -485,7 +486,6 @@ else
 
  if (!ax5043)  // don't test if AX5043 is present
  {
-  int uart_fd;
   payload = OFF;
 
   if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
@@ -869,6 +869,46 @@ for (int j = 0; j < frameCnt; j++)
 //printf("Before 1st strcpy\n");
   strcat(cw_str2, cw_footer2);
 //printf("Before 1st strcpy\n");
+	
+// read payload sensor if available
+	
+char sensor_payload[500];
+	
+if (payload == ON)
+{
+     char c;
+     unsigned int waitTime;
+     int i = 0;
+
+     serialPutchar (uart_fd, '?');
+     printf("Querying payload with ?\n");
+     waitTime = millis() + 500;
+     int end = FALSE;
+     while ((millis() < waitTime) && !end) 
+     { 
+	int chars = serialDataAvail (uart_fd);
+        while ((chars-- > 0) && !end)
+        {
+          c = serialGetchar (uart_fd);
+//	  printf ("%c", c);
+//	  fflush(stdout);
+	  if (c != '\n')
+	  {
+	  	sensor_payload[i++] = c;
+	  }
+	  else
+	  {
+		  end = TRUE;
+	  }
+        }
+    }
+//    sensor_payload[i++] = '\n';
+    sensor_payload[i] = '\0';
+    printf("Payload string: %s", sensor_payload);
+    
+    strcat(str, sensor_payload);  // append to telemetry string for transmission
+}
+
   digitalWrite (txLed, txLedOn);
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
@@ -1004,6 +1044,8 @@ int get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
+//  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
+  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078; // XAxisAngularVelocity Y and Z set to 0
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1134,8 +1176,89 @@ if (firstTime != ON)
   PSUVoltage = (int)(reading[BUS].voltage * 100);
   PSUCurrent = (int)reading[BUS].current + 2048;
 	  
-  if (payload == ON)
-	  STEMBoardFailure = 0;
+//  if (payload == ON)
+//	  STEMBoardFailure = 0;
+	  
+// read payload sensor if available
+	
+char sensor_payload[500];
+	
+if (payload == ON)
+{
+     STEMBoardFailure = 0;
+	
+     char c;
+     unsigned int waitTime;
+     int i = 0;
+
+     serialPutchar (uart_fd, '?');
+     printf("Querying payload with ?\n");
+     waitTime = millis() + 500;
+     int end = FALSE;
+     while ((millis() < waitTime) && !end) 
+     { 
+	int chars = serialDataAvail (uart_fd);
+        while ((chars-- > 0) && !end)
+        {
+          c = serialGetchar (uart_fd);
+//	  printf ("%c", c);
+//	  fflush(stdout);
+	  if (c != '\n')
+	  {
+	  	sensor_payload[i++] = c;
+	  }
+	  else
+	  {
+		  end = TRUE;
+	  }
+        }
+    }
+    sensor_payload[i++] = ' ';
+    sensor_payload[i++] = '\n';
+    sensor_payload[i] = '\0';
+    printf("Payload string: %s", sensor_payload);
+	
+   int count1;
+   char *token;
+//   char cmdbuffer[1000];
+		
+//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+//    	fgets(cmdbuffer, 1000, file);
+//	printf("result: %s\n", cmdbuffer);
+//    	pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(sensor_payload, space);
+
+    float gyroX, gyroY, gyroZ;	
+		   
+    for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
+    {
+	if (token != NULL)
+    		token = strtok(NULL, space);		
+    }	
+    if (token != NULL)
+    {
+    	gyroX = atof(token);
+    	printf("gyroX %f ", gyroX);
+    	token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	gyroY = atof(token);
+        printf("gyroY %f ", gyroY);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	gyroZ = atof(token);
+        printf("gyroZ %f \n", gyroZ);
+    }
+	
+    xAngularVelocity = (-0.69)*(gyroX)*(gyroX) + 45.3 * (gyroX) + 2078;
+    yAngularVelocity = (-0.69)*(gyroY)*(gyroY) + 45.3 * (gyroY) + 2078;
+    zAngularVelocity = (-0.69)*(gyroZ)*(gyroZ) + 45.3 * (gyroZ) + 2078;
+  }
 
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
@@ -1179,7 +1302,11 @@ if (firstTime != ON)
   encodeB(b, 46 + head_offset,PSUCurrent);
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
-
+	  
+  encodeB(b, 40 + head_offset,  xAngularVelocity);
+  encodeA(b, 42 + head_offset,  yAngularVelocity);
+  encodeB(b, 43 + head_offset,  zAngularVelocity);
+	  
   encodeB(b, 51 + head_offset, STEMBoardFailure);
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
