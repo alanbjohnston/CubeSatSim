@@ -58,6 +58,14 @@ Remove the following text in cmdline.txt to prevent a console from running on th
 
 Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt.
 
+Now install the python packages:
+
+`sudo apt install -y python3-pip python-smbus`
+
+`sudo pip3 install --upgrade setuptools`
+
+`sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219` 
+
 Reboot by typing:
 
 `sudo reboot now`
