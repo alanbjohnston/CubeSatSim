@@ -13,7 +13,7 @@ MPU6050 mpu6050(Wire);
 int counter = 0;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 long timer = 0;
-bmePresent = 1;
+int bmePresent;
 
 void setup() {
 
@@ -23,14 +23,15 @@ void setup() {
 
   Serial.println("Starting!");
 
-
   digitalWrite(RXLED, LOW);   // set the RX LED ON
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
   delay(50);              // wait for a second
   digitalWrite(RXLED, HIGH);   // set the RX LED ON
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 
-  if (!bme.begin(0x76)) {
+  if (bme.begin(0x76)) {
+    bmePresent = 1;
+  } else {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     bmePresent = 0;
   }
@@ -49,9 +50,13 @@ void loop() {
     digitalWrite(RXLED, HIGH);   // set the RX LED ON
     TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
     char result = Serial.read();
-    //    Serial1.println(result);
-    if (result == 'R')
-      setup();  
+ //       Serial.println(result);  
+     
+    if (result == 'R') {
+      Serial.println("OK");
+      delay(500);
+      setup(); 
+    }
     if (bmePresent) {
       Serial.print("OK BME280 ");
       Serial.print(bme.readTemperature());
@@ -85,8 +90,12 @@ void loop() {
     TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
     char result = Serial1.read();
 //    Serial1.println(result);
-    if (result == 'R')
-      setup();  
+
+    if (result == 'R') {
+      Serial1.println("OK");
+      delay(500);
+      setup(); 
+    }  
     if (bmePresent) {  
       Serial1.print("OK BME280 ");
       Serial1.print(bme.readTemperature());
@@ -112,6 +121,6 @@ void loop() {
 //  Serial1.println(counter++);
   }
 #endif
-
+  
   delay(100);
 }
