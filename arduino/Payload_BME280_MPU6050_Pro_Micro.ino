@@ -13,6 +13,7 @@ MPU6050 mpu6050(Wire);
 int counter = 0;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 long timer = 0;
+bmePresent = TRUE;
 
 void setup() {
 
@@ -31,7 +32,7 @@ void setup() {
 
   if (!bme.begin(0x76)) {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
-//    while (1);
+    bmePresent = FALSE;
   }
   
   mpu6050.begin();
@@ -49,15 +50,19 @@ void loop() {
     TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
     char result = Serial.read();
     //    Serial1.println(result);
-    Serial.print("OK BME280 ");
-    Serial.print(bme.readTemperature());
-    Serial.print(" ");
-    Serial.print(bme.readPressure() / 100.0F);
-    Serial.print(" ");
-    Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-    Serial.print(" ");
-    Serial.print(bme.readHumidity());
-    
+    if (bmePresent) {
+      Serial.print("OK BME280 ");
+      Serial.print(bme.readTemperature());
+      Serial.print(" ");
+      Serial.print(bme.readPressure() / 100.0F);
+      Serial.print(" ");
+      Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+      Serial.print(" ");
+      Serial.print(bme.readHumidity());
+    } else
+    {
+       Serial.println("OK BME280 0.0 0.0 0.0 0.0");
+    }
     mpu6050.update();
     
     Serial.print(" MPU6050 ");
@@ -79,16 +84,19 @@ void loop() {
     char result = Serial1.read();
 //    Serial1.println(result);
 //    Serial1.println("OK ");
-  
-    Serial1.print("OK BME280 ");
-    Serial1.print(bme.readTemperature());
-    Serial1.print(" ");
-    Serial1.print(bme.readPressure() / 100.0F);
-    Serial1.print(" ");
-    Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-    Serial1.print(" ");
-    Serial1.print(bme.readHumidity());
-
+    if (bmePresent) {  
+      Serial1.print("OK BME280 ");
+      Serial1.print(bme.readTemperature());
+      Serial1.print(" ");
+      Serial1.print(bme.readPressure() / 100.0F);
+      Serial1.print(" ");
+      Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+      Serial1.print(" ");
+      Serial1.print(bme.readHumidity());
+    } else
+    {
+       Serial1.println("OK BME280 0.0 0.0 0.0 0.0");
+    }
     mpu6050.update();
     
     Serial1.print(" MPU6050 ");
