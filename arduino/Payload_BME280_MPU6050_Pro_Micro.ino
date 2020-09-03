@@ -50,6 +50,8 @@ void loop() {
     TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
     char result = Serial.read();
     //    Serial1.println(result);
+    if (result == 'R')
+      setup();  
     if (bmePresent) {
       Serial.print("OK BME280 ");
       Serial.print(bme.readTemperature());
@@ -83,7 +85,8 @@ void loop() {
     TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
     char result = Serial1.read();
 //    Serial1.println(result);
-//    Serial1.println("OK ");
+    if (result == 'R')
+      setup();  
     if (bmePresent) {  
       Serial1.print("OK BME280 ");
       Serial1.print(bme.readTemperature());
