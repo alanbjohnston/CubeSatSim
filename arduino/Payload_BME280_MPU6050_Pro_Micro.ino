@@ -31,7 +31,7 @@ void setup() {
 
   if (!bme.begin(0x76)) {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    while (1);
+//    while (1);
   }
   
   mpu6050.begin();
