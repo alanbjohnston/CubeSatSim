@@ -14,6 +14,8 @@ GetAllData.ino Displays the results of reading the MPU6050 sensor: Temperature, 
 
 PayloadOK_STM32_PC13.ino and PayloadOK_Pro_Micro.ino  This code answers the query from the Raspberry Pi CubeSatSim software over the UART so that the STEM Payload is marked "OK" in the FoxTelem CubeSatSim-FSK Health tab. 
 
+Payload_BME280_MPU6050_Pro_Micro.ino and Payload_BME280_MPU6050_STM32.ino  This code answers the query from the Raspberry Pi CubeSatSim software over the UART so that the STEM Payload is marked "OK" in the FoxTelem CubeSatSim-FSK Health tab and also replies withe BME280 and MPU6050 sensor data.  In FoxTelem, this is displayed as the X, Y, and Z Gyro (dps) and in AFSK mode, it is appended to the telemetry string.
+
 The STM32 can be programmed using the Arduino IDE with the Generic STM32F103C series board and STM32duino bootloader, Maple Mini port.
 
 The Sparkfun Pro Micro can also be programed using the Arduino IDE with the Sparkfun Pro Micro board and AVRISP mkII Programmer.
