@@ -495,8 +495,8 @@ else
      int i;
     for(i = 0; i < 2; i++)
     {
-     serialPutchar (uart_fd, '?');
-     printf("Querying payload with ?\n");
+     serialPutchar (uart_fd, 'R');
+     printf("Querying payload with R to reset\n");
      waitTime = millis() + 500;
      while ((millis() < waitTime) && (payload != ON)) 
      { 
