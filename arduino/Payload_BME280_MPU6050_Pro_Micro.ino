@@ -13,7 +13,7 @@ MPU6050 mpu6050(Wire);
 int counter = 0;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 long timer = 0;
-bmePresent = TRUE;
+bmePresent = 1;
 
 void setup() {
 
@@ -32,7 +32,7 @@ void setup() {
 
   if (!bme.begin(0x76)) {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
-    bmePresent = FALSE;
+    bmePresent = 0;
   }
   
   mpu6050.begin();
@@ -61,7 +61,7 @@ void loop() {
       Serial.print(bme.readHumidity());
     } else
     {
-       Serial.println("OK BME280 0.0 0.0 0.0 0.0");
+       Serial.print("OK BME280 0.0 0.0 0.0 0.0");
     }
     mpu6050.update();
     
@@ -95,7 +95,7 @@ void loop() {
       Serial1.print(bme.readHumidity());
     } else
     {
-       Serial1.println("OK BME280 0.0 0.0 0.0 0.0");
+       Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
     }
     mpu6050.update();
     
