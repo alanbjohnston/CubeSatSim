@@ -29,12 +29,16 @@ if __name__ == "__main__":
   for x in buses:
     i2c_bus = I2C(x) # Device is /dev/i2c-x
     for y in addresses:
- #     print(x,y)
+      print(x,y)
       try:
   # Create library object using  Extended Bus I2C port
 #        print("bus: ", x, " addr: ", y)
-
-        ina219 = INA219(i2c_bus, y)
+        if x == 0 and y == 0x45:
+          print("Reading INA219 in MoPower Board")
+          i2c_bus = I2C(1)
+          ina219 = INA219(i2c_bus, 0x4a)
+        else:
+          ina219 = INA219(i2c_bus, y)
    
 #   print("ina219 test")
         if config:
