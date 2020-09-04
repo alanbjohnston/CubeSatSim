@@ -29,12 +29,12 @@ if __name__ == "__main__":
   for x in buses:
     i2c_bus = I2C(x) # Device is /dev/i2c-x
     for y in addresses:
-      print(x,y)
+ #     print(x,y)
       try:
   # Create library object using  Extended Bus I2C port
 #        print("bus: ", x, " addr: ", y)
         if x == 0 and y == 0x45:
-          print("Reading INA219 in MoPower Board")
+%          print("Reading INA219 in MoPower Board")
           i2c_bus = I2C(1)
           ina219 = INA219(i2c_bus, 0x4a)
         else:
@@ -52,6 +52,8 @@ if __name__ == "__main__":
         bus_voltage = ina219.bus_voltage  # voltage on V- (load side)
 #       shunt_voltage = ina219.shunt_voltage  # voltage between V+ and V- across the shunt
         current = ina219.current  # current in mA
+        if x == 0 and y == 0x45:
+          current = current * 10
 # INA219 measure bus voltage on the load side. So PSU voltage = bus_voltage + shunt_voltage
 #       print("{:6.3f}".format(bus_voltage + shunt_voltage))
         print("{:6.3f} ".format(bus_voltage), "{:6.3f} ".format(current) , end = '')
