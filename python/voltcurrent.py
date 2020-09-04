@@ -34,7 +34,7 @@ if __name__ == "__main__":
   # Create library object using  Extended Bus I2C port
 #        print("bus: ", x, " addr: ", y)
         if x == 0 and y == 0x45:
-%          print("Reading INA219 in MoPower Board")
+#          print("Reading INA219 in MoPower Board")
           i2c_bus = I2C(1)
           ina219 = INA219(i2c_bus, 0x4a)
         else:
