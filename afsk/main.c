@@ -490,13 +490,13 @@ else
   sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
 	
   tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0); */
-  map[BAT] = PLUS_Z;
-  map[BUS] = BAT;
-  map[PLUS_Z] = BUS;
-  map[MINUS_Z] = BUS;
+  map[BUS] = MINUS_Z;
+  map[BAT] = BUS;
+  map[PLUS_Z] = BAT;
+  map[MINUS_Z] = PLUS_Z;
 //  map[4] = MINUS_X;
 //  map[5] = BUS;
-  map[8] = 0x4a;  // 2000 mA on bus 1
+  map[8] = 0x4a;  // 
   strcpy(busStr,"1 0");
   batteryThreshold = 8.0;
  }
