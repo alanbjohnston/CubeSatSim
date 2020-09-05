@@ -33,7 +33,6 @@
 #include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
-#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
 #include "TelemEncoding.h"
 #include <sys/socket.h> 
 #include <stdlib.h> 
