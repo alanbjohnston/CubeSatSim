@@ -33,8 +33,8 @@
 #include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
-#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
-#include "make_wav.h"
+//#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
+//#include "make_wav.h"
 #include <sys/socket.h> 
 #include <stdlib.h> 
 #include <netinet/in.h> 
