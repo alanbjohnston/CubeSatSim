@@ -584,7 +584,7 @@ for (int j = 0; j < frameCnt; j++)
 	    {
 	        voltage[count1] = atof(token);				      
     #ifdef DEBUG_LOGGING
-		 printf("voltage: %f ", voltage[count1]);
+//		 printf("voltage: %f ", voltage[count1]);
     #endif
 		token = strtok(NULL, space);	
 	    	if (token != NULL)
@@ -593,7 +593,7 @@ for (int j = 0; j < frameCnt; j++)
 		    if ((current[count1] < 0) && (current[count1] > -0.5))
 			 current[count1] *= (-1.0);			
     #ifdef DEBUG_LOGGING
-		    printf("current: %f\n", current[count1]);
+//		    printf("current: %f\n", current[count1]);
     #endif
 		    token = strtok(NULL, space);	
 		}
@@ -1164,13 +1164,13 @@ if (payload == ON)
 		
     #ifdef DEBUG_LOGGING	    	    
 //	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
-
+/*
 	  printf("Parities ");
-//		for (int m = 0; m < PARITY_LEN; m++) {
 		for (int m = 0; m < parityLen; m++) {
 		 	printf("%d ", parities[0][m]);
 		}
 		printf("\n");
+*/		
      #endif
 	  
   	int ctr2 = 0;    
