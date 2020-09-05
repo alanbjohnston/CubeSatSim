@@ -666,8 +666,10 @@ while (loop-- != 0)
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
 //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
-    samplePeriod = 3000;
-    sleepTime = 3.0;
+//    samplePeriod = 3000;
+//    sleepTime = 3.0;
+    samplePeriod = 1000;  // reduce dut to python and sensor querying delays
+    sleepTime = 1.0;
 
     printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
 	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
@@ -1091,16 +1093,6 @@ int get_tlm_fox() {
   {
 
 if (firstTime != ON)
-/* 
-{//  digitalWrite (3, HIGH);	
-  if (mode == BPSK)
-	sleep(3); 
- // sleep(3.5); 
-//  digitalWrite (3, LOW);	
-}
-	  
-  if (mode == FSK)
-*/
  {
 // delay for sample period
   digitalWrite (txLed, txLedOn);
