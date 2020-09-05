@@ -3,12 +3,12 @@
  *
  */
 
-//#include <fcntl.h>                              
+#include <fcntl.h>                              
 #include <stdlib.h>
 #include <stdio.h>
-//#include <unistd.h>
+#include <unistd.h>
 #include <string.h>
-#include "status.h"
+//#include "status.h"
 //#include "ax5043.h"
 //#include "ax25.h"
 //#include "spi/ax5043spi.h"
