@@ -442,13 +442,14 @@ int main(int argc, char *argv[]) {
 //	        count, reading[count].voltage, reading[count].current, reading[count].power); 
 //  }	
   printf("\n");
-  
+
+	
 //  sensorV = config_sensor("/dev/i2c-1", 0x40, 400);
 //  readingV = read_sensor_data(sensorV);
-  printf("+X  | sensor[%d] % 4.2fV % 6.1fmA  % 6.1fmW \n", 
+  printf("+X  | sensor[%d] % 4.2fV % 6.1fmA \n", 
 //	        PLUS_X, readingV.voltage, readingV.current, readingV.power);
-	        PLUS_X, reading[PLUS_X].voltage, reading[PLUS_X].current, reading[PLUS_X].power);
-	
+	        PLUS_X, voltage[map[PLUS_X]], current[mapPLUS_X]]);
+/*	
 //  sensorV  = config_sensor("/dev/i2c-1", 0x41, 400);
 //  readingV = read_sensor_data(sensorV);
   printf("+Y  | sensor[%d] % 4.2fV % 6.1fmA  % 6.1fmW \n", 
@@ -490,7 +491,7 @@ int main(int argc, char *argv[]) {
   printf("Bus | sensor[%d] % 4.2fV % 6.1fmA  % 6.1fmW \n", 
 //	        BUS, readingV.voltage, readingV.current, readingV.power);
 	        BUS, reading[BUS].voltage, reading[BUS].current, reading[BUS].power);
-		
+*/		
   printf("\n\n");
 
   return 0;
