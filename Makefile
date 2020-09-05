@@ -1,13 +1,11 @@
 all: DEBUG_BEHAVIOR=
 all: libax5043.a
 all: radioafsk 
-all: radiocw 
 all: telem
 
 debug: DEBUG_BEHAVIOR = -DDEBUG_LOGGING
 debug: libax5043.a
 debug: radioafsk
-debug: radiocw
 debug: telem
 
 rebuild: clean
@@ -17,7 +15,6 @@ lib: libax5043.a
 
 clean:
 	rm -f radiochat	
-	rm -f radiocw
 	rm -f radiopiglatin
 	rm -f testax5043rx
 	rm -f testax5043tx
@@ -54,13 +51,6 @@ libax5043.a: ax5043/spi/ax5043spi.o
 radiochat: libax5043.a
 radiochat: chat/chat_main.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radiochat -pthread -L./ chat/chat_main.o -lwiringPi -lax5043
-
-radiocw: libax5043.a
-radiocw: cw/cw_main.o
-radiocw: afsk/ax25.o
-radiocw: afsk/ax5043.o
-radiocw: afsk/send_afsk.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radiocw -L./ afsk/ax25.o afsk/ax5043.o afsk/send_afsk.o cw/cw_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
@@ -240,13 +230,6 @@ afsk/main.o: ax5043/spi/ax5043spi.h
 
 afsk/telem.o: afsk/telem.c
 	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c telem.c; cd ..
-
-afsk/send_afsk.o: afsk/send_afsk.c
-afsk/send_afsk.o: afsk/send_afsk.h
-afsk/send_afsk.o: afsk/status.h
-afsk/send_afsk.o: afsk/ax5043.h
-afsk/send_afsk.o: afsk/ax25.h
-	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -pedantic -Wconversion -Wall -Wextra -c send_afsk.c; cd ..
 
 cw/cw_main.o: cw/cw_main.c
 cw/cw_main.o: ax5043/spi/ax5043spi.h
