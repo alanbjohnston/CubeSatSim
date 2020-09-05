@@ -575,6 +575,7 @@ for (int j = 0; j < frameCnt; j++)
     token = strtok(cmdbuffer, space);
 
     float voltage[9], current[9];	
+	
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));	 
 	  
@@ -909,7 +910,7 @@ if (firstTime != ON)
 	    {
 	        voltage[count1] = atof(token);				      
     #ifdef DEBUG_LOGGING
-		printf("voltage: %f ", voltage[count1]);
+//		printf("voltage: %f ", voltage[count1]);
     #endif
 		token = strtok(NULL, space);	
 	    	if (token != NULL)
@@ -918,7 +919,7 @@ if (firstTime != ON)
 		    if ((current[count1] < 0) && (current[count1] > -0.5))
 			 current[count1] *= (-1.0);     
      #ifdef DEBUG_LOGGING
-		 printf("current: %f\n", current[count1]);
+//		 printf("current: %f\n", current[count1]);
      #endif
 		    token = strtok(NULL, space);	
 		}
