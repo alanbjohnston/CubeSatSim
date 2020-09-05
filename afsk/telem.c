@@ -12,8 +12,8 @@
 //#include "ax5043.h"
 //#include "ax25.h"
 //#include "spi/ax5043spi.h"
-//#include <wiringPiI2C.h>
-//#include <wiringPi.h>
+#include <wiringPiI2C.h>
+#include <wiringPi.h>
 //#include <time.h>
 //#include <math.h>
 //#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
