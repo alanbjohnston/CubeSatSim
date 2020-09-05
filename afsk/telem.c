@@ -448,7 +448,7 @@ int main(int argc, char *argv[]) {
 //  readingV = read_sensor_data(sensorV);
   printf("+X  | sensor[%d] % 4.2fV % 6.1fmA \n", 
 //	        PLUS_X, readingV.voltage, readingV.current, readingV.power);
-	        PLUS_X, voltage[map[PLUS_X]], current[mapPLUS_X]]);
+	        PLUS_X, voltage[map[PLUS_X]], current[map[PLUS_X]]);
 /*	
 //  sensorV  = config_sensor("/dev/i2c-1", 0x41, 400);
 //  readingV = read_sensor_data(sensorV);
