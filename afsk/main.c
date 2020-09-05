@@ -668,8 +668,8 @@ while (loop-- != 0)
 //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
 //    samplePeriod = 3000;
 //    sleepTime = 3.0;
-    samplePeriod = 2000;  // reduce dut to python and sensor querying delays
-    sleepTime = 2.0;
+    samplePeriod = 2500;  // reduce dut to python and sensor querying delays
+    sleepTime = 2.5;
 
     printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
 	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
