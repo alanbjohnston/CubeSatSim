@@ -1129,16 +1129,12 @@ if (payload == ON)
 	  
 	int ctr1 = 0;
 	int ctr3 = 0;
-//	for (i = 0; i < RS_FRAME_LEN; i++) 
 	for (i = 0; i < rsFrameLen; i++) 
 	{
-//        for (int j  = 0; j < RS_FRAMES ; j++)
         for (int j  = 0; j < rsFrames ; j++)
 		{
-//			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
 			if (!((i == (rsFrameLen - 1)) && (j == 2))) // skip last one for BPSK
 			{
-//				if (ctr1 < HEADER_LEN)
 				if (ctr1 < headerLen)
 				{
              				rs_frame[j][i] = h[ctr1];
@@ -1149,9 +1145,7 @@ if (payload == ON)
 				}
 				else
 				{
-//             				rs_frame[j][i] = b[ctr3 % DATA_LEN];
              				rs_frame[j][i] = b[ctr3 % dataLen];
-//		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
 		     			update_rs(parities[j], b[ctr3 % dataLen]);
           //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
           //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
@@ -1177,8 +1171,6 @@ if (payload == ON)
   	int ctr2 = 0;    
  	memset(data10,0,sizeof(data10));  
 	
- 
-//    for (i = 0; i < DATA_LEN * PAYLOADS + HEADER_LEN; i++) // 476 for BPSK
     for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
 	{
 				data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
@@ -1189,10 +1181,8 @@ if (payload == ON)
 				rd = nrd; // ^ nrd;
 				ctr2++;
 	}
-//    for (i = 0; i < PARITY_LEN; i++) 
     for (i = 0; i < parityLen; i++) 
 	{
-//		for (int j  = 0; j < RS_FRAMES; j++)
 		for (int j  = 0; j < rsFrames; j++)
 		{
 			data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
@@ -1215,14 +1205,11 @@ if (payload == ON)
 //	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
     #endif
 	  
-// 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
 		write_wave(ctr, buffer);	
 //		printf("%d ",ctr);
-//		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
-//  			int bit = SYNC_BITS - i/SAMPLES + 1;
   			int bit = syncBits - i/samples + 1;
   			val = sync;
 			data = val & 1 << (bit - 1);	
@@ -1251,14 +1238,10 @@ if (payload == ON)
 //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
     #endif
 	  for (i = 1; 
-//	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
 		write_wave(ctr, buffer);
-//		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
-//			int symbol = (int)((i - 1)/ (SAMPLES * 10));
-//			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
 			int symbol = (int)((i - 1)/ (samples * 10));
 			int bit = 10 - (i - symbol * samples * 10) / samples + 1;	
 			val = data10[symbol];
@@ -1342,15 +1325,14 @@ if (payload == ON)
 //	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis()-start);
 	start = millis();
-//	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
 	printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
-       		printf("Resending\n");
+	       	printf("Not resending\n");
 //	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
-       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
+//       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
 	}
 
 	if (sock_ret == -1)  {
