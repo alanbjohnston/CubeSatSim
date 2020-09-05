@@ -2,6 +2,8 @@
 
 echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
+sleep 10
+
 sudo systemctl restart rpitx
 
 if [ "$1" = "a" ]; then

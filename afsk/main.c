@@ -1,5 +1,5 @@
 /*
- *  Transmits CubeSat Telemetry at 434.9MHz in AO-7 format
+ *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, or BPSK format
  *
  *  Copyright Alan B. Johnston
  *
@@ -17,9 +17,6 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire code
- *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
 #include <fcntl.h>                              
@@ -36,8 +33,7 @@
 #include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
-#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
-#include "make_wav.h"
+#include "TelemEncoding.h"
 #include <sys/socket.h> 
 #include <stdlib.h> 
 #include <netinet/in.h> 
@@ -54,12 +50,13 @@
 
 #define PLUS_X 0
 #define PLUS_Y 1
-#define PLUS_Z 2
-#define BAT 3
+#define BAT 2
+#define BUS 3
 #define MINUS_X 4
 #define MINUS_Y 5
-#define MINUS_Z 6
-#define BUS 7
+#define PLUS_Z 6
+#define MINUS_Z 7
+
 #define OFF -1
 #define ON 1
 
@@ -111,11 +108,6 @@ void write_to_buffer(int i, int symbol, int val);
 void write_wave(int i, short int *buffer);
   int uart_fd;
 
-//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
-//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
-//short int buffer[BUF_LEN];
-//short int data10[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
-//short int data8[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
 int reset_count;
 float uptime_sec;
 long int uptime;
@@ -126,139 +118,11 @@ float sleepTime;
 int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float batteryThreshold = 0;
+float batteryThreshold = 3.0, batteryVoltage;
 
-struct SensorConfig {
-    int fd;
-    uint16_t  config;
-    int calValue;    
-    int powerMultiplier;
-    int currentDivider;
-};
-
-struct SensorData {
-    double current;
-    double voltage;
-    double power;
-};
-
-/**
- * @brief Read the data from one of the i2c current sensors.
- *
- * Reads the current data from the requested i2c current sensor configuration and
- * stores it into a SensorData struct. An invalid file descriptor (i.e. less than zero)
- * results in a SensorData struct being returned that has both its #current and #power members
- * set to NAN.
- *
- * @param sensor A structure containing sensor configuration including the file descriptor.
- * @return struct SensorData A struct that contains the current, voltage, and power readings
- * from the requested sensor.
- */
-struct SensorData read_sensor_data(struct SensorConfig sensor) {
-    struct SensorData data = {
-        .current = 0,
-        .voltage = 0,
-        .power = 0    };
-
-    if (sensor.fd < 0) {
-        return data;
-    }
-    // doesn't read negative currents accurately, shows -0.1mA	
-    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
-    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CONFIG, sensor.config);	
-    wiringPiI2CWriteReg16(sensor.fd, INA219_REG_CALIBRATION, sensor.calValue);
-    sleep(0.01);
-    int value  = wiringPiI2CReadReg16(sensor.fd, INA219_REG_CURRENT);
-    if (value == -1)
-    {
-	sensor.fd = -1;
-	return data;
-    }
-    data.current  = (float) twosToInt(value, 16) / (float) sensor.currentDivider;
-	
-    wiringPiI2CWrite(sensor.fd, INA219_REG_BUSVOLTAGE);
-    delay(1); // Max 12-bit conversion time is 586us per sample
-    value = (wiringPiI2CRead(sensor.fd) << 8 ) | wiringPiI2CRead (sensor.fd);	
-    data.voltage  =  ((float)(value >> 3) * 4) / 1000;	
-    // power has very low resolution, seems to step in 512mW values	
-    data.power   = (float) wiringPiI2CReadReg16(sensor.fd, INA219_REG_POWER) * (float) sensor.powerMultiplier;
- 	
-    return data;
-}
-
-/**
- * @brief Configures an i2c current sensor.
- *
- * Calculates the configuration values of the i2c sensor so that
- * current, voltage, and power can be read using read_sensor_data.
- * Supports 16V 400mA and 16V 2.0A settings.
- *
- * @param sensor A file descriptor that can be used to read from the sensor.
- * @param milliAmps The mA configuration, either 400mA or 2A are supported.
- * @return struct SensorConfig A struct that contains the configuraton of the sensor.
- */
-//struct SensorConfig config_sensor(int sensor, int milliAmps) {
-struct SensorConfig config_sensor(char *bus, int address,  int milliAmps) {
-    struct SensorConfig data;
-	
-    if (access(bus, W_OK | R_OK) < 0)  {   // Test if I2C Bus is missing 
-	    printf("ERROR: %s bus not present\n  Check raspi-config Interfacing Options/I2C and /boot/config.txt  \n", bus);
-	    data.fd = OFF;
-	    return (data);
-    }
-    char result[128];	
-    int pos = strlen(bus) / sizeof(bus[0]) - 1;	
- //    printf("Bus size %d \n", pos);	
- //    printf("Bus value %d \n", atoi(&bus[pos]));	
-    char command[50] = "timeout 10 i2cdetect -y ";	
-    strcat (command, &bus[pos]);	
-    FILE *i2cdetect = popen(command, "r");	
- 		
-    while (fgets(result, 128, i2cdetect) != NULL) {	
- 	;	
- //        printf("result: %s", result);	
- 	    }	
- 		
-    int error = pclose(i2cdetect)/256;	
-	
- //    printf("%s error: %d \n", &command, error);	
-    if (error != 0)	
-    {	
- 	printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);	
- 	data.fd = OFF;	
- 	return (data);	
-    }
-	
-    data.fd = wiringPiI2CSetupInterface(bus, address);	
-	
-    data.config = INA219_CONFIG_BVOLTAGERANGE_32V |
-                  INA219_CONFIG_GAIN_1_40MV | 
-                  INA219_CONFIG_BADCRES_12BIT |
-                  INA219_CONFIG_SADCRES_12BIT_1S_532US |
-                  INA219_CONFIG_MODE_SANDBVOLT_CONTINUOUS;
-		 
-    if (milliAmps == 400) {	// INA219 16V 400mA configuration
-      data.calValue = 8192;    
-      data.powerMultiplier = 1; 
-      data.currentDivider = 20;  // 40; in Adafruit config
-    }
-    else  {                     // INA219 16V 2A configuration
-      data.calValue = 40960;    
-      data.powerMultiplier = 2;  
-      data.currentDivider = 10;  // 20; in Adafruit config
-    }	
-	
-    #ifdef DEBUG_LOGGING
-	printf("Sensor %s %x configuration: %d %d %d %d %d\n", bus, address, data.fd,
-	       data.config, data.calValue, data.currentDivider, data.powerMultiplier); 
-    #endif	
-    return data;
-}
-
-struct SensorConfig sensor[8];   // 8 current sensors in Solar Power PCB vB4/5
-struct SensorData reading[8];   // 8 current sensors in Solar Power PCB vB4/5
-struct SensorConfig tempSensor; 
-
+const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
+char pythonStr[100], pythonConfigStr[100], busStr[10];
+int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 
@@ -396,7 +260,6 @@ int main(int argc, char *argv[]) {
 	  onLed = 0;
           onLedOn = HIGH;
 	  onLedOff = LOW;
-	  batteryThreshold = 3.0;
 	  transmit = TRUE;
   	}
 	else
@@ -414,10 +277,9 @@ int main(int argc, char *argv[]) {
 	  		onLed = 27;
           		onLedOn = HIGH;
 	  		onLedOff = LOW;
-	  		batteryThreshold = 3.0;
 	  		transmit = TRUE;
 		}
-	}
+	  }
     }
   }	
   pinMode (txLed, OUTPUT);
@@ -431,9 +293,6 @@ int main(int argc, char *argv[]) {
 	printf("Power LED On\n");
   #endif
 	
-//    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
-//      mode = (reset_count) % 3;  // alternate between the three modes	
-	
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
@@ -441,47 +300,41 @@ int main(int argc, char *argv[]) {
 		
 if (vB4)
 {	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
-  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x44, 400);
-  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
-  sensor[PLUS_Z]  = config_sensor("/dev/i2c-0", 0x40, 400);
-  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x41, 400);
-  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x44, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x45, 400); 
+  map[BAT] = BUS;
+  map[BUS] = BAT;
+  strcpy(busStr,"1 0");
 }	
 else if (vB5)
 {	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
-  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  sensor[BUS]  	  = config_sensor("/dev/i2c-1", 0x45, 400);
-  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x44, 400);
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
-  	sensor[PLUS_Z]  = config_sensor("/dev/i2c-11", 0x40, 400);
-  	sensor[MINUS_X] = config_sensor("/dev/i2c-11", 0x41, 400);
-  	sensor[MINUS_Y] = config_sensor("/dev/i2c-11", 0x44, 400);
-  	sensor[MINUS_Z] = config_sensor("/dev/i2c-11", 0x45, 400); 
+	strcpy(busStr,"1 11");
   } else {
-  	sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
-  	sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
-  	sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
-  	sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400); 
+	strcpy(busStr,"1 3");
   }
 } 
 else
 {	
-  sensor[PLUS_X]  = config_sensor("/dev/i2c-1", 0x40, 400); 
-  sensor[PLUS_Y]  = config_sensor("/dev/i2c-1", 0x41, 400);
-  sensor[PLUS_Z]  = config_sensor("/dev/i2c-1", 0x44, 400);
-  sensor[BAT]     = config_sensor("/dev/i2c-1", 0x45, 400);
-  sensor[BUS]     = config_sensor("/dev/i2c-1", 0x4a, 2000);
-  sensor[MINUS_X] = config_sensor("/dev/i2c-0", 0x40, 400);
-  sensor[MINUS_Y] = config_sensor("/dev/i2c-0", 0x41, 400);
-  sensor[MINUS_Z] = config_sensor("/dev/i2c-0", 0x44, 400);
-  tempSensor 	  = config_sensor("/dev/i2c-3", 0x48, 0);  
+  map[BUS] = MINUS_Z;
+  map[BAT] = BUS;
+  map[PLUS_Z] = BAT;
+  map[MINUS_Z] = PLUS_Z;
+  strcpy(busStr,"1 0");
+  batteryThreshold = 8.0;
  }
 
+   strcpy(pythonStr, pythonCmd);
+   strcat(pythonStr, busStr);
+   strcat(pythonConfigStr, pythonStr);
+   strcat(pythonConfigStr, " c");
+	
+//   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
+   FILE* file1 = popen(pythonConfigStr, "r");
+   char cmdbuffer[1000];
+   fgets(cmdbuffer, 1000, file1);
+//   printf("pythonStr result: %s\n", cmdbuffer);
+   pclose(file1);	
+	
 // try connecting to Arduino payload using UART
 
  if (!ax5043)  // don't test if AX5043 is present
@@ -530,56 +383,22 @@ else
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
-	
+
   if (mode == AFSK)
 	  sleep(10); // delay awaiting CW ID completion
-/*	
+	
    if (transmit == FALSE)
    {
 	   
 	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
-	
-// Send ID in CW (Morse Code)
-cw_id = OFF;
-if (cw_id == ON)	// Don't send CW if using AX5043 or in mode cycling or set by 3rd argument 
-{
-  char cw_str[200];
-  char cw_header[] = "echo 'de ";
-  char cw_footer[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
 
-  strcpy(cw_str, cw_header);
-//printf("Before 1st strcpy\n");
-  strcat(cw_str, call);
-//printf("Before 1st strcpy\n");
-  strcat(cw_str, cw_footer);
-//printf("Before 1st strcpy\n");
-  digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-//printf("Before cmd\n");
-//printf("CW String: %s\n", cw_str);
-//	FILE* f;
-	system(cw_str);
-//	printf("File %d \n", f);
-//  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
-printf("After command\n");
-//  sleep(7);
-//printf("Before Write\n");
-  digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-//printf("After Write\n");
-}
-//printf("Done CW!\n");
-*/	
+	
 while (loop-- != 0)
   {
    frames_sent++;
-   float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
+
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
    #endif	 
@@ -636,8 +455,10 @@ while (loop-- != 0)
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
 //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
-    samplePeriod = 3000;
-    sleepTime = 3.0;
+//    samplePeriod = 3000;
+//    sleepTime = 3.0;
+    samplePeriod = 2200;  // reduce dut to python and sensor querying delays
+    sleepTime = 2.2;
 
     printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
 	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
@@ -683,21 +504,7 @@ while (loop-- != 0)
 	sleep(loop_count);
 	printf("Done sleeping\n");
   }
-/*	
-//  int transmit = popen("timeout 1 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3","r");
-  int txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r");
-  pclose(txResult);
-  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r"); 
-  pclose(txResult);
-  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r"); 
-  pclose(txResult);
 	
-  if(cw_id == ON) // only turn off Power LED if CW ID is enabled (i.e. not demo.sh mode cycling)
-      digitalWrite (onLed, onLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
-*/	
   return 0;
 }
 
@@ -754,44 +561,60 @@ for (int j = 0; j < frameCnt; j++)
   memset(tlm, 0, sizeof tlm);
 	
 //  Reading I2C voltage and current sensors
-  int count;
-  for (count = 0; count < 8; count++)
-  {
-    reading[count] = read_sensor_data(sensor[count]);	
-    #ifdef DEBUG_LOGGING
-//      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-//	        count, reading[count].voltage, reading[count].current, reading[count].power); 
-    #endif
-  }
-	    
-  tlm[1][A] = (int)(reading[BUS].voltage /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
-  tlm[1][B] = (int) (99.5 - reading[PLUS_X].current/10.0) % 100;  // +X current [4]
-  tlm[1][C] = (int) (99.5 - reading[MINUS_X].current/10.0) % 100;  			// X- current [10] 
-  tlm[1][D] = (int) (99.5 - reading[PLUS_Y].current/10.0) % 100;  // +Y current [7]
-
-  tlm[2][A] = (int) (99.5 - reading[MINUS_Y].current/10.0) % 100;  			// -Y current [10] 
-  tlm[2][B] = (int) (99.5 - reading[PLUS_Z].current/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-  tlm[2][C] = (int) (99.5 - reading[MINUS_Z].current/10.0) % 100;  			// -Z current (was timestamp)
-  tlm[2][D] = (int)(50.5 + reading[BAT].current/10.0) % 100;   // NiMH Battery current
 	
-  tlm[3][A] = abs((int)((reading[BAT].voltage * 10.0) - 65.5) % 100);
-  tlm[3][B] = (int)(reading[BUS].voltage * 10.0) % 100;      // 5V supply to Pi
+   int count1;
+   char *token;
+   char cmdbuffer[1000];
+	
+     FILE* file = popen(pythonStr, "r");
+     fgets(cmdbuffer, 1000, file);
+//   printf("result: %s\n", cmdbuffer);
+     pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(cmdbuffer, space);
 
-  if (ax5043)
-  {
-   if (tempSensor.fd != OFF) {
-    int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
-    uint8_t upper = (uint8_t) (tempValue >> 8);
-    uint8_t lower = (uint8_t) (tempValue & 0xff);
-    float temp = (float)lower + ((float)upper / 0x100);
+    float voltage[9], current[9];	
+    memset(voltage, 0, sizeof(voltage));
+    memset(current, 0, sizeof(current));	 
 	  
+    for (count1 = 0; count1 < 8; count1++)
+    {
+	    if (token != NULL)
+	    {
+	        voltage[count1] = atof(token);				      
     #ifdef DEBUG_LOGGING
-      printf("Temp Sensor Read: %6.1f\n", temp);
+		 printf("voltage: %f ", voltage[count1]);
     #endif
-	  
-    tlm[4][A] = (int)((95.8 - temp)/1.48 + 0.5) % 100;
-   }
-  } 
+		token = strtok(NULL, space);	
+	    	if (token != NULL)
+	    	{
+	            current[count1] = atof(token);
+		    if ((current[count1] < 0) && (current[count1] > -0.5))
+			 current[count1] *= (-1.0);			
+    #ifdef DEBUG_LOGGING
+		    printf("current: %f\n", current[count1]);
+    #endif
+		    token = strtok(NULL, space);	
+		}
+	  }
+    }		
+	    
+  tlm[1][A] = (int)(voltage[map[BUS]] /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
+  tlm[1][B] = (int) (99.5 - current[map[PLUS_X]]/10.0) % 100;  // +X current [4]
+  tlm[1][C] = (int) (99.5 - current[map[MINUS_X]]/10.0) % 100;  			// X- current [10] 
+  tlm[1][D] = (int) (99.5 - current[map[PLUS_Y]]/10.0) % 100;  // +Y current [7]
+
+  tlm[2][A] = (int) (99.5 - current[map[MINUS_Y]]/10.0) % 100;  			// -Y current [10] 
+  tlm[2][B] = (int) (99.5 - current[map[PLUS_Z]]/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+  tlm[2][C] = (int) (99.5 - current[map[MINUS_Z]]/10.0) % 100;  			// -Z current (was timestamp)
+  tlm[2][D] = (int)(50.5 + current[map[BAT]]/10.0) % 100;   // NiMH Battery current
+	
+  tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
+  tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100;      // 5V supply to Pi
+
+  batteryVoltage = voltage[map[BAT]];
+	
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -913,23 +736,12 @@ if (payload == ON)
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-//printf("Before cmd\n");
-//printf("CW telem String: %s\n", cw_str2);
-//	FILE* f;
-    if (mode == CW)
+  if (mode == CW)
 	system(cw_str2);
-//	printf("File %d \n", f);
-//  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
-//printf("After command\n");
-//  sleep(7);
-//printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-//printf("After Write\n");
-//}
-//printf("Done CW!\n");
 	
   if (ax5043)
   {
@@ -986,24 +798,18 @@ if (payload == ON)
 	printf("Tx LED On\n");
   #endif
   }
-	
-  //digitalWrite (txLed, txLedOff);
  
-   }
+}
 	
-//printf("End of get_tlm and rpitx =========================================================\n");
-
-   digitalWrite (txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
+digitalWrite (txLed, txLedOff);
+#ifdef DEBUG_LOGGING
+printf("Tx LED Off\n");
+#endif
 
 return;
 }
 
 int get_tlm_fox() {
-
-//   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
 	
@@ -1061,16 +867,6 @@ int get_tlm_fox() {
   {
 
 if (firstTime != ON)
-/* 
-{//  digitalWrite (3, HIGH);	
-  if (mode == BPSK)
-	sleep(3); 
- // sleep(3.5); 
-//  digitalWrite (3, LOW);	
-}
-	  
-  if (mode == FSK)
-*/
  {
 // delay for sample period
   digitalWrite (txLed, txLedOn);
@@ -1090,31 +886,47 @@ if (firstTime != ON)
     sampleTime = millis();
   }  else
 	printf("first time - no sleep\n");
-	
-    int count;
-    for (count = 0; count < 8; count++)
-    {
-      reading[count] = read_sensor_data(sensor[count]);	
-    #ifdef DEBUG_LOGGING
-//      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
-//	        count, reading[count].voltage, reading[count].current, reading[count].power); 
-    #endif
-    }
-/*
-    if (tempSensor.fd != OFF) {
-      int tempValue = wiringPiI2CReadReg16(tempSensor.fd, 0); 
-      uint8_t upper = (uint8_t) (tempValue >> 8);
-      uint8_t lower = (uint8_t) (tempValue & 0xff);
-      float temp = (float)lower + ((float)upper / 0x100);
-	  
-    #ifdef DEBUG_LOGGING
-      printf("Temp Sensor Read: %6.1f\n", temp);
-    #endif
 
-      TxTemp = (int)((temp * 10.0) + 0.5);
-      encodeB(b, 34 + head_offset,  TxTemp);
-  }
-*/  
+   int count1;
+   char *token;
+   char cmdbuffer[1000];
+	
+    FILE* file = popen(pythonStr, "r");
+    fgets(cmdbuffer, 1000, file);
+//  printf("result: %s\n", cmdbuffer);
+    pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(cmdbuffer, space);
+
+    float voltage[9], current[9];	
+    memset(voltage, 0, sizeof(voltage));
+    memset(current, 0, sizeof(current));	 
+	  
+    for (count1 = 0; count1 < 8; count1++)
+  	{
+	    if (token != NULL)
+	    {
+	        voltage[count1] = atof(token);				      
+    #ifdef DEBUG_LOGGING
+		printf("voltage: %f ", voltage[count1]);
+    #endif
+		token = strtok(NULL, space);	
+	    	if (token != NULL)
+	    	{
+	            current[count1] = atof(token);
+		    if ((current[count1] < 0) && (current[count1] > -0.5))
+			 current[count1] *= (-1.0);     
+     #ifdef DEBUG_LOGGING
+		 printf("current: %f\n", current[count1]);
+     #endif
+		    token = strtok(NULL, space);	
+		}
+	    }
+  	}	  
+	  
+//	 printf("\n"); 
+ 
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -1156,25 +968,27 @@ if (firstTime != ON)
     if (mode == BPSK)
       h[6] = 99;
 	  
-//  posXv = reading[PLUS_X].current;
-  posXi = (int)reading[PLUS_X].current + 2048;
-  posYi = (int)reading[PLUS_Y].current + 2048;
-  posZi = (int)reading[PLUS_Z].current + 2048;
-  negXi = (int)reading[MINUS_X].current + 2048;
-  negYi = (int)reading[MINUS_Y].current + 2048;
-  negZi = (int)reading[MINUS_Z].current + 2048;
+  posXi = (int)current[map[PLUS_X]] + 2048;
+  posYi = (int)current[map[PLUS_Y]] + 2048;
+  posZi = (int)current[map[PLUS_Z]] + 2048;
+  negXi = (int)current[map[MINUS_X]] + 2048;
+  negYi = (int)current[map[MINUS_Y]] + 2048;
+  negZi = (int)current[map[MINUS_Z]] + 2048;
 
-  posXv = (int)(reading[PLUS_X].voltage * 100);
-  posYv = (int)(reading[PLUS_Y].voltage* 100);
-  posZv = (int)(reading[PLUS_Z].voltage * 100);
-  negXv = (int)(reading[MINUS_X].voltage * 100);
-  negYv = (int)(reading[MINUS_Y].voltage * 100);
-  negZv = (int)(reading[MINUS_Z].voltage * 100);
+  posXv = (int)(voltage[map[PLUS_X]] * 100);
+  posYv = (int)(voltage[map[PLUS_Y]] * 100);
+  posZv = (int)(voltage[map[PLUS_Z]] * 100);
+  negXv = (int)(voltage[map[MINUS_X]] * 100);
+  negYv = (int)(voltage[map[MINUS_Y]] * 100);
+  negZv = (int)(voltage[map[MINUS_Z]] * 100);
+  batt_c_v = (int)(voltage[map[BAT]] * 100);
+  battCurr = (int)current[map[BAT]] + 2048;
+  PSUVoltage = (int)(voltage[map[BUS]] * 100);
+  PSUCurrent = (int)current[map[BUS]] + 2048;	  
+  if (payload == ON)
+	  STEMBoardFailure = 0;
 	  
-  batt_c_v = (int)(reading[BAT].voltage * 100);
-  battCurr = (int)reading[BAT].current + 2048;
-  PSUVoltage = (int)(reading[BUS].voltage * 100);
-  PSUCurrent = (int)reading[BUS].current + 2048;
+  batteryVoltage = voltage[map[BAT]];
 	  
 //  if (payload == ON)
 //	  STEMBoardFailure = 0;
@@ -1477,64 +1291,11 @@ if (payload == ON)
 
   int error = 0;
   int count;
-//  for (count = 0; count < DATA_LEN; count++) {
 //  for (count = 0; count < dataLen; count++) {
 //      printf("%02X", b[count]);
 //  }
 //  printf("\n");
 		
-// rpitx
-/*	
-      char cmdbuffer[1000];
-      FILE* txResult;
-      if ((rpitxStatus != mode)) //  || ((loop % 1000) == 0))
-	      
-      {  // change rpitx mode
-	  rpitxStatus = mode;    
-	  printf("Changing rpitx mode!\n");
-//     	  txResult = popen("ps -ef | grep rpitx | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  txResult = popen("sudo killall -9 rpitx > /dev/null 2>&1", "r"); 
-	  pclose(txResult);   
-//	  printf("1\n");
-//          sleep(1);
-//     	  txResult = popen("ps -ef | grep sendiq | grep -v grep | awk '{print $2}' | sudo xargs kill -9 > /dev/null 2>&1", "r"); 
-      	  txResult = popen("sudo killall -9 sendiq > /dev/null 2>&1", "r");
-	  pclose(txResult);
-//	  printf("2\n");
-//  digitalWrite (txLed, txLedOn);
-	      sleep(1);
-	  txResult = popen("sudo fuser -k 8080/tcp > /dev/null 2>&1", "r");
-	  pclose(txResult);
-	  socket_open = 0;
-	      
-//	  printf("3\n");
-          sleep(1);
-//  digitalWrite (txLed, txLedOff);
-
-	  if (transmit)
-	  {
-	    if (mode == FSK)  {  
-      	 // 	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.896e3&", "r"); 
-      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | while true; do sudo timeout -k 1 60m /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3; done &", "r"); 
-  		pclose(txResult);
-	//	  	printf("4\n");
-           } else if (mode == BPSK) {
-//      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/CubeSatSim/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8925e6 -t float 2>&1&", "r"); 
-      	  	txResult = popen("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | while true; do sudo timeout -k 1 60m /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.8945e6 -t float 2>&1; done &", "r"); 
-           	pclose(txResult);           }
-//      fgets(cmdbuffer, 1000, txResult);
-
-	  }
-	  else
-          {
-	     fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-	     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-          }
-      sleep(2);
-//      printf("Results of transmit command: %s\n", cmdbuffer);
-      }
-*/
-	
 // socket write
 
   if (!socket_open && transmit)

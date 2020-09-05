@@ -58,6 +58,14 @@ Remove the following text in cmdline.txt to prevent a console from running on th
 
 Press Ctrl-X then type `y` then hit Enter to save the file and exit the editor. You should back at the pi@... prompt.
 
+Now install the python packages:
+
+`sudo apt install -y python3-pip python-smbus`
+
+`sudo pip3 install --upgrade setuptools`
+
+`sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219` 
+
 Reboot by typing:
 
 `sudo reboot now`
@@ -160,7 +168,7 @@ Press and release after two blinks of green LED: switches to FSK mode. After abo
 
 Press and release after three blinks of green LED: switches to BPSK mode. After about 5 seconds, the telemetry mode will switch to BPSK.
 
-Press and release after four blinks of green LED: switches to SSTV mode. SSTV images in PD120 mode will be transmitted instead of telemetry.
+Press and release after four blinks of green LED: switches to SSTV mode. After about 5 seconds, the telemetry mode will switch to SSTV transmitting PD120 mode SSTV.
 
 Press and release after green LED begins slow blinking: shuts down CubeSatSim.  
 
