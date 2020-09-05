@@ -142,6 +142,8 @@ int main(int argc, char *argv[]) {
 	    	if (token != NULL)
 	    	{
 	            current[count1] = atof(token);
+		    if ((current[count1] < 0) && (current[count1] > -1))
+			 current[count1] *= (-1.0);
 //    #ifdef DEBUG_LOGGING
 //		    printf("current: %f\n", current[count1]);
 //    #endif
