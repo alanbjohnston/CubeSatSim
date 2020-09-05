@@ -319,11 +319,13 @@ int main(int argc, char *argv[]) {
   	sensor[MINUS_X] = config_sensor("/dev/i2c-11", 0x41, 400);
   	sensor[MINUS_Y] = config_sensor("/dev/i2c-11", 0x44, 400);
   	sensor[MINUS_Z] = config_sensor("/dev/i2c-11", 0x45, 400); */
+	strcpy(busStr,"1 11");
   } else {
  /* 	sensor[PLUS_Z]  = config_sensor("/dev/i2c-3", 0x40, 400);
   	sensor[MINUS_X] = config_sensor("/dev/i2c-3", 0x41, 400);
   	sensor[MINUS_Y] = config_sensor("/dev/i2c-3", 0x44, 400);
   	sensor[MINUS_Z] = config_sensor("/dev/i2c-3", 0x45, 400);  */
+	strcpy(busStr,"1 3");
   }	  
   		}
 		else
