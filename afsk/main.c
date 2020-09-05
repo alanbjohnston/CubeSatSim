@@ -130,7 +130,7 @@ float batteryThreshold = 3.0, batteryVoltage;
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
-int map[9] = { 0, 1, 2, 3, 4, 5, 6, 7, 0x45};
+int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 /*
 struct SensorConfig {
     int fd;
@@ -494,9 +494,6 @@ else
   map[BAT] = BUS;
   map[PLUS_Z] = BAT;
   map[MINUS_Z] = PLUS_Z;
-//  map[4] = MINUS_X;
-//  map[5] = BUS;
-  map[8] = 0x4a;  // 
   strcpy(busStr,"1 0");
   batteryThreshold = 8.0;
  }
