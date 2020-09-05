@@ -8,20 +8,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-//#include "status.h"
-//#include "ax5043.h"
-//#include "ax25.h"
-//#include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
-//#include <time.h>
-//#include <math.h>
-//#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
-
-#define A 1
-#define B 2
-#define C 3
-#define D 4
 
 #define PLUS_X 0
 #define PLUS_Y 1
