@@ -168,35 +168,14 @@ int main(int argc, char *argv[]) {
     }	
   printf("\n");
 	
-  printf("+X  | % 4.2fV % 6.1fmA \n", voltage[map[PLUS_X]], current[map[PLUS_X]]);
-	
-  printf("+Y  | % 4.2fV % 6.1fmA \n", voltage[map[PLUS_Y]], current[map[PLUS_Y]]);
-	
-  //sensorV  = config_sensor("/dev/i2c-0", 0x40, 400);
-  //readingV = read_sensor_data(sensorV);
-  printf("+Z  | % 4.2fV % 6.1fmA \n", voltage[map[PLUS_Z]], current[map[PLUS_Z]]);
-	
-//  sensorV = config_sensor("/dev/i2c-0", 0x41, 400);
-//  readingV = read_sensor_data(sensorV);
-  printf("-X  |  % 4.2fV % 6.1fmA  \n", voltage[map[MINUS_X]], current[map[MINUS_X]]);
-		
-//  sensorV = config_sensor("/dev/i2c-0", 0x44, 400);
-//  readingV = read_sensor_data(sensorV);
-  printf("-Y  | % 4.2fV % 6.1fmA \n", voltage[map[[MINUS_Y]], current[map[MINUS_Y]]);
-		
-//sensorV = config_sensor("/dev/i2c-0", 0x45, 400); 
-//  readingV = read_sensor_data(sensorV);
-  printf("-Z  | % 4.2fV % 6.1fmA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
-
-//  sensorV     = config_sensor("/dev/i2c-1", 0x45, 400);
-//  readingV = read_sensor_data(sensorV);
-  printf("Bat | % 4.2fV % 6.1fmA  \n", voltage[map[BAT]], current[map[BAT]]);
-		
- // sensorV     = config_sensor("/dev/i2c-1", 0x44, 400);
- // readingV = read_sensor_data(sensorV);
-  printf("Bus |  % 4.2fV % 6.1fmA  \n", voltage[map[BUS]], current[map[BUS]]);
-*/		
-  printf("\n\n");
+  printf("+X  | % 4.2fV % 6.0fmA \n", voltage[map[PLUS_X]], current[map[PLUS_X]]);
+  printf("+Y  | % 4.2fV % 6.0fmA \n", voltage[map[PLUS_Y]], current[map[PLUS_Y]]);
+  printf("+Z  | % 4.2fV % 6.0fmA \n", voltage[map[PLUS_Z]], current[map[PLUS_Z]]);
+  printf("-X  | % 4.2fV % 6.0fmA \n", voltage[map[MINUS_X]], current[map[MINUS_X]]);
+  printf("-Y  | % 4.2fV % 6.0fmA \n", voltage[map[MINUS_Y]], current[map[MINUS_Y]]);
+  printf("-Z  | % 4.2fV % 6.0fmA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
+  printf("Bat | % 4.2fV % 6.0fmA \n", voltage[map[BAT]], current[map[BAT]]);
+  printf("Bus | % 4.2fV % 6.0fmA \n\n", voltage[map[BUS]], current[map[BUS]]);		
 
   return 0;
 }
