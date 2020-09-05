@@ -1,39 +1,22 @@
 /*
- *  Generates telemetry for CubeSat Simulator
+ *  Displays voltage and current sensors for CubeSatSim
  *
- *  Copyright Alan B. Johnston
- *
- *  This program is free software: you can redistribute it and/or modify
- *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
- *  (at your option) any later version.
- *
- *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- *  GNU General Public License for more details.
- *
- *  You should have received a copy of the GNU General Public License
- *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire code
- *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
-#include <fcntl.h>                              
+//#include <fcntl.h>                              
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <string.h>
-#include "status.h"
-#include "ax5043.h"
-#include "ax25.h"
-#include "spi/ax5043spi.h"
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
-#include <time.h>
-#include <math.h>
-#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
+//#include "status.h"
+//#include "ax5043.h"
+//#include "ax25.h"
+//#include "spi/ax5043spi.h"
+//#include <wiringPiI2C.h>
+//#include <wiringPi.h>
+//#include <time.h>
+//#include <math.h>
+//#include "Adafruit_INA219.h" // From Adafruit INA219 library for Arduino
 
 #define A 1
 #define B 2
@@ -168,14 +151,14 @@ int main(int argc, char *argv[]) {
     }	
   printf("\n");
 	
-  printf("+X  | % 4.2fV % 5.0fmA \n", voltage[map[PLUS_X]], current[map[PLUS_X]]);
-  printf("+Y  | % 4.2fV % 5.0fmA \n", voltage[map[PLUS_Y]], current[map[PLUS_Y]]);
-  printf("+Z  | % 4.2fV % 5.0fmA \n", voltage[map[PLUS_Z]], current[map[PLUS_Z]]);
-  printf("-X  | % 4.2fV % 5.0fmA \n", voltage[map[MINUS_X]], current[map[MINUS_X]]);
-  printf("-Y  | % 4.2fV % 5.0fmA \n", voltage[map[MINUS_Y]], current[map[MINUS_Y]]);
-  printf("-Z  | % 4.2fV % 5.0fmA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
-  printf("Bat | % 4.2fV % 5.0fmA \n", voltage[map[BAT]], current[map[BAT]]);
-  printf("Bus | % 4.2fV % 5.0fmA \n\n", voltage[map[BUS]], current[map[BUS]]);		
+  printf("+X  | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_X]], current[map[PLUS_X]]);
+  printf("+Y  | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_Y]], current[map[PLUS_Y]]);
+  printf("+Z  | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_Z]], current[map[PLUS_Z]]);
+  printf("-X  | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_X]], current[map[MINUS_X]]);
+  printf("-Y  | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_Y]], current[map[MINUS_Y]]);
+  printf("-Z  | % 4.2f V % 5.0f mA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
+  printf("Bat | % 4.2f V % 5.0f mA \n", voltage[map[BAT]], current[map[BAT]]);
+  printf("Bus | % 4.2f V % 5.0f mA \n\n", voltage[map[BUS]], current[map[BUS]]);		
 
   return 0;
 }
