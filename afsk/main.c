@@ -1,5 +1,5 @@
 /*
- *  Transmits CubeSat Telemetry at 434.9MHz in AO-7 format
+ *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, or BPSK format
  *
  *  Copyright Alan B. Johnston
  *
@@ -17,9 +17,6 @@
  *
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- *  INA219 Raspberry Pi wiringPi code is based on Adafruit Arduino wire code
- *  from https://github.com/adafruit/Adafruit_INA219.
  */
 
 #include <fcntl.h>                              
@@ -111,11 +108,6 @@ int nrd;
 void write_to_buffer(int i, int symbol, int val);	
 void write_wave(int i, short int *buffer);
 
-//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (8 + 6 * DATA_LEN + 96)) * SAMPLES)     
-//#define BUF_LEN (FRAME_CNT * (SYNC_BITS + 10 * (HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN))) * SAMPLES)    
-//short int buffer[BUF_LEN];
-//short int data10[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)];
-//short int data8[HEADER_LEN + RS_FRAMES * (RS_FRAME_LEN + PARITY_LEN)]; 
 int reset_count;
 float uptime_sec;
 long int uptime;
@@ -287,7 +279,7 @@ int main(int argc, char *argv[]) {
 	  		onLedOff = LOW;
 	  		transmit = TRUE;
 		}
-	}
+	  }
     }
   }	
   pinMode (txLed, OUTPUT);
@@ -300,9 +292,6 @@ int main(int argc, char *argv[]) {
   #ifdef DEBUG_LOGGING
 	printf("Power LED On\n");
   #endif
-	
-//    if ((cycle == ON) && !ax5043)  // don't cycle modes if using AX5043
-//      mode = (reset_count) % 3;  // alternate between the three modes	
 	
     config_file = fopen("sim.cfg","w");
     fprintf(config_file, "%s %d", call, reset_count);
@@ -334,7 +323,7 @@ else
   batteryThreshold = 8.0;
  }
 
-	strcpy(pythonStr, pythonCmd);
+   strcpy(pythonStr, pythonCmd);
    strcat(pythonStr, busStr);
    strcat(pythonConfigStr, pythonStr);
    strcat(pythonConfigStr, " c");
@@ -399,7 +388,6 @@ else
 while (loop-- != 0)
   {
    frames_sent++;
-//   float batteryVoltage = read_sensor_data(sensor[BAT]).voltage;
 
    #ifdef DEBUG_LOGGING
       fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
@@ -568,11 +556,10 @@ for (int j = 0; j < frameCnt; j++)
    char *token;
    char cmdbuffer[1000];
 	
-//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-        FILE* file = popen(pythonStr, "r");
-	fgets(cmdbuffer, 1000, file);
-//	printf("result: %s\n", cmdbuffer);
-    	pclose(file);
+     FILE* file = popen(pythonStr, "r");
+     fgets(cmdbuffer, 1000, file);
+//   printf("result: %s\n", cmdbuffer);
+     pclose(file);
 	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
@@ -593,12 +580,14 @@ for (int j = 0; j < frameCnt; j++)
 	    	if (token != NULL)
 	    	{
 	            current[count1] = atof(token);
+		    if ((current[count1] < 0) && (current[count1] > -0.5))
+			 current[count1] *= (-1.0);			
     #ifdef DEBUG_LOGGING
 		    printf("current: %f\n", current[count1]);
     #endif
 		    token = strtok(NULL, space);	
 		}
-	    }
+	  }
     }		
 	    
   tlm[1][A] = (int)(voltage[map[BUS]] /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
@@ -697,23 +686,12 @@ for (int j = 0; j < frameCnt; j++)
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-//printf("Before cmd\n");
-//printf("CW telem String: %s\n", cw_str2);
-//	FILE* f;
-    if (mode == CW)
+  if (mode == CW)
 	system(cw_str2);
-//	printf("File %d \n", f);
-//  printf("close: %d \n", pclose(f));  // execute command and wait for termination before continuing
-//printf("After command\n");
-//  sleep(7);
-//printf("Before Write\n");
   digitalWrite (txLed, txLedOn);
   #ifdef DEBUG_LOGGING
 	printf("Tx LED On\n");
   #endif
-//printf("After Write\n");
-//}
-//printf("Done CW!\n");
 	
   if (ax5043)
   {
@@ -770,24 +748,18 @@ for (int j = 0; j < frameCnt; j++)
 	printf("Tx LED On\n");
   #endif
   }
-	
-  //digitalWrite (txLed, txLedOff);
  
-   }
+}
 	
-//printf("End of get_tlm and rpitx =========================================================\n");
-
-   digitalWrite (txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
+digitalWrite (txLed, txLedOff);
+#ifdef DEBUG_LOGGING
+printf("Tx LED Off\n");
+#endif
 
 return;
 }
 
 int get_tlm_fox() {
-
-//   memset(b, 0, 64);
 	
 //  Reading I2C voltage and current sensors
 	
@@ -867,11 +839,10 @@ if (firstTime != ON)
    char *token;
    char cmdbuffer[1000];
 	
-//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-        FILE* file = popen(pythonStr, "r");
-	fgets(cmdbuffer, 1000, file);
-//	printf("result: %s\n", cmdbuffer);
-    	pclose(file);
+    FILE* file = popen(pythonStr, "r");
+    fgets(cmdbuffer, 1000, file);
+//  printf("result: %s\n", cmdbuffer);
+    pclose(file);
 	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
@@ -892,7 +863,8 @@ if (firstTime != ON)
 	    	if (token != NULL)
 	    	{
 	            current[count1] = atof(token);
-     #ifdef DEBUG_LOGGING
+		    if ((current[count1] < 0) && (current[count1] > -0.5))
+			 current[count1] *= (-1.0);     #ifdef DEBUG_LOGGING
 		 printf("current: %f\n", current[count1]);
      #endif
 		    token = strtok(NULL, space);	
