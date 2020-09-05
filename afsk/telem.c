@@ -363,7 +363,7 @@ int main(int argc, char *argv[]) {
 	
    int count1;
    char *token;
-   char cmdbuffer[1000];
+//   char cmdbuffer[1000];
 	
 //	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
         FILE* file = popen(pythonStr, "r");
@@ -440,7 +440,7 @@ int main(int argc, char *argv[]) {
 //    reading[count] = read_sensor_data(sensor[count]);	
 //      printf("Read sensor[%d] % 4.2fV % 6.1fmA % 6.1fmW \n", 
 //	        count, reading[count].voltage, reading[count].current, reading[count].power); 
-  }	
+//  }	
   printf("\n");
   
 //  sensorV = config_sensor("/dev/i2c-1", 0x40, 400);
