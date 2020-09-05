@@ -864,7 +864,8 @@ if (firstTime != ON)
 	    	{
 	            current[count1] = atof(token);
 		    if ((current[count1] < 0) && (current[count1] > -0.5))
-			 current[count1] *= (-1.0);     #ifdef DEBUG_LOGGING
+			 current[count1] *= (-1.0);     
+     #ifdef DEBUG_LOGGING
 		 printf("current: %f\n", current[count1]);
      #endif
 		    token = strtok(NULL, space);	
