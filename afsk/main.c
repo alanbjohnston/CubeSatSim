@@ -851,7 +851,7 @@ int get_tlm_fox() {
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
-  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078; // XAxisAngularVelocity Y and Z set to 0
+  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078, int RXTemperature = 0; // XAxisAngularVelocity Y and Z set to 0
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1049,8 +1049,11 @@ if (payload == ON)
     for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
 	if (token != NULL)
-    		token = strtok(NULL, space);		
-    }	
+    		token = strtok(NULL, space);
+	if (count1 = 2) 
+		RXTemperature = atof(token);
+    }
+    printf("RX Temperature: %f \n", RXTemperature);
     if (token != NULL)
     {
     	gyroX = atof(token);
