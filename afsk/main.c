@@ -1051,10 +1051,11 @@ if (payload == ON)
     {
 	if (token != NULL)
     		token = strtok(NULL, space);
-//	if (count1 == 3) 
+	if (count1 == 3) 
 //		RXTemperature = atof(token);
+    printf("RXTemperature: %s \n", token);
     }
-    printf("RXTemperature: %f \n", RXTemperature);
+
 	
     if (token != NULL)
     {
