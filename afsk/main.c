@@ -1051,7 +1051,7 @@ if (payload == ON)
     {
 	if (token != NULL)
     		token = strtok(NULL, space);
-	if (count1 = 2) 
+	if (count1 == 2) 
 		RXTemperature = atof(token);
     }
     printf("RX Temperature: %f \n", RXTemperature);
