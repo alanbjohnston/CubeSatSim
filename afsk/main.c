@@ -852,7 +852,7 @@ int get_tlm_fox() {
   int head_offset = 0; 	
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
   int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
-  float RXTemperature = 0;
+  int RXTemperature = 0;
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1051,10 +1051,10 @@ if (payload == ON)
     {
 	if (token != NULL)
 		if (count1 == 2)
-			RXTemperature = atof(token);
+			RXTemperature = (int)((atof(token) * 10.0) + 0.5);
     		token = strtok(NULL, space);
     }
-    printf("RXTemperature: %f \n", RXTemperature);
+    printf("RXTemperature: %d \n", RXTemperature);
 	
     if (token != NULL)
     {
@@ -1119,7 +1119,8 @@ if (payload == ON)
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
   encodeB(b, 46 + head_offset,PSUCurrent);
-	  
+
+  encodeA(b, 36 + head_offset,  RXTemperature);	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 	  
   encodeB(b, 40 + head_offset,  xAngularVelocity);
