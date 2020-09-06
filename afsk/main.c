@@ -1050,7 +1050,7 @@ if (payload == ON)
     for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
 	if (token != NULL)
-		if (count1 == 1)
+		if (count1 == 2)
 			RXTemperature = atof(token);
     		token = strtok(NULL, space);
     }
