@@ -1054,7 +1054,7 @@ if (payload == ON)
 			RXTemperature = atof(token);
     		token = strtok(NULL, space);
     }
-    printf("RXTemperature: %s \n", token);
+    printf("RXTemperature: %f \n", RXTemperature);
 	
     if (token != NULL)
     {
