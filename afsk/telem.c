@@ -23,6 +23,7 @@
 #define OFF -1
 #define ON 1
 
+int test_i2c_bus(char *bus);
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
@@ -94,6 +95,8 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
   			printf("vB5 Present\n");  // Don't print normal board detection
+			
+			print("Result: %d \n",test_i2c_bus(3));
 			
  			if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 				printf("/dev/i2c-11 is present\n\n");
@@ -173,8 +176,8 @@ int main(int argc, char *argv[]) {
     	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
 		strcpy(busStr,"1 -1");  
 	  }
-		}
 	}
+      }
     }	
 	
 //  Reading I2C voltage and current sensors
@@ -239,4 +242,37 @@ int main(int argc, char *argv[]) {
   printf("Bus | % 4.2f V % 5.0f mA \n\n", voltage[map[BUS]], current[map[BUS]]);		
 
   return 0;
+}
+
+int test_i2c_bus(char *bus)
+{
+	int result = 1;
+	char *busString = "/dev/i2c-3";
+	
+	 if (access(busString, W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
+//	  	printf("bus is present\n\n");	    
+    	  	char result[128];		
+    	  	char command[50] = "timeout 10 i2cdetect -y ";
+    	 	strcat (command, itoa(bus));
+//     	 	printf("Command: %s \n", command);
+    	 	FILE *i2cdetect = popen(command, "r");
+	
+    	 	while (fgets(result, 128, i2cdetect) != NULL) {
+    	 		;
+//       	 	printf("result: %s", result);
+    	 	}	
+    	 	int error = pclose(i2cdetect)/256;
+//      	 	printf("%s error: %d \n", &command, error);
+    	 	if (error != 0) 
+    	 	{	
+    	 		printf("ERROR: %d bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
+			result = -1;
+    		}													
+	  } else
+	  {
+    	 	printf("ERROR: %d bus has a problem \n  Check software to see if enabled \n", bus);
+		result = -1 
+	  }
+	}
+   return(result);	
 }
