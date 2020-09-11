@@ -47,8 +47,33 @@ int main(int argc, char *argv[]) {
   	  map[BAT] = BUS;
   	  map[PLUS_Z] = BAT;
   	  map[MINUS_Z] = PLUS_Z;
-	  strcpy(busStr,"1 0");		
-    } 
+ 	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
+	  	printf("/dev/i2c-0 is present\n\n");	    
+    	  	char result[128];		
+    	  	char command[50] = "timeout 10 i2cdetect -y ";
+    	 	strcat (command, "0");
+//     	 	printf("Command: %s \n", command);
+    	 	FILE *i2cdetect = popen(command, "r");
+	
+    	 	while (fgets(result, 128, i2cdetect) != NULL) {
+    	 		;
+//       	 	printf("result: %s", result);
+    	 	}	
+    	 	int error = pclose(i2cdetect)/256;
+//      	 	printf("%s error: %d \n", &command, error);
+    	 	if (error != 0) 
+    	 	{	
+    	 		printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "0");
+			strcpy(busStr,"1 -1");
+    		}													
+		else	    
+	  		strcpy(busStr,"1 0");	
+	  } else
+	  {
+    	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
+		strcpy(busStr,"1 -1");  
+	  }
+      } 
     else
     {
   	pinMode (3, INPUT);
@@ -88,9 +113,10 @@ int main(int argc, char *argv[]) {
    				if (error != 0) 
    				{	
 	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
-//	    				return (data);
+					strcpy(busStr,"1 -1");
     				}													
-				strcpy(busStr,"1 11");
+				else
+					strcpy(busStr,"1 11");
   			} else {
     				char result[128];		
     				char command[50] = "timeout 10 i2cdetect -y ";
@@ -120,9 +146,34 @@ int main(int argc, char *argv[]) {
   			map[BAT] = BUS;
   			map[PLUS_Z] = BAT;
   			map[MINUS_Z] = PLUS_Z;
-			strcpy(busStr,"1 0");			
-  		}
+			
+ 	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
+	  	printf("/dev/i2c-0 is present\n\n");	    
+    	  	char result[128];		
+    	  	char command[50] = "timeout 10 i2cdetect -y ";
+    	 	strcat (command, "0");
+//     	 	printf("Command: %s \n", command);
+    	 	FILE *i2cdetect = popen(command, "r");
+	
+    	 	while (fgets(result, 128, i2cdetect) != NULL) {
+    	 		;
+//       	 	printf("result: %s", result);
+    	 	}	
+    	 	int error = pclose(i2cdetect)/256;
+//      	 	printf("%s error: %d \n", &command, error);
+    	 	if (error != 0) 
+    	 	{	
+    	 		printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "0");
+			strcpy(busStr,"1 -1");
+    		}													
+		else	    
+	  		strcpy(busStr,"1 0");	
+	  } else
+	  {
+    	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
+		strcpy(busStr,"1 -1");  
 	  }
+	}
     }	
 	
 //  Reading I2C voltage and current sensors
