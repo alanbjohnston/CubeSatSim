@@ -244,7 +244,7 @@ int main(int argc, char *argv[]) {
   return 0;
 }
 
-int test_i2c_bus(char *bus)
+int test_i2c_bus(int bus)
 {
 	int result = 1;
 	char *busString = "/dev/i2c-3";
