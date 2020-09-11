@@ -271,8 +271,8 @@ int test_i2c_bus(char *bus)
 	  } else
 	  {
     	 	printf("ERROR: %d bus has a problem \n  Check software to see if enabled \n", bus);
-		result = -1 
+		result = -1; 
 	  }
-	}
+   }
    return(result);	
 }
