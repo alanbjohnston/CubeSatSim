@@ -71,9 +71,44 @@ int main(int argc, char *argv[]) {
   			printf("vB5 Present\n");  // Don't print normal board detection
 			
  			if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
-				printf("/dev/i2c-11 is present\n\n");		
+				printf("/dev/i2c-11 is present\n\n");
+				
+    				char result[128];		
+    				char command[50] = "timeout 10 i2cdetect -y ";
+    				strcat (command, "11");
+// 			   	printf("Command: %s \n", command);
+    				FILE *i2cdetect = popen(command, "r");
+	
+    				while (fgets(result, 128, i2cdetect) != NULL) {
+					;
+//        				printf("result: %s", result);
+   				 }	
+    				int error = pclose(i2cdetect)/256;
+//    				printf("%s error: %d \n", &command, error);
+   				if (error != 0) 
+   				{	
+	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
+//	    				return (data);
+    				}													
 				strcpy(busStr,"1 11");
   			} else {
+    				char result[128];		
+    				char command[50] = "timeout 10 i2cdetect -y ";
+    				strcat (command, "3");
+// 			   	printf("Command: %s \n", command);
+    				FILE *i2cdetect = popen(command, "r");
+	
+    				while (fgets(result, 128, i2cdetect) != NULL) {
+					;
+//        				printf("result: %s", result);
+   				 }	
+    				int error = pclose(i2cdetect)/256;
+//    				printf("%s error: %d \n", &command, error);
+   				if (error != 0) 
+   				{	
+	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "3");
+//	    				return (data);
+    				}
 				strcpy(busStr,"1 3");
  			}	  
   		}
