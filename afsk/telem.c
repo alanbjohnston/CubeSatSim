@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
   		{
   			printf("vB5 Present\n");  // Don't print normal board detection
 			
-			print("Result: %d \n",test_i2c_bus(3));
+			printf("Result: %d \n",test_i2c_bus(3));
 			
  			if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 				printf("/dev/i2c-11 is present\n\n");
