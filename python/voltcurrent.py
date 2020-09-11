@@ -61,6 +61,6 @@ if __name__ == "__main__":
         except:
           print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')   
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), "{:6.3f} ".format(0),  "{:6.3f} ".format(0), "{:6.3f} ".format(0),  "{:6.3f} ".format(0), "{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')   
 #        pass
   print(" ")
