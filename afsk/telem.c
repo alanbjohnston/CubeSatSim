@@ -173,7 +173,6 @@ int main(int argc, char *argv[]) {
     	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
 		strcpy(busStr,"1 -1");  
 	  }
-	}
     }	
 	
 //  Reading I2C voltage and current sensors
