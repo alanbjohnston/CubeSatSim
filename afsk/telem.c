@@ -247,9 +247,9 @@ int main(int argc, char *argv[]) {
 int test_i2c_bus(int bus)
 {
 	int output = 1;
-	char *busDev = "/dev/i2c-";
-	char *busString[25];
-	char *busS[5];
+	char busDev[] = "/dev/i2c-";
+	char busString[25];
+	char busS[5];
 	sprintf(busS, "%d", bus);
 	strcat (busString, busDev);
 	strcat (busString, busS);	
