@@ -249,7 +249,7 @@ int test_i2c_bus(char *bus)
 	int result = 1;
 	char *busString = "/dev/i2c-3";
 	
-	 if (access(busString, W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
+	if (access(busString, W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 //	  	printf("bus is present\n\n");	    
     	  	char result[128];		
     	  	char command[50] = "timeout 10 i2cdetect -y ";
@@ -268,11 +268,10 @@ int test_i2c_bus(char *bus)
     	 		printf("ERROR: %d bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
 			result = -1;
     		}													
-	  } else
-	  {
+	} else
+	{
     	 	printf("ERROR: %d bus has a problem \n  Check software to see if enabled \n", bus);
 		result = -1; 
-	  }
-   }
-   return(result);	
+	}
+	return(result);	
 }
