@@ -107,9 +107,10 @@ int main(int argc, char *argv[]) {
    				if (error != 0) 
    				{	
 	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "3");
-//	    				return (data);
+					strcpy(busStr,"1 -1");
     				}
-				strcpy(busStr,"1 3");
+				else
+					strcpy(busStr,"1 3");
  			}	  
   		}
 		else
