@@ -23,7 +23,7 @@
 #define OFF -1
 #define ON 1
 
-int test_i2c_bus(char *bus);
+int test_i2c_bus(int bus);
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
