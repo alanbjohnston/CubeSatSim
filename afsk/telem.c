@@ -251,8 +251,8 @@ int test_i2c_bus(int bus)
 	char busString[25];
 	char busS[5];
 	sprintf(busS, "%d", bus);
-	strcat (busString, busDev);
-	strcat (busString, busS);	
+	strcat (busString, &busDev);
+	strcat (busString, &busS);	
 	printf("Bus Dev String: %s \n", busString);
 	
 	if (access(busString, W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
