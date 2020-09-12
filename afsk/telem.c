@@ -95,12 +95,15 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
   			printf("vB5 Present\n");  // Don't print normal board detection
-			
-			printf("Result: %d \n",test_i2c_bus(3));
+			if (test_i2c_bus(0) != OFF)
+				strcpy(busStr,"1 ");
+			else
+				strcpy(busStr,"-1 ");
+//			printf("Result: %d \n",test_i2c_bus(3));
 			
  			if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 				printf("/dev/i2c-11 is present\n\n");
-				
+/*				
     				char result[128];		
     				char command[50] = "timeout 10 i2cdetect -y ";
     				strcat (command, "11");
@@ -114,14 +117,18 @@ int main(int argc, char *argv[]) {
     				int error = pclose(i2cdetect)/256;
 //    				printf("%s error: %d \n", &command, error);
    				if (error != 0) 
+*/
+				if (test_i2c_bus(11) != OFF)
    				{	
-	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
-					strcpy(busStr,"1 -1");
+//	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
+					strcat(busStr,"-1");
     				}													
 				else
-					strcpy(busStr,"1 11");
+					strcat(busStr,"11");
+				printf("Bus String: %s \n", busStr);
+				
   			} else {
-    				char result[128];		
+/*    				char result[128];		
     				char command[50] = "timeout 10 i2cdetect -y ";
     				strcat (command, "3");
 // 			   	printf("Command: %s \n", command);
@@ -140,7 +147,16 @@ int main(int argc, char *argv[]) {
     				}
 				else
 					strcpy(busStr,"1 3");
- 			}	  
+ */
+				if (test_i2c_bus(3) != OFF)
+   				{	
+//	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
+					strcat(busStr,"-1");
+    				}													
+				else
+					strcat(busStr,"3");
+				printf("Bus String: %s \n", busStr);
+			}	  
   		}
 		else
 		{
@@ -248,7 +264,6 @@ int test_i2c_bus(int bus)
 {
 	int output = 1;
 	char busDev[20] = "/dev/i2c-";
-	char busString[25];
 	char busS[5];
 	snprintf(busS, 5, "%d", bus);
 	strcat (busDev, busS);	
