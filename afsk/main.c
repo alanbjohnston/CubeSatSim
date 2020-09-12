@@ -119,6 +119,7 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
+int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
@@ -302,15 +303,15 @@ if (vB4)
 {	
   map[BAT] = BUS;
   map[BUS] = BAT;
-  strcpy(busStr,"1 0");
+  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 }	
 else if (vB5)
 {	
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
-	strcpy(busStr,"1 11");
+	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
   } else {
-	strcpy(busStr,"1 3");
+	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
   }
 } 
 else
@@ -319,7 +320,7 @@ else
   map[BAT] = BUS;
   map[PLUS_Z] = BAT;
   map[MINUS_Z] = PLUS_Z;
-  strcpy(busStr,"1 0");
+  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
   batteryThreshold = 8.0;
  }
 
@@ -1585,4 +1586,41 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
          val = val - (1 << len);
 
       return(val);
+}
+int test_i2c_bus(int bus)
+{
+	int output = bus; // return bus number if OK, otherwise return -1
+	char busDev[20] = "/dev/i2c-";
+	char busS[5];
+	snprintf(busS, 5, "%d", bus);
+	strcat (busDev, busS);	
+	printf("I2C Bus Tested: %s \n", busDev);
+	
+	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
+//	  	printf("bus is present\n\n");	    
+    	  	char result[128];		
+    	  	const char command_start[] = "timeout 10 i2cdetect -y ";
+		char command[50];
+		strcpy (command, command_start);
+    	 	strcat (command, busS);
+//     	 	printf("Command: %s \n", command);
+    	 	FILE *i2cdetect = popen(command, "r");
+	
+    	 	while (fgets(result, 128, i2cdetect) != NULL) {
+    	 		;
+//       	 	printf("result: %s", result);
+    	 	}	
+    	 	int error = pclose(i2cdetect)/256;
+//      	 	printf("%s error: %d \n", &command, error);
+    	 	if (error != 0) 
+    	 	{	
+    	 		printf("ERROR: %d bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
+			output = -1;
+    		}													
+	} else
+	{
+    	 	printf("ERROR: %d bus has a problem \n  Check software to see if enabled \n", bus);
+		output = -1; 
+	}
+	return(output);	// return bus number or -1 if there is a problem with the bus
 }
