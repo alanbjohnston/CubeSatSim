@@ -85,7 +85,12 @@ int main(int argc, char *argv[]) {
 	  printf("vB4 Present\n");
 	  map[BAT] = BUS;
 	  map[BUS] = BAT;
-  	  strcpy(busStr,"1 0");
+		
+	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+			
+	  printf("New Bus String: %s \n", busStr);
+		
+ // 	  strcpy(busStr,"1 0");
   	}
 	else
 	{
@@ -172,6 +177,10 @@ int main(int argc, char *argv[]) {
   			map[PLUS_Z] = BAT;
   			map[MINUS_Z] = PLUS_Z;
 			
+			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+			
+			printf("New Bus String: %s \n", busStr);
+/*			
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
     	  	char result[128];		
@@ -198,6 +207,7 @@ int main(int argc, char *argv[]) {
     	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
 		strcpy(busStr,"1 -1");  
 	  }
+*/	  
 	}
       }
     }	
