@@ -249,7 +249,7 @@ int test_i2c_bus(int bus)
 	int output = 1;
 	char busDev[20] = "/dev/i2c-";
 	char busString[25];
-	char *busS;
+	char busS[5];
 	snprintf(busS, 5, "%d", bus);
 	strcat (busDev, busS);	
 	printf("Bus Dev String: %s \n", busDev);
