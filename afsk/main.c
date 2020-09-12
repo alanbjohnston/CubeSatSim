@@ -1614,12 +1614,12 @@ int test_i2c_bus(int bus)
 //      	 	printf("%s error: %d \n", &command, error);
     	 	if (error != 0) 
     	 	{	
-    	 		printf("ERROR: %d bus has a problem \n  Check I2C wiring and pullup resistors \n", bus);
+    	 		printf("ERROR: %sd bus has a problem \n  Check I2C wiring and pullup resistors \n", busDev);
 			output = -1;
     		}													
 	} else
 	{
-    	 	printf("ERROR: %d bus has a problem \n  Check software to see if enabled \n", bus);
+    	 	printf("ERROR: %s bus has a problem \n  Check software to see if I2C enabled \n", busDev);
 		output = -1; 
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
