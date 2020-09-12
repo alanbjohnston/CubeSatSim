@@ -152,7 +152,7 @@ int main(int argc, char *argv[]) {
     				}
 				else
 					strcpy(busStr,"1 3");
- */
+ *
 				if (test_i2c_bus(3) != OFF)
    				{	
 //	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
