@@ -95,6 +95,11 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
   			printf("vB5 Present\n");  // Don't print normal board detection
+			
+			snprintf(busStr, 10, "%d %d", test_i2c_bus(0), test_i2c_bus(3));
+			
+			printf("New Bus String: %s \n", busStr);
+/*			
 			if (test_i2c_bus(0) != OFF)
 				strcpy(busStr,"1 ");
 			else
@@ -117,7 +122,7 @@ int main(int argc, char *argv[]) {
     				int error = pclose(i2cdetect)/256;
 //    				printf("%s error: %d \n", &command, error);
    				if (error != 0) 
-*/
+*
 				if (test_i2c_bus(11) != OFF)
    				{	
 //	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
@@ -125,7 +130,7 @@ int main(int argc, char *argv[]) {
     				}													
 				else
 					strcat(busStr,"11");
-				printf("Bus String: %s \n", busStr);
+*				printf("Bus String: %s \n", busStr);
 				
   			} else {
 /*    				char result[128];		
@@ -157,7 +162,8 @@ int main(int argc, char *argv[]) {
 					strcat(busStr,"3");
 				printf("Bus String: %s \n", busStr);
 			}	  
-  		}
+*/
+		}
 		else
 		{
 			printf("VB3 Present\n");
@@ -262,7 +268,7 @@ int main(int argc, char *argv[]) {
 
 int test_i2c_bus(int bus)
 {
-	int output = 1;
+	int output = bus; // return bus number if OK, otherwise return -1
 	char busDev[20] = "/dev/i2c-";
 	char busS[5];
 	snprintf(busS, 5, "%d", bus);
@@ -295,5 +301,5 @@ int test_i2c_bus(int bus)
     	 	printf("ERROR: %d bus has a problem \n  Check software to see if enabled \n", bus);
 		output = -1; 
 	}
-	return(output);	
+	return(output);	// return bus number or -1 if there is a problem with the bus
 }
