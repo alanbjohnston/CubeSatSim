@@ -247,15 +247,14 @@ int main(int argc, char *argv[]) {
 int test_i2c_bus(int bus)
 {
 	int output = 1;
-	const char busDev[] = "/dev/i2c-";
+	char busDev[20] = "/dev/i2c-";
 	char busString[25];
-	char busS[5];
-	sprintf(busS, "%d", bus);
-	strcat (busString, &busDev);
-	strcat (busString, &busS);	
-	printf("Bus Dev String: %s \n", busString);
+	char *busS;
+	snprintf(busS, 5, "%d", bus);
+	strcat (busDev, busS);	
+	printf("Bus Dev String: %s \n", busDev);
 	
-	if (access(busString, W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
+	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
 //	  	printf("bus is present\n\n");	    
     	  	char result[128];		
     	  	const char command_start[] = "timeout 10 i2cdetect -y ";
