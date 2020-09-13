@@ -132,19 +132,27 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "2m": {
-                "name": "2m Band",
+                "name": "2m Ham Band",
                 "center_freq": 145000000,
                 "rf_gain": 20,
                 "samp_rate": 2400000,
                 "start_freq": 145725000,
                 "start_mod": "nfm",
             },
-            "70cm": {
-                "name": "70cm Band",
+            "70cm-1": {
+                "name": "70cm Ham Band 435 MHz",
                 "center_freq": 435500000,
                 "rf_gain": 20,
                 "samp_rate": 2400000,
                 "start_freq": 4355000000,
+                "start_mod": "nfm",
+            },
+            "70cm-2": {
+                "name": "70cm Ham Band 438 MHz",
+                "center_freq": 438000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 438000000,
                 "start_mod": "nfm",
             },
             "fm": {
