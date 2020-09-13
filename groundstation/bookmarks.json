@@ -10,6 +10,12 @@
     "modulation": "nfm"
   },
   {
+    "name": "ARISS Repeater Downlink",
+    "frequency": 437800000,
+    "modulation": "nfm"
+
+  },
+  {
     "name": "AO-27",
     "frequency": 436795000,
     "modulation": "nfm"
