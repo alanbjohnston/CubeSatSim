@@ -171,6 +171,14 @@ sdrs = {
                 "start_freq": 51000000,
                 "start_mod": "usb",
             },
+            "108MHz": {
+                "name": "108 MHz",
+                "center_freq": 108000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 108000000,
+                "start_mod": "nfm",
+            },
             "110MHz": {
                 "name": "110 MHz",
                 "center_freq": 110000000,
@@ -509,10 +517,18 @@ sdrs = {
             },
             "438mhz": {
                 "name": "438 MHz 70cm Ham Band",
-                "center_freq": 138000000,
+                "center_freq": 438000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 438000000,
+                "start_mod": "nfm",
+            },
+            "440mhz": {
+                "name": "440 MHz 70cm Ham Band",
+                "center_freq": 440000000,
+                "rf_gain": 30,
+                "samp_rate": 2400000,
+                "start_freq": 440000000,
                 "start_mod": "nfm",
             },
             "446mhz": {
