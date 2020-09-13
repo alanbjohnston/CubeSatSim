@@ -152,7 +152,7 @@ sdrs = {
                 "center_freq": 438000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
-                "start_freq": 438000000,
+                "start_freq": 437800000,
                 "start_mod": "nfm",
             },
             "fm": {
