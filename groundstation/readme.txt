@@ -1,6 +1,8 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0) License https://creativecommons.org/licenses/by/4.0/
+
 Welcome to the ARISS Radio Pi!
 
-We hope you have fun learning about radio, the International Space Station, and Satellites 
+We hope you have fun learning about radio, the International Space Station, and Satellites! 
 
 Make sure your RTL-SDR USB radio dongle is plugged into your Pi with an antenna connected.
 
