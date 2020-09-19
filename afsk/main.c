@@ -119,6 +119,7 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
+int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
@@ -302,15 +303,15 @@ if (vB4)
 {	
   map[BAT] = BUS;
   map[BUS] = BAT;
-  strcpy(busStr,"1 0");
+  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 }	
 else if (vB5)
 {	
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
-	strcpy(busStr,"1 11");
+	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
   } else {
-	strcpy(busStr,"1 3");
+	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
   }
 } 
 else
@@ -319,7 +320,7 @@ else
   map[BAT] = BUS;
   map[PLUS_Z] = BAT;
   map[MINUS_Z] = PLUS_Z;
-  strcpy(busStr,"1 0");
+  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
   batteryThreshold = 8.0;
  }
 
@@ -575,6 +576,7 @@ for (int j = 0; j < frameCnt; j++)
     token = strtok(cmdbuffer, space);
 
     float voltage[9], current[9];	
+	
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));	 
 	  
@@ -584,7 +586,7 @@ for (int j = 0; j < frameCnt; j++)
 	    {
 	        voltage[count1] = atof(token);				      
     #ifdef DEBUG_LOGGING
-		 printf("voltage: %f ", voltage[count1]);
+//		 printf("voltage: %f ", voltage[count1]);
     #endif
 		token = strtok(NULL, space);	
 	    	if (token != NULL)
@@ -593,7 +595,7 @@ for (int j = 0; j < frameCnt; j++)
 		    if ((current[count1] < 0) && (current[count1] > -0.5))
 			 current[count1] *= (-1.0);			
     #ifdef DEBUG_LOGGING
-		    printf("current: %f\n", current[count1]);
+//		    printf("current: %f\n", current[count1]);
     #endif
 		    token = strtok(NULL, space);	
 		}
@@ -910,7 +912,7 @@ if (firstTime != ON)
 	    {
 	        voltage[count1] = atof(token);				      
     #ifdef DEBUG_LOGGING
-		printf("voltage: %f ", voltage[count1]);
+//		printf("voltage: %f ", voltage[count1]);
     #endif
 		token = strtok(NULL, space);	
 	    	if (token != NULL)
@@ -919,7 +921,7 @@ if (firstTime != ON)
 		    if ((current[count1] < 0) && (current[count1] > -0.5))
 			 current[count1] *= (-1.0);     
      #ifdef DEBUG_LOGGING
-		 printf("current: %f\n", current[count1]);
+//		 printf("current: %f\n", current[count1]);
      #endif
 		    token = strtok(NULL, space);	
 		}
@@ -1134,16 +1136,12 @@ if (payload == ON)
 	  
 	int ctr1 = 0;
 	int ctr3 = 0;
-//	for (i = 0; i < RS_FRAME_LEN; i++) 
 	for (i = 0; i < rsFrameLen; i++) 
 	{
-//        for (int j  = 0; j < RS_FRAMES ; j++)
         for (int j  = 0; j < rsFrames ; j++)
 		{
-//			if (!((i == (RS_FRAME_LEN - 1)) && (j == 2))) // skip last one for BPSK
 			if (!((i == (rsFrameLen - 1)) && (j == 2))) // skip last one for BPSK
 			{
-//				if (ctr1 < HEADER_LEN)
 				if (ctr1 < headerLen)
 				{
              				rs_frame[j][i] = h[ctr1];
@@ -1154,9 +1152,7 @@ if (payload == ON)
 				}
 				else
 				{
-//             				rs_frame[j][i] = b[ctr3 % DATA_LEN];
              				rs_frame[j][i] = b[ctr3 % dataLen];
-//		     			update_rs(parities[j], b[ctr3 % DATA_LEN]);
 		     			update_rs(parities[j], b[ctr3 % dataLen]);
           //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
           //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
@@ -1170,20 +1166,18 @@ if (payload == ON)
 		
     #ifdef DEBUG_LOGGING	    	    
 //	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
-
+/*
 	  printf("Parities ");
-//		for (int m = 0; m < PARITY_LEN; m++) {
 		for (int m = 0; m < parityLen; m++) {
 		 	printf("%d ", parities[0][m]);
 		}
 		printf("\n");
+*/		
      #endif
 	  
   	int ctr2 = 0;    
  	memset(data10,0,sizeof(data10));  
 	
- 
-//    for (i = 0; i < DATA_LEN * PAYLOADS + HEADER_LEN; i++) // 476 for BPSK
     for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
 	{
 				data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
@@ -1194,10 +1188,8 @@ if (payload == ON)
 				rd = nrd; // ^ nrd;
 				ctr2++;
 	}
-//    for (i = 0; i < PARITY_LEN; i++) 
     for (i = 0; i < parityLen; i++) 
 	{
-//		for (int j  = 0; j < RS_FRAMES; j++)
 		for (int j  = 0; j < rsFrames; j++)
 		{
 			data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
@@ -1220,14 +1212,11 @@ if (payload == ON)
 //	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
     #endif
 	  
-// 	for (i = 1; i <= SYNC_BITS * SAMPLES; i++)
  	for (i = 1; i <= syncBits * samples; i++)
 	{
 		write_wave(ctr, buffer);	
 //		printf("%d ",ctr);
-//		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
-//  			int bit = SYNC_BITS - i/SAMPLES + 1;
   			int bit = syncBits - i/samples + 1;
   			val = sync;
 			data = val & 1 << (bit - 1);	
@@ -1256,14 +1245,10 @@ if (payload == ON)
 //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
     #endif
 	  for (i = 1; 
-//	  i <= (10 * (HEADER_LEN + DATA_LEN * PAYLOADS + RS_FRAMES * PARITY_LEN) * SAMPLES); i++) // 572   
 	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 	{
 		write_wave(ctr, buffer);
-//		if ( (i % SAMPLES) == 0) {
 		if ( (i % samples) == 0) {
-//			int symbol = (int)((i - 1)/ (SAMPLES * 10));
-//			int bit = 10 - (i - symbol * SAMPLES * 10) / SAMPLES + 1;	
 			int symbol = (int)((i - 1)/ (samples * 10));
 			int bit = 10 - (i - symbol * samples * 10) / samples + 1;	
 			val = data10[symbol];
@@ -1347,15 +1332,14 @@ if (payload == ON)
 //	digitalWrite (0, LOW);
 	printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis()-start);
 	start = millis();
-//	int sock_ret = send(sock, buffer, buffSize, 0);
 	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
 	printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
  	if (sock_ret < (ctr * 2 + 2))
 	{
-       		printf("Resending\n");
+	       	printf("Not resending\n");
 //	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
-       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
+//       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
 	}
 
 	if (sock_ret == -1)  {
@@ -1608,4 +1592,41 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
          val = val - (1 << len);
 
       return(val);
+}
+int test_i2c_bus(int bus)
+{
+	int output = bus; // return bus number if OK, otherwise return -1
+	char busDev[20] = "/dev/i2c-";
+	char busS[5];
+	snprintf(busS, 5, "%d", bus);
+	strcat (busDev, busS);	
+	printf("I2C Bus Tested: %s \n", busDev);
+	
+	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
+//	  	printf("bus is present\n\n");	    
+    	  	char result[128];		
+    	  	const char command_start[] = "timeout 10 i2cdetect -y ";
+		char command[50];
+		strcpy (command, command_start);
+    	 	strcat (command, busS);
+//     	 	printf("Command: %s \n", command);
+    	 	FILE *i2cdetect = popen(command, "r");
+	
+    	 	while (fgets(result, 128, i2cdetect) != NULL) {
+    	 		;
+//       	 	printf("result: %s", result);
+    	 	}	
+    	 	int error = pclose(i2cdetect)/256;
+//      	 	printf("%s error: %d \n", &command, error);
+    	 	if (error != 0) 
+    	 	{	
+    	 		printf("ERROR: %sd bus has a problem \n  Check I2C wiring and pullup resistors \n", busDev);
+			output = -1;
+    		}													
+	} else
+	{
+    	 	printf("ERROR: %s bus has a problem \n  Check software to see if I2C enabled \n", busDev);
+		output = -1; 
+	}
+	return(output);	// return bus number or -1 if there is a problem with the bus
 }
