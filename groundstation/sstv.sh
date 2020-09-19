@@ -7,13 +7,11 @@ echo "Script to transmit SSTV images from  ARISS Radio Pi using CubeSatSim Lite"
 
 echo 
 
-sudo systemctl stop rpitx
-
 echo "Taking picture with Raspicam to Desktop raspicam.jpg"
 
 echo 
 
-raspistill -o ~/Desktop/raspicam.jpg -w 640 -h 496 
+raspistill -o ~/Desktop/raspicam.jpg -w 640 -h 496 > /dev/null 2>&1
 
 echo "Converting image to SSTV with pysstv (takes about 3 minutes)"
 
@@ -24,6 +22,8 @@ python3 -m pysstv --mode PD120 ~/Desktop/raspicam.jpg output.wav > /dev/null 2>&
 echo "Transmitting PD120 SSTV image on 434.9 MHz using rpitx"
 
 echo 
+
+sudo systemctl stop rpitx
 
 sudo killall -9 rpitx > /dev/null 2>&1
 
