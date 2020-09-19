@@ -3,7 +3,7 @@
 
 echo
 
-echo "Script to transmit SSTV images from  ARISS Radio Pi using CubeSatSim Lite"
+echo "Script to transmit SSTV images from ARISS Radio Pi using CubeSatSim Lite"
 
 echo 
 
@@ -13,13 +13,13 @@ echo
 
 raspistill -o ~/Desktop/raspicam.jpg -w 640 -h 496 > /dev/null 2>&1
 
-echo "Converting image to SSTV with pysstv (takes about 3 minutes)"
+echo "Converting image to SSTV with pysstv (takes about a minute)"
 
 echo 
 
 python3 -m pysstv --mode PD120 ~/Desktop/raspicam.jpg output.wav > /dev/null 2>&1
 
-echo "Transmitting PD120 SSTV image on 434.9 MHz using rpitx"
+echo "Transmitting PD120 SSTV image on 434.9 MHz using rpitx (takes about two minutes to send)"
 
 echo 
 
