@@ -17,7 +17,7 @@ echo "Converting image to SSTV with pysstv (takes about 3 minutes)"
 
 echo 
 
-python3 -m pysstv --mode PD120 ~/Desktop/raspicam.jpg output.wav > /dev/null 2>&1
+python3 -m /home/pi/pySSTV/pysstv --mode PD120 ~/Desktop/raspicam.jpg output.wav > /dev/null 2>&1
 
 echo "Transmitting PD120 SSTV image on 434.9 MHz using rpitx"
 
