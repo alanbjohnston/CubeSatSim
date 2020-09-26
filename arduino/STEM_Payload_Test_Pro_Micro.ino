@@ -18,6 +18,11 @@
 int sensorValue = 0;
 int D9 = 9;
 int D8 = 8;
+// Calibration data for diode temperature sensor
+float T1 = 25; // Temperature data point 1
+float R1 = 373; // Reading data point 1
+float T2 = 17; // Temperature data point 2
+float R2 = 405; // Reading data point 2
 
 // the setup function runs once when you press reset or power the board
 void setup() {
@@ -38,9 +43,14 @@ void loop() {
   delay(1000); // wait for a second
 
   sensorValue = analogRead(A0);
-  Serial.println(sensorValue);
+//  Serial.println(sensorValue);
   sensorValue = analogRead(A1);
-  Serial.println(sensorValue);
+  
+  float temp = T1 + (sensorValue - R1) *(T2 - T1)/(R2 - R1);
+  Serial.print("Temperature: ");
+  Serial.print(temp);
+  Serial.println(" C");
+  
   sensorValue = analogRead(A2);
-  Serial.println(sensorValue);  
+//  Serial.println(sensorValue);  
 }
