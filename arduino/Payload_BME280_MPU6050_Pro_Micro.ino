@@ -14,6 +14,8 @@ int counter = 0;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 long timer = 0;
 int bmePresent;
+int greenLED = 9;
+int blueLED = 8;
 
 void setup() {
 
@@ -38,8 +40,17 @@ void setup() {
   
   mpu6050.begin();
   mpu6050.calcGyroOffsets(true);
-}
 
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
+
+  digitalWrite(greenLED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  digitalWrite(blueLED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  delay(100);              // wait for a second
+  digitalWrite(greenLED, LOW);    // turn the LED off by making the voltage LOW
+  digitalWrite(blueLED, LOW);   // turn the LED on (HIGH is the voltage level)
+}
+  
 void loop() {
 
 #ifdef TESTING
@@ -79,6 +90,22 @@ void loop() {
     Serial.print(" ");
     Serial.println(mpu6050.getGyroZ());
 
+    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()* mpu6050.getGyroZ()); 
+    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+//    Serial.print(rotation);
+//    Serial.print(" ");
+//    Serial.println(acceleration);
+
+    if (acceleration > 1.2)
+        digitalWrite(greenLED, HIGH);
+    else
+        digitalWrite(greenLED, LOW);
+        
+    if (rotation > 5)
+        digitalWrite(blueLED, HIGH);
+    else
+        digitalWrite(blueLED, LOW);   
+  
     //  Serial1.println(counter++);
   }
 #else
@@ -118,6 +145,22 @@ void loop() {
     Serial1.print(" ");
     Serial1.println(mpu6050.getGyroZ());   
 
+    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()* mpu6050.getGyroZ()); 
+    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+//    Serial.print(rotation);
+//    Serial.print(" ");
+//    Serial.println(acceleration);
+
+    if (acceleration > 1.2)
+        digitalWrite(greenLED, HIGH);
+    else
+        digitalWrite(greenLED, LOW);
+        
+    if (rotation > 5)
+        digitalWrite(blueLED, HIGH);
+    else
+        digitalWrite(blueLED, LOW);   
+         
 //  Serial1.println(counter++);
   }
 #endif
