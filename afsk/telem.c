@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
   		{
   			printf("vB5 Present\n");  // Don't print normal board detection
 			
-			snprintf(busStr, 10, "%d %d", test_i2c_bus(0), test_i2c_bus(3));
+			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
 			
 			printf("New Bus String: %s \n", busStr);
 /*			
