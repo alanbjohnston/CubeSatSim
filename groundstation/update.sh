@@ -5,6 +5,8 @@ echo -e "\nUpdating configurations. \n"
 
 cd ~/CubeSatSim && git pull
 
+sudo modprobe snd-aloop
+
 sudo cp ~/CubeSatSim/groundstation/config_webrx.py /etc/openwebrx/config_webrx.py
 
 sudo cp ~/CubeSatSim/groundstation/bookmarks.json /etc/openwebrx/bookmarks.json
