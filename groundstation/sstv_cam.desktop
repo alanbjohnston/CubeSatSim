@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=SSTV Camera Tx
+GenericName=Transmit SSTV from CubeSatSim using camera
+Comment=434.9 MHz SSTV signals
+Exec=/home/pi/CubeSatSim/groundstation/sstv.sh
+Icon=/usr/share/qsstv/qsstv.png
+Terminal=true
+Type=Application
+Categories=HamRadio;
+Keywords=SSTV;CubeSatSim;
