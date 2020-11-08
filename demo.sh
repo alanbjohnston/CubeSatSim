@@ -31,7 +31,8 @@ else
       elif [ "$1" = "s" ]; then
    	   echo "Mode is continuous SSTV"  
     	   while true; do sleep 5; done
-      els3 [ "$1" = "f" ]; then
+      else
+         [ "$1" = "f" ]; then
          echo "Mode is continuous FSK"
          /home/pi/CubeSatSim/radioafsk fsk  
       fi
