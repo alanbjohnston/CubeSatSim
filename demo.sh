@@ -35,3 +35,4 @@ else
          echo "Mode is continuous FSK"
          /home/pi/CubeSatSim/radioafsk fsk  
       fi
+fi
