@@ -11,13 +11,13 @@ if [ "$1" = "c" ]; then
     echo $(($y % 4))
     
       if [ $(($y % 4)) = 0 ]; then
-   	   $1 = "a"
+   	   1= "a"
       elif [ $(($y % 4)) = 1 ]; then
-   	   $1 = "b"
+   	   1="b"
       elif [ $(($y % 4)) = 2 ]; then
-   	   $1 = "s"
+   	   1="s"
       else
-         $1 = "f"
+         1="f"
       fi
 fi
 
