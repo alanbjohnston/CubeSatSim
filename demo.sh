@@ -20,8 +20,9 @@ else
     echo "Mode cycling"
     y=$(last reboot | grep ^reboot | wc -l)
     echo $y
+    echo $(($y % 4))
     
-      if [ "$y" % 4 = "0" ]; then
+      if [ $(($y % 4)) = "0" ]; then
    	   echo "Mode is continuous AFSK"
     	   /home/pi/CubeSatSim/radioafsk afsk
       elif [ "$1" = "b" ]; then
