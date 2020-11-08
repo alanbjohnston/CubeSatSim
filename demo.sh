@@ -2,7 +2,11 @@
 
 echo -e "\nDemo of CubeSatSim at 434.9 MHz\n"
 
-sleep 10
+y=$(last reboot | grep ^reboot | wc -l)
+echo $y
+
+if [ "$1" = "c" ]; then
+    echo "Mode cycling"
 
 sudo systemctl restart rpitx
 
