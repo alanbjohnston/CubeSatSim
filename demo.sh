@@ -14,13 +14,13 @@ fi
 if [[ ("$1" = "a" ) || (("$1" = "c") && ("$(($y %4))" = 0)) ]]; then
    	echo "Mode is continuous AFSK"
     	/home/pi/CubeSatSim/radioafsk afsk
-elif [ "$1" = "b" ]; then
+elif [[ ("$1" = "b" ) || (("$1" = "c") && ("$(($y %4))" = 1)) ]]; then
    	echo "Mode is continuous BPSK"  
     	/home/pi/CubeSatSim/radioafsk bpsk
-elif [ "$1" = "s" ]; then
+elif [[ ("$1" = "s" ) || (("$1" = "c") && ("$(($y %4))" = 2)) ]]; then
    	echo "Mode is continuous SSTV"  
     	while true; do sleep 5; done
-else [ "$1" = "f" ]; then
+else
     echo "Mode is continuous FSK"
     /home/pi/CubeSatSim/radioafsk fsk
 fi
