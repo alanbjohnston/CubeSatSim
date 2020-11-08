@@ -117,7 +117,7 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 float sleepTime;
 int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
+int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
 int test_i2c_bus(int bus);
 
@@ -239,6 +239,7 @@ int main(int argc, char *argv[]) {
     if (digitalRead(2) != HIGH)
     {
 	  printf("vB3 with TFB Present\n");
+	  vB3 = TRUE;
   	  txLed = 3;
 	  txLedOn = LOW;
  	  txLedOff = HIGH;
@@ -338,7 +339,7 @@ else
 	
 // try connecting to Arduino payload using UART
 
- if (!ax5043)  // don't test if AX5043 is present
+ if (!ax5043 && !vB3)  // don't test if AX5043 is present
  {
   payload = OFF;
 
