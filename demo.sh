@@ -11,7 +11,7 @@ if [ "$1" = "c" ]; then
     echo $(($y % 4))    
 fi
 
-if [[ ("$1" = "a" ) || (("$1" = "c") && ("$(($y %4))" = 0)) ]]; then
+if [[ ("$1" = "a" ) || (("$1" = "c") && ("$(($y %4))" = 3)) ]]; then
    	echo "Mode is continuous AFSK"
     	/home/pi/CubeSatSim/radioafsk afsk
 elif [[ ("$1" = "b" ) || (("$1" = "c") && ("$(($y %4))" = 1)) ]]; then
