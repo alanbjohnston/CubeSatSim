@@ -299,7 +299,8 @@ int main(int argc, char *argv[]) {
   #endif
 	
     config_file = fopen("sim.cfg","w");
-    fprintf(config_file, "%s %d %f %f", call, reset_count, lat_file, long_file);
+//    fprintf(config_file, "%s %d %f %f", call, reset_count, lat_file, long_file);
+    fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
 		
