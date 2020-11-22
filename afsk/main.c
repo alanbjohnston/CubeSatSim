@@ -193,7 +193,7 @@ int main(int argc, char *argv[]) {
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0))
   {
       printf("Valid latitude and longitude in config file\n");
-      lattitude = lat_file;
+      latitude = lat_file;
       longitude = long_file;
   }	
   wiringPiSetup ();
