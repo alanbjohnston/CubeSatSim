@@ -676,7 +676,7 @@ for (int j = 0; j < frameCnt; j++)
 //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
 	sprintf(header_lat, "%7.2f%c",latitude * 100.0,'N');  // lat
 	sprintf(header_long, "%08.2f%c",longitude * (-100.0),'W');  // long
-	sprintf(header_str2b, "=%s%c%c%shi hi ",header_lat,0x5c,0x5c,header_long);  // add APRS lat and long	    
+	sprintf(header_str2b, "=%s%c%c%sShi hi ",header_lat,0x5c,0x5c,header_long);  // add APRS lat and long	    
 	printf("\n\nString is %s \n\n", header_str2b);
 	strcat(str, header_str2b);
     } else
