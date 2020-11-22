@@ -117,8 +117,11 @@ int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, s
 float sleepTime;
 int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
+int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
+float latitude = 39.027702, longitude = -77.078064;
+float lat_file, long_file;
+
 int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
@@ -180,13 +183,19 @@ int main(int argc, char *argv[]) {
 	fclose(config_file);
 	config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
   } 
-	
+  
   char* cfg_buf[100]; 
-  fscanf(config_file, "%s %d", call, &reset_count);
+  fscanf(config_file, "%s %d %f %f", call, &reset_count, &lat_file, &long_file);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d\n", call, reset_count); 	
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file); 	
   reset_count = (reset_count + 1) % 0xffff;
 	
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0))
+  {
+      printf("Valid latitude and longitude in config file\n");
+      latitude = lat_file;
+      longitude = long_file;
+  }	
   wiringPiSetup ();
 
 // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -239,6 +248,7 @@ int main(int argc, char *argv[]) {
     if (digitalRead(2) != HIGH)
     {
 	  printf("vB3 with TFB Present\n");
+	  vB3 = TRUE;
   	  txLed = 3;
 	  txLedOn = LOW;
  	  txLedOff = HIGH;
@@ -295,7 +305,8 @@ int main(int argc, char *argv[]) {
   #endif
 	
     config_file = fopen("sim.cfg","w");
-    fprintf(config_file, "%s %d", call, reset_count);
+    fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file);
+//    fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
 		
@@ -338,7 +349,7 @@ else
 	
 // try connecting to Arduino payload using UART
 
- if (!ax5043)  // don't test if AX5043 is present
+ if (!ax5043 && !vB3)  // don't test if AX5043 is present
  {
   payload = OFF;
 
@@ -650,7 +661,12 @@ for (int j = 0; j < frameCnt; j++)
   char tlm_str[1000];
   char header_str[] = "\x03\xf0hi hi ";	
   char header_str3[] = "echo '";
-  char header_str2[] = ">CQ:>041440zhi hi ";
+  //char header_str2[] = ">CQ:>041440zhi hi ";
+  //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
+  char header_str2[] = ">CQ:";
+  char header_str2b[30]; // for APRS coordinates
+  char header_lat[10];
+  char header_long[10];
   char header_str4[] = "hi hi ";	
   char footer_str1[] = "\' > t.txt && echo \'"; 
   char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
@@ -666,6 +682,19 @@ for (int j = 0; j < frameCnt; j++)
     {
     	strcat(str, call);
     	strcat(str, header_str2);
+//	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
+	if (latitude > 0)
+	    sprintf(header_lat, "%7.2f%c",latitude * 100.0,'N');  // lat
+	else
+	    sprintf(header_lat, "%7.2f%c",latitude * (-100.0),'S');  // lat
+	if (longitude > 0)
+	    sprintf(header_long, "%08.2f%c",longitude * 100.0,'E');  // long
+	else
+	    sprintf(header_long, "%08.2f%c",longitude * (-100.0),'W');  // long
+
+	sprintf(header_str2b, "=%s%c%c%sShi hi ",header_lat,0x5c,0x5c,header_long);  // add APRS lat and long	    
+	printf("\n\nString is %s \n\n", header_str2b);
+	strcat(str, header_str2b);
     } else
     {
 	strcat(str, header_str4);
