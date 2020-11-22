@@ -120,6 +120,8 @@ int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
+float lat_file, long_file;
+
 int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
@@ -182,11 +184,10 @@ int main(int argc, char *argv[]) {
 	config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
   } 
   
-  float lat_file, long_file;
   char* cfg_buf[100]; 
   fscanf(config_file, "%s %d %f %f", call, &reset_count, lat_file, long_file);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file); 	
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %8.2f %8.2f\n", call, reset_count, lat_file, long_file); 	
   reset_count = (reset_count + 1) % 0xffff;
 	
   wiringPiSetup ();
