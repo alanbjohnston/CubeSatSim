@@ -187,12 +187,15 @@ int main(int argc, char *argv[]) {
   char* cfg_buf[100]; 
   fscanf(config_file, "%s %d %f %f", call, &reset_count, &lat_file, &long_file);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %8.2f %8.2f\n", call, reset_count, lat_file, long_file); 	
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file); 	
   reset_count = (reset_count + 1) % 0xffff;
 	
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0))
+  {
       printf("Valid latitude and longitude in config file\n");
-	
+      lattitude = lat_file;
+      longitude = long_file;
+  }	
   wiringPiSetup ();
 
 // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -302,7 +305,7 @@ int main(int argc, char *argv[]) {
   #endif
 	
     config_file = fopen("sim.cfg","w");
-    fprintf(config_file, "%s %d %f %f", call, reset_count, lat_file, long_file);
+    fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file);
 //    fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
