@@ -670,8 +670,8 @@ for (int j = 0; j < frameCnt; j++)
     {
     	strcat(str, call);
     	strcat(str, header_str2);
-	sprintf(header_str2b, "%7.2f%c%c%7.2f%cShi hi","\",4003.79,"N",07534.33,"W");  // add APRS latt and long
-	printf"\n\nString is %s \m\", header_str2b);
+	sprintf(header_str2b, "%7.2f%c%c%7.2f%cShi hi",4003.79,'N',0x5C,07534.33,'W');  // add APRS latt and long
+	printf("\n\nString is %s \m\", header_str2b);
     } else
     {
 	strcat(str, header_str4);
