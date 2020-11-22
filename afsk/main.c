@@ -190,7 +190,7 @@ int main(int argc, char *argv[]) {
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %8.2f %8.2f\n", call, reset_count, lat_file, long_file); 	
   reset_count = (reset_count + 1) % 0xffff;
 	
-  if ((abs(lat_file) > 0) && ((abs(lat_file) < 90.0) && (abs(long_file) > 0) && (abs(long_file) < 180.0))
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0))
       printf("Valid latitude and longitude in config file\n");
 	
   wiringPiSetup ();
