@@ -181,11 +181,12 @@ int main(int argc, char *argv[]) {
 	fclose(config_file);
 	config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
   } 
-	
+  
+  float lat_file, long_file;
   char* cfg_buf[100]; 
-  fscanf(config_file, "%s %d", call, &reset_count);
+  fscanf(config_file, "%s %d %f %f", call, &reset_count, lat_file, long_file);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d\n", call, reset_count); 	
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file); 	
   reset_count = (reset_count + 1) % 0xffff;
 	
   wiringPiSetup ();
@@ -297,7 +298,7 @@ int main(int argc, char *argv[]) {
   #endif
 	
     config_file = fopen("sim.cfg","w");
-    fprintf(config_file, "%s %d", call, reset_count);
+    fprintf(config_file, "%s %d %f %f", call, reset_count, lat_file, long_file);
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
 		
