@@ -652,7 +652,9 @@ for (int j = 0; j < frameCnt; j++)
   char header_str[] = "\x03\xf0hi hi ";	
   char header_str3[] = "echo '";
   //char header_str2[] = ">CQ:>041440zhi hi ";
-  char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
+  //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
+  char header_str2[] = ">CQ:";
+  char header_str2b[30]; // for APRS coordinates	
   char header_str4[] = "hi hi ";	
   char footer_str1[] = "\' > t.txt && echo \'"; 
   char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
@@ -668,6 +670,8 @@ for (int j = 0; j < frameCnt; j++)
     {
     	strcat(str, call);
     	strcat(str, header_str2);
+	sprintf(header_str2b, "%7.2f%c%c%7.2f%cShi hi","\",4003.79,"N",07534.33,"W");  // add APRS latt and long
+	printf"\n\nString is %s \m\", header_str2b);
     } else
     {
 	strcat(str, header_str4);
