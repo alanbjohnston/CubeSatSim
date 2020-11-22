@@ -185,7 +185,7 @@ int main(int argc, char *argv[]) {
   } 
   
   char* cfg_buf[100]; 
-  fscanf(config_file, "%s %d %f %f", call, &reset_count, lat_file, long_file);
+  fscanf(config_file, "%s %d %f %f", call, &reset_count, &lat_file, &long_file);
   fclose(config_file);
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %8.2f %8.2f\n", call, reset_count, lat_file, long_file); 	
   reset_count = (reset_count + 1) % 0xffff;
@@ -299,8 +299,8 @@ int main(int argc, char *argv[]) {
   #endif
 	
     config_file = fopen("sim.cfg","w");
-//    fprintf(config_file, "%s %d %f %f", call, reset_count, lat_file, long_file);
-    fprintf(config_file, "%s %d", call, reset_count);
+    fprintf(config_file, "%s %d %f %f", call, reset_count, lat_file, long_file);
+//    fprintf(config_file, "%s %d", call, reset_count);
     fclose(config_file);
     config_file = fopen("sim.cfg","r"); 
 		
