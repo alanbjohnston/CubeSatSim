@@ -5,7 +5,9 @@ echo -e "\nUpdating configurations. \n"
 
 cd ~/CubeSatSim && git pull
 
-make debug
+if [ "$1" = "make" ]; then
+  make debug
+fi
 
 sudo cp ~/CubeSatSim/groundstation/config_webrx.py /etc/openwebrx/config_webrx.py
 
