@@ -1,0 +1,40 @@
+39,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+0,MIN,BATT_A_V,12,V,4,NONE,0,0,0,NONE,Battery pair A low voltage raw value (0-2.5V scale)
+1,MIN,BATT_B_V,12,V,4,NONE,0,0,0,NONE,Battery pair B low voltage raw value (0-3.3V scale)
+2,MIN,BATT_C_V,12,V,4,NONE,0,0,0,NONE,Battery pair C low voltage raw value (0-5.0V scale)
+3,MIN,BATT_A_T,12,T,8,NONE,0,0,0,NONE,Battery pair A low temperature raw value
+4,MIN,BATT_B_T,12,T,8,NONE,0,0,0,NONE,Battery pair B low temperature raw value
+5,MIN,BATT_C_T,12,T,8,NONE,0,0,0,NONE,Battery pair C low temperature raw value
+6,MIN,TOTAL_BATT_I,12,mA,9,NONE,0,0,0,NONE,Battery DC low current raw value
+7,MIN,BATTBoardTemperature,12,C,8,NONE,0,0,0,NONE,Low PC Board Temperature of BATT raw value
+8,MIN,PANEL_PLUS_X_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+9,MIN,PANEL_MINUS_X_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+10,MIN,PANEL_PLUS_Y_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+11,MIN,PANEL_MINUS_Y_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+12,MIN,PANEL_PLUS_Z_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+13,MIN,PANEL_MINUS_Z_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+14,MIN,PANEL_PLUS_X_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+15,MIN,PANEL_MINUS_X_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+16,MIN,PANEL_PLUS_Y_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+17,MIN,PANEL_MINUS_Y_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+18,MIN,PANEL_PLUS_Z_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+19,MIN,PANEL_MINUS_Z_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+20,MIN,PSUTemperature,12,C,7,NONE,0,0,0,NONE,PSU card low temperature raw value
+21,MIN,SPIN,12,rpm,12,NONE,0,0,0,NONE,Lowest calculated spin rate RPM using solar cells
+22,MIN,TXPACurrent,12,mA,10,NONE,0,0,0,NONE,Transmit power amplifier low current raw value
+23,MIN,TXTemperature,12,C,7,NONE,0,0,0,NONE,Transmitter card low temperature raw value
+24,MIN,RXTemperature,12,C,7,NONE,0,0,0,NONE,Receiver card low temperature raw value
+25,MIN,RSSI,12,dBm,14,NONE,0,0,0,NONE,Low Received Signal Strength Indication raw value
+26,MIN,IHUTemperature,12,C,15,NONE,0,0,0,NONE,Low CPU Temperature of IHU raw value
+27,MIN,SatelliteXAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Lowest Raw Angle
+28,MIN,SatelliteYAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Lowest Raw Angle
+29,MIN,SatelliteZAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Lowest Raw Angle
+30,MIN,EXP4Temperature,12,C,7,NONE,0,0,0,NONE,Experiment 4 card low temperature raw value
+31,MIN,PSUCurrent,12,mA,11,NONE,0,0,0,NONE,PSU DC low current
+32,MIN,IHUSoftErrorData,32,-,20,Computer,2,9,0,Soft Error,Diagnostic Data on IHU Soft Errors
+33,MIN,MinTimestampResetCount,16,-,1,NONE,0,0,0,NONE,Total number of times IHU has reset since initial on-orbit startup
+34,MIN,MinTimestampUptime,25,-,1,NONE,0,0,0,NONE,This is the IHU uptime in seconds since the last reset
+35,MIN,SafeModeIndication,1,-,21,NONE,0,0,0,NONE,State: 1 = Safe Mode Active
+36,MIN,AutoSafeModeActive,1,-,21,NONE,0,0,0,NONE,State: 1 = Auto Safe Mode Active
+37,MIN,AutoSafeModeAllowed,1,-,21,NONE,0,0,0,NONE,State: 1 = Auto Safe Mode Allowed
+38,MIN,Pad,20,-,0,NONE,0,0,0,NONE,NONE
