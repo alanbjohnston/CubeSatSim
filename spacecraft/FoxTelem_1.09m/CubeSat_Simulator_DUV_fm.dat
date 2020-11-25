@@ -1,0 +1,15 @@
+#Fox 1 Telemetry Decoder User Spacecraft Properties
+#Wed Nov 25 09:31:53 EST 2020
+hasModeInHeader=false
+maxFreqBoundkHz=434950.0
+displayName=CubeSatSim-FSK
+minFreqBoundkHz=434850.0
+priority=1
+memsRestValueY=2101
+memsRestValueZ=2045
+user_format=0
+memsRestValueX=2087
+name=CubeSatSim
+track=true
+telemetryDownlinkFreqkHz=434900.0
+BATTERY_CURRENT_ZERO=-1.839
