@@ -7,18 +7,18 @@
 5,realTime,battCtemp,12,C,8,NONE,4,6,3,Temperature C,Battery pair C temperature
 6,realTime,battCurr,12,mA,cubesatsim_ina219_current,Battery,4,2,4,Current,Total Battery DC current
 7,realTime,battCardTemp,12,C,8,NONE,4,8,3,Board Temp,Battery Card Temperature
-8,realTime,posXv,12,V,cubesatsim_ina219_voltage,+X Panel,8,1,3,Voltage,+X solar Panel voltage
-9,realTime,posYv,12,V,cubesatsim_ina219_voltage,+Y Panel,9,1,3,Voltage,+Y solar Panel voltage
-10,realTime,posZv,12,V,cubesatsim_ina219_voltage,+Z Panel,10,1,3,Voltage,+Z solar Panel voltage
-11,realTime,negXv,12,V,cubesatsim_ina219_voltage,-X Panel,11,1,3,Voltage,-X solar Panel voltage
-12,realTime,negYv,12,V,cubesatsim_ina219_voltage,-Y Panel,12,1,3,Voltage,-Y solar Panel voltage
-13,realTime,negZv,12,V,cubesatsim_ina219_voltage,-Z Panel,13,1,3,Voltage,-Z solar Panel voltage
-14,realTime,posXi,12,mA,cubesatsim_ina219_current,+X Panel,8,2,4,Current,+X solar Panel current
-15,realTime,posYi,12,mA,cubesatsim_ina219_current,+Y Panel,9,2,4,Current,+Y solar Panel current
-16,realTime,posZi,12,mA,cubesatsim_ina219_current,+Z Panel,10,2,4,Current,+Z solar Panel current
-17,realTime,negXi,12,mA,cubesatsim_ina219_current,-X Panel,11,2,4,Current,-X solar Panel current
-18,realTime,negYi,12,mA,cubesatsim_ina219_current,-Y Panel,12,2,4,Current,-Y solar Panel current
-19,realTime,negZi,12,mA,cubesatsim_ina219_current,-Z Panel,13,2,4,Current,-Z solar Panel current
+8,realTime,posXv,12,V,cubesatsim_ina219_voltage,+X Panel,7,1,3,Voltage,+X solar Panel voltage
+9,realTime,posYv,12,V,cubesatsim_ina219_voltage,+Y Panel,8,1,3,Voltage,+Y solar Panel voltage
+10,realTime,posZv,12,V,cubesatsim_ina219_voltage,+Z Panel,9,1,3,Voltage,+Z solar Panel voltage
+11,realTime,negXv,12,V,cubesatsim_ina219_voltage,-X Panel,10,1,3,Voltage,-X solar Panel voltage
+12,realTime,negYv,12,V,cubesatsim_ina219_voltage,-Y Panel,11,1,3,Voltage,-Y solar Panel voltage
+13,realTime,negZv,12,V,cubesatsim_ina219_voltage,-Z Panel,12,1,3,Voltage,-Z solar Panel voltage
+14,realTime,posXi,12,mA,cubesatsim_ina219_current,+X Panel,7,2,4,Current,+X solar Panel current
+15,realTime,posYi,12,mA,cubesatsim_ina219_current,+Y Panel,8,2,4,Current,+Y solar Panel current
+16,realTime,posZi,12,mA,cubesatsim_ina219_current,+Z Panel,9,2,4,Current,+Z solar Panel current
+17,realTime,negXi,12,mA,cubesatsim_ina219_current,-X Panel,10,2,4,Current,-X solar Panel current
+18,realTime,negYi,12,mA,cubesatsim_ina219_current,-Y Panel,11,2,4,Current,-Y solar Panel current
+19,realTime,negZi,12,mA,cubesatsim_ina219_current,-Z Panel,12,2,4,Current,-Z solar Panel current
 20,realTime,PSUVoltage,12,V,cubesatsim_ina219_voltage,PSU,5,2,3,Board Voltage,Power Supply Voltage
 21,realTime,spin,12,rpm,12,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
 22,realTime,TxPAi,12,mA,38,Radio,1,2,3,PA Current,Transmit power amplifier current
@@ -26,9 +26,9 @@
 24,realTime,FwdPower,12,mW,40,Radio,1,4,3,Fwd Power,Receiver card temperature
 25,realTime,rssi,12,dBm,14,Radio,1,3,3,RSSI,Received Signal Strength Indication
 26,realTime,IHUcpuTemp,12,C,cubesatsim_temperature,Computer Hardware,2,1,3,Temperature,Internal Temperature of IHU
-27,realTime,SatelliteXAxisAngularVelocity,12,dps,cubesatsim_rotation,+X Panel,8,3,3,Rotation,Angular Veolcity around X Axis
-28,realTime,SatelliteYAxisAngularVelocity,12,dps,cubesatsim_rotation,+Y Panel,9,3,3,Rotation,Angular Veolcity around Y Axis
-29,realTime,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation,+Z Panel,10,3,3,Rotation,Angular Veolcity around Z Axis
+27,realTime,SatelliteXAxisAngularVelocity,12,dps,cubesatsim_rotation,+X Panel,7,3,3,Rotation,Angular Veolcity around X Axis
+28,realTime,SatelliteYAxisAngularVelocity,12,dps,cubesatsim_rotation,+Y Panel,8,3,3,Rotation,Angular Veolcity around Y Axis
+29,realTime,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation,+Z Panel,9,3,3,Rotation,Angular Veolcity around Z Axis
 30,realTime,Exp4Temp,12,C,7,Experiments,6,1,3,EXP4 Temp,Experiment 4 card temperature
 31,realTime,PSUCurrent,12,mA,cubesatsim_ina219_current,PSU,5,1,3,Current,Power Supply DC Current
 32,realTime,ReflectedPwr,12,mW,41,Radio,1,5,3,Ref Power,Reflected Power from the Transmit Antenna
