@@ -41,7 +41,7 @@
 39,realTime,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
 40,realTime,LtVGACtl,12,V,42,Radio,1,6,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
 41,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
-42,realTime,IHUdiagData,32,-,18,Computer Software,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
+42,realTime,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
 43,realTime,expFailure0,1,-,17,Experiments,6,2,0,Vanderbilt Radiation,Vanderbilt University Vulcan Experiment Indicator
 44,realTime,expFailure1,1,-,17,Experiments,6,3,0,Exp 1,Experiment 1 Failure Indicator
 45,realTime,expFailure2,1,-,17,Experiments,6,4,0,Exp 2,Experiment 2 Failure Indicator
