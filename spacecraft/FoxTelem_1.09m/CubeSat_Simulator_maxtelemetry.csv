@@ -1,0 +1,40 @@
+39,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+0,MAX,BATT_A_V,12,V,4,NONE,0,0,0,NONE,Battery pair A high voltage raw value (0-2.5V scale)
+1,MAX,BATT_B_V,12,V,4,NONE,0,0,0,NONE,Battery pair B high voltage raw value (0-3.3V scale)
+2,MAX,BATT_C_V,12,V,4,NONE,0,0,0,NONE,Battery pair C high voltage raw value (0-5.0V scale)
+3,MAX,BATT_A_T,12,C,8,NONE,0,0,0,NONE,Battery pair A high temperature raw value
+4,MAX,BATT_B_T,12,C,8,NONE,0,0,0,NONE,Battery pair B high temperature raw value
+5,MAX,BATT_C_T,12,C,8,NONE,0,0,0,NONE,Battery pair C high temperature raw value
+6,MAX,TOTAL_BATT_I,12,mA,9,NONE,0,0,0,NONE,Battery DC high current raw value
+7,MAX,BATTBoardTemperature,12,C,8,NONE,0,0,0,NONE,High PC Board Temperature of BATT raw value
+8,MAX,PANEL_PLUS_X_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+9,MAX,PANEL_MINUS_X_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+10,MAX,PANEL_PLUS_Y_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+11,MAX,PANEL_MINUS_Y_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+12,MAX,PANEL_PLUS_Z_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+13,MAX,PANEL_MINUS_Z_V,12,V,5,NONE,0,0,0,NONE,#NAME?
+14,MAX,PANEL_PLUS_X_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+15,MAX,PANEL_MINUS_X_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+16,MAX,PANEL_PLUS_Y_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+17,MAX,PANEL_MINUS_Y_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+18,MAX,PANEL_PLUS_Z_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+19,MAX,PANEL_MINUS_Z_T,12,C,6,NONE,0,0,0,NONE,#NAME?
+20,MAX,PSUTemperature,12,C,7,NONE,0,0,0,NONE,PSU card high temperature raw value
+21,MAX,SPIN,12,rpm,12,NONE,0,0,0,NONE,Highest calculated spin rate RPM using solar cells
+22,MAX,TXPACurrent,12,mA,10,NONE,0,0,0,NONE,Transmit power amplifier high current raw value
+23,MAX,TXTemperature,12,C,7,NONE,0,0,0,NONE,Transmitter card high temperature raw value
+24,MAX,RXTemperature,12,C,7,NONE,0,0,0,NONE,Receiver card high temperature raw value
+25,MAX,RSSI,12,dBm,14,NONE,0,0,0,NONE,High Received Signal Strength Indication raw value
+26,MAX,IHUTemperature,12,C,15,NONE,0,0,0,NONE,High CPU Temperature of IHU raw value
+27,MAX,SatelliteXAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Highest Raw Angle
+28,MAX,SatelliteYAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Highest Raw Angle
+29,MAX,SatelliteZAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Highest Raw Angle
+30,MAX,EXP4Temperature,12,C,7,NONE,0,0,0,NONE,LBand Uplink card temperature raw value
+31,MAX,PSUCurrent,12,mA,22,NONE,0,0,0,NONE,PSU DC high current
+32,MAX,IHUHardErrorData,32,-,19,Computer,2,8,0,Hard Error,Diagnostic Data on IHU Hard Errors
+33,MAX,MaxTimestampResetCount,16,-,1,NONE,0,0,0,NONE,Total number of times IHU has reset since initial on-orbit startup
+34,MAX,MaxTimestampUptime,25,-,1,NONE,0,0,0,NONE,This is the IHU uptime in seconds since the last reset
+35,MAX,SafeModeIndication,1,-,21,Computer,2,10,0,Safe Mode,State: 1 = Safe Mode Active
+36,MAX,AutoSafeModeActive,1,-,21,Computer,2,11,0,Auto Safe Mode,State: 1 = Auto Safe Mode Active
+37,MAX,AutoSafeModeAllowed,1,-,21,Computer,2,12,0,Auto Safe Allowed,State: 1 = Auto Safe Mode Allowed
+38,MAX,Pad,20,-,0,NONE,0,0,0,NONE,NONE
