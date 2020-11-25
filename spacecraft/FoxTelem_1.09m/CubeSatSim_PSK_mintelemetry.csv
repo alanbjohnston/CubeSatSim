@@ -41,7 +41,7 @@
 39,MIN,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
 40,MIN,LtVGACtl,12,V,42,NONE,1,6,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
 41,MIN,pad,4,-,34,NONE,0,0,0,None,Unused
-42,MIN,IHUsoftError,32,-,39,Computer Software,3,8,0,Soft Error,Diagnostic Data on IHU Software Errors
+42,MIN,IHUsoftError,32,-,39,NONE,3,8,0,Soft Error,Diagnostic Data on IHU Software Errors
 43,MIN,minTimestampReset,16,s,1,NONE,0,0,0,NONE,Timestamp Resets
 44,MIN,minTimestampUptime,25,s,1,NONE,0,0,0,NONE,Timestamp uptime
 45,MIN,SafeModeIndication,1,-,21,NONE,0,0,0,NONE,In safe mode?
