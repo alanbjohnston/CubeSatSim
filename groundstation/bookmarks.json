@@ -5,15 +5,14 @@
     "modulation": "nfm"
   },
   {
-    "name": "ISS SSTV",
-    "frequency": 145819000,
+    "name": "ISS SSTV/Voice",
+    "frequency": 145800000,
     "modulation": "nfm"
   },
   {
     "name": "ARISS Repeater Downlink",
     "frequency": 437800000,
     "modulation": "nfm"
-
   },
   {
     "name": "AO-27",
@@ -133,7 +132,7 @@
   {
     "name": "CubeSatSim",
     "frequency": 434900000,
-    "modulation": "nfm"
+    "modulation": "packet"
   },
   {
     "name": "APRS EU",
