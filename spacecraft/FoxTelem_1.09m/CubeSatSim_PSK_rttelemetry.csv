@@ -54,7 +54,7 @@
 52,realTime,TxAntDeploy,2,-,16,Radio,1,7,0,TX Antenna,70cm Antenna status
 53,realTime,I2CfailureRF,1,-,17,Computer Hardware,2,5,0,RF I2C,RF I2C Bus failure indicator
 54,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
-55,realTime,wodSize,8,000s,36,Computer Software,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
+55,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
 56,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
 57,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 58,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
