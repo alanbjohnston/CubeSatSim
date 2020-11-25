@@ -35,6 +35,6 @@
 33,MAX,MaxTimestampResetCount,16,-,1,NONE,0,0,0,NONE,Total number of times IHU has reset since initial on-orbit startup
 34,MAX,MaxTimestampUptime,25,-,1,NONE,0,0,0,NONE,This is the IHU uptime in seconds since the last reset
 35,MAX,SafeModeIndication,1,-,21,Computer,2,10,0,Safe Mode,State: 1 = Safe Mode Active
-36,MAX,AutoSafeModeActive,1,-,21,Computer,2,11,0,Auto Safe Mode,State: 1 = Auto Safe Mode Active
-37,MAX,AutoSafeModeAllowed,1,-,21,Computer,2,12,0,Auto Safe Allowed,State: 1 = Auto Safe Mode Allowed
+36,MAX,AutoSafeModeActive,1,-,21,NONE,2,11,0,Auto Safe Mode,State: 1 = Auto Safe Mode Active
+37,MAX,AutoSafeModeAllowed,1,-,21,NONE,2,12,0,Auto Safe Allowed,State: 1 = Auto Safe Mode Allowed
 38,MAX,Pad,20,-,0,NONE,0,0,0,NONE,NONE
