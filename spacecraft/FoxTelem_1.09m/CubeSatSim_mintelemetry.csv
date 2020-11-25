@@ -31,7 +31,7 @@
 29,MIN,SatelliteZAxisAngularVelocity,12,dps,13,NONE,0,0,0,NONE,Lowest Raw Angle
 30,MIN,EXP4Temperature,12,C,7,NONE,0,0,0,NONE,Experiment 4 card low temperature raw value
 31,MIN,PSUCurrent,12,mA,11,NONE,0,0,0,NONE,PSU DC low current
-32,MIN,IHUSoftErrorData,32,-,20,Computer,2,9,0,Soft Error,Diagnostic Data on IHU Soft Errors
+32,MIN,IHUSoftErrorData,32,-,20,NONE,2,9,0,Soft Error,Diagnostic Data on IHU Soft Errors
 33,MIN,MinTimestampResetCount,16,-,1,NONE,0,0,0,NONE,Total number of times IHU has reset since initial on-orbit startup
 34,MIN,MinTimestampUptime,25,-,1,NONE,0,0,0,NONE,This is the IHU uptime in seconds since the last reset
 35,MIN,SafeModeIndication,1,-,21,NONE,0,0,0,NONE,State: 1 = Safe Mode Active
