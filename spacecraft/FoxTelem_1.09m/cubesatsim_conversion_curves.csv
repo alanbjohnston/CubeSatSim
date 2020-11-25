@@ -1,0 +1,4 @@
+﻿CurveName,a,bx,cx^2,dx^3,ex^4,fx^5,Description
+cubesatsim_ina219_voltage,0,0.01,0,0,0,0,Converts voltages read from the INA219 sensors
+cubesatsim_ina219_current,-2048,1,0,0,0,0,Converts positive and negative currents read from the INA219 sensors
+cubesatsim_temperature,0,0.1,0,0,0,0,Converts temperature of Pi
