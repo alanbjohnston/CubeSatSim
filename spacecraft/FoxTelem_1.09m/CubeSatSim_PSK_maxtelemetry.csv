@@ -1,0 +1,52 @@
+51,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+0,MAX,BATT_A_V,12,V,4,NONE,4,1,3,Cell A,Battery pair A voltage (0-2.5V scale)
+1,MAX,BATT_B_V,12,V,4,NONE,4,2,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
+2,MAX,BATT_C_V,12,V,4,NONE,4,3,3,Cell A + B + C,Battery pairs A+B+C voltage (0-5.0V scale)
+3,MAX,battAtemp,12,C,8,NONE,4,4,3,Temperature A,Battery pair A temperature
+4,MAX,battBtemp,12,C,8,NONE,4,5,3,Temperature B,Battery pair B temperature
+5,MAX,battCtemp,12,C,8,NONE,4,6,3,Temperature C,Battery pair C temperature
+6,MAX,battCurr,12,mA,9,NONE,4,7,3,Current,Total Battery DC current
+7,MAX,battCardTemp,12,C,8,NONE,4,8,3,Board Temp,Battery Card Temperature
+8,MAX,posXv,12,V,23,NONE,8,1,3,Voltage,+X solar Panel voltage
+9,MAX,posYv,12,V,23,NONE,9,1,3,Voltage,+Y solar Panel voltage
+10,MAX,posZv,12,V,23,NONE,10,1,3,Voltage,+Z solar Panel voltage
+11,MAX,negXv,12,V,23,NONE,11,1,3,Voltage,-X solar Panel voltage
+12,MAX,negYv,12,V,23,NONE,12,1,3,Voltage,-Y solar Panel voltage
+13,MAX,negZv,12,V,23,NONE,13,1,3,Voltage,-Z solar Panel voltage
+14,MAX,posXt,12,C,24,NONE,8,2,3,Temp,+X solar Panel temperature
+15,MAX,posYt,12,C,24,NONE,9,2,3,Temp,+Y solar Panel temperature
+16,MAX,posZt,12,C,24,NONE,10,2,3,Temp,+Z solar Panel temperature
+17,MAX,negXt,12,C,24,NONE,11,2,3,Temp,-X solar Panel temperature
+18,MAX,negYt,12,C,24,NONE,12,2,3,Temp,-Y solar Panel temperature
+19,MAX,negZt,12,C,24,NONE,13,2,3,Temp,-Z solar Panel temperature
+20,MAX,PSUTemp,12,C,8,NONE,5,2,3,Board Temp,Power Supply Card Temperature
+21,MAX,spin,12,rpm,12,NONE,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
+22,MAX,TxPAi,12,mA,38,NONE,1,2,3,PA Current,Transmit power amplifier current
+23,MAX,TxTemp,12,C,37,NONE,1,1,3,TX Temperature,Transmitter card temperature
+24,MAX,FwdPower,12,mW,40,NONE,1,4,3,Fwd Power,Receiver card temperature
+25,MAX,rssi,12,dBm,14,NONE,1,3,3,RSSI,Received Signal Strength Indication
+26,MAX,IHUcpuTemp,12,C,15,NONE,2,1,3,Temperature,Internal Temperature of IHU
+27,MAX,SatelliteXAxisAngularVelocity,12,dps,13,NONE,8,3,3,Rotation,Angular Veolcity around X Axis
+28,MAX,SatelliteYAxisAngularVelocity,12,dps,13,NONE,9,3,3,Rotation,Angular Veolcity around Y Axis
+29,MAX,SatelliteZAxisAngularVelocity,12,dps,13,NONE,10,3,3,Rotation,Angular Veolcity around Z Axis
+30,MAX,Exp4Temp,12,C,7,NONE,6,1,3,EXP4 Temp,Experiment 4 card temperature
+31,MAX,PSUCurrent,12,mA,22,NONE,5,1,3,Current,Power Supply DC Current
+32,MAX,ReflectedPwr,12,mW,41,NONE,1,5,3,Ref Power,Reflected Power from the Transmit Antenna
+33,MAX,ICR3V,12,V,43,NONE,7,1,3,3V,ICR 3V
+34,MAX,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
+35,MAX,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
+36,MAX,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
+37,MAX,rf6,12,-,0,NONE,0,0,0,None,None
+38,MAX,rf7,12,-,0,NONE,0,0,0,None,None
+39,MAX,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
+40,MAX,LtVGACtl,12,V,42,NONE,1,6,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
+41,MAX,pad,4,-,34,NONE,0,0,0,None,Unused
+42,MAX,IHUhardError,32,-,19,Computer Hardware,2,7,0,IHU Hard Error Data,Reason for last reset
+43,MAX,maxTimestampReset,16,s,1,NONE,0,0,0,MAX Timestamp Reset Count,Timestamp of last max change
+44,MAX,maxTimestampUptime,25,s,1,NONE,0,0,0,MAX Timestamp Uptime,Timestamp of last max change
+45,MAX,SafeModeIndication,1,-,21,Computer Software,3,4,0,Safe Mode,In safe mode?
+46,MAX,AutoSafeModeActive,1,-,21,Computer Software,3,5,0,Auto Safe Mode,In Autosafe mode?
+47,MAX,AutoSafeModeAllowed,1,-,21,Computer Software,3,6,0,Auto Safe Allowed,Autosafe enabled?
+48,MAX,ScienceModeActive,1,-,21,Computer Software,3,7,0,Science Mode,In Science Mode?
+49,MAX,pad1,19,-,0,NONE,0,0,0,NONE,Make it even
+50,MAX,pad2,32,-,0,NONE,0,0,0,NONE,-
