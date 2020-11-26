@@ -21,8 +21,8 @@
 19,RT,PANEL_MINUS_Z_I,12,mA,cubesatsim_ina219_current,-Z Panel,11,1,3,Current,-Z Panel
 20,RT,PSUVoltage,12,V,cubesatsim_ina219_voltage,PSU,4,2,3,Board Voltage,Power Supply Voltage
 21,RT,SPIN,12,rpm,12,Computer,2,2,3,Spacecraft Spin,Calculated spin rate using solar cells
-22,RT,Pressure,12,bar,10,Experiments,5,2,4,Pressure,STEM Payload Sensor Pressure
-23,RT,Altitude,12,m,7,Experiments,5,2,5,Altitude,STEM Payload Sensor Altitude
+22,RT,Pressure,12,bar,10,Experiments,5,3,3,Pressure,STEM Payload Sensor Pressure
+23,RT,Altitude,12,m,7,Experiments,5,4,3,Altitude,STEM Payload Sensor Altitude
 24,RT,RXTemperature,12,C,7,Radio,1,1,3,RX Temperature,Receiver card temperature
 25,RT,RSSI,12,dBm,14,Radio,1,2,3,RSSI,Received Signal Strength Indication
 26,RT,IHUTemperature,12,C,cubesatsim_temperature,Computer,2,1,3,Temperature,Internal Temperature of IHU
