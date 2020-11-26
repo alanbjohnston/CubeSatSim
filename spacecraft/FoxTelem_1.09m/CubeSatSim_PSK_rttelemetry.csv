@@ -23,7 +23,7 @@
 21,realTime,spin,12,rpm,12,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
 22,realTime,Pressure,12,bar,cubesatsim_pressure,Experiments,6,3,3,Pressure,STEM Payload Sensor Pressure
 23,realTime,Altitude,12,m,cubesatsim_altitude,Experiments,6,4,3,Altitude,STEM Payload Sensor Altitude
-24,realTime,Resets,12,-,12,Computer Software,3,2,3,Reset Count, Software Reset Count
+24,realTime,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
 25,realTime,rssi,12,dBm,14,Radio,1,1,3,RSSI,Received Signal Strength Indication
 26,realTime,IHUcpuTemp,12,C,cubesatsim_temperature,Computer Hardware,2,1,3,Temperature,Internal Temperature of IHU
 27,realTime,SatelliteXAxisAngularVelocity,12,dps,cubesatsim_rotation,+X Panel,7,3,3,Rotation,Angular Veolcity around X Axis
