@@ -4,3 +4,5 @@ cubesatsim_ina219_current,-2048,1,0,0,0,0,Converts positive and negative current
 cubesatsim_temperature,0,0.1,0,0,0,0,Converts temperature of Pi
 cubesatsim_rotation,-2048,1,0,0,0,0,Converts positive and negative dps rotation
 cubesatsim_acceleration,-2048,0.01,0,0,0,0,Converts positive and negative g acceleration
+cubesatsim_sensor1,0,1,0,0,0,0,Integer conversion of Sensor 1
+cubesatsim_sensor2,-2048,1,0,0,0,0,Integer conversion of Sensor 2
