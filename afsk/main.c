@@ -876,7 +876,7 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16, NormalModeFailure = 0; // set to 32 to fail into Safe Mode
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16, NormalModeFailure = 32; // set to 32 to fail into Safe Mode
   int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
