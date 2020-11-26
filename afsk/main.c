@@ -22,6 +22,7 @@
 #include <fcntl.h>                              
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <unistd.h>
 #include <string.h>
 #include "status.h"
@@ -885,7 +886,7 @@ int get_tlm_fox() {
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
-  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 224, pressure = 1000, altitude = 1000;
+  int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
   int sensor1 = 0, sensor2 = 2048;
 	
   short int buffer_test[bufLen];
