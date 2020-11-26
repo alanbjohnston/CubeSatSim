@@ -884,6 +884,7 @@ int get_tlm_fox() {
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
   int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
+  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 2240, pressure = 1000, altitude = 1000;
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1114,13 +1115,13 @@ if (payload == ON)
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
 	  
-  encodeB(b, 4 + head_offset,negXv);	  // Xaccel
-  encodeA(b, 6 + head_offset,posYv);	  //Yaccel
-  encodeB(b, 7 + head_offset,negYv);	  //Zaccel
+  encodeB(b, 4 + head_offset,xAccel);	  // Xaccel
+  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
+  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
-  encodeB(b, 10 + head_offset,negYv);	// Temp
+  encodeB(b, 10 + head_offset,temp);	// Temp
 	  
   if (mode == FSK)
   {	  
@@ -1157,8 +1158,8 @@ if (payload == ON)
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
 	  
-  encodeA(b, 33 + head_offset,PSUVoltage);  // Pressure
-  encodeB(b, 34 + head_offset,PSUVoltage);   // Altitude
+  encodeA(b, 33 + head_offset,pressure);  // Pressure
+  encodeB(b, 34 + head_offset,altitude);   // Altitude
 	  
   encodeB(b, 46 + head_offset,PSUCurrent);
 
