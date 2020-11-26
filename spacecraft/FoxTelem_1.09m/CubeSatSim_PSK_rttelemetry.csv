@@ -1,25 +1,25 @@
 60,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
 0,realTime,BATT_A_V,12,V,4,NONE,4,1,3,Cell A,Battery pair A voltage (0-2.5V scale)
 1,realTime,BATT_B_V,12,V,4,NONE,4,2,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
-2,realTime,BATT_V,12,V,cubesatsim_ina219_voltage,Battery,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
+2,realTime,BATT_V,12,V,cubesatsim_ina219_voltage|FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
 3,realTime,SatelliteXAxisAcceleration,12,g,cubesatsim_rotation,+X Panel,7,4,3,Acceleration,Acceleration around X Axis
 4,realTime,SatelliteYAxisAcceleration,12,g,cubesatsim_rotation,+Y Panel,8,4,3,Acceleration,Acceleration around Y Axis
 5,realTime,SatelliteZAxisAcceleration,12,g,cubesatsim_rotation,+Z Panel,9,4,3,Acceleration,Acceleration around Z Axis
 6,realTime,battCurr,12,mA,cubesatsim_ina219_current,Battery,4,2,4,Current,Total Battery DC current
 7,realTime,Temperature,12,C,cubesatsim_temperature,Experiments,6,2,3,Temp,STEM Payload Sensor Temperature
-8,realTime,posXv,12,V,cubesatsim_ina219_voltage,+X Panel,7,1,3,Voltage,+X solar Panel voltage
-9,realTime,posYv,12,V,cubesatsim_ina219_voltage,+Y Panel,8,1,3,Voltage,+Y solar Panel voltage
-10,realTime,posZv,12,V,cubesatsim_ina219_voltage,+Z Panel,9,1,3,Voltage,+Z solar Panel voltage
-11,realTime,negXv,12,V,cubesatsim_ina219_voltage,-X Panel,10,1,3,Voltage,-X solar Panel voltage
-12,realTime,negYv,12,V,cubesatsim_ina219_voltage,-Y Panel,11,1,3,Voltage,-Y solar Panel voltage
-13,realTime,negZv,12,V,cubesatsim_ina219_voltage,-Z Panel,12,1,3,Voltage,-Z solar Panel voltage
+8,realTime,posXv,12,V,cubesatsim_ina219_voltage|FLOAT2,+X Panel,7,1,3,Voltage,+X solar Panel voltage
+9,realTime,posYv,12,V,cubesatsim_ina219_voltage|FLOAT2,+Y Panel,8,1,3,Voltage,+Y solar Panel voltage
+10,realTime,posZv,12,V,cubesatsim_ina219_voltage|FLOAT2,+Z Panel,9,1,3,Voltage,+Z solar Panel voltage
+11,realTime,negXv,12,V,cubesatsim_ina219_voltage|FLOAT2,-X Panel,10,1,3,Voltage,-X solar Panel voltage
+12,realTime,negYv,12,V,cubesatsim_ina219_voltage|FLOAT2,-Y Panel,11,1,3,Voltage,-Y solar Panel voltage
+13,realTime,negZv,12,V,cubesatsim_ina219_voltage|FLOAT2,-Z Panel,12,1,3,Voltage,-Z solar Panel voltage
 14,realTime,posXi,12,mA,cubesatsim_ina219_current,+X Panel,7,2,4,Current,+X solar Panel current
 15,realTime,posYi,12,mA,cubesatsim_ina219_current,+Y Panel,8,2,4,Current,+Y solar Panel current
 16,realTime,posZi,12,mA,cubesatsim_ina219_current,+Z Panel,9,2,4,Current,+Z solar Panel current
 17,realTime,negXi,12,mA,cubesatsim_ina219_current,-X Panel,10,2,4,Current,-X solar Panel current
 18,realTime,negYi,12,mA,cubesatsim_ina219_current,-Y Panel,11,2,4,Current,-Y solar Panel current
 19,realTime,negZi,12,mA,cubesatsim_ina219_current,-Z Panel,12,2,4,Current,-Z solar Panel current
-20,realTime,PSUVoltage,12,V,cubesatsim_ina219_voltage,PSU,5,1,3,Board Voltage,Power Supply Voltage
+20,realTime,PSUVoltage,12,V,cubesatsim_ina219_voltage|FLOAT2,PSU,5,1,3,Board Voltage,Power Supply Voltage
 21,realTime,spin,12,rpm,12,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
 22,realTime,Pressure,12,bar,cubesatsim_pressure,Experiments,6,3,3,Pressure,STEM Payload Sensor Pressure
 23,realTime,Altitude,12,m,cubesatsim_altitude,Experiments,6,4,3,Altitude,STEM Payload Sensor Altitude
