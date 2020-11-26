@@ -35,7 +35,7 @@
 33,RT,Sensor3,12,signed scaled,cubesatsim_sensor3,Experiments,6,7,3,Sensor 3,STEM Payload Extra Sensor 3
 34,RT,Unused,8,na,7,NONE,0,0,0,Unused,Unused
 35,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload Status,STEM Payload Board Status
-36,RT,Safe Mode,1,-,17,Computer Software,3,2,0,Safe Mode, Safe Mode
+36,RT,Nominal Mode,1,-,17,Computer Software,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
 37,RT,Experiment3FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
 38,RT,Experiment4FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
 39,RT,BATTI2CFailureIndications,1,-,17,Computer Hardware,2,2,0,Battery I2C,Battery I2C Bus failure indicator
