@@ -32,7 +32,7 @@
 30,realTime,Sensor1,12,raw,cubesatsim_sensor1,Experiments,6,5,3,Sensor 1,STEM Payload Extra Sensor 1
 31,realTime,PSUCurrent,12,mA,cubesatsim_ina219_current,PSU,5,1,3,Current,Power Supply DC Current
 32,realTime,Sensor2,12,signed raw,cubesatsim_sensor2,Experiments,6,6,3,Sensor 2,STEM Payload Extra Sensor 2
-33,realTime,ICR3V,12,V,43,NONE,7,1,3,3V,ICR 3V
+33,realTime,Sensor3,12,signed raw,cubesatsim_sensor3,Experiments,6,7,3,Sensor 3,STEM Payload Extra Sensor 3
 34,realTime,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
 35,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
 36,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
