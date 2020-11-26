@@ -1113,7 +1113,14 @@ if (payload == ON)
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
+	  
+  encodeB(b, 4 + head_offset,negXv);	  // Xaccel
+  encodeA(b, 6 + head_offset,posYv);	  //Yaccel
+  encodeB(b, 7 + head_offset,negYv);	  //Zaccel
+	  
   encodeA(b, 9 + head_offset, battCurr);
+	
+  encodeB(b, 10 + head_offset,negYv);	// Temp
 	  
   if (mode == FSK)
   {	  
@@ -1149,6 +1156,10 @@ if (payload == ON)
   }	  
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
+	  
+  encodeA(b, 33 + head_offset,PSUVoltage);  // Pressure
+  encodeB(b, 34 + head_offset,PSUVoltage);   // Altitude
+	  
   encodeB(b, 46 + head_offset,PSUCurrent);
 
   encodeA(b, 36 + head_offset,  RXTemperature);	  
