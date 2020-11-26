@@ -1176,7 +1176,7 @@ if (payload == ON)
 
   encodeA(b, 45 + head_offset, sensor1);
   encodeB(b, 46 + head_offset,PSUCurrent);
-  encodeA(b, 47 + head_offset, sensor2);
+  encodeA(b, 48 + head_offset, sensor2);
 
 	  
   encodeB(b, 51 + head_offset, STEMBoardFailure);
