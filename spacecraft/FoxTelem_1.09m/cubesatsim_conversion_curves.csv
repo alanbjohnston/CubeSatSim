@@ -6,5 +6,6 @@ cubesatsim_rotation,-2048,1,0,0,0,0,Converts positive and negative dps rotation
 cubesatsim_acceleration,-20.48,0.01,0,0,0,0,Converts positive and negative g acceleration
 cubesatsim_altitude,0,0.1,0,0,0,0,Converts altitude
 cubesatsim_pressure,0,1,0,0,0,0,Converts pressure
-cubesatsim_sensor1,0,1,0,0,0,0,Integer conversion of Sensor 1
-cubesatsim_sensor2,-2048,1,0,0,0,0,Integer conversion of Sensor 2
+cubesatsim_sensor1,0,1,0,0,0,0,Conversion of Sensor 1
+cubesatsim_sensor2,-2048,1,0,0,0,0,Conversion of Sensor 2
+cubesatsim_sensor3,-20.48,0.01,0,0,0,0,Conversion of Sensor 3
