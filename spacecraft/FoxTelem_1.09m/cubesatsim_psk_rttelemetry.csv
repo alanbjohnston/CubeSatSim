@@ -50,8 +50,8 @@
 48,realTime,I2CfailurePSU1,1,-,17,Computer Hardware,2,3,0,PSU1 I2C,PSU2 I2C Bus failure indicator
 49,realTime,I2CfailurePSU2,1,-,17,Computer Hardware,2,4,0,PSU2 I2C,PSU2 I2C Bus failure indicator
 50,realTime,TLMresets,4,-,1,Computer Hardware,2,6,0,Ground Resets,Number of times command stations reset stored telemetry
-51,realTime,RxAntDeploy,1,-,16,Radio,1,8,0,RX Antenna,2m Antenna status
-52,realTime,TxAntDeploy,2,-,16,Radio,1,7,0,TX Antenna,70cm Antenna status
+51,realTime,RxAntDeploy,1,-,16,Radio,1,6,0,RX Antenna,2m Antenna status
+52,realTime,TxAntDeploy,2,-,16,Radio,1,5,0,TX Antenna,70cm Antenna status
 53,realTime,I2CfailureRF,1,-,17,Computer Hardware,2,5,0,RF I2C,RF I2C Bus failure indicator
 54,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
 55,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
