@@ -29,9 +29,9 @@
 27,RT,SatelliteXAxisAngularVelocity,12,dps,cubesatsim_rotation,+X Panel,6,3,3,Rotation,Angular Veolcity around X Axis
 28,RT,SatelliteYAxisAngularVelocity,12,dps,cubesatsim_rotation,+Y Panel,7,3,3,Rotation,Angular Veolcity around Y Axis
 29,RT,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation,+Z Panel,8,3,3,Rotation,Angular Veolcity around Z Axis
-30,RT,EXP4Temperature,12,C,7,NONE,5,0,0,EXP4 Temperature,Not used
+30,RT,Sensor1,12,raw,7,Experiments,5,5,3,Sensor 1,STEM Payload Extra Sensor 1
 31,RT,PSUCurrent,12,mA,cubesatsim_ina219_current,PSU,4,1,3,Current,Power Supply DC Current
-32,RT,IHUDiagnosticData,32,-,18,NONE,2,7,0,Diagnostic Info,Diagnostic Data on IHU Performance
+32,RT,Sensor2,12,raw,7,Experiments,5,6,3,Sensor 2,STEM Payload Extra Sensor 2
 33,RT,Experiment1FailureIndication,1,-,17,Experiments,5,1,0,STEM Payload Status,STEM Payload Board Status
 34,RT,Experiment2FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
 35,RT,Experiment3FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
