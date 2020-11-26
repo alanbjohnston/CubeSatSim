@@ -876,7 +876,7 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16;
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16, NormalModeFailure = 0; // set to 32 to fail into Safe Mode
   int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
@@ -1180,7 +1180,8 @@ if (payload == ON)
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeB(b, 51 + head_offset, STEMBoardFailure + 32);  // Normal Mode FAIL?
+  encodeB(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure);  // NormalModeFailure set to 32 if in Safe Mode
+  encodeA(b, 52 + head_offset, 16+32+64); // Try TXAntenna RXAntenna 
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
