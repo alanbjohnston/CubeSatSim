@@ -38,9 +38,9 @@
 36,RT,Experiment2FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
 37,RT,Experiment3FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
 38,RT,Experiment4FailureIndication,1,-,17,NONE,5,0,0,Not installed,Not used
-39,RT,BATTI2CFailureIndications,1,-,17,Computer Hardware,2,3,0,Battery I2C,Battery I2C Bus failure indicator
-40,RT,PSU1I2CFailureIndications,1,-,17,Computer Hardware,2,4,0,PSU1 I2C,PSU2 I2C Bus failure indicator
-41,RT,PSU2I2CFailureIndications,1,-,17,Computer Hardware,2,5,0,PSU2 I2C,PSU2 I2C Bus failure indicator
+39,RT,BATTI2CFailureIndications,1,-,17,Computer Hardware,2,2,0,Battery I2C,Battery I2C Bus failure indicator
+40,RT,PSU1I2CFailureIndications,1,-,17,Computer Hardware,2,3,0,PSU1 I2C,PSU2 I2C Bus failure indicator
+41,RT,PSU2I2CFailureIndications,1,-,17,Computer Hardware,2,4,0,PSU2 I2C,PSU2 I2C Bus failure indicator
 42,RT,NumberofGroundCommandedTLMResets,4,-,1,NONE,2,6,0,Ground Resets,Number of times command stations reset stored telemetry
 43,RT,RXAntenna,1,-,16,Radio,1,4,0,RX Antenna,70cm Antenna status
 44,RT,TXAntenna,1,-,16,Radio,1,3,0,TX Antenna,2m Antenna status
