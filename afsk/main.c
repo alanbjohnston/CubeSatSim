@@ -887,7 +887,7 @@ int get_tlm_fox() {
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
   int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
-  int sensor1 = 0, sensor2 = 2048;
+  int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048+200;
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1178,9 +1178,9 @@ if (payload == ON)
   encodeA(b, 45 + head_offset, sensor1);
   encodeB(b, 46 + head_offset,PSUCurrent);
   encodeA(b, 48 + head_offset, sensor2);
-
+  encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeB(b, 51 + head_offset, STEMBoardFailure);
+  encodeB(b, 51 + head_offset, STEMBoardFailure + 32);  // Normal Mode FAIL?
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
