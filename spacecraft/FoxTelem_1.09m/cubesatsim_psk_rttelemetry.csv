@@ -2,11 +2,11 @@
 0,realTime,BATT_A_V,12,V,4,NONE,4,1,3,Cell A,Battery pair A voltage (0-2.5V scale)
 1,realTime,BATT_B_V,12,V,4,NONE,4,2,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
 2,realTime,BATT_V,12,V,cubesatsim_ina219_voltage,Battery,4,1,3,Cell A + B + C,Battery A+B+C voltage (0-5.0V scale)
-3,RT,SatelliteXAxisAcceleration,12,g,cubesatsim_rotation,+X Panel,6,4,3,Acceleration,Acceleration around X Axis
-4,RT,SatelliteYAxisAcceleration,12,g,cubesatsim_rotation,+Y Panel,7,4,3,Acceleration,Acceleration around Y Axis
-5,RT,SatelliteZAxisAcceleration,12,g,cubesatsim_rotation,+Z Panel,8,4,3,Acceleration,Acceleration around Z Axis
+3,realTime,SatelliteXAxisAcceleration,12,g,cubesatsim_rotation,+X Panel,6,4,3,Acceleration,Acceleration around X Axis
+4,realTime,SatelliteYAxisAcceleration,12,g,cubesatsim_rotation,+Y Panel,7,4,3,Acceleration,Acceleration around Y Axis
+5,realTime,SatelliteZAxisAcceleration,12,g,cubesatsim_rotation,+Z Panel,8,4,3,Acceleration,Acceleration around Z Axis
 6,realTime,battCurr,12,mA,cubesatsim_ina219_current,Battery,4,2,4,Current,Total Battery DC current
-7,RT,Temperature,12,C,cubesatsim_temperature,Experiments,5,2,3,Temp,STEM Payload Sensor Temperature
+7,realTime,Temperature,12,C,cubesatsim_temperature,Experiments,5,2,3,Temp,STEM Payload Sensor Temperature
 8,realTime,posXv,12,V,cubesatsim_ina219_voltage,+X Panel,7,1,3,Voltage,+X solar Panel voltage
 9,realTime,posYv,12,V,cubesatsim_ina219_voltage,+Y Panel,8,1,3,Voltage,+Y solar Panel voltage
 10,realTime,posZv,12,V,cubesatsim_ina219_voltage,+Z Panel,9,1,3,Voltage,+Z solar Panel voltage
@@ -21,8 +21,8 @@
 19,realTime,negZi,12,mA,cubesatsim_ina219_current,-Z Panel,12,2,4,Current,-Z solar Panel current
 20,realTime,PSUVoltage,12,V,cubesatsim_ina219_voltage,PSU,5,2,3,Board Voltage,Power Supply Voltage
 21,realTime,spin,12,rpm,12,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
-22,RT,Pressure,12,bar,cubesatsim_pressure,Experiments,5,3,3,Pressure,STEM Payload Sensor Pressure
-23,RT,Altitude,12,m,cubesatsim_altitude,Experiments,5,4,3,Altitude,STEM Payload Sensor Altitude
+22,realTime,Pressure,12,bar,cubesatsim_pressure,Experiments,5,3,3,Pressure,STEM Payload Sensor Pressure
+23,realTime,Altitude,12,m,cubesatsim_altitude,Experiments,5,4,3,Altitude,STEM Payload Sensor Altitude
 24,realTime,FwdPower,12,mW,40,Radio,1,4,3,Fwd Power,Receiver card temperature
 25,realTime,rssi,12,dBm,14,Radio,1,3,3,RSSI,Received Signal Strength Indication
 26,realTime,IHUcpuTemp,12,C,cubesatsim_temperature,Computer Hardware,2,1,3,Temperature,Internal Temperature of IHU
@@ -41,7 +41,7 @@
 39,realTime,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
 40,realTime,LtVGACtl,12,V,42,Radio,1,6,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
 41,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
-42,realTime,IHUdiagData,32,-,18,Computer Software,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
+42,realTime,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
 43,realTime,expFailure0,1,-,17,Experiments,6,2,0,Vanderbilt Radiation,Vanderbilt University Vulcan Experiment Indicator
 44,realTime,expFailure1,1,-,17,Experiments,6,3,0,Exp 1,Experiment 1 Failure Indicator
 45,realTime,expFailure2,1,-,17,Experiments,6,4,0,Exp 2,Experiment 2 Failure Indicator
@@ -54,7 +54,7 @@
 52,realTime,TxAntDeploy,2,-,16,Radio,1,7,0,TX Antenna,70cm Antenna status
 53,realTime,I2CfailureRF,1,-,17,Computer Hardware,2,5,0,RF I2C,RF I2C Bus failure indicator
 54,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
-55,realTime,wodSize,8,000s,36,Computer Software,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
+55,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
 56,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
 57,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 58,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
