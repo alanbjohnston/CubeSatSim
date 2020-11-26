@@ -1,18 +1,18 @@
 46,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
 0,RT,BATT_A_V,12,V,4,NONE,0,0,3,Cell A,Battery pair A voltage (0-2.5V scale)
 1,RT,BATT_B_V,12,V,4,NONE,0,0,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
-2,RT,BATT_V,12,V,cubesatsim_ina219_voltage | FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
-3,RT,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration | FLOAT2,+X Panel,7,4,3,Acceleration,Acceleration around X Axis
-4,RT,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration | FLOAT2,+Y Panel,8,4,3,Acceleration,Acceleration around Y Axis
-5,RT,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration | FLOAT2,+Z Panel,9,4,3,Acceleration,Acceleration around Z Axis
+2,RT,BATT_V,12,V,cubesatsim_ina219_voltage|FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
+3,RT,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+X Panel,7,4,3,Acceleration,Acceleration around X Axis
+4,RT,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Y Panel,8,4,3,Acceleration,Acceleration around Y Axis
+5,RT,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Z Panel,9,4,3,Acceleration,Acceleration around Z Axis
 6,RT,TOTAL_BATT_I,12,mA,cubesatsim_ina219_current,Battery,4,2,3,Current,Total Battery DC current
 7,RT,Temperature,12,C,cubesatsim_temperature,Experiments,6,2,3,Temp,STEM Payload Sensor Temperature
-8,RT,PANEL_PLUS_X_V,12,V,cubesatsim_ina219_voltage,+X Panel,7,1,3,Voltage,+X Panel
-9,RT,PANEL_MINUS_X_V,12,V,cubesatsim_ina219_voltage,-X Panel,10,1,3,Voltage,-X Panel
-10,RT,PANEL_PLUS_Y_V,12,V,cubesatsim_ina219_voltage,+Y Panel,8,1,3,Voltage,+YPanel
-11,RT,PANEL_MINUS_Y_V,12,V,cubesatsim_ina219_voltage,-Y Panel,11,1,3,Voltage,-Y Panel
-12,RT,PANEL_PLUS_Z_V,12,V,cubesatsim_ina219_voltage,+Z Panel,9,1,3,Voltage,+Z Panel
-13,RT,PANEL_MINUS_Z_V,12,V,cubesatsim_ina219_voltage,-Z Panel,12,1,3,Voltage,-Z Panel
+8,RT,PANEL_PLUS_X_V,12,V,cubesatsim_ina219_voltage|FLOAT2,+X Panel,7,1,3,Voltage,+X Panel
+9,RT,PANEL_MINUS_X_V,12,V,cubesatsim_ina219_voltage|FLOAT2,-X Panel,10,1,3,Voltage,-X Panel
+10,RT,PANEL_PLUS_Y_V,12,V,cubesatsim_ina219_voltage|FLOAT2,+Y Panel,8,1,3,Voltage,+YPanel
+11,RT,PANEL_MINUS_Y_V,12,V,cubesatsim_ina219_voltage|FLOAT2,-Y Panel,11,1,3,Voltage,-Y Panel
+12,RT,PANEL_PLUS_Z_V,12,V,cubesatsim_ina219_voltage|FLOAT2,+Z Panel,9,1,3,Voltage,+Z Panel
+13,RT,PANEL_MINUS_Z_V,12,V,cubesatsim_ina219_voltage|FLOAT2,-Z Panel,12,1,3,Voltage,-Z Panel
 14,RT,PANEL_PLUS_X_I,12,mA,cubesatsim_ina219_current,+X Panel,7,2,3,Current,+X Panel
 15,RT,PANEL_MINUS_X_I,12,mA,cubesatsim_ina219_current,-X Panel,10,2,3,Current,-X Panel
 16,RT,PANEL_PLUS_Y_I,12,mA,cubesatsim_ina219_current,+Y Panel,8,2,3,Current,+Y Panel
