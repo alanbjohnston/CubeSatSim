@@ -7,7 +7,7 @@
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or/
+ *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -1180,8 +1180,8 @@ if (payload == ON)
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeB(b, 52 + head_offset, 4095); // STEMBoardFailure + NormalModeFailure);  // NormalModeFailure set to 32 if in Safe Mode
-  encodeA(b, 53 + head_offset, 0); // 16+32+64); // Try TXAntenna RXAntenna 
+  encodeA(b, 51 + head_offset, 4095); // STEMBoardFailure + NormalModeFailure);  // NormalModeFailure set to 32 if in Safe Mode
+  encodeB(b, 52 + head_offset, 0); // 16+32+64); // Try TXAntenna RXAntenna 
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
@@ -1539,7 +1539,7 @@ static unsigned char CCSDS_index_of[NN+1] = {
 192,115,153,119,150, 92,250, 82,228,236, 95, 74,182,162, 22,134,
 105,197, 98,254, 41,125,187,204,224,211, 77,140,242, 31, 48,220,
 130,171,231, 86,179,147, 64,216, 52,176,239, 38, 55, 12, 17, 68,
-111,120, 25,154, 71,116,167,193, 35, 83,137,251, 20, 93,248,151,
+111,120, 25,154, 71,116,167,193, 35, 83,137,251, 20, 93,248,1/,
  46, 75,185, 96, 15,237, 62,229,246,135,165, 23, 58,163, 60,183,
 };
 
