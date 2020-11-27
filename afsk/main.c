@@ -7,7 +7,6 @@
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -876,7 +875,7 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16, NormalModeFailure = 32; // set to 32 to fail into Safe Mode
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 1, rxAntennaFailure = 1, txAntennaFailure = 0, groundCommandCount = 1; //
   int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
@@ -1180,8 +1179,8 @@ if (payload == ON)
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeA(b, 51 + head_offset, 1 + 2); // STEMBoardFailure + NormalModeFailure);  // NormalModeFailure set to 32 if in Safe Mode
-  encodeB(b, 52 + head_offset, 1 + 2); // 16+32+64); // Try TXAntenna RXAntenna 
+  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + groundCommandCount * 256); 
+  encodeB(b, 52 + head_offset, rxAntenna + txAntenna * 2);  
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
