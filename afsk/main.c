@@ -883,7 +883,7 @@ int get_tlm_fox() {
   int head_offset = 0; 	
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
-  int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
+  int xAngularVelocity = 2048-100, yAngularVelocity = 2048-400, zAngularVelocity = 2048+150;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
   int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
   int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048-1501;
