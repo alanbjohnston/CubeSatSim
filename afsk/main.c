@@ -1180,8 +1180,8 @@ if (payload == ON)
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeA(b, 51 + head_offset, 4095); // STEMBoardFailure + NormalModeFailure);  // NormalModeFailure set to 32 if in Safe Mode
-  encodeB(b, 52 + head_offset, 0); // 16+32+64); // Try TXAntenna RXAntenna 
+  encodeA(b, 51 + head_offset, 1 + 2048); // STEMBoardFailure + NormalModeFailure);  // NormalModeFailure set to 32 if in Safe Mode
+  encodeB(b, 52 + head_offset, 1 + 2048); // 16+32+64); // Try TXAntenna RXAntenna 
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
