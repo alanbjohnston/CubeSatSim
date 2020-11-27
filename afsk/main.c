@@ -887,7 +887,7 @@ int get_tlm_fox() {
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
   int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
-  int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048+200;
+  int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048-1501;
 	
   short int buffer_test[bufLen];
   int buffSize;
