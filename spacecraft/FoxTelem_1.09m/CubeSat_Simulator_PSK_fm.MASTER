@@ -69,4 +69,4 @@ numberOfSources=1
 source0.name=amsat.cubesat_simulator.ihu.bpsk
 user_format=0
 useConversionCoeffs=true
-conversionCurvesFileName=cubesatsim_conversion_curves.csv
+conversionCurvesFileName=CubeSatsim_conversion_curves.csv
