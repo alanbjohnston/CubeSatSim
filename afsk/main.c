@@ -1180,7 +1180,7 @@ if (payload == ON)
   encodeB(b, 49 + head_offset, sensor3);
 	  
   encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + groundCommandCount * 256); 
-  encodeB(b, 52 + head_offset, rxAntenna + txAntenna * 2);  
+  encodeB(b, 52 + head_offset, rxAntennaFailure + txAntennaFailure* 2);  
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
