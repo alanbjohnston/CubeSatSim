@@ -37,10 +37,10 @@
 35,realTime,Nominal Mode,1,-,17,Computer Software,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
 36,realTime,PayloadStatus1,1,-,17,NONE,6,7,0,Exp 2,STEM Payload status 1 failure indicator
 37,realTime,PayloadStatus2,1,-,17,NONE,6,8,0,Exp 3,STEM Payload status 2 failure indicator
-38,realTime,I2CBus0Failure,1,-,17,Computer Hardware,2,2,0,Battery I2C,I2C bus 0 failure indicator
-39,realTime,I2CBus1Failure,1,-,17,Computer Hardware,2,3,0,PSU1 I2C,I2C bus 1 failure indicator
-40,realTime,I2CBus3Failure,1,-,17,Computer Hardware,2,4,0,PSU2 I2C,I2C bus 3 failure indicator
-41,realTime,CameraFailure,1,-,17,NONE,2,5,0,RF I2C,Camera failure indicator
+38,realTime,I2CBus0Failure,1,-,17,Computer Hardware,2,2,0,I2C Bus 0,I2C bus 0 failure indicator
+39,realTime,I2CBus1Failure,1,-,17,Computer Hardware,2,3,0,I2C Bus 1,I2C bus 1 failure indicator
+40,realTime,I2CBus3Failure,1,-,17,Computer Hardware,2,4,0,I2C Bus 3,I2C bus 3 failure indicator
+41,realTime,CameraFailure,1,-,17,NONE,2,5,0,Camera,Camera failure indicator
 42,realTime,GroundCommands,4,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
 43,realTime,RxAntenna,1,-,16,Radio,1,3,0,RX Antenna,Receive antenna status
 44,realTime,TxAntenna,2,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
