@@ -1107,14 +1107,10 @@ if (payload == ON)
 	gyroZ = atof(token);
         printf("gyroZ %f \n", gyroZ);
     }
-	
-//    xAngularVelocity = (-0.69)*(gyroX)*(gyroX) + 45.3 * (gyroX) + 2078;
-//    yAngularVelocity = (-0.69)*(gyroY)*(gyroY) + 45.3 * (gyroY) + 2078;
-//    zAngularVelocity = (-0.69)*(gyroZ)*(gyroZ) + 45.3 * (gyroZ) + 2078;
 
-    xAngularVelocity =  1 * (gyroX) + 2048;
-    yAngularVelocity =  1 * (gyroY) + 2048;
-    zAngularVelocity =  1 * (gyroZ) + 2048;
+//    xAngularVelocity =  1 * (gyroX) + 2048;
+//    yAngularVelocity =  1 * (gyroY) + 2048;
+//    zAngularVelocity =  1 * (gyroZ) + 2048;
   }
 
   encodeA(b, 0 + head_offset, batt_a_v);
