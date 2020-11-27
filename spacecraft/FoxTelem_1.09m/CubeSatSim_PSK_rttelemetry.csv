@@ -2,9 +2,9 @@
 0,realTime,BATT_A_V,12,V,cubesatsim_ina219_voltage|FLOAT2,NONE,4,1,3,Cell A,Battery pair A voltage (0-2.5V scale)
 1,realTime,BATT_B_V,12,V,cubesatsim_ina219_voltage|FLOAT2,NONE,4,2,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
 2,realTime,BATT_V,12,V,cubesatsim_ina219_voltage|FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
-3,realTime,SatelliteXAxisAcceleration,12,g,cubesatsim_rotation,+X Panel,7,4,3,Acceleration,Acceleration around X Axis
-4,realTime,SatelliteYAxisAcceleration,12,g,cubesatsim_rotation,+Y Panel,8,4,3,Acceleration,Acceleration around Y Axis
-5,realTime,SatelliteZAxisAcceleration,12,g,cubesatsim_rotation,+Z Panel,9,4,3,Acceleration,Acceleration around Z Axis
+3,realTime,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+X Panel,7,4,3,Acceleration,Acceleration around X Axis
+4,realTime,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Y Panel,8,4,3,Acceleration,Acceleration around Y Axis
+5,realTime,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Z Panel,9,4,3,Acceleration,Acceleration around Z Axis
 6,realTime,battCurr,12,mA,cubesatsim_ina219_current,Battery,4,2,4,Current,Total Battery DC current
 7,realTime,Temperature,12,C,cubesatsim_temperature,Experiments,6,2,3,Temp,STEM Payload Sensor Temperature
 8,realTime,posXv,12,V,cubesatsim_ina219_voltage|FLOAT2,+X Panel,7,1,3,Voltage,+X solar Panel voltage
