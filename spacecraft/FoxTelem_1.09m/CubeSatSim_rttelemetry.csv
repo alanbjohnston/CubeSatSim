@@ -33,7 +33,7 @@
 31,RT,PSUCurrent,12,mA,cubesatsim_current,PSU,5,2,3,Current,Power Supply DC Current
 32,RT,Sensor2,12,signed raw,cubesatsim_sensor2|INT,Experiments,6,6,3,Sensor 2,STEM Payload Extra Sensor 2
 33,RT,Sensor3,12,signed scaled,cubesatsim_sensor3|FLOAT2,Experiments,6,7,3,Sensor 3,STEM Payload Extra Sensor 3
-34,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload Status,STEM Payload Board Status
+34,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload,STEM Payload Board Status
 35,RT,Nominal Mode,1,-,17,Computer Software,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
 36,RT,PayloadStatus1,1,-,17,NONE,6,7,0,Exp 2,STEM Payload status 1 failure indicator
 37,RT,PayloadStatus2,1,-,17,NONE,6,8,0,Exp 3,STEM Payload status 2 failure indicator
