@@ -10,6 +10,6 @@ memsRestValueZ=2045
 user_format=0
 memsRestValueX=2087
 name=CubeSatSim
-track=true
+track=false
 telemetryDownlinkFreqkHz=434900.0
 BATTERY_CURRENT_ZERO=-1.839
