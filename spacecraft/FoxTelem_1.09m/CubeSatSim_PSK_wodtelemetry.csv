@@ -1,4 +1,4 @@
-60,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+61,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
 0,WOD,BATT_A_V,12,V,cubesatsim_voltage|FLOAT2,NONE,4,1,3,Cell A,Battery A voltage (0-2.5V scale)
 1,WOD,BATT_B_V,12,V,cubesatsim_voltage|FLOAT2,NONE,4,2,3,Cell A+B,Battery A+B voltage (0-3.3V scale)
 2,WOD,BATT_V,12,V,cubesatsim_voltage|FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
@@ -52,10 +52,11 @@
 50,WOD,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
 51,WOD,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
 52,WOD,pad,4,-,34,NONE,0,0,0,None,Unused
-53,WOD,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
-54,WOD,pad1,1,-,0,NONE,0,0,0,NONE,Filler
+53,WOD,WODTimeStampReset,25,-,1,NONE,0,0,0,MAX Timestamp Uptime, Time Whole Orbit Data was collected
+54,WOD,pad1,17,-,0,NONE,0,0,0,NONE,Filler
 55,WOD,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
 56,WOD,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
 57,WOD,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 58,WOD,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
-59,WOD,pad2,28,-,0,NONE,0,0,0,NONE,Filler
+59,WOD,WODTimeStampUpTime,25,s,1,NONE,0,0,0,MAX Timestamp Uptime, Time Whole Orbit Data was collected
+60,WOD,pad2,3,-,0,NONE,0,0,0,NONE,Filler
