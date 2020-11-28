@@ -1,0 +1,13 @@
+number_of_payloads=6
+payload0.name=rtelemetry
+payload0.length=78
+payload1.name=rtelemetry
+payload1.length=78
+payload2.name=rtelemetry
+payload2.length=78
+payload3.name=maxtelemetry
+payload3.length=78
+payload4.name=mintelemetry
+payload4.length=78
+payload5.name=wodtelemetry
+payload5.length=78
