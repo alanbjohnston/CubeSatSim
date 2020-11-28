@@ -1003,12 +1003,12 @@ if (firstTime != ON)
     if (mode == BPSK)
       h[6] = 99;
 	  
-  posXi = (int)current[map[PLUS_X]] + 2048;
-  posYi = (int)current[map[PLUS_Y]] + 2048;
-  posZi = (int)current[map[PLUS_Z]] + 2048;
-  negXi = (int)current[map[MINUS_X]] + 2048;
-  negYi = (int)current[map[MINUS_Y]] + 2048;
-  negZi = (int)current[map[MINUS_Z]] + 2048;
+  posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
+  posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
+  posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
+  negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
+  negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
+  negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
 
   posXv = (int)(voltage[map[PLUS_X]] * 100);
   posYv = (int)(voltage[map[PLUS_Y]] * 100);
@@ -1017,9 +1017,9 @@ if (firstTime != ON)
   negYv = (int)(voltage[map[MINUS_Y]] * 100);
   negZv = (int)(voltage[map[MINUS_Z]] * 100);
   batt_c_v = (int)(voltage[map[BAT]] * 100);
-  battCurr = (int)current[map[BAT]] + 2048;
+  battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
   PSUVoltage = (int)(voltage[map[BUS]] * 100);
-  PSUCurrent = (int)current[map[BUS]] + 2048;	  
+  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
 	  
