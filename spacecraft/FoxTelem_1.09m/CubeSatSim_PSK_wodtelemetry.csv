@@ -52,7 +52,7 @@
 50,WOD,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
 51,WOD,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
 52,WOD,pad,4,-,34,NONE,0,0,0,None,Unused
-53,WOD,WODTimeStampReset,25,-,1,NONE,0,0,0,MAX Timestamp Uptime, Time Whole Orbit Data was collected
+53,WOD,WODTimeStampReset,16,-,1,NONE,0,0,0,MAX Timestamp Uptime, Time Whole Orbit Data was collected
 54,WOD,pad1,17,-,0,NONE,0,0,0,NONE,Filler
 55,WOD,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
 56,WOD,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
