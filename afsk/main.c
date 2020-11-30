@@ -317,7 +317,10 @@ if (vB4)
   snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 }	
 else if (vB5)
-{	
+{
+   map[MINUS_X] = PLUS_Z;
+   map[PLUS_Z] = MINUS_X;
+	
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
 	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
