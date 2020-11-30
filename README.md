@@ -4,7 +4,7 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 There are several hardware versions and software branches to go with them - see below for information.
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 3B, 3B+, Pi Zero or Pi Zero W (doesn't work on Pi 4 since rpitx doesn't work on it yet):
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. To build and run the software on a Raspberry Pi 4B, 3B, 3B+, Pi Zero or Pi Zero W:
 Requires:
 - Raspbian Stretch or Buster, full desktop or Lite 
 - wiringpi
@@ -23,6 +23,13 @@ To begin the software install, after logging in type:
 `sudo apt update -y && sudo apt dist-upgrade -y`
 
 `sudo apt install -y wiringpi git libasound2-dev i2c-tools`
+
+If you are installing on a Pi 4B, you will need to install the 2.52 version of wiring pi by following these steps (you can skip these steps for any other Pi version):
+
+`cd /tmp`
+`wget https://project-downloads.drogon.net/wiringpi-latest.deb`
+`sudo dpkg -i wiringpi-latest.deb`
+`cd`
 
 Run raspi-config and enable the I2C bus by selecting Option 5 Interfacing Options and then Option 5 I2C and selecting Y to enable the ARM I2C bus:
 
