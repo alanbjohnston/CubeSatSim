@@ -105,12 +105,13 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
   			printf("vB5 Present\n");  // Don't print normal board detection
-			
+			map[MINUS_X] = PLUS_Z;
+			map[PLUS_Z] = MINUS_X;			
 			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
 			
 			printf("New Bus String: %s \n", busStr);
 /*			
-			if (test_i2c_bus(0) != OFF)
+			if (test_i2c_b0) != OFF)
 				strcpy(busStr,"1 ");
 			else
 				strcpy(busStr,"-1 ");
