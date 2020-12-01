@@ -7,7 +7,6 @@
  *
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
- *  the Free Software Foundation, either version 3 of the License, or/
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
@@ -22,6 +21,7 @@
 #include <fcntl.h>                              
 #include <stdlib.h>
 #include <stdio.h>
+
 #include <unistd.h>
 #include <string.h>
 #include "status.h"
@@ -317,7 +317,10 @@ if (vB4)
   snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 }	
 else if (vB5)
-{	
+{
+   map[MINUS_X] = PLUS_Z;
+   map[PLUS_Z] = MINUS_X;
+	
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
 	printf("/dev/i2c-11 is present\n\n");		
 	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
@@ -875,15 +878,18 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 16;
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 3; //
   int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0; 	
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
-  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
+//  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
+  int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
+  int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
+  int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048-1501;
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -1000,12 +1006,12 @@ if (firstTime != ON)
     if (mode == BPSK)
       h[6] = 99;
 	  
-  posXi = (int)current[map[PLUS_X]] + 2048;
-  posYi = (int)current[map[PLUS_Y]] + 2048;
-  posZi = (int)current[map[PLUS_Z]] + 2048;
-  negXi = (int)current[map[MINUS_X]] + 2048;
-  negYi = (int)current[map[MINUS_Y]] + 2048;
-  negZi = (int)current[map[MINUS_Z]] + 2048;
+  posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
+  posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
+  posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
+  negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
+  negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
+  negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
 
   posXv = (int)(voltage[map[PLUS_X]] * 100);
   posYv = (int)(voltage[map[PLUS_Y]] * 100);
@@ -1014,9 +1020,9 @@ if (firstTime != ON)
   negYv = (int)(voltage[map[MINUS_Y]] * 100);
   negZv = (int)(voltage[map[MINUS_Z]] * 100);
   batt_c_v = (int)(voltage[map[BAT]] * 100);
-  battCurr = (int)current[map[BAT]] + 2048;
+  battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
   PSUVoltage = (int)(voltage[map[BUS]] * 100);
-  PSUCurrent = (int)current[map[BUS]] + 2048;	  
+  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
 	  
@@ -1104,16 +1110,23 @@ if (payload == ON)
 	gyroZ = atof(token);
         printf("gyroZ %f \n", gyroZ);
     }
-	
-    xAngularVelocity = (-0.69)*(gyroX)*(gyroX) + 45.3 * (gyroX) + 2078;
-    yAngularVelocity = (-0.69)*(gyroY)*(gyroY) + 45.3 * (gyroY) + 2078;
-    zAngularVelocity = (-0.69)*(gyroZ)*(gyroZ) + 45.3 * (gyroZ) + 2078;
+
+    xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
+    yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
+    zAngularVelocity =  (int)(gyroZ + 0.5) + 2048;
   }
 
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
+	  
+  encodeB(b, 4 + head_offset,xAccel);	  // Xaccel
+  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
+  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
+	  
   encodeA(b, 9 + head_offset, battCurr);
+	
+  encodeB(b, 10 + head_offset,temp);	// Temp
 	  
   if (mode == FSK)
   {	  
@@ -1149,16 +1162,24 @@ if (payload == ON)
   }	  
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
-  encodeB(b, 46 + head_offset,PSUCurrent);
-
+	  
+  encodeA(b, 33 + head_offset,pressure);  // Pressure
+  encodeB(b, 34 + head_offset,altitude);   // Altitude
+	  
   encodeA(b, 36 + head_offset,  RXTemperature);	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 	  
   encodeB(b, 40 + head_offset,  xAngularVelocity);
   encodeA(b, 42 + head_offset,  yAngularVelocity);
   encodeB(b, 43 + head_offset,  zAngularVelocity);
+
+  encodeA(b, 45 + head_offset, sensor1);
+  encodeB(b, 46 + head_offset,PSUCurrent);
+  encodeA(b, 48 + head_offset, sensor2);
+  encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeB(b, 51 + head_offset, STEMBoardFailure);
+  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + groundCommandCount * 256); 
+  encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed* 2);  
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
