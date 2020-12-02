@@ -17,6 +17,8 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sudo killall -9 java &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sudo killall -9 CubicSDR &>/dev/null
 
 rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1 &
