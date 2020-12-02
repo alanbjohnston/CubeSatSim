@@ -9,7 +9,7 @@ sudo modprobe snd-aloop
 
 sudo killall -9 rtl_fm &>/dev/null
 
-sudo killall -9 sstv &>/dev/null
+sudo killall -9 aplay &>/dev/null
 
 sudo systemctl stop openwebrx
 
