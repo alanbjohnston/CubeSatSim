@@ -76,7 +76,7 @@ receiver_keys = []
 
 # ==== DSP/RX settings ====
 fft_fps = 9
-fft_size = 4096  # Should be power of 2
+fft_size = 2048  # Should be power of 2
 fft_voverlap_factor = (
     0.3  # If fft_voverlap_factor is above 0, multiple FFTs will be used for creating a line on the diagram.
 )
@@ -92,7 +92,7 @@ fft_compression = "adpcm"  # valid values: "adpcm", "none"
 wfm_deemphasis_tau = 75e-6  # for the rest of the world
 
 digimodes_enable = True  # Decoding digimodes come with higher CPU usage.
-digimodes_fft_size = 2048
+digimodes_fft_size = 1024
 
 # determines the quality, and thus the cpu usage, for the ambe codec used by digital voice modes
 # if you're running on a Raspi (up to 3B+) you'll want to leave this on 1
