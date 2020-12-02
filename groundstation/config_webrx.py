@@ -200,7 +200,7 @@ sdrs = {
                 "start_mod": "nfm",
             },
             "92MHz": {
-                "name": "92 MHz FM Band" 
+                "name": "92 MHz FM Band", 
                 "center_freq": 92000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
