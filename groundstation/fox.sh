@@ -13,6 +13,8 @@ pkill -o chromium &>/dev/null
 
 sudo killall -9 rtl_tcp &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
