@@ -27,7 +27,7 @@ sleep 5
 
 #sudo rtl_fm -f 144.39M -s 22050 -g 48 - | multimon-ng -a AFSK1200 -A -t raw -
 
-direwolf&
+direwolf -t 0 &
 
 rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1
 
