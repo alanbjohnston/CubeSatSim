@@ -11,6 +11,8 @@ sudo killall -9 rtl_fm &>/dev/null
 
 sudo killall -9 aplay &>/dev/null
 
+sudo killall -9 direwolf &>/dev/null
+
 sudo systemctl stop openwebrx
 
 sudo systemctl stop rtl_tcp
