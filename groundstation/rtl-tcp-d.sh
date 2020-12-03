@@ -19,6 +19,8 @@ echo
 
 sudo killall -9 java &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sudo killall -9 CubicSDR &>/dev/null
 
 sudo systemctl stop rtl_tcp
