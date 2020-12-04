@@ -27,6 +27,6 @@ sudo systemctl stop rtl_tcp
 
 sudo systemctl restart openwebrx
 
-chromium --check-for-update-interval=3600 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
+chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
 
 $SHELL
