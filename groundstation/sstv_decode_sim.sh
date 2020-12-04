@@ -31,7 +31,8 @@ echo "ARG1=s" >> .mode
 
 qsstv &
 
-sudo systemctl restart cubesatsim
+#sudo systemctl restart cubesatsim
 
 rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1 
+
 $SHELL
