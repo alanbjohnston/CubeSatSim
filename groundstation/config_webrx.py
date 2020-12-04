@@ -585,7 +585,7 @@ sdrs = {
             },
             "438mhz": {
                 "name": "438 MHz 70cm Ham Band",
-                "center_freq": 138000000,
+                "center_freq": 438000000,
                 "rf_gain": 30,
                 "samp_rate": 2400000,
                 "start_freq": 438000000,
