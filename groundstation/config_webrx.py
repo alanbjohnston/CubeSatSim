@@ -287,7 +287,7 @@ sdrs = {
                 "start_freq": 118000000,
                 "start_mod": "nfm",
             },
-            "120mhz": {
+            "120mhz": { 
                 "name": "120 MHz Air Band",
                 "center_freq": 120000000,
                 "rf_gain": 30,
