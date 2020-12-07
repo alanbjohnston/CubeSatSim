@@ -84,6 +84,7 @@ int loop = -1, loop_count = 0;
 int firstTime = ON;
 long start;
 int testCount = 0;
+time_t time_start;
 
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
@@ -401,6 +402,9 @@ srand(time(0));
 	printf("Rnd: %f \n", rnd_float(-0.2, 0.0));
 	printf("Rnd: %f \n", rnd_float(.50, 0.6));
 	printf("Rnd: %f \n", rnd_float(4.0, 5.0));
+	
+ time_start = time(NULL);
+	
 	
   int ret;
   //uint8_t data[1024];
@@ -1015,6 +1019,12 @@ if (firstTime != ON)
       h[6] = 99;
 	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
+	  
+  float time = (time(NULL) - time_start);	  
+  posXi = 5.0 * SIN(1.57)*SIN(2.0 * 3.14 * time / 46.0);
+	  
+  print("Time: %f  Xi %f \n",time, posXi);
+	  
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
   posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
   negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
