@@ -1021,7 +1021,7 @@ if (firstTime != ON)
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
 	  
   float time = (millis() - time_start)/1000.0;	  
-  posXi = 5.0 * SIN(1.57)*SIN(2.0 * 3.14 * time / 46.0);
+  posXi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
 	  
   print("Time: %f  Xi %f \n",time, posXi);
 	  
