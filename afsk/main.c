@@ -1021,7 +1021,7 @@ if (firstTime != ON)
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
 	  
   double time = (millis() - time_start)/1000.0;	  
-  double Xi = (5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
+  double Xi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
 	  
   printf("Time: %f  Xi %f \n",time, Xi);
 	  
