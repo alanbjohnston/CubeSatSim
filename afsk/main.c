@@ -1020,10 +1020,10 @@ if (firstTime != ON)
 	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
 	  
-  float time = (millis() - time_start)/1000.0;	  
-  posXi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
+  double time = (millis() - time_start)/1000.0;	  
+  double Xi = (5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
 	  
-  printf("Time: %f  Xi %f \n",time, posXi);
+  printf("Time: %f  Xi %f \n",time, Xi);
 	  
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
   posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
