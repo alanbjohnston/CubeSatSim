@@ -397,9 +397,9 @@ else
 
 srand(time(0)); 
 
-	printf("Rnd: %f \n", rnd_float(-0.2, 0.2));
-	printf("Rnd: %f \n", rnd_float(-0.2, 0.2));
-	printf("Rnd: %f \n", rnd_float(.5, 1.0));
+	printf("Rnd: %f \n", rnd_float(-0.2, 0.0));
+	printf("Rnd: %f \n", rnd_float(-0.2, 0.0));
+	printf("Rnd: %f \n", rnd_float(.50, 0.6));
 	printf("Rnd: %f \n", rnd_float(4.0, 5.0));
 	
   int ret;
