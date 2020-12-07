@@ -1655,7 +1655,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 float rnd_float(float min,float max) {   // returns 2 decimal point random number
 // from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
 	
-	int val = (rand() % ((int)(max*100) – (int)(min*100) + 1)) + (int)(min*100);
+	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
 	float ret = ((float)(val)/100);
 	
       return(ret);
@@ -1666,7 +1666,7 @@ int test_i2c_bus(int bus)
 	int output = bus; // return bus number if OK, otherwise return -1
 	char busDev[20] = "/dev/i2c-";
 	char busS[5];
-	snprintf(busS, 5, "%d", bus);
+	snprintf(busS, 5, "%d", bus);  
 	strcat (busDev, busS);	
 	printf("I2C Bus Tested: %s \n", busDev);
 	
