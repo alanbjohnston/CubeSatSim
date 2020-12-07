@@ -981,9 +981,9 @@ if (firstTime != ON)
   double time = (millis() - time_start)/1000.0;	  
   double Xi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
   double Yi = 5.0 * sin(1.57) * sin((2.0 * 3.14 * time / 46.0) + (3.14/2.0));
-  double Zi = 5.0 * cos(1.57 - 1.57) * sin((2.0 * 3.14 * time / 46.0) + 3.14);
+  double Zi = 5.0 * cos(1.57 - 0.0) * sin((2.0 * 3.14 * time / 46.0) + 3.14);
 	  
-  printf("Yi: %f Zi: %f \n", Yi, Zi);
+  //printf("Yi: %f Zi: %f \n", Yi, Zi);
 	  
   current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0;	 
   current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
