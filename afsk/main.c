@@ -976,6 +976,22 @@ if (firstTime != ON)
   	}	  
 	  
 //	 printf("\n"); 
+	  
+	  
+  double time = (millis() - time_start)/1000.0;	  
+  double Xi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
+  double Yi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0 + 3.14/2.0);
+  double Zi = 5.0 * cos(1.57 - 0.0) * sin(2.0 * 3.14 * time / 46.0 + 3.14);
+	  
+  current[map[PLUS_X]] = ( Xi >= 0) ? (Xi, 0);	 
+  current[map[MINUS_X]] = ( Xi >= 0) ? (0, ((-1.0)) * Xi));	 
+  current[map[PLUS_Y]] = ( Yi >= 0) ? (Yi, 0);	 
+  current[map[MINUS_Y]] = ( Yi >= 0) ? (0, ((-1.0)) * Yi));	
+  current[map[PLUS_Y]] = ( Zi >= 0) ? (Zi, 0);	 
+  current[map[MINUS_Y]] = ( Zi >= 0) ? (0, ((-1.0)) * Zi));
+	  
+  printf("Time: %f  : %f %f %f \n",time, Xi, Yi, Zi);
+	  
  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
@@ -1019,12 +1035,6 @@ if (firstTime != ON)
       h[6] = 99;
 	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
-	  
-  double time = (millis() - time_start)/1000.0;	  
-  double Xi = 5.0 * sin(1.57) * sin(2.0 * 3.14 * time / 46.0);
-	  
-  printf("Time: %f  Xi %f \n",time, Xi);
-	  
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
   posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
   negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
