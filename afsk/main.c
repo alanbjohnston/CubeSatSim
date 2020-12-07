@@ -979,9 +979,9 @@ if (firstTime != ON)
 	  
 	  
   double time = (millis() - time_start)/1000.0;	  
-  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / 46.0) + rnd_float(-1, 1);
-  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / 46.0) + (3.14/2.0)) + rnd_float(-1, 1);
-  double Zi = 9.0 * cos(1.37 - 0.2) * sin((2.0 * 3.14 * time / 46.0) + 3.14 + 0.785) + rnd_float(-1, 1);
+  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
+  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / (46.0 * 2)) + (3.14/2.0)) + rnd_float(-1, 1);
+  double Zi = 9.0 * cos(1.37 - 0.2) * sin((2.0 * 3.14 * time / (46.0 * 2)) + 3.14 + 0.785) + rnd_float(-1, 1);
 	  
   //printf("Yi: %f Zi: %f \n", Yi, Zi);
 	  
