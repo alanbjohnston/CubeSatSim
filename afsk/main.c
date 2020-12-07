@@ -984,11 +984,11 @@ if (firstTime != ON)
   double Zi = 5.0 * cos(1.57 - 0.0) * sin(2.0 * 3.14 * time / 46.0 + 3.14);
 	  
   current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0;	 
-  current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0)) * Xi);	 
+  current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
   current[map[PLUS_Y]] = ( Yi >= 0) ? Yi: 0;	 
-  current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0)) * Yi);	
+  current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0) * Yi);	
   current[map[PLUS_Y]] = ( Zi >= 0) ? Zi: 0;	 
-  current[map[MINUS_Y]] = ( Zi >= 0) ? 0: ((-1.0)) * Zi);
+  current[map[MINUS_Y]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
 	  
   printf("Time: %f  : %f %f %f \n",time, Xi, Yi, Zi);
 	  
