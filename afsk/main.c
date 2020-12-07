@@ -1655,7 +1655,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 float rnd_float(float min,float max) {   // returns 2 decimal point random number
 // from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
 	
-	int val = (rand() % ((int)(max*100) – (int)(min*100) + 1)) + (int)(min*100)
+	int val = (rand() % ((int)(max*100) – (int)(min*100) + 1)) + (int)(min*100);
 	float ret = ((float)(val)/100);
 	
       return(ret);
