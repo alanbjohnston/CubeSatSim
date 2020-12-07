@@ -68,6 +68,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
+float rnd_float(float min, float max);
 int get_tlm(void);
 int get_tlm_fox();
 int encodeA(short int *b, int index, int val);
@@ -394,6 +395,13 @@ else
   }
  }
 
+srand(time(0)); 
+
+	printf("Rnd: %f \n", rnd_float(-0.2, 0.2));
+	printf("Rnd: %f \n", rnd_float(-0.2, 0.2));
+	printf("Rnd: %f \n", rnd_float(.5, 1.0));
+	printf("Rnd: %f \n", rnd_float(4.0, 5.0));
+	
   int ret;
   //uint8_t data[1024];
 
@@ -1643,6 +1651,16 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 
       return(val);
 }
+
+float rnd_float(float min,float max) {   // returns 2 decimal point random number
+// from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
+	
+	int val = (rand() % ((int)(max*100) – (int)(min*100) + 1)) + (int)(min*100)
+	float ret = ((float)(val)/100);
+	
+      return(ret);
+}
+
 int test_i2c_bus(int bus)
 {
 	int output = bus; // return bus number if OK, otherwise return -1
