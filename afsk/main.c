@@ -989,8 +989,8 @@ if (firstTime != ON)
   current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
   current[map[PLUS_Y]] = ( Yi >= 0) ? Yi: 0;	 
   current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0) * Yi);	
-  current[map[PLUS_Y]] = ( Zi >= 0) ? Zi: 0;	 
-  current[map[MINUS_Y]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
+  current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
+  current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
 	  
   printf("Time: %f  : %f %f | %f %f | %f %f\n",time, current[map[PLUS_X]], current[map[MINUS_X]], current[map[PLUS_Y]], current[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 	  
