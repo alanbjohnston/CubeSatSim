@@ -423,7 +423,11 @@ eclipse_time = rnd_float(0, 300);
 eclipse = (rnd_float(-1, +1) > 0) ? 1 : 0;
 period = rnd_float(150, 300);
 temp = rnd_float(20, 55);
-		
+	
+for(int i=0; i < 3; i++)
+	printf("axis: %f angle: %f v: %f i: %f \n",axis[i], angle[i], volts_max[i], amps_max[i]);
+printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f\n", batt, speed, eclipse_time, eclipse, period, temp);
+	
  time_start = millis();
 	
 	
