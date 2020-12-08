@@ -124,6 +124,9 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
+float axis[2], angle[2], volt_max[2], amp_max[2], batt, speed, eclipse_time, period, temp
+int eclipse;
+
 int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
@@ -397,12 +400,30 @@ else
  }
 
 srand(time(0)); 
-
-	printf("Rnd: %f \n", rnd_float(-0.2, 0.0));
-	printf("Rnd: %f \n", rnd_float(-0.2, 0.0));
-	printf("Rnd: %f \n", rnd_float(.50, 0.6));
-	printf("Rnd: %f \n", rnd_float(4.0, 5.0));
 	
+axis[0] = rnd_float(-0.2, 0.2);
+axis[1] = rnd_float(-0.2, 0.2);
+axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
+
+angle[0] = atan(axis[1] / axis[2]);
+angle[1] = atan(axis[2] / axis[0]);
+angle[2] = atan(axis[1] / axis[0]);
+
+volt_max[0] = rnd_float(4.5, 5.5) * sin(angle[1]);	
+volt_max[1] = rnd_float(4.5, 5.5) * cos(angle[0]);
+volt_max[2] = rnd_float(4.5, 5.5) * cos(angle[1] - angle[0]);
+
+amp_max[0] = rnd_float(140, 160) * sin(angle[1]);	
+amp_max[1] = rnd_float(140, 160) * cos(angle[0]);
+amp_max[2] = rnd_float(140, 160) * cos(angle[1] - angle[0]);
+	
+batt = rnd_float(3.5, 4.3);
+speed = rnd_fload(0.5, 1.2);
+eclipse_time = rnd_float(0, 300);
+eclipse = (rnd_float(-1, +1) > 0) ? true : false;
+period = rnd_float(150, 300);
+temp = rnd_float(20, 55);
+		
  time_start = millis();
 	
 	
@@ -978,10 +999,22 @@ if (firstTime != ON)
 //	 printf("\n"); 
 	  
 	  
-  double time = (millis() - time_start)/1000.0;	  
-  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
-  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / (46.0 * 2)) + (3.14/2.0)) + rnd_float(-1, 1);
-  double Zi = 9.0 * cos(1.37 - 0.2) * sin((2.0 * 3.14 * time / (46.0 * 2)) + 3.14 + 0.785) + rnd_float(-1, 1);
+  double time = (millis() - time_start)/1000.0;	 
+
+  if (time % eclipse_time == 0)
+	  eclipse = (eclipse == 1) ? 0 : 1;
+	  
+//  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
+//  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / (46.0 * 2)) + (3.14/2.0)) + rnd_float(-1, 1);
+//  double Zi = 9.0 * cos(1.37 - 0.2) * sin((2.0 * 3.14 * time / (46.0 * 2)) + 3.14 + 0.785) + rnd_float(-1, 1);
+
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+	  
+  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-.2, 2);	  
+  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-.2, 2);	  
+  double Zv = eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-.2, 2);
 	  
   //printf("Yi: %f Zi: %f \n", Yi, Zi);
 	  
@@ -992,9 +1025,15 @@ if (firstTime != ON)
   current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
   current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
 	  
+  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xi: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_X]] = ( Xv <= -1) ? rnd_float(0.9, 1.1): ((-1.0) * Xi);	 
+  voltage[map[PLUS_Y]] = ( Yv >= 0) ? Yi: rnd_float(0.9, 1.1);	  
+  voltage[map[MINUS_Y]] = ( Yv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Yi);	
+  voltage[map[PLUS_Z]] = ( Zv >= 0) ? Zi: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_Z]] = ( Zv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Zi);
+	  	  
   printf("Time: %f  : %f %f | %f %f | %f %f\n",time, current[map[PLUS_X]], current[map[MINUS_X]], current[map[PLUS_Y]], current[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 	  
- 
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
