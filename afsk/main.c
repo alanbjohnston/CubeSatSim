@@ -1036,6 +1036,7 @@ if (firstTime != ON)
   {
 	  eclipse = (eclipse == 1) ? 0 : 1;
 	  eclipse_time = time;
+	  printf("\n\nSwitching eclipse mode! \n\n");
   }
 	  
 //  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
