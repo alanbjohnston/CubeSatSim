@@ -436,6 +436,9 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	
  time_start = millis();
 	
+ double eclipse_start = time;
+ if (eclipse == 0)
+	  eclipse_start -= period/2;  // if starting in eclipse, shorten interval	
 	
   int ret;
   //uint8_t data[1024];
@@ -1028,8 +1031,11 @@ if (firstTime != ON)
 	  
   double time = (millis() - time_start)/1000.0;	 
 
-  if ((int)time % (int)eclipse_time == 0)
+  if ((time - eclipse_start) > period)
+  {
 	  eclipse = (eclipse == 1) ? 0 : 1;
+	  eclipse_start = time;
+  }
 	  
 //  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
 //  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / (46.0 * 2)) + (3.14/2.0)) + rnd_float(-1, 1);
@@ -1073,7 +1079,8 @@ if (firstTime != ON)
   voltage[map[BUS]] = rnd_float(4.99, 5.01);
   current[map[BUS]] = rnd_float(158, 171);
 	  
-  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+//  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+  float charging = eclipse * (amps_max[0] * .707 + amps_max[1] * 0.707 + rnd_float(-4.0, 4.0));
   current[map[BAT]] = current[map[BUS]] - charging;
   batt -= (batt > 3.5) ? current[map[BAT]]/20000: current[map[BAT]]/2000;
   voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
