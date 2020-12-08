@@ -1064,8 +1064,8 @@ if (firstTime != ON)
 	  
   float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
   current[map[BAT]] = current[map[BUS]] - charging;
-  batt -= (batt > 3.5) ? current[map[BAT]]/200000: current[map[BAT]]/20000;
-  voltage[map[BAT]] = batt;
+  batt -= (batt > 3.5) ? current[map[BAT]]/20000: current[map[BAT]]/2000;
+  voltage[map[BAT]] = batt + rnd_float(-0.07, 0.07);
 	  
 // end of simulated telemetry
 	  
