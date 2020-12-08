@@ -432,7 +432,7 @@ temp_min = rnd_float(10,20);
 	
 for(int i=0; i < 3; i++)
 	printf("axis: %f angle: %f v: %f i: %f \n",axis[i], angle[i], volts_max[i], amps_max[i]);
-printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f\n", batt, speed, eclipse_time, eclipse, period, temp);
+printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
 	
  time_start = millis();
 	
