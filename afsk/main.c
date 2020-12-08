@@ -124,7 +124,7 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, eclipse_time, period, temp;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, eclipse_time, period, temp, temp_max, temp_min;
 int eclipse;
 
 int test_i2c_bus(int bus);
@@ -420,9 +420,11 @@ amps_max[2] = rnd_float(140.0, 160.0) * (float) cos(angle[1] - angle[0]);
 batt = rnd_float(3.5, 4.3);
 speed = rnd_float(1.0, 2.5);
 eclipse_time = rnd_float(0, 300);
-eclipse = (rnd_float(-1, +1) > 0) ? 1 : 0;
+eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
 period = rnd_float(150, 300);
 temp = rnd_float(20, 55);
+temp_max = rnd_float(50, 70);
+temp_min = rnd_float(10,20);
 	
 for(int i=0; i < 3; i++)
 	printf("axis: %f angle: %f v: %f i: %f \n",axis[i], angle[i], volts_max[i], amps_max[i]);
@@ -1003,6 +1005,22 @@ if (firstTime != ON)
 //	 printf("\n"); 
 	  
 	  
+  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  if (cpuTempSensor) {
+		double cpuTemp;
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+	  
+    #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+    #endif
+	  
+    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+   }	  
+   fclose(cpuTempSensor);
+
+ // simulated telemetry 
+	  
   double time = (millis() - time_start)/1000.0;	 
 
   if ((int)time % (int)eclipse_time == 0)
@@ -1037,20 +1055,19 @@ if (firstTime != ON)
   voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
 	  	  
   printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+  temp += (eclipse > 0) ? ((temp_max - temp)/50.0): ((temp_min - temp)/50.0);
+  IHUcpuTemp = temp;	  
+
+  voltage[map[BUS]] = rnd_float(4.99, 5.01);
+  current[map[BUS]] = rnd_float(240, 270);
 	  
-  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-  if (cpuTempSensor) {
-		double cpuTemp;
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
+  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+  current[map[BAT]] = current[map[BUS]] - charging;
+  batt -= (batt > 3.5) ? current/20000: current/2000;
+  voltage[map[BAT]] = batt;
 	  
-    #ifdef DEBUG_LOGGING
-      printf("CPU Temp Read: %6.1f\n", cpuTemp);
-    #endif
-	  
-    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-   }	  
-   fclose(cpuTempSensor);
+// end of simulated telemetry
 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
