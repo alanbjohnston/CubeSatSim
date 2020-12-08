@@ -1058,15 +1058,15 @@ if (firstTime != ON)
   printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
   temp += (eclipse > 0) ? ((temp_max - temp)/10.0): ((temp_min - temp)/10.0);
-  IHUcpuTemp = temp + rnd_float(-1,+1);	  
+  IHUcpuTemp = (temp + rnd_float(-1,+1)) * 100;	  
 
   voltage[map[BUS]] = rnd_float(4.99, 5.01);
-  current[map[BUS]] = rnd_float(150, 175);
+  current[map[BUS]] = rnd_float(158, 171);
 	  
   float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
   current[map[BAT]] = current[map[BUS]] - charging;
   batt -= (batt > 3.5) ? current[map[BAT]]/20000: current[map[BAT]]/2000;
-  voltage[map[BAT]] = batt + rnd_float(-0.07, 0.07);
+  voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
 	  
 // end of simulated telemetry
 	  
