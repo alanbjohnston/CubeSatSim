@@ -417,9 +417,9 @@ amps_max[0] = rnd_float(140.0, 190.0) * (float) sin(angle[1]);
 amps_max[1] = rnd_float(140.0, 190.0) * (float) cos(angle[0]);
 amps_max[2] = rnd_float(140.0, 190.0) * (float) cos(angle[1] - angle[0]);
 */
-amps_max[0] = 180 * (float) sin(angle[1]);	
-amps_max[1] = 180 * (float) cos(angle[0]);
-amps_max[2] = 180 * (float) cos(angle[1] - angle[0]);
+amps_max[0] = 180.0 * (float) sin(angle[1]);	
+amps_max[1] = 180.0 * (float) cos(angle[0]);
+amps_max[2] = 180.0 * (float) cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.5, 4.3);
 speed = rnd_float(1.0, 2.5);
