@@ -68,7 +68,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
-float rnd_float(float min, float max);
+float rnd_float(double min, double max);
 int get_tlm(void);
 int get_tlm_fox();
 int encodeA(short int *b, int index, int val);
@@ -124,7 +124,7 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
-float axis[2], angle[2], volt_max[2], amp_max[2], batt, speed, eclipse_time, period, temp
+float axis[2], angle[2], volts_max[2], amps_max[2], batt, speed, eclipse_time, period, temp
 int eclipse;
 
 int test_i2c_bus(int bus);
@@ -409,18 +409,18 @@ angle[0] = atan(axis[1] / axis[2]);
 angle[1] = atan(axis[2] / axis[0]);
 angle[2] = atan(axis[1] / axis[0]);
 
-volt_max[0] = rnd_float(4.5, 5.5) * sin(angle[1]);	
-volt_max[1] = rnd_float(4.5, 5.5) * cos(angle[0]);
-volt_max[2] = rnd_float(4.5, 5.5) * cos(angle[1] - angle[0]);
+volts_max[0] = rnd_float(4.5, 5.5) * sin(angle[1]);	
+volts_max[1] = rnd_float(4.5, 5.5) * cos(angle[0]);
+volts_max[2] = rnd_float(4.5, 5.5) * cos(angle[1] - angle[0]);
 
-amp_max[0] = rnd_float(140, 160) * sin(angle[1]);	
-amp_max[1] = rnd_float(140, 160) * cos(angle[0]);
-amp_max[2] = rnd_float(140, 160) * cos(angle[1] - angle[0]);
+amps_max[0] = rnd_float(140, 160) * sin(angle[1]);	
+amps_max[1] = rnd_float(140, 160) * cos(angle[0]);
+amps_max[2] = rnd_float(140, 160) * cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.5, 4.3);
 speed = rnd_fload(0.5, 1.2);
 eclipse_time = rnd_float(0, 300);
-eclipse = (rnd_float(-1, +1) > 0) ? true : false;
+eclipse = (rnd_float(-1, +1) > 0) ? 1 : 0;
 period = rnd_float(150, 300);
 temp = rnd_float(20, 55);
 		
@@ -1001,7 +1001,7 @@ if (firstTime != ON)
 	  
   double time = (millis() - time_start)/1000.0;	 
 
-  if (time % eclipse_time == 0)
+  if ((int)time % (int)eclipse_time == 0)
 	  eclipse = (eclipse == 1) ? 0 : 1;
 	  
 //  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
@@ -1032,7 +1032,7 @@ if (firstTime != ON)
   voltage[map[PLUS_Z]] = ( Zv >= 0) ? Zi: rnd_float(0.9, 1.1);	 
   voltage[map[MINUS_Z]] = ( Zv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Zi);
 	  	  
-  printf("Time: %f  : %f %f | %f %f | %f %f\n",time, current[map[PLUS_X]], current[map[MINUS_X]], current[map[PLUS_Y]], current[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+  printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, current[map[PLUS_X]], current[map[MINUS_X]], current[map[PLUS_Y]], current[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 	  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
@@ -1713,8 +1713,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
       return(val);
 }
 
-float rnd_float(float min,float max) {   // returns 2 decimal point random number
-// from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
+float rnd_float(double min,double max) {   // returns 2 decimal point random number
 	
 	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
 	float ret = ((float)(val)/100);
