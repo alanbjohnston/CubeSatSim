@@ -403,7 +403,7 @@ srand(time(0));
 	
 axis[0] = rnd_float(0.0, 0.2);
 axis[1] = rnd_float(0.0, 0.2);
-axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
+axis[2] = 1.0; // (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
 
 angle[0] = (float) atan(axis[1] / axis[2]);
 angle[1] = (float) atan(axis[2] / axis[0]);
@@ -1036,7 +1036,7 @@ if (firstTime != ON)
   voltage[map[PLUS_Z]] = ( Zv >= 0) ? Zv: rnd_float(0.9, 1.1);	 
   voltage[map[MINUS_Z]] = ( Zv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Zv);
 	  	  
-  printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, current[map[PLUS_X]], current[map[MINUS_X]], current[map[PLUS_Y]], current[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+  printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 	  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
