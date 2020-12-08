@@ -1065,8 +1065,8 @@ if (firstTime != ON)
 
   printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-  tempS += (eclipse > 0) ? ((temp_max - tempS)/500.0): ((temp_min - tempS)/500.0);
-  IHUcpuTemp = (int)(tempS * 10 + 0.5);
+  tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
+  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
 	 
   printf("IHUcpuTemp: %d \n", IHUcpuTemp);	  
 	 
