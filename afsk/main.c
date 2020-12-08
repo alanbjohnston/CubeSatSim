@@ -1020,7 +1020,7 @@ if (firstTime != ON)
   double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
   double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 	  
-  printf("Yi: %f Zi: %f \n", Yi, Zi);
+  printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 	  
   current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0;	 
   current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
