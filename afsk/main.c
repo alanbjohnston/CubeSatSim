@@ -1002,8 +1002,9 @@ if (firstTime != ON)
 	    }
   	}	  
 	  
-//	 printf("\n"); 
-	  
+//	 printf("\n"); 	  
+	 	  
+   batteryVoltage = voltage[map[BAT]];
 	  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
@@ -1114,7 +1115,7 @@ if (firstTime != ON)
   negZv = (int)(voltage[map[MINUS_Z]] * 100);
 	  
   batt_c_v = (int)(voltage[map[BAT]] * 100);
-  batt_c_v = (int)(batt * 100);
+//  batt_c_v = (int)(batt * 100);
 	  
   battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
   PSUVoltage = (int)(voltage[map[BUS]] * 100);
@@ -1123,8 +1124,6 @@ if (firstTime != ON)
 	  STEMBoardFailure = 0;
 	  
   printf("PosZi: %d \n", posZi);
-	  
-  batteryVoltage = voltage[map[BAT]];
 	  
 //  if (payload == ON)
 //	  STEMBoardFailure = 0;
