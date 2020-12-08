@@ -1063,11 +1063,13 @@ if (firstTime != ON)
   voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
   voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
 	  	  
-  printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+  printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",temp, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
   temp += (eclipse > 0) ? ((temp_max - temp)/50.0): ((temp_min - temp)/50.0);
-  IHUcpuTemp = (int)((temp + rnd_float(-0.5, 0.5)) * 10 + 0.5);	  
-
+  IHUcpuTemp = (int)((temp + rnd_float(-0.5, 0.5)) * 10 + 0.5);
+	 
+  printf("IHUcpuTemp: %d \n", IHUcpuTemp);	  
+	 
   voltage[map[BUS]] = rnd_float(4.99, 5.01);
   current[map[BUS]] = rnd_float(158, 171);
 	  
