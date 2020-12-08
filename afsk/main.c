@@ -1012,9 +1012,9 @@ if (firstTime != ON)
 //  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / (46.0 * 2)) + (3.14/2.0)) + rnd_float(-1, 1);
 //  double Zi = 9.0 * cos(1.37 - 0.2) * sin((2.0 * 3.14 * time / (46.0 * 2)) + 3.14 + 0.785) + rnd_float(-1, 1);
 
-  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);	  
-  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-2, 2);	  
-  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 	  
   double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
   double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
