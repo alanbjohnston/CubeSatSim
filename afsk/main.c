@@ -1025,12 +1025,12 @@ if (firstTime != ON)
   current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
   current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
 	  
-  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xi: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_X]] = ( Xv <= -1) ? rnd_float(0.9, 1.1): ((-1.0) * Xi);	 
-  voltage[map[PLUS_Y]] = ( Yv >= 0) ? Yi: rnd_float(0.9, 1.1);	  
-  voltage[map[MINUS_Y]] = ( Yv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Yi);	
-  voltage[map[PLUS_Z]] = ( Zv >= 0) ? Zi: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_Z]] = ( Zv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Zi);
+  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_X]] = ( Xv <= -1) ? rnd_float(0.9, 1.1): ((-1.0) * Xv);	 
+  voltage[map[PLUS_Y]] = ( Yv >= 0) ? Yv: rnd_float(0.9, 1.1);	  
+  voltage[map[MINUS_Y]] = ( Yv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Yv);	
+  voltage[map[PLUS_Z]] = ( Zv >= 0) ? Zv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_Z]] = ( Zv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Zv);
 	  	  
   printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, current[map[PLUS_X]], current[map[MINUS_X]], current[map[PLUS_Y]], current[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 	  
