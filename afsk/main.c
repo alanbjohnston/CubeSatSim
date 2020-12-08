@@ -1018,9 +1018,9 @@ if (firstTime != ON)
 	  
   double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
   double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
-  double Zv = eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+  double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 	  
-  //printf("Yi: %f Zi: %f \n", Yi, Zi);
+  printf("Yi: %f Zi: %f \n", Yi, Zi);
 	  
   current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0;	 
   current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
@@ -1079,7 +1079,7 @@ if (firstTime != ON)
     if (mode == BPSK)
       h[6] = 99;
 	  
-  printf("Mxv: %f \n",voltage[map[MINUS_X]]);	  
+  printf("Pzi: %f \n",current[map[PLUS_Z]]);	  
 	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
@@ -1102,7 +1102,7 @@ if (firstTime != ON)
   if (payload == ON)
 	  STEMBoardFailure = 0;
 	  
-  printf("NegXv: %d \n", negXv);
+  printf("PosZi: %d \n", posZi);
 	  
   batteryVoltage = voltage[map[BAT]];
 	  
