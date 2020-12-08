@@ -1083,7 +1083,7 @@ if (firstTime != ON)
 	  
 //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
   float charging = eclipse * (amps_max[0] * .707 + amps_max[1] * 0.707 + rnd_float(-4.0, 4.0));
-  current[map[BAT]] = current[map[BUS]] - charging;
+  current[map[BAT]] = current[map[BUS]] * voltage[map[BUS]] / (voltage[map[BAT]] * 0.95) - charging;
   batt -= (batt > 3.5) ? current[map[BAT]]/20000: current[map[BAT]]/2000;
   voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
 	  
