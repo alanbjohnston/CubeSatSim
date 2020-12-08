@@ -405,9 +405,9 @@ axis[0] = 0; // rnd_float(-0.2, 0.2);
 axis[1] = 0; // rnd_float(-0.2, 0.2);
 axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
 
-angle[0] = (axis[2] != 0) ? (float) atan(axis[1] / axis[2]) : ((axis[1] != 0) ? 0: 3.14/2.0);
-angle[1] = (axis[0] != 0) ? (float) atan(axis[2] / axis[0]) : ((axis[2] != 0) ? 0: 3.14/2.0);
-angle[2] = (axis[0] != 0) ? (float) atan(axis[1] / axis[0]) : ((axis[1] != 0) ? 0: 3.14/2.0);
+angle[0] = (float) atan(axis[1] / (axis[2] + 0.001));
+angle[1] = (float) atan(axis[2] / (axis[0] + 0.001));
+angle[2] = (float) atan(axis[1] / (axis[0] + 0.001));
 
 volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);	
 volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
