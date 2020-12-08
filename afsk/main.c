@@ -124,8 +124,9 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, eclipse_time, period, tempS, temp_max, temp_min;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min;
 int eclipse;
+double eclipse_time;
 
 int test_i2c_bus(int bus);
 
@@ -436,7 +437,7 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	
  time_start = millis();
 	
- eclipse_time = time;
+ eclipse_time = time();
  if (eclipse == 0)
 	  eclipse_time -= period/2;  // if starting in eclipse, shorten interval	
 	
