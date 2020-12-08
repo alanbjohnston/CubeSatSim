@@ -1079,12 +1079,15 @@ if (firstTime != ON)
     if (mode == BPSK)
       h[6] = 99;
 	  
+  printf("Mxv: %f \n",voltage[map[MINUS_X]]);	  
+	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
   posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
   negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
   negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
   negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
+
 
   posXv = (int)(voltage[map[PLUS_X]] * 100);
   posYv = (int)(voltage[map[PLUS_Y]] * 100);
@@ -1098,6 +1101,8 @@ if (firstTime != ON)
   PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
+	  
+  printf("NegXv: %d \n", negXv);
 	  
   batteryVoltage = voltage[map[BAT]];
 	  
