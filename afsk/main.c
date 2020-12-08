@@ -401,9 +401,9 @@ else
 
 srand(time(0)); 
 	
-axis[0] = rnd_float(0.0, 0.2);
-axis[1] = rnd_float(0.0, 0.2);
-axis[2] = 1.0; // (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
+axis[0] = rnd_float(-0.2, 0.2);
+axis[1] = rnd_float(-0.2, 0.2);
+axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
 
 angle[0] = (float) atan(axis[1] / axis[2]);
 angle[1] = (float) atan(axis[2] / axis[0]);
@@ -413,9 +413,9 @@ volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
 volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
 volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 
-amps_max[0] = rnd_float(140.0, 160.0) * (float) sin(angle[1]);	
-amps_max[1] = rnd_float(140.0, 160.0) * (float) cos(angle[0]);
-amps_max[2] = rnd_float(140.0, 160.0) * (float) cos(angle[1] - angle[0]);
+amps_max[0] = rnd_float(140.0, 190.0) * (float) sin(angle[1]);	
+amps_max[1] = rnd_float(140.0, 190.0) * (float) cos(angle[0]);
+amps_max[2] = rnd_float(140.0, 190.0) * (float) cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.5, 4.3);
 speed = rnd_float(1.0, 2.5);
@@ -1057,10 +1057,10 @@ if (firstTime != ON)
   printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
   temp += (eclipse > 0) ? ((temp_max - temp)/50.0): ((temp_min - temp)/50.0);
-  IHUcpuTemp = temp;	  
+  IHUcpuTemp = temp + rnd_float(-1,+1);	  
 
   voltage[map[BUS]] = rnd_float(4.99, 5.01);
-  current[map[BUS]] = rnd_float(240, 270);
+  current[map[BUS]] = rnd_float(150, 175);
 	  
   float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
   current[map[BAT]] = current[map[BUS]] - charging;
