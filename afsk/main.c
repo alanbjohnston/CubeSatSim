@@ -1112,7 +1112,10 @@ if (firstTime != ON)
   negXv = (int)(voltage[map[MINUS_X]] * 100);
   negYv = (int)(voltage[map[MINUS_Y]] * 100);
   negZv = (int)(voltage[map[MINUS_Z]] * 100);
+	  
   batt_c_v = (int)(voltage[map[BAT]] * 100);
+  batt_c_v = (int)(batt * 100);
+	  
   battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
   PSUVoltage = (int)(voltage[map[BUS]] * 100);
   PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
