@@ -401,8 +401,8 @@ else
 
 srand(time(0)); 
 	
-axis[0] = rnd_float(-0.2, 0.2);
-axis[1] = rnd_float(-0.2, 0.2);
+axis[0] = rnd_float(0.0, 0.2);
+axis[1] = rnd_float(0.0, 0.2);
 axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
 
 angle[0] = (float) atan(axis[1] / axis[2]);
@@ -413,9 +413,9 @@ volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
 volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
 volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 
-amps_max[0] = rnd_float(140, 160) * (float) sin(angle[1]);	
-amps_max[1] = rnd_float(140, 160) * (float) cos(angle[0]);
-amps_max[2] = rnd_float(140, 160) * (float) cos(angle[1] - angle[0]);
+amps_max[0] = rnd_float(140.0, 160.0) * (float) sin(angle[1]);	
+amps_max[1] = rnd_float(140.0, 160.0) * (float) cos(angle[0]);
+amps_max[2] = rnd_float(140.0, 160.0) * (float) cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.5, 4.3);
 speed = rnd_float(1.0, 2.5);
@@ -1016,9 +1016,9 @@ if (firstTime != ON)
   double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-2, 2);	  
   double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 	  
-  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-.2, 2);	  
-  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-.2, 2);	  
-  double Zv = eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-.2, 2);
+  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
+  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
+  double Zv = eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 	  
   //printf("Yi: %f Zi: %f \n", Yi, Zi);
 	  
