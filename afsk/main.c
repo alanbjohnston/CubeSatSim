@@ -437,7 +437,7 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	
  time_start = millis();
 	
- eclipse_time = time();
+ eclipse_time = time(0);
  if (eclipse == 0)
 	  eclipse_time -= period/2;  // if starting in eclipse, shorten interval	
 	
