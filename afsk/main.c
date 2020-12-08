@@ -1032,7 +1032,7 @@ if (firstTime != ON)
 	  
   double time = (millis() - time_start)/1000.0;	 
 	  
-  printf("Eclipse time left: %d \n", period - time + eclipse_time;
+  printf("Eclipse time left: %d \n", period - time + eclipse_time);
 
   if ((time - eclipse_time) > period)
   {
