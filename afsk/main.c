@@ -437,7 +437,7 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	
  time_start = millis();
 	
- eclipse_time = time(0);
+ eclipse_time = millis()/1000.0;	 
  if (eclipse == 0)
 	  eclipse_time -= period/2;  // if starting in eclipse, shorten interval	
 	
@@ -1031,6 +1031,8 @@ if (firstTime != ON)
  // simulated telemetry 
 	  
   double time = (millis() - time_start)/1000.0;	 
+	  
+  printf("Eclipse time left: %d \n", period - time + eclipse_time;
 
   if ((time - eclipse_time) > period)
   {
