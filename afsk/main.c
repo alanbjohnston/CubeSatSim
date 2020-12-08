@@ -1085,6 +1085,11 @@ if (firstTime != ON)
   float charging = eclipse * (amps_max[0] * .707 + amps_max[1] * 0.707 + rnd_float(-4.0, 4.0));
   current[map[BAT]] = current[map[BUS]] * voltage[map[BUS]] / (voltage[map[BAT]] * 0.95) - charging;
   batt -= (batt > 3.5) ? current[map[BAT]]/20000: current[map[BAT]]/2000;
+  if (batt < 3.0)
+	  batt = 3.0;
+  if (batt > 4.5)
+	  batt = 4.5;
+	  
   voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
 	  
 // end of simulated telemetry
