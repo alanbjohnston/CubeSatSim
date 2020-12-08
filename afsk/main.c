@@ -405,20 +405,20 @@ axis[0] = rnd_float(-0.2, 0.2);
 axis[1] = rnd_float(-0.2, 0.2);
 axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
 
-angle[0] = atan(axis[1] / axis[2]);
-angle[1] = atan(axis[2] / axis[0]);
-angle[2] = atan(axis[1] / axis[0]);
+angle[0] = (float) atan(axis[1] / axis[2]);
+angle[1] = (float) atan(axis[2] / axis[0]);
+angle[2] = (float) atan(axis[1] / axis[0]);
 
-volts_max[0] = rnd_float(4.5, 5.5) * sin(angle[1]);	
-volts_max[1] = rnd_float(4.5, 5.5) * cos(angle[0]);
-volts_max[2] = rnd_float(4.5, 5.5) * cos(angle[1] - angle[0]);
+volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);	
+volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
+volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 
-amps_max[0] = rnd_float(140, 160) * sin(angle[1]);	
-amps_max[1] = rnd_float(140, 160) * cos(angle[0]);
-amps_max[2] = rnd_float(140, 160) * cos(angle[1] - angle[0]);
+amps_max[0] = rnd_float(140, 160) * (float) sin(angle[1]);	
+amps_max[1] = rnd_float(140, 160) * (float) cos(angle[0]);
+amps_max[2] = rnd_float(140, 160) * (float) cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.5, 4.3);
-speed = rnd_fload(0.5, 1.2);
+speed = rnd_float(0.5, 1.2);
 eclipse_time = rnd_float(0, 300);
 eclipse = (rnd_float(-1, +1) > 0) ? 1 : 0;
 period = rnd_float(150, 300);
