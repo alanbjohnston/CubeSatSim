@@ -1033,8 +1033,8 @@ if (firstTime != ON)
   voltage[map[MINUS_X]] = ( Xv <= -1) ? ((-1.0) * Xv): rnd_float(0.9, 1.1);	 
   voltage[map[PLUS_Y]] = ( Yv >= 1) ? Yv: rnd_float(0.9, 1.1);	  
   voltage[map[MINUS_Y]] = ( Yv <= -1) ? ((-1.0) * Yv): rnd_float(0.9, 1.1);	
-  voltage[map[PLUS_Z]] = ( Zv >= 0) ? Zv: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_Z]] = ( Zv >= 0) ? rnd_float(0.9, 1.1): ((-1.0) * Zv);
+  voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
 	  	  
   printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 	  
