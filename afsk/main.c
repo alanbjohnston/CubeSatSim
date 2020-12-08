@@ -423,7 +423,7 @@ amps_max[2] = 180.0 * (float) cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.5, 4.3);
 speed = rnd_float(1.0, 2.5);
-eclipse_time = rnd_float(0, 300);
+//eclipse_time = rnd_float(0, 300);
 eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
 period = rnd_float(150, 300);
 tempS = rnd_float(20, 55);
@@ -436,9 +436,9 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	
  time_start = millis();
 	
- double eclipse_start = time;
+ eclipse_time = time;
  if (eclipse == 0)
-	  eclipse_start -= period/2;  // if starting in eclipse, shorten interval	
+	  eclipse_time -= period/2;  // if starting in eclipse, shorten interval	
 	
   int ret;
   //uint8_t data[1024];
@@ -1031,10 +1031,10 @@ if (firstTime != ON)
 	  
   double time = (millis() - time_start)/1000.0;	 
 
-  if ((time - eclipse_start) > period)
+  if ((time - eclipse_time) > period)
   {
 	  eclipse = (eclipse == 1) ? 0 : 1;
-	  eclipse_start = time;
+	  eclipse_time = time;
   }
 	  
 //  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
