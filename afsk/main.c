@@ -1030,11 +1030,15 @@ if (firstTime != ON)
 //  double Xi = 10.0 * sin(1.37) * sin(2.0 * 3.14 * time / (46.0 * 2)) + rnd_float(-1, 1);
 //  double Yi = 8.5 * sin(1.37) * sin((2.0 * 3.14 * time / (46.0 * 2)) + (3.14/2.0)) + rnd_float(-1, 1);
 //  double Zi = 9.0 * cos(1.37 - 0.2) * sin((2.0 * 3.14 * time / (46.0 * 2)) + 3.14 + 0.785) + rnd_float(-1, 1);
-
+/*
   double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
   double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
   double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
-	  
+*/
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed))  + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))  + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  + rnd_float(-2, 2);
+
   double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
   double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
   double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
@@ -1057,8 +1061,8 @@ if (firstTime != ON)
 	  	  
   printf("Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-  temp += (eclipse > 0) ? ((temp_max - temp)/10.0): ((temp_min - temp)/10.0);
-  IHUcpuTemp = (temp + rnd_float(-1,+1)) * 100;	  
+  temp += (eclipse > 0) ? ((temp_max - temp)/50.0): ((temp_min - temp)/50.0);
+  IHUcpuTemp = (temp + rnd_float(-0.5,+0.5)) * 100;	  
 
   voltage[map[BUS]] = rnd_float(4.99, 5.01);
   current[map[BUS]] = rnd_float(158, 171);
