@@ -124,7 +124,7 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
-float axis[2], angle[2], volts_max[2], amps_max[2], batt, speed, eclipse_time, period, temp;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, eclipse_time, period, temp;
 int eclipse;
 
 int test_i2c_bus(int bus);
