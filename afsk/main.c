@@ -124,7 +124,7 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, eclipse_time, period, temp, temp_max, temp_min;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, eclipse_time, period, tempS, temp_max, temp_min;
 int eclipse;
 
 int test_i2c_bus(int bus);
@@ -426,7 +426,7 @@ speed = rnd_float(1.0, 2.5);
 eclipse_time = rnd_float(0, 300);
 eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
 period = rnd_float(150, 300);
-temp = rnd_float(20, 55);
+tempS = rnd_float(20, 55);
 temp_max = rnd_float(50, 70);
 temp_min = rnd_float(10,20);
 	
@@ -1062,11 +1062,11 @@ if (firstTime != ON)
   voltage[map[MINUS_Y]] = ( Yv <= -1) ? ((-1.0) * Yv): rnd_float(0.9, 1.1);	
   voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
   voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
-	  	  
-  printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",temp, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-  temp += (eclipse > 0) ? ((temp_max - temp)/50.0): ((temp_min - temp)/50.0);
-  IHUcpuTemp = (int)((temp + rnd_float(-0.5, 0.5)) * 10 + 0.5);
+  printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+  tempS += (eclipse > 0) ? ((temp_max - tempS)/500.0): ((temp_min - tempS)/500.0);
+  IHUcpuTemp = (int)(tempS * 10 + 0.5);
 	 
   printf("IHUcpuTemp: %d \n", IHUcpuTemp);	  
 	 
