@@ -1078,7 +1078,7 @@ if (firstTime != ON)
 	 
   printf("IHUcpuTemp: %d \n", IHUcpuTemp);	  
 	 
-  voltage[map[BUS]] = rnd_float(4.995, 5.005);
+  voltage[map[BUS]] = rnd_float(5.0, 5.005);
   current[map[BUS]] = rnd_float(158, 171);
 	  
 //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
