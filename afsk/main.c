@@ -1315,7 +1315,7 @@ if (payload == ON)
   encodeB(b, 34 + head_offset,altitude);   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
-  encodeA(b, 37 + head_offset,  Rssi);	
+  encodeB(b, 37 + head_offset,  Rssi);	
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 	  
