@@ -405,6 +405,9 @@ else
 i2c_bus0 = (test_i2c_bus(0) != -1) ? ON: OFF;	
 i2c_bus1 = (test_i2c_bus(1) != -1) ? ON: OFF;	
 i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
+	
+i2c_bus1 = ON;  // testing 
+i2c_bus3 = ON;
 
 #ifdef DEBUG_LOGGING
 printf("INFO: I2C bus status 0: %d 1: %d 3: %d \n",i2c_bus0, i2c_bus1, i2c_bus3);
@@ -1316,7 +1319,7 @@ if (payload == ON)
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
 	  
-  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == ON) * 16 + (i2c_bus1 == ON) * 32 + (i2c_bus3 == ON) * 64  + groundCommandCount * 256); 
+  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + groundCommandCount * 256); 
   encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed* 2);  
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
