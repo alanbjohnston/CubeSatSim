@@ -1084,7 +1084,7 @@ if (firstTime != ON)
 //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
   float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0)); 
 	  printf("Charging: %f \n", charging);
-  current[map[BAT]] = (current[map[BUS]] * voltage[map[BUS]] / (voltage[map[BAT]] * 0.95)) - charging;
+  current[map[BAT]] = (current[map[BUS]] * voltage[map[BUS]] / (voltage[map[BAT]] * 1.0)) - charging;
   batt -= (batt > 3.5) ? current[map[BAT]]/30000: current[map[BAT]]/3000;
   if (batt < 3.0)
 	  batt = 3.0;
