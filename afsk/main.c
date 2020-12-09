@@ -405,7 +405,13 @@ else
 i2c_bus0 = (test_i2c_bus(0) != -1) ? ON: OFF;	
 i2c_bus1 = (test_i2c_bus(1) != -1) ? ON: OFF;	
 i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
-
+	
+    char cmdbuffer1[1000];	
+    FILE* file4 = popen("vcgencmd get_camera", "r");
+    fgets(cmdbuffer1, 1000, file4);
+    printf("Camera result: %s\n", cmdbuffer1);
+    pclose(file4);
+	
 #ifdef DEBUG_LOGGING
 printf("INFO: I2C bus status 0: %d 1: %d 3: %d \n",i2c_bus0, i2c_bus1, i2c_bus3);
 #endif	
