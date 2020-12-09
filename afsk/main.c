@@ -415,10 +415,12 @@ angle[2] = (float) atan(axis[1] / axis[0]);
 volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);	
 volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
 volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+	
+float amps_avg = rnd_float (180, 280);
 
-amps_max[0] = rnd_float(140.0, 190.0) * (float) sin(angle[1]);	
-amps_max[1] = rnd_float(140.0, 190.0) * (float) cos(angle[0]);
-amps_max[2] = rnd_float(140.0, 190.0) * (float) cos(angle[1] - angle[0]);
+amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);	
+amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
+amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
 	
 batt = rnd_float(3.8, 4.3);
 speed = rnd_float(1.0, 2.5);
