@@ -401,22 +401,20 @@ else
  }
 	
 // test i2c buses	
-
 i2c_bus0 = (test_i2c_bus(0) != -1) ? ON: OFF;	
 i2c_bus1 = (test_i2c_bus(1) != -1) ? ON: OFF;	
 i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
 	
-    char cmdbuffer1[1000];	
-    FILE* file4 = popen("vcgencmd get_camera", "r");
-    fgets(cmdbuffer1, 1000, file4);
-    printf("Camera result:%s pos: %s %s value: %d \n", &cmdbuffer1, &cmdbuffer1[10], &cmdbuffer1[21], ((&cmdbuffer1[10] == "1") & (&cmdbuffer1[21] == "1")));
-    char camera_present = "supported=1 detected=1";
-    printf("String compare: %d \n", (strchr(cmdbuffer1, camera_present)) != NULL);
-
-    pclose(file4);
+// check for camera	
+char cmdbuffer1[1000];	
+FILE* file4 = popen("vcgencmd get_camera", "r");
+fgets(cmdbuffer1, 1000, file4);
+camera = (&cmdbuffer1[10] == "1") & (&cmdbuffer1[21] == "1") ? ON: OFF;
+printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
+pclose(file4);
 	
 #ifdef DEBUG_LOGGING
-printf("INFO: I2C bus status 0: %d 1: %d 3: %d \n",i2c_bus0, i2c_bus1, i2c_bus3);
+printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1, i2c_bus3, camera);
 #endif	
 	
 if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
