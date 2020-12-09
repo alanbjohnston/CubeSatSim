@@ -1142,9 +1142,7 @@ if (sim_mode)
 	  
     if (mode == BPSK)
       h[6] = 99;
-	  
-  printf("Pzi: %f \n",current[map[PLUS_Z]]);	  
-	  
+	  	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
   posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
@@ -1167,8 +1165,6 @@ if (sim_mode)
   PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
-	  
-  printf("PosZi: %d \n", posZi);
 	  
 //  if (payload == ON)
 //	  STEMBoardFailure = 0;
