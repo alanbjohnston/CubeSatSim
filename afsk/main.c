@@ -415,6 +415,8 @@ camera = (strstr(&cmdbuffer1,camera_present) != NULL) ? ON: OFF;
 printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
 pclose(file4);
 	
+camera = ON;
+	
 #ifdef DEBUG_LOGGING
 printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1, i2c_bus3, camera);
 #endif	
@@ -954,7 +956,8 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 3; //
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 3; 
+  int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
@@ -1324,9 +1327,12 @@ if (payload == ON)
   encodeB(b, 46 + head_offset,PSUCurrent);
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
-	  
-//  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128 + groundCommandCount * 256); 
-  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
+
+  int status = 	STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 
+	  + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128 + groundCommandCount * 256  
+	
+  encodeA(b, 51 + head_offset, status); 
+//  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
   encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed* 2);  
    
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
