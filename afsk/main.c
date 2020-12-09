@@ -956,7 +956,7 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 3; 
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 0; 
   int PayloadFailure1 = 1, PayloadFailure2 = 1;
   int PSUVoltage = 0, PSUCurrent = 0; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
@@ -967,8 +967,8 @@ int get_tlm_fox() {
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
-  int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
-  int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048-1501;
+  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 0, pressure = 0, altitude = 0;
+  int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 	
   short int buffer_test[bufLen];
   int buffSize;
