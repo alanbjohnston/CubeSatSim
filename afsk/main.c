@@ -416,7 +416,7 @@ volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
 volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
 volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 	
-float amps_avg = rnd_float (220, 300);
+float amps_avg = rnd_float (150, 300);
 
 amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);	
 amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
