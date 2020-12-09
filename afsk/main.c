@@ -411,7 +411,7 @@ FILE* file4 = popen("vcgencmd get_camera", "r");
 fgets(cmdbuffer1, 1000, file4);
 char camera_present[] = "supported=1 detected=1";
 printf("strstr: %s \n", strstr(&cmdbuffer1,camera_present));
-camera = (strstr(&cmdbuffer1,camera_present) == NULL) ? OFF: ON;
+camera = (strstr(&cmdbuffer1,camera_present) != NULL) ? ON: OFF;
 printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
 pclose(file4);
 	
