@@ -404,7 +404,11 @@ else
 
 i2c_bus0 = (test_i2c_bus(0) != -1) ? ON: OFF;	
 i2c_bus1 = (test_i2c_bus(1) != -1) ? ON: OFF;	
-i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;	
+i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
+
+#ifdef DEBUG_LOGGING
+printf("INFO: I2C bus status 0: %d 1: %d 3: %d \n",i2c_bus0, i2c_bus1, i2c_bus3);
+#endif	
 	
 if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
 	sim_mode = TRUE;
