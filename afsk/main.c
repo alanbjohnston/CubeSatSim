@@ -414,9 +414,7 @@ printf("strstr: %s \n", strstr(&cmdbuffer1,camera_present));
 camera = (strstr(&cmdbuffer1,camera_present) != NULL) ? ON: OFF;
 printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
 pclose(file4);
-	
-camera = OFF;
-	
+		
 #ifdef DEBUG_LOGGING
 printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1, i2c_bus3, camera);
 #endif	
@@ -1328,7 +1326,7 @@ if (payload == ON)
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
 	  
-camera = ON;
+// camera = ON;
 	  
   int status = 	STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 
 	  + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128  + groundCommandCount * 256;  
