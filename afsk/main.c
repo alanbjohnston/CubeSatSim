@@ -1329,7 +1329,7 @@ if (payload == ON)
   encodeB(b, 49 + head_offset, sensor3);
 
   int status = 	STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 
-	  + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128 + groundCommandCount * 256  
+	  + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128 + groundCommandCount * 256;  
 	
   encodeA(b, 51 + head_offset, status); 
 //  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
