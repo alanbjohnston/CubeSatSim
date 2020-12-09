@@ -409,7 +409,7 @@ i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
 char cmdbuffer1[1000];	
 FILE* file4 = popen("vcgencmd get_camera", "r");
 fgets(cmdbuffer1, 1000, file4);
-camera = ((&cmdbuffer1[10] == "1") && (&cmdbuffer1[21] == "1")) ? ON: OFF;
+camera = ((&cmdbuffer1[10] == "1") & (&cmdbuffer1[21] == "1"));
 printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
 pclose(file4);
 	
