@@ -956,7 +956,7 @@ int get_tlm_fox() {
 
   int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 0; 
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
-  int PSUVoltage = 0, PSUCurrent = 0, Resets = 0; Rssi = 2048; 
+  int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
