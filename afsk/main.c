@@ -420,7 +420,7 @@ amps_max[0] = rnd_float(140.0, 190.0) * (float) sin(angle[1]);
 amps_max[1] = rnd_float(140.0, 190.0) * (float) cos(angle[0]);
 amps_max[2] = rnd_float(140.0, 190.0) * (float) cos(angle[1] - angle[0]);
 	
-batt = rnd_float(3.9, 4.3);
+batt = rnd_float(3.8, 4.3);
 speed = rnd_float(1.0, 2.5);
 //eclipse_time = rnd_float(0, 300);
 eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
@@ -1085,7 +1085,7 @@ if (firstTime != ON)
   float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0)); 
 	  printf("Charging: %f \n", charging);
   current[map[BAT]] = (current[map[BUS]] * voltage[map[BUS]] / (voltage[map[BAT]] * 0.95)) - charging;
-  batt -= (batt > 3.5) ? current[map[BAT]]/40000: current[map[BAT]]/4000;
+  batt -= (batt > 3.5) ? current[map[BAT]]/30000: current[map[BAT]]/3000;
   if (batt < 3.0)
 	  batt = 3.0;
   if (batt > 4.5)
