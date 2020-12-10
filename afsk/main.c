@@ -954,7 +954,7 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 0; 
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 0, groundCommandCount = 0; 
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
@@ -965,7 +965,7 @@ int get_tlm_fox() {
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
-  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 0, BME280pressure = 0, BME280altitude = 0, BME280humidity = 0, BME280temperature;
+  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 0, BME280pressure = 0, BME280altitude = 0, BME280humidity = 0, BME280temperature, spin = 0;
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 	
   short int buffer_test[bufLen];
@@ -1172,7 +1172,8 @@ if (sim_mode)
 	  
   battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
   PSUVoltage = (int)(voltage[map[BUS]] * 100);
-  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
+  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	
+	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
 	  
@@ -1305,7 +1306,7 @@ if (payload == ON)
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
-  encodeB(b, 10 + head_offset,temp);	// Temp
+  encodeB(b, 10 + head_offset,BME280temperature);	// Temp
 	  
   if (mode == FSK)
   {	  
@@ -1341,6 +1342,7 @@ if (payload == ON)
   }	  
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
+  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
 	  
   encodeA(b, 33 + head_offset,BME280pressure);  // Pressure
   encodeB(b, 34 + head_offset,BME280altitude);   // Altitude
@@ -1366,8 +1368,11 @@ if (payload == ON)
 	
   encodeA(b, 51 + head_offset, status); 
 //  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
-  encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed* 2);  
-   
+  encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);  
+	 
+  if (txAndennaDeployed == 0)
+	  txAntennaDeployed = 1;
+	  
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
 	  
