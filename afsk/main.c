@@ -965,7 +965,7 @@ int get_tlm_fox() {
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
-  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 0, pressure = 0, altitude = 0;
+  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 0, BME280pressure = 0, BME280altitude = 0, BME280humidity = 0, BME280temperature;
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 	
   short int buffer_test[bufLen];
@@ -1231,7 +1231,7 @@ if (payload == ON)
     token = strtok(sensor_payload, space);
 
     float gyroX, gyroY, gyroZ;	
-		   
+/*		   
     for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
 	if (token != NULL)
@@ -1240,7 +1240,21 @@ if (payload == ON)
     		token = strtok(NULL, space);
     }
     printf("RXTemperature: %d \n", RXTemperature);
+*/	
 	
+    if (token != NULL)
+    	token = strtok(NULL, space);  // start of BME280 data
+    if (token != NULL)
+	BME280temperature = atof(token);
+    if (token != NULL)
+	BME280pressure = atof(token);	
+    if (token != NULL)
+	BME280altitude = atof(token);
+    if (token != NULL)
+	BME280humidity = atof(token);
+	
+    if (token != NULL)
+    	token = strtok(NULL, space);  // start of MPU6050 data
     if (token != NULL)
     {
     	gyroX = atof(token);
@@ -1258,6 +1272,21 @@ if (payload == ON)
 	gyroZ = atof(token);
         printf("gyroZ %f \n", gyroZ);
     }
+    if (token != NULL)
+    {
+	xAccel = atof(token);
+        printf("accelX %f \n", xAccel);
+    }
+    if (token != NULL)
+    {
+	yAccel = atof(token);
+        printf("accelY %f \n", yAccel;
+    }
+    if (token != NULL)
+    {
+	zAccel = atof(token);
+        printf("accelZ %f \n", zAccel;
+    }
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
     yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
@@ -1268,9 +1297,11 @@ if (payload == ON)
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
 	  
-  encodeB(b, 4 + head_offset,xAccel);	  // Xaccel
-  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
-  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
+  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
+  encodeB(b, 4 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
+  encodeB(b, 4 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
+//  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
+//  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
