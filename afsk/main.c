@@ -813,6 +813,7 @@ if (payload == ON)
      unsigned int waitTime;
      int i = 0;
 
+     serialPutchar (uart_fd, '\n');
      serialPutchar (uart_fd, '?');
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
