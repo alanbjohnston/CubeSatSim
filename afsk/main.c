@@ -125,7 +125,7 @@ float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min;
-int eclipse, i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE;
+int eclipse, i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
 
 int test_i2c_bus(int bus);
@@ -954,7 +954,7 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 0, groundCommandCount = 0; 
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0; 
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
@@ -1371,8 +1371,10 @@ if (payload == ON)
   encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);  
 	 
   if (txAntennaDeployed == 0)
+  {
 	  txAntennaDeployed = 1;
-	  
+	  printf("TX Antenna Deployed!\n");
+  } 
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
 	  
