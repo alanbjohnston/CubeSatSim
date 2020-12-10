@@ -1205,6 +1205,7 @@ if (payload == ON)
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
      int end = FALSE;
+     int retry = FALSE;
      while ((millis() < waitTime) && !end) 
      { 
 	int chars = serialDataAvail (uart_fd);
@@ -1219,13 +1220,16 @@ if (payload == ON)
 		if (i == 2)
 			if ((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K'))
 			{
-				i = 0; // restart read
+				retry = TRUE; // restart read
 				printf("Restarting sensor read! %c%c\n", sensor_payload[0], sensor_payload[1]);
 			}
 	  }
 	  else
 	  {
-		  end = TRUE;
+		  if (retry)
+			  i = 0;
+		  else
+		  	end = TRUE;
 	  }
         }
     }
