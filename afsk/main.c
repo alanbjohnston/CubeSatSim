@@ -760,7 +760,7 @@ if (sim_mode)
   // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
   tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
-  cpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+  cpuTemp = tempS + rnd_float(-1.0, 1.0);
 	 
   voltage[map[BUS]] = rnd_float(5.0, 5.005);
   current[map[BUS]] = rnd_float(158, 171);
