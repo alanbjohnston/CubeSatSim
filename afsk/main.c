@@ -1252,18 +1252,37 @@ if (payload == ON)
 */	
 	
     if (token != NULL)
-    	token = strtok(NULL, space);  // start of BME280 data
+    {
+	token = strtok(NULL, space);  // start of BME280 data
+    }
     if (token != NULL)
+    {
 	BME280temperature = atof(token);
+	printf("temperature %f ", BME280temperature);
+	token = strtok(NULL, space);  // get next token
+    }
     if (token != NULL)
+    {
 	BME280pressure = atof(token);	
+	printf("pressure %f ",BME280pressure);
+	token = strtok(NULL, space);  // get next token
+    }
     if (token != NULL)
+    {
 	BME280altitude = atof(token);
+	printf("altitude %f ",BME280altitude);
+	token = strtok(NULL, space);  // get next token
+    }
     if (token != NULL)
+    {
 	BME280humidity = atof(token);
-	
+	printf("humidity %f ",BME280humidity);
+	token = strtok(NULL, space);  // get next token
+    }	
     if (token != NULL)
+    {
     	token = strtok(NULL, space);  // start of MPU6050 data
+    }
     if (token != NULL)
     {
     	gyroX = atof(token);
