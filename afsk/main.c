@@ -362,7 +362,7 @@ else
  {
   payload = OFF;
 
-  if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
+  if ((uart_fd = serialOpen ("/dev/ttyAMA0", 19200)) >= 0)
   {
      char c;
      unsigned int waitTime;
