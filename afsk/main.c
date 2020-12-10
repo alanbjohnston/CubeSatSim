@@ -1255,7 +1255,11 @@ if (payload == ON)
 	
     if (token != NULL)
     {
-	token = strtok(NULL, space);  // start of BME280 data
+	token = strtok(NULL, space);  // OK token
+    }
+    if (token != NULL)
+    {
+	token = strtok(NULL, space);  // BME280 token
     }
     if (token != NULL)
     {
@@ -1373,8 +1377,8 @@ if (payload == ON)
   encodeA(b, 30 + head_offset,PSUVoltage);
   encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
 	  
-  encodeA(b, 33 + head_offset,BME280pressure);  // Pressure
-  encodeB(b, 34 + head_offset,BME280altitude);   // Altitude
+  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
+  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
   encodeB(b, 37 + head_offset,  Rssi);	
@@ -1385,7 +1389,7 @@ if (payload == ON)
   encodeA(b, 42 + head_offset,  yAngularVelocity);
   encodeB(b, 43 + head_offset,  zAngularVelocity);
 
-  encodeA(b, 45 + head_offset, sensor1);
+  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));
   encodeB(b, 46 + head_offset,PSUCurrent);
   encodeA(b, 48 + head_offset, sensor2);
   encodeB(b, 49 + head_offset, sensor3);
