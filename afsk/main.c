@@ -1199,6 +1199,11 @@ if (payload == ON)
      STEMBoardFailure = 0;
 	
      char c;
+     int charss = serialDataAvail (uart_fd);
+     printf("Clearing buffer of %d chars \n", charss);	
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	
      unsigned int waitTime;
      int i = 0;	
      serialPutchar (uart_fd, '?');
