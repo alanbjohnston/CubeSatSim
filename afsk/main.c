@@ -776,7 +776,6 @@ if (sim_mode)
   if (batt < 3.0)
   {
 	  batt = 3.0;
-	  NormalModeFailure = 1;
 	  printf("Safe Mode!\n");
   }
   if (batt > 4.5)
