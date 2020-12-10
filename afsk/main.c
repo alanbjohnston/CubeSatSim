@@ -1417,7 +1417,7 @@ if (payload == ON)
   encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
   encodeB(b, 46 + head_offset,PSUCurrent);
   encodeA(b, 48 + head_offset, (int)(XSsensor2));
-  encodeB(b, 49 + head_offset, (int)(XSensor3 * 100 + 0.5));
+  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5));
 	  
 // camera = ON;
 	  
