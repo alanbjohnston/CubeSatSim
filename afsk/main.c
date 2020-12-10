@@ -965,7 +965,7 @@ int get_tlm_fox() {
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0;
-  int  xAccel = 2048, yAccel = 2048, zAccel = 2048, temp = 0, BME280pressure = 0, BME280altitude = 0, BME280humidity = 0, BME280temperature = 0, spin = 0;
+  int  xAccel = 0, yAccel = 0, zAccel = 0, temp = 0, BME280pressure = 0, BME280altitude = 0, BME280humidity = 0, BME280temperature = 0, spin = 0;
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 	
   short int buffer_test[bufLen];
@@ -1299,8 +1299,8 @@ if (payload == ON)
   encodeA(b, 3 + head_offset, batt_c_v);
 	  
   encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
-  encodeB(b, 4 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
-  encodeB(b, 4 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
+  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
+  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
 //  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
 //  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
 	  
