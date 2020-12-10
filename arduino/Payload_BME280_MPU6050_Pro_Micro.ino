@@ -16,6 +16,9 @@ long timer = 0;
 int bmePresent;
 int greenLED = 9;
 int blueLED = 8;
+int Sensor1 = 0;
+int Sensor2 = 0;
+float Sensor3 = 0;
 
 void setup() {
 
@@ -88,7 +91,21 @@ void loop() {
     Serial.print(" ");
     Serial.print(mpu6050.getGyroY());
     Serial.print(" ");
-    Serial.println(mpu6050.getGyroZ());
+    Serial.print(mpu6050.getGyroZ());
+    
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccX());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccY());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccZ());  
+    
+    Serial.print(" XS ");
+    Serial.print(Sensor1);   
+    Serial.print(" ");
+    Serial.print(Sensor2);              
+    Serial.print(" ");
+    Serial.println(Sensor3);  
 
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()* mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -143,8 +160,22 @@ void loop() {
     Serial1.print(" ");
     Serial1.print(mpu6050.getGyroY());
     Serial1.print(" ");
-    Serial1.println(mpu6050.getGyroZ());   
+    Serial1.print(mpu6050.getGyroZ());   
 
+    Serial1.print(" ");
+    Serial1.print(mpu6050.getAccX());   
+    Serial1.print(" ");
+    Serial1.print(mpu6050.getAccY());   
+    Serial1.print(" ");
+    Serial1.print(mpu6050.getAccZ());   
+  
+    Serial1.print(" XS ");
+    Serial1.print(Sensor1));   
+    Serial1.print(" ");
+    Serial1.print(Sensor2);              
+    Serial1.print(" ");
+    Serial1.println(Sensor3);     
+    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()* mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
@@ -159,8 +190,15 @@ void loop() {
     if (rotation > 5)
         digitalWrite(blueLED, HIGH);
     else
-        digitalWrite(blueLED, LOW);   
-         
+        digitalWrite(blueLED, LOW);
+
+    Serial1.print(" XS ");
+    Serial1.print(Sensor1);   
+    Serial1.print(" ");
+    Serial1.print(Sensor2);              
+    Serial1.print(" ");
+    Serial1.println(Sensor3);     
+             
 //  Serial1.println(counter++);
   }
 #endif
