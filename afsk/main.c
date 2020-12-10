@@ -1280,12 +1280,12 @@ if (payload == ON)
     if (token != NULL)
     {
 	yAccel = atof(token);
-        printf("accelY %f \n", yAccel;
+        printf("accelY %f \n", yAccel);
     }
     if (token != NULL)
     {
 	zAccel = atof(token);
-        printf("accelZ %f \n", zAccel;
+        printf("accelZ %f \n", zAccel);
     }
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
@@ -1342,8 +1342,8 @@ if (payload == ON)
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
 	  
-  encodeA(b, 33 + head_offset,pressure);  // Pressure
-  encodeB(b, 34 + head_offset,altitude);   // Altitude
+  encodeA(b, 33 + head_offset,BME280pressure);  // Pressure
+  encodeB(b, 34 + head_offset,BME280altitude);   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
   encodeB(b, 37 + head_offset,  Rssi);	
