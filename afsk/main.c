@@ -967,7 +967,7 @@ int get_tlm_fox() {
   int RXTemperature = 0;
   int  xAccel = 0, yAccel = 0, zAccel = 0, temp = 0, spin = 0;
   float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0, XSsensor3 = 0.0;
-  int XSsensor1 = 0, XSsensor2 = 0;	
+  float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;	
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 	
   short int buffer_test[bufLen];
@@ -1305,21 +1305,46 @@ if (payload == ON)
     {
 	gyroZ = atof(token);
         printf("gyroZ %f \n", gyroZ);
+        token = strtok(NULL, space);
     }
     if (token != NULL)
     {
 	xAccel = atof(token);
-        printf("accelX %f \n", xAccel);
-    }
+        printf("accelX %f ", xAccel);
+        token = strtok(NULL, space);
+   }
     if (token != NULL)
     {
 	yAccel = atof(token);
-        printf("accelY %f \n", yAccel);
+        printf("accelY %f ", yAccel);
+        token = strtok(NULL, space);
     }
     if (token != NULL)
     {
 	zAccel = atof(token);
-        printf("accelZ %f \n", zAccel);
+        printf("accelZ %f ", zAccel);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+    	token = strtok(NULL, space);  // start of XS extra sensor data
+    }
+    if (token != NULL)
+    {
+    	XSsensor1 = atof(token);
+    	printf("Sensor1%f ", XSsensor1);
+    	token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	XSsensor2 = atof(token);
+        printf("Sensor2 %f ", XSsensor2);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	XSsensor3 = atof(token);
+        printf("Sensor3 %f \n", XSsensor3);
     }
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
@@ -1389,10 +1414,10 @@ if (payload == ON)
   encodeA(b, 42 + head_offset,  yAngularVelocity);
   encodeB(b, 43 + head_offset,  zAngularVelocity);
 
-  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));
+  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
   encodeB(b, 46 + head_offset,PSUCurrent);
-  encodeA(b, 48 + head_offset, sensor2);
-  encodeB(b, 49 + head_offset, sensor3);
+  encodeA(b, 48 + head_offset, (int)(XSsensor2));
+  encodeB(b, 49 + head_offset, (int)(XSensor3 * 100 + 0.5));
 	  
 // camera = ON;
 	  
