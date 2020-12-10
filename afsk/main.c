@@ -365,6 +365,12 @@ else
   if ((uart_fd = serialOpen ("/dev/ttyAMA0", 19200)) >= 0)
   {
      char c;
+     int charss = serialDataAvail (uart_fd);
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);	
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	  
      unsigned int waitTime;
      int i;
     for(i = 0; i < 2; i++)
@@ -810,6 +816,12 @@ char sensor_payload[500];
 if (payload == ON)
 {
      char c;
+     int charss = serialDataAvail (uart_fd);
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	
      unsigned int waitTime;
      int i = 0;
 
@@ -1200,7 +1212,8 @@ if (payload == ON)
 	
      char c;
      int charss = serialDataAvail (uart_fd);
-     printf("Clearing buffer of %d chars \n", charss);	
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);
      while ((charss-- > 0))
           c = serialGetchar (uart_fd);  // clear buffer
 	
@@ -1210,7 +1223,7 @@ if (payload == ON)
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
      int end = FALSE;
-     int retry = FALSE;
+//     int retry = FALSE;
      while ((millis() < waitTime) && !end) 
      { 
 	int chars = serialDataAvail (uart_fd);
@@ -1222,26 +1235,17 @@ if (payload == ON)
 	  if (c != '\n')
 	  {
 	  	sensor_payload[i++] = c;
-		if (i == 2)
-			if ((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K'))
-			{
-				retry = TRUE; // restart read
-				printf("Restarting sensor read! %c%c\n", sensor_payload[0], sensor_payload[1]);
-			}
 	  }
 	  else
 	  {
-		  if (retry)
-			  i = 0;
-		  else
-		  	end = TRUE;
+		 end = TRUE;
 	  }
         }
     }
     sensor_payload[i++] = ' ';
-    sensor_payload[i++] = '\n';
+//    sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
-    printf("Payload string: %s", sensor_payload);
+    printf("Payload string: %s \n", sensor_payload);
 	
    int count1;
    char *token;
