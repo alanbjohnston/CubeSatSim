@@ -362,7 +362,7 @@ else
  {
   payload = OFF;
 
-  if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
+  if ((uart_fd = serialOpen ("/dev/ttyAMA0", 19200)) >= 0)
   {
      char c;
      unsigned int waitTime;
@@ -1200,9 +1200,7 @@ if (payload == ON)
 	
      char c;
      unsigned int waitTime;
-     int i = 0;
-	
-     serialPutchar (uart_fd, '\n');
+     int i = 0;	
      serialPutchar (uart_fd, '?');
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
