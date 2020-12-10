@@ -964,8 +964,8 @@ int get_tlm_fox() {
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
-  int RXTemperature = 0;
-  int  xAccel = 0, yAccel = 0, zAccel = 0, temp = 0, spin = 0;
+  int RXTemperature = 0, temp = 0, spin = 0;;
+  float  xAccel = 0.0, yAccel = 0.0, zAccel = 0.0; 
   float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
   float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;	
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
@@ -1416,8 +1416,8 @@ if (payload == ON)
 
   encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
   encodeB(b, 46 + head_offset,PSUCurrent);
-  encodeA(b, 48 + head_offset, (int)(XSsensor2));
-  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5));
+  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
+  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
 	  
 // camera = ON;
 	  
