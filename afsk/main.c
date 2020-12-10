@@ -1216,6 +1216,12 @@ if (payload == ON)
 	  if (c != '\n')
 	  {
 	  	sensor_payload[i++] = c;
+		if (i == 2)
+			if ((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K'))
+			{
+				i = 0; // restart read
+				printf("Restarting sensor read!\n");
+			}
 	  }
 	  else
 	  {
