@@ -22,9 +22,9 @@ float Sensor3 = 0;
 
 void setup() {
 
-  Serial.begin(9600); // Serial Monitor for testing
+  Serial.begin(19200); // Serial Monitor for testing
 
-  Serial1.begin(9600);  // Pi UART
+  Serial1.begin(19200);  // Pi UART
 
   Serial.println("Starting!");
 
@@ -71,6 +71,8 @@ void loop() {
       delay(500);
       setup(); 
     }
+    if (result == '?')
+    {
     if (bmePresent) {
       Serial.print("OK BME280 ");
       Serial.print(bme.readTemperature());
@@ -125,6 +127,7 @@ void loop() {
   
     //  Serial1.println(counter++);
   }
+  }
 #else
   if (Serial1.available() > 0) {
     digitalWrite(RXLED, LOW);   // set the RX LED ON
@@ -139,7 +142,9 @@ void loop() {
       Serial1.println("OK");
       delay(500);
       setup(); 
-    }  
+    }
+    if (result == '?')
+    {  
     if (bmePresent) {  
       Serial1.print("OK BME280 ");
       Serial1.print(bme.readTemperature());
@@ -170,7 +175,7 @@ void loop() {
     Serial1.print(mpu6050.getAccZ());   
   
     Serial1.print(" XS ");
-    Serial1.print(Sensor1));   
+    Serial1.print(Sensor1);   
     Serial1.print(" ");
     Serial1.print(Sensor2);              
     Serial1.print(" ");
@@ -191,15 +196,9 @@ void loop() {
         digitalWrite(blueLED, HIGH);
     else
         digitalWrite(blueLED, LOW);
-
-    Serial1.print(" XS ");
-    Serial1.print(Sensor1);   
-    Serial1.print(" ");
-    Serial1.print(Sensor2);              
-    Serial1.print(" ");
-    Serial1.println(Sensor3);     
-             
+               
 //  Serial1.println(counter++);
+  }
   }
 #endif
   
