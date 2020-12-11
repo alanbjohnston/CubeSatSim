@@ -68,6 +68,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
+float rnd_float(double min, double max);
 int get_tlm(void);
 int get_tlm_fox();
 int encodeA(short int *b, int index, int val);
@@ -83,6 +84,7 @@ int loop = -1, loop_count = 0;
 int firstTime = ON;
 long start;
 int testCount = 0;
+long time_start;
 
 short int buffer[2336400];  // max size for 10 frames count of BPSK
 
@@ -121,6 +123,10 @@ int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onL
 float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702, longitude = -77.078064;
 float lat_file, long_file;
+
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min;
+int eclipse, i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
+double eclipse_time;
 
 int test_i2c_bus(int bus);
 
@@ -359,6 +365,12 @@ else
   if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
   {
      char c;
+     int charss = serialDataAvail (uart_fd);
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);	
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	  
      unsigned int waitTime;
      int i;
     for(i = 0; i < 2; i++)
@@ -393,7 +405,77 @@ else
     fprintf (stderr, "Unable to open UART: %s\n", strerror (errno)) ;
   }
  }
+	
+// test i2c buses	
+i2c_bus0 = (test_i2c_bus(0) != -1) ? ON: OFF;	
+i2c_bus1 = (test_i2c_bus(1) != -1) ? ON: OFF;	
+i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
+	
+// check for camera	
+char cmdbuffer1[1000];	
+FILE* file4 = popen("vcgencmd get_camera", "r");
+fgets(cmdbuffer1, 1000, file4);
+char camera_present[] = "supported=1 detected=1";
+printf("strstr: %s \n", strstr(&cmdbuffer1,camera_present));
+camera = (strstr(&cmdbuffer1,camera_present) != NULL) ? ON: OFF;
+printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
+pclose(file4);
+		
+#ifdef DEBUG_LOGGING
+printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1, i2c_bus3, camera);
+#endif	
+	
+if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
+	sim_mode = TRUE;
 
+if (sim_mode)
+{	
+
+printf("Simulated telemetry mode!\n");
+	
+srand(time(0)); 
+	
+axis[0] = rnd_float(-0.2, 0.2);
+if (axis[0] == 0)
+	axis[0] = rnd_float(-0.2, 0.2);
+axis[1] = rnd_float(-0.2, 0.2);
+axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
+
+angle[0] = (float) atan(axis[1] / axis[2]);
+angle[1] = (float) atan(axis[2] / axis[0]);
+angle[2] = (float) atan(axis[1] / axis[0]);
+
+volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);	
+volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
+volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+	
+float amps_avg = rnd_float (150, 300);
+
+amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);	
+amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
+amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+	
+batt = rnd_float(3.8, 4.3);
+speed = rnd_float(1.0, 2.5);
+eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
+period = rnd_float(150, 300);
+tempS = rnd_float(20, 55);
+temp_max = rnd_float(50, 70);
+temp_min = rnd_float(10,20);
+
+#ifdef DEBUG_LOGGING	
+for(int i=0; i < 3; i++)
+	printf("axis: %f angle: %f v: %f i: %f \n",axis[i], angle[i], volts_max[i], amps_max[i]);
+printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+#endif
+	
+ time_start = millis();
+	
+ eclipse_time = millis()/1000.0;	 
+ if (eclipse == 0)
+	  eclipse_time -= period/2;  // if starting in eclipse, shorten interval	
+}
+	
   int ret;
   //uint8_t data[1024];
 
@@ -614,8 +696,95 @@ for (int j = 0; j < frameCnt; j++)
 		    token = strtok(NULL, space);	
 		}
 	  }
-    }		
-	    
+    }	
+	
+ batteryVoltage = voltage[map[BAT]];
+	
+ double cpuTemp;
+	
+  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+  if (cpuTempSensor) {
+		fscanf (cpuTempSensor, "%lf", &cpuTemp);
+		cpuTemp /= 1000;
+	  
+    #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+    #endif
+	  
+  }
+  fclose (cpuTempSensor);
+	
+	
+if (sim_mode) 
+{	
+ // simulated telemetry 
+	  
+  double time = (millis() - time_start)/1000.0;	 
+	  
+  if ((time - eclipse_time) > period)
+  {
+	  eclipse = (eclipse == 1) ? 0 : 1;
+	  eclipse_time = time;
+	  printf("\n\nSwitching eclipse mode! \n\n");
+  }
+	  
+/*
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
+*/
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed))  + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))  + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  + rnd_float(-2, 2);
+
+  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
+  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
+  double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+	  
+  // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+	  
+  current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0; 	 
+  current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
+  current[map[PLUS_Y]] = ( Yi >= 0) ? Yi: 0;	 
+  current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0) * Yi);	
+  current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
+  current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
+	  
+  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_X]] = ( Xv <= -1) ? ((-1.0) * Xv): rnd_float(0.9, 1.1);	 
+  voltage[map[PLUS_Y]] = ( Yv >= 1) ? Yv: rnd_float(0.9, 1.1);	  
+  voltage[map[MINUS_Y]] = ( Yv <= -1) ? ((-1.0) * Yv): rnd_float(0.9, 1.1);	
+  voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
+
+  // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+  tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
+  cpuTemp = tempS + rnd_float(-1.0, 1.0);
+	 
+  voltage[map[BUS]] = rnd_float(5.0, 5.005);
+  current[map[BUS]] = rnd_float(158, 171);
+	  
+//  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+  float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0)); 
+
+  current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+	  
+//  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+	  
+  batt -= (batt > 3.5) ? current[map[BAT]]/30000: current[map[BAT]]/3000;
+  if (batt < 3.0)
+  {
+	  batt = 3.0;
+	  printf("Safe Mode!\n");
+  }
+  if (batt > 4.5)
+	  batt = 4.5;
+	  
+  voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+	  
+// end of simulated telemetry	
+}	    
   tlm[1][A] = (int)(voltage[map[BUS]] /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
   tlm[1][B] = (int) (99.5 - current[map[PLUS_X]]/10.0) % 100;  // +X current [4]
   tlm[1][C] = (int) (99.5 - current[map[MINUS_X]]/10.0) % 100;  			// X- current [10] 
@@ -629,23 +798,8 @@ for (int j = 0; j < frameCnt; j++)
   tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
   tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100;      // 5V supply to Pi
 
-  batteryVoltage = voltage[map[BAT]];
-	
-  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-  if (cpuTempSensor) {
-		double cpuTemp;
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
-	  
-    #ifdef DEBUG_LOGGING
-      printf("CPU Temp Read: %6.1f\n", cpuTemp);
-    #endif
-	  
-    tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
+  tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
 
-  }
-  fclose (cpuTempSensor);
-	
   tlm[6][B] = 0 ;
   tlm[6][D] = 49 + rand() % 3; 
 
@@ -734,6 +888,12 @@ char sensor_payload[500];
 if (payload == ON)
 {
      char c;
+     int charss = serialDataAvail (uart_fd);
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	
      unsigned int waitTime;
      int i = 0;
 
@@ -878,8 +1038,9 @@ int get_tlm_fox() {
 	short int rs_frame[rsFrames][223];
 	unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, rxAntennaDeployed = 0, txAntennaDeployed = 1, groundCommandCount = 3; //
-  int PSUVoltage = 0, PSUCurrent = 0; 
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0; 
+  int PayloadFailure1 = 0, PayloadFailure2 = 0;
+  int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048; 
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
@@ -887,9 +1048,11 @@ int get_tlm_fox() {
 //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
 //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
-  int RXTemperature = 0;
-  int  xAccel = 2048+100, yAccel = 2048-100, zAccel = 2048+500, temp = 224, pressure = 1000, altitude = 1000;
-  int sensor1 = 0, sensor2 = 2048-3, sensor3 = 2048-1501;
+  int RXTemperature = 0, temp = 0, spin = 0;;
+  float  xAccel = 0.0, yAccel = 0.0, zAccel = 0.0; 
+  float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
+  float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;	
+  int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 	
   short int buffer_test[bufLen];
   int buffSize;
@@ -963,8 +1126,18 @@ if (firstTime != ON)
 	    }
   	}	  
 	  
-//	 printf("\n"); 
- 
+//	 printf("\n"); 	  
+	 	  
+	  
+   batteryVoltage = voltage[map[BAT]];
+   if (batteryVoltage < 3.5)
+   {
+	   NormalModeFailure = 1;
+	   printf("Safe Mode!\n");
+   }
+   else
+	   NormalModeFailure = 0;
+	  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -978,6 +1151,81 @@ if (firstTime != ON)
     IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
    }	  
    fclose(cpuTempSensor);
+
+if (sim_mode) 
+{	
+ // simulated telemetry 
+	  
+  double time = (millis() - time_start)/1000.0;	 
+	  
+  if ((time - eclipse_time) > period)
+  {
+	  eclipse = (eclipse == 1) ? 0 : 1;
+	  eclipse_time = time;
+	  printf("\n\nSwitching eclipse mode! \n\n");
+  }
+	  
+/*
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
+*/
+  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed))  + rnd_float(-2, 2);	  
+  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))  + rnd_float(-2, 2);	  
+  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  + rnd_float(-2, 2);
+
+  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
+  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
+  double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+	  
+  // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+	  
+  current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0; 	 
+  current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
+  current[map[PLUS_Y]] = ( Yi >= 0) ? Yi: 0;	 
+  current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0) * Yi);	
+  current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
+  current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
+	  
+  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_X]] = ( Xv <= -1) ? ((-1.0) * Xv): rnd_float(0.9, 1.1);	 
+  voltage[map[PLUS_Y]] = ( Yv >= 1) ? Yv: rnd_float(0.9, 1.1);	  
+  voltage[map[MINUS_Y]] = ( Yv <= -1) ? ((-1.0) * Yv): rnd_float(0.9, 1.1);	
+  voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
+  voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
+
+  // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+  tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
+  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+	 
+  voltage[map[BUS]] = rnd_float(5.0, 5.005);
+  current[map[BUS]] = rnd_float(158, 171);
+	  
+//  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+  float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0)); 
+
+  current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+	  
+//  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+	  
+  batt -= (batt > 3.5) ? current[map[BAT]]/30000: current[map[BAT]]/3000;
+  if (batt < 3.0)
+  {
+	  batt = 3.0;
+	  NormalModeFailure = 1;
+	  printf("Safe Mode!\n");
+  }
+  else
+	  NormalModeFailure = 0;
+	
+  if (batt > 4.5)
+	  batt = 4.5;
+	  
+  voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+	  
+// end of simulated telemetry
+}	
 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
@@ -1005,7 +1253,7 @@ if (firstTime != ON)
 	  
     if (mode == BPSK)
       h[6] = 99;
-	  
+	  	  
   posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
   posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
   posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
@@ -1013,20 +1261,22 @@ if (firstTime != ON)
   negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
   negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
 
+
   posXv = (int)(voltage[map[PLUS_X]] * 100);
   posYv = (int)(voltage[map[PLUS_Y]] * 100);
   posZv = (int)(voltage[map[PLUS_Z]] * 100);
   negXv = (int)(voltage[map[MINUS_X]] * 100);
   negYv = (int)(voltage[map[MINUS_Y]] * 100);
   negZv = (int)(voltage[map[MINUS_Z]] * 100);
+	  
   batt_c_v = (int)(voltage[map[BAT]] * 100);
+	  
   battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
   PSUVoltage = (int)(voltage[map[BUS]] * 100);
-  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	  
+  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	
+	  
   if (payload == ON)
 	  STEMBoardFailure = 0;
-	  
-  batteryVoltage = voltage[map[BAT]];
 	  
 //  if (payload == ON)
 //	  STEMBoardFailure = 0;
@@ -1040,13 +1290,19 @@ if (payload == ON)
      STEMBoardFailure = 0;
 	
      char c;
+     int charss = serialDataAvail (uart_fd);
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	
      unsigned int waitTime;
-     int i = 0;
-
+     int i = 0;	
      serialPutchar (uart_fd, '?');
      printf("Querying payload with ?\n");
      waitTime = millis() + 500;
      int end = FALSE;
+//     int retry = FALSE;
      while ((millis() < waitTime) && !end) 
      { 
 	int chars = serialDataAvail (uart_fd);
@@ -1061,14 +1317,14 @@ if (payload == ON)
 	  }
 	  else
 	  {
-		  end = TRUE;
+		 end = TRUE;
 	  }
         }
     }
     sensor_payload[i++] = ' ';
-    sensor_payload[i++] = '\n';
+//    sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
-    printf("Payload string: %s", sensor_payload);
+    printf("Payload string: %s \n", sensor_payload);
 	
    int count1;
    char *token;
@@ -1083,7 +1339,7 @@ if (payload == ON)
     token = strtok(sensor_payload, space);
 
     float gyroX, gyroY, gyroZ;	
-		   
+/*		   
     for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
 	if (token != NULL)
@@ -1092,7 +1348,44 @@ if (payload == ON)
     		token = strtok(NULL, space);
     }
     printf("RXTemperature: %d \n", RXTemperature);
+*/	
 	
+    if (token != NULL)
+    {
+	token = strtok(NULL, space);  // OK token
+    }
+    if (token != NULL)
+    {
+	token = strtok(NULL, space);  // BME280 token
+    }
+    if (token != NULL)
+    {
+	BME280temperature = atof(token);
+	printf("temperature %f ", BME280temperature);
+	token = strtok(NULL, space);  // get next token
+    }
+    if (token != NULL)
+    {
+	BME280pressure = atof(token);	
+	printf("pressure %f ",BME280pressure);
+	token = strtok(NULL, space);  // get next token
+    }
+    if (token != NULL)
+    {
+	BME280altitude = atof(token);
+	printf("altitude %f ",BME280altitude);
+	token = strtok(NULL, space);  // get next token
+    }
+    if (token != NULL)
+    {
+	BME280humidity = atof(token);
+	printf("humidity %f ",BME280humidity);
+	token = strtok(NULL, space);  // get next token
+    }	
+    if (token != NULL)
+    {
+    	token = strtok(NULL, space);  // start of MPU6050 data
+    }
     if (token != NULL)
     {
     	gyroX = atof(token);
@@ -1109,6 +1402,46 @@ if (payload == ON)
     {
 	gyroZ = atof(token);
         printf("gyroZ %f \n", gyroZ);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	xAccel = atof(token);
+        printf("accelX %f ", xAccel);
+        token = strtok(NULL, space);
+   }
+    if (token != NULL)
+    {
+	yAccel = atof(token);
+        printf("accelY %f ", yAccel);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	zAccel = atof(token);
+        printf("accelZ %f ", zAccel);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+    	token = strtok(NULL, space);  // start of XS extra sensor data
+    }
+    if (token != NULL)
+    {
+    	XSsensor1 = atof(token);
+    	printf("Sensor1%f ", XSsensor1);
+    	token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	XSsensor2 = atof(token);
+        printf("Sensor2 %f ", XSsensor2);
+        token = strtok(NULL, space);
+    }
+    if (token != NULL)
+    {
+	XSsensor3 = atof(token);
+        printf("Sensor3 %f \n", XSsensor3);
     }
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
@@ -1120,13 +1453,15 @@ if (payload == ON)
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
 	  
-  encodeB(b, 4 + head_offset,xAccel);	  // Xaccel
-  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
-  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
+  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
+  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
+  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
+//  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
+//  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
-  encodeB(b, 10 + head_offset,temp);	// Temp
+  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
 	  
   if (mode == FSK)
   {	  
@@ -1162,25 +1497,39 @@ if (payload == ON)
   }	  
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
+  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
 	  
-  encodeA(b, 33 + head_offset,pressure);  // Pressure
-  encodeB(b, 34 + head_offset,altitude);   // Altitude
+  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
+  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
 	  
-  encodeA(b, 36 + head_offset,  RXTemperature);	  
+  encodeA(b, 36 + head_offset,  Resets);	  
+  encodeB(b, 37 + head_offset,  Rssi);	
+	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 	  
   encodeB(b, 40 + head_offset,  xAngularVelocity);
   encodeA(b, 42 + head_offset,  yAngularVelocity);
   encodeB(b, 43 + head_offset,  zAngularVelocity);
 
-  encodeA(b, 45 + head_offset, sensor1);
+  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
   encodeB(b, 46 + head_offset,PSUCurrent);
-  encodeA(b, 48 + head_offset, sensor2);
-  encodeB(b, 49 + head_offset, sensor3);
+  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
+  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
 	  
-  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + groundCommandCount * 256); 
-  encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed* 2);  
-   
+// camera = ON;
+	  
+  int status = 	STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 
+	  + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128  + groundCommandCount * 256;  
+	
+  encodeA(b, 51 + head_offset, status); 
+//  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
+  encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);  
+	 
+  if (txAntennaDeployed == 0)
+  {
+	  txAntennaDeployed = 1;
+	  printf("TX Antenna Deployed!\n");
+  } 
   	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
   	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
 	  
@@ -1643,12 +1992,21 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 
       return(val);
 }
+
+float rnd_float(double min,double max) {   // returns 2 decimal point random number
+	
+	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
+	float ret = ((float)(val)/100);
+	
+      return(ret);
+}
+
 int test_i2c_bus(int bus)
 {
 	int output = bus; // return bus number if OK, otherwise return -1
 	char busDev[20] = "/dev/i2c-";
 	char busS[5];
-	snprintf(busS, 5, "%d", bus);
+	snprintf(busS, 5, "%d", bus);  
 	strcat (busDev, busS);	
 	printf("I2C Bus Tested: %s \n", busDev);
 	
