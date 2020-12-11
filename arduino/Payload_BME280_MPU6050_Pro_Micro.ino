@@ -22,9 +22,9 @@ float Sensor3 = 0;
 
 void setup() {
 
-  Serial.begin(19200); // Serial Monitor for testing
+  Serial.begin(9600); // Serial Monitor for testing
 
-  Serial1.begin(19200);  // Pi UART
+  Serial1.begin(9600);  // Pi UART
 
   Serial.println("Starting!");
 
