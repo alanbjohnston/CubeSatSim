@@ -1128,12 +1128,16 @@ if (firstTime != ON)
 	  
 //	 printf("\n"); 	  
 	 	  
+	  
    batteryVoltage = voltage[map[BAT]];
    if (batteryVoltage < 3.5)
    {
 	   NormalModeFailure = 1;
 	   printf("Safe Mode!\n");
-   }	  
+   }
+   else
+	   NormalModeFailure = 0;
+	  
   FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
   if (cpuTempSensor) {
 		double cpuTemp;
@@ -1212,6 +1216,9 @@ if (sim_mode)
 	  NormalModeFailure = 1;
 	  printf("Safe Mode!\n");
   }
+  else
+	  NormalModeFailure = 0;
+	
   if (batt > 4.5)
 	  batt = 4.5;
 	  
