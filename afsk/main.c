@@ -57,7 +57,6 @@
 #define PLUS_Z 6
 #define MINUS_Z 7
 
-PRES, ALT, TEMP
 #define TEMP 2
 #define PRES 3
 #define ALT 4
