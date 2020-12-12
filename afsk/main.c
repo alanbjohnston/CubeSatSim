@@ -1125,7 +1125,7 @@ if (firstTime != ON)
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-    float voltage[9], current[9], sensor[20], other[3];	
+    float voltage[9], current[9], sensor[14], other[3];	
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));	 
     memset(sensor, 0, sizeof(sensor));
@@ -1488,7 +1488,7 @@ if (payload == ON)
     }
 */
 
-	for (count1 = 0; count1 < 20; count1++)
+	for (count1 = 0; count1 < 14; count1++)
   	{
 	    if (token != NULL)
 	    {
@@ -1501,7 +1501,7 @@ if (payload == ON)
   	}
 	printf("\n");
 	
-    for (count1 = 0; count1 < 20; count1++)
+    for (count1 = 0; count1 < 14; count1++)
     {
 	if (sensor[count1] < sensor_min[count1])
 	    sensor_min[count1] = sensor[count1];
@@ -1520,11 +1520,13 @@ if (payload == ON)
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
 	  
-  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
-  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
-  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
-//  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
-//  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
+//  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
+//  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
+//  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
+	  
+  encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048);	  // Xaccel
+  encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048);	  // Yaccel
+  encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048);	  // Zaccel
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
