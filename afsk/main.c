@@ -517,6 +517,7 @@ for(int i=0; i < 17; i++)
 {
 	sensor_min[i] = 1000.0;
 	sensor_max[i] = -1000.0;
+	printf("Sensor min and max initialized!");
 }
 for(int i=0; i < 3; i++)		
 {
