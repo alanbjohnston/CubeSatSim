@@ -1390,7 +1390,7 @@ if (payload == ON)
     const char space[2] = " ";
     token = strtok(sensor_payload, space);
 
-    float gyroX, gyroY, gyroZ;	
+//    float gyroX, gyroY, gyroZ;	
 /*		   
     for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
     {
@@ -1526,9 +1526,9 @@ if (payload == ON)
     }    	
 
 }	
-    xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
-    yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
-    zAngularVelocity =  (int)(gyroZ + 0.5) + 2048;
+//    xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
+//    yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
+//    zAngularVelocity =  (int)(gyroZ + 0.5) + 2048;
   }
 
   encodeA(b, 0 + head_offset, batt_a_v);
