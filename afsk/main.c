@@ -1394,7 +1394,7 @@ if (sim_mode)
 	    	voltage[count1] = voltage_min[count1];
 	    	current[count1] = current_min[count1];
 	    }
-	    if (sensor_min[count1] != 1000.0;	 // make sure values are valid
+	    if (sensor_min[count1] != 1000.0)	 // make sure values are valid
 	    	sensor[count1] = sensor_min[count1];
 	}	
     }
@@ -1411,7 +1411,7 @@ if (sim_mode)
 	    	voltage[count1] = voltage_max[count1];
 	    	current[count1] = current_max[count1];
 	    }
-	    if (sensor_max[count1] != -1000.0;	// make sure values are valid
+	    if (sensor_max[count1] != -1000.0)	// make sure values are valid
 		sensor[count1] = sensor_max[count1];
 	}	
     }	  
