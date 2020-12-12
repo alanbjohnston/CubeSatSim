@@ -445,10 +445,10 @@ printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1,
 #endif	
 	
 if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
-	sim_mode = TRUE;
-
-if (sim_mode)
-{	
+{
+	
+sim_mode = TRUE;
+payload == OFF:	
 
 printf("Simulated telemetry mode!\n");
 	
