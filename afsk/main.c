@@ -135,6 +135,7 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9];	
 
 int main(int argc, char *argv[]) {
 
@@ -491,6 +492,10 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
 
+memset(voltage_min), 0, sizeof(voltage_min));
+memset(current_min, 0, sizeof(current_min));	
+memset(voltage_max, 0, sizeof(voltage_max));
+memset(current_max, 0, sizeof(current_max));	
 	
 while (loop-- != 0)
   {
@@ -1226,6 +1231,21 @@ if (sim_mode)
 	  
 // end of simulated telemetry
 }	
+	  
+    for (count1 = 0; count1 < 8; count1++)
+    {
+	if (voltage[count1] < voltage_min[count1]
+	    voltage_min[count1] = voltage[count];
+	if (current[count1] < current_min[count1]
+	    voltage_min[count1] = current[count];
+
+	if (voltage[count1] > voltage_max[count1]
+	    voltage_max[count1] = voltage[count];
+	if (current[count1] > current_max[count1]
+	    voltage_max[count1] = current[count];
+
+	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
+    }    
 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
