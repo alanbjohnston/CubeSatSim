@@ -1235,14 +1235,14 @@ if (sim_mode)
     for (count1 = 0; count1 < 8; count1++)
     {
 	if (voltage[count1] < voltage_min[count1])
-	    voltage_min[count1] = voltage[count];
+	    voltage_min[count1] = voltage[count1];
 	if (current[count1] < current_min[count1])
-	    voltage_min[count1] = current[count];
+	    voltage_min[count1] = current[count1];
 
 	if (voltage[count1] > voltage_max[count1])
-	    voltage_max[count1] = voltage[count];
+	    voltage_max[count1] = voltage[count]1;
 	if (current[count1] > current_max[count1])
-	    voltage_max[count1] = current[count];
+	    voltage_max[count1] = current[count1];
 
 	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
     }    
