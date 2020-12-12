@@ -499,12 +499,12 @@ for(int i=0; i < 9; i++)
 	voltage_max[i] = -1000.0;
 	current_max[i] = -1000.0;
 }
-for(i=0; i < 14; i++)		
+for(int i=0; i < 14; i++)		
 {
 	sensor_min[i] = 1000.0;
 	sensor_max[i] = -1000.0;
 }
-for(i=0; i < 3; i++)		
+for(int i=0; i < 3; i++)		
 {
 	other_min[i] = 1000.0;
 	other_max[i] = -1000.0;
