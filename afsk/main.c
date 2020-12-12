@@ -1260,31 +1260,9 @@ if (payload == ON)
 		token = strtok(NULL, space);	
 	    }
   	}
-	printf("\n");
-	
-	
-	
-    for (count1 = 0; count1 < 17; count1++)
-    {	    
-	if (sensor[count1] < sensor_min[count1])
-	    sensor_min[count1] = sensor[count1];
-	if (sensor[count1] > sensor_max[count1])
-	    sensor_max[count1] = sensor[count1];
+	printf("\n");	  
 
-   	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
-    }    
-	  
-    for (count1 = 0; count1 < 3; count1++)
-    {	    
-	if (other[count1] < other_min[count1])
-	    other_min[count1] = other[count1];
-	if (other[count1] > other_max[count1])
-	    other_max[count1] = other[count1];
-
-   	printf("Other min %f max %f \n", other_min[count1], other_max[count1]);   
-    }  	  
-
-}	
+    }	
 
 }	  
 
@@ -1379,6 +1357,26 @@ if (sim_mode)
 
 	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
     }    
+	  	
+    for (count1 = 0; count1 < 17; count1++)
+    {	    
+	if (sensor[count1] < sensor_min[count1])
+	    sensor_min[count1] = sensor[count1];
+	if (sensor[count1] > sensor_max[count1])
+	    sensor_max[count1] = sensor[count1];
+
+   	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
+    }    
+	  
+    for (count1 = 0; count1 < 3; count1++)
+    {	    
+	if (other[count1] < other_min[count1])
+	    other_min[count1] = other[count1];
+	if (other[count1] > other_max[count1])
+	    other_max[count1] = other[count1];
+
+   	printf("Other min %f max %f \n", other_min[count1], other_max[count1]);   
+    }  
 	  
     if (loop % 8 == 0)
     { 
@@ -1529,7 +1527,7 @@ if (sim_mode)
 //  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
 
   encodeA(b, 33 + head_offset,(int)(sensor[PRES] + 0.5));  // Pressure
-  encodeB(b, 34 + head_offset,(int)(sensor[ALT] + 0.5));   // Altitude
+  encodeB(b, 34 + head_offset,(int)(sensor[ALT] * 10.0 + 0.5));   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
 //  encodeB(b, 37 + head_offset,  Rssi);	
