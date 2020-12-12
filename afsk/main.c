@@ -492,10 +492,18 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
 
-memset(voltage_min, 0, sizeof(voltage_min));
-memset(current_min, 0, sizeof(current_min));	
-memset(voltage_max, 0, sizeof(voltage_max));
-memset(current_max, 0, sizeof(current_max));	
+//memset(voltage_min, 0, sizeof(voltage_min));
+//memset(current_min, 0, sizeof(current_min));	
+//memset(voltage_max, 0, sizeof(voltage_max));
+//memset(current_max, 0, sizeof(current_max));	
+
+for(i=0; i < 9; i++)		
+{
+	voltage_min[i] = 1000.0;
+	current_min[i] = 1000.0;
+	voltage_max[i] = -1000.0;
+	current_max[i] = -1000.0;
+}
 	
 while (loop-- != 0)
   {
