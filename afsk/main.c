@@ -1508,14 +1508,18 @@ if (payload == ON)
   	}
 	printf("\n");
 	
+	
+	
     for (count1 = 0; count1 < 17; count1++)
     {
+	printf("Sensor min %f Sensor max %f \n", sensor_min[count1], sensor_max[count1]);   
+	    
 	if (sensor[count1] < sensor_min[count1])
 	    sensor_min[count1] = sensor[count1];
 	if (sensor[count1] > sensor_max[count1])
 	    sensor_max[count1] = sensor[count1];
 
-	 printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
+   	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
     }    	
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
