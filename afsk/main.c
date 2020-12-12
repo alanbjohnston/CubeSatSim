@@ -497,7 +497,7 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 //memset(voltage_max, 0, sizeof(voltage_max));
 //memset(current_max, 0, sizeof(current_max));	
 
-for(i=0; i < 9; i++)		
+for(int i=0; i < 9; i++)		
 {
 	voltage_min[i] = 1000.0;
 	current_min[i] = 1000.0;
