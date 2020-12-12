@@ -1533,9 +1533,9 @@ if (payload == ON)
 	  
     for (count1 = 0; count1 < 3; count1++)
     {	    
-	if (other[count1] < oter_min[count1])
+	if (other[count1] < other_min[count1])
 	    other_min[count1] = other[count1];
-	if (other[count1] > otjer_max[count1])
+	if (other[count1] > other_max[count1])
 	    other_max[count1] = other[count1];
 
    	printf("Other min %f max %f \n", other_min[count1], other_max[count1]);   
