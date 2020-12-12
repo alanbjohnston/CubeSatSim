@@ -57,6 +57,13 @@
 #define PLUS_Z 6
 #define MINUS_Z 7
 
+#define GYRO_X 7
+#define GYRO_Y 8
+#define GYRO_Z 9
+#define ACCEL_X 10
+#define ACCEL_Y 11
+#define ACCEL_Z 12
+
 #define OFF -1
 #define ON 1
 
@@ -135,7 +142,7 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
-float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[14], sensor_min[14], other_max[3], other_min[3];	
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[14], sensor_min[14], other_max[3], other_min[3];
 
 int main(int argc, char *argv[]) {
 
@@ -1486,17 +1493,23 @@ if (payload == ON)
 	    if (token != NULL)
 	    {
 	        sensor[count1] = atof(token);	
-		if (sensor[count1] < sensor_min[count1])
-	    		sensor_min[count1] = sensor[count1];
-		if (sensor[count1] > sensor_max[count1])
-	    		sensor_max[count1] = sensor[count1];
-//    #ifdef DEBUG_LOGGING
+    #ifdef DEBUG_LOGGING
 		printf("sensor: %f ", sensor[count1]);
-//    #endif
+    #endif
 		token = strtok(NULL, space);	
 	    }
   	}
 	printf("\n");
+	
+    for (count1 = 0; count1 < 20; count1++)
+    {
+	if (sensor[count1] < sensor_min[count1])
+	    sensor_min[count1] = sensor[count1];
+	if (sensor[count1] > sensor_max[count1])
+	    sensor_max[count1] = sensor[count1];
+
+	 printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
+    }    	
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
     yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
@@ -1561,9 +1574,15 @@ if (payload == ON)
 	  
   encodeA(b, 39 + head_offset,  IHUcpuTemp);
 	  
-  encodeB(b, 40 + head_offset,  xAngularVelocity);
-  encodeA(b, 42 + head_offset,  yAngularVelocity);
-  encodeB(b, 43 + head_offset,  zAngularVelocity);
+//  encodeB(b, 40 + head_offset,  xAngularVelocity);
+//  encodeA(b, 42 + head_offset,  yAngularVelocity);
+//  encodeB(b, 43 + head_offset,  zAngularVelocity);
+
+  encodeB(b, 40 + head_offset,  (int)(sensor[GYRO_X] + 0.5) + 2048);
+  encodeA(b, 42 + head_offset,  (int)(sensor[GYRO_Y] + 0.5) + 2048);
+  encodeB(b, 43 + head_offset,  (int)(sensor[GYRO_Z] + 0.5) + 2048);
+	  
+	  
 
   encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
   encodeB(b, 46 + head_offset,PSUCurrent);
