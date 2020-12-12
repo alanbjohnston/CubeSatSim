@@ -1285,6 +1285,22 @@ if (sim_mode)
 	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
     }    
 	  
+    if (loop % 4 == 0)
+    { 
+	printf("Sending MIN frame \n");
+	frm_type = 0x02;
+    	for (count1 = 0; count1 < 17; count1++)
+    	{
+	    if (count1 < 3)
+	    	other[count1] = other_min[count1];
+	    if (count1 < 8)
+	    {
+	    	voltage[count1] = voltage_min[count1];
+	    	current[count1] = current_min[count1];
+	    }
+	    sensor[count1] = sensor_min[count1];
+    }
+	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
 	  
