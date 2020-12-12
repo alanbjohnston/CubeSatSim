@@ -1609,7 +1609,7 @@ if (payload == ON)
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
 //  encodeB(b, 37 + head_offset,  Rssi);	
-  encodeB(b, 37 + head_offset,  other[RSSI]);	
+  encodeB(b, 37 + head_offset,  (int)(other[RSSI] + 0.5));	
 	  
 //  encodeA(b, 39 + head_offset,  IHUcpuTemp);
   encodeA(b, 39 + head_offset,  (int)(other[IHU_TEMP] * 10 + 0.5));
