@@ -1187,7 +1187,7 @@ if (firstTime != ON)
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
 	  
-    other[IHUtemp] = cpuTemp;
+    other[IHU_TEMP] = cpuTemp;
 	  
 //    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
    }	  
