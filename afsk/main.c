@@ -1299,6 +1299,7 @@ if (sim_mode)
 	    	current[count1] = current_min[count1];
 	    }
 	    sensor[count1] = sensor_min[count1];
+	}	
     }
 	  
     memset(rs_frame,0,sizeof(rs_frame));
