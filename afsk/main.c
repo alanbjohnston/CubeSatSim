@@ -1375,7 +1375,9 @@ if (payload == ON)
 //    sensor_payload[i++] = '\n';
     sensor_payload[i] = '\0';
     printf("Payload string: %s \n", sensor_payload);
-	
+
+  if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K'))  // only process if valid payload response
+  {	  
    int count1;
    char *token;
 //   char cmdbuffer[1000];
@@ -1523,6 +1525,7 @@ if (payload == ON)
    	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
     }    	
 
+}	
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
     yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
     zAngularVelocity =  (int)(gyroZ + 0.5) + 2048;
