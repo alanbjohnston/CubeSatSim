@@ -1240,7 +1240,7 @@ if (sim_mode)
 	    voltage_min[count1] = current[count1];
 
 	if (voltage[count1] > voltage_max[count1])
-	    voltage_max[count1] = voltage[count]1;
+	    voltage_max[count1] = voltage[count1];
 	if (current[count1] > current_max[count1])
 	    voltage_max[count1] = current[count1];
 
