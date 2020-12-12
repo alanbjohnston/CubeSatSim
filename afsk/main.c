@@ -135,7 +135,7 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
-float voltage_min[9], current_min[9], voltage_max[9], current_max[9];	
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[14], sensor_min[14], other_max[3], other_min[3];	
 
 int main(int argc, char *argv[]) {
 
@@ -492,11 +492,6 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
 
-//memset(voltage_min, 0, sizeof(voltage_min));
-//memset(current_min, 0, sizeof(current_min));	
-//memset(voltage_max, 0, sizeof(voltage_max));
-//memset(current_max, 0, sizeof(current_max));	
-
 for(int i=0; i < 9; i++)		
 {
 	voltage_min[i] = 1000.0;
@@ -504,6 +499,16 @@ for(int i=0; i < 9; i++)
 	voltage_max[i] = -1000.0;
 	current_max[i] = -1000.0;
 }
+for(i=0; i < 14; i++)		
+{
+	sensor_min[i] = 1000.0;
+	sensor_max[i] = -1000.0;
+}
+for(i=0; i < 3; i++)		
+{
+	other_min[i] = 1000.0;
+	other_max[i] = -1000.0;
+}	
 	
 while (loop-- != 0)
   {
@@ -1113,9 +1118,11 @@ if (firstTime != ON)
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-    float voltage[9], current[9];	
+    float voltage[9], current[9], sensor[20], other[3];	
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));	 
+    memset(sensor, 0, sizeof(sensor));
+    memset(other, 0, sizeof(other));
 	  
     for (count1 = 0; count1 < 8; count1++)
   	{
@@ -1377,7 +1384,8 @@ if (payload == ON)
     }
     printf("RXTemperature: %d \n", RXTemperature);
 */	
-	
+/*
+    count1 = 0;	
     if (token != NULL)
     {
 	token = strtok(NULL, space);  // OK token
@@ -1471,6 +1479,24 @@ if (payload == ON)
 	XSsensor3 = atof(token);
         printf("Sensor3 %f \n", XSsensor3);
     }
+*/
+
+	for (count1 = 0; count1 < 20; count1++)
+  	{
+	    if (token != NULL)
+	    {
+	        sensor[count1] = atof(token);	
+		if (sensor[count1] < sensor_min[count1])
+	    		sensor_min[count1] = sensor[count1];
+		if (sensor[count1] > sensor_max[count1])
+	    		sensor_max[count1] = sensor[count1];
+//    #ifdef DEBUG_LOGGING
+		printf("sensor: %f ", sensor[count1]);
+//    #endif
+		token = strtok(NULL, space);	
+	    }
+  	}
+	printf("\n");
 
     xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
     yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
