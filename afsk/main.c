@@ -448,7 +448,7 @@ if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
 {
 	
 sim_mode = TRUE;
-payload == OFF:	
+payload == OFF;	
 
 printf("Simulated telemetry mode!\n");
 	
