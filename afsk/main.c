@@ -57,12 +57,20 @@
 #define PLUS_Z 6
 #define MINUS_Z 7
 
+PRES, ALT, TEMP
+#define TEMP 2
+#define PRES 3
+#define ALT 4
+#define HUMI 5
 #define GYRO_X 7
 #define GYRO_Y 8
 #define GYRO_Z 9
 #define ACCEL_X 10
 #define ACCEL_Y 11
 #define ACCEL_Z 12
+#define XS1 14
+#define XS2 15
+#define XS3 16
 
 #define OFF -1
 #define ON 1
@@ -1125,7 +1133,7 @@ if (firstTime != ON)
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-    float voltage[9], current[9], sensor[14], other[3];	
+    float voltage[9], current[9], sensor[17], other[3];	
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));	 
     memset(sensor, 0, sizeof(sensor));
@@ -1488,7 +1496,7 @@ if (payload == ON)
     }
 */
 
-	for (count1 = 0; count1 < 14; count1++)
+	for (count1 = 0; count1 < 17; count1++)
   	{
 	    if (token != NULL)
 	    {
@@ -1501,7 +1509,7 @@ if (payload == ON)
   	}
 	printf("\n");
 	
-    for (count1 = 0; count1 < 14; count1++)
+    for (count1 = 0; count1 < 17; count1++)
     {
 	if (sensor[count1] < sensor_min[count1])
 	    sensor_min[count1] = sensor[count1];
@@ -1530,7 +1538,8 @@ if (payload == ON)
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
-  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
+//  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
+  encodeB(b, 10 + head_offset,(int)(sensor[TEMP] * 10 + 0.5));	// Temp	  
 	  
   if (mode == FSK)
   {	  
@@ -1568,8 +1577,11 @@ if (payload == ON)
   encodeA(b, 30 + head_offset,PSUVoltage);
   encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
 	  
-  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
-  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+//  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
+//  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+
+  encodeA(b, 33 + head_offset,(int)(sensor[PRES] + 0.5));  // Pressure
+  encodeB(b, 34 + head_offset,(int)(sensor[ALT] + 0.5));   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
   encodeB(b, 37 + head_offset,  Rssi);	
@@ -1586,10 +1598,15 @@ if (payload == ON)
 	  
 	  
 
-  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
+//  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
+  encodeA(b, 45 + head_offset, (int)(sensor[HUMI] + 0.5));  // in place of sensor1
+	  
   encodeB(b, 46 + head_offset,PSUCurrent);
-  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
-  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
+//  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
+//  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
+
+  encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
+  encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
 	  
 // camera = ON;
 	  
