@@ -71,6 +71,10 @@
 #define XS2 15
 #define XS3 16
 
+#define RSSI 0
+#define IHU_TEMP 2
+#define SPIN 1
+
 #define OFF -1
 #define ON 1
 
@@ -1183,7 +1187,9 @@ if (firstTime != ON)
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
 	  
-    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+    other[IHUtemp] = cpuTemp;
+	  
+//    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
    }	  
    fclose(cpuTempSensor);
 
@@ -1232,7 +1238,9 @@ if (sim_mode)
   // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
   tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
-  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+  tempS += + rnd_float(-1.0, 1.0);
+//  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+  other[IHU_TEMP] = tempS;	
 	 
   voltage[map[BUS]] = rnd_float(5.0, 5.005);
   current[map[BUS]] = rnd_float(158, 171);
@@ -1514,16 +1522,24 @@ if (payload == ON)
 	
 	
     for (count1 = 0; count1 < 17; count1++)
-    {
-	printf("Sensor min %f Sensor max %f \n", sensor_min[count1], sensor_max[count1]);   
-	    
+    {	    
 	if (sensor[count1] < sensor_min[count1])
 	    sensor_min[count1] = sensor[count1];
 	if (sensor[count1] > sensor_max[count1])
 	    sensor_max[count1] = sensor[count1];
 
    	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
-    }    	
+    }    
+	  
+    for (count1 = 0; count1 < 3; count1++)
+    {	    
+	if (other[count1] < oter_min[count1])
+	    other_min[count1] = other[count1];
+	if (other[count1] > otjer_max[count1])
+	    other_max[count1] = other[count1];
+
+   	printf("Other min %f max %f \n", other_min[count1], other_max[count1]);   
+    }  	  
 
 }	
 //    xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
@@ -1582,7 +1598,8 @@ if (payload == ON)
   }	  
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
-  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
+//  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
+  encodeB(b, 31 + head_offset,(other[SPIN] * 10) + 2048);	
 	  
 //  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
 //  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
@@ -1591,9 +1608,11 @@ if (payload == ON)
   encodeB(b, 34 + head_offset,(int)(sensor[ALT] + 0.5));   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
-  encodeB(b, 37 + head_offset,  Rssi);	
+//  encodeB(b, 37 + head_offset,  Rssi);	
+  encodeB(b, 37 + head_offset,  other[RSSI]);	
 	  
-  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+//  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+  encodeA(b, 39 + head_offset,  (int)(other[IHU_TEMP] * 10 + 0.5));
 	  
 //  encodeB(b, 40 + head_offset,  xAngularVelocity);
 //  encodeA(b, 42 + head_offset,  yAngularVelocity);
