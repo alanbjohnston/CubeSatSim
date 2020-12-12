@@ -1357,7 +1357,9 @@ if (sim_mode)
 
 	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
     }    
-	  	
+
+ if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K'))
+ {	 
     for (count1 = 0; count1 < 17; count1++)
     {	    
 	if (sensor[count1] < sensor_min[count1])
@@ -1366,7 +1368,8 @@ if (sim_mode)
 	    sensor_max[count1] = sensor[count1];
 
    	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
-    }    
+    } 
+ }	 
 	  
     for (count1 = 0; count1 < 3; count1++)
     {	    
