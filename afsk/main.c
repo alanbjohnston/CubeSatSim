@@ -149,7 +149,7 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
-float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[14], sensor_min[14], other_max[3], other_min[3];
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
 int main(int argc, char *argv[]) {
 
@@ -513,7 +513,7 @@ for(int i=0; i < 9; i++)
 	voltage_max[i] = -1000.0;
 	current_max[i] = -1000.0;
 }
-for(int i=0; i < 14; i++)		
+for(int i=0; i < 17; i++)		
 {
 	sensor_min[i] = 1000.0;
 	sensor_max[i] = -1000.0;
