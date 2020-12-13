@@ -6,7 +6,7 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-//#define TESTING  // Define to test on Serial Monitor
+#define TESTING  // Define to test on Serial Monitor
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
@@ -57,6 +57,14 @@ void setup() {
 
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);   
     
+  }
+  else
+  {
+
+  Serial.println("Calculating gyro offsets and storing in EEPROM\n");
+  
+  mpu6050.calcGyroOffsets(true);
+
   eeprom_word_write(0, 0xA07);
   eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
   eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
@@ -68,14 +76,6 @@ void setup() {
   Serial.println(((float)eeprom_word_read(3))/100.0, DEC);
 
   }
-    
-  }
-  else
-  {
-
-  Serial.println("Calculating gyro offsets and storing in EEPROM\n");
-  
-  mpu6050.calcGyroOffsets(true);
 }
 
 void loop() {
@@ -117,7 +117,7 @@ void loop() {
     Serial.print(" ");
     Serial.print(mpu6050.getGyroY());
     Serial.print(" ");
-    Serial.printl(mpu6050.getGyroZ());
+    Serial.print(mpu6050.getGyroZ());
     
     Serial.print(" XS ");
     Serial.print(Sensor1);   
