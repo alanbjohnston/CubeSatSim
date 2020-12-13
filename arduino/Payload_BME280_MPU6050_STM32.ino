@@ -6,7 +6,7 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-#define TESTING  // Define to test on Serial Monitor
+//#define TESTING  // Define to test on Serial Monitor
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
