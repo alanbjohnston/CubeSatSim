@@ -105,7 +105,7 @@ long time_start;
 
 short int buffer[2336400]; // max size for 10 frames count of BPSK
 
-#define S_RATE(48000) // (44100)
+#define S_RATE	(48000) // (44100)
 
 #define AFSK 1
 #define FSK 2
@@ -149,16 +149,7 @@ int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
-int map[8] = {
-  0,
-  1,
-  2,
-  3,
-  4,
-  5,
-  6,
-  7
-};
+int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
