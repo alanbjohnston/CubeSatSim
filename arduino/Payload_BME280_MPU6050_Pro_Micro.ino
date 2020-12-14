@@ -21,7 +21,7 @@ int Sensor1 = 0;
 int Sensor2 = 0;
 float Sensor3 = 0;
 void eeprom_word_write(int addr, int val);
-int eeprom_word_read(int addr);
+short eeprom_word_read(int addr);
 
 void setup() {
 
@@ -249,7 +249,7 @@ void eeprom_word_write(int addr, int val)
 
 }
 
-int eeprom_word_read(int addr)
+short eeprom_word_read(int addr)
 {
   return((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
 }
