@@ -57,6 +57,24 @@
 #define PLUS_Z 6
 #define MINUS_Z 7
 
+#define TEMP 2
+#define PRES 3
+#define ALT 4
+#define HUMI 5
+#define GYRO_X 7
+#define GYRO_Y 8
+#define GYRO_Z 9
+#define ACCEL_X 10
+#define ACCEL_Y 11
+#define ACCEL_Z 12
+#define XS1 14
+#define XS2 15
+#define XS3 16
+
+#define RSSI 0
+#define IHU_TEMP 2
+#define SPIN 1
+
 #define OFF -1
 #define ON 1
 
@@ -135,6 +153,7 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
 int main(int argc, char *argv[]) {
 
@@ -426,10 +445,9 @@ printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1,
 #endif	
 	
 if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
-	sim_mode = TRUE;
-
-if (sim_mode)
-{	
+{
+	
+sim_mode = TRUE;
 
 printf("Simulated telemetry mode!\n");
 	
@@ -491,6 +509,24 @@ printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max:
 	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
    }
 
+for(int i=0; i < 9; i++)		
+{
+	voltage_min[i] = 1000.0;
+	current_min[i] = 1000.0;
+	voltage_max[i] = -1000.0;
+	current_max[i] = -1000.0;
+}
+for(int i=0; i < 17; i++)		
+{
+	sensor_min[i] = 1000.0;
+	sensor_max[i] = -1000.0;
+	printf("Sensor min and max initialized!");
+}
+for(int i=0; i < 3; i++)		
+{
+	other_min[i] = 1000.0;
+	other_max[i] = -1000.0;
+}	
 	
 while (loop-- != 0)
   {
@@ -1100,9 +1136,11 @@ if (firstTime != ON)
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-    float voltage[9], current[9];	
+    float voltage[9], current[9], sensor[17], other[3];	
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));	 
+    memset(sensor, 0, sizeof(sensor));
+    memset(other, 0, sizeof(other));
 	  
     for (count1 = 0; count1 < 8; count1++)
   	{
@@ -1148,9 +1186,84 @@ if (firstTime != ON)
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
     #endif
 	  
-    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+    other[IHU_TEMP] = cpuTemp;
+	  
+//    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
    }	  
    fclose(cpuTempSensor);
+	  
+char sensor_payload[500];
+	
+if (payload == ON)
+{
+     STEMBoardFailure = 0;
+	
+     char c;
+     int charss = serialDataAvail (uart_fd);
+     if (charss != 0)
+	  printf("Clearing buffer of %d chars \n", charss);
+     while ((charss-- > 0))
+          c = serialGetchar (uart_fd);  // clear buffer
+	
+     unsigned int waitTime;
+     int i = 0;	
+     serialPutchar (uart_fd, '?');
+     printf("Querying payload with ?\n");
+     waitTime = millis() + 500;
+     int end = FALSE;
+//     int retry = FALSE;
+     while ((millis() < waitTime) && !end) 
+     { 
+	int chars = serialDataAvail (uart_fd);
+        while ((chars-- > 0) && !end)
+        {
+          c = serialGetchar (uart_fd);
+//	  printf ("%c", c);
+//	  fflush(stdout);
+	  if (c != '\n')
+	  {
+	  	sensor_payload[i++] = c;
+	  }
+	  else
+	  {
+		 end = TRUE;
+	  }
+        }
+    }
+    sensor_payload[i++] = ' ';
+//    sensor_payload[i++] = '\n';
+    sensor_payload[i] = '\0';
+    printf("Payload string: %s \n", sensor_payload);
+
+  if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K'))  // only process if valid payload response
+  {	  
+   int count1;
+   char *token;
+//   char cmdbuffer[1000];
+		
+//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+//    	fgets(cmdbuffer, 1000, file);
+//	printf("result: %s\n", cmdbuffer);
+//    	pclose(file);
+	
+    const char space[2] = " ";
+    token = strtok(sensor_payload, space);
+	for (count1 = 0; count1 < 17; count1++)
+  	{
+	    if (token != NULL)
+	    {
+	        sensor[count1] = atof(token);	
+    #ifdef DEBUG_LOGGING
+		printf("sensor: %f ", sensor[count1]);
+    #endif
+		token = strtok(NULL, space);	
+	    }
+  	}
+	printf("\n");	  
+
+    }	
+
+}	  
 
 if (sim_mode) 
 {	
@@ -1197,7 +1310,9 @@ if (sim_mode)
   // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
   tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
-  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+  tempS += + rnd_float(-1.0, 1.0);
+//  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+  other[IHU_TEMP] = tempS;	
 	 
   voltage[map[BUS]] = rnd_float(5.0, 5.005);
   current[map[BUS]] = rnd_float(158, 171);
@@ -1226,6 +1341,79 @@ if (sim_mode)
 	  
 // end of simulated telemetry
 }	
+	  
+    for (count1 = 0; count1 < 8; count1++)
+    {
+	if (voltage[count1] < voltage_min[count1])
+	    voltage_min[count1] = voltage[count1];
+	if (current[count1] < current_min[count1])
+	    current_min[count1] = current[count1];
+
+	if (voltage[count1] > voltage_max[count1])
+	    voltage_max[count1] = voltage[count1];
+	if (current[count1] > current_max[count1])
+	    current_max[count1] = current[count1];
+
+	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
+    }    
+
+ if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K'))
+ {	 
+    for (count1 = 0; count1 < 17; count1++)
+    {	    
+	if (sensor[count1] < sensor_min[count1])
+	    sensor_min[count1] = sensor[count1];
+	if (sensor[count1] > sensor_max[count1])
+	    sensor_max[count1] = sensor[count1];
+
+   	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
+    } 
+ }	 
+	  
+    for (count1 = 0; count1 < 3; count1++)
+    {	    
+	if (other[count1] < other_min[count1])
+	    other_min[count1] = other[count1];
+	if (other[count1] > other_max[count1])
+	    other_max[count1] = other[count1];
+
+   	printf("Other min %f max %f \n", other_min[count1], other_max[count1]);   
+    }  
+	  
+    if (loop % 8 == 0)
+    { 
+	printf("Sending MIN frame \n");
+	frm_type = 0x03;
+    	for (count1 = 0; count1 < 17; count1++)
+    	{
+	    if (count1 < 3)
+	    	other[count1] = other_min[count1];
+	    if (count1 < 8)
+	    {
+	    	voltage[count1] = voltage_min[count1];
+	    	current[count1] = current_min[count1];
+	    }
+	    if (sensor_min[count1] != 1000.0)	 // make sure values are valid
+	    	sensor[count1] = sensor_min[count1];
+	}	
+    }
+    if ((loop + 4) % 8 == 0)
+    { 
+	printf("Sending MAX frame \n");
+	frm_type = 0x02;
+    	for (count1 = 0; count1 < 17; count1++)
+    	{
+	    if (count1 < 3)
+	    	other[count1] = other_max[count1];
+	    if (count1 < 8)
+	    {
+	    	voltage[count1] = voltage_max[count1];
+	    	current[count1] = current_max[count1];
+	    }
+	    if (sensor_max[count1] != -1000.0)	// make sure values are valid
+		sensor[count1] = sensor_max[count1];
+	}	
+    }	  
 	  
     memset(rs_frame,0,sizeof(rs_frame));
     memset(parities,0,sizeof(parities));
@@ -1283,185 +1471,24 @@ if (sim_mode)
 	  
 // read payload sensor if available
 	
-char sensor_payload[500];
-	
-if (payload == ON)
-{
-     STEMBoardFailure = 0;
-	
-     char c;
-     int charss = serialDataAvail (uart_fd);
-     if (charss != 0)
-	  printf("Clearing buffer of %d chars \n", charss);
-     while ((charss-- > 0))
-          c = serialGetchar (uart_fd);  // clear buffer
-	
-     unsigned int waitTime;
-     int i = 0;	
-     serialPutchar (uart_fd, '?');
-     printf("Querying payload with ?\n");
-     waitTime = millis() + 500;
-     int end = FALSE;
-//     int retry = FALSE;
-     while ((millis() < waitTime) && !end) 
-     { 
-	int chars = serialDataAvail (uart_fd);
-        while ((chars-- > 0) && !end)
-        {
-          c = serialGetchar (uart_fd);
-//	  printf ("%c", c);
-//	  fflush(stdout);
-	  if (c != '\n')
-	  {
-	  	sensor_payload[i++] = c;
-	  }
-	  else
-	  {
-		 end = TRUE;
-	  }
-        }
-    }
-    sensor_payload[i++] = ' ';
-//    sensor_payload[i++] = '\n';
-    sensor_payload[i] = '\0';
-    printf("Payload string: %s \n", sensor_payload);
-	
-   int count1;
-   char *token;
-//   char cmdbuffer[1000];
-		
-//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-//    	fgets(cmdbuffer, 1000, file);
-//	printf("result: %s\n", cmdbuffer);
-//    	pclose(file);
-	
-    const char space[2] = " ";
-    token = strtok(sensor_payload, space);
 
-    float gyroX, gyroY, gyroZ;	
-/*		   
-    for (count1 = 0; count1 < 7; count1++)  // skipping over BME280 data
-    {
-	if (token != NULL)
-		if (count1 == 2)
-			RXTemperature = (int)((atof(token) * 10.0) + 0.5);
-    		token = strtok(NULL, space);
-    }
-    printf("RXTemperature: %d \n", RXTemperature);
-*/	
-	
-    if (token != NULL)
-    {
-	token = strtok(NULL, space);  // OK token
-    }
-    if (token != NULL)
-    {
-	token = strtok(NULL, space);  // BME280 token
-    }
-    if (token != NULL)
-    {
-	BME280temperature = atof(token);
-	printf("temperature %f ", BME280temperature);
-	token = strtok(NULL, space);  // get next token
-    }
-    if (token != NULL)
-    {
-	BME280pressure = atof(token);	
-	printf("pressure %f ",BME280pressure);
-	token = strtok(NULL, space);  // get next token
-    }
-    if (token != NULL)
-    {
-	BME280altitude = atof(token);
-	printf("altitude %f ",BME280altitude);
-	token = strtok(NULL, space);  // get next token
-    }
-    if (token != NULL)
-    {
-	BME280humidity = atof(token);
-	printf("humidity %f ",BME280humidity);
-	token = strtok(NULL, space);  // get next token
-    }	
-    if (token != NULL)
-    {
-    	token = strtok(NULL, space);  // start of MPU6050 data
-    }
-    if (token != NULL)
-    {
-    	gyroX = atof(token);
-    	printf("gyroX %f ", gyroX);
-    	token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-	gyroY = atof(token);
-        printf("gyroY %f ", gyroY);
-        token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-	gyroZ = atof(token);
-        printf("gyroZ %f \n", gyroZ);
-        token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-	xAccel = atof(token);
-        printf("accelX %f ", xAccel);
-        token = strtok(NULL, space);
-   }
-    if (token != NULL)
-    {
-	yAccel = atof(token);
-        printf("accelY %f ", yAccel);
-        token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-	zAccel = atof(token);
-        printf("accelZ %f ", zAccel);
-        token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-    	token = strtok(NULL, space);  // start of XS extra sensor data
-    }
-    if (token != NULL)
-    {
-    	XSsensor1 = atof(token);
-    	printf("Sensor1%f ", XSsensor1);
-    	token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-	XSsensor2 = atof(token);
-        printf("Sensor2 %f ", XSsensor2);
-        token = strtok(NULL, space);
-    }
-    if (token != NULL)
-    {
-	XSsensor3 = atof(token);
-        printf("Sensor3 %f \n", XSsensor3);
-    }
-
-    xAngularVelocity =  (int)(gyroX + 0.5) + 2048;
-    yAngularVelocity =  (int)(gyroY + 0.5) + 2048;
-    zAngularVelocity =  (int)(gyroZ + 0.5) + 2048;
-  }
 
   encodeA(b, 0 + head_offset, batt_a_v);
   encodeB(b, 1 + head_offset, batt_b_v);
   encodeA(b, 3 + head_offset, batt_c_v);
 	  
-  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
-  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
-  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
-//  encodeA(b, 6 + head_offset,yAccel);	  //Yaccel
-//  encodeB(b, 7 + head_offset,zAccel);	  //Zaccel
+//  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
+//  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
+//  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
+	  
+  encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048);	  // Xaccel
+  encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048);	  // Yaccel
+  encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048);	  // Zaccel
 	  
   encodeA(b, 9 + head_offset, battCurr);
 	
-  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
+//  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
+  encodeB(b, 10 + head_offset,(int)(sensor[TEMP] * 10 + 0.5));	// Temp	  
 	  
   if (mode == FSK)
   {	  
@@ -1497,24 +1524,41 @@ if (payload == ON)
   }	  
 	  
   encodeA(b, 30 + head_offset,PSUVoltage);
-  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
+//  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
+  encodeB(b, 31 + head_offset,(other[SPIN] * 10) + 2048);	
 	  
-  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
-  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+//  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
+//  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+
+  encodeA(b, 33 + head_offset,(int)(sensor[PRES] + 0.5));  // Pressure
+  encodeB(b, 34 + head_offset,(int)(sensor[ALT] * 10.0 + 0.5));   // Altitude
 	  
   encodeA(b, 36 + head_offset,  Resets);	  
-  encodeB(b, 37 + head_offset,  Rssi);	
+//  encodeB(b, 37 + head_offset,  Rssi);	
+  encodeB(b, 37 + head_offset,  (int)(other[RSSI] + 0.5) + 2048);	
 	  
-  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+//  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+  encodeA(b, 39 + head_offset,  (int)(other[IHU_TEMP] * 10 + 0.5));
 	  
-  encodeB(b, 40 + head_offset,  xAngularVelocity);
-  encodeA(b, 42 + head_offset,  yAngularVelocity);
-  encodeB(b, 43 + head_offset,  zAngularVelocity);
+//  encodeB(b, 40 + head_offset,  xAngularVelocity);
+//  encodeA(b, 42 + head_offset,  yAngularVelocity);
+//  encodeB(b, 43 + head_offset,  zAngularVelocity);
 
-  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
+  encodeB(b, 40 + head_offset,  (int)(sensor[GYRO_X] + 0.5) + 2048);
+  encodeA(b, 42 + head_offset,  (int)(sensor[GYRO_Y] + 0.5) + 2048);
+  encodeB(b, 43 + head_offset,  (int)(sensor[GYRO_Z] + 0.5) + 2048);
+	  
+	  
+
+//  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
+  encodeA(b, 45 + head_offset, (int)(sensor[HUMI] + 0.5));  // in place of sensor1
+	  
   encodeB(b, 46 + head_offset,PSUCurrent);
-  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
-  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
+//  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
+//  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
+
+  encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
+  encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
 	  
 // camera = ON;
 	  
