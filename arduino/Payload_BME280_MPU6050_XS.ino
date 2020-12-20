@@ -261,6 +261,6 @@ void blink(int length)
 
 #if defined __AVR_ATmega32U4__
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED1; //TX LED macro to turn LED ON
+  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
 }
