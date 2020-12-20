@@ -6,12 +6,9 @@
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-//#define TESTING  // Define to test on Serial Monitor
-
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
 
-int counter = 0;
 long timer = 0;
 int bmePresent;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
@@ -30,12 +27,6 @@ void setup() {
   Serial1.begin(9600);  // Pi UART
 
   Serial.println("Starting!");
-/*
-  pinMode(PC13, OUTPUT);
-  digitalWrite(PC13, LOW);   // turn the LED on
-  delay(50);              // wait for a second
-  digitalWrite(PC13, HIGH);    // turn the LED off
-*/
 
   blink_setup();
 
@@ -57,7 +48,6 @@ void setup() {
 
   if (eeprom_word_read(0) == 0xA07)
   {
-
     Serial.println("Reading gyro offsets from EEPROM\n");
 
     float xOffset = ((float)eeprom_word_read(1)) / 100.0;
@@ -69,11 +59,9 @@ void setup() {
     Serial.println(zOffset, DEC);
 
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
-
   }
   else
   {
-
     Serial.println("Calculating gyro offsets and storing in EEPROM\n");
 
     mpu6050.calcGyroOffsets(true);
@@ -87,17 +75,12 @@ void setup() {
     Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
-
   }
 }
 
 void loop() {
 
-//#ifdef TESTING
   if (Serial.available() > 0) {
-//    digitalWrite(PC13, LOW);   // turn the LED on
-//    delay(50);              // wait for a second
-//    digitalWrite(PC13, HIGH);    // turn the LED off
     blink(50);
     char result = Serial.read();
     //       Serial.println(result);
@@ -110,7 +93,6 @@ void loop() {
 
     if (result == '?')
     {
-
       if (bmePresent) {
         Serial.print("OK BME280 ");
         Serial.print(bme.readTemperature());
@@ -146,8 +128,8 @@ void loop() {
     Serial.print(Sensor2);              
     Serial.print(" ");
     Serial.println(Sensor3);  
-
-    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()* mpu6050.getGyroZ()); 
+      
+    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
@@ -161,16 +143,11 @@ void loop() {
     if (rotation > 5)
         digitalWrite(blueLED, HIGH);
     else
-        digitalWrite(blueLED, LOW);   
-
-      //  Serial1.println(counter++);
-    }
+        digitalWrite(blueLED, LOW);          
+    }    
   }
-//#else
+
   if (Serial1.available() > 0) {
- //   digitalWrite(PC13, LOW);   // turn the LED on
- //   delay(50);              // wait for a second
- //   digitalWrite(PC13, HIGH);    // turn the LED off
  
     blink(50);
     char result = Serial1.read();
@@ -184,7 +161,6 @@ void loop() {
 
     if (result == '?')
     {
-
       if (bmePresent) {
         Serial1.print("OK BME280 ");
         Serial1.print(bme.readTemperature());
@@ -221,7 +197,7 @@ void loop() {
     Serial1.print(" ");
     Serial1.println(Sensor3);     
     
-    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()* mpu6050.getGyroZ()); 
+    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
@@ -236,22 +212,16 @@ void loop() {
         digitalWrite(blueLED, HIGH);
     else
         digitalWrite(blueLED, LOW);
-
-      //  Serial1.println(counter++);
     }
   }
-//#endif
 
-  delay(100);
+//  delay(100);
 }
-
 
 void eeprom_word_write(int addr, int val)
 {
-
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
-
 }
 
 short eeprom_word_read(int addr)
@@ -259,7 +229,8 @@ short eeprom_word_read(int addr)
   return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
 }
 
-void blink_setup() {
+void blink_setup() 
+{
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)  
   // initialize digital pin PB1 as an output.
   pinMode(PC13, OUTPUT);
@@ -269,12 +240,10 @@ void blink_setup() {
   pinMode(RXLED, OUTPUT);  // Set RX LED as an output
   // TX LED is set as an output behind the scenes
 #endif
-
 }
 
 void blink(int length)
 {
-  
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
   digitalWrite(PC13, LOW);   // turn the LED on (HIGH is the voltage level)
 #endif
