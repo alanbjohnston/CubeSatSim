@@ -18,10 +18,9 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <fcntl.h>                              
+#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
-
 #include <unistd.h>
 #include <string.h>
 #include "status.h"
@@ -34,10 +33,10 @@
 #include <time.h>
 #include <math.h>
 #include "TelemEncoding.h"
-#include <sys/socket.h> 
-#include <stdlib.h> 
-#include <netinet/in.h> 
-#include <string.h> 
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <string.h>
 #include <arpa/inet.h>
 #include <errno.h>
 
@@ -75,7 +74,7 @@
 #define IHU_TEMP 2
 #define SPIN 1
 
-#define OFF -1
+#define OFF - 1
 #define ON 1
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
@@ -89,8 +88,8 @@ int twosToInt(int val, int len);
 float rnd_float(double min, double max);
 int get_tlm(void);
 int get_tlm_fox();
-int encodeA(short int *b, int index, int val);
-int encodeB(short int *b, int index, int val);
+int encodeA(short int * b, int index, int val);
+int encodeB(short int * b, int index, int val);
 void config_x25();
 void trans_x25();
 int upper_digit(int number);
@@ -104,9 +103,9 @@ long start;
 int testCount = 0;
 long time_start;
 
-short int buffer[2336400];  // max size for 10 frames count of BPSK
+short int buffer[2336400]; // max size for 10 frames count of BPSK
 
-#define S_RATE  (48000)     // (44100)
+#define S_RATE	(48000) // (44100)
 
 #define AFSK 1
 #define FSK 2
@@ -116,24 +115,24 @@ short int buffer[2336400];  // max size for 10 frames count of BPSK
 int rpitxStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
-float freq_Hz = 3000;  // 1200
-	
+float freq_Hz = 3000; // 1200
+
 int smaller;
 int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
 int rd = 0;
 int nrd;
-void write_to_buffer(int i, int symbol, int val);	
-void write_wave(int i, short int *buffer);
-  int uart_fd;
+void write_to_buffer(int i, int symbol, int val);
+void write_wave(int i, short int * buffer);
+int uart_fd;
 
 int reset_count;
 float uptime_sec;
 long int uptime;
 char call[5];
 
-int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod; 
+int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
 int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
@@ -150,494 +149,449 @@ int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
-int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7};
+int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
-int main(int argc, char *argv[]) {
+int main(int argc, char * argv[]) {
 
   mode = FSK;
   frameCnt = 1;
-	
+
   if (argc > 1) {
-//	  strcpy(src_addr, argv[1]);
-	  if (*argv[1] == 'b')
-	  {
-		  mode = BPSK;
-		  printf("Mode BPSK\n");
-	  }
-	  else if (*argv[1] == 'a')
-	  {
-		  mode = AFSK;
-		  printf("Mode AFSK\n");
-	  }
-	  else if (*argv[1] == 'c')
-	  {
-		  mode = CW;
-		  printf("Mode CW\n");
-	  }
-	  else
-	  {
-		  printf("Mode FSK\n");
-	  }
+    //	  strcpy(src_addr, argv[1]);
+    if ( * argv[1] == 'b') {
+      mode = BPSK;
+      printf("Mode BPSK\n");
+    } else if ( * argv[1] == 'a') {
+      mode = AFSK;
+      printf("Mode AFSK\n");
+    } else if ( * argv[1] == 'c') {
+      mode = CW;
+      printf("Mode CW\n");
+    } else {
+      printf("Mode FSK\n");
+    }
 
-	  if (argc > 2)  {
-//		  printf("String is %s %s\n", *argv[2], argv[2]);
-		  loop = atoi(argv[2]);
-		  loop_count = loop;
-	  }
-	  printf("Looping %d times \n", loop);
-	  
-	  if (argc > 3) {
-		if (*argv[3] == 'n')
-		{
-			cw_id = OFF;
-			printf("No CW id\n");
-		}
-	  }
+    if (argc > 2) {
+      //		  printf("String is %s %s\n", *argv[2], argv[2]);
+      loop = atoi(argv[2]);
+      loop_count = loop;
+    }
+    printf("Looping %d times \n", loop);
+
+    if (argc > 3) {
+      if ( * argv[3] == 'n') {
+        cw_id = OFF;
+        printf("No CW id\n");
+      }
+    }
   }
-	
-// Open configuration file with callsign and reset count	
-  FILE* config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
-  if (config_file == NULL) 
-  { 
-       printf("Creating config file."); 
-       config_file = fopen("/home/pi/CubeSatSim/sim.cfg","w");
-	fprintf(config_file, "%s %d", " ", 100);
-	fclose(config_file);
-	config_file = fopen("/home/pi/CubeSatSim/sim.cfg","r"); 
-  } 
-  
-  char* cfg_buf[100]; 
-  fscanf(config_file, "%s %d %f %f", call, &reset_count, &lat_file, &long_file);
+
+  // Open configuration file with callsign and reset count	
+  FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  if (config_file == NULL) {
+    printf("Creating config file.");
+    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "w");
+    fprintf(config_file, "%s %d", " ", 100);
+    fclose(config_file);
+    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  }
+
+  char * cfg_buf[100];
+  fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file); 	
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file);
   reset_count = (reset_count + 1) % 0xffff;
-	
-  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0))
-  {
-      printf("Valid latitude and longitude in config file\n");
-      latitude = lat_file;
-      longitude = long_file;
-  }	
-  wiringPiSetup ();
 
-// Check for SPI and AX-5043 Digital Transceiver Board	
-  FILE *file = popen("sudo raspi-config nonint get_spi", "r");
-       if (fgetc(file) == 48) 
-	{
-	  printf("SPI is enabled!\n");	
-	       
-          FILE *file2 = popen("ls /dev/spidev0.* 2>&1", "r");
-//          printf("Result getc: %c \n", getc(file2));
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
+    printf("Valid latitude and longitude in config file\n");
+    latitude = lat_file;
+    longitude = long_file;
+  }
+  wiringPiSetup();
 
-          if (fgetc(file2) != 'l')
-          {
-            printf("SPI devices present!\n");
-//	  }
- 	  pclose(file2);
-	  setSpiChannel(SPI_CHANNEL);
-  	  setSpiSpeed(SPI_SPEED);
-  	  initializeSpi();
-//	  char src_addr[5] = "KU2Y";
-//          char dest_addr[5] = "CQ";
-	  ax25_init(&hax25, (uint8_t *) dest_addr, '1', (uint8_t *) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
-	  if (init_rf())
-	  {
-		printf("AX5043 successfully initialized!\n");
-		ax5043 = TRUE;
-		cw_id = OFF;
-		mode = AFSK;
-//		cycle = OFF;
-		printf("Mode AFSK with AX5043\n");  
-		transmit = TRUE;
-	  }	  
-	  else
-		printf("AX5043 not present!\n");
- 	}
-      } 
-//       else
-//       {
-//	  printf("SPI not enabled!\n");
-//       }
+  // Check for SPI and AX-5043 Digital Transceiver Board	
+  FILE * file = popen("sudo raspi-config nonint get_spi", "r");
+  if (fgetc(file) == 48) {
+    printf("SPI is enabled!\n");
+
+    FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
+    //          printf("Result getc: %c \n", getc(file2));
+
+    if (fgetc(file2) != 'l') {
+      printf("SPI devices present!\n");
+      //	  }
+      pclose(file2);
+      setSpiChannel(SPI_CHANNEL);
+      setSpiSpeed(SPI_SPEED);
+      initializeSpi();
+      //	  char src_addr[5] = "KU2Y";
+      //          char dest_addr[5] = "CQ";
+      ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
+      if (init_rf()) {
+        printf("AX5043 successfully initialized!\n");
+        ax5043 = TRUE;
+        cw_id = OFF;
+        mode = AFSK;
+        //		cycle = OFF;
+        printf("Mode AFSK with AX5043\n");
+        transmit = TRUE;
+      } else
+        printf("AX5043 not present!\n");
+    }
+  }
+  //       else
+  //       {
+  //	  printf("SPI not enabled!\n");
+  //       }
   pclose(file);
-  txLed = 0;	// defaults for vB3 board without TFB
+  txLed = 0; // defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
-  if (!ax5043)
-  {
-    pinMode (2, INPUT);
-    pullUpDnControl (2, PUD_UP);
+  if (!ax5043) {
+    pinMode(2, INPUT);
+    pullUpDnControl(2, PUD_UP);
 
-    if (digitalRead(2) != HIGH)
-    {
-	  printf("vB3 with TFB Present\n");
-	  vB3 = TRUE;
-  	  txLed = 3;
-	  txLedOn = LOW;
- 	  txLedOff = HIGH;
-	  onLed = 0;
-          onLedOn = LOW;
-	  onLedOff = HIGH;
-	  transmit = TRUE;
-    } else
-    {
-  	pinMode (3, INPUT);
-  	pullUpDnControl (3, PUD_UP);
+    if (digitalRead(2) != HIGH) {
+      printf("vB3 with TFB Present\n");
+      vB3 = TRUE;
+      txLed = 3;
+      txLedOn = LOW;
+      txLedOff = HIGH;
+      onLed = 0;
+      onLedOn = LOW;
+      onLedOff = HIGH;
+      transmit = TRUE;
+    } else {
+      pinMode(3, INPUT);
+      pullUpDnControl(3, PUD_UP);
 
-  	if (digitalRead(3) != HIGH)
-  	{
-	  printf("vB4 Present\n");
-  	  txLed = 2;
-	  txLedOn = HIGH;
- 	  txLedOff = LOW;
- 	  vB4 = TRUE;
-	  onLed = 0;
+      if (digitalRead(3) != HIGH) {
+        printf("vB4 Present\n");
+        txLed = 2;
+        txLedOn = HIGH;
+        txLedOff = LOW;
+        vB4 = TRUE;
+        onLed = 0;
+        onLedOn = HIGH;
+        onLedOff = LOW;
+        transmit = TRUE;
+      } else {
+        pinMode(26, INPUT);
+        pullUpDnControl(26, PUD_UP);
+
+        if (digitalRead(26) != HIGH) {
+          printf("vB5 Present\n");
+          txLed = 2;
+          txLedOn = HIGH;
+          txLedOff = LOW;
+          vB5 = TRUE;
+          onLed = 27;
           onLedOn = HIGH;
-	  onLedOff = LOW;
-	  transmit = TRUE;
-  	}
-	else
-	{
-		pinMode (26, INPUT);
-  		pullUpDnControl (26, PUD_UP);
-
-  		if (digitalRead(26) != HIGH)
-  		{
-	  		printf("vB5 Present\n");
-  	  		txLed = 2;
-	  		txLedOn = HIGH;
- 	  		txLedOff = LOW;
- 	  		vB5 = TRUE;
-	  		onLed = 27;
-          		onLedOn = HIGH;
-	  		onLedOff = LOW;
-	  		transmit = TRUE;
-		}
-	  }
-    }
-  }	
-  pinMode (txLed, OUTPUT);
-  digitalWrite (txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
-  pinMode (onLed, OUTPUT);
-  digitalWrite (onLed, onLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Power LED On\n");
-  #endif
-	
-    config_file = fopen("sim.cfg","w");
-    fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file);
-//    fprintf(config_file, "%s %d", call, reset_count);
-    fclose(config_file);
-    config_file = fopen("sim.cfg","r"); 
-		
-if (vB4)
-{	
-  map[BAT] = BUS;
-  map[BUS] = BAT;
-  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-}	
-else if (vB5)
-{
-   map[MINUS_X] = PLUS_Z;
-   map[PLUS_Z] = MINUS_X;
-	
-  if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
-	printf("/dev/i2c-11 is present\n\n");		
-	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
-  } else {
-	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
-  }
-} 
-else
-{	
-  map[BUS] = MINUS_Z;
-  map[BAT] = BUS;
-  map[PLUS_Z] = BAT;
-  map[MINUS_Z] = PLUS_Z;
-  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-  batteryThreshold = 8.0;
- }
-
-   strcpy(pythonStr, pythonCmd);
-   strcat(pythonStr, busStr);
-   strcat(pythonConfigStr, pythonStr);
-   strcat(pythonConfigStr, " c");
-	
-//   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
-   FILE* file1 = popen(pythonConfigStr, "r");
-   char cmdbuffer[1000];
-   fgets(cmdbuffer, 1000, file1);
-//   printf("pythonStr result: %s\n", cmdbuffer);
-   pclose(file1);	
-	
-// try connecting to Arduino payload using UART
-
- if (!ax5043 && !vB3)  // don't test if AX5043 is present
- {
-  payload = OFF;
-
-  if ((uart_fd = serialOpen ("/dev/ttyAMA0", 9600)) >= 0)
-  {
-     char c;
-     int charss = serialDataAvail (uart_fd);
-     if (charss != 0)
-	  printf("Clearing buffer of %d chars \n", charss);	
-     while ((charss-- > 0))
-          c = serialGetchar (uart_fd);  // clear buffer
-	  
-     unsigned int waitTime;
-     int i;
-    for(i = 0; i < 2; i++)
-    {
-     serialPutchar (uart_fd, 'R');
-     printf("Querying payload with R to reset\n");
-     waitTime = millis() + 500;
-     while ((millis() < waitTime) && (payload != ON)) 
-     { 
-        if (serialDataAvail (uart_fd))
-        {
-          printf ("%c", c = serialGetchar (uart_fd));
-          fflush (stdout);
-	  if (c == 'O')
-	  {
-             printf ("%c", c = serialGetchar (uart_fd));
-             fflush (stdout);
-             if (c == 'K')
-         	 payload = ON;
-          }
+          onLedOff = LOW;
+          transmit = TRUE;
         }
-//        sleep(0.75);
-     }
+      }
     }
-    if (payload == ON)
-	  printf ("\nPayload is present!\n") ;
-    else
-	  printf ("\nPayload not present!\n") ;
   }
-   else 
+  pinMode(txLed, OUTPUT);
+  digitalWrite(txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+  printf("Tx LED Off\n");
+  #endif
+  pinMode(onLed, OUTPUT);
+  digitalWrite(onLed, onLedOn);
+  #ifdef DEBUG_LOGGING
+  printf("Power LED On\n");
+  #endif
+
+  config_file = fopen("sim.cfg", "w");
+  fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file);
+  //    fprintf(config_file, "%s %d", call, reset_count);
+  fclose(config_file);
+  config_file = fopen("sim.cfg", "r");
+
+  if (vB4) {
+    map[BAT] = BUS;
+    map[BUS] = BAT;
+    snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+  } else if (vB5) {
+    map[MINUS_X] = PLUS_Z;
+    map[PLUS_Z] = MINUS_X;
+
+    if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
+      printf("/dev/i2c-11 is present\n\n");
+      snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
+    } else {
+      snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
+    }
+  } else {
+    map[BUS] = MINUS_Z;
+    map[BAT] = BUS;
+    map[PLUS_Z] = BAT;
+    map[MINUS_Z] = PLUS_Z;
+    snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+    batteryThreshold = 8.0;
+  }
+
+  strcpy(pythonStr, pythonCmd);
+  strcat(pythonStr, busStr);
+  strcat(pythonConfigStr, pythonStr);
+  strcat(pythonConfigStr, " c");
+
+  //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
+  FILE * file1 = popen(pythonConfigStr, "r");
+  char cmdbuffer[1000];
+  fgets(cmdbuffer, 1000, file1);
+  //   printf("pythonStr result: %s\n", cmdbuffer);
+  pclose(file1);
+
+  // try connecting to Arduino payload using UART
+
+  if (!ax5043 && !vB3) // don't test if AX5043 is present
   {
-    fprintf (stderr, "Unable to open UART: %s\n", strerror (errno)) ;
+    payload = OFF;
+
+    if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {
+      char c;
+      int charss = serialDataAvail(uart_fd);
+      if (charss != 0)
+        printf("Clearing buffer of %d chars \n", charss);
+      while ((charss--> 0))
+        c = serialGetchar(uart_fd); // clear buffer
+
+      unsigned int waitTime;
+      int i;
+      for (i = 0; i < 2; i++) {
+        serialPutchar(uart_fd, 'R');
+        printf("Querying payload with R to reset\n");
+        waitTime = millis() + 500;
+        while ((millis() < waitTime) && (payload != ON)) {
+          if (serialDataAvail(uart_fd)) {
+            printf("%c", c = serialGetchar(uart_fd));
+            fflush(stdout);
+            if (c == 'O') {
+              printf("%c", c = serialGetchar(uart_fd));
+              fflush(stdout);
+              if (c == 'K')
+                payload = ON;
+            }
+          }
+          //        sleep(0.75);
+        }
+      }
+      if (payload == ON)
+        printf("\nPayload is present!\n");
+      else
+        printf("\nPayload not present!\n");
+    } else {
+      fprintf(stderr, "Unable to open UART: %s\n", strerror(errno));
+    }
   }
- }
-	
-// test i2c buses	
-i2c_bus0 = (test_i2c_bus(0) != -1) ? ON: OFF;	
-i2c_bus1 = (test_i2c_bus(1) != -1) ? ON: OFF;	
-i2c_bus3 = (test_i2c_bus(3) != -1) ? ON: OFF;
-	
-// check for camera	
-char cmdbuffer1[1000];	
-FILE* file4 = popen("vcgencmd get_camera", "r");
-fgets(cmdbuffer1, 1000, file4);
-char camera_present[] = "supported=1 detected=1";
-printf("strstr: %s \n", strstr(&cmdbuffer1,camera_present));
-camera = (strstr(&cmdbuffer1,camera_present) != NULL) ? ON: OFF;
-printf("Camera result:%s camera: %d \n", &cmdbuffer1, camera);
-pclose(file4);
-		
-#ifdef DEBUG_LOGGING
-printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n",i2c_bus0, i2c_bus1, i2c_bus3, camera);
-#endif	
-	
-if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF))
-{
-	
-sim_mode = TRUE;
 
-printf("Simulated telemetry mode!\n");
-	
-srand(time(0)); 
-	
-axis[0] = rnd_float(-0.2, 0.2);
-if (axis[0] == 0)
-	axis[0] = rnd_float(-0.2, 0.2);
-axis[1] = rnd_float(-0.2, 0.2);
-axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0: -1.0;
+  // test i2c buses	
+  i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
+  i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
+  i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
 
-angle[0] = (float) atan(axis[1] / axis[2]);
-angle[1] = (float) atan(axis[2] / axis[0]);
-angle[2] = (float) atan(axis[1] / axis[0]);
+  // check for camera	
+  char cmdbuffer1[1000];
+  FILE * file4 = popen("vcgencmd get_camera", "r");
+  fgets(cmdbuffer1, 1000, file4);
+  char camera_present[] = "supported=1 detected=1";
+  printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+  camera = (strstr( & cmdbuffer1, camera_present) != NULL) ? ON : OFF;
+  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  pclose(file4);
 
-volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);	
-volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
-volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
-	
-float amps_avg = rnd_float (150, 300);
+  #ifdef DEBUG_LOGGING
+  printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
+  #endif
 
-amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);	
-amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
-amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
-	
-batt = rnd_float(3.8, 4.3);
-speed = rnd_float(1.0, 2.5);
-eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
-period = rnd_float(150, 300);
-tempS = rnd_float(20, 55);
-temp_max = rnd_float(50, 70);
-temp_min = rnd_float(10,20);
+  if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF)) {
 
-#ifdef DEBUG_LOGGING	
-for(int i=0; i < 3; i++)
-	printf("axis: %f angle: %f v: %f i: %f \n",axis[i], angle[i], volts_max[i], amps_max[i]);
-printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
-#endif
-	
- time_start = millis();
-	
- eclipse_time = millis()/1000.0;	 
- if (eclipse == 0)
-	  eclipse_time -= period/2;  // if starting in eclipse, shorten interval	
-}
-	
+    sim_mode = TRUE;
+
+    printf("Simulated telemetry mode!\n");
+
+    srand(time(0));
+
+    axis[0] = rnd_float(-0.2, 0.2);
+    if (axis[0] == 0)
+      axis[0] = rnd_float(-0.2, 0.2);
+    axis[1] = rnd_float(-0.2, 0.2);
+    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+
+    angle[0] = (float) atan(axis[1] / axis[2]);
+    angle[1] = (float) atan(axis[2] / axis[0]);
+    angle[2] = (float) atan(axis[1] / axis[0]);
+
+    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
+    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
+    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+
+    float amps_avg = rnd_float(150, 300);
+
+    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
+    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
+    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+
+    batt = rnd_float(3.8, 4.3);
+    speed = rnd_float(1.0, 2.5);
+    eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
+    period = rnd_float(150, 300);
+    tempS = rnd_float(20, 55);
+    temp_max = rnd_float(50, 70);
+    temp_min = rnd_float(10, 20);
+
+    #ifdef DEBUG_LOGGING
+    for (int i = 0; i < 3; i++)
+      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+    printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+    #endif
+
+    time_start = millis();
+
+    eclipse_time = millis() / 1000.0;
+    if (eclipse == 0)
+      eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
+  }
+
   int ret;
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
 
   if (mode == AFSK)
-	  sleep(10); // delay awaiting CW ID completion
-	
-   if (transmit == FALSE)
-   {
-	   
-	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-   }
+    sleep(10); // delay awaiting CW ID completion
 
-for(int i=0; i < 9; i++)		
-{
-	voltage_min[i] = 1000.0;
-	current_min[i] = 1000.0;
-	voltage_max[i] = -1000.0;
-	current_max[i] = -1000.0;
-}
-for(int i=0; i < 17; i++)		
-{
-	sensor_min[i] = 1000.0;
-	sensor_max[i] = -1000.0;
-	printf("Sensor min and max initialized!");
-}
-for(int i=0; i < 3; i++)		
-{
-	other_min[i] = 1000.0;
-	other_max[i] = -1000.0;
-}	
-	
-while (loop-- != 0)
-  {
-   frames_sent++;
+  if (transmit == FALSE) {
 
-   #ifdef DEBUG_LOGGING
-      fprintf(stderr,"INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
-   #endif	 
-   if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-   {
-	fprintf(stderr,"Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
-  	digitalWrite (txLed, txLedOff);
-        digitalWrite (onLed, onLedOff);
-        sleep(1);
-        digitalWrite (onLed, onLedOn);
-        sleep(1);
-        digitalWrite (onLed, onLedOff);
-        sleep(1);
-        digitalWrite (onLed, onLedOn);
-        sleep(1);
-        digitalWrite (onLed, onLedOff);
-  
-	popen("sudo shutdown -h now > /dev/null 2>&1", "r"); 
-	sleep(10);
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
-			  
-  if (mode == FSK) {	
-    bitRate = 200;
-    rsFrames = 1;
-    payloads = 1;
-    rsFrameLen = 64;
-    headerLen = 6;
-    dataLen = 58;
-    syncBits = 10;
-    syncWord = 0b0011111010;
-    parityLen = 32;
-    amplitude = 32767/3;
-    samples = S_RATE/bitRate;
-    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
-   sleepTime = 0.1;
-
-    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n", 
-	   bufLen/(samples * frameCnt), bitRate, samplePeriod);
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
   }
-  else if (mode == BPSK) {
-    bitRate = 1200;
-    rsFrames = 3;
-    payloads = 6;
-    rsFrameLen = 159;
-    headerLen = 8;
-    dataLen = 78;
-    syncBits = 31;
-    syncWord = 0b1000111110011010010000101011101;
-    parityLen = 32;
-    amplitude = 32767;
-    samples = S_RATE/bitRate;
-    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-
-//   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
-//    samplePeriod = 3000;
-//    sleepTime = 3.0;
-    samplePeriod = 2200;  // reduce dut to python and sensor querying delays
-    sleepTime = 2.2;
-
-    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n", 
-	   bufLen, bufLen/(samples * frameCnt), bitRate, bufLen/(samples * frameCnt * bitRate), samplePeriod);
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+    printf("Sensor min and max initialized!");
   }
-	 
-  //  sleep(1);  // Delay 1 second
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
+  }
+
+  while (loop-- != 0) {
+    frames_sent++;
+
+    #ifdef DEBUG_LOGGING
+    fprintf(stderr, "INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
+    #endif
+    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+    {
+      fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
+      digitalWrite(txLed, txLedOff);
+      digitalWrite(onLed, onLedOff);
+      sleep(1);
+      digitalWrite(onLed, onLedOn);
+      sleep(1);
+      digitalWrite(onLed, onLedOff);
+      sleep(1);
+      digitalWrite(onLed, onLedOn);
+      sleep(1);
+      digitalWrite(onLed, onLedOff);
+
+      popen("sudo shutdown -h now > /dev/null 2>&1", "r");
+      sleep(10);
+    }
+
+    if (mode == FSK) {
+      bitRate = 200;
+      rsFrames = 1;
+      payloads = 1;
+      rsFrameLen = 64;
+      headerLen = 6;
+      dataLen = 58;
+      syncBits = 10;
+      syncWord = 0b0011111010;
+      parityLen = 32;
+      amplitude = 32767 / 3;
+      samples = S_RATE / bitRate;
+      bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+
+      samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500;
+      sleepTime = 0.1;
+
+      printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n",
+        bufLen / (samples * frameCnt), bitRate, samplePeriod);
+    } else if (mode == BPSK) {
+      bitRate = 1200;
+      rsFrames = 3;
+      payloads = 6;
+      rsFrameLen = 159;
+      headerLen = 8;
+      dataLen = 78;
+      syncBits = 31;
+      syncWord = 0b1000111110011010010000101011101;
+      parityLen = 32;
+      amplitude = 32767;
+      samples = S_RATE / bitRate;
+      bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+
+      //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+      //    samplePeriod = 3000;
+      //    sleepTime = 3.0;
+      samplePeriod = 2200; // reduce dut to python and sensor querying delays
+      sleepTime = 2.2;
+
+      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
+        bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
+    }
+
+    //  sleep(1);  // Delay 1 second
     ctr = 0;
     #ifdef DEBUG_LOGGING
-      fprintf(stderr,"INFO: Getting TLM Data\n");
+    fprintf(stderr, "INFO: Getting TLM Data\n");
     #endif
-	  	  
-    if ((mode == AFSK) || (mode == CW))
-    {
-       get_tlm();
-    }
-    else // FSK or BPSK
+
+    if ((mode == AFSK) || (mode == CW)) {
+      get_tlm();
+    } else // FSK or BPSK
     {
       get_tlm_fox();
     }
 
     #ifdef DEBUG_LOGGING
-      fprintf(stderr,"INFO: Getting ready to send\n");
-    #endif	     
- }
+    fprintf(stderr, "INFO: Getting ready to send\n");
+    #endif
+  }
 
-  if (mode == BPSK)
-  {
-	digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-	printf("Sleeping to allow BPSK transmission to finish.\n");
-	sleep(loop_count * 5);
-	printf("Done sleeping\n");
-	digitalWrite (txLed, txLedOff);  
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
+  if (mode == BPSK) {
+    digitalWrite(txLed, txLedOn);
+    #ifdef DEBUG_LOGGING
+    printf("Tx LED On\n");
+    #endif
+    printf("Sleeping to allow BPSK transmission to finish.\n");
+    sleep(loop_count * 5);
+    printf("Done sleeping\n");
+    digitalWrite(txLed, txLedOff);
+    #ifdef DEBUG_LOGGING
+    printf("Tx LED Off\n");
+    #endif
+  } else if (mode == FSK) {
+    printf("Sleeping to allow FSK transmission to finish.\n");
+    sleep(loop_count);
+    printf("Done sleeping\n");
   }
-  else if (mode == FSK)
-  {
-	printf("Sleeping to allow FSK transmission to finish.\n");
-	sleep(loop_count);
-	printf("Done sleeping\n");
-  }
-	
+
   return 0;
 }
 
@@ -645,1167 +599,1079 @@ while (loop-- != 0)
 //
 int lower_digit(int number) {
 
-	int digit = 0;
-	if (number < 100) 
-		digit = number - ((int)(number/10) * 10);
-	else
-		fprintf(stderr,"ERROR: Not a digit in lower_digit!\n");
-	return digit;
+  int digit = 0;
+  if (number < 100)
+    digit = number - ((int)(number / 10) * 10);
+  else
+    fprintf(stderr, "ERROR: Not a digit in lower_digit!\n");
+  return digit;
 }
 
 // Returns upper digit of a number which must be less than 99
 //
 int upper_digit(int number) {
 
-	int digit = 0;
-	if (number < 100) 
-		
-		digit = (int)(number/10);
-	else
-		fprintf(stderr,"ERROR: Not a digit in upper_digit!\n");
-	return digit;
+  int digit = 0;
+  if (number < 100)
+
+    digit = (int)(number / 10);
+  else
+    fprintf(stderr, "ERROR: Not a digit in upper_digit!\n");
+  return digit;
 }
 
 static int init_rf() {
-    int ret;
-    fprintf(stderr,"Initializing AX5043\n");
+  int ret;
+  fprintf(stderr, "Initializing AX5043\n");
 
-    ret = ax5043_init(&hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
-    if (ret != PQWS_SUCCESS) {
-        fprintf(stderr,
-                "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
- //       exit(EXIT_FAILURE);
-        return(0);
-    }
-    return(1);
+  ret = ax5043_init( & hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
+  if (ret != PQWS_SUCCESS) {
+    fprintf(stderr,
+      "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
+    //       exit(EXIT_FAILURE);
+    return (0);
+  }
+  return (1);
 }
 
 int get_tlm(void) {
 
-      FILE* txResult;
+  FILE * txResult;
 
-for (int j = 0; j < frameCnt; j++)	
-{	
-   digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-  int tlm[7][5];
-  memset(tlm, 0, sizeof tlm);
-	
-//  Reading I2C voltage and current sensors
-	
-   int count1;
-   char *token;
-   char cmdbuffer[1000];
-	
-     FILE* file = popen(pythonStr, "r");
-     fgets(cmdbuffer, 1000, file);
-//   printf("result: %s\n", cmdbuffer);
-     pclose(file);
-	
+  for (int j = 0; j < frameCnt; j++) {
+    digitalWrite(txLed, txLedOn);
+    #ifdef DEBUG_LOGGING
+    printf("Tx LED On\n");
+    #endif
+    int tlm[7][5];
+    memset(tlm, 0, sizeof tlm);
+
+    //  Reading I2C voltage and current sensors
+
+    int count1;
+    char * token;
+    char cmdbuffer[1000];
+
+    FILE * file = popen(pythonStr, "r");
+    fgets(cmdbuffer, 1000, file);
+    //   printf("result: %s\n", cmdbuffer);
+    pclose(file);
+
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-    float voltage[9], current[9];	
-	
+    float voltage[9], current[9];
+
     memset(voltage, 0, sizeof(voltage));
-    memset(current, 0, sizeof(current));	 
-	  
-    for (count1 = 0; count1 < 8; count1++)
-    {
-	    if (token != NULL)
-	    {
-	        voltage[count1] = atof(token);				      
-    #ifdef DEBUG_LOGGING
-//		 printf("voltage: %f ", voltage[count1]);
-    #endif
-		token = strtok(NULL, space);	
-	    	if (token != NULL)
-	    	{
-	            current[count1] = atof(token);
-		    if ((current[count1] < 0) && (current[count1] > -0.5))
-			 current[count1] *= (-1.0);			
-    #ifdef DEBUG_LOGGING
-//		    printf("current: %f\n", current[count1]);
-    #endif
-		    token = strtok(NULL, space);	
-		}
-	  }
-    }	
-	
- batteryVoltage = voltage[map[BAT]];
-	
- double cpuTemp;
-	
-  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-  if (cpuTempSensor) {
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
-	  
-    #ifdef DEBUG_LOGGING
+    memset(current, 0, sizeof(current));
+
+    for (count1 = 0; count1 < 8; count1++) {
+      if (token != NULL) {
+        voltage[count1] = atof(token);
+        #ifdef DEBUG_LOGGING
+        //		 printf("voltage: %f ", voltage[count1]);
+        #endif
+        token = strtok(NULL, space);
+        if (token != NULL) {
+          current[count1] = atof(token);
+          if ((current[count1] < 0) && (current[count1] > -0.5))
+            current[count1] *= (-1.0);
+          #ifdef DEBUG_LOGGING
+          //		    printf("current: %f\n", current[count1]);
+          #endif
+          token = strtok(NULL, space);
+        }
+      }
+    }
+
+    batteryVoltage = voltage[map[BAT]];
+
+    double cpuTemp;
+
+    FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+    if (cpuTempSensor) {
+      fscanf(cpuTempSensor, "%lf", & cpuTemp);
+      cpuTemp /= 1000;
+
+      #ifdef DEBUG_LOGGING
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
-    #endif
-	  
-  }
-  fclose (cpuTempSensor);
-	
-	
-if (sim_mode) 
-{	
- // simulated telemetry 
-	  
-  double time = (millis() - time_start)/1000.0;	 
-	  
-  if ((time - eclipse_time) > period)
-  {
-	  eclipse = (eclipse == 1) ? 0 : 1;
-	  eclipse_time = time;
-	  printf("\n\nSwitching eclipse mode! \n\n");
-  }
-	  
-/*
-  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
-  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
-  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
-*/
-  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed))  + rnd_float(-2, 2);	  
-  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))  + rnd_float(-2, 2);	  
-  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  + rnd_float(-2, 2);
+      #endif
 
-  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
-  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
-  double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
-	  
-  // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
-	  
-  current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0; 	 
-  current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
-  current[map[PLUS_Y]] = ( Yi >= 0) ? Yi: 0;	 
-  current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0) * Yi);	
-  current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
-  current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
-	  
-  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xv: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_X]] = ( Xv <= -1) ? ((-1.0) * Xv): rnd_float(0.9, 1.1);	 
-  voltage[map[PLUS_Y]] = ( Yv >= 1) ? Yv: rnd_float(0.9, 1.1);	  
-  voltage[map[MINUS_Y]] = ( Yv <= -1) ? ((-1.0) * Yv): rnd_float(0.9, 1.1);	
-  voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
+    }
+    fclose(cpuTempSensor);
 
-  // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+    if (sim_mode) {
+      // simulated telemetry 
 
-  tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
-  cpuTemp = tempS + rnd_float(-1.0, 1.0);
-	 
-  voltage[map[BUS]] = rnd_float(5.0, 5.005);
-  current[map[BUS]] = rnd_float(158, 171);
-	  
-//  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-  float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0)); 
+      double time = (millis() - time_start) / 1000.0;
 
-  current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
-	  
-//  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
-	  
-  batt -= (batt > 3.5) ? current[map[BAT]]/30000: current[map[BAT]]/3000;
-  if (batt < 3.0)
-  {
-	  batt = 3.0;
-	  printf("Safe Mode!\n");
-  }
-  if (batt > 4.5)
-	  batt = 4.5;
-	  
-  voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
-	  
-// end of simulated telemetry	
-}	    
-  tlm[1][A] = (int)(voltage[map[BUS]] /15.0 + 0.5) % 100;  // Current of 5V supply to Pi
-  tlm[1][B] = (int) (99.5 - current[map[PLUS_X]]/10.0) % 100;  // +X current [4]
-  tlm[1][C] = (int) (99.5 - current[map[MINUS_X]]/10.0) % 100;  			// X- current [10] 
-  tlm[1][D] = (int) (99.5 - current[map[PLUS_Y]]/10.0) % 100;  // +Y current [7]
+      if ((time - eclipse_time) > period) {
+        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse_time = time;
+        printf("\n\nSwitching eclipse mode! \n\n");
+      }
 
-  tlm[2][A] = (int) (99.5 - current[map[MINUS_Y]]/10.0) % 100;  			// -Y current [10] 
-  tlm[2][B] = (int) (99.5 - current[map[PLUS_Z]]/10.0) % 100;  // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-  tlm[2][C] = (int) (99.5 - current[map[MINUS_Z]]/10.0) % 100;  			// -Z current (was timestamp)
-  tlm[2][D] = (int)(50.5 + current[map[BAT]]/10.0) % 100;   // NiMH Battery current
-	
-  tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
-  tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100;      // 5V supply to Pi
+      /*
+        double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
+        double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
+        double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
+      */
+      double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 
-  tlm[4][B] = (int)((95.8 - cpuTemp)/1.48 + 0.5) % 100;
+      double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
-  tlm[6][B] = 0 ;
-  tlm[6][D] = 49 + rand() % 3; 
+      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
-  #ifdef DEBUG_LOGGING
-// Display tlm
+      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0) * Xi);
+      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0) * Yi);
+      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0) * Zi);
+
+      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0) * Zv) : rnd_float(0.9, 1.1);
+
+      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0);
+      cpuTemp = tempS + rnd_float(-1.0, 1.0);
+
+      voltage[map[BUS]] = rnd_float(5.0, 5.005);
+      current[map[BUS]] = rnd_float(158, 171);
+
+      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+
+      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+
+      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      if (batt < 3.0) {
+        batt = 3.0;
+        printf("Safe Mode!\n");
+      }
+      if (batt > 4.5)
+        batt = 4.5;
+
+      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+
+      // end of simulated telemetry	
+    }
+    tlm[1][A] = (int)(voltage[map[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
+    tlm[1][B] = (int)(99.5 - current[map[PLUS_X]] / 10.0) % 100; // +X current [4]
+    tlm[1][C] = (int)(99.5 - current[map[MINUS_X]] / 10.0) % 100; // X- current [10] 
+    tlm[1][D] = (int)(99.5 - current[map[PLUS_Y]] / 10.0) % 100; // +Y current [7]
+
+    tlm[2][A] = (int)(99.5 - current[map[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
+    tlm[2][B] = (int)(99.5 - current[map[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+    tlm[2][C] = (int)(99.5 - current[map[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
+    tlm[2][D] = (int)(50.5 + current[map[BAT]] / 10.0) % 100; // NiMH Battery current
+
+    tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
+    tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100; // 5V supply to Pi
+
+    tlm[4][B] = (int)((95.8 - cpuTemp) / 1.48 + 0.5) % 100;
+
+    tlm[6][B] = 0;
+    tlm[6][D] = 49 + rand() % 3;
+
+    #ifdef DEBUG_LOGGING
+    // Display tlm
     int k, j;
     for (k = 1; k < 7; k++) {
       for (j = 1; j < 5; j++) {
-        printf(" %2d ",	tlm[k][j]);
+        printf(" %2d ", tlm[k][j]);
       }
       printf("\n");
-    }	
-  #endif
-	
-  char str[1000];
-  char tlm_str[1000];
-  char header_str[] = "\x03\xf0hi hi ";	
-  char header_str3[] = "echo '";
-  //char header_str2[] = ">CQ:>041440zhi hi ";
-  //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
-  char header_str2[] = ">CQ:";
-  char header_str2b[30]; // for APRS coordinates
-  char header_lat[10];
-  char header_long[10];
-  char header_str4[] = "hi hi ";	
-  char footer_str1[] = "\' > t.txt && echo \'"; 
-  char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
-	
-  if (ax5043)
-  {
-	strcpy(str, header_str);
-  }
-  else
-  {
-    strcpy(str, header_str3);
-    if (mode != CW) 
-    {
-    	strcat(str, call);
-    	strcat(str, header_str2);
-//	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
-	if (latitude > 0)
-	    sprintf(header_lat, "%7.2f%c",latitude * 100.0,'N');  // lat
-	else
-	    sprintf(header_lat, "%7.2f%c",latitude * (-100.0),'S');  // lat
-	if (longitude > 0)
-	    sprintf(header_long, "%08.2f%c",longitude * 100.0,'E');  // long
-	else
-	    sprintf(header_long, "%08.2f%c",longitude * (-100.0),'W');  // long
-
-	sprintf(header_str2b, "=%s%c%c%sShi hi ",header_lat,0x5c,0x5c,header_long);  // add APRS lat and long	    
-	printf("\n\nString is %s \n\n", header_str2b);
-	strcat(str, header_str2b);
-    } else
-    {
-	strcat(str, header_str4);
     }
-  }
- 
+    #endif
+
+    char str[1000];
+    char tlm_str[1000];
+    char header_str[] = "\x03\xf0hi hi ";
+    char header_str3[] = "echo '";
+    //char header_str2[] = ">CQ:>041440zhi hi ";
+    //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
+    char header_str2[] = ">CQ:";
+    char header_str2b[30]; // for APRS coordinates
+    char header_lat[10];
+    char header_long[10];
+    char header_str4[] = "hi hi ";
+    char footer_str1[] = "\' > t.txt && echo \'";
+    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
+
+    if (ax5043) {
+      strcpy(str, header_str);
+    } else {
+      strcpy(str, header_str3);
+      if (mode != CW) {
+        strcat(str, call);
+        strcat(str, header_str2);
+        //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
+        if (latitude > 0)
+          sprintf(header_lat, "%7.2f%c", latitude * 100.0, 'N'); // lat
+        else
+          sprintf(header_lat, "%7.2f%c", latitude * (-100.0), 'S'); // lat
+        if (longitude > 0)
+          sprintf(header_long, "%08.2f%c", longitude * 100.0, 'E'); // long
+        else
+          sprintf(header_long, "%08.2f%c", longitude * (-100.0), 'W'); // long
+
+        sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
+        printf("\n\nString is %s \n\n", header_str2b);
+        strcat(str, header_str2b);
+      } else {
+        strcat(str, header_str4);
+      }
+    }
+
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ", 
+      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
-        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]), 
-        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]), 
+        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
+        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-//        printf("%s",tlm_str);
-        strcat(str, tlm_str);
+      //        printf("%s",tlm_str);
+      strcat(str, tlm_str);
     }
-// CW
-	
-  char cw_str2[500];
-  char cw_header2[] = "echo '";
-  char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+    // CW
 
-  strcpy(cw_str2, cw_header2);
-//printf("Before 1st strcpy\n");
-  strcat(cw_str2, str);
-//printf("Before 1st strcpy\n");
-  strcat(cw_str2, cw_footer2);
-//printf("Before 1st strcpy\n");
-	
-// read payload sensor if available
-	
-char sensor_payload[500];
-	
-if (payload == ON)
-{
-     char c;
-     int charss = serialDataAvail (uart_fd);
-     if (charss != 0)
-	  printf("Clearing buffer of %d chars \n", charss);
-     while ((charss-- > 0))
-          c = serialGetchar (uart_fd);  // clear buffer
-	
-     unsigned int waitTime;
-     int i = 0;
+    char cw_str2[500];
+    char cw_header2[] = "echo '";
+    char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
 
-     serialPutchar (uart_fd, '?');
-     printf("Querying payload with ?\n");
-     waitTime = millis() + 500;
-     int end = FALSE;
-     while ((millis() < waitTime) && !end) 
-     { 
-	int chars = serialDataAvail (uart_fd);
-        while ((chars-- > 0) && !end)
-        {
-          c = serialGetchar (uart_fd);
-//	  printf ("%c", c);
-//	  fflush(stdout);
-	  if (c != '\n')
-	  {
-	  	sensor_payload[i++] = c;
-	  }
-	  else
-	  {
-		  end = TRUE;
-	  }
+    strcpy(cw_str2, cw_header2);
+    //printf("Before 1st strcpy\n");
+    strcat(cw_str2, str);
+    //printf("Before 1st strcpy\n");
+    strcat(cw_str2, cw_footer2);
+    //printf("Before 1st strcpy\n");
+
+    // read payload sensor if available
+
+    char sensor_payload[500];
+
+    if (payload == ON) {
+      char c;
+      int charss = serialDataAvail(uart_fd);
+      if (charss != 0)
+        printf("Clearing buffer of %d chars \n", charss);
+      while ((charss--> 0))
+        c = serialGetchar(uart_fd); // clear buffer
+
+      unsigned int waitTime;
+      int i = 0;
+
+      serialPutchar(uart_fd, '?');
+      printf("Querying payload with ?\n");
+      waitTime = millis() + 500;
+      int end = FALSE;
+      while ((millis() < waitTime) && !end) {
+        int chars = serialDataAvail(uart_fd);
+        while ((chars--> 0) && !end) {
+          c = serialGetchar(uart_fd);
+          //	  printf ("%c", c);
+          //	  fflush(stdout);
+          if (c != '\n') {
+            sensor_payload[i++] = c;
+          } else {
+            end = TRUE;
+          }
         }
+      }
+      //    sensor_payload[i++] = '\n';
+      sensor_payload[i] = '\0';
+      printf("Payload string: %s", sensor_payload);
+
+      strcat(str, sensor_payload); // append to telemetry string for transmission
     }
-//    sensor_payload[i++] = '\n';
-    sensor_payload[i] = '\0';
-    printf("Payload string: %s", sensor_payload);
-    
-    strcat(str, sensor_payload);  // append to telemetry string for transmission
-}
 
-  digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-  if (mode == CW)
-	system(cw_str2);
-  digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-	
-  if (ax5043)
-  {
-    	digitalWrite (txLed, txLedOn); 
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-	fprintf(stderr,"INFO: Transmitting X.25 packet using AX5043\n");
-        memcpy(data, str, strnlen(str, 256));
-        int ret = ax25_tx_frame(&hax25, &hax5043, data, strnlen(str, 256));
-        if (ret) {
-            fprintf(stderr,
-                    "ERROR: Failed to transmit AX.25 frame with error code %d\n",
-                    ret);
-            exit(EXIT_FAILURE);
-        }
-        ax5043_wait_for_transmit();
-    	digitalWrite (txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
+    digitalWrite(txLed, txLedOn);
+    #ifdef DEBUG_LOGGING
+    printf("Tx LED On\n");
+    #endif
+    if (mode == CW)
+      system(cw_str2);
+    digitalWrite(txLed, txLedOn);
+    #ifdef DEBUG_LOGGING
+    printf("Tx LED On\n");
+    #endif
 
-        if (ret) {
-            fprintf(stderr,
-                    "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
-                    ret);
-            exit(EXIT_FAILURE);
-	}
-        sleep(2);
+    if (ax5043) {
+      digitalWrite(txLed, txLedOn);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED On\n");
+      #endif
+      fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
+      memcpy(data, str, strnlen(str, 256));
+      int ret = ax25_tx_frame( & hax25, & hax5043, data, strnlen(str, 256));
+      if (ret) {
+        fprintf(stderr,
+          "ERROR: Failed to transmit AX.25 frame with error code %d\n",
+          ret);
+        exit(EXIT_FAILURE);
+      }
+      ax5043_wait_for_transmit();
+      digitalWrite(txLed, txLedOff);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED Off\n");
+      #endif
+
+      if (ret) {
+        fprintf(stderr,
+          "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
+          ret);
+        exit(EXIT_FAILURE);
+      }
+      sleep(2);
+    } else {
+      strcat(str, footer_str1);
+      strcat(str, call);
+      strcat(str, footer_str);
+      fprintf(stderr, "String to execute: %s\n", str);
+      if (transmit) {
+        FILE * file2 = popen(str, "r");
+        pclose(file2);
+      } else {
+        fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+        fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+      }
+      digitalWrite(txLed, txLedOff);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED Off\n");
+      #endif
+      sleep(3);
+      digitalWrite(txLed, txLedOn);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED On\n");
+      #endif
+    }
+
   }
-  else
-  {
-     	  strcat(str, footer_str1);
-     	  strcat(str, call);
-	  strcat(str,footer_str);
-	  fprintf(stderr, "String to execute: %s\n", str);
-	  if (transmit)
-	  {
-	  	FILE* file2 = popen(str, "r"); 
-      	  	pclose(file2);
-	  }
-	  else
-   	  {
-		fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-		fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-   	  }
-    	  digitalWrite (txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
-	  sleep(3);
-   	  digitalWrite (txLed, txLedOn);	  
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
-  }
- 
-}
-	
-digitalWrite (txLed, txLedOff);
-#ifdef DEBUG_LOGGING
-printf("Tx LED Off\n");
-#endif
 
-return;
+  digitalWrite(txLed, txLedOff);
+  #ifdef DEBUG_LOGGING
+  printf("Tx LED Off\n");
+  #endif
+
+  return;
 }
 
 int get_tlm_fox() {
-	
-//  Reading I2C voltage and current sensors
-	
-   FILE* uptime_file = fopen("/proc/uptime", "r");
-    fscanf(uptime_file, "%f", &uptime_sec);
-    uptime = (int) uptime_sec;
+
+  //  Reading I2C voltage and current sensors
+
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  uptime = (int) uptime_sec;
   #ifdef DEBUG_LOGGING
-    printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+  printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
   #endif
-    fclose(uptime_file);
-	
-	int i;
-//	long int sync = SYNC_WORD;
-	long int sync = syncWord;
+  fclose(uptime_file);
 
-	smaller = S_RATE/(2 * freq_Hz);
+  int i;
+  //	long int sync = SYNC_WORD;
+  long int sync = syncWord;
 
-//	short int b[DATA_LEN];
-	short int b[dataLen];
-	memset(b, 0, sizeof(b));
+  smaller = S_RATE / (2 * freq_Hz);
 
-//	short int h[HEADER_LEN];
-	short int h[headerLen];
-	memset(h, 0, sizeof(h));
-		
-        memset(buffer, 0xa5, sizeof(buffer));
-	
-//	short int b10[DATA_LEN], h10[HEADER_LEN];
-//	short int rs_frame[RS_FRAMES][223];
-//	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
-//	short int b10[dataLen], h10[headerLen];
-	short int rs_frame[rsFrames][223];
-	unsigned char parities[rsFrames][parityLen], inputByte;
+  //	short int b[DATA_LEN];
+  short int b[dataLen];
+  memset(b, 0, sizeof(b));
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0; 
+  //	short int h[HEADER_LEN];
+  short int h[headerLen];
+  memset(h, 0, sizeof(h));
+
+  memset(buffer, 0xa5, sizeof(buffer));
+
+  //	short int b10[DATA_LEN], h10[HEADER_LEN];
+  //	short int rs_frame[RS_FRAMES][223];
+  //	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
+  //	short int b10[dataLen], h10[headerLen];
+  short int rs_frame[rsFrames][223];
+  unsigned char parities[rsFrames][parityLen], inputByte;
+
+  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0;
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
-  int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048; 
+  int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
-  int head_offset = 0; 	
-//  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
-//  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
-  int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048;  // XAxisAngularVelocity Y and Z set to 0
+  int head_offset = 0;
+  //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
+  //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
+  int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0, temp = 0, spin = 0;;
-  float  xAccel = 0.0, yAccel = 0.0, zAccel = 0.0; 
+  float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
   float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
-  float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;	
+  float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
-	
+
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = sizeof(buffer_test);
-	
+
   if (mode == FSK)
     id = 7;
   else
-    id = 0;  // 99 in h[6]
+    id = 0; // 99 in h[6]
 
-//  for (int frames = 0; frames < FRAME_CNT; frames++) 
-  for (int frames = 0; frames < frameCnt; frames++) 
-  {
+  //  for (int frames = 0; frames < FRAME_CNT; frames++) 
+  for (int frames = 0; frames < frameCnt; frames++) {
 
-if (firstTime != ON)
- {
-// delay for sample period
-  digitalWrite (txLed, txLedOn);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED On\n");
-  #endif
+    if (firstTime != ON) {
+      // delay for sample period
+      digitalWrite(txLed, txLedOn);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED On\n");
+      #endif
 
-    while ((millis() - sampleTime) < samplePeriod)
+      while ((millis() - sampleTime) < samplePeriod)
         sleep(sleepTime);
-  
-  digitalWrite (txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-	printf("Tx LED Off\n");
-  #endif
 
-    printf("Sample period: %d\n",millis() - sampleTime);
-    sampleTime = millis();
-  }  else
-	printf("first time - no sleep\n");
+      digitalWrite(txLed, txLedOff);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED Off\n");
+      #endif
 
-   int count1;
-   char *token;
-   char cmdbuffer[1000];
-	
-    FILE* file = popen(pythonStr, "r");
+      printf("Sample period: %d\n", millis() - sampleTime);
+      sampleTime = millis();
+    } else
+      printf("first time - no sleep\n");
+
+    int count1;
+    char * token;
+    char cmdbuffer[1000];
+
+    FILE * file = popen(pythonStr, "r");
     fgets(cmdbuffer, 1000, file);
-//  printf("result: %s\n", cmdbuffer);
+    //  printf("result: %s\n", cmdbuffer);
     pclose(file);
-	
+
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-    float voltage[9], current[9], sensor[17], other[3];	
+    float voltage[9], current[9], sensor[17], other[3];
     memset(voltage, 0, sizeof(voltage));
-    memset(current, 0, sizeof(current));	 
+    memset(current, 0, sizeof(current));
     memset(sensor, 0, sizeof(sensor));
     memset(other, 0, sizeof(other));
-	  
-    for (count1 = 0; count1 < 8; count1++)
-  	{
-	    if (token != NULL)
-	    {
-	        voltage[count1] = atof(token);				      
-    #ifdef DEBUG_LOGGING
-//		printf("voltage: %f ", voltage[count1]);
-    #endif
-		token = strtok(NULL, space);	
-	    	if (token != NULL)
-	    	{
-	            current[count1] = atof(token);
-		    if ((current[count1] < 0) && (current[count1] > -0.5))
-			 current[count1] *= (-1.0);     
-     #ifdef DEBUG_LOGGING
-//		 printf("current: %f\n", current[count1]);
-     #endif
-		    token = strtok(NULL, space);	
-		}
-	    }
-  	}	  
-	  
-//	 printf("\n"); 	  
-	 	  
-	  
-   batteryVoltage = voltage[map[BAT]];
-   if (batteryVoltage < 3.5)
-   {
-	   NormalModeFailure = 1;
-	   printf("Safe Mode!\n");
-   }
-   else
-	   NormalModeFailure = 0;
-	  
-  FILE *cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-  if (cpuTempSensor) {
-		double cpuTemp;
-		fscanf (cpuTempSensor, "%lf", &cpuTemp);
-		cpuTemp /= 1000;
-	  
-    #ifdef DEBUG_LOGGING
-      printf("CPU Temp Read: %6.1f\n", cpuTemp);
-    #endif
-	  
-    other[IHU_TEMP] = cpuTemp;
-	  
-//    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-   }	  
-   fclose(cpuTempSensor);
-	  
-char sensor_payload[500];
-	
-if (payload == ON)
-{
-     STEMBoardFailure = 0;
-	
-     char c;
-     int charss = serialDataAvail (uart_fd);
-     if (charss != 0)
-	  printf("Clearing buffer of %d chars \n", charss);
-     while ((charss-- > 0))
-          c = serialGetchar (uart_fd);  // clear buffer
-	
-     unsigned int waitTime;
-     int i = 0;	
-     serialPutchar (uart_fd, '?');
-     printf("Querying payload with ?\n");
-     waitTime = millis() + 500;
-     int end = FALSE;
-//     int retry = FALSE;
-     while ((millis() < waitTime) && !end) 
-     { 
-	int chars = serialDataAvail (uart_fd);
-        while ((chars-- > 0) && !end)
-        {
-          c = serialGetchar (uart_fd);
-//	  printf ("%c", c);
-//	  fflush(stdout);
-	  if (c != '\n')
-	  {
-	  	sensor_payload[i++] = c;
-	  }
-	  else
-	  {
-		 end = TRUE;
-	  }
+
+    for (count1 = 0; count1 < 8; count1++) {
+      if (token != NULL) {
+        voltage[count1] = atof(token);
+        #ifdef DEBUG_LOGGING
+        //		printf("voltage: %f ", voltage[count1]);
+        #endif
+        token = strtok(NULL, space);
+        if (token != NULL) {
+          current[count1] = atof(token);
+          if ((current[count1] < 0) && (current[count1] > -0.5))
+            current[count1] *= (-1.0);
+          #ifdef DEBUG_LOGGING
+          //		 printf("current: %f\n", current[count1]);
+          #endif
+          token = strtok(NULL, space);
         }
+      }
     }
-    sensor_payload[i++] = ' ';
-//    sensor_payload[i++] = '\n';
-    sensor_payload[i] = '\0';
-    printf("Payload string: %s \n", sensor_payload);
 
-  if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K'))  // only process if valid payload response
-  {	  
-   int count1;
-   char *token;
-//   char cmdbuffer[1000];
-		
-//	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-//    	fgets(cmdbuffer, 1000, file);
-//	printf("result: %s\n", cmdbuffer);
-//    	pclose(file);
-	
-    const char space[2] = " ";
-    token = strtok(sensor_payload, space);
-	for (count1 = 0; count1 < 17; count1++)
-  	{
-	    if (token != NULL)
-	    {
-	        sensor[count1] = atof(token);	
-    #ifdef DEBUG_LOGGING
-		printf("sensor: %f ", sensor[count1]);
-    #endif
-		token = strtok(NULL, space);	
-	    }
-  	}
-	printf("\n");	  
+    //	 printf("\n"); 	  
 
-    }	
+    batteryVoltage = voltage[map[BAT]];
+    if (batteryVoltage < 3.5) {
+      NormalModeFailure = 1;
+      printf("Safe Mode!\n");
+    } else
+      NormalModeFailure = 0;
 
-}	  
+    FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+    if (cpuTempSensor) {
+      double cpuTemp;
+      fscanf(cpuTempSensor, "%lf", & cpuTemp);
+      cpuTemp /= 1000;
 
-if (sim_mode) 
-{	
- // simulated telemetry 
-	  
-  double time = (millis() - time_start)/1000.0;	 
-	  
-  if ((time - eclipse_time) > period)
-  {
-	  eclipse = (eclipse == 1) ? 0 : 1;
-	  eclipse_time = time;
-	  printf("\n\nSwitching eclipse mode! \n\n");
-  }
-	  
-/*
-  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
-  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
-  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
-*/
-  double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed))  + rnd_float(-2, 2);	  
-  double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))  + rnd_float(-2, 2);	  
-  double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  + rnd_float(-2, 2);
+      #ifdef DEBUG_LOGGING
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+      #endif
 
-  double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);	  
-  double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) + rnd_float(-0.2, 0.2);	  
-  double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
-	  
-  // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
-	  
-  current[map[PLUS_X]] = ( Xi >= 0) ? Xi: 0; 	 
-  current[map[MINUS_X]] = ( Xi >= 0) ? 0: ((-1.0) * Xi);	 
-  current[map[PLUS_Y]] = ( Yi >= 0) ? Yi: 0;	 
-  current[map[MINUS_Y]] = ( Yi >= 0) ? 0: ((-1.0) * Yi);	
-  current[map[PLUS_Z]] = ( Zi >= 0) ? Zi: 0;	 
-  current[map[MINUS_Z]] = ( Zi >= 0) ? 0: ((-1.0) * Zi);
-	  
-  voltage[map[PLUS_X]] = ( Xv >= 1) ? Xv: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_X]] = ( Xv <= -1) ? ((-1.0) * Xv): rnd_float(0.9, 1.1);	 
-  voltage[map[PLUS_Y]] = ( Yv >= 1) ? Yv: rnd_float(0.9, 1.1);	  
-  voltage[map[MINUS_Y]] = ( Yv <= -1) ? ((-1.0) * Yv): rnd_float(0.9, 1.1);	
-  voltage[map[PLUS_Z]] = ( Zv >= 1) ? Zv: rnd_float(0.9, 1.1);	 
-  voltage[map[MINUS_Z]] = ( Zv <= -1) ? ((-1.0) * Zv): rnd_float(0.9, 1.1);
+      other[IHU_TEMP] = cpuTemp;
 
-  // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
-
-  tempS += (eclipse > 0) ? ((temp_max - tempS)/50.0): ((temp_min - tempS)/50.0);
-  tempS += + rnd_float(-1.0, 1.0);
-//  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
-  other[IHU_TEMP] = tempS;	
-	 
-  voltage[map[BUS]] = rnd_float(5.0, 5.005);
-  current[map[BUS]] = rnd_float(158, 171);
-	  
-//  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-  float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0)); 
-
-  current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
-	  
-//  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
-	  
-  batt -= (batt > 3.5) ? current[map[BAT]]/30000: current[map[BAT]]/3000;
-  if (batt < 3.0)
-  {
-	  batt = 3.0;
-	  NormalModeFailure = 1;
-	  printf("Safe Mode!\n");
-  }
-  else
-	  NormalModeFailure = 0;
-	
-  if (batt > 4.5)
-	  batt = 4.5;
-	  
-  voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
-	  
-// end of simulated telemetry
-}	
-	  
-    for (count1 = 0; count1 < 8; count1++)
-    {
-	if (voltage[count1] < voltage_min[count1])
-	    voltage_min[count1] = voltage[count1];
-	if (current[count1] < current_min[count1])
-	    current_min[count1] = current[count1];
-
-	if (voltage[count1] > voltage_max[count1])
-	    voltage_max[count1] = voltage[count1];
-	if (current[count1] > current_max[count1])
-	    current_max[count1] = current[count1];
-
-	 printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);   
-    }    
-
- if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K'))
- {	 
-    for (count1 = 0; count1 < 17; count1++)
-    {	    
-	if (sensor[count1] < sensor_min[count1])
-	    sensor_min[count1] = sensor[count1];
-	if (sensor[count1] > sensor_max[count1])
-	    sensor_max[count1] = sensor[count1];
-
-   	printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);   
-    } 
- }	 
-	  
-    for (count1 = 0; count1 < 3; count1++)
-    {	    
-	if (other[count1] < other_min[count1])
-	    other_min[count1] = other[count1];
-	if (other[count1] > other_max[count1])
-	    other_max[count1] = other[count1];
-
-   	printf("Other min %f max %f \n", other_min[count1], other_max[count1]);   
-    }  
-	  
-    if (loop % 8 == 0)
-    { 
-	printf("Sending MIN frame \n");
-	frm_type = 0x03;
-    	for (count1 = 0; count1 < 17; count1++)
-    	{
-	    if (count1 < 3)
-	    	other[count1] = other_min[count1];
-	    if (count1 < 8)
-	    {
-	    	voltage[count1] = voltage_min[count1];
-	    	current[count1] = current_min[count1];
-	    }
-	    if (sensor_min[count1] != 1000.0)	 // make sure values are valid
-	    	sensor[count1] = sensor_min[count1];
-	}	
+      //    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
     }
-    if ((loop + 4) % 8 == 0)
-    { 
-	printf("Sending MAX frame \n");
-	frm_type = 0x02;
-    	for (count1 = 0; count1 < 17; count1++)
-    	{
-	    if (count1 < 3)
-	    	other[count1] = other_max[count1];
-	    if (count1 < 8)
-	    {
-	    	voltage[count1] = voltage_max[count1];
-	    	current[count1] = current_max[count1];
-	    }
-	    if (sensor_max[count1] != -1000.0)	// make sure values are valid
-		sensor[count1] = sensor_max[count1];
-	}	
-    }	  
-	  
-    memset(rs_frame,0,sizeof(rs_frame));
-    memset(parities,0,sizeof(parities));
-	  
-    FILE *uptime_file = fopen("/proc/uptime", "r");
-    fscanf(uptime_file, "%f", &uptime_sec);
+    fclose(cpuTempSensor);
+
+    char sensor_payload[500];
+
+    if (payload == ON) {
+      STEMBoardFailure = 0;
+
+      char c;
+      int charss = serialDataAvail(uart_fd);
+      if (charss != 0)
+        printf("Clearing buffer of %d chars \n", charss);
+      while ((charss--> 0))
+        c = serialGetchar(uart_fd); // clear buffer
+
+      unsigned int waitTime;
+      int i = 0;
+      serialPutchar(uart_fd, '?');
+      printf("Querying payload with ?\n");
+      waitTime = millis() + 500;
+      int end = FALSE;
+      //     int retry = FALSE;
+      while ((millis() < waitTime) && !end) {
+        int chars = serialDataAvail(uart_fd);
+        while ((chars--> 0) && !end) {
+          c = serialGetchar(uart_fd);
+          //	  printf ("%c", c);
+          //	  fflush(stdout);
+          if (c != '\n') {
+            sensor_payload[i++] = c;
+          } else {
+            end = TRUE;
+          }
+        }
+      }
+      sensor_payload[i++] = ' ';
+      //    sensor_payload[i++] = '\n';
+      sensor_payload[i] = '\0';
+      printf("Payload string: %s \n", sensor_payload);
+
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
+      {
+        int count1;
+        char * token;
+        //   char cmdbuffer[1000];
+
+        //	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+        //    	fgets(cmdbuffer, 1000, file);
+        //	printf("result: %s\n", cmdbuffer);
+        //    	pclose(file);
+
+        const char space[2] = " ";
+        token = strtok(sensor_payload, space);
+        for (count1 = 0; count1 < 17; count1++) {
+          if (token != NULL) {
+            sensor[count1] = atof(token);
+            #ifdef DEBUG_LOGGING
+            printf("sensor: %f ", sensor[count1]);
+            #endif
+            token = strtok(NULL, space);
+          }
+        }
+        printf("\n");
+
+      }
+
+    }
+
+    if (sim_mode) {
+      // simulated telemetry 
+
+      double time = (millis() - time_start) / 1000.0;
+
+      if ((time - eclipse_time) > period) {
+        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse_time = time;
+        printf("\n\nSwitching eclipse mode! \n\n");
+      }
+
+      /*
+        double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
+        double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
+        double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
+      */
+      double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+
+      double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+
+      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+
+      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0) * Xi);
+      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0) * Yi);
+      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0) * Zi);
+
+      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0) * Zv) : rnd_float(0.9, 1.1);
+
+      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0);
+      tempS += +rnd_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      other[IHU_TEMP] = tempS;
+
+      voltage[map[BUS]] = rnd_float(5.0, 5.005);
+      current[map[BUS]] = rnd_float(158, 171);
+
+      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+
+      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+
+      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      if (batt < 3.0) {
+        batt = 3.0;
+        NormalModeFailure = 1;
+        printf("Safe Mode!\n");
+      } else
+        NormalModeFailure = 0;
+
+      if (batt > 4.5)
+        batt = 4.5;
+
+      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+
+      // end of simulated telemetry
+    }
+
+    for (count1 = 0; count1 < 8; count1++) {
+      if (voltage[count1] < voltage_min[count1])
+        voltage_min[count1] = voltage[count1];
+      if (current[count1] < current_min[count1])
+        current_min[count1] = current[count1];
+
+      if (voltage[count1] > voltage_max[count1])
+        voltage_max[count1] = voltage[count1];
+      if (current[count1] > current_max[count1])
+        current_max[count1] = current[count1];
+
+      printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+    }
+
+    if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+      for (count1 = 0; count1 < 17; count1++) {
+        if (sensor[count1] < sensor_min[count1])
+          sensor_min[count1] = sensor[count1];
+        if (sensor[count1] > sensor_max[count1])
+          sensor_max[count1] = sensor[count1];
+
+        printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+      }
+    }
+
+    for (count1 = 0; count1 < 3; count1++) {
+      if (other[count1] < other_min[count1])
+        other_min[count1] = other[count1];
+      if (other[count1] > other_max[count1])
+        other_max[count1] = other[count1];
+
+      printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
+    }
+
+    if (loop % 8 == 0) {
+      printf("Sending MIN frame \n");
+      frm_type = 0x03;
+      for (count1 = 0; count1 < 17; count1++) {
+        if (count1 < 3)
+          other[count1] = other_min[count1];
+        if (count1 < 8) {
+          voltage[count1] = voltage_min[count1];
+          current[count1] = current_min[count1];
+        }
+        if (sensor_min[count1] != 1000.0) // make sure values are valid
+          sensor[count1] = sensor_min[count1];
+      }
+    }
+    if ((loop + 4) % 8 == 0) {
+      printf("Sending MAX frame \n");
+      frm_type = 0x02;
+      for (count1 = 0; count1 < 17; count1++) {
+        if (count1 < 3)
+          other[count1] = other_max[count1];
+        if (count1 < 8) {
+          voltage[count1] = voltage_max[count1];
+          current[count1] = current_max[count1];
+        }
+        if (sensor_max[count1] != -1000.0) // make sure values are valid
+          sensor[count1] = sensor_max[count1];
+      }
+    }
+
+    memset(rs_frame, 0, sizeof(rs_frame));
+    memset(parities, 0, sizeof(parities));
+
+    FILE * uptime_file = fopen("/proc/uptime", "r");
+    fscanf(uptime_file, "%f", & uptime_sec);
     uptime = (int) uptime_sec;
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-	  
-    h[0] = (h[0] & 0xf8) | (id & 0x07);  // 3 bits
-//    printf("h[0] %x\n", h[0]);
-    h[0] = (h[0] & 0x07)| ((reset_count & 0x1f) << 3);
-//    printf("h[0] %x\n", h[0]);
+
+    h[0] = (h[0] & 0xf8) | (id & 0x07); // 3 bits
+    //    printf("h[0] %x\n", h[0]);
+    h[0] = (h[0] & 0x07) | ((reset_count & 0x1f) << 3);
+    //    printf("h[0] %x\n", h[0]);
     h[1] = (reset_count >> 5) & 0xff;
-//    printf("h[1] %x\n", h[1]);
+    //    printf("h[1] %x\n", h[1]);
     h[2] = (h[2] & 0xf8) | ((reset_count >> 13) & 0x07);
-//    printf("h[2] %x\n", h[2]);
+    //    printf("h[2] %x\n", h[2]);
     h[2] = (h[2] & 0x0e) | ((uptime & 0x1f) << 3);
-//    printf("h[2] %x\n", h[2]);
+    //    printf("h[2] %x\n", h[2]);
     h[3] = (uptime >> 5) & 0xff;
     h[4] = (uptime >> 13) & 0xff;
     h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
-    h[5] = (h[5] & 0x0f) | (frm_type << 4);  
-	  
+    h[5] = (h[5] & 0x0f) | (frm_type << 4);
+
     if (mode == BPSK)
       h[6] = 99;
-	  	  
-  posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
-  posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
-  posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
-  negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
-  negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
-  negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
 
+    posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
+    posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
+    posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
+    negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
+    negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
+    negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
 
-  posXv = (int)(voltage[map[PLUS_X]] * 100);
-  posYv = (int)(voltage[map[PLUS_Y]] * 100);
-  posZv = (int)(voltage[map[PLUS_Z]] * 100);
-  negXv = (int)(voltage[map[MINUS_X]] * 100);
-  negYv = (int)(voltage[map[MINUS_Y]] * 100);
-  negZv = (int)(voltage[map[MINUS_Z]] * 100);
-	  
-  batt_c_v = (int)(voltage[map[BAT]] * 100);
-	  
-  battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
-  PSUVoltage = (int)(voltage[map[BUS]] * 100);
-  PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;	
-	  
-  if (payload == ON)
-	  STEMBoardFailure = 0;
-	  
-//  if (payload == ON)
-//	  STEMBoardFailure = 0;
-	  
-// read payload sensor if available
-	
+    posXv = (int)(voltage[map[PLUS_X]] * 100);
+    posYv = (int)(voltage[map[PLUS_Y]] * 100);
+    posZv = (int)(voltage[map[PLUS_Z]] * 100);
+    negXv = (int)(voltage[map[MINUS_X]] * 100);
+    negYv = (int)(voltage[map[MINUS_Y]] * 100);
+    negZv = (int)(voltage[map[MINUS_Z]] * 100);
 
+    batt_c_v = (int)(voltage[map[BAT]] * 100);
 
-  encodeA(b, 0 + head_offset, batt_a_v);
-  encodeB(b, 1 + head_offset, batt_b_v);
-  encodeA(b, 3 + head_offset, batt_c_v);
-	  
-//  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
-//  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
-//  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
-	  
-  encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048);	  // Xaccel
-  encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048);	  // Yaccel
-  encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048);	  // Zaccel
-	  
-  encodeA(b, 9 + head_offset, battCurr);
-	
-//  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
-  encodeB(b, 10 + head_offset,(int)(sensor[TEMP] * 10 + 0.5));	// Temp	  
-	  
-  if (mode == FSK)
-  {	  
-  encodeA(b, 12 + head_offset,posXv);  	
-  encodeB(b, 13 + head_offset,negXv);	
-  encodeA(b, 15 + head_offset,posYv);	
-  encodeB(b, 16 + head_offset,negYv);	
-  encodeA(b, 18 + head_offset,posZv);	
-  encodeB(b, 19 + head_offset,negZv);
-	  
-  encodeA(b, 21 + head_offset,posXi);  	
-  encodeB(b, 22 + head_offset,negXi);	
-  encodeA(b, 24 + head_offset,posYi);	
-  encodeB(b, 25 + head_offset,negYi);	
-  encodeA(b, 27 + head_offset,posZi);	
-  encodeB(b, 28 + head_offset,negZi);
-  }
-  else // BPSK
-  {
-  encodeA(b, 12 + head_offset,posXv);  	
-  encodeB(b, 13 + head_offset,posYv);	
-  encodeA(b, 15 + head_offset,posZv);	
-  encodeB(b, 16 + head_offset,negXv);	
-  encodeA(b, 18 + head_offset,negYv);	
-  encodeB(b, 19 + head_offset,negZv);
-	  
-  encodeA(b, 21 + head_offset,posXi);  	
-  encodeB(b, 22 + head_offset,posYi);	
-  encodeA(b, 24 + head_offset,posZi);	
-  encodeB(b, 25 + head_offset,negXi);	
-  encodeA(b, 27 + head_offset,negYi);	
-  encodeB(b, 28 + head_offset,negZi);
-  }	  
-	  
-  encodeA(b, 30 + head_offset,PSUVoltage);
-//  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
-  encodeB(b, 31 + head_offset,(other[SPIN] * 10) + 2048);	
-	  
-//  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
-//  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+    battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
+    PSUVoltage = (int)(voltage[map[BUS]] * 100);
+    PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;
 
-  encodeA(b, 33 + head_offset,(int)(sensor[PRES] + 0.5));  // Pressure
-  encodeB(b, 34 + head_offset,(int)(sensor[ALT] * 10.0 + 0.5));   // Altitude
-	  
-  encodeA(b, 36 + head_offset,  Resets);	  
-//  encodeB(b, 37 + head_offset,  Rssi);	
-  encodeB(b, 37 + head_offset,  (int)(other[RSSI] + 0.5) + 2048);	
-	  
-//  encodeA(b, 39 + head_offset,  IHUcpuTemp);
-  encodeA(b, 39 + head_offset,  (int)(other[IHU_TEMP] * 10 + 0.5));
-	  
-//  encodeB(b, 40 + head_offset,  xAngularVelocity);
-//  encodeA(b, 42 + head_offset,  yAngularVelocity);
-//  encodeB(b, 43 + head_offset,  zAngularVelocity);
+    if (payload == ON)
+      STEMBoardFailure = 0;
 
-  encodeB(b, 40 + head_offset,  (int)(sensor[GYRO_X] + 0.5) + 2048);
-  encodeA(b, 42 + head_offset,  (int)(sensor[GYRO_Y] + 0.5) + 2048);
-  encodeB(b, 43 + head_offset,  (int)(sensor[GYRO_Z] + 0.5) + 2048);
-	  
-	  
+    //  if (payload == ON)
+    //	  STEMBoardFailure = 0;
 
-//  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
-  encodeA(b, 45 + head_offset, (int)(sensor[HUMI] + 0.5));  // in place of sensor1
-	  
-  encodeB(b, 46 + head_offset,PSUCurrent);
-//  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
-//  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
+    // read payload sensor if available
 
-  encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
-  encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
-	  
-// camera = ON;
-	  
-  int status = 	STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 
-	  + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (camera == OFF) * 128  + groundCommandCount * 256;  
-	
-  encodeA(b, 51 + head_offset, status); 
-//  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
-  encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);  
-	 
-  if (txAntennaDeployed == 0)
-  {
-	  txAntennaDeployed = 1;
-	  printf("TX Antenna Deployed!\n");
-  } 
-  	short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
-  	short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)]; 
-	  
-	int ctr1 = 0;
-	int ctr3 = 0;
-	for (i = 0; i < rsFrameLen; i++) 
-	{
-        for (int j  = 0; j < rsFrames ; j++)
-		{
-			if (!((i == (rsFrameLen - 1)) && (j == 2))) // skip last one for BPSK
-			{
-				if (ctr1 < headerLen)
-				{
-             				rs_frame[j][i] = h[ctr1];
-		     			update_rs(parities[j], h[ctr1]);
-      //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
-					data8[ctr1++] = rs_frame[j][i];
-	//				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
-				}
-				else
-				{
-             				rs_frame[j][i] = b[ctr3 % dataLen];
-		     			update_rs(parities[j], b[ctr3 % dataLen]);
-          //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
-          //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
-					data8[ctr1++] = rs_frame[j][i];
-		//			printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
-					ctr3++;
-				}								
-			}
-		}	
-	} 
-		
-    #ifdef DEBUG_LOGGING	    	    
-//	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
-/*
-	  printf("Parities ");
-		for (int m = 0; m < parityLen; m++) {
-		 	printf("%d ", parities[0][m]);
-		}
-		printf("\n");
-*/		
-     #endif
-	  
-  	int ctr2 = 0;    
- 	memset(data10,0,sizeof(data10));  
-	
-    for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
-	{
-				data10[ctr2] = (Encode_8b10b[rd][((int)data8[ctr2])] & 0x3ff);
-				nrd = (Encode_8b10b[rd][((int)data8[ctr2])] >> 10) & 1;
-		//		printf ("data10[%d] = encoded data8[%d] = %x \n",
-		//		 	ctr2, ctr2, data10[ctr2]); 
+    encodeA(b, 0 + head_offset, batt_a_v);
+    encodeB(b, 1 + head_offset, batt_b_v);
+    encodeA(b, 3 + head_offset, batt_c_v);
 
-				rd = nrd; // ^ nrd;
-				ctr2++;
-	}
-    for (i = 0; i < parityLen; i++) 
-	{
-		for (int j  = 0; j < rsFrames; j++)
-		{
-			data10[ctr2++] = (Encode_8b10b[rd][((int)parities[j][i])] & 0x3ff);
-			nrd = (Encode_8b10b[rd][((int)parities[j][i])] >> 10) & 1;
-		//	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
-		//		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
+    //  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
+    //  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
+    //  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
 
-			rd = nrd; 
-		}	
-	}
-    #ifdef DEBUG_LOGGING	    	    
-// 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
+    encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+    encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+    encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
+
+    encodeA(b, 9 + head_offset, battCurr);
+
+    //  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
+    encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
+
+    if (mode == FSK) {
+      encodeA(b, 12 + head_offset, posXv);
+      encodeB(b, 13 + head_offset, negXv);
+      encodeA(b, 15 + head_offset, posYv);
+      encodeB(b, 16 + head_offset, negYv);
+      encodeA(b, 18 + head_offset, posZv);
+      encodeB(b, 19 + head_offset, negZv);
+
+      encodeA(b, 21 + head_offset, posXi);
+      encodeB(b, 22 + head_offset, negXi);
+      encodeA(b, 24 + head_offset, posYi);
+      encodeB(b, 25 + head_offset, negYi);
+      encodeA(b, 27 + head_offset, posZi);
+      encodeB(b, 28 + head_offset, negZi);
+    } else // BPSK
+    {
+      encodeA(b, 12 + head_offset, posXv);
+      encodeB(b, 13 + head_offset, posYv);
+      encodeA(b, 15 + head_offset, posZv);
+      encodeB(b, 16 + head_offset, negXv);
+      encodeA(b, 18 + head_offset, negYv);
+      encodeB(b, 19 + head_offset, negZv);
+
+      encodeA(b, 21 + head_offset, posXi);
+      encodeB(b, 22 + head_offset, posYi);
+      encodeA(b, 24 + head_offset, posZi);
+      encodeB(b, 25 + head_offset, negXi);
+      encodeA(b, 27 + head_offset, negYi);
+      encodeB(b, 28 + head_offset, negZi);
+    }
+
+    encodeA(b, 30 + head_offset, PSUVoltage);
+    //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
+    encodeB(b, 31 + head_offset, (other[SPIN] * 10) + 2048);
+
+    //  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
+    //  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+
+    encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
+    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
+
+    encodeA(b, 36 + head_offset, Resets);
+    //  encodeB(b, 37 + head_offset,  Rssi);	
+    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
+
+    //  encodeA(b, 39 + head_offset,  IHUcpuTemp);
+    encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
+
+    //  encodeB(b, 40 + head_offset,  xAngularVelocity);
+    //  encodeA(b, 42 + head_offset,  yAngularVelocity);
+    //  encodeB(b, 43 + head_offset,  zAngularVelocity);
+
+    encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
+    encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
+    encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
+
+    //  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
+    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] + 0.5)); // in place of sensor1
+
+    encodeB(b, 46 + head_offset, PSUCurrent);
+    //  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
+    //  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
+
+    encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
+    encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
+
+    // camera = ON;
+
+    int status = STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 +
+      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
+
+    encodeA(b, 51 + head_offset, status);
+    //  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
+    encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
+
+    if (txAntennaDeployed == 0) {
+      txAntennaDeployed = 1;
+      printf("TX Antenna Deployed!\n");
+    }
+    short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
+    short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
+
+    int ctr1 = 0;
+    int ctr3 = 0;
+    for (i = 0; i < rsFrameLen; i++) {
+      for (int j = 0; j < rsFrames; j++) {
+        if (!((i == (rsFrameLen - 1)) && (j == 2))) // skip last one for BPSK
+        {
+          if (ctr1 < headerLen) {
+            rs_frame[j][i] = h[ctr1];
+            update_rs(parities[j], h[ctr1]);
+            //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
+            data8[ctr1++] = rs_frame[j][i];
+            //				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
+          } else {
+            rs_frame[j][i] = b[ctr3 % dataLen];
+            update_rs(parities[j], b[ctr3 % dataLen]);
+            //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
+            //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
+            data8[ctr1++] = rs_frame[j][i];
+            //			printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
+            ctr3++;
+          }
+        }
+      }
+    }
+
+    #ifdef DEBUG_LOGGING
+    //	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
+    /*
+    	  printf("Parities ");
+    		for (int m = 0; m < parityLen; m++) {
+    		 	printf("%d ", parities[0][m]);
+    		}
+    		printf("\n");
+    */
     #endif
-	  
+
+    int ctr2 = 0;
+    memset(data10, 0, sizeof(data10));
+
+    for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
+    {
+      data10[ctr2] = (Encode_8b10b[rd][((int) data8[ctr2])] & 0x3ff);
+      nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
+      //		printf ("data10[%d] = encoded data8[%d] = %x \n",
+      //		 	ctr2, ctr2, data10[ctr2]); 
+
+      rd = nrd; // ^ nrd;
+      ctr2++;
+    }
+    for (i = 0; i < parityLen; i++) {
+      for (int j = 0; j < rsFrames; j++) {
+        data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
+        nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
+        //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
+        //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
+
+        rd = nrd;
+      }
+    }
+    #ifdef DEBUG_LOGGING
+    // 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
+    #endif
+
     int data;
     int val;
     int offset = 0;
-	  
-    #ifdef DEBUG_LOGGING	    	    
-//	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
+
+    #ifdef DEBUG_LOGGING
+    //	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
     #endif
-	  
- 	for (i = 1; i <= syncBits * samples; i++)
-	{
-		write_wave(ctr, buffer);	
-//		printf("%d ",ctr);
-		if ( (i % samples) == 0) {
-  			int bit = syncBits - i/samples + 1;
-  			val = sync;
-			data = val & 1 << (bit - 1);	
-		 //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-		 //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
-			if (mode == FSK)
-			{
-				phase = ((data != 0) * 2) - 1; 
-		//		printf("Sending a %d\n", phase);
-			}
-			else
-			{
-				if (data == 0)  {
-					phase *= -1;
-					if ( (ctr - smaller) > 0)
-					{
-						for (int j = 1; j <= smaller; j++)
-				     		buffer[ctr - j] = buffer[ctr - j] * 0.4;
-					}
-					flip_ctr = ctr;
-				}
-			}
-		}
-	}
-    #ifdef DEBUG_LOGGING	    	    
-//	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
+
+    for (i = 1; i <= syncBits * samples; i++) {
+      write_wave(ctr, buffer);
+      //		printf("%d ",ctr);
+      if ((i % samples) == 0) {
+        int bit = syncBits - i / samples + 1;
+        val = sync;
+        data = val & 1 << (bit - 1);
+        //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
+        //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+        if (mode == FSK) {
+          phase = ((data != 0) * 2) - 1;
+          //		printf("Sending a %d\n", phase);
+        } else {
+          if (data == 0) {
+            phase *= -1;
+            if ((ctr - smaller) > 0) {
+              for (int j = 1; j <= smaller; j++)
+                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+            }
+            flip_ctr = ctr;
+          }
+        }
+      }
+    }
+    #ifdef DEBUG_LOGGING
+    //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
     #endif
-	  for (i = 1; 
-	  i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
-	{
-		write_wave(ctr, buffer);
-		if ( (i % samples) == 0) {
-			int symbol = (int)((i - 1)/ (samples * 10));
-			int bit = 10 - (i - symbol * samples * 10) / samples + 1;	
-			val = data10[symbol];
-			data = val & 1 << (bit - 1);	
-	//		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-	//	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-		    if (mode == FSK)
-			{
-				phase = ((data != 0) * 2) - 1; 
-	//			printf("Sending a %d\n", phase);
-			}
-			else
-			{	 
-				if (data == 0)  {
-					phase *= -1;
-					if ( (ctr - smaller) > 0)
-					{
-						for (int j = 1; j <= smaller; j ++)
-				    	 	buffer[ctr - j] = buffer[ctr - j] * 0.4;
-					}
-					flip_ctr = ctr;
-				}
-			}	
-		}
-	 }   
-	}
-    #ifdef DEBUG_LOGGING	    	    
-//	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
-//	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
-    #endif	
+    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+    {
+      write_wave(ctr, buffer);
+      if ((i % samples) == 0) {
+        int symbol = (int)((i - 1) / (samples * 10));
+        int bit = 10 - (i - symbol * samples * 10) / samples + 1;
+        val = data10[symbol];
+        data = val & 1 << (bit - 1);
+        //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
+        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+        if (mode == FSK) {
+          phase = ((data != 0) * 2) - 1;
+          //			printf("Sending a %d\n", phase);
+        } else {
+          if (data == 0) {
+            phase *= -1;
+            if ((ctr - smaller) > 0) {
+              for (int j = 1; j <= smaller; j++)
+                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+            }
+            flip_ctr = ctr;
+          }
+        }
+      }
+    }
+  }
+  #ifdef DEBUG_LOGGING
+  //	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
+  //	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
+  #endif
 
   int error = 0;
   int count;
-//  for (count = 0; count < dataLen; count++) {
-//      printf("%02X", b[count]);
-//  }
-//  printf("\n");
-		
-// socket write
+  //  for (count = 0; count < dataLen; count++) {
+  //      printf("%02X", b[count]);
+  //  }
+  //  printf("\n");
 
-  if (!socket_open && transmit)
-    {
+  // socket write
+
+  if (!socket_open && transmit) {
     printf("Opening socket!\n");
-    struct sockaddr_in address; 
-    int valread; 
-    struct sockaddr_in serv_addr; 
-//    char *hello = "Hello from client"; 
-//    char buffer[1024] = {0}; 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) 
-    { 
-        printf("\n Socket creation error \n"); 
-        error = 1; 
-    } 
-   
-    memset(&serv_addr, '0', sizeof(serv_addr)); 
-   
-    serv_addr.sin_family = AF_INET; 
-    serv_addr.sin_port = htons(PORT); 
-       
+    struct sockaddr_in address;
+    int valread;
+    struct sockaddr_in serv_addr;
+    //    char *hello = "Hello from client"; 
+    //    char buffer[1024] = {0}; 
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+      printf("\n Socket creation error \n");
+      error = 1;
+    }
+
+    memset( & serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+
     // Convert IPv4 and IPv6 addresses from text to binary form 
-    if(inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr)<=0)  
-    { 
-        printf("\nInvalid address/ Address not supported \n"); 
-        error = 1; 
-    } 
-   
-    if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0) 
-    { 
-        printf("\nConnection Failed \n"); 
-	printf("Error: %s \n", strerror(errno));
-        error = 1; 
+    if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+      printf("\nInvalid address/ Address not supported \n");
+      error = 1;
+    }
+
+    if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+      printf("\nConnection Failed \n");
+      printf("Error: %s \n", strerror(errno));
+      error = 1;
     }
     if (error == 1)
-	; //rpitxStatus = -1;
+    ; //rpitxStatus = -1;
     else
-	 socket_open = 1;
-    }
-	
-    if (!error && transmit)
-    {
-//	digitalWrite (0, LOW);
-	printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis()-start);
-	start = millis();
-	int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-	printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
+      socket_open = 1;
+  }
 
- 	if (sock_ret < (ctr * 2 + 2))
-	{
-	       	printf("Not resending\n");
-//	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
-//       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
-	}
+  if (!error && transmit) {
+    //	digitalWrite (0, LOW);
+    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis() - start);
+    start = millis();
+    int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
+    printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
 
-	if (sock_ret == -1)  {
-		printf("Error: %s \n", strerror(errno));
-		socket_open = 0;
-		//rpitxStatus = -1;
-	}
+    if (sock_ret < (ctr * 2 + 2)) {
+      printf("Not resending\n");
+      //	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
+      //       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
     }
-    if (!transmit)
-    {
-	fprintf(stderr,"\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-	fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-    }
-//    digitalWrite (0, HIGH);
-	
-    if (mode == FSK)
-	    firstTime = 0;
-    else if (frames_sent > 0) //5)
-	    firstTime = 0;
 
-return 0;	
+    if (sock_ret == -1) {
+      printf("Error: %s \n", strerror(errno));
+      socket_open = 0;
+      //rpitxStatus = -1;
+    }
+  }
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
+  //    digitalWrite (0, HIGH);
+
+  if (mode == FSK)
+    firstTime = 0;
+  else if (frames_sent > 0) //5)
+    firstTime = 0;
+
+  return 0;
 }
- 
  /*
  * TelemEncoding.h
  *
