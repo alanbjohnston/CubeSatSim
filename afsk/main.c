@@ -138,7 +138,7 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
-float latitude = 39.027702, longitude = -77.078064;
+float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min;
@@ -199,7 +199,7 @@ int main(int argc, char * argv[]) {
     config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   }
 
-  char * cfg_buf[100];
+//  char * cfg_buf[100];
   fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file);
   fclose(config_file);
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file);
@@ -356,11 +356,11 @@ int main(int argc, char * argv[]) {
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {
       char c;
-      int charss = serialDataAvail(uart_fd);
+      int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
       while ((charss--> 0))
-        c = serialGetchar(uart_fd); // clear buffer
+        c = (char) serialGetchar(uart_fd); // clear buffer
 
       unsigned int waitTime;
       int i;
@@ -401,9 +401,9 @@ int main(int argc, char * argv[]) {
   FILE * file4 = popen("vcgencmd get_camera", "r");
   fgets(cmdbuffer1, 1000, file4);
   char camera_present[] = "supported=1 detected=1";
-  printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   camera = (strstr( & cmdbuffer1, camera_present) != NULL) ? ON : OFF;
-  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
   pclose(file4);
 
   #ifdef DEBUG_LOGGING
@@ -416,7 +416,7 @@ int main(int argc, char * argv[]) {
 
     printf("Simulated telemetry mode!\n");
 
-    srand(time(0));
+    srand((unsigned int)time(0));
 
     axis[0] = rnd_float(-0.2, 0.2);
     if (axis[0] == 0)
@@ -452,14 +452,14 @@ int main(int argc, char * argv[]) {
     printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
     #endif
 
-    time_start = millis();
+    time_start = (long int) millis();
 
-    eclipse_time = millis() / 1000.0;
+    eclipse_time = (long int)(millis() / 1000.0);
     if (eclipse == 0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
-  int ret;
+  //int ret;
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
@@ -527,8 +527,8 @@ int main(int argc, char * argv[]) {
       samples = S_RATE / bitRate;
       bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-      samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500;
-      sleepTime = 0.1;
+      samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
+      sleepTime = 0.1f;
 
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, samplePeriod);
@@ -550,7 +550,7 @@ int main(int argc, char * argv[]) {
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
       samplePeriod = 2200; // reduce dut to python and sensor querying delays
-      sleepTime = 2.2;
+      sleepTime = 2.2f;
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
@@ -580,7 +580,7 @@ int main(int argc, char * argv[]) {
     printf("Tx LED On\n");
     #endif
     printf("Sleeping to allow BPSK transmission to finish.\n");
-    sleep(loop_count * 5);
+    sleep((int)(loop_count * 5));
     printf("Done sleeping\n");
     digitalWrite(txLed, txLedOff);
     #ifdef DEBUG_LOGGING
@@ -588,7 +588,7 @@ int main(int argc, char * argv[]) {
     #endif
   } else if (mode == FSK) {
     printf("Sleeping to allow FSK transmission to finish.\n");
-    sleep(loop_count);
+    sleep((int)loop_count);
     printf("Done sleeping\n");
   }
 
@@ -667,15 +667,15 @@ int get_tlm(void) {
 
     for (count1 = 0; count1 < 8; count1++) {
       if (token != NULL) {
-        voltage[count1] = atof(token);
+        voltage[count1] = (float) atof(token);
         #ifdef DEBUG_LOGGING
         //		 printf("voltage: %f ", voltage[count1]);
         #endif
         token = strtok(NULL, space);
         if (token != NULL) {
-          current[count1] = atof(token);
+          current[count1] = (float) atof(token);
           if ((current[count1] < 0) && (current[count1] > -0.5))
-            current[count1] *= (-1.0);
+            current[count1] *= (-1);
           #ifdef DEBUG_LOGGING
           //		    printf("current: %f\n", current[count1]);
           #endif
@@ -703,7 +703,7 @@ int get_tlm(void) {
     if (sim_mode) {
       // simulated telemetry 
 
-      double time = (millis() - time_start) / 1000.0;
+      double time = ((long int) millis() - time_start) / 1000.0;
 
       if ((time - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
@@ -1071,13 +1071,13 @@ int get_tlm_fox() {
 
     for (count1 = 0; count1 < 8; count1++) {
       if (token != NULL) {
-        voltage[count1] = atof(token);
+        voltage[count1] = (float) atof(token);
         #ifdef DEBUG_LOGGING
         //		printf("voltage: %f ", voltage[count1]);
         #endif
         token = strtok(NULL, space);
         if (token != NULL) {
-          current[count1] = atof(token);
+          current[count1] = (float) atof(token);
           if ((current[count1] < 0) && (current[count1] > -0.5))
             current[count1] *= (-1.0);
           #ifdef DEBUG_LOGGING
@@ -1165,7 +1165,7 @@ int get_tlm_fox() {
         token = strtok(sensor_payload, space);
         for (count1 = 0; count1 < 17; count1++) {
           if (token != NULL) {
-            sensor[count1] = atof(token);
+            sensor[count1] = (float) atof(token);
             #ifdef DEBUG_LOGGING
             printf("sensor: %f ", sensor[count1]);
             #endif
@@ -1181,7 +1181,7 @@ int get_tlm_fox() {
     if (sim_mode) {
       // simulated telemetry 
 
-      double time = (millis() - time_start) / 1000.0;
+      double time = ((long int)millis() - time_start) / 1000.0;
 
       if ((time - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
