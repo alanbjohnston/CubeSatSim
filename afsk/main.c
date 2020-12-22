@@ -993,7 +993,7 @@ void get_tlm_fox() {
   //	long int sync = SYNC_WORD;
   long int sync = syncWord;
 
-  smaller = S_RATE / (2 * freq_Hz);
+  smaller = (int) (S_RATE / (2 * freq_Hz));
 
   //	short int b[DATA_LEN];
   short int b[dataLen];
@@ -1030,7 +1030,7 @@ void get_tlm_fox() {
 
   short int buffer_test[bufLen];
   int buffSize;
-  buffSize = sizeof(buffer_test);
+  buffSize = (int) sizeof(buffer_test);
 
   if (mode == FSK)
     id = 7;
@@ -1047,7 +1047,7 @@ void get_tlm_fox() {
       printf("Tx LED On\n");
       #endif
 
-      while ((millis() - sampleTime) < samplePeriod)
+      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 
       digitalWrite(txLed, txLedOff);
@@ -1055,8 +1055,8 @@ void get_tlm_fox() {
       printf("Tx LED Off\n");
       #endif
 
-      printf("Sample period: %d\n", millis() - sampleTime);
-      sampleTime = millis();
+      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
+      sampleTime = (int) millis();
     } else
       printf("first time - no sleep\n");
 
@@ -1128,11 +1128,11 @@ void get_tlm_fox() {
       STEMBoardFailure = 0;
 
       char c;
-      int charss = serialDataAvail(uart_fd);
+      int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
       while ((charss--> 0))
-        c = serialGetchar(uart_fd); // clear buffer
+        c = (char) serialGetchar(uart_fd); // clear buffer
 
       unsigned int waitTime;
       int i = 0;
@@ -1142,9 +1142,9 @@ void get_tlm_fox() {
       int end = FALSE;
       //     int retry = FALSE;
       while ((millis() < waitTime) && !end) {
-        int chars = serialDataAvail(uart_fd);
+        int chars = (char) serialDataAvail(uart_fd);
         while ((chars--> 0) && !end) {
-          c = serialGetchar(uart_fd);
+          c = (char) serialGetchar(uart_fd);
           //	  printf ("%c", c);
           //	  fflush(stdout);
           if (c != '\n') {
@@ -1332,20 +1332,20 @@ void get_tlm_fox() {
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
 
-    h[0] = (h[0] & 0xf8) | (id & 0x07); // 3 bits
+    h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
     //    printf("h[0] %x\n", h[0]);
-    h[0] = (h[0] & 0x07) | ((reset_count & 0x1f) << 3);
+    h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
     //    printf("h[0] %x\n", h[0]);
-    h[1] = (reset_count >> 5) & 0xff;
+    h[1] = (short int) ((reset_count >> 5) & 0xff);
     //    printf("h[1] %x\n", h[1]);
-    h[2] = (h[2] & 0xf8) | ((reset_count >> 13) & 0x07);
+    h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
     //    printf("h[2] %x\n", h[2]);
-    h[2] = (h[2] & 0x0e) | ((uptime & 0x1f) << 3);
+    h[2] = (short int) ((h[2] & 0x0e) | ((uptime & 0x1f) << 3));
     //    printf("h[2] %x\n", h[2]);
-    h[3] = (uptime >> 5) & 0xff;
-    h[4] = (uptime >> 13) & 0xff;
-    h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
-    h[5] = (h[5] & 0x0f) | (frm_type << 4);
+    h[3] = (short int) ((uptime >> 5) & 0xff);
+    h[4] = (short int) ((uptime >> 13) & 0xff);
+    h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
+    h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
 
     if (mode == BPSK)
       h[6] = 99;
