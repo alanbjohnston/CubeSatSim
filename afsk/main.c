@@ -1021,10 +1021,10 @@ void get_tlm_fox() {
   int head_offset = 0;
   //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
   //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
-  int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
+  // int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
   int RXTemperature = 0, temp = 0, spin = 0;;
-  float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
-  float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
+  // float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
+  // float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
   float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
   int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 
@@ -1702,8 +1702,8 @@ void get_tlm_fox() {
 //static int encodeB(short int  *b, int index, int val);
 //static int encodeA(short int  *b, int index, int val);
 
-	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
-	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
+//	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
+//	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
 	
 /*
  * TelemEncoding.c
@@ -1892,13 +1892,13 @@ void write_wave(int i, short int *buffer)
 int encodeA(short int  *b, int index, int val) {
 //    printf("Encoding A\n");
     b[index] = val & 0xff;
-    b[index + 1] = (b[index + 1] & 0xf0) | ((val >> 8) & 0x0f);
+    b[index + 1] = (short int) ((b[index + 1] & 0xf0) | ((val >> 8) & 0x0f));
     return 0;	
 }
 
 int encodeB(short int  *b, int index, int val) {
 //    printf("Encoding B\n");
-    b[index] = (b[index] & 0x0f)  |  ((val << 4) & 0xf0);
+    b[index] =  (short int) ((b[index] & 0x0f)  |  ((val << 4) & 0xf0));
     b[index + 1] = (val >> 4 ) & 0xff;
     return 0;	
 }
