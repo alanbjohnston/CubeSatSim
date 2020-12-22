@@ -642,6 +642,7 @@ void get_tlm(void) {
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
     printf("Tx LED On\n");
+    #endif
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 
