@@ -86,8 +86,8 @@ ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
 float rnd_float(double min, double max);
-int get_tlm(void);
-int get_tlm_fox();
+void get_tlm();
+void get_tlm_fox();
 int encodeA(short int * b, int index, int val);
 int encodeB(short int * b, int index, int val);
 void config_x25();
@@ -141,8 +141,8 @@ float batteryThreshold = 3.0, batteryVoltage;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min;
-int eclipse, i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
+int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
 
 int test_i2c_bus(int bus);
@@ -370,10 +370,10 @@ int main(int argc, char * argv[]) {
         waitTime = millis() + 500;
         while ((millis() < waitTime) && (payload != ON)) {
           if (serialDataAvail(uart_fd)) {
-            printf("%c", c = serialGetchar(uart_fd));
+            printf("%c", c = (char) serialGetchar(uart_fd));
             fflush(stdout);
             if (c == 'O') {
-              printf("%c", c = serialGetchar(uart_fd));
+              printf("%c", c = (char) serialGetchar(uart_fd));
               fflush(stdout);
               if (c == 'K')
                 payload = ON;
@@ -440,7 +440,7 @@ int main(int argc, char * argv[]) {
 
     batt = rnd_float(3.8, 4.3);
     speed = rnd_float(1.0, 2.5);
-    eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
+    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
     temp_max = rnd_float(50, 70);
@@ -449,13 +449,13 @@ int main(int argc, char * argv[]) {
     #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-    printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
     #endif
 
     time_start = (long int) millis();
 
     eclipse_time = (long int)(millis() / 1000.0);
-    if (eclipse == 0)
+    if (eclipse == 0.0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
@@ -580,7 +580,7 @@ int main(int argc, char * argv[]) {
     printf("Tx LED On\n");
     #endif
     printf("Sleeping to allow BPSK transmission to finish.\n");
-    sleep((int)(loop_count * 5));
+    sleep((unsigned int)(loop_count * 5));
     printf("Done sleeping\n");
     digitalWrite(txLed, txLedOff);
     #ifdef DEBUG_LOGGING
@@ -588,7 +588,7 @@ int main(int argc, char * argv[]) {
     #endif
   } else if (mode == FSK) {
     printf("Sleeping to allow FSK transmission to finish.\n");
-    sleep((int)loop_count);
+    sleep((unsigned int)loop_count);
     printf("Done sleeping\n");
   }
 
@@ -634,7 +634,7 @@ static int init_rf() {
   return (1);
 }
 
-int get_tlm(void) {
+void get_tlm(void) {
 
   FILE * txResult;
 
@@ -642,7 +642,6 @@ int get_tlm(void) {
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
     printf("Tx LED On\n");
-    #endif
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 
@@ -706,7 +705,7 @@ int get_tlm(void) {
       double time = ((long int) millis() - time_start) / 1000.0;
 
       if ((time - eclipse_time) > period) {
-        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse = (eclipse == 1) ? 0.0 : 1.0;
         eclipse_time = time;
         printf("\n\nSwitching eclipse mode! \n\n");
       }
@@ -716,6 +715,7 @@ int get_tlm(void) {
         double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
         double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
       */
+/*	    
       double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
       double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
       double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
@@ -723,6 +723,14 @@ int get_tlm(void) {
       double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
       double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+*/
+      float Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      float Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      float Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+
+      float Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      float Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      float Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
@@ -864,11 +872,11 @@ int get_tlm(void) {
 
     if (payload == ON) {
       char c;
-      int charss = serialDataAvail(uart_fd);
+      int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
       while ((charss--> 0))
-        c = serialGetchar(uart_fd); // clear buffer
+        c = (char) serialGetchar(uart_fd); // clear buffer
 
       unsigned int waitTime;
       int i = 0;
@@ -878,9 +886,9 @@ int get_tlm(void) {
       waitTime = millis() + 500;
       int end = FALSE;
       while ((millis() < waitTime) && !end) {
-        int chars = serialDataAvail(uart_fd);
+        int chars = (char) serialDataAvail(uart_fd);
         while ((chars--> 0) && !end) {
-          c = serialGetchar(uart_fd);
+          c = (char) serialGetchar(uart_fd);
           //	  printf ("%c", c);
           //	  fflush(stdout);
           if (c != '\n') {
@@ -968,7 +976,7 @@ int get_tlm(void) {
   return;
 }
 
-int get_tlm_fox() {
+void get_tlm_fox() {
 
   //  Reading I2C voltage and current sensors
 
@@ -1039,7 +1047,7 @@ int get_tlm_fox() {
       #endif
 
       while ((millis() - sampleTime) < samplePeriod)
-        sleep(sleepTime);
+        sleep((unsigned int)sleepTime);
 
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
