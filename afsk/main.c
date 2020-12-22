@@ -1294,6 +1294,7 @@ void get_tlm_fox() {
       printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
     }
 
+   if (mode == FSK) {	  
     if (loop % 8 == 0) {
       printf("Sending MIN frame \n");
       frm_type = 0x03;
@@ -1322,7 +1323,7 @@ void get_tlm_fox() {
           sensor[count1] = sensor_max[count1];
       }
     }
-
+   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
 
@@ -1473,6 +1474,11 @@ void get_tlm_fox() {
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
+    }
+    
+    if (mode == BPSK) {
+      encodeB(b, 60 + head_offset, 0xff);
+      encodeB(b, 66 + head_offset, 0xff);	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
