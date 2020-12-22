@@ -1478,7 +1478,7 @@ void get_tlm_fox() {
     
     if (mode == BPSK) {  // WOD field experiments
       encodeA(b, 63 + head_offset, 0xfff);  
-      encodeB(b, 75 + head_offset, 0xfff);	
+      encodeB(b, 75 + head_offset, 0xff);	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
