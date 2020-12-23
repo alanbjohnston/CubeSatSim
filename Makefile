@@ -204,13 +204,13 @@ chat/chat_main.o: ax5043/axradio/axradiorx_p.h
 chat/chat_main.o: ax5043/axradio/axradiotx.h
 chat/chat_main.o: ax5043/axradio/axradiotx_p.h
 chat/chat_main.o: ax5043/generated/configtx.h
-	cd chat; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I../ax5043 -Wconversion -Wall -Wextra -c chat_main.c; cd ..
+	cd chat; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I../ax5043 -c chat_main.c; cd ..
 
 afsk/ax25.o: afsk/ax25.c
 afsk/ax25.o: afsk/ax25.h
 afsk/ax25.o: afsk/ax5043.h
 afsk/ax25.o: afsk/status.h
-	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c ax25.c; cd ..
+	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c ax25.c; cd ..
 
 afsk/ax5043.o: afsk/ax5043.c
 afsk/ax5043.o: afsk/ax25.h
@@ -219,17 +219,17 @@ afsk/ax5043.o: afsk/status.h
 afsk/ax5043.o: afsk/utils.h
 afsk/ax5043.o: afsk/main.c
 afsk/ax5043.o: ax5043/spi/ax5043spi.h
-	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c ax5043.c; cd ..
+	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c ax5043.c; cd ..
 
 afsk/main.o: afsk/main.c
 afsk/main.o: afsk/status.h
 afsk/main.o: afsk/ax5043.h
 afsk/main.o: afsk/ax25.h
 afsk/main.o: ax5043/spi/ax5043spi.h
-	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c main.c; cd ..
+	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.c; cd ..
 
 afsk/telem.o: afsk/telem.c
-	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c telem.c; cd ..
+	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c telem.c; cd ..
 
 cw/cw_main.o: cw/cw_main.c
 cw/cw_main.o: ax5043/spi/ax5043spi.h
@@ -243,7 +243,7 @@ cw/cw_main.o: ax5043/axradio/axradiorx_p.h
 cw/cw_main.o: ax5043/axradio/axradiotx.h
 cw/cw_main.o: ax5043/axradio/axradiotx_p.h
 cw/cw_main.o: ax5043/generated/configtx.h
-	cd cw; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I../ax5043 -Wconversion -Wall -Wextra -c cw_main.c; cd ..
+	cd cw; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I../ax5043 -c cw_main.c; cd ..
 
 piglatin/piglatin_main.o: piglatin/piglatin_main.c
 piglatin/piglatin_main.o: ax5043/spi/ax5043spi.h
@@ -257,7 +257,7 @@ piglatin/piglatin_main.o: ax5043/axradio/axradiorx_p.h
 piglatin/piglatin_main.o: ax5043/axradio/axradiotx.h
 piglatin/piglatin_main.o: ax5043/axradio/axradiotx_p.h
 piglatin/piglatin_main.o: ax5043/generated/configtx.h
-	cd piglatin; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c piglatin_main.c; cd ..
+	cd piglatin; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c piglatin_main.c; cd ..
 
 receive/receive_main.o: receive/receive_main.c
 receive/receive_main.o: ax5043/axradio/axradioinit.h
@@ -269,7 +269,7 @@ receive/receive_main.o: ax5043/axradio/axradiomode_p.h
 receive/receive_main.o: ax5043/axradio/axradiorx.h
 receive/receive_main.o: ax5043/axradio/axradiorx_p.h
 receive/receive_main.o: ax5043/generated/configrx.h
-	cd receive; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c receive_main.c; cd ..
+	cd receive; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c receive_main.c; cd ..
 
 transmit/transmit_main.o: transmit/transmit_main.c
 transmit/transmit_main.o: ax5043/axradio/axradioinit.h
@@ -281,7 +281,7 @@ transmit/transmit_main.o: ax5043/axradio/axradiomode_p.h
 transmit/transmit_main.o: ax5043/axradio/axradiotx.h
 transmit/transmit_main.o: ax5043/axradio/axradiotx_p.h
 transmit/transmit_main.o: ax5043/generated/configtx.h
-	cd transmit; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c transmit_main.c; cd ..
+	cd transmit; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c transmit_main.c; cd ..
 
 transmit2freq/transmit2freq_main.o: transmit2freq/transmit2freq_main.c
 transmit2freq/transmit2freq_main.o: ax5043/axradio/axradioinit.h
@@ -293,20 +293,20 @@ transmit2freq/transmit2freq_main.o: ax5043/axradio/axradiomode_p.h
 transmit2freq/transmit2freq_main.o: ax5043/axradio/axradiotx.h
 transmit2freq/transmit2freq_main.o: ax5043/axradio/axradiotx_p.h
 transmit2freq/transmit2freq_main.o: ax5043/generated/configtx.h
-	cd transmit2freq; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c transmit2freq_main.c; cd ..
+	cd transmit2freq; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c transmit2freq_main.c; cd ..
 
 init/init_main.o: init/init_main.c
 init/init_main.o: ax5043/axradio/axradioinit.h
 init/init_main.o: ax5043/axradio/axradioinit_p.h
 init/init_main.o: ax5043/spi/ax5043spi.h
 init/init_main.o: ax5043/spi/ax5043spi_p.h
-	cd init; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c init_main.c; cd ..
+	cd init; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c init_main.c; cd ..
 
 afsktx/ax25.o: afsktx/ax25.c
 afsktx/ax25.o: afsktx/ax25.h
 afsktx/ax25.o: afsktx/ax5043.h
 afsktx/ax25.o: afsktx/status.h
-	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c ax25.c; cd ..
+	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c ax25.c; cd ..
 
 afsktx/ax5043.o: afsktx/ax5043.c
 afsktx/ax5043.o: afsktx/ax25.h
@@ -314,11 +314,11 @@ afsktx/ax5043.o: afsktx/ax5043.h
 afsktx/ax5043.o: afsktx/status.h
 afsktx/ax5043.o: afsktx/utils.h
 afsktx/ax5043.o: ax5043/spi/ax5043spi.h
-	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c ax5043.c; cd ..
+	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c ax5043.c; cd ..
 
 afsktx/main.o: afsktx/main.c
 afsktx/main.o: afsktx/status.h
 afsktx/main.o: afsktx/ax5043.h
 afsktx/main.o: afsktx/ax25.h
 afsktx/main.o: ax5043/spi/ax5043spi.h
-	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -Wconversion -Wall -Wextra -c main.c; cd ..
+	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.c; cd ..
