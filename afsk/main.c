@@ -725,33 +725,33 @@ void get_tlm(void) {
       double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 */
-      float Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      float Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      float Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      float Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      float Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      float Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 
-      float Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      float Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      float Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      float Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      float Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      float Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0) * Xi);
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
       current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0) * Yi);
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
       current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0) * Zi);
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
       voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0) * Zv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
 
       // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0);
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0f);
       cpuTemp = tempS + rnd_float(-1.0, 1.0);
 
       voltage[map[BUS]] = rnd_float(5.0, 5.005);
@@ -760,7 +760,7 @@ void get_tlm(void) {
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
 
       //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
@@ -1088,7 +1088,7 @@ void get_tlm_fox() {
         if (token != NULL) {
           current[count1] = (float) atof(token);
           if ((current[count1] < 0) && (current[count1] > -0.5))
-            current[count1] *= (-1.0);
+            current[count1] *= (-1.0f);
           #ifdef DEBUG_LOGGING
           //		 printf("current: %f\n", current[count1]);
           #endif
@@ -1116,7 +1116,7 @@ void get_tlm_fox() {
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
       #endif
 
-      other[IHU_TEMP] = cpuTemp;
+      other[IHU_TEMP] = (double)cpuTemp;
 
       //    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
     }
@@ -1203,33 +1203,33 @@ void get_tlm_fox() {
         double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
         double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
       */
-      double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 
-      double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0) * Xi);
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
       current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0) * Yi);
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
       current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0) * Zi);
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
       voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0) * Zv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
 
       // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0);
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
       tempS += +rnd_float(-1.0, 1.0);
       //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
@@ -1240,7 +1240,7 @@ void get_tlm_fox() {
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
 
       //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
@@ -1429,7 +1429,7 @@ void get_tlm_fox() {
 
     encodeA(b, 30 + head_offset, PSUVoltage);
     //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
-    encodeB(b, 31 + head_offset, (other[SPIN] * 10) + 2048);
+    encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
     //  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
     //  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
