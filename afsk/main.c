@@ -1887,9 +1887,9 @@ void write_wave(int i, short int *buffer)
 		else
 		{
 			if ((ctr - flip_ctr) < smaller)
-  		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
  			else
- 		 		buffer[ctr++] = (int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+ 		 		buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
  		 } 			
 //		printf("%d %d \n", i, buffer[ctr - 1]);
 
