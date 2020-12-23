@@ -1012,7 +1012,7 @@ void get_tlm_fox() {
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0;
+  int id, frm_type = 0x01, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0;
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
@@ -1022,11 +1022,11 @@ void get_tlm_fox() {
   //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
   //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
   // int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
-  int RXTemperature = 0, temp = 0, spin = 0;;
+  // int RXTemperature = 0, temp = 0, spin = 0;;
   // float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
   // float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
-  float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
-  int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
+  // float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
+  // int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 
   short int buffer_test[bufLen];
   int buffSize;
@@ -1548,7 +1548,7 @@ void get_tlm_fox() {
 
     int data;
     int val;
-    int offset = 0;
+    //int offset = 0;
 
     #ifdef DEBUG_LOGGING
     //	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
@@ -1613,7 +1613,7 @@ void get_tlm_fox() {
   #endif
 
   int error = 0;
-  int count;
+  // int count;
   //  for (count = 0; count < dataLen; count++) {
   //      printf("%02X", b[count]);
   //  }
@@ -1623,8 +1623,8 @@ void get_tlm_fox() {
 
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
-    struct sockaddr_in address;
-    int valread;
+ //   struct sockaddr_in address;
+ //   int valread;
     struct sockaddr_in serv_addr;
     //    char *hello = "Hello from client"; 
     //    char buffer[1024] = {0}; 
@@ -1657,10 +1657,10 @@ void get_tlm_fox() {
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
-    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis() - start);
+    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
-    int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-    printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
+    int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+    printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
 
     if (sock_ret < (ctr * 2 + 2)) {
       printf("Not resending\n");
@@ -1685,7 +1685,7 @@ void get_tlm_fox() {
   else if (frames_sent > 0) //5)
     firstTime = 0;
 
-  return 0;
+  return;
 }
  /*
  * TelemEncoding.h
@@ -1880,9 +1880,9 @@ void write_wave(int i, short int *buffer)
 		if (mode == FSK)
 		{
 			if ((ctr - flip_ctr) < smaller)
-				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
+				buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
 			else
-				buffer[ctr++] = 0.25 * amplitude * phase;
+				buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 		}
 		else
 		{
