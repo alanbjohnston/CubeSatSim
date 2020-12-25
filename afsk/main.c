@@ -482,7 +482,6 @@ int main(int argc, char * argv[]) {
   for (int i = 0; i < 17; i++) {
     sensor_min[i] = 1000.0;
     sensor_max[i] = -1000.0;
-    printf("Sensor min and max initialized!");
   }
   for (int i = 0; i < 3; i++) {
     other_min[i] = 1000.0;
@@ -1175,9 +1174,7 @@ void get_tlm_fox() {
         for (count1 = 0; count1 < 17; count1++) {
           if (token != NULL) {
             sensor[count1] = (float) atof(token);
-            #ifdef DEBUG_LOGGING
-            printf("sensor: %f ", sensor[count1]);
-            #endif
+            // printf("sensor: %f ", sensor[count1]);
             token = strtok(NULL, space);
           }
         }
@@ -1271,7 +1268,7 @@ void get_tlm_fox() {
       if (current[count1] > current_max[count1])
         current_max[count1] = current[count1];
 
-      printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+      // printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
     }
 
     if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
@@ -1281,7 +1278,7 @@ void get_tlm_fox() {
         if (sensor[count1] > sensor_max[count1])
           sensor_max[count1] = sensor[count1];
 
-        printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+        // printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
       }
     }
 
@@ -1291,7 +1288,7 @@ void get_tlm_fox() {
       if (other[count1] > other_max[count1])
         other_max[count1] = other[count1];
 
-      printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
+      // printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
     }
 
    if (mode == FSK) {	  
