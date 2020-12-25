@@ -545,6 +545,7 @@ int main(int argc, char * argv[]) {
       samples = S_RATE / bitRate;
       bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
+      printf("Old samplePeriod: %f \n", ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800);	    
       //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
