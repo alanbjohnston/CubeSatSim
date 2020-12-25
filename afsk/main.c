@@ -1477,10 +1477,10 @@ void get_tlm_fox() {
     }
     
     if (mode == BPSK) {  // WOD field experiments
-      encodeA(b, 63 + head_offset, 0x01); // was 0xff  
+      encodeA(b, 65 + head_offset, 0x01); // was 0xff  
       encodeA(b, 64 + head_offset, 0x01);   // new 	    
-      encodeB(b, 72 + head_offset, 0xff);   // new
-      encodeB(b, 73 + head_offset, 0xa5);	
+      encodeB(b, 72 + head_offset, 0xa5);   // new
+      encodeB(b, 71 + head_offset, 0xa5);	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
