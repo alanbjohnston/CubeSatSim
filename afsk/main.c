@@ -86,8 +86,8 @@ ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
 float rnd_float(double min, double max);
-int get_tlm(void);
-int get_tlm_fox();
+void get_tlm();
+void get_tlm_fox();
 int encodeA(short int * b, int index, int val);
 int encodeB(short int * b, int index, int val);
 void config_x25();
@@ -138,11 +138,11 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
-float latitude = 39.027702, longitude = -77.078064;
+float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min;
-int eclipse, i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
+int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
 
 int test_i2c_bus(int bus);
@@ -199,7 +199,7 @@ int main(int argc, char * argv[]) {
     config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   }
 
-  char * cfg_buf[100];
+//  char * cfg_buf[100];
   fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file);
   fclose(config_file);
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file);
@@ -356,11 +356,11 @@ int main(int argc, char * argv[]) {
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {
       char c;
-      int charss = serialDataAvail(uart_fd);
+      int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
       while ((charss--> 0))
-        c = serialGetchar(uart_fd); // clear buffer
+        c = (char) serialGetchar(uart_fd); // clear buffer
 
       unsigned int waitTime;
       int i;
@@ -370,10 +370,10 @@ int main(int argc, char * argv[]) {
         waitTime = millis() + 500;
         while ((millis() < waitTime) && (payload != ON)) {
           if (serialDataAvail(uart_fd)) {
-            printf("%c", c = serialGetchar(uart_fd));
+            printf("%c", c = (char) serialGetchar(uart_fd));
             fflush(stdout);
             if (c == 'O') {
-              printf("%c", c = serialGetchar(uart_fd));
+              printf("%c", c = (char) serialGetchar(uart_fd));
               fflush(stdout);
               if (c == 'K')
                 payload = ON;
@@ -401,9 +401,9 @@ int main(int argc, char * argv[]) {
   FILE * file4 = popen("vcgencmd get_camera", "r");
   fgets(cmdbuffer1, 1000, file4);
   char camera_present[] = "supported=1 detected=1";
-  printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
-  camera = (strstr( & cmdbuffer1, camera_present) != NULL) ? ON : OFF;
-  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+  camera = (strstr( (const char *)& cmdbuffer1, camera_present) != NULL) ? ON : OFF;
+  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
   pclose(file4);
 
   #ifdef DEBUG_LOGGING
@@ -416,7 +416,7 @@ int main(int argc, char * argv[]) {
 
     printf("Simulated telemetry mode!\n");
 
-    srand(time(0));
+    srand((unsigned int)time(0));
 
     axis[0] = rnd_float(-0.2, 0.2);
     if (axis[0] == 0)
@@ -440,7 +440,7 @@ int main(int argc, char * argv[]) {
 
     batt = rnd_float(3.8, 4.3);
     speed = rnd_float(1.0, 2.5);
-    eclipse = (rnd_float(-1, +4) > 0) ? 1 : 0;
+    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
     temp_max = rnd_float(50, 70);
@@ -449,17 +449,17 @@ int main(int argc, char * argv[]) {
     #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-    printf("batt: %f speed: %f eclipse_time: %f eclipse: %d period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
     #endif
 
-    time_start = millis();
+    time_start = (long int) millis();
 
-    eclipse_time = millis() / 1000.0;
-    if (eclipse == 0)
+    eclipse_time = (long int)(millis() / 1000.0);
+    if (eclipse == 0.0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
-  int ret;
+  //int ret;
   //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
@@ -527,8 +527,8 @@ int main(int argc, char * argv[]) {
       samples = S_RATE / bitRate;
       bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-      samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500;
-      sleepTime = 0.1;
+      samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
+      sleepTime = 0.1f;
 
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, samplePeriod);
@@ -550,7 +550,7 @@ int main(int argc, char * argv[]) {
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
       samplePeriod = 2200; // reduce dut to python and sensor querying delays
-      sleepTime = 2.2;
+      sleepTime = 2.2f;
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
@@ -580,7 +580,7 @@ int main(int argc, char * argv[]) {
     printf("Tx LED On\n");
     #endif
     printf("Sleeping to allow BPSK transmission to finish.\n");
-    sleep(loop_count * 5);
+    sleep((unsigned int)(loop_count * 5));
     printf("Done sleeping\n");
     digitalWrite(txLed, txLedOff);
     #ifdef DEBUG_LOGGING
@@ -588,7 +588,7 @@ int main(int argc, char * argv[]) {
     #endif
   } else if (mode == FSK) {
     printf("Sleeping to allow FSK transmission to finish.\n");
-    sleep(loop_count);
+    sleep((unsigned int)loop_count);
     printf("Done sleeping\n");
   }
 
@@ -634,7 +634,7 @@ static int init_rf() {
   return (1);
 }
 
-int get_tlm(void) {
+void get_tlm(void) {
 
   FILE * txResult;
 
@@ -667,15 +667,15 @@ int get_tlm(void) {
 
     for (count1 = 0; count1 < 8; count1++) {
       if (token != NULL) {
-        voltage[count1] = atof(token);
+        voltage[count1] = (float) atof(token);
         #ifdef DEBUG_LOGGING
         //		 printf("voltage: %f ", voltage[count1]);
         #endif
         token = strtok(NULL, space);
         if (token != NULL) {
-          current[count1] = atof(token);
+          current[count1] = (float) atof(token);
           if ((current[count1] < 0) && (current[count1] > -0.5))
-            current[count1] *= (-1.0);
+            current[count1] *= (-1);
           #ifdef DEBUG_LOGGING
           //		    printf("current: %f\n", current[count1]);
           #endif
@@ -703,10 +703,10 @@ int get_tlm(void) {
     if (sim_mode) {
       // simulated telemetry 
 
-      double time = (millis() - time_start) / 1000.0;
+      double time = ((long int) millis() - time_start) / 1000.0;
 
       if ((time - eclipse_time) > period) {
-        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse = (eclipse == 1) ? 0.0 : 1.0;
         eclipse_time = time;
         printf("\n\nSwitching eclipse mode! \n\n");
       }
@@ -716,6 +716,7 @@ int get_tlm(void) {
         double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
         double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
       */
+/*	    
       double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
       double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
       double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
@@ -723,26 +724,34 @@ int get_tlm(void) {
       double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
       double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+*/
+      float Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      float Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      float Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+
+      float Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      float Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      float Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0) * Xi);
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
       current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0) * Yi);
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
       current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0) * Zi);
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
       voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0) * Zv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
 
       // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0);
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0f);
       cpuTemp = tempS + rnd_float(-1.0, 1.0);
 
       voltage[map[BUS]] = rnd_float(5.0, 5.005);
@@ -751,7 +760,7 @@ int get_tlm(void) {
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
 
       //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
@@ -864,11 +873,11 @@ int get_tlm(void) {
 
     if (payload == ON) {
       char c;
-      int charss = serialDataAvail(uart_fd);
+      int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
       while ((charss--> 0))
-        c = serialGetchar(uart_fd); // clear buffer
+        c = (char) serialGetchar(uart_fd); // clear buffer
 
       unsigned int waitTime;
       int i = 0;
@@ -878,9 +887,9 @@ int get_tlm(void) {
       waitTime = millis() + 500;
       int end = FALSE;
       while ((millis() < waitTime) && !end) {
-        int chars = serialDataAvail(uart_fd);
+        int chars = (char) serialDataAvail(uart_fd);
         while ((chars--> 0) && !end) {
-          c = serialGetchar(uart_fd);
+          c = (char) serialGetchar(uart_fd);
           //	  printf ("%c", c);
           //	  fflush(stdout);
           if (c != '\n') {
@@ -968,7 +977,7 @@ int get_tlm(void) {
   return;
 }
 
-int get_tlm_fox() {
+void get_tlm_fox() {
 
   //  Reading I2C voltage and current sensors
 
@@ -984,7 +993,7 @@ int get_tlm_fox() {
   //	long int sync = SYNC_WORD;
   long int sync = syncWord;
 
-  smaller = S_RATE / (2 * freq_Hz);
+  smaller = (int) (S_RATE / (2 * freq_Hz));
 
   //	short int b[DATA_LEN];
   short int b[dataLen];
@@ -1003,7 +1012,7 @@ int get_tlm_fox() {
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, TxTemp = 0, IHUcpuTemp = 0, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0;
+  int id, frm_type = 0x01, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0;
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
@@ -1012,16 +1021,16 @@ int get_tlm_fox() {
   int head_offset = 0;
   //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
   //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
-  int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
-  int RXTemperature = 0, temp = 0, spin = 0;;
-  float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
-  float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
-  float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
-  int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
+  // int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
+  // int RXTemperature = 0, temp = 0, spin = 0;;
+  // float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
+  // float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
+  // float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
+  // int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 
   short int buffer_test[bufLen];
   int buffSize;
-  buffSize = sizeof(buffer_test);
+  buffSize = (int) sizeof(buffer_test);
 
   if (mode == FSK)
     id = 7;
@@ -1038,16 +1047,16 @@ int get_tlm_fox() {
       printf("Tx LED On\n");
       #endif
 
-      while ((millis() - sampleTime) < samplePeriod)
-        sleep(sleepTime);
+      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
+        sleep((unsigned int)sleepTime);
 
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
       printf("Tx LED Off\n");
       #endif
 
-      printf("Sample period: %d\n", millis() - sampleTime);
-      sampleTime = millis();
+      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
+      sampleTime = (int) millis();
     } else
       printf("first time - no sleep\n");
 
@@ -1071,15 +1080,15 @@ int get_tlm_fox() {
 
     for (count1 = 0; count1 < 8; count1++) {
       if (token != NULL) {
-        voltage[count1] = atof(token);
+        voltage[count1] = (float) atof(token);
         #ifdef DEBUG_LOGGING
         //		printf("voltage: %f ", voltage[count1]);
         #endif
         token = strtok(NULL, space);
         if (token != NULL) {
-          current[count1] = atof(token);
+          current[count1] = (float) atof(token);
           if ((current[count1] < 0) && (current[count1] > -0.5))
-            current[count1] *= (-1.0);
+            current[count1] *= (-1.0f);
           #ifdef DEBUG_LOGGING
           //		 printf("current: %f\n", current[count1]);
           #endif
@@ -1107,7 +1116,7 @@ int get_tlm_fox() {
       printf("CPU Temp Read: %6.1f\n", cpuTemp);
       #endif
 
-      other[IHU_TEMP] = cpuTemp;
+      other[IHU_TEMP] = (double)cpuTemp;
 
       //    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
     }
@@ -1119,11 +1128,11 @@ int get_tlm_fox() {
       STEMBoardFailure = 0;
 
       char c;
-      int charss = serialDataAvail(uart_fd);
+      int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
       while ((charss--> 0))
-        c = serialGetchar(uart_fd); // clear buffer
+        c = (char) serialGetchar(uart_fd); // clear buffer
 
       unsigned int waitTime;
       int i = 0;
@@ -1133,9 +1142,9 @@ int get_tlm_fox() {
       int end = FALSE;
       //     int retry = FALSE;
       while ((millis() < waitTime) && !end) {
-        int chars = serialDataAvail(uart_fd);
+        int chars = (char) serialDataAvail(uart_fd);
         while ((chars--> 0) && !end) {
-          c = serialGetchar(uart_fd);
+          c = (char) serialGetchar(uart_fd);
           //	  printf ("%c", c);
           //	  fflush(stdout);
           if (c != '\n') {
@@ -1165,7 +1174,7 @@ int get_tlm_fox() {
         token = strtok(sensor_payload, space);
         for (count1 = 0; count1 < 17; count1++) {
           if (token != NULL) {
-            sensor[count1] = atof(token);
+            sensor[count1] = (float) atof(token);
             #ifdef DEBUG_LOGGING
             printf("sensor: %f ", sensor[count1]);
             #endif
@@ -1181,7 +1190,7 @@ int get_tlm_fox() {
     if (sim_mode) {
       // simulated telemetry 
 
-      double time = (millis() - time_start) / 1000.0;
+      double time = ((long int)millis() - time_start) / 1000.0;
 
       if ((time - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
@@ -1194,33 +1203,33 @@ int get_tlm_fox() {
         double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
         double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
       */
-      double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 
-      double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0) * Xi);
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
       current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0) * Yi);
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
       current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0) * Zi);
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
       voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
       voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0) * Zv) : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
 
       // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
-      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0);
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
       tempS += +rnd_float(-1.0, 1.0);
       //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
@@ -1231,7 +1240,7 @@ int get_tlm_fox() {
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / (batt * 1.0)) - charging;
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
 
       //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
@@ -1285,6 +1294,7 @@ int get_tlm_fox() {
       printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
     }
 
+   if (mode == FSK) {	  
     if (loop % 8 == 0) {
       printf("Sending MIN frame \n");
       frm_type = 0x03;
@@ -1313,7 +1323,7 @@ int get_tlm_fox() {
           sensor[count1] = sensor_max[count1];
       }
     }
-
+   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
 
@@ -1323,20 +1333,20 @@ int get_tlm_fox() {
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
 
-    h[0] = (h[0] & 0xf8) | (id & 0x07); // 3 bits
+    h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
     //    printf("h[0] %x\n", h[0]);
-    h[0] = (h[0] & 0x07) | ((reset_count & 0x1f) << 3);
+    h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
     //    printf("h[0] %x\n", h[0]);
-    h[1] = (reset_count >> 5) & 0xff;
+    h[1] = (short int) ((reset_count >> 5) & 0xff);
     //    printf("h[1] %x\n", h[1]);
-    h[2] = (h[2] & 0xf8) | ((reset_count >> 13) & 0x07);
+    h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
     //    printf("h[2] %x\n", h[2]);
-    h[2] = (h[2] & 0x0e) | ((uptime & 0x1f) << 3);
+    h[2] = (short int) ((h[2] & 0x0e) | ((uptime & 0x1f) << 3));
     //    printf("h[2] %x\n", h[2]);
-    h[3] = (uptime >> 5) & 0xff;
-    h[4] = (uptime >> 13) & 0xff;
-    h[5] = (h[5] & 0xf0) | ((uptime >> 21) & 0x0f);
-    h[5] = (h[5] & 0x0f) | (frm_type << 4);
+    h[3] = (short int) ((uptime >> 5) & 0xff);
+    h[4] = (short int) ((uptime >> 13) & 0xff);
+    h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
+    h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
 
     if (mode == BPSK)
       h[6] = 99;
@@ -1419,7 +1429,7 @@ int get_tlm_fox() {
 
     encodeA(b, 30 + head_offset, PSUVoltage);
     //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
-    encodeB(b, 31 + head_offset, (other[SPIN] * 10) + 2048);
+    encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
     //  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
     //  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
@@ -1464,6 +1474,11 @@ int get_tlm_fox() {
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
+    }
+    
+    if (mode == BPSK) {  // WOD field experiments
+      encodeA(b, 63 + head_offset, 0xff);  
+      encodeB(b, 74 + head_offset, 0xff);	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
@@ -1533,7 +1548,7 @@ int get_tlm_fox() {
 
     int data;
     int val;
-    int offset = 0;
+    //int offset = 0;
 
     #ifdef DEBUG_LOGGING
     //	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
@@ -1598,7 +1613,7 @@ int get_tlm_fox() {
   #endif
 
   int error = 0;
-  int count;
+  // int count;
   //  for (count = 0; count < dataLen; count++) {
   //      printf("%02X", b[count]);
   //  }
@@ -1608,8 +1623,8 @@ int get_tlm_fox() {
 
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
-    struct sockaddr_in address;
-    int valread;
+ //   struct sockaddr_in address;
+ //   int valread;
     struct sockaddr_in serv_addr;
     //    char *hello = "Hello from client"; 
     //    char buffer[1024] = {0}; 
@@ -1642,10 +1657,10 @@ int get_tlm_fox() {
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
-    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, millis() - start);
+    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
-    int sock_ret = send(sock, buffer, ctr * 2 + 2, 0);
-    printf("Millis5: %d Result of socket send: %d \n", millis() - start, sock_ret);
+    int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+    printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
 
     if (sock_ret < (ctr * 2 + 2)) {
       printf("Not resending\n");
@@ -1670,7 +1685,7 @@ int get_tlm_fox() {
   else if (frames_sent > 0) //5)
     firstTime = 0;
 
-  return 0;
+  return;
 }
  /*
  * TelemEncoding.h
@@ -1693,8 +1708,8 @@ int get_tlm_fox() {
 //static int encodeB(short int  *b, int index, int val);
 //static int encodeA(short int  *b, int index, int val);
 
-	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
-	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
+//	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
+//	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
 	
 /*
  * TelemEncoding.c
@@ -1865,16 +1880,16 @@ void write_wave(int i, short int *buffer)
 		if (mode == FSK)
 		{
 			if ((ctr - flip_ctr) < smaller)
-				buffer[ctr++] = 0.1 * phase * (ctr - flip_ctr) / smaller;
+				buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
 			else
-				buffer[ctr++] = 0.25 * amplitude * phase;
+				buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 		}
 		else
 		{
 			if ((ctr - flip_ctr) < smaller)
-  		 		buffer[ctr++] = (int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
  			else
- 		 		buffer[ctr++] = (int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+ 		 		buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
  		 } 			
 //		printf("%d %d \n", i, buffer[ctr - 1]);
 
@@ -1883,13 +1898,13 @@ void write_wave(int i, short int *buffer)
 int encodeA(short int  *b, int index, int val) {
 //    printf("Encoding A\n");
     b[index] = val & 0xff;
-    b[index + 1] = (b[index + 1] & 0xf0) | ((val >> 8) & 0x0f);
+    b[index + 1] = (short int) ((b[index + 1] & 0xf0) | ((val >> 8) & 0x0f));
     return 0;	
 }
 
 int encodeB(short int  *b, int index, int val) {
 //    printf("Encoding B\n");
-    b[index] = (b[index] & 0x0f)  |  ((val << 4) & 0xf0);
+    b[index] =  (short int) ((b[index] & 0x0f)  |  ((val << 4) & 0xf0));
     b[index + 1] = (val >> 4 ) & 0xff;
     return 0;	
 }
