@@ -487,9 +487,15 @@ int main(int argc, char * argv[]) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
   }
-
+  
+  long int loopTime;
+  loopTime = millis();
+	
   while (loop-- != 0) {
     frames_sent++;
+
+    printf("++++ Loop time: %d +++++\n", millis() - loopTime);
+    loopTime = millis();
 
     #ifdef DEBUG_LOGGING
     fprintf(stderr, "INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
