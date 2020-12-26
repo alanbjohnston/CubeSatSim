@@ -7,7 +7,7 @@ import busio
 from adafruit_extended_bus import ExtendedI2C as I2C
 from adafruit_ina219 import INA219
 
-print("Import done!");
+print("Import done!")
 
 if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
