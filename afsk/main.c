@@ -1052,11 +1052,11 @@ void get_tlm_fox() {
       #ifdef DEBUG_LOGGING
       printf("Tx LED On\n");
       #endif
-/*
+/**/
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
 //        sleep((unsigned int)sleepTime);
         sleep(sleepTime);
-*/
+/**/
  //     sleep(0.5);  // Sleep to allow rpitx to run
 	    
       digitalWrite(txLed, txLedOff);
