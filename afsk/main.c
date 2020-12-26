@@ -489,31 +489,7 @@ int main(int argc, char * argv[]) {
     other_max[i] = -1000.0;
   }
 
-  while (loop-- != 0) {
-    frames_sent++;
-
-    #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
-    #endif
-    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-    {
-      fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
-      digitalWrite(txLed, txLedOff);
-      digitalWrite(onLed, onLedOff);
-      sleep(1);
-      digitalWrite(onLed, onLedOn);
-      sleep(1);
-      digitalWrite(onLed, onLedOff);
-      sleep(1);
-      digitalWrite(onLed, onLedOn);
-      sleep(1);
-      digitalWrite(onLed, onLedOff);
-
-      popen("sudo shutdown -h now > /dev/null 2>&1", "r");
-      sleep(10);
-    }
-
-    if (mode == FSK) {
+   if (mode == FSK) {
       bitRate = 200;
       rsFrames = 1;
       payloads = 1;
@@ -554,6 +530,32 @@ int main(int argc, char * argv[]) {
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
+    }
+
+ 	
+	
+  while (loop-- != 0) {
+    frames_sent++;
+
+    #ifdef DEBUG_LOGGING
+    fprintf(stderr, "INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
+    #endif
+    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+    {
+      fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
+      digitalWrite(txLed, txLedOff);
+      digitalWrite(onLed, onLedOff);
+      sleep(1);
+      digitalWrite(onLed, onLedOn);
+      sleep(1);
+      digitalWrite(onLed, onLedOff);
+      sleep(1);
+      digitalWrite(onLed, onLedOn);
+      sleep(1);
+      digitalWrite(onLed, onLedOff);
+
+      popen("sudo shutdown -h now > /dev/null 2>&1", "r");
+      sleep(10);
     }
 
     //  sleep(1);  // Delay 1 second
@@ -1046,10 +1048,10 @@ void get_tlm_fox() {
       #ifdef DEBUG_LOGGING
       printf("Tx LED On\n");
       #endif
-
+/*
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
-
+*/
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
       printf("Tx LED Off\n");
