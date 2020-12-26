@@ -482,7 +482,7 @@ int main(int argc, char * argv[]) {
   for (int i = 0; i < 17; i++) {
     sensor_min[i] = 1000.0;
     sensor_max[i] = -1000.0;
-    printf("Sensor min and max initialized!");
+ //   printf("Sensor min and max initialized!");
   }
   for (int i = 0; i < 3; i++) {
     other_min[i] = 1000.0;
@@ -532,11 +532,15 @@ int main(int argc, char * argv[]) {
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
     }
 
- 	
+  long int loopTime;
+  loopTime = millis();	
 	
   while (loop-- != 0) {
-    frames_sent++;
-
+//    frames_sent++;
+	  
+    printf("++++ Loop time: %d +++++\n", millis() - loopTime);
+    loopTime = millis();
+	  
     #ifdef DEBUG_LOGGING
     fprintf(stderr, "INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
     #endif
@@ -1273,7 +1277,7 @@ void get_tlm_fox() {
       if (current[count1] > current_max[count1])
         current_max[count1] = current[count1];
 
-      printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+  //    printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
     }
 
     if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
@@ -1283,7 +1287,7 @@ void get_tlm_fox() {
         if (sensor[count1] > sensor_max[count1])
           sensor_max[count1] = sensor[count1];
 
-        printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+    //    printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
       }
     }
 
@@ -1293,7 +1297,7 @@ void get_tlm_fox() {
       if (other[count1] > other_max[count1])
         other_max[count1] = other[count1];
 
-      printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
+   //   printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
     }
 
    if (mode == FSK) {	  
