@@ -1312,7 +1312,7 @@ else {
     if (loop % 8 == 0) {
       printf("Sending MIN frame \n");
       frm_type = 0x03;
-      for (count1 = 0; count1 < 17; count1++) {
+      for (int count1 = 0; count1 < 17; count1++) {
         if (count1 < 3)
           other[count1] = other_min[count1];
         if (count1 < 8) {
