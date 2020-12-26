@@ -1053,7 +1053,7 @@ void get_tlm_fox() {
       printf("Tx LED On\n");
       #endif
 /**/
-      while ((millis() - ') < (unsigned int)samplePeriod)
+      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
 //        sleep((unsigned int)sleepTime);
         sleep(sleepTime);
 /**/
