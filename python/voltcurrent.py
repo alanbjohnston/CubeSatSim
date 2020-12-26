@@ -7,6 +7,8 @@ import busio
 from adafruit_extended_bus import ExtendedI2C as I2C
 from adafruit_ina219 import INA219
 
+print("Import done!");
+
 if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
   
@@ -25,7 +27,7 @@ if __name__ == "__main__":
           from adafruit_ina219 import ADCResolution, BusVoltageRange
 
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
-#  print("buses: ", buses, " addr: ", addresses)
+  print("buses: ", buses, " addr: ", addresses)
   for x in buses:
     try:
       i2c_bus = I2C(x) # Device is /dev/i2c-x
@@ -33,7 +35,7 @@ if __name__ == "__main__":
  #     print(x,y)
         try:
   # Create library object using  Extended Bus I2C port
-#         print("bus: ", x, " addr: ", y)
+         print("bus: ", x, " addr: ", y)
           if x == 0 and y == 0x45:
 #           print("Reading INA219 in MoPower Board")
             i2c_bus = I2C(1)
@@ -41,9 +43,9 @@ if __name__ == "__main__":
           else:
             ina219 = INA219(i2c_bus, y)
    
-#       print("ina219 test")
+       print("ina219 test")
           if config:
-#           print("Configuring")
+           print("Configuring")
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
             ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
             ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
