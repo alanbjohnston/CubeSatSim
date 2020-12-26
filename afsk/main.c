@@ -1052,11 +1052,13 @@ void get_tlm_fox() {
       #ifdef DEBUG_LOGGING
       printf("Tx LED On\n");
       #endif
-
+/*
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
 //        sleep((unsigned int)sleepTime);
         sleep(sleepTime);
-
+*/
+      sleep(0.5);  // Sleep to allow rpitx to run
+	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
       printf("Tx LED Off\n");
@@ -1075,6 +1077,9 @@ void get_tlm_fox() {
     fgets(cmdbuffer, 1000, file);
     //  printf("result: %s\n", cmdbuffer);
     pclose(file);
+	  
+      sleep(0.5);  // Sleep to allow rpitx to run
+	    
 
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
@@ -1103,6 +1108,9 @@ void get_tlm_fox() {
         }
       }
     }
+	  
+      sleep(0.5);  // Sleep to allow rpitx to run
+	    
 
     //	 printf("\n"); 	  
 
@@ -1160,7 +1168,7 @@ void get_tlm_fox() {
             end = TRUE;
           }
         }
-      }
+      }   
       sensor_payload[i++] = ' ';
       //    sensor_payload[i++] = '\n';
       sensor_payload[i] = '\0';
@@ -1191,6 +1199,9 @@ void get_tlm_fox() {
       }
 
     }
+	  
+      sleep(0.5);  // Sleep to allow rpitx to run
+	    
 
     if (sim_mode) {
       // simulated telemetry 
@@ -1264,6 +1275,8 @@ void get_tlm_fox() {
 
       // end of simulated telemetry
     }
+      sleep(0.5);  // Sleep to allow rpitx to run
+	    
 
     for (count1 = 0; count1 < 8; count1++) {
       if (voltage[count1] < voltage_min[count1])
@@ -1375,6 +1388,9 @@ void get_tlm_fox() {
     battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
     PSUVoltage = (int)(voltage[map[BUS]] * 100);
     PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;
+	  
+      sleep(0.5);  // Sleep to allow rpitx to run
+	    
 
     if (payload == ON)
       STEMBoardFailure = 0;
