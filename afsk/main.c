@@ -1299,7 +1299,7 @@ else {
       }
     }
 
-    for (count1 = 0; count1 < 3; count1++) {
+    for (int count1 = 0; count1 < 3; count1++) {
       if (other[count1] < other_min[count1])
         other_min[count1] = other[count1];
       if (other[count1] > other_max[count1])
