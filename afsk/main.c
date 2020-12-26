@@ -1326,7 +1326,7 @@ else {
     if ((loop + 4) % 8 == 0) {
       printf("Sending MAX frame \n");
       frm_type = 0x02;
-      for (count1 = 0; count1 < 17; count1++) {
+      for (int count1 = 0; count1 < 17; count1++) {
         if (count1 < 3)
           other[count1] = other_max[count1];
         if (count1 < 8) {
