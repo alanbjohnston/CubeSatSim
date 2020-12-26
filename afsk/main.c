@@ -1050,7 +1050,7 @@ void get_tlm_fox() {
       // delay for sample period
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED On\n");
+//      printf("Tx LED On\n");
       #endif
 /*
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
@@ -1058,7 +1058,7 @@ void get_tlm_fox() {
 */
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED Off\n");
+//      printf("Tx LED Off\n");
       #endif
 
       printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
@@ -1151,12 +1151,12 @@ else {
     int count1;
     char * token;
     char cmdbuffer[1000];
-
+/*
     FILE * file = popen(pythonStr, "r");
     fgets(cmdbuffer, 1000, file);
     //  printf("result: %s\n", cmdbuffer);
     pclose(file);
-
+*/
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
