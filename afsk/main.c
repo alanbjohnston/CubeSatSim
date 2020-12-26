@@ -1139,7 +1139,7 @@ void get_tlm_fox() {
 
     char sensor_payload[500];
 
-    if (payload == ON) {
+    if (payload == -55) {
       STEMBoardFailure = 0;
 
       char c;
