@@ -2,6 +2,8 @@
 # Reads all voltage and current sensors for two I2C buses
 
 from time import sleep
+sleep(0.1)
+print("1")
 import sys
 sleep(0.1)
 print("1")
