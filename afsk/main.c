@@ -1072,12 +1072,12 @@ void get_tlm_fox() {
     int count1;
     char * token;
     char cmdbuffer[1000];
-
+/*
     FILE * file = popen(pythonStr, "r");
     fgets(cmdbuffer, 1000, file);
     //  printf("result: %s\n", cmdbuffer);
     pclose(file);
-	  
+*/	  
 //      sleep(0.5);  // Sleep to allow rpitx to run
 	    
 
