@@ -877,7 +877,7 @@ void get_tlm(void) {
 
     char sensor_payload[500];
 
-    if (payload == ON) {
+    if (payload == -55) {  // ON
       char c;
       int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
