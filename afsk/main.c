@@ -1182,7 +1182,7 @@ void get_tlm_fox() {
           if (token != NULL) {
             sensor[count1] = (float) atof(token);
             #ifdef DEBUG_LOGGING
-            printf("sensor: %f ", sensor[count1]);
+ //           printf("sensor: %f ", sensor[count1]);
             #endif
             token = strtok(NULL, space);
           }
@@ -1686,10 +1686,10 @@ void get_tlm_fox() {
   }
   //    digitalWrite (0, HIGH);
 
-  if (mode == FSK)
+//  if (mode == FSK)
     firstTime = 0;
-  else if (frames_sent > 0) //5)
-    firstTime = 0;
+//  else if (frames_sent > 0) //5)
+//    firstTime = 0;
 
   return;
 }
