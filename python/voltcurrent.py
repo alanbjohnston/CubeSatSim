@@ -4,13 +4,17 @@
 from time import sleep
 import sys
 sleep(0.1)
+print("1")
 #import board
 import busio
 sleep(0.1)
+print("1")
 from adafruit_extended_bus import ExtendedI2C as I2C
 sleep(0.1)
+print("1")
 from adafruit_ina219 import INA219
 sleep(0.1)
+print("1")
 if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
   
