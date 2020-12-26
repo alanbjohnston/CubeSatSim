@@ -1160,8 +1160,6 @@ else {
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
-
-
     for (count1 = 0; count1 < 8; count1++) {
       if (token != NULL) {
         voltage[count1] = (float) atof(token);
@@ -1182,7 +1180,10 @@ else {
     }
 
     //	 printf("\n"); 	  
-
+	
+   sleep(1);
+    printf("Sleep over\n");	
+	
     batteryVoltage = voltage[map[BAT]];
     if (batteryVoltage < 3.5) {
       NormalModeFailure = 1;
@@ -1346,6 +1347,9 @@ else {
     uptime = (int) uptime_sec;
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+	  
+    sleep(1);
+    printf("Sleep over\n");
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
     //    printf("h[0] %x\n", h[0]);
@@ -1532,6 +1536,9 @@ else {
     		printf("\n");
     */
     #endif
+	   
+    sleep(1);
+    printf("Sleep over\n");
 
     int ctr2 = 0;
     memset(data10, 0, sizeof(data10));
