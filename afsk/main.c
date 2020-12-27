@@ -539,7 +539,7 @@ int main(int argc, char * argv[]) {
 //    frames_sent++;
 
     loopTime = millis();
-    sleep(2.0);
+    sleep(2);
     printf("++++ Loop time: %d +++++\n", millis() - loopTime);
     loopTime = millis();
 	  
@@ -551,6 +551,7 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
       digitalWrite(onLed, onLedOff);
+      
       sleep(1);
       digitalWrite(onLed, onLedOn);
       sleep(1);
