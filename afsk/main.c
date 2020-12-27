@@ -1066,7 +1066,7 @@ void get_tlm_fox() {
     } else
       printf("first time - no sleep\n");
 	  
-    sleep(2.5);
+    sleep(4.5);
 	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
@@ -1349,8 +1349,8 @@ else {
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
 	  
-    sleep(1);
-    printf("Sleep over\n");
+    //sleep(1);
+    //printf("Sleep over\n");
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
     //    printf("h[0] %x\n", h[0]);
@@ -1538,8 +1538,8 @@ else {
     */
     #endif
 	   
-    sleep(1);
-    printf("Sleep over\n");
+    //sleep(1);
+    //printf("Sleep over\n");
 
     int ctr2 = 0;
     memset(data10, 0, sizeof(data10));
