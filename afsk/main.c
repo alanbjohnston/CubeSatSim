@@ -538,8 +538,6 @@ int main(int argc, char * argv[]) {
   while (loop-- != 0) {
 //    frames_sent++;
 
-    loopTime = millis();
-    sleep(2);
     printf("++++ Loop time: %d +++++\n", millis() - loopTime);
     loopTime = millis();
 	  
@@ -1059,6 +1057,8 @@ void get_tlm_fox() {
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 */
+      sleep(3.5);
+	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
 //      printf("Tx LED Off\n");
@@ -1069,7 +1069,7 @@ void get_tlm_fox() {
     } else
       printf("first time - no sleep\n");
 	  
-    sleep(2.5);
+
 	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
@@ -1185,8 +1185,9 @@ else {
 
     //	 printf("\n"); 	  
 	
-   sleep(0.5);
-    printf("Sleep over\n");	
+
+//   sleep(0.5);
+//    printf("Sleep over\n");	
 	
     batteryVoltage = voltage[map[BAT]];
     if (batteryVoltage < 3.5) {
@@ -1687,7 +1688,7 @@ else {
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
     printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
     
-    sleep(2.5);
+//    sleep(2.5);
 	  
     if (sock_ret < (ctr * 2 + 2)) {
       printf("Not resending\n");
