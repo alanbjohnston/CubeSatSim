@@ -10,7 +10,7 @@ StandardOutput=inherit
 StandardError=inherit
 Restart=always
 User=root
-CPUQuota=5%
+CPUQuota=2.5%
 
 [Install]
 WantedBy=default.target
