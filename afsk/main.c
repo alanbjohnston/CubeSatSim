@@ -1066,7 +1066,7 @@ void get_tlm_fox() {
     } else
       printf("first time - no sleep\n");
 	  
-    sleep(4.5);
+    sleep(2.5);
 	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
@@ -1679,11 +1679,13 @@ else {
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
-    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
+ //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
     printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
-
+    
+    sleep(2.5);
+	  
     if (sock_ret < (ctr * 2 + 2)) {
       printf("Not resending\n");
       //	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
