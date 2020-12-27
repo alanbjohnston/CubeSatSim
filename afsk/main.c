@@ -1066,6 +1066,7 @@ void get_tlm_fox() {
     } else
       printf("first time - no sleep\n");
 	  
+    sleep(0.6);
 	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
@@ -1181,7 +1182,7 @@ else {
 
     //	 printf("\n"); 	  
 	
-   sleep(1);
+   sleep(0.5);
     printf("Sleep over\n");	
 	
     batteryVoltage = voltage[map[BAT]];
