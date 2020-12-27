@@ -134,7 +134,7 @@ char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
-unsigned int sampleTime = 0
+unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
