@@ -134,7 +134,8 @@ char call[5];
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
-int sampleTime = 0, frames_sent = 0;
+unsigned int sampleTime = 0
+int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
@@ -1057,7 +1058,7 @@ void get_tlm_fox() {
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 */
-      sleep(3.0);
+      sleep(2.5);
 	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
@@ -1065,7 +1066,7 @@ void get_tlm_fox() {
       #endif
 
       printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
-      sampleTime = (int) millis();
+      sampleTime = (unsigned int) millis();
     } else
       printf("first time - no sleep\n");
 	  
