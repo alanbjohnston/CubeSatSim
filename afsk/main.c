@@ -1066,7 +1066,7 @@ void get_tlm_fox() {
     } else
       printf("first time - no sleep\n");
 	  
-    sleep(0.6);
+    sleep(2.5);
 	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
