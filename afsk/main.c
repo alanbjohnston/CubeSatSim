@@ -537,7 +537,9 @@ int main(int argc, char * argv[]) {
 	
   while (loop-- != 0) {
 //    frames_sent++;
-	  
+
+    loopTime = millis();
+    sleep(2.0);
     printf("++++ Loop time: %d +++++\n", millis() - loopTime);
     loopTime = millis();
 	  
