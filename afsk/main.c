@@ -365,7 +365,7 @@ printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr,
   fputc('\n', infd);
   fgets(cmdbuffer, 1000, outfd);
      printf("pythonStr result2: %s\n", cmdbuffer);		
-*/
+
 	
   // try connecting to Arduino payload using UART
 
