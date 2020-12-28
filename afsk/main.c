@@ -1010,12 +1010,16 @@ int start_subprocess(char *const command[], int *pid, int *infd, int *outfd)
     if (!pid || !infd || !outfd)
         return 0;
 
-    if (pipe(p1) == -1)
-        goto err_pipe1;
-    if (pipe(p2) == -1)
-        goto err_pipe2;
-    if ((*pid = fork()) == -1)
-        goto err_fork;
+    if (pipe(p1) == -1) {
+        printf("Error pipe1\n");
+	return 0;
+    }  if (pipe(p2) == -1) {
+        printf("Error pipe2\n");
+	return 0;
+    }   if ((*pid = fork()) == -1) {
+        printf("Error fork\n");
+	return 0;
+    }
 
     if (*pid) {
         /* Parent process. */
