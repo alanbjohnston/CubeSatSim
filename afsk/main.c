@@ -1690,6 +1690,7 @@ else {
     printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
     
 //    sleep(2.5);
+      delsy(2.5);
 	  
     if (sock_ret < (ctr * 2 + 2)) {
       printf("Not resending\n");
