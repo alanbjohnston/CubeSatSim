@@ -1,12 +1,15 @@
 """Sample code and test for adafruit_in219"""
 # Reads all voltage and current sensors for two I2C buses
-
+import time
 import sys
+time.sleep(0.1)
 #import board
 import busio
+time.sleep(0.1)
 from adafruit_extended_bus import ExtendedI2C as I2C
+time.sleep(0.1)
 from adafruit_ina219 import INA219
-
+time.sleep(0.1)
 if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
   
