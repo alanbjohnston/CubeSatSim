@@ -556,7 +556,7 @@ int main(int argc, char * argv[]) {
       sleep(1);
       digitalWrite(onLed, onLedOff);
       sleep(1);
-      digitalWrite(onLed, onLedOn);
+      digitalWrite(onLed, onLedOn);slee
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
@@ -1059,6 +1059,7 @@ void get_tlm_fox() {
         sleep((unsigned int)sleepTime);
 */
 //      sleep(2.5);  // No sleep at all!
+	         delay(2.5);
 	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
@@ -1690,7 +1691,7 @@ else {
     printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
     
 //    sleep(2.5);
-      delsy(2.5);
+
 	  
     if (sock_ret < (ctr * 2 + 2)) {
       printf("Not resending\n");
