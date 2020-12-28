@@ -1058,7 +1058,7 @@ void get_tlm_fox() {
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 */
-      sleep(2.5);  // No sleep at all!
+      sleep(1.5);  // No sleep at all!
 
 	    
       digitalWrite(txLed, txLedOff);
@@ -1157,12 +1157,12 @@ else {
     int count1;
     char * token;
     char cmdbuffer[1000];
-/*
+/**/
     FILE * file = popen(pythonStr, "r");
     fgets(cmdbuffer, 1000, file);
     //  printf("result: %s\n", cmdbuffer);
     pclose(file);
-*/
+**/
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
