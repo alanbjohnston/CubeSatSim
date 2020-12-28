@@ -352,17 +352,19 @@ int main(int argc, char * argv[]) {
 */
 int pid, infd, outfd;	
 printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, &pid, &infd, &outfd), pid, infd, outfd);	
-/*
+   fgets(cmdbuffer, 1000, outfd);
+     printf("pythonStr result: %s\n", cmdbuffer);
+	
   sleep(5);
-  fputc('\n', file1);
-  fgets(cmdbuffer, 1000, file1);
+  fputc('\n', infd);
+  fgets(cmdbuffer, 1000, outfd);
      printf("pythonStr result2: %s\n", cmdbuffer);	
 
 
   sleep(5);
-  fputc('\n', file1);
-  fgets(cmdbuffer, 1000, file1);
-     printf("pythonStr result3: %s\n", cmdbuffer);	
+  fputc('\n', infd);
+  fgets(cmdbuffer, 1000, outfd);
+     printf("pythonStr result2: %s\n", cmdbuffer);		
 */
 	
   // try connecting to Arduino payload using UART
