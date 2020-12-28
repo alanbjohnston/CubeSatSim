@@ -343,7 +343,7 @@ int main(int argc, char * argv[]) {
   strcat(pythonConfigStr, " c");
 
   //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
-  FILE * file1 = popen(pythonConfigStr, "r");
+  FILE * file1 = popen(pythonConfigStr, "rw");
   char cmdbuffer[1000];
   fgets(cmdbuffer, 1000, file1);
      printf("pythonStr result: %s\n", cmdbuffer);
