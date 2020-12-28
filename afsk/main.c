@@ -1037,6 +1037,7 @@ int start_subprocess(char *const command[], int *pid, int *infd, int *outfd)
         fprintf(stderr, "error running %s: %s", *command, strerror(errno));
         abort();
     }
+}
 
 void get_tlm_fox() {
 
