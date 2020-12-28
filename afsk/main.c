@@ -1059,7 +1059,7 @@ void get_tlm_fox() {
         sleep((unsigned int)sleepTime);
 */
 //      sleep(2.5);  // No sleep at all!
-	         delay(2.5);
+	         delay(3);
 	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
