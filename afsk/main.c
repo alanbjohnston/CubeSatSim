@@ -1058,7 +1058,7 @@ void get_tlm_fox() {
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 */
-      sleep(2.5);
+//      sleep(2.5);
 	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
