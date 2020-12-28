@@ -126,7 +126,7 @@ int nrd;
 void write_to_buffer(int i, int symbol, int val);
 void write_wave(int i, short int * buffer);
 int uart_fd;
-start_subprocess(char *const command[], int *pid, int *infd, int *outfd);
+int start_subprocess(char *const command[], int *pid, int *infd, int *outfd);
 
 int reset_count;
 float uptime_sec;
@@ -1003,7 +1003,7 @@ void get_tlm(void) {
 
 // code by https://stackoverflow.com/users/2876370/pavel-%c5%a0imerda
 
-static bool start_subprocess(char *const command[], int *pid, int *infd, int *outfd)
+int start_subprocess(char *const command[], int *pid, int *infd, int *outfd)
 {
     int p1[2], p2[2];
 
