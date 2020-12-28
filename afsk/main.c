@@ -556,7 +556,7 @@ int main(int argc, char * argv[]) {
       sleep(1);
       digitalWrite(onLed, onLedOff);
       sleep(1);
-      digitalWrite(onLed, onLedOn);slee
+      digitalWrite(onLed, onLedOn);
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
