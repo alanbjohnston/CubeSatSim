@@ -351,7 +351,7 @@ int main(int argc, char * argv[]) {
   pclose(file1);  
 
 int pid, infd, outfd;	
-printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, int *pid, int *infd, int *outfd), pid, infd, outfd);	
+printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, &pid, &infd, &outfd), pid, infd, outfd);	
 /*
   sleep(5);
   fputc('\n', file1);
