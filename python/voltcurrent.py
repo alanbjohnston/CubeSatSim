@@ -66,5 +66,5 @@ if __name__ == "__main__":
 #         pass
    print(" ")
    inp = input()
-   print(inp)
+#   print(inp)
   
