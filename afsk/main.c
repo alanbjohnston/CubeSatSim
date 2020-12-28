@@ -352,18 +352,18 @@ int main(int argc, char * argv[]) {
 */
 int pid, infd, outfd;	
 printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, &pid, &infd, &outfd), pid, infd, outfd);	
-   fgets(cmdbuffer, 1000, outfd);
+   fgets(cmdbuffer, 1000, FILE *outfd);
      printf("pythonStr result: %s\n", cmdbuffer);
 	
   sleep(5);
-  fputc('\n', infd);
-  fgets(cmdbuffer, 1000, outfd);
+  fputc('\n', FILE *infd);
+  fgets(cmdbuffer, 1000, FILE *outfd);
      printf("pythonStr result2: %s\n", cmdbuffer);	
 
 
   sleep(5);
-  fputc('\n', infd);
-  fgets(cmdbuffer, 1000, outfd);
+  fputc('\n', FILE*infd);
+  fgets(cmdbuffer, 1000, FILE *outfd);
      printf("pythonStr result2: %s\n", cmdbuffer);		
 
 	
