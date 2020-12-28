@@ -1162,7 +1162,7 @@ else {
     fgets(cmdbuffer, 1000, file);
     //  printf("result: %s\n", cmdbuffer);
     pclose(file);
-**/
+/**/
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
