@@ -126,6 +126,7 @@ int nrd;
 void write_to_buffer(int i, int symbol, int val);
 void write_wave(int i, short int * buffer);
 int uart_fd;
+start_subprocess(char *const command[], int *pid, int *infd, int *outfd);
 
 int reset_count;
 float uptime_sec;
@@ -343,12 +344,15 @@ int main(int argc, char * argv[]) {
   strcat(pythonConfigStr, " c");
 
   //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
-  FILE * file1 = popen(pythonConfigStr, "r+");
+  FILE * file1 = popen(pythonConfigStr, "r");
   char cmdbuffer[1000];
   fgets(cmdbuffer, 1000, file1);
      printf("pythonStr result: %s\n", cmdbuffer);
-//  pclose(file1);  Try new python
+  pclose(file1);  
 
+int pid, infd, outfd;	
+printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, int *pid, int *infd, int *outfd), pid, infd, outfd);	
+/*
   sleep(5);
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
@@ -359,7 +363,7 @@ int main(int argc, char * argv[]) {
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
      printf("pythonStr result3: %s\n", cmdbuffer);	
-
+*/
 	
   // try connecting to Arduino payload using UART
 
@@ -996,6 +1000,43 @@ void get_tlm(void) {
 
   return;
 }
+
+// code by https://stackoverflow.com/users/2876370/pavel-%c5%a0imerda
+
+static bool start_subprocess(char *const command[], int *pid, int *infd, int *outfd)
+{
+    int p1[2], p2[2];
+
+    if (!pid || !infd || !outfd)
+        return false;
+
+    if (pipe(p1) == -1)
+        goto err_pipe1;
+    if (pipe(p2) == -1)
+        goto err_pipe2;
+    if ((*pid = fork()) == -1)
+        goto err_fork;
+
+    if (*pid) {
+        /* Parent process. */
+        *infd = p1[1];
+        *outfd = p2[0];
+        close(p1[0]);
+        close(p2[1]);
+        return true;
+    } else {
+        /* Child process. */
+        dup2(p1[0], 0);
+        dup2(p2[1], 1);
+        close(p1[0]);
+        close(p1[1]);
+        close(p2[0]);
+        close(p2[1]);
+        execvp(*command, command);
+        /* Error occured. */
+        fprintf(stderr, "error running %s: %s", *command, strerror(errno));
+        abort();
+    }
 
 void get_tlm_fox() {
 
