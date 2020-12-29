@@ -116,6 +116,7 @@ int rpitxStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000; // 1200
+float sin_samples;
 
 int smaller;
 int flip_ctr = 0;
@@ -531,10 +532,11 @@ int main(int argc, char * argv[]) {
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
-
+	   
+      sin_samples = S_RATE/freq_Hz;
       printf("Sin map: ");
-      for (int j = 0; j < (S_RATE/freq_Hz); j++) {	
-        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j * freq_Hz/S_RATE)));
+      for (int j = 0; j < sin_samples; j++) {	
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples));
 	printf(" %d", sin_map[j]);
       }
       printf("\n");
@@ -1926,9 +1928,11 @@ void write_wave(int i, short int *buffer)
 		else
 		{
 			if ((ctr - flip_ctr) < smaller)
-  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2); 					
  			else
- 		 		buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE))); 					
+  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 					
  		 } 			
 //		printf("%d %d \n", i, buffer[ctr - 1]);
 
