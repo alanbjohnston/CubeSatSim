@@ -1184,13 +1184,13 @@ else {
     int count1;
     char * token;
 //    char cmdbuffer[1000];
-/**/
+/*
 //    FILE * file = popen(pythonStr, "r");
     fputc('\n', file1);
     fgets(cmdbuffer, 1000, file1);
     printf("Python read Result: %s\n", cmdbuffer);
 //    pclose(file);
-/**/
+*/
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
