@@ -61,7 +61,7 @@ if __name__ == "__main__":
   if buses[0] == 0 and addresses[0] == 0x45:
 #    print("Reading INA219 in MoPower Board")
     ina219_one = INA219(I2C(1), 0x4a) 
-  else
+  else:
     ina219_one = INA219(i2c_one, addresses[0])
   ina219_two = INA219(i2c_one, addresses[1])
   ina219_three = INA219(i2c_one, addresses[2])
