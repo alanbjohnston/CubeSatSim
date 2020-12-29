@@ -1085,7 +1085,7 @@ void get_tlm_fox() {
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 */
-      sleep(3.5);  // No sleep at all!
+      sleep(2.8);  // No sleep at all!
 
 	    
       digitalWrite(txLed, txLedOff);
