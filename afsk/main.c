@@ -341,7 +341,7 @@ int main(int argc, char * argv[]) {
   strcpy(pythonStr, pythonCmd);
   strcat(pythonStr, busStr);
   strcat(pythonConfigStr, pythonStr);
-  strcat(pythonConfigStr, " c");
+  strcat(pythonConfigStr, " c >sdtin");  // added stdin
 	
   file1 = popen(pythonConfigStr, "w");
 
