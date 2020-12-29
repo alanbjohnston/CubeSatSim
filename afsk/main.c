@@ -344,28 +344,28 @@ int main(int argc, char * argv[]) {
   strcat(pythonConfigStr, " c");
 	
   char cmdbuffer[1000];
-/*
+
   //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
-  FILE * file1 = popen(pythonConfigStr, "r");
+  FILE * file1 = popen(pythonConfigStr, "w");
 
   fgets(cmdbuffer, 1000, file1);
      printf("pythonStr result: %s\n", cmdbuffer);
-  pclose(file1);  
-*/
-int pid, infd, outfd;	
-printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, &pid, &infd, &outfd), pid, infd, outfd);	
-   fgets(cmdbuffer, 1000, (FILE *)outfd);
-     printf("pythonStr result: %s\n", cmdbuffer);
+//  pclose(file1);  
+
+// int pid, infd, outfd;	
+// printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, &pid, &infd, &outfd), pid, infd, outfd);	
+//   fgets(cmdbuffer, 1000, (FILE *)outfd);
+ //    printf("pythonStr result: %s\n", cmdbuffer);
 	
   sleep(5);
-  fputc('\n', (FILE *)infd);
-  fgets(cmdbuffer, 1000, (FILE *)outfd);
+  fputc('\n', file1);
+  fgets(cmdbuffer, 1000, file1);
      printf("pythonStr result2: %s\n", cmdbuffer);	
 
 
   sleep(5);
-  fputc('\n', (FILE *)infd);
-  fgets(cmdbuffer, 1000, (FILE *)outfd);
+  fputc('\n', file1);
+  fgets(cmdbuffer, 1000, file1);
      printf("pythonStr result2: %s\n", cmdbuffer);		
 
 	
