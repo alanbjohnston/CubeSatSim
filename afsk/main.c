@@ -533,7 +533,7 @@ int main(int argc, char * argv[]) {
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
 
       printf("Sin map: ");
-      for (int j = 0; j < (S_Rate/freq_Hz); j++) {	
+      for (int j = 0; j < (S_RATE/freq_Hz); j++) {	
         sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j * freq_Hz/S_RATE)));
 	printf(" %d", sin_map[j]);
       }
