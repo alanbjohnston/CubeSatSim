@@ -1289,6 +1289,7 @@ else {
 	    
   }
 
+  if (mode == FSK) {
     for (int count1 = 0; count1 < 8; count1++) {
       if (voltage[count1] < voltage_min[count1])
         voltage_min[count1] = voltage[count1];
@@ -1316,7 +1317,7 @@ else {
    //   printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
     }
 
-   if (mode == FSK) {	  
+//   if (mode == FSK) {	  
     if (loop % 8 == 0) {
       printf("Sending MIN frame \n");
       frm_type = 0x03;
