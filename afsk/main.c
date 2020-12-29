@@ -154,7 +154,7 @@ int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "CQ";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
-
+short int sin_map[16];
 int main(int argc, char * argv[]) {
 
   mode = FSK;
@@ -531,6 +531,13 @@ int main(int argc, char * argv[]) {
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
+
+      printf("Sin map: ");
+      for (int j = 0; j < (S_Rate/freq_Hz); j++) {	
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j * freq_Hz/S_RATE)));
+	printf(" %d", sin_map[j]);
+      }
+      printf("\n");
     }
 
   long int loopTime;
