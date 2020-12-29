@@ -347,13 +347,18 @@ int main(int argc, char * argv[]) {
 
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result: %s\n", cmdbuffer);
+  fgets(cmdbuffer, 1000, file1);
+  printf("pythonStr resulta: %s\n", cmdbuffer);
+  fgets(cmdbuffer, 1000, file1);
+  printf("pythonStr resultb: %s\n", cmdbuffer);	
 //  pclose(file1);  
 
   sleep(5);
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result2: %s\n", cmdbuffer);	
-
+  fgets(cmdbuffer, 1000, file1);
+  printf("pythonStr result2a: %s\n", cmdbuffer);	
 
   sleep(5);
   fputc('\n', file1);
