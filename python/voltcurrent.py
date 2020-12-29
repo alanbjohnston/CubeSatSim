@@ -30,11 +30,11 @@ if __name__ == "__main__":
 # config
 
   for x in buses:
-    try:
+#    try:
       i2c_bus = I2C(x) # Device is /dev/i2c-x
       for y in addresses:
  #     print(x,y)
-        try:
+ #       try:
   # Create library object using  Extended Bus I2C port
 #        print("bus: ", x, " addr: ", y)
           if x == 0 and y == 0x45:
@@ -51,8 +51,8 @@ if __name__ == "__main__":
           ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
-        except:
-    except:
+#        except:
+#    except:
 # No try checking yet
 
   i2c_one = I2C(buses[0])
