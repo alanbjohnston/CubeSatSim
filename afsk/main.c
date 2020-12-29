@@ -116,7 +116,7 @@ int rpitxStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000; // 1200
-float sin_samples;
+short int sin_samples;
 
 int smaller;
 int flip_ctr = 0;
@@ -536,7 +536,7 @@ int main(int argc, char * argv[]) {
       sin_samples = S_RATE/freq_Hz;
       printf("Sin map: ");
       for (int j = 0; j < sin_samples; j++) {	
-        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples));
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));
 	printf(" %d", sin_map[j]);
       }
       printf("\n");
