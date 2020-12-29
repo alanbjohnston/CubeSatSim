@@ -66,10 +66,10 @@ if __name__ == "__main__":
   ina219_two = INA219(i2c_one, addresses[1])
   ina219_three = INA219(i2c_one, addresses[2])
   ina219_four= INA219(i2c_one, addresses[3])
-  ina219_five= INA219(i2c_two, addresses[4])  
-  ina219_six = INA219(i2c_two, addresses[5]) 
-  ina219_seven = INA219(i2c_two, addresses[6]) 
-  ina219_eight = INA219(i2c_two, addresses[7]) 
+  ina219_five= INA219(i2c_two, addresses[0])  
+  ina219_six = INA219(i2c_two, addresses[1]) 
+  ina219_seven = INA219(i2c_two, addresses[2]) 
+  ina219_eight = INA219(i2c_two, addresses[3]) 
 
   while (True):
 #    print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
