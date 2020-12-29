@@ -1170,6 +1170,7 @@ else {
 //    char cmdbuffer[1000];
 /**/
 //    FILE * file = popen(pythonStr, "r");
+    fputc('\n', file1);
     fgets(cmdbuffer, 1000, file1);
     //  printf("result: %s\n", cmdbuffer);
 //    pclose(file);
