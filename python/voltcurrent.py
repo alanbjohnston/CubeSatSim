@@ -72,8 +72,8 @@ if __name__ == "__main__":
   ina219_eight = INA219(i2c_two, addresses[7]) 
 
   while (True):
-    
-    print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '') 
+    print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')
+#    print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '') 
     print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
     print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
     print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
