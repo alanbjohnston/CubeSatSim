@@ -105,6 +105,7 @@ long time_start;
 char cmdbuffer[1000];
 FILE * file1;
 short int buffer[2336400]; // max size for 10 frames count of BPSK
+FILE *sopen(const char *program);
 
 #define S_RATE	(48000) // (44100)
 
@@ -341,7 +342,17 @@ int main(int argc, char * argv[]) {
   strcpy(pythonStr, pythonCmd);
   strcat(pythonStr, busStr);
   strcat(pythonConfigStr, pythonStr);
-  strcat(pythonConfigStr, " c >stdout");  // added stdin
+  strcat(pythonConfigStr, " c");  
+	
+  file1 = sopen(pythonConfigStr);  // try new function
+  fgets(cmdbuffer, 1000, file1);
+  printf("pythonStr result: %s\n", cmdbuffer);
+	
+  sleep(5);
+  fputc('\n', file1);
+  fgets(cmdbuffer, 1000, file1);
+  printf("pythonStr result2: %s\n", cmdbuffer);	
+
 	
   file1 = popen(pythonConfigStr, "w");
 
@@ -1735,6 +1746,35 @@ else {
 
   return;
 }
+
+// code by https://stackoverflow.com/questions/25161377/open-a-cmd-program-with-full-functionality-i-o/25177958#25177958
+
+    FILE *sopen(const char *program)
+    {
+        int fds[2];
+        pid_t pid;
+
+        if (socketpair(AF_UNIX, SOCK_STREAM, 0, fds) < 0)
+            return NULL;
+
+        switch(pid=vfork()) {
+        case -1:    /* Error */
+            close(fds[0]);
+            close(fds[1]);
+            return NULL;
+        case 0:     /* child */
+            close(fds[0]);
+            dup2(fds[1], 0);
+            dup2(fds[1], 1);
+            close(fds[1]);
+            execl("/bin/sh", "sh", "-c", program, NULL);
+            _exit(127);
+        }
+        /* parent */
+        close(fds[1]);
+        return fdopen(fds[0], "r+");
+    }
+
  /*
  * TelemEncoding.h
  *
