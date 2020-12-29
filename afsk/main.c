@@ -102,7 +102,8 @@ int firstTime = 0; // ON;
 long start;
 int testCount = 0;
 long time_start;
-
+char cmdbuffer[1000];
+FILE * file1;
 short int buffer[2336400]; // max size for 10 frames count of BPSK
 
 #define S_RATE	(48000) // (44100)
@@ -126,7 +127,6 @@ int nrd;
 void write_to_buffer(int i, int symbol, int val);
 void write_wave(int i, short int * buffer);
 int uart_fd;
-int start_subprocess(char *const command[], int *pid, int *infd, int *outfd);
 
 int reset_count;
 float uptime_sec;
@@ -343,32 +343,23 @@ int main(int argc, char * argv[]) {
   strcat(pythonConfigStr, pythonStr);
   strcat(pythonConfigStr, " c");
 	
-  char cmdbuffer[1000];
-
-  //   FILE* file1 = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11 c", "r");
-  FILE * file1 = popen(pythonConfigStr, "w");
+  file1 = popen(pythonConfigStr, "w");
 
   fgets(cmdbuffer, 1000, file1);
-     printf("pythonStr result: %s\n", cmdbuffer);
+  printf("pythonStr result: %s\n", cmdbuffer);
 //  pclose(file1);  
 
-// int pid, infd, outfd;	
-// printf("Start Process Result: %d %d %d %d \n", start_subprocess(pythonConfigStr, &pid, &infd, &outfd), pid, infd, outfd);	
-//   fgets(cmdbuffer, 1000, (FILE *)outfd);
- //    printf("pythonStr result: %s\n", cmdbuffer);
-	
   sleep(5);
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
-     printf("pythonStr result2: %s\n", cmdbuffer);	
+  printf("pythonStr result2: %s\n", cmdbuffer);	
 
 
   sleep(5);
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
-     printf("pythonStr result2: %s\n", cmdbuffer);		
+  printf("pythonStr result2: %s\n", cmdbuffer);		
 
-	
   // try connecting to Arduino payload using UART
 
   if (!ax5043 && !vB3) // don't test if AX5043 is present
@@ -418,12 +409,12 @@ int main(int argc, char * argv[]) {
   i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
 
   // check for camera	
-  char cmdbuffer1[1000];
+//  char cmdbuffer1[1000];
   FILE * file4 = popen("vcgencmd get_camera", "r");
-  fgets(cmdbuffer1, 1000, file4);
+  fgets(cmdbuffer, 1000, file4);
   char camera_present[] = "supported=1 detected=1";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
-  camera = (strstr( (const char *)& cmdbuffer1, camera_present) != NULL) ? ON : OFF;
+  camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
   //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
   pclose(file4);
 
@@ -678,7 +669,7 @@ void get_tlm(void) {
 
     int count1;
     char * token;
-    char cmdbuffer[1000];
+//    char cmdbuffer[1000];
 
     FILE * file = popen(pythonStr, "r");
     fgets(cmdbuffer, 1000, file);
@@ -1005,48 +996,6 @@ void get_tlm(void) {
   return;
 }
 
-// code by https://stackoverflow.com/users/2876370/pavel-%c5%a0imerda
-
-int start_subprocess(char *const command[], int *pid, int *infd, int *outfd)
-{
-    int p1[2], p2[2];
-
-    if (!pid || !infd || !outfd)
-        return 0;
-
-    if (pipe(p1) == -1) {
-        printf("Error pipe1\n");
-	return 0;
-    }  if (pipe(p2) == -1) {
-        printf("Error pipe2\n");
-	return 0;
-    }   if ((*pid = fork()) == -1) {
-        printf("Error fork\n");
-	return 0;
-    }
-
-    if (*pid) {
-        /* Parent process. */
-        *infd = p1[1];
-        *outfd = p2[0];
-        close(p1[0]);
-        close(p2[1]);
-        return 1;
-    } else {
-        /* Child process. */
-        dup2(p1[0], 0);
-        dup2(p2[1], 1);
-        close(p1[0]);
-        close(p1[1]);
-        close(p2[0]);
-        close(p2[1]);
-        execvp(*command, command);
-        /* Error occured. */
-        fprintf(stderr, "error running %s: %s", *command, strerror(errno));
-        abort();
-    }
-}
-
 void get_tlm_fox() {
 
   //  Reading I2C voltage and current sensors
@@ -1218,12 +1167,12 @@ void get_tlm_fox() {
 else {
     int count1;
     char * token;
-    char cmdbuffer[1000];
+//    char cmdbuffer[1000];
 /**/
-    FILE * file = popen(pythonStr, "r");
-    fgets(cmdbuffer, 1000, file);
+//    FILE * file = popen(pythonStr, "r");
+    fgets(cmdbuffer, 1000, file1);
     //  printf("result: %s\n", cmdbuffer);
-    pclose(file);
+//    pclose(file);
 /**/
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
