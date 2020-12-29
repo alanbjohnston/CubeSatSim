@@ -353,7 +353,7 @@ int main(int argc, char * argv[]) {
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result2: %s\n", cmdbuffer);	
 
-	
+/*	
   file1 = popen(pythonConfigStr, "w");
 
   fgets(cmdbuffer, 1000, file1);
@@ -375,7 +375,7 @@ int main(int argc, char * argv[]) {
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result2: %s\n", cmdbuffer);		
-
+*/
   // try connecting to Arduino payload using UART
 
   if (!ax5043 && !vB3) // don't test if AX5043 is present
