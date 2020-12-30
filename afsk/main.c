@@ -1728,13 +1728,11 @@ else {
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
     printf("Millis6: %d Result of socket send: %d \n\n", (unsigned int)millis() - start, sock_ret);
     
-//    sleep(2.5);
-
-	  
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
-      	 	sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-             		printf("Millis6: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
+      sleep(0.5);
+      sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+      printf("Millis6: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
     }
 
     if (sock_ret == -1) {
