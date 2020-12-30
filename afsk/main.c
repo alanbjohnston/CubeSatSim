@@ -612,7 +612,7 @@ int main(int argc, char * argv[]) {
     }
 
     #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Getting ready to send\n");
+//    fprintf(stderr, "INFO: Getting ready to send\n");
     #endif
   }
 
@@ -1022,7 +1022,7 @@ void get_tlm(void) {
 void get_tlm_fox() {
 
   //  Reading I2C voltage and current sensors
-
+/*
   FILE * uptime_file = fopen("/proc/uptime", "r");
   fscanf(uptime_file, "%f", & uptime_sec);
   uptime = (int) uptime_sec;
@@ -1030,7 +1030,7 @@ void get_tlm_fox() {
   printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
   #endif
   fclose(uptime_file);
-
+*/
   int i;
   //	long int sync = SYNC_WORD;
   long int sync = syncWord;
@@ -1114,6 +1114,13 @@ void get_tlm_fox() {
     memset(sensor, 0, sizeof(sensor));
     memset(other, 0, sizeof(other));	
 	  
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  uptime = (int) uptime_sec;
+  #ifdef DEBUG_LOGGING
+  printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+  #endif
+  fclose(uptime_file);	  
     if (sim_mode) {
       // simulated telemetry 
 
@@ -1319,11 +1326,11 @@ else {
           sensor_min[count1] = sensor[count1];
         if (sensor[count1] > sensor_max[count1])
           sensor_max[count1] = sensor[count1];
-
+      }  // just added
     //    printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
 	    
   }
-//  if (mode == FSK) {
+  if (mode == FSK) {  // just added
     for (int count1 = 0; count1 < 8; count1++) {
       if (voltage[count1] < voltage_min[count1])
         voltage_min[count1] = voltage[count1];
@@ -1383,13 +1390,13 @@ else {
    }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
-
+/*
     FILE * uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", & uptime_sec);
     uptime = (int) uptime_sec;
     fclose(uptime_file);
     printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-	  
+*/	  
     //sleep(1);
     //printf("Sleep over\n");
 
