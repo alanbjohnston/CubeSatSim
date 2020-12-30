@@ -1100,7 +1100,7 @@ void get_tlm_fox() {
 //      printf("Tx LED Off\n");
       #endif
 
-      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
+//      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
       sampleTime = (unsigned int) millis();
     } else
       printf("first time - no sleep\n");
