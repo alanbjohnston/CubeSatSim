@@ -119,6 +119,7 @@ int rpitxStatus = -1;
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000; // 1200
 short int sin_samples;
+short int sin_map[16];
 
 int smaller;
 int flip_ctr = 0;
