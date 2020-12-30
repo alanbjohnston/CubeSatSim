@@ -1256,8 +1256,6 @@ else {
     }
     fclose(cpuTempSensor);
 
-
-
     if (payload == ON) {  // -55
       STEMBoardFailure = 0;
 
@@ -1316,38 +1314,33 @@ else {
           }
         }
         printf("\n");
-
       }
-
     }
-      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+    if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
       for (count1 = 0; count1 < 17; count1++) {
         if (sensor[count1] < sensor_min[count1])
           sensor_min[count1] = sensor[count1];
         if (sensor[count1] > sensor_max[count1])
           sensor_max[count1] = sensor[count1];
-      }  // just added
     //    printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
-	    
+      }  // just added	    
+    }
+    if (mode == FSK) {  // just added
+      for (int count1 = 0; count1 < 8; count1++) {
+        if (voltage[count1] < voltage_min[count1])
+          voltage_min[count1] = voltage[count1];
+        if (current[count1] < current_min[count1])
+          current_min[count1] = current[count1];
+	      
+        if (voltage[count1] > voltage_max[count1])
+          voltage_max[count1] = voltage[count1];
+        if (current[count1] > current_max[count1])
+          current_max[count1] = current[count1];
+
+        printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+    }
   }
-  if (mode == FSK) {  // just added
-    for (int count1 = 0; count1 < 8; count1++) {
-      if (voltage[count1] < voltage_min[count1])
-        voltage_min[count1] = voltage[count1];
-      if (current[count1] < current_min[count1])
-        current_min[count1] = current[count1];
-
-      if (voltage[count1] > voltage_max[count1])
-        voltage_max[count1] = voltage[count1];
-      if (current[count1] > current_max[count1])
-        current_max[count1] = current[count1];
-
-      printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
-    }
-
-
-      }
-    }
+}
 
     for (int count1 = 0; count1 < 3; count1++) {
       if (other[count1] < other_min[count1])
