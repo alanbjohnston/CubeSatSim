@@ -1733,7 +1733,7 @@ else {
 	  
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
-      	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
+      	 	sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
              		printf("Millis6: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
     }
 
