@@ -1340,37 +1340,38 @@ void get_tlm_fox() {
 
         //  printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
       }
-   }  // just moved again
-   if (mode == FSK) {	  
-    if (loop % 8 == 0) {
-      printf("Sending MIN frame \n");
-      frm_type = 0x03;
-      for (int count1 = 0; count1 < 17; count1++) {
-        if (count1 < 3)
-          other[count1] = other_min[count1];
-        if (count1 < 8) {
-          voltage[count1] = voltage_min[count1];
-          current[count1] = current_min[count1];
+      if (loop % 8 == 0) {
+        printf("Sending MIN frame \n");
+        frm_type = 0x03;
+        for (int count1 = 0; count1 < 17; count1++) {
+          if (count1 < 3)
+            other[count1] = other_min[count1];
+          if (count1 < 8) {
+            voltage[count1] = voltage_min[count1];
+            current[count1] = current_min[count1];
+          }
+          if (sensor_min[count1] != 1000.0) // make sure values are valid
+            sensor[count1] = sensor_min[count1];
         }
-        if (sensor_min[count1] != 1000.0) // make sure values are valid
-          sensor[count1] = sensor_min[count1];
       }
-    }
-    if ((loop + 4) % 8 == 0) {
-      printf("Sending MAX frame \n");
-      frm_type = 0x02;
-      for (int count1 = 0; count1 < 17; count1++) {
-        if (count1 < 3)
-          other[count1] = other_max[count1];
-        if (count1 < 8) {
-          voltage[count1] = voltage_max[count1];
-          current[count1] = current_max[count1];
+      if ((loop + 4) % 8 == 0) {
+        printf("Sending MAX frame \n");
+        frm_type = 0x02;
+        for (int count1 = 0; count1 < 17; count1++) {
+          if (count1 < 3)
+            other[count1] = other_max[count1];
+          if (count1 < 8) {
+            voltage[count1] = voltage_max[count1];
+            current[count1] = current_max[count1];
+          }
+          if (sensor_max[count1] != -1000.0) // make sure values are valid
+            sensor[count1] = sensor_max[count1];
         }
-        if (sensor_max[count1] != -1000.0) // make sure values are valid
-          sensor[count1] = sensor_max[count1];
-      }
-    }
-   }
+      }	        
+    }  
+	  
+//   if (mode == FSK) {	// remove this 
+//   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
 /*
@@ -1423,9 +1424,6 @@ void get_tlm_fox() {
 
     if (payload == ON)
       STEMBoardFailure = 0;
-
-    //  if (payload == ON)
-    //	  STEMBoardFailure = 0;
 
     // read payload sensor if available
 
