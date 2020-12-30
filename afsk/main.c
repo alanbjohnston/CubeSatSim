@@ -1114,15 +1114,15 @@ void get_tlm_fox() {
     memset(sensor, 0, sizeof(sensor));
     memset(other, 0, sizeof(other));	
 	  
-  FILE * uptime_file = fopen("/proc/uptime", "r");
-  fscanf(uptime_file, "%f", & uptime_sec);
-  uptime = (int) uptime_sec;
-  #ifdef DEBUG_LOGGING
-  printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-  #endif
-  fclose(uptime_file);	  
-    if (sim_mode) {
-      // simulated telemetry 
+    FILE * uptime_file = fopen("/proc/uptime", "r");
+    fscanf(uptime_file, "%f", & uptime_sec);
+    uptime = (int) uptime_sec;
+    #ifdef DEBUG_LOGGING
+    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+    #endif
+    fclose(uptime_file);	
+	  
+    if (sim_mode) { // simulated telemetry 
 
       double time = ((long int)millis() - time_start) / 1000.0;
 
@@ -1132,11 +1132,6 @@ void get_tlm_fox() {
         printf("\n\nSwitching eclipse mode! \n\n");
       }
 
-      /*
-        double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
-        double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
-        double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
-      */
       double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
       double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
       double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
@@ -1193,139 +1188,137 @@ void get_tlm_fox() {
 
       // end of simulated telemetry
     }
-  
-else {
-    int count1;
-    char * token;
+    else {
+      int count1;
+      char * token;
 //    char cmdbuffer[1000];
 /**/
 //    FILE * file = popen(pythonStr, "r");
-    fputc('\n', file1);
-    fgets(cmdbuffer, 1000, file1);
+      fputc('\n', file1);
+      fgets(cmdbuffer, 1000, file1);
 //    printf("Python read Result: %s\n", cmdbuffer);
 //    pclose(file);
 /**/
-    const char space[2] = " ";
-    token = strtok(cmdbuffer, space);
+      const char space[2] = " ";
+      token = strtok(cmdbuffer, space);
 
-    for (count1 = 0; count1 < 8; count1++) {
-      if (token != NULL) {
-        voltage[count1] = (float) atof(token);
-        #ifdef DEBUG_LOGGING
-        //		printf("voltage: %f ", voltage[count1]);
-        #endif
-        token = strtok(NULL, space);
+      for (count1 = 0; count1 < 8; count1++) {
         if (token != NULL) {
-          current[count1] = (float) atof(token);
-          if ((current[count1] < 0) && (current[count1] > -0.5))
-            current[count1] *= (-1.0f);
+          voltage[count1] = (float) atof(token);
           #ifdef DEBUG_LOGGING
-          //		 printf("current: %f\n", current[count1]);
+          //  printf("voltage: %f ", voltage[count1]);
           #endif
           token = strtok(NULL, space);
-        }
-      }
-    }
-
-    //	 printf("\n"); 	  
-	
-
-//   sleep(0.5);
-//    printf("Sleep over\n");	
-	
-    batteryVoltage = voltage[map[BAT]];
-    if (batteryVoltage < 3.5) {
-      NormalModeFailure = 1;
-      printf("Safe Mode!\n");
-    } else
-      NormalModeFailure = 0;
-
-    FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-    if (cpuTempSensor) {
-      double cpuTemp;
-      fscanf(cpuTempSensor, "%lf", & cpuTemp);
-      cpuTemp /= 1000;
-
-      #ifdef DEBUG_LOGGING
-      printf("CPU Temp Read: %6.1f\n", cpuTemp);
-      #endif
-
-      other[IHU_TEMP] = (double)cpuTemp;
-
-      //    IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-    }
-    fclose(cpuTempSensor);
-
-    if (payload == ON) {  // -55
-      STEMBoardFailure = 0;
-
-      char c;
-      int charss = (char) serialDataAvail(uart_fd);
-      if (charss != 0)
-        printf("Clearing buffer of %d chars \n", charss);
-      while ((charss--> 0))
-        c = (char) serialGetchar(uart_fd); // clear buffer
-
-      unsigned int waitTime;
-      int i = 0;
-      serialPutchar(uart_fd, '?');
-      printf("Querying payload with ?\n");
-      waitTime = millis() + 500;
-      int end = FALSE;
-      //     int retry = FALSE;
-      while ((millis() < waitTime) && !end) {
-        int chars = (char) serialDataAvail(uart_fd);
-        while ((chars--> 0) && !end) {
-          c = (char) serialGetchar(uart_fd);
-          //	  printf ("%c", c);
-          //	  fflush(stdout);
-          if (c != '\n') {
-            sensor_payload[i++] = c;
-          } else {
-            end = TRUE;
+          if (token != NULL) {
+            current[count1] = (float) atof(token);
+            if ((current[count1] < 0) && (current[count1] > -0.5))
+              current[count1] *= (-1.0f);
+            #ifdef DEBUG_LOGGING
+            //  printf("current: %f\n", current[count1]);
+            #endif
+            token = strtok(NULL, space);
           }
         }
       }
-      sensor_payload[i++] = ' ';
-      //    sensor_payload[i++] = '\n';
-      sensor_payload[i] = '\0';
-      printf("Payload string: %s", sensor_payload);
+    //	 printf("\n"); 	  
+	
+//   sleep(0.5);
+//    printf("Sleep over\n");	
+	
+      batteryVoltage = voltage[map[BAT]];
+      if (batteryVoltage < 3.5) {
+        NormalModeFailure = 1;
+        printf("Safe Mode!\n");
+      } else
+        NormalModeFailure = 0;
 
-      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
-      {
-        int count1;
-        char * token;
-        //   char cmdbuffer[1000];
+      FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+      if (cpuTempSensor) {
+        double cpuTemp;
+        fscanf(cpuTempSensor, "%lf", & cpuTemp);
+        cpuTemp /= 1000;
+
+        #ifdef DEBUG_LOGGING
+        printf("CPU Temp Read: %6.1f\n", cpuTemp);
+        #endif
+
+        other[IHU_TEMP] = (double)cpuTemp;
+
+      //  IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+      }
+      fclose(cpuTempSensor);
+
+      if (payload == ON) {  // -55
+        STEMBoardFailure = 0;
+
+        char c;
+        int charss = (char) serialDataAvail(uart_fd);
+        if (charss != 0)
+        printf("Clearing buffer of %d chars \n", charss);
+        while ((charss--> 0))
+          c = (char) serialGetchar(uart_fd); // clear buffer
+
+        unsigned int waitTime;
+        int i = 0;
+        serialPutchar(uart_fd, '?');
+        printf("Querying payload with ?\n");
+        waitTime = millis() + 500;
+        int end = FALSE;
+        //  int retry = FALSE;
+        while ((millis() < waitTime) && !end) {
+          int chars = (char) serialDataAvail(uart_fd);
+          while ((chars--> 0) && !end) {
+            c = (char) serialGetchar(uart_fd);
+            //	printf ("%c", c);
+            //	fflush(stdout);
+            if (c != '\n') {
+              sensor_payload[i++] = c;
+            } else {
+              end = TRUE;
+            }
+          }
+        }
+        sensor_payload[i++] = ' ';
+        //  sensor_payload[i++] = '\n';
+        sensor_payload[i] = '\0';
+        printf("Payload string: %s", sensor_payload);
+
+        if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
+        {
+          int count1;
+          char * token;
+          //  char cmdbuffer[1000];
 
         //	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
         //    	fgets(cmdbuffer, 1000, file);
         //	printf("result: %s\n", cmdbuffer);
         //    	pclose(file);
 
-        const char space[2] = " ";
-        token = strtok(sensor_payload, space);
-        for (count1 = 0; count1 < 17; count1++) {
-          if (token != NULL) {
-            sensor[count1] = (float) atof(token);
-            #ifdef DEBUG_LOGGING
- //           printf("sensor: %f ", sensor[count1]);
-            #endif
-            token = strtok(NULL, space);
+          const char space[2] = " ";
+          token = strtok(sensor_payload, space);
+          for (count1 = 0; count1 < 17; count1++) {
+            if (token != NULL) {
+              sensor[count1] = (float) atof(token);
+              #ifdef DEBUG_LOGGING
+              //  printf("sensor: %f ", sensor[count1]);
+              #endif
+              token = strtok(NULL, space);
+            }
           }
+          printf("\n");
         }
-        printf("\n");
+      }
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+        for (count1 = 0; count1 < 17; count1++) {
+          if (sensor[count1] < sensor_min[count1])
+            sensor_min[count1] = sensor[count1];
+          if (sensor[count1] > sensor_max[count1])
+            sensor_max[count1] = sensor[count1];
+            //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+        }   	    
       }
     }
-    if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-      for (count1 = 0; count1 < 17; count1++) {
-        if (sensor[count1] < sensor_min[count1])
-          sensor_min[count1] = sensor[count1];
-        if (sensor[count1] > sensor_max[count1])
-          sensor_max[count1] = sensor[count1];
-    //    printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
-      }  // just added	    
-    }
-    if (mode == FSK) {  // just added
+    if (mode == FSK) {  // just moved
       for (int count1 = 0; count1 < 8; count1++) {
         if (voltage[count1] < voltage_min[count1])
           voltage_min[count1] = voltage[count1];
@@ -1338,19 +1331,16 @@ else {
           current_max[count1] = current[count1];
 
         printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
-    }
-  }
-}
+      }
+       for (int count1 = 0; count1 < 3; count1++) {
+        if (other[count1] < other_min[count1])
+          other_min[count1] = other[count1];
+        if (other[count1] > other_max[count1])
+          other_max[count1] = other[count1];
 
-    for (int count1 = 0; count1 < 3; count1++) {
-      if (other[count1] < other_min[count1])
-        other_min[count1] = other[count1];
-      if (other[count1] > other_max[count1])
-        other_max[count1] = other[count1];
-
-   //   printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
-    }
-
+        //  printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
+      }
+   }  // just moved again
    if (mode == FSK) {	  
     if (loop % 8 == 0) {
       printf("Sending MIN frame \n");
