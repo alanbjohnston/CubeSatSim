@@ -1726,15 +1726,15 @@ else {
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-    printf("Millis5: %d Result of socket send: %d \n", (unsigned int)millis() - start, sock_ret);
+    printf("Millis6: %d Result of socket send: %d \n\n", (unsigned int)millis() - start, sock_ret);
     
 //    sleep(2.5);
 
 	  
     if (sock_ret < (ctr * 2 + 2)) {
-      printf("Not resending\n");
-      //	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
-      //       		printf("Millis10: %d Result of socket send: %d \n", millis() - start, sock_ret);
+  //    printf("Not resending\n");
+      	 	sock_ret = send(sock, buffer[sock_ret], ctr * 2 + 2 - sock_ret, 0);
+             		printf("Millis6: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
     }
 
     if (sock_ret == -1) {
