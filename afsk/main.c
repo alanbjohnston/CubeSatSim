@@ -1330,7 +1330,7 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 
-        printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+        // printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
       }
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
