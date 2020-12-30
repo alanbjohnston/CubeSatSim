@@ -349,13 +349,12 @@ int main(int argc, char * argv[]) {
   file1 = sopen(pythonConfigStr);  // try new function
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result: %s\n", cmdbuffer);
-	
+/*	
   sleep(5);
   fputc('\n', file1);
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result2: %s\n", cmdbuffer);	
-
-/*	
+	
   file1 = popen(pythonConfigStr, "w");
 
   fgets(cmdbuffer, 1000, file1);
@@ -1287,7 +1286,7 @@ else {
       sensor_payload[i++] = ' ';
       //    sensor_payload[i++] = '\n';
       sensor_payload[i] = '\0';
-      printf("Payload string: %s \n", sensor_payload);
+      printf("Payload string: %s", sensor_payload);
 
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
       {
