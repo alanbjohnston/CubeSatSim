@@ -1335,7 +1335,7 @@ else {
       if (current[count1] > current_max[count1])
         current_max[count1] = current[count1];
 
-  //    printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+      printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
     }
 
 
