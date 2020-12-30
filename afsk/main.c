@@ -46,7 +46,6 @@
 #define B 2
 #define C 3
 #define D 4
-
 #define PLUS_X 0
 #define PLUS_Y 1
 #define BAT 2
@@ -55,7 +54,6 @@
 #define MINUS_Y 5
 #define PLUS_Z 6
 #define MINUS_Z 7
-
 #define TEMP 2
 #define PRES 3
 #define ALT 4
