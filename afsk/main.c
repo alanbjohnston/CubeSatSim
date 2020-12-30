@@ -1254,7 +1254,7 @@ else {
 
 
 
-    if (payload == -55) {  // ON
+    if (payload == ON) {  // -55
       STEMBoardFailure = 0;
 
       char c;
