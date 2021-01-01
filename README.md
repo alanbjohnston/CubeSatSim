@@ -13,6 +13,7 @@ Requires:
 - pi-power-button
 - Direwolf
 - rpitx
+- cpulimit
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. Runs on a Raspberry Pi 3B, 3B+, or Pi Zero W (Does NOT work on a Pi 4 since rpitx does not work on it yet).  The Pi Zero W or Pi Zero are recommended since they are draw the least power and will result in the best performance under battery power.
 
@@ -22,7 +23,7 @@ To begin the software install, after logging in type:
 
 `sudo apt update -y && sudo apt dist-upgrade -y`
 
-`sudo apt install -y wiringpi git libasound2-dev i2c-tools`
+`sudo apt install -y wiringpi git libasound2-dev i2c-tools cpulimit`
 
 If you are installing on a Pi 4B, you will need to install the 2.52 version of wiring pi by following these steps (you can skip these steps for any other Pi version):
 
