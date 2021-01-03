@@ -15,6 +15,7 @@ wget https://project-downloads.drogon.net/wiringpi-latest.deb
 
 sudo dpkg -i wiringpi-latest.deb
 
+
 cd
 
 sudo cp /boot/config.txt /boot/config.txt.0
@@ -27,9 +28,13 @@ sudo pip3 install --upgrade setuptools
 
 sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
 
+
 cd ~/CubeSatSim
 
-make 
+git pull
+
+make debug
+
 
 cd
 
@@ -41,17 +46,8 @@ make -j
 
 sudo make install
 
-echo "You may get an error in this step - don't worry\n"
-
 make install-rpi
 
-cd
-
-git clone https://github.com/F5OEO/rpitx.git
-
-cd rpitx
-
-./install.sh
 
 cd
 
@@ -61,6 +57,15 @@ cd pi-power-button
 
 ./script/install
 
+cd
+
+git clone https://github.com/F5OEO/rpitx.git
+
+cd rpitx
+
+./install.sh
+
+
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
 sudo systemctl enable cubesatsim
@@ -69,4 +74,5 @@ sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
 
+echo "You still need to edit /boot/config.txt and /boot/cmdline.txt then reboot\n"
 
