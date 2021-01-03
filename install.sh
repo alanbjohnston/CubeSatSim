@@ -78,17 +78,17 @@ if [ "$1" = "u" ]; then
   sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
   
   if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
-    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
-    sudo echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt
-  else
     echo "dtoverlay=i2c-gpio already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
   fi
 
   if [[ $(grep 'dtoverlay=pi3-miniuart-bt' /boot/config.txt) ]]; then
-    echo "adding dtoverlay=pi3-miniuart-bt to /boot/config.txt"
-    sudo echo "\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt
-  else
     echo "dtoverlay=pi3-miniuart-bt already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=pi3-miniuart-bt to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt'
   fi
 fi
 
