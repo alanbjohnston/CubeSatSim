@@ -28,6 +28,21 @@ git pull
 
 make debug
 
+FILE=/home/pi/CubeSatSim/.mode
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "ARG1=f" >> .mode
+fi
+
+FILE=/home/pi/CubeSatSim/sim.cfg
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo $1 >> sim.cfg
+fi
 
 cd
 
@@ -71,7 +86,8 @@ sudo cp /boot/config.txt /boot/config.txt.0
 
 sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
 
-if [ "$1" = "u" ]; then
+#if [ "$1" = "u" ]; then
+#fi
 
   sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
   
@@ -90,7 +106,6 @@ if [ "$1" = "u" ]; then
     echo "adding dtoverlay=pi3-miniuart-bt to /boot/config.txt"
     sudo sh -c 'echo "\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt'
   fi
-fi
 
 echo "You need to reboot to complete the installation\n"
 
