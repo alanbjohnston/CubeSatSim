@@ -73,7 +73,7 @@ sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
 
 if [ "$1" = "u" ]; then
 
-  sudo sed -i 's/console=serial0,115200//g' /boot/cmdline.txt
+  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
   
   sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
   
