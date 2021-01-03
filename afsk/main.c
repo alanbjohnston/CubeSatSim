@@ -694,10 +694,11 @@ void get_tlm(void) {
     char * token;
 //    char cmdbuffer[1000];
 
-    FILE * file = popen(pythonStr, "r");
+//    FILE * file = popen(pythonStr, "r");
+    fputc('\n', file1);
     fgets(cmdbuffer, 1000, file);
     //   printf("result: %s\n", cmdbuffer);
-    pclose(file);
+//    pclose(file);
 
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
