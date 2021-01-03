@@ -2,9 +2,6 @@
 
 echo -e "\ninstallation script for CubeSatSim\n"
 
-#if [ "$1" = "c" ]; then
-#fi
-
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
 sudo apt-get install -y wiringpi git libasound2-dev i2c-tools cpulimit
@@ -48,7 +45,6 @@ sudo make install
 
 make install-rpi
 
-
 cd
 
 git clone https://github.com/alanbjohnston/pi-power-button.git
@@ -65,7 +61,6 @@ cd rpitx
 
 ./install.sh
 
-
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
 sudo systemctl enable cubesatsim
@@ -74,5 +69,13 @@ sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
 
-echo "You still need to edit /boot/config.txt and /boot/cmdline.txt then reboot\n"
+if [ "$1" = "u" ]; then
+
+  sed -i 's/console=serial0,115200//g' /boot/cmdline.txt
+  
+  sudo echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt
+
+fi
+
+echo "You need to reboot to complete the installation\n"
 
