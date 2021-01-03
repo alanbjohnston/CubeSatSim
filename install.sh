@@ -15,10 +15,6 @@ sudo dpkg -i wiringpi-latest.deb
 
 cd
 
-sudo cp /boot/config.txt /boot/config.txt.0
-
-sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
-
 sudo apt install -y python3-pip python-smbus
 
 sudo pip3 install --upgrade setuptools
@@ -61,6 +57,8 @@ cd rpitx
 
 ./install.sh
 
+cd
+
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
 sudo systemctl enable cubesatsim
@@ -69,13 +67,15 @@ sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
 
+sudo cp /boot/config.txt /boot/config.txt.0
+
+sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
+
 if [ "$1" = "u" ]; then
 
   sudo sed -i 's/console=serial0,115200//g' /boot/cmdline.txt
   
   sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
-  
-  sudo echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt
   
   if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
     echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
