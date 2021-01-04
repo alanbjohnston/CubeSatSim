@@ -106,6 +106,20 @@ sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
     echo "adding dtoverlay=pi3-miniuart-bt to /boot/config.txt"
     sudo sh -c 'echo "\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt'
   fi
+  
+  if [[ $(grep 'dtoverlay=dwc2' /boot/config.txt) ]]; then
+    echo "dtoverlay=dwc2 aalready in /boot/config.txt"
+  else
+    echo "adding dtoverlay=dwc2 to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=dwc2" >> /boot/config.txt'
+  fi
 
+  if [[ $(grep 'modules-load=dwc2,g_ether' /boot/cmdline.txt) ]]; then
+    echo "modules-load=dwc2,g_ether already in /boot/cmdline.txt"
+  else
+    echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
+    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_etherg/g' /boot/cmdline.txt
+  fi
+  
 echo "You need to reboot to complete the installation\n"
 
