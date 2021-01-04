@@ -82,9 +82,12 @@ sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
 
+
 sudo cp /boot/config.txt /boot/config.txt.0
 
 sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
+
+sudo raspi-config nonint do_i2c 0
 
 #if [ "$1" = "u" ]; then
 #fi
