@@ -410,7 +410,8 @@ int main(int argc, char * argv[]) {
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
   #endif
 
-  if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF)) {
+  // if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF)) {
+  if (i2c_bus1 == OFF) {  // i2c bus 1 can be turned off using raspi-config to enable sim mode without reboot
 
     sim_mode = TRUE;
 
