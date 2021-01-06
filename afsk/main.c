@@ -173,7 +173,10 @@ int main(int argc, char * argv[]) {
     } else {
       printf("Mode FSK\n");
     }
-
+	  
+// force afsk mode
+mode = AFSK;
+	  
     if (argc > 2) {
       //		  printf("String is %s %s\n", *argv[2], argv[2]);
       loop = atoi(argv[2]);
@@ -409,7 +412,9 @@ int main(int argc, char * argv[]) {
   #ifdef DEBUG_LOGGING
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
   #endif
-
+	
+// no sim mode
+/*	
   // if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF)) {
   if (i2c_bus1 == OFF) {  // i2c bus 1 can be turned off using raspi-config to enable sim mode without reboot
 
@@ -459,7 +464,7 @@ int main(int argc, char * argv[]) {
     if (eclipse == 0.0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
-
+*/
   //int ret;
   //uint8_t data[1024];
 
@@ -818,7 +823,8 @@ void get_tlm(void) {
     char header_long[10];
     char header_str4[] = "hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'";
-    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
+//    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
+    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 144.29e3 > /dev/null 2>&1";
 
     if (ax5043) {
       strcpy(str, header_str);
@@ -845,6 +851,8 @@ void get_tlm(void) {
       }
     }
 
+// skip normal telemetry
+/*	  
     int channel;
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
@@ -867,7 +875,7 @@ void get_tlm(void) {
     //printf("Before 1st strcpy\n");
     strcat(cw_str2, cw_footer2);
     //printf("Before 1st strcpy\n");
-
+*/
     // read payload sensor if available
 
     char sensor_payload[500];
