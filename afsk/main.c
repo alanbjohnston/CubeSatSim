@@ -920,7 +920,7 @@ void get_tlm(void) {
     printf("Tx LED On\n");
     #endif
     if (mode == CW)
-      system(cw_str2);
+      ; //  system(cw_str2);
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
     printf("Tx LED On\n");
