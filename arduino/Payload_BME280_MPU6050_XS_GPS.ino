@@ -22,7 +22,7 @@ int Sensor2 = 0;
 float Sensor3 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
-float flat = 0.0, flon = 0.0, flel = 0.0;
+float lat = 0.0, lon = 0.0, alt = 0.0;
 
 void setup() {
 
@@ -144,7 +144,7 @@ void loop() {
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ()); 
       } else {
-          Serial.print("OK MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
+          Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
       }
     
     Serial.print(" XS ");
@@ -159,7 +159,10 @@ void loop() {
     bool newData = false;
     unsigned long chars;
     unsigned short sentences, failed;
-  
+    
+  // For one second we parse GPS data and report some key values
+  for (unsigned long start = millis(); millis() - start < 1000;) // 1000;)
+  {  
     while (Serial2.available())
     {
       char c = Serial2.read();
@@ -167,10 +170,23 @@ void loop() {
       if (gps.encode(c)) // Did a new valid sentence come in?
         newData = true;
     }
-     if (newData)
+  } 
+    if (newData)
   {
+    float flon, flat;
     unsigned long age;
     gps.f_get_position(&flat, &flon, &age);
+    lat = flat * 100;
+    lon = flon * 100;
+    alt = (float) gps.altitude()/100.0;
+    
+    Serial.print(" GPS ");
+    Serial.print(lat);   
+    Serial.print(" ");
+    Serial.print(lon);              
+    Serial.print(" ");
+    Serial.println(alt);  
+/*    
     Serial.print("LAT=");
     Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
     Serial.print(" LON=");
@@ -179,14 +195,8 @@ void loop() {
     Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
     Serial.print(" PREC=");
     Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
+*/
   }
-
-    Serial.print(" GPS ");
-    Serial.print(flat);   
-    Serial.print(" ");
-    Serial.print(flon);              
-    Serial.print(" ");
-    Serial.println(flel);  
       
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -250,7 +260,7 @@ void loop() {
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
       } else {
-      Serial1.print("OK MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
+      Serial1.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
      
     }
     Serial1.print(" XS ");
