@@ -43,14 +43,15 @@ void setup() {
   blink(500);
   delay(250);  
  
- /* 
+ /**/ 
   if (bme.begin(0x76)) {
     bmePresent = 1;
   } else {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     bmePresent = 0;
   }
-
+  
+/**/
   Wire.beginTransmission(0x68);
 //  Serial.print(address, HEX);
   byte error = Wire.endTransmission();
@@ -58,7 +59,7 @@ void setup() {
     mpuPresent = 1;
   else
     Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
-*/
+/**/
 if (mpuPresent) {
   mpu6050.begin();
 
@@ -154,7 +155,12 @@ void loop() {
     Serial.print(" ");
     Serial.print(Sensor3);  
 
-//    Serial.println(" GPS 0.0 0.0 0.0");
+    Serial.print(" GPS "); // return previous GPS data (can't wait due to 1 sec delay)
+    Serial.print(lat);   
+    Serial.print(" ");
+    Serial.print(lon);              
+    Serial.print(" ");
+    Serial.println(alt);   
     
     bool newData = false;
     unsigned long chars;
@@ -180,12 +186,6 @@ void loop() {
     lon = flon * 100;
     alt = (float) gps.altitude()/100.0;
     
-    Serial.print(" GPS ");
-    Serial.print(lat);   
-    Serial.print(" ");
-    Serial.print(lon);              
-    Serial.print(" ");
-    Serial.println(alt);  
 /*    
     Serial.print("LAT=");
     Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
@@ -196,8 +196,8 @@ void loop() {
     Serial.print(" PREC=");
     Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
 */
-  }
-      
+  } 
+    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
