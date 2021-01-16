@@ -12,7 +12,8 @@ MPU6050 mpu6050(Wire);
 TinyGPS gps;
 
 long timer = 0;
-int bmePresent;
+int bmePresent = 0;
+int mpuPresent = 0;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 9;
 int blueLED = 8;
@@ -21,7 +22,7 @@ int Sensor2 = 0;
 float Sensor3 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
-float flat, flon;
+float flat = 0.0, flon = 0.0, flel = 0.0;
 
 void setup() {
 
@@ -41,7 +42,8 @@ void setup() {
   delay(250);
   blink(500);
   delay(250);  
-  
+ 
+ /* 
   if (bme.begin(0x76)) {
     bmePresent = 1;
   } else {
@@ -49,6 +51,15 @@ void setup() {
     bmePresent = 0;
   }
 
+  Wire.beginTransmission(0x68);
+//  Serial.print(address, HEX);
+  byte error = Wire.endTransmission();
+  if (error == 0)
+    mpuPresent = 1;
+  else
+    Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
+*/
+if (mpuPresent) {
   mpu6050.begin();
 
   if (eeprom_word_read(0) == 0xA07)
@@ -81,6 +92,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
+}
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED, OUTPUT);
 }
@@ -113,6 +125,9 @@ void loop() {
       {
         Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
+
+      if (mpuPresent) {
+       
       mpu6050.update();
 
       Serial.print(" MPU6050 ");
@@ -127,7 +142,10 @@ void loop() {
     Serial.print(" ");
     Serial.print(mpu6050.getAccY());   
     Serial.print(" ");
-    Serial.print(mpu6050.getAccZ());  
+    Serial.print(mpu6050.getAccZ()); 
+      } else {
+          Serial.print("OK MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
+      }
     
     Serial.print(" XS ");
     Serial.print(Sensor1);   
@@ -136,7 +154,7 @@ void loop() {
     Serial.print(" ");
     Serial.print(Sensor3);  
 
-    Serial.println(" GPS 0.0 0.0");
+//    Serial.println(" GPS 0.0 0.0 0.0");
     
     bool newData = false;
     unsigned long chars;
@@ -145,7 +163,7 @@ void loop() {
     while (Serial2.available())
     {
       char c = Serial2.read();
-      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+//      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
       if (gps.encode(c)) // Did a new valid sentence come in?
         newData = true;
     }
@@ -162,6 +180,13 @@ void loop() {
     Serial.print(" PREC=");
     Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
   }
+
+    Serial.print(" GPS ");
+    Serial.print(flat);   
+    Serial.print(" ");
+    Serial.print(flon);              
+    Serial.print(" ");
+    Serial.println(flel);  
       
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -208,6 +233,7 @@ void loop() {
       {
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
       }
+      if (mpuPresent) {
       mpu6050.update();
 
       Serial1.print(" MPU6050 ");
@@ -223,7 +249,10 @@ void loop() {
     Serial1.print(mpu6050.getAccY());   
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
-  
+      } else {
+      Serial1.print("OK MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
+     
+    }
     Serial1.print(" XS ");
     Serial1.print(Sensor1);   
     Serial1.print(" ");
