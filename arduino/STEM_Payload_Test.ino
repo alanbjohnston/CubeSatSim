@@ -31,6 +31,14 @@ void setup() {
   // initialize digital pin PB1 as an output.
   pinMode(PB9, OUTPUT);
   pinMode(PB8, OUTPUT);
+  pinMode(PA0, INPUT_ANALOG);
+  pinMode(PA1, INPUT_ANALOG);
+  pinMode(PA2, INPUT_ANALOG);
+
+  T2 = 25; // Temperature data point 1
+  R2 = 2111; // Reading data point 1
+  T1 = 23; // Temperature data point 2
+  R1 = 2097; // Reading data point 2
 #endif
 
 #if defined __AVR_ATmega32U4__
@@ -44,22 +52,22 @@ void setup() {
 // the loop function runs over and over again forever
 void loop() {
   ledWrite(greenLED, HIGH);   // turn the LED on (HIGH is the voltage level)
-  ledSet(blueLED, LOW);   // turn the LED on (HIGH is the voltage level)
+  ledWrite(blueLED, LOW);   // turn the LED on (HIGH is the voltage level)
   delay(1000);              // wait for a second
   ledWrite(greenLED, LOW);    // turn the LED off by making the voltage LOW
-  ledlWrite(blueLED, HIGH);   // turn the LED on (HIGH is the voltage level)
+  ledWrite(blueLED, HIGH);   // turn the LED on (HIGH is the voltage level)
   delay(1000); // wait for a second
 
-  sensorValue = analogRead(A0);
+  sensorValue = readAnalog(0);
 //  Serial.println(sensorValue);
-  sensorValue = analogRead(A1);
+  sensorValue = readAnalog(1);
   
   float temp = T1 + (sensorValue - R1) *(T2 - T1)/(R2 - R1);
   Serial.print("Temperature: ");
   Serial.print(temp);
   Serial.println(" C");
   
-  sensorValue = analogRead(A2);
+  sensorValue = readAnalog(2);
 //  Serial.println(sensorValue);  
 }
 
@@ -75,4 +83,23 @@ void ledWrite(int ledPin, bool state)
 #if defined __AVR_ATmega32U4__
   digitalWrite(ledPin, state);   
 #endif  
+}
+
+int readAnalog(int pin)
+{
+  int value = 0;
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  if (pin == 0)
+    value = analogRead(PA0);
+  else if (pin == 1)
+    value = analogRead(PA1);    
+  else if (pin == 2)
+    value = analogRead(PA2);   
+#endif
+
+#if defined __AVR_ATmega32U4__
+  value = analogRead(pin);   
+#endif  
+
+  return(value);
 }
