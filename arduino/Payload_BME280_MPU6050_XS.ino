@@ -27,16 +27,20 @@ void setup() {
   Serial1.begin(9600);  // Pi UART
 
   Serial.println("Starting!");
-
+  
   blink_setup();
 
   blink(500);
   delay(250);
   blink(500);
   delay(250);
-  blink(500);
-  delay(250);  
-  
+  led_set(greenLED, HIGH);
+  delay(250);
+  led_set(greenLED, LOW);
+  led_set(blueLED, HIGH);
+  delay(250);
+  led_set(blueLED, LOW);
+      
   if (bme.begin(0x76)) {
     bmePresent = 1;
   } else {
@@ -136,14 +140,14 @@ void loop() {
 //    Serial.println(acceleration);
 
     if (acceleration > 1.2)
-        digitalWrite(greenLED, HIGH);
+        led_set(greenLED, HIGH);
     else
-        digitalWrite(greenLED, LOW);
+        led_set(greenLED, LOW);
         
     if (rotation > 5)
-        digitalWrite(blueLED, HIGH);
+        led_set(blueLED, HIGH);
     else
-        digitalWrite(blueLED, LOW);          
+        led_set(blueLED, LOW);          
     }    
   }
 
@@ -204,14 +208,14 @@ void loop() {
 //    Serial.println(acceleration);
 
     if (acceleration > 1.2)
-        digitalWrite(greenLED, HIGH);
+        led_set(greenLED, HIGH);
     else
-        digitalWrite(greenLED, LOW);
+        led_set(greenLED, LOW);
         
     if (rotation > 5)
-        digitalWrite(blueLED, HIGH);
+        led_set(blueLED, HIGH);
     else
-        digitalWrite(blueLED, LOW);
+        led_set(blueLED, LOW);
     }
   }
 
@@ -234,11 +238,15 @@ void blink_setup()
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)  
   // initialize digital pin PB1 as an output.
   pinMode(PC13, OUTPUT);
+  pinMode(PB9, OUTPUT);
+  pinMode(PB8, OUTPUT);
 #endif
 
 #if defined __AVR_ATmega32U4__
   pinMode(RXLED, OUTPUT);  // Set RX LED as an output
   // TX LED is set as an output behind the scenes
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED,OUTPUT);
 #endif
 }
 
@@ -262,5 +270,19 @@ void blink(int length)
 #if defined __AVR_ATmega32U4__
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
+#endif  
+}
+
+void led_set(int ledPin, bool state)
+{
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  if (ledPin == greenLED)
+    digitalWrite(PB9, state);
+  else if (ledPin == blueLED)
+    digitalWrite(PB8, state);    
+#endif
+
+#if defined __AVR_ATmega32U4__
+  digitalWrite(ledPin, state);   
 #endif  
 }
