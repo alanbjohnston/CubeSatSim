@@ -17,6 +17,8 @@ The other option is to start with any Raspberry Pi OS (Rasbian) image and run th
 - pi-power-button
 - Direwolf
 - rpitx
+- python3-pip 
+- python-smbus
 
 ## Disk Image Option Steps
 
