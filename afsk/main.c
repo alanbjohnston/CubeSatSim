@@ -412,7 +412,7 @@ int main(int argc, char * argv[]) {
   #endif
 
   // if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF)) {
-  if (i2c_bus1 == OFF) {  // i2c bus 1 can be turned off using raspi-config to enable sim mode without reboot
+  if (i2c_bus3 == OFF) {  // i2c bus 13 can be turned off manually by editing /boot/config.txt
 
     sim_mode = TRUE;
 
