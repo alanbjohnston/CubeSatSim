@@ -1,4 +1,4 @@
-/*
+
  *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, or BPSK format
  *
  *  Copyright Alan B. Johnston
@@ -918,6 +918,7 @@ void get_tlm(void) {
       strcat(str, sensor_payload); // append to telemetry string for transmission
 	    
 // parse sensor payload
+      float sensor[17];
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
       {
         int count1;
