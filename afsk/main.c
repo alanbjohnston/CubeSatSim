@@ -916,6 +916,28 @@ void get_tlm(void) {
       printf("Payload string: %s", sensor_payload);
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
+	    
+// parse sensor payload
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
+      {
+        int count1;
+        char * token;
+        const char space[2] = " ";
+        token = strtok(sensor_payload, space);
+        for (count1 = 0; count1 < 17; count1++) {
+          if (token != NULL) {
+            sensor[count1] = (float) atof(token);
+            #ifdef DEBUG_LOGGING
+            printf("sensor: %f ", sensor[count1]);
+            #endif
+            token = strtok(NULL, space);
+          }
+        }
+        printf("\n");
+	if (sensor[XS1] != 0)      
+		latitude = toAprsFormat(sensor[XS1];
+	if (sensor[XS2] != 0)  
+		longitude = toAprsFormat(sensor[XS2];      	    
     }
 
     digitalWrite(txLed, txLedOn);
