@@ -265,8 +265,8 @@ void loop() {
     float flon, flat;
     unsigned long age;
     gps.f_get_position(&flat, &flon, &age);
-    Sensor1 = flat * 100;
-    Sensor2 = flon * 100;
+    Sensor1 = flat;
+    Sensor2 = flon;
     Sensor3 = (float) gps.altitude()/100.0;
     
 /*    
