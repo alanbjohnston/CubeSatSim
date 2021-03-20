@@ -1982,5 +1982,5 @@ float toAprsFormat(float input) {
     int mm1 = (int)((input - dd) * 60);
     int mm2 = (int)((input - dd - mm1/60) * 60) ;
     float output = dd * 100 + mm1 + mm2 * 0.01;
-    return(float);	
+    return(output);	
 }
