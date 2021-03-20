@@ -94,6 +94,7 @@ void config_x25();
 void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
+float toAprsFormat(float input);
 static int init_rf();
 int socket_open = 0;
 int sock = 0;
@@ -210,8 +211,10 @@ mode = AFSK;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     printf("Valid latitude and longitude in config file\n");
-    latitude = lat_file;
-    longitude = long_file;
+// convert to APRS DDMM.MM format
+    latitude = toAprsFormat(lat_file);
+    longitude = toAprsFormat(long_file);
+    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
   }
   wiringPiSetup();
 
@@ -1971,4 +1974,13 @@ int test_i2c_bus(int bus)
 		output = -1; 
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
+}
+
+float toAprsFormat(float input) {
+// converts decimal coordinate (lattitude or longitude) to APRS DDMM.MM format	
+    int dd = (int) input;
+    int mm1 = (int)((input - dd) * 60);
+    int mm2 = (int)((input - dd - mm1/60) * 60) ;
+    float output = dd * 100 + mm1 + mm2 * 0.01;
+    return(float);	
 }
