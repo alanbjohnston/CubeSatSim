@@ -1,4 +1,4 @@
-
+/*
  *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, or BPSK format
  *
  *  Copyright Alan B. Johnston
@@ -936,9 +936,9 @@ void get_tlm(void) {
         }
         printf("\n");
 	if (sensor[XS1] != 0)      
-		latitude = toAprsFormat(sensor[XS1];
+		latitude = toAprsFormat(sensor[XS1]);
 	if (sensor[XS2] != 0)  
-		longitude = toAprsFormat(sensor[XS2];      	    
+		longitude = toAprsFormat(sensor[XS2]);      	    
     }
 
     digitalWrite(txLed, txLedOn);
