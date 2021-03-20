@@ -1981,7 +1981,7 @@ float toAprsFormat(float input) {
     int dd = (int) input;
     int mm1 = (int)((input - dd) * 60);
     int mm2; // = (int)((input - dd - mm1/60) * 60 * 60);
-    float mm21 = input - dd - mm1/60
+    float mm21 = input - dd - mm1/60;
     printf("%f ", mm21);
     mm21 = mm21 * 60 * 60;
     printf("%f ", mm21);
