@@ -1980,7 +1980,13 @@ float toAprsFormat(float input) {
 // converts decimal coordinate (lattitude or longitude) to APRS DDMM.MM format	
     int dd = (int) input;
     int mm1 = (int)((input - dd) * 60);
-    int mm2 = (int)((input - dd - mm1/60) * 60 * 60) ;
+    int mm2; // = (int)((input - dd - mm1/60) * 60 * 60);
+    float mm21 = input - dd - mm1/60
+    print("%f ", mm21);
+    mm21 = mm21 * 60 * 60;
+    print("%f ", mm21);
+    mm2 = (int)mm21;
+    print("%d ", mm2);
     float output = dd * 100 + mm1 + mm2 * 0.01;
     return(output);	
 }
