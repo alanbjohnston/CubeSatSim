@@ -936,9 +936,9 @@ void get_tlm(void) {
         }
         printf("\n");
 	if (sensor[XS1] != 0)      
-		latitude = toAprsFormat(sensor[XS1]);
+		latitude = toAprsFormat(sensor[XS1]/100.0);
 	if (sensor[XS2] != 0)  
-		longitude = toAprsFormat(sensor[XS2]);
+		longitude = toAprsFormat(sensor[XS2]/100.0);
       }	      
     }
 
