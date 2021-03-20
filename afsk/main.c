@@ -373,7 +373,7 @@ mode = AFSK;
       for (i = 0; i < 2; i++) {
         serialPutchar(uart_fd, 'R');
         printf("Querying payload with R to reset\n");
-        waitTime = millis() + 500;
+        waitTime = millis() + 5000; // increased from 500 with GPS
         while ((millis() < waitTime) && (payload != ON)) {
           if (serialDataAvail(uart_fd)) {
             printf("%c", c = (char) serialGetchar(uart_fd));
