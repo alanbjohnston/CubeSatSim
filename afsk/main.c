@@ -847,8 +847,6 @@ void get_tlm(void) {
           sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
 
 //	sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // APRS satellite symbol with escaped \ as \\
-	printf("lat: %s long: %s \n", &header_lat, &header_long);
-//        sprintf(header_str2b, "=3910.10N/07500.32WOhi hi %f %f", latitude, longitude); // APRS balloon symbol    
         sprintf(header_str2b, "=%s%c%s%chi hi ", &header_lat, '/', &header_long, 'O'); // APRS balloon symbol    
         printf("\n\nString is %s \n\n", &header_str2b);
         strcat(str, header_str2b);
