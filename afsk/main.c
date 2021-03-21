@@ -94,6 +94,7 @@ void config_x25();
 void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
+float toAprsFormat(float input);
 static int init_rf();
 int socket_open = 0;
 int sock = 0;
@@ -138,7 +139,7 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
-float latitude = 39.027702f, longitude = -77.078064f;
+float latitude = 39.027702f, longitude = -77.078064f; // 100x for now
 float lat_file, long_file;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
@@ -210,8 +211,10 @@ mode = AFSK;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     printf("Valid latitude and longitude in config file\n");
-    latitude = lat_file;
-    longitude = long_file;
+// convert to APRS DDMM.MM format
+    latitude = toAprsFormat(lat_file);
+    longitude = toAprsFormat(long_file);
+    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
   }
   wiringPiSetup();
 
@@ -370,7 +373,7 @@ mode = AFSK;
       for (i = 0; i < 2; i++) {
         serialPutchar(uart_fd, 'R');
         printf("Querying payload with R to reset\n");
-        waitTime = millis() + 500;
+        waitTime = millis() + 5000; // increased from 500 with GPS
         while ((millis() < waitTime) && (payload != ON)) {
           if (serialDataAvail(uart_fd)) {
             printf("%c", c = (char) serialGetchar(uart_fd));
@@ -824,7 +827,7 @@ void get_tlm(void) {
     char header_str4[] = "hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'";
 //    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
-    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 144.29e3 > /dev/null 2>&1";
+    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 144.39e3 > /dev/null 2>&1";
 
     if (ax5043) {
       strcpy(str, header_str);
@@ -835,16 +838,19 @@ void get_tlm(void) {
         strcat(str, header_str2);
         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
-          sprintf(header_lat, "%7.2f%c", latitude * 100.0, 'N'); // lat
+          sprintf(header_lat, "%7.2f%c", latitude, 'N'); // lat
         else
-          sprintf(header_lat, "%7.2f%c", latitude * (-100.0), 'S'); // lat
+          sprintf(header_lat, "%7.2f%c", latitude * (-1.0), 'S'); // lat
         if (longitude > 0)
-          sprintf(header_long, "%08.2f%c", longitude * 100.0, 'E'); // long
+          sprintf(header_long, "%08.2f%c", longitude, 'E'); // long
         else
-          sprintf(header_long, "%08.2f%c", longitude * (-100.0), 'W'); // long
+          sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
 
-        sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-        printf("\n\nString is %s \n\n", header_str2b);
+//	sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // APRS satellite symbol with escaped \ as \\
+	printf("lat: %s long: %s \n", &header_lat, &header_long);
+//        sprintf(header_str2b, "=3910.10N/07500.32WOhi hi %f %f", latitude, longitude); // APRS balloon symbol    
+        sprintf(header_str2b, "=%s%c%s%chi hi ", &header_lat, '/', &header_long, 'O'); // APRS balloon symbol    
+        printf("\n\nString is %s \n\n", &header_str2b);
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
@@ -913,6 +919,30 @@ void get_tlm(void) {
       printf("Payload string: %s", sensor_payload);
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
+	    
+// parse sensor payload
+      float sensor[17];
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
+      {
+        int count1;
+        char * token;
+        const char space[2] = " ";
+        token = strtok(sensor_payload, space);
+        for (count1 = 0; count1 < 17; count1++) {
+          if (token != NULL) {
+            sensor[count1] = (float) atof(token);
+            #ifdef DEBUG_LOGGING
+            printf("sensor: %f ", sensor[count1]);
+            #endif
+            token = strtok(NULL, space);
+          }
+        }
+        printf("\n");
+	if (sensor[XS1] != 0)      
+		latitude = toAprsFormat(sensor[XS1]);
+	if (sensor[XS2] != 0)  
+		longitude = toAprsFormat(sensor[XS2]);
+      }	      
     }
 
     digitalWrite(txLed, txLedOn);
@@ -1971,4 +2001,13 @@ int test_i2c_bus(int bus)
 		output = -1; 
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
+}
+
+float toAprsFormat(float input) {
+// converts decimal coordinate (lattitude or longitude) to APRS DDMM.MM format	
+    int dd = (int) input;
+    int mm1 = (int)((input - dd) * 60.0);
+    int mm2 = (int)((input - dd - (float)mm1/60.0) * 60.0 * 60.0);
+    float output = dd * 100 + mm1 + (float)mm2 * 0.01;
+    return(output);	
 }
