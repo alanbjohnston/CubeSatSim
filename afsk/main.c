@@ -139,7 +139,7 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
-float latitude = 3902.7702f, longitude = -7707.8064f; // 100x for now
+float latitude = 39.027702f, longitude = -77.078064f; // 100x for now
 float lat_file, long_file;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
@@ -936,9 +936,9 @@ void get_tlm(void) {
         }
         printf("\n");
 	if (sensor[XS1] != 0)      
-		latitude = toAprsFormat(sensor[XS1]/100.0);
+		latitude = toAprsFormat(sensor[XS1]);
 	if (sensor[XS2] != 0)  
-		longitude = toAprsFormat(sensor[XS2]/100.0);
+		longitude = toAprsFormat(sensor[XS2]);
       }	      
     }
 
