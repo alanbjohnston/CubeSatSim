@@ -1003,7 +1003,7 @@ void get_tlm(void) {
       #ifdef DEBUG_LOGGING
       printf("Tx LED Off\n");
       #endif
-      sleep(60);
+      sleep(30);
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
       printf("Tx LED On\n");
