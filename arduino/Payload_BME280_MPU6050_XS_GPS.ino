@@ -1,3 +1,10 @@
+// Payload software for CubeSatSim STEM Payload Board
+// Arduino software for STM32 or Arduino Pro Micro 
+//
+// BME280 code based on
+// MPU6050 code based on
+// GPS code based on TinyGPS simple_test example
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
@@ -12,13 +19,14 @@ MPU6050 mpu6050(Wire);
 TinyGPS gps;
 
 long timer = 0;
-int bmePresent;
+int bmePresent = 0;
+int mpuPresent = 0;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 9;
 int blueLED = 8;
-float Sensor1 = 0;
-float Sensor2 = 0;
-float Sensor3 = 0;
+float Sensor1 = 0.0;
+float Sensor2 = 0.0;
+float Sensor3 = 0.0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 float lat = 0.0, lon = 0.0, alt = 0.0;
@@ -39,14 +47,24 @@ void setup() {
   delay(250);
   blink(500);
   delay(250);  
-  
+ 
+ /**/ 
   if (bme.begin(0x76)) {
     bmePresent = 1;
   } else {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     bmePresent = 0;
   }
-/*
+/**/
+  Wire.beginTransmission(0x68);
+//  Serial.print(address, HEX);
+  byte error = Wire.endTransmission();
+  if (error == 0)
+    mpuPresent = 1;
+  else
+    Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
+/**/
+if (mpuPresent) {
   mpu6050.begin();
 
   if (eeprom_word_read(0) == 0xA07)
@@ -79,7 +97,9 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
-  */
+}
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
 }
 
 void loop() {
@@ -110,7 +130,10 @@ void loop() {
       {
         Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
- //     mpu6050.update();
+
+      if (mpuPresent) {
+       
+      mpu6050.update();
 
       Serial.print(" MPU6050 ");
       Serial.print(mpu6050.getGyroX());
@@ -124,39 +147,27 @@ void loop() {
     Serial.print(" ");
     Serial.print(mpu6050.getAccY());   
     Serial.print(" ");
-    Serial.print(mpu6050.getAccZ());  
+    Serial.print(mpu6050.getAccZ()); 
+      } else {
+          Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
+      }
     
     Serial.print(" XS ");
     Serial.print(Sensor1);   
     Serial.print(" ");
     Serial.print(Sensor2);              
     Serial.print(" ");
-    Serial.println(Sensor3); 
-     
-    bool newData = false;
-    unsigned long chars;
-    unsigned short sentences, failed;
-    
-  // For one second we parse GPS data and report some key values
-  for (unsigned long start = millis(); millis() - start < 1000;) // 1000;)
-  {  
-    while (Serial2.available())
-    {
-      char c = Serial2.read();
-//      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
-      if (gps.encode(c)) // Did a new valid sentence come in?
-        newData = true;
-    }
-  } 
-    if (newData)
-  {
-    float flon, flat;
-    unsigned long age;
-    gps.f_get_position(&flat, &flon, &age);
-    Sensor1 = flat;
-    Sensor2 = flon;
-    Sensor3 = (float) gps.altitude()/100.0;
-  }     
+    Serial.println(Sensor3);  
+/*
+    Serial.print(" GPS "); // return previous GPS data (can't wait due to 1 sec delay)
+    Serial.print(lat);   
+    Serial.print(" ");
+    Serial.print(lon);              
+    Serial.print(" ");
+    Serial.println(alt);   
+ */   
+
+/*    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
@@ -171,7 +182,8 @@ void loop() {
     if (rotation > 5)
         digitalWrite(blueLED, HIGH);
     else
-        digitalWrite(blueLED, LOW);          
+        digitalWrite(blueLED, LOW);   
+ */              
     }    
   }
 
@@ -202,7 +214,8 @@ void loop() {
       {
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
       }
- //     mpu6050.update();
+      if (mpuPresent) {
+      mpu6050.update();
 
       Serial1.print(" MPU6050 ");
       Serial1.print(mpu6050.getGyroX());
@@ -217,14 +230,21 @@ void loop() {
     Serial1.print(mpu6050.getAccY());   
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
-  
+      } else {
+      Serial1.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");       
+     
+    }
     Serial1.print(" XS ");
     Serial1.print(Sensor1);   
     Serial1.print(" ");
     Serial1.print(Sensor2);              
     Serial1.print(" ");
-    Serial1.println(Sensor3);   
+    Serial1.println(Sensor3);    
 
+//    Serial1.println(" GPS 0.0 0.0");
+    
+    }
+  }
     bool newData = false;
     unsigned long chars;
     unsigned short sentences, failed;
@@ -248,8 +268,18 @@ void loop() {
     Sensor1 = flat;
     Sensor2 = flon;
     Sensor3 = (float) gps.altitude()/100.0;
-  }
     
+/*    
+    Serial.print("LAT=");
+    Serial.print(flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+    Serial.print(" LON=");
+    Serial.print(flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+    Serial.print(" SAT=");
+    Serial.print(gps.satellites() == TinyGPS::GPS_INVALID_SATELLITES ? 0 : gps.satellites());
+    Serial.print(" PREC=");
+    Serial.print(gps.hdop() == TinyGPS::GPS_INVALID_HDOP ? 0 : gps.hdop());
+*/
+  } 
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
@@ -265,9 +295,6 @@ void loop() {
         digitalWrite(blueLED, HIGH);
     else
         digitalWrite(blueLED, LOW);
-    }
-  }
-
 //  delay(100);
 }
 
@@ -314,6 +341,6 @@ void blink(int length)
 
 #if defined __AVR_ATmega32U4__
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
+  TXLED0; //TX LED macro to turn LED ON
 #endif  
 }
