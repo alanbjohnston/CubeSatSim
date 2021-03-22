@@ -46,7 +46,7 @@ void setup() {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     bmePresent = 0;
   }
-/*
+
   mpu6050.begin();
 
   if (eeprom_word_read(0) == 0xA07)
@@ -79,7 +79,6 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
-  */
 }
 
 void loop() {
@@ -110,7 +109,7 @@ void loop() {
       {
         Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
- //     mpu6050.update();
+      mpu6050.update();
 
       Serial.print(" MPU6050 ");
       Serial.print(mpu6050.getGyroX());
@@ -202,7 +201,7 @@ void loop() {
       {
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
       }
- //     mpu6050.update();
+      mpu6050.update();
 
       Serial1.print(" MPU6050 ");
       Serial1.print(mpu6050.getGyroX());

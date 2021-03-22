@@ -139,7 +139,7 @@ int sampleTime = 0, frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 float batteryThreshold = 3.0, batteryVoltage;
-float latitude = 39.027702f, longitude = -77.078064f; // 100x for now
+float latitude = 40.0373f, longitude = -75.3491f; // 100x for now
 float lat_file, long_file;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
@@ -215,7 +215,11 @@ mode = AFSK;
     latitude = toAprsFormat(lat_file);
     longitude = toAprsFormat(long_file);
     printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+  } else { // set default
+    latitude = toAprsFormat(latitude);
+    longitude = toAprsFormat(longitude);
   }
+	
   wiringPiSetup();
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -999,7 +1003,7 @@ void get_tlm(void) {
       #ifdef DEBUG_LOGGING
       printf("Tx LED Off\n");
       #endif
-      sleep(3);
+      sleep(30);
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
       printf("Tx LED On\n");
@@ -2004,7 +2008,7 @@ int test_i2c_bus(int bus)
 }
 
 float toAprsFormat(float input) {
-// converts decimal coordinate (lattitude or longitude) to APRS DDMM.MM format	
+// converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
     int dd = (int) input;
     int mm1 = (int)((input - dd) * 60.0);
     int mm2 = (int)((input - dd - (float)mm1/60.0) * 60.0 * 60.0);
