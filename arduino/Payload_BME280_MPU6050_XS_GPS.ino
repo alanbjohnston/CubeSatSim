@@ -126,11 +126,11 @@ void loop() {
     Serial.print(mpu6050.getAccZ());  
     
     Serial.print(" XS ");
-    Serial.print(Sensor1);   
+    Serial.print(Sensor1,4);   
     Serial.print(" ");
-    Serial.print(Sensor2);              
+    Serial.print(Sensor2,4);              
     Serial.print(" ");
-    Serial.println(Sensor3); 
+    Serial.println(Sensor3,2); 
      
     bool newData = false;
     unsigned long chars;
@@ -218,11 +218,11 @@ void loop() {
     Serial1.print(mpu6050.getAccZ());   
   
     Serial1.print(" XS ");
-    Serial1.print(Sensor1);   
+    Serial1.print(Sensor1,4);   
     Serial1.print(" ");
-    Serial1.print(Sensor2);              
+    Serial1.print(Sensor2,4);              
     Serial1.print(" ");
-    Serial1.println(Sensor3);   
+    Serial1.println(Sensor3,2);   
 
     bool newData = false;
     unsigned long chars;
