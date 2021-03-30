@@ -303,19 +303,20 @@ mode = AFSK;
           onLedOff = LOW;
           transmit = TRUE;
         } else {
-       	pinMode(23, INPUT);
-        pullUpDnControl(23, PUD_UP);
+       	  pinMode(23, INPUT);
+          pullUpDnControl(23, PUD_UP);
 
-        if (digitalRead(23) != HIGH) {
-          printf("vB5 Present with VHF BPF\n");
-          txLed = 2;
-          txLedOn = HIGH;
-          txLedOff = LOW;
-          vB5 = TRUE;
-          onLed = 27;
-          onLedOn = HIGH;
-          onLedOff = LOW;
-          transmit = TRUE;
+          if (digitalRead(23) != HIGH) {
+            printf("vB5 Present with VHF BPF\n");
+            txLed = 2;
+            txLedOn = HIGH;
+            txLedOff = LOW;
+            vB5 = TRUE;
+            onLed = 27;
+            onLedOn = HIGH;
+            onLedOff = LOW;
+            transmit = TRUE;
+	  }
 	}
       }
     }
