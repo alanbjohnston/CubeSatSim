@@ -20,7 +20,6 @@
 
 #include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include "status.h"
@@ -937,7 +936,7 @@ void get_tlm(void) {
       sensor_payload[i] = '\0';
       printf("Payload string: %s", sensor_payload);
 
-      strcat(str, sensor_payload); // append to telemetry string for transmission
+//      strcat(str, sensor_payload); // append to telemetry string for transmission
 	    
 // parse sensor payload
       float sensor[17];
