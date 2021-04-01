@@ -869,7 +869,7 @@ void get_tlm(void) {
 	printf("lat: %s long: %s \n", &header_lat, &header_long);
 //        sprintf(header_str2b, "=3910.10N/07500.32WOhi hi %f %f", latitude, longitude); // APRS balloon symbol    
         sprintf(header_str2b, "=%s%c%s%chi hi ", &header_lat, '/', &header_long, 'O'); // APRS balloon symbol    
-        sprintf(header_str2b, "=3958.95N/07509.16WKhi hi");
+//        sprintf(header_str2b, "=3958.95N/07509.16WKhi hi");
 	printf("\n\nString is %s \n\n", &header_str2b);
         strcat(str, header_str2b);
       } else {
@@ -938,7 +938,7 @@ void get_tlm(void) {
       sensor_payload[i] = '\0';
       printf("Payload string: %s", sensor_payload);
 
-//      strcat(str, sensor_payload); // append to telemetry string for transmission
+      strcat(str, sensor_payload); // append to telemetry string for transmission
 	    
 // parse sensor payload
       float sensor[17];
