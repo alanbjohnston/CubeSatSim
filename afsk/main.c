@@ -23,6 +23,7 @@
 #include <unistd.h>
 #include <string.h>
 #include "status.h"
+#include <stdio.h>
 #include "ax5043.h"
 #include "ax25.h"
 #include "spi/ax5043spi.h"
