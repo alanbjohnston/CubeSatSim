@@ -77,7 +77,7 @@
 #define OFF - 1
 #define ON 1
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+uint32_t tx_freq_hz = 144390000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
 
