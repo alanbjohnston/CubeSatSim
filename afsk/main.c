@@ -192,17 +192,29 @@ mode = AFSK;
       }
     }
   }
+	
+  // Open telemetry file with STEM Payload Data
+  FILE * telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "r");
+  if (telem_file == NULL) {
+    printf("Creating telem file");
+    config_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
+    fprintf(telem_file, " ");
+    fclose(telem_file);
+    telem_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  }
+  printf("Opened telem file");	
 
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   if (config_file == NULL) {
-    printf("Creating config file.");
+    printf("Creating config file");
     config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "w");
     fprintf(config_file, "%s %d", " ", 100);
     fclose(config_file);
     config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   }
-
+  printf("Opened config file");	
+	
 //  char * cfg_buf[100];
   fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file);
   fclose(config_file);
@@ -939,6 +951,10 @@ void get_tlm(void) {
       printf("Payload string: %s", sensor_payload);
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
+
+      time_t timeStamp;
+      time(&timeStamp);   // get timestamp 	    
+      fprintf(telem_file, "%s %s", ctime(&timeStamp), sensor_payload);	 // write telemetry string to telem.txt file    
 	    
 // parse sensor payload
       float sensor[17];
