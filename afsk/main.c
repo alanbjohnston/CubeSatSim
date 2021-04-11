@@ -195,15 +195,10 @@ mode = AFSK;
   }
 	
   // Open telemetry file with STEM Payload Data
-  telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
-  if (telem_file == NULL) {
-    printf("Creating telem file\n");
-    telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
-    fprintf(telem_file, " ");
-//    fclose(telem_file);
-//    telem_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
-  }
-//  fclose(telem_file);
+  telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
+  if (telem_file == NULL) 
+    printf("Error opening telem file\n");
+  fclose(telem_file);
   printf("Opened telem file\n");	
 
   // Open configuration file with callsign and reset count	
@@ -954,19 +949,19 @@ void get_tlm(void) {
 	    
       strcat(str, sensor_payload); // append to telemetry string for transmission
 
-//      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
+      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
 //      if (telem_file == NULL)
 //        printf("Error opening telem file\n");
 //      else {
         printf("Writing payload string\n");
 	time_t timeStamp;
         time(&timeStamp);   // get timestamp 
-        printf("Timestamp: %s\n", ctime(&timeStamp));
-	char s[31];    
-	snprintf(s, 30, "%.24s", ctime(&timeStamp)); 
-	printf("TimeStamp: %s\n", s);
-        fprintf(telem_file, "%s %s\n", s, sensor_payload);	 // write telemetry string to telem.txt file    
-//        fclose(telem_file);
+//        printf("Timestamp: %s\n", ctime(&timeStamp));
+	char timeStampNoNl[31];    
+	snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
+	printf("TimeStamp: %s\n", timeStampNoNl);
+        fprintf(telem_file, "%s %s\n", timeStampNoNl, sensor_payload);	 // write telemetry string to telem.txt file    
+        fclose(telem_file);
 //      }	      
 	    
 // parse sensor payload
