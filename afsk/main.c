@@ -103,6 +103,7 @@ int firstTime = ON;
 long start;
 int testCount = 0;
 long time_start;
+FILE * telem_file;
 
 short int buffer[2336400]; // max size for 10 frames count of BPSK
 
@@ -194,7 +195,7 @@ mode = AFSK;
   }
 	
   // Open telemetry file with STEM Payload Data
-  FILE * telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "r");
+  telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "r");
   if (telem_file == NULL) {
     printf("Creating telem file");
     telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
