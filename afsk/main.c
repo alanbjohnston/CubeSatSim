@@ -197,7 +197,7 @@ mode = AFSK;
   FILE * telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "r");
   if (telem_file == NULL) {
     printf("Creating telem file");
-    config_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
+    telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
     fprintf(telem_file, " ");
     fclose(telem_file);
     telem_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
