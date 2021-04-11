@@ -20,10 +20,10 @@
 
 #include <fcntl.h>
 #include <stdlib.h>
-#include <stdio.h>
 #include <unistd.h>
 #include <string.h>
 #include "status.h"
+#include <stdio.h>
 #include "ax5043.h"
 #include "ax25.h"
 #include "spi/ax5043spi.h"
@@ -302,7 +302,22 @@ mode = AFSK;
           onLedOn = HIGH;
           onLedOff = LOW;
           transmit = TRUE;
-        }
+        } else {
+       	  pinMode(23, INPUT);
+          pullUpDnControl(23, PUD_UP);
+
+          if (digitalRead(23) != HIGH) {
+            printf("vB5 Present with VHF BPF\n");
+            txLed = 2;
+            txLedOn = HIGH;
+            txLedOff = LOW;
+            vB5 = TRUE;
+            onLed = 27;
+            onLedOn = HIGH;
+            onLedOff = LOW;
+            transmit = TRUE;
+	  }
+	}
       }
     }
   }
@@ -824,14 +839,14 @@ void get_tlm(void) {
     char header_str3[] = "echo '";
     //char header_str2[] = ">CQ:>041440zhi hi ";
     //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
-    char header_str2[] = ">CQ:";
+    char header_str2[] = ">WIDE1:";
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'";
 //    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
-    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 144.39e3 > /dev/null 2>&1";
+    char footer_str[] = ">APU25N:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 144.39e3 > /dev/null 2>&1";
 
     if (ax5043) {
       strcpy(str, header_str);
@@ -854,7 +869,8 @@ void get_tlm(void) {
 	printf("lat: %s long: %s \n", &header_lat, &header_long);
 //        sprintf(header_str2b, "=3910.10N/07500.32WOhi hi %f %f", latitude, longitude); // APRS balloon symbol    
         sprintf(header_str2b, "=%s%c%s%chi hi ", &header_lat, '/', &header_long, 'O'); // APRS balloon symbol    
-        printf("\n\nString is %s \n\n", &header_str2b);
+//        sprintf(header_str2b, "=3958.95N/07509.16WKhi hi");
+	printf("\n\nString is %s \n\n", &header_str2b);
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
