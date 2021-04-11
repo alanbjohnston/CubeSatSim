@@ -11,7 +11,7 @@
  *
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
- *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See thef
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
@@ -405,7 +405,7 @@ mode = AFSK;
       int i;
       for (i = 0; i < 2; i++) {
         serialPutchar(uart_fd, 'R');
-        printf("Querying payload with R to reset\n");
+        printf("\nQuerying payload with R to reset\n");
         waitTime = millis() + 5000; // increased from 500 with GPS
         while ((millis() < waitTime) && (payload != ON)) {
           if (serialDataAvail(uart_fd)) {
@@ -950,7 +950,7 @@ void get_tlm(void) {
       }
       //    sensor_payload[i++] = '\n';
       sensor_payload[i] = '\0';
-      printf("Payload string: %s", sensor_payload);
+      printf("Payload string received: %s", sensor_payload);
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
 
