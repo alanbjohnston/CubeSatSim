@@ -839,7 +839,7 @@ void get_tlm(void) {
     char header_str3[] = "echo '";
     //char header_str2[] = ">CQ:>041440zhi hi ";
     //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
-    char header_str2[] = ">WIDE1:";
+    char header_str2[] = ">APEHB,WIDE1-1,WIDE2-1:";
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
