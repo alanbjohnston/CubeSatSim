@@ -954,13 +954,17 @@ void get_tlm(void) {
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
 
-      printf("Writing payload string\n");
-      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "r");
-      time_t timeStamp;
-      time(&timeStamp);   // get timestamp 
-      printf("Timestamp: %s\n", ctime(&timeStamp));
-      fprintf(telem_file, "%s %s\n", ctime(&timeStamp), sensor_payload);	 // write telemetry string to telem.txt file    
-      fclose(telem_file);
+      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "w");
+      if (telem_file == NULL)
+        printf("Error opening telem file\n");
+      else {	    
+        printf("Writing payload string\n");
+	time_t timeStamp;
+        time(&timeStamp);   // get timestamp 
+        printf("Timestamp: %s\n", ctime(&timeStamp));
+        fprintf(telem_file, "%s %s\n", ctime(&timeStamp), sensor_payload);	 // write telemetry string to telem.txt file    
+        fclose(telem_file);
+      }	      
 	    
 // parse sensor payload
       float sensor[17];
