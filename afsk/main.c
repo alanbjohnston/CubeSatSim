@@ -203,6 +203,7 @@ mode = AFSK;
     fclose(telem_file);
     telem_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   }
+  fclose(telem_file);
   printf("Opened telem file\n");	
 
   // Open configuration file with callsign and reset count	
@@ -952,11 +953,12 @@ void get_tlm(void) {
       printf("Payload string: %s", sensor_payload);
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
-
+	    
+      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "r");
       time_t timeStamp;
       time(&timeStamp);   // get timestamp 	    
       fprintf(telem_file, "%s %s", ctime(&timeStamp), sensor_payload);	 // write telemetry string to telem.txt file    
-      fflush(telem_file);
+      fclose(telem_file);
 	    
 // parse sensor payload
       float sensor[17];
