@@ -1455,7 +1455,7 @@ void get_tlm_fox() {
     encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
 
     //  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
-    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] + 0.5)); // in place of sensor1
+    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
 
     encodeB(b, 46 + head_offset, PSUCurrent);
     //  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
