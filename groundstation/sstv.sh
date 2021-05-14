@@ -7,6 +7,16 @@ echo "Script to transmit SSTV images from Pi Camera using CubeSatSim Lite"
 
 echo 
 
+echo "Transmitting stored image while  preparing live image"
+
+echo
+
+cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &
+
+#(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1 &
+
+#(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &>/dev/null &
+
 echo "Taking picture with Pi Camera to Desktop camera.jpg"
 
 echo 
