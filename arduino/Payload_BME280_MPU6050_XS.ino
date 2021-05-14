@@ -19,6 +19,7 @@ int Sensor2 = 0;
 float Sensor3 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
+int first_time = true;
 
 void setup() {
 
@@ -84,7 +85,7 @@ void setup() {
 
 void loop() {
 
-  if (Serial.available() > 0) {
+  if ((Serial.available() > 0)|| first_time == true) {
     blink(50);
     char result = Serial.read();
     //       Serial.println(result);
@@ -95,8 +96,9 @@ void loop() {
       setup();
     }
 
-    if (result == '?')
+    if ((result == '?') || first_time == true)
     {
+      first_time = false;
       if (bmePresent) {
         Serial.print("OK BME280 ");
         Serial.print(bme.readTemperature());
