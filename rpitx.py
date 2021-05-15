@@ -63,11 +63,11 @@ if __name__ == "__main__":
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 	    while True:
 		GPIO.output(txLed, txLedOn);
-		os.system("raspistill -o ~/camera_out.jpg -w 640 -h 496") #  > /dev/null 2>&1")
+		os.system("raspistill -o /home/pi/camera_out.jpg -w 640 -h 496") #  > /dev/null 2>&1")
 		print("Picture taken")
-		os.system("sudo python3 -m pysstv --mode PD120 ~/camera_out.jpg ~/sstv_camera.wav") #  > /dev/null 2>&1")
+		os.system("sudo python3 -m pysstv --mode PD120 /home/pi/camera_out.jpg /home/pi/sstv_camera.wav") #  > /dev/null 2>&1")
 		print ("Sending picture")
-		os.system("cat sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+		os.system("cat /home/pi/sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 		
 #		try:
 #			camera = PiCamera()
