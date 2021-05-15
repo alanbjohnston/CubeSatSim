@@ -67,20 +67,8 @@ if __name__ == "__main__":
 	    except:
 		print("No camera")
 		camera_present = 0
-#	   finally:
-#		print("Continuing")
-		
-	
-#	    try: 
-#	    	camera = PiCamera()
-#		print("Camera present")
-#	    except:
-#		print("No camera")
-#	    finally:
-#		print("Continuing")
-#	    GPIO.output(txLed, txLedOn)
-#	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
-	    while 1:
+
+		while 1:
 	    	system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 		GPIO.output(txLed, txLedOff)
 		if (camera_present == 1):
@@ -102,33 +90,16 @@ if __name__ == "__main__":
 				time.sleep(60)
 				GPIO.output(txLed, txLedOff)
 				time.sleep(1)
-#		try:
-#			camera = PiCamera()
-#			camera.resolution = (640, 496)
-#			camera.start_preview()
-			# Camera warm-up time
-#			time.sleep(2)
-#			camera.capture('sstv_image.jpg')
-#		finally:			
 
-	#	GPIO.output(27, 0);
-#		print("Sleeping")
-#		time.sleep(10)
-#		print("Transmitting SSTV")
-#		GPIO.output(txLed, txLedOff);
-#		GPIO.output(27, 1);
-#		time.sleep(10)
-
-#		os.system("cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
             print("BPSK")
-	    os.system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
+	    system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
 	else:
             print("FSK") 
-	    os.system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+	    system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
     else:
         print("FSK") 
-	os.system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+	system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
   else:
     print("No Band Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
     while True:
