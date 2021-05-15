@@ -31,17 +31,6 @@ print(txLed)
 GPIO.setup(27, GPIO.OUT)
 GPIO.output(27, 0)
 
-try: 
-	camera = PiCamera()
-	print("Camera present")
-	camera_present = 1
-	camera.close()
-except:
-	print("No camera")
-	camera_present = 0
-finally:
-	print("Continuing")
-	
 print(transmit)
 
 file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -70,6 +59,18 @@ if __name__ == "__main__":
     		time.sleep(5)
         elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
             print("SSTV")
+	    try: 
+		camera = PiCamera()
+		print("Camera present")
+		camera_present = 1
+		camera.close()
+	    except:
+		print("No camera")
+		camera_present = 0
+#	   finally:
+#		print("Continuing")
+		
+	
 #	    try: 
 #	    	camera = PiCamera()
 #		print("Camera present")
