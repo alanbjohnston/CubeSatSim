@@ -5,7 +5,6 @@ import subprocess
 import time
 #import os
 import sys
-from picamera import PiCamera
 from os import system
 
 GPIO.setmode(GPIO.BCM)
@@ -60,6 +59,7 @@ if __name__ == "__main__":
         elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
             print("SSTV")
 	    try: 
+		from picamera import PiCamera	
 		camera = PiCamera()
 		print("Camera present")
 		camera_present = 1
