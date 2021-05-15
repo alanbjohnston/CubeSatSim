@@ -5,6 +5,7 @@ import subprocess
 import time
 import os
 import sys
+from picamera import PiCamera
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -52,13 +53,14 @@ if __name__ == "__main__":
         elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
             print("SSTV")
 	    GPIO.output(txLed, txLedOn);
-	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
-#	    while True:
-#		GPIO.output(txLed, txLedOff);
-#		print("Sleeping")
-#		time.sleep(10)
-#		print("Transmitting SSTV")
-#		GPIO.output(txLed, txLedOn);
+#	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
+	    while True:
+		GPIO.output(txLed, txLedOff);
+		print("Sleeping")
+		time.sleep(10)
+		print("Transmitting SSTV")
+		GPIO.output(txLed, txLedOn);
 #		os.system("cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
             print("BPSK")
