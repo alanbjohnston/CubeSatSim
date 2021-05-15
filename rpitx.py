@@ -9,14 +9,14 @@ from picamera import PiCamera
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 transmit = False
 if GPIO.input(12) == False:
 	transmit = True
-if GPIO.input(27) == False:
+if GPIO.input(22) == False:
 	transmit = True
-	txLed = 22
+	txLed = 27
 	txLedOn = False
  	txLedOff = True
 else:
@@ -25,7 +25,7 @@ else:
  	txLedOff = False
 	
 GPIO.setup(txLed, GPIO.OUT)
-print(txLed)
+print(txLedOn)
 	
 print(transmit)
 
