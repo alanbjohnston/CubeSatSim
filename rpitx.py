@@ -67,7 +67,7 @@ if __name__ == "__main__":
 			camera.resolution = (640, 496)
 			camera.start_preview()
 			# Camera warm-up time
-			sleep(2)
+			time.sleep(2)
 			camera.capture('sstv_image.jpg')
 		finally:			
 			GPIO.output(txLed, txLedOn);
