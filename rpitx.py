@@ -59,7 +59,7 @@ if __name__ == "__main__":
     		time.sleep(5)
         elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
             print("SSTV")
-	    GPIO.output(txLed, txLedOn)
+#	    GPIO.output(txLed, txLedOn)
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    while 1:
 	    	system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
@@ -72,6 +72,7 @@ if __name__ == "__main__":
 		print ("Sending SSTV photo")
 		time.sleep(1)
 		system("sudo killall -9 rpitx > /dev/null 2>&1")
+		system("sudo killall -9 csdr > /dev/null 2>&1")
 		GPIO.output(txLed, txLedOn);		
 		system("cat /home/pi/sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 		
