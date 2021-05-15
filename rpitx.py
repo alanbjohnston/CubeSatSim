@@ -5,7 +5,7 @@ import subprocess
 import time
 import os
 import sys
-from picamera import PiCamera
+# from picamera import PiCamera
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -62,22 +62,26 @@ if __name__ == "__main__":
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 	    while True:
-		try:
-			camera = PiCamera()
-			camera.resolution = (640, 496)
-			camera.start_preview()
+		os.system("raspistill -o ~/camera_out.jpg -w 640 -h 496 > /dev/null 2>&1")
+		os.system("python3 -m pysstv --mode PD120 ~/camera_out.jpg sstv_camera.wav > /dev/null 2>&1")
+		os.system("cat sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+		
+#		try:
+#			camera = PiCamera()
+#			camera.resolution = (640, 496)
+#			camera.start_preview()
 			# Camera warm-up time
-			time.sleep(2)
-			camera.capture('sstv_image.jpg')
-		finally:			
-			GPIO.output(txLed, txLedOn);
+#			time.sleep(2)
+#			camera.capture('sstv_image.jpg')
+#		finally:			
+		GPIO.output(txLed, txLedOn);
 	#	GPIO.output(27, 0);
-			print("Sleeping")
-			time.sleep(10)
-			print("Transmitting SSTV")
-			GPIO.output(txLed, txLedOff);
+		print("Sleeping")
+		time.sleep(10)
+		print("Transmitting SSTV")
+		GPIO.output(txLed, txLedOff);
 #		GPIO.output(27, 1);
-			time.sleep(10)
+		time.sleep(10)
 
 #		os.system("cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
