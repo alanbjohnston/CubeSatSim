@@ -17,15 +17,18 @@ if GPIO.input(12) == False:
 if GPIO.input(22) == False:
 	transmit = True
 	txLed = 27
-	txLedOn = False
- 	txLedOff = True
+	txLedOn = 0
+ 	txLedOff = 1
 else:
 	txLed = 27
-	txLedOn = True
- 	txLedOff = False
+	txLedOn = 1 
+ 	txLedOff = 0
 	
 GPIO.setup(txLed, GPIO.OUT)
 print(txLedOn)
+print(txLed)
+GPIO.setup(27, GPIO.OUT)
+GPIO.output(27, 0)
 	
 print(transmit)
 
@@ -33,8 +36,10 @@ file = open("/home/pi/CubeSatSim/sim.cfg")
 callsign = file.readline().split(" ")[0]
 print(callsign)
 
+#GPIO.output(27, 1);
 GPIO.output(txLed, txLedOn);
 os.system("echo 'de " + callsign + "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+#GPIO.output(27, 0);
 GPIO.output(txLed, txLedOff);
 
 time.sleep(2)
@@ -57,11 +62,15 @@ if __name__ == "__main__":
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 	    while True:
-		GPIO.output(txLed, txLedOff);
+		GPIO.output(txLed, txLedOn);
+	#	GPIO.output(27, 0);
 		print("Sleeping")
 		time.sleep(10)
 		print("Transmitting SSTV")
-		GPIO.output(txLed, txLedOn);
+		GPIO.output(txLed, txLedOff);
+#		GPIO.output(27, 1);
+		time.sleep(10)
+
 #		os.system("cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
             print("BPSK")
