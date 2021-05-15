@@ -4,8 +4,8 @@ import RPi.GPIO as GPIO
 import subprocess
 import time
 #import os
-import sys
-# from picamera import PiCamera
+import system
+from picamera import PiCamera
 from os import system
 
 GPIO.setmode(GPIO.BCM)
@@ -59,6 +59,13 @@ if __name__ == "__main__":
     		time.sleep(5)
         elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
             print("SSTV")
+	    try: 
+	    	camera = PiCamera()
+		print("Camera present")
+	    except:
+		print("No camera")
+	    finally:
+		print("Continuing")
 #	    GPIO.output(txLed, txLedOn)
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    while 1:
