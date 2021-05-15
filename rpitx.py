@@ -25,6 +25,7 @@ else:
  	txLedOff = False
 	
 GPIO.setup(txLed, GPIO.OUT)
+print(txLed)
 	
 print(transmit)
 
