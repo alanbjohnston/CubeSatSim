@@ -69,16 +69,15 @@ if __name__ == "__main__":
 			# Camera warm-up time
 			sleep(2)
 			camera.capture('sstv_image.jpg')
-#		except:
-			
-		GPIO.output(txLed, txLedOn);
+		finally:			
+			GPIO.output(txLed, txLedOn);
 	#	GPIO.output(27, 0);
-		print("Sleeping")
-		time.sleep(10)
-		print("Transmitting SSTV")
-		GPIO.output(txLed, txLedOff);
+			print("Sleeping")
+			time.sleep(10)
+			print("Transmitting SSTV")
+			GPIO.output(txLed, txLedOff);
 #		GPIO.output(27, 1);
-		time.sleep(10)
+			time.sleep(10)
 
 #		os.system("cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
