@@ -62,6 +62,15 @@ if __name__ == "__main__":
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 	    while True:
+		try:
+			camera = PiCamera()
+			camera.resolution = (640, 496)
+			camera.start_preview()
+			# Camera warm-up time
+			sleep(2)
+			camera.capture('sstv_image.jpg')
+		catch:
+			
 		GPIO.output(txLed, txLedOn);
 	#	GPIO.output(27, 0);
 		print("Sleeping")
