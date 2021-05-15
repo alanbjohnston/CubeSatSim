@@ -73,6 +73,7 @@ if __name__ == "__main__":
 		time.sleep(1)
 		system("sudo killall -9 rpitx > /dev/null 2>&1")
 		system("sudo killall -9 csdr > /dev/null 2>&1")
+		system("sudo killall -9 cat > /dev/null 2>&1")
 		GPIO.output(txLed, txLedOn);		
 		system("cat /home/pi/sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 		
