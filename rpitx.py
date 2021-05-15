@@ -69,7 +69,7 @@ if __name__ == "__main__":
 			# Camera warm-up time
 			sleep(2)
 			camera.capture('sstv_image.jpg')
-		catch:
+		except:
 			
 		GPIO.output(txLed, txLedOn);
 	#	GPIO.output(27, 0);
