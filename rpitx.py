@@ -4,7 +4,7 @@ import RPi.GPIO as GPIO
 import subprocess
 import time
 #import os
-import system
+import sys
 from picamera import PiCamera
 from os import system
 
