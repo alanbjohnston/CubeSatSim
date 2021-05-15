@@ -62,13 +62,14 @@ if __name__ == "__main__":
 	    GPIO.output(txLed, txLedOn);
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
-	    while True:
-		GPIO.output(txLed, txLedOn);
+	    while 1:
+		GPIO.output(txLed, txLedOff);
 		system("raspistill -o /home/pi/camera_out.jpg -w 640 -h 496") #  > /dev/null 2>&1")
-		print("Picture taken")
+		print("Photo taken")
 		system("sudo python3 -m pysstv --mode PD120 /home/pi/camera_out.jpg /home/pi/sstv_camera.wav") #  > /dev/null 2>&1")
-		print ("Sending picture")
+		print ("Sending SSTV photo")
 		system("sudo killall -9 rpitx > /dev/null 2>&1")
+		GPIO.output(txLed, txLedOn);		
 		system("cat /home/pi/sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 		
 #		try:
@@ -81,12 +82,12 @@ if __name__ == "__main__":
 #		finally:			
 
 	#	GPIO.output(27, 0);
-		print("Sleeping")
-		time.sleep(10)
-		print("Transmitting SSTV")
-		GPIO.output(txLed, txLedOff);
+#		print("Sleeping")
+#		time.sleep(10)
+#		print("Transmitting SSTV")
+#		GPIO.output(txLed, txLedOff);
 #		GPIO.output(27, 1);
-		time.sleep(10)
+#		time.sleep(10)
 
 #		os.system("cat /home/pi/CubeSatSim/wav/sstv.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
