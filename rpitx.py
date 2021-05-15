@@ -35,6 +35,7 @@ try:
 	camera = PiCamera()
 	print("Camera present")
 	camera_present = 1
+	camera.close()
 except:
 	print("No camera")
 	camera_present = 0
