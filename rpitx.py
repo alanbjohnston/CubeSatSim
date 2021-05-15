@@ -8,16 +8,6 @@ import sys
 from picamera import PiCamera
 from os import system
 
-try: 
-	camera = PiCamera()
-	print("Camera present")
-	camera_present = 1
-except:
-	print("No camera")
-	camera_present = 0
-finally:
-	print("Continuing")
-
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -40,6 +30,16 @@ print(txLedOn)
 print(txLed)
 GPIO.setup(27, GPIO.OUT)
 GPIO.output(27, 0)
+
+try: 
+	camera = PiCamera()
+	print("Camera present")
+	camera_present = 1
+except:
+	print("No camera")
+	camera_present = 0
+finally:
+	print("Continuing")
 	
 print(transmit)
 
@@ -69,13 +69,13 @@ if __name__ == "__main__":
     		time.sleep(5)
         elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
             print("SSTV")
-	    try: 
-	    	camera = PiCamera()
-		print("Camera present")
-	    except:
-		print("No camera")
-	    finally:
-		print("Continuing")
+#	    try: 
+#	    	camera = PiCamera()
+#		print("Camera present")
+#	    except:
+#		print("No camera")
+#	    finally:
+#		print("Continuing")
 #	    GPIO.output(txLed, txLedOn)
 #	    os.system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 	    while 1:
