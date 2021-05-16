@@ -8,18 +8,18 @@ if [ "$1" = "c" ]; then
     echo $y
           if [ $(($y % 4)) = 3 ]; then
    	   echo "Mode is continuous AFSK"
-    	   python -u /home/pi/CubeSatSim/rpitx.py a
+    	   python3 -u /home/pi/CubeSatSim/rpitx.py a
       elif [ $(($y % 4)) = 1 ]; then
    	   echo "Mode is continuous BPSK"  
-    	   python -u /home/pi/CubeSatSim/rpitx.py b
+    	   python3 -u /home/pi/CubeSatSim/rpitx.py b
       elif [ $(($y % 4)) = 2 ]; then
    	   echo "Mode is continuous SSTV"  
-    	   python -u /home/pi/CubeSatSim/rpitx.py s
+    	   python3 -u /home/pi/CubeSatSim/rpitx.py s
       else
          echo "Mode is continuous FSK"
-         python -u /home/pi/CubeSatSim/rpitx.py f
+         python3 -u /home/pi/CubeSatSim/rpitx.py f
       fi
 else
-    python -u /home/pi/CubeSatSim/rpitx.py $1
+    python3 -u /home/pi/CubeSatSim/rpitx.py $1
 fi
 
