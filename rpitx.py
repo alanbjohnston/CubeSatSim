@@ -18,11 +18,11 @@ if GPIO.input(22) == False:
 	transmit = True
 	txLed = 27
 	txLedOn = 0
- 	txLedOff = 1
+	txLedOff = 1
 else:
 	txLed = 27
 	txLedOn = 1 
- 	txLedOff = 0
+	txLedOff = 0
 	
 GPIO.setup(txLed, GPIO.OUT)
 print(txLedOn)
@@ -46,62 +46,62 @@ time.sleep(2)
 
 if __name__ == "__main__":
 	
-  if (transmit):
+	if (transmit):
 	
-    print 'Length: ', len(sys.argv)
+		print 'Length: ', len(sys.argv)
     
-    if (len(sys.argv)) > 1:
-#        print("There are arguments!")
-        if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
-            print("AFSK") 
-	    while True:
-    		time.sleep(5)
-        elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
-            print("SSTV")
-	    try: 
-		from picamera import PiCamera
-		from pysstv.sstv import SSTV
-		camera = PiCamera()
-		print("Camera present")
-		camera_present = 1
-		camera.close()
-	    except:
-		print("No camera")
-		camera_present = 0
+		if (len(sys.argv)) > 1:
+#        		print("There are arguments!")
+			if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
+				print("AFSK") 
+				while True:
+					time.sleep(5)
+			elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
+				print("SSTV")
+				try: 
+					from picamera import PiCamera
+					from pysstv.sstv import SSTV
+					camera = PiCamera()
+					print("Camera present")
+					camera_present = 1
+					camera.close()
+				except:
+					print("No camera")
+					camera_present = 0
 
-	    while 1:
-	    	system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
-		GPIO.output(txLed, txLedOff)
-		if (camera_present == 1):
-			system("raspistill -o /home/pi/camera_out.jpg -w 640 -h 496") #  > /dev/null 2>&1")
-			print("Photo taken")
-			GPIO.output(txLed, txLedOn)
-			system("sudo python3 -m pysstv --mode PD120 /home/pi/camera_out.jpg /home/pi/sstv_camera.wav") #  > /dev/null 2>&1")
-			GPIO.output(txLed, txLedOff)
-			print ("Sending SSTV photo")
-			time.sleep(1)
-			system("sudo killall -9 rpitx > /dev/null 2>&1")
-			system("sudo killall -9 csdr > /dev/null 2>&1")
-			system("sudo killall -9 cat > /dev/null 2>&1")
-			GPIO.output(txLed, txLedOn);		
-			system("cat /home/pi/sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+				while 1:
+					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
+					GPIO.output(txLed, txLedOff)
+					if (camera_present == 1):
+						system("raspistill -o /home/pi/camera_out.jpg -w 640 -h 496") #  > /dev/null 2>&1")
+						print("Photo taken")
+						GPIO.output(txLed, txLedOn)
+						system("sudo python3 -m pysstv --mode PD120 /home/pi/camera_out.jpg /home/pi/sstv_camera.wav") #  > /dev/null 2>&1")
+						GPIO.output(txLed, txLedOff)
+						print ("Sending SSTV photo")
+						time.sleep(1)
+						system("sudo killall -9 rpitx > /dev/null 2>&1")
+						system("sudo killall -9 csdr > /dev/null 2>&1")
+						system("sudo killall -9 cat > /dev/null 2>&1")
+						GPIO.output(txLed, txLedOn);		
+						system("cat /home/pi/sstv_camera.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+					else:
+						while 1:
+							GPIO.output(txLed, txLedOn)
+							time.sleep(60)
+							GPIO.output(txLed, txLedOff)
+							time.sleep(1)
+
+			elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
+				print("BPSK")
+				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
+			else:
+				print("FSK") 
+				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 		else:
-			while 1:
-				GPIO.output(txLed, txLedOn)
-				time.sleep(60)
-				GPIO.output(txLed, txLedOff)
-				time.sleep(1)
-
-	elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
-            print("BPSK")
-	    system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
+        		print("FSK") 
+			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 	else:
-            print("FSK") 
-	    system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
-    else:
-        print("FSK") 
-	system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
-  else:
-    print("No Band Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
-    while True:
-      time.sleep(5)
+    		print("No Band Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
+    		while True:
+			time.sleep(5)
