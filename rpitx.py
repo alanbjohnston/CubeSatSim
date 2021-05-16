@@ -48,7 +48,7 @@ if __name__ == "__main__":
 	
 	if (transmit):
 	
-		print 'Length: ', len(sys.argv)
+#		print 'Length: ', len(sys.argv)
     
 		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
