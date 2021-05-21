@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/CubeSatSim/groundstation/loc.sh
+Name=SDR FM Broadcast
+Comment=Set Location for Gpredict 
+Icon=/home/pi/Downloads/cubicsdr.png
+Path=/home/pi
+Terminal=true
+Categories=HamRadio
+Keywords=Ham Radio;SDR
