@@ -17,7 +17,7 @@ longitude = data['items'][0]['position']['lng']
 print(latitude)
 print(longitude)
 
-file = open(r".config/Gpredict/MyLocation.qth","w+")
+file = open(r"/home/pi/.config/Gpredict/MyLocation.qth","w+")
 
 str1 = "[QTH]\n"
 str2 = "LOCATION=" + location + "\n"
