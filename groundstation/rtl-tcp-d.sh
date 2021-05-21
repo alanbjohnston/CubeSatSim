@@ -23,6 +23,8 @@ sudo killall -9 rtl_fm &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
+sudo killall -9 qsstv &>/dev/null
+
 sudo systemctl stop rtl_tcp
 
 sudo systemctl stop openwebrx
