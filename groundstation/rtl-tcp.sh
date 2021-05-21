@@ -35,6 +35,8 @@ sudo systemctl stop openwebrx
 
 sudo killall -9 rtl_tcp &>/dev/null
 
+sudo killall -9 qsstv &>/dev/null
+
 sudo systemctl start rtl_tcp
 
 $SHELL
