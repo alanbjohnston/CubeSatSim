@@ -14,6 +14,8 @@ PARAMS = {'apikey':api_key,'q':location}
 r = requests.get(url = URL, params = PARAMS) 
 data = r.json()
 
+print(data)
+
 latitude = data['items'][0]['position']['lat']
 longitude = data['items'][0]['position']['lng']
 
