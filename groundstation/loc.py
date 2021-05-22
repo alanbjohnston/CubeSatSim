@@ -7,7 +7,7 @@ print("In order to track satellites, we need to know your location\n")
 print("You can enter your state or country or region\n")
 print("as your exact location is not needed. \n\n")
 location = input("Type your location: ") #taking user input
-api_key = 'EabUlpQK8GcVVEMs2OLI0Bdb6A9Wj_yeli6d4Wwe8u0' # Acquire from developer.here.com
+api_key = '' # Acquire from developer.here.com
 PARAMS = {'apikey':api_key,'q':location} 
 
 # sending get request and saving the response as response object 
