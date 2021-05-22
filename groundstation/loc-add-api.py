@@ -1,4 +1,6 @@
 # code based on https://developer.here.com/blog/understanding-geocoding-with-python
+#
+# copy or rename to loc.py and add api key
 
 import requests
 
@@ -14,7 +16,7 @@ PARAMS = {'apikey':api_key,'q':location}
 r = requests.get(url = URL, params = PARAMS) 
 data = r.json()
 
-print(data)
+#print(data)
 
 latitude = data['items'][0]['position']['lat']
 longitude = data['items'][0]['position']['lng']
