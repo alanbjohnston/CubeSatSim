@@ -121,7 +121,7 @@ sudo raspi-config nonint do_i2c 0
     echo "modules-load=dwc2,g_ether already in /boot/cmdline.txt"
   else
     echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
-    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_etherg/g' /boot/cmdline.txt
+    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
   fi
   
 echo "You need to reboot to complete the installation\n"

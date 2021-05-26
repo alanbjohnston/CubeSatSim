@@ -318,8 +318,9 @@ int main(int argc, char * argv[]) {
     map[BUS] = BAT;
     snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
   } else if (vB5) {
-    map[MINUS_X] = PLUS_Z;
-    map[PLUS_Z] = MINUS_X;
+    map[MINUS_X] = MINUS_Y;
+    map[PLUS_Z] = MINUS_X;	
+    map[MINUS_Y] = PLUS_Z;		  
 
     if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
       printf("/dev/i2c-11 is present\n\n");
@@ -411,7 +412,7 @@ int main(int argc, char * argv[]) {
   #endif
 
   // if ((i2c_bus1 == OFF) && (i2c_bus3 == OFF)) {
-  if (i2c_bus1 == OFF) {  // i2c bus 1 can be turned off using raspi-config to enable sim mode without reboot
+  if (i2c_bus3 == OFF) {  // i2c bus 13 can be turned off manually by editing /boot/config.txt
 
     sim_mode = TRUE;
 
@@ -1454,7 +1455,7 @@ void get_tlm_fox() {
     encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
 
     //  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
-    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] + 0.5)); // in place of sensor1
+    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
 
     encodeB(b, 46 + head_offset, PSUCurrent);
     //  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
