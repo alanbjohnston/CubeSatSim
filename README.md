@@ -22,7 +22,7 @@ The other option is to start with any Raspberry Pi OS (Rasbian) image and run th
 
 ## Disk Image Option Steps
 
-See the Wiki Software Install page for details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install.
+See the Wiki Software Install page for details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install.
 
 ## Installation Script Option Steps
 
