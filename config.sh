@@ -1,5 +1,31 @@
 #!/bin/bash
 
+if [ "$1" = "r" ]; then
+	echo "Restarting CubeSatSim"
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "a" ]; then
+	echo "changing CubeSatSim to AFSK mode"
+	sudo echo "ARG1=a" >> .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "f" ]; then
+	echo "changing CubeSatSim to FSK mode"
+	sudo echo "ARG1=f" >> .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "b" ]; then
+	echo "changing CubeSatSim to BPSK mode"
+	sudo echo "ARG1=b" >> .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "s" ]; then
+	echo "changing CubeSatSim to SSTV mode"
+	sudo echo "ARG1=s" >> .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+fi
+
 echo -e "\nConfiguration script for CubeSatSim\n"
  
 echo -e "Return keeps current value."
