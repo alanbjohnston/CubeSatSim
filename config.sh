@@ -6,24 +6,24 @@ if [ "$1" = "-r" ]; then
 	echo "Restarting CubeSatSim"
 	sudo systemctl restart cubesatsim
 	exit 
-elif [ "$1" = -"a" ]; then
+elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
-	sudo echo "ARG1=a" >> .mode	
+	sudo echo "ARG1=a" > .mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-f" ]; then
 	echo "changing CubeSatSim to FSK mode"
-	sudo echo "ARG1=f" >> .mode	
+	sudo echo "ARG1=f" > .mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-b" ]; then
 	echo "changing CubeSatSim to BPSK mode"
-	sudo echo "ARG1=b" >> .mode	
+	sudo echo "ARG1=b" > .mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-s" ]; then
 	echo "changing CubeSatSim to SSTV mode"
-	sudo echo "ARG1=s" >> .mode	
+	sudo echo "ARG1=s" > .mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-h" ]; then
@@ -37,12 +37,13 @@ elif [ "$1" = "-h" ]; then
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
 	echo "   -r     Restarts CubeSatsim software"
+	echo "   -m     Modified the configuration file sim.cfg"
+	echo "          You can change callsign, reset count, or"
+	echo "          latitude and longitude (used for APRS)"
 	echo
-	echo "Without any options, modifies configuration file"
-	echo "sim.cfg.  You can change callsign, reset count, or"
-	echo "latitude and longitude (used for APRS)"
 	exit
-fi
+
+elif [ "$1" = "-m" ]; then
 
 echo -e "\nConfiguration script for CubeSatSim\n"
  
@@ -126,6 +127,8 @@ echo $callsign $resets $lat $long
 echo $callsign $resets $lat $long > sim.cfg
  
 echo "Restarting CubeSatSim with new configuraation file"
+
+fi
 
 sudo systemctl restart cubesatsim
 
