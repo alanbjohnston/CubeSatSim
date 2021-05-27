@@ -60,7 +60,7 @@ if __name__ == "__main__":
 				print("SSTV")
 				try: 
 					from picamera import PiCamera
-					from pysstv.sstv import SSTV
+#					from pysstv.sstv import SSTV
 					camera = PiCamera()
 					print("Camera present")
 					camera_present = 1
