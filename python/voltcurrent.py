@@ -15,7 +15,7 @@ if __name__ == "__main__":
   config = False
   
   if (len(sys.argv)) > 1:
-   print("There are arguments!")
+   print("There are arguments!", file=sys.stderr)
    if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
     buses[0] = int(sys.argv[1], base=10)
     if (len(sys.argv)) > 2:
@@ -26,7 +26,7 @@ if __name__ == "__main__":
           
 
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
-  print("buses: ", buses, " addr: ", addresses)
+  print("buses: ", buses, " addr: ", addresses, file=sys.stderr)
 
 # config
 
@@ -53,9 +53,9 @@ if __name__ == "__main__":
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
         except:
-          print("Error 2")
+          print("Error 2", file=sys.stderr)
     except:
-      print("Error 1")
+      print("Error 1", file=sys.stderr)
 # No try checking yet
 
   i2c_one = I2C(buses[0])
