@@ -344,11 +344,11 @@ int main(int argc, char * argv[]) {
   strcat(pythonConfigStr, pythonStr);
   strcat(pythonConfigStr, " c");  
 
-  printf("pythonConfigStr: %s\n", pythonConfigStr);
+  fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
 	
   file1 = sopen(pythonConfigStr);  // try new function
   fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr result: %s\n", cmdbuffer);
+  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
 /*	
   sleep(5);
   fputc('\n', file1);
