@@ -53,9 +53,9 @@ if __name__ == "__main__":
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
         except:
-          print("Error 2", file=sys.stderr)
+          print("Error 2", file=sys.stderr, flush=True)
     except:
-      print("Error 1", file=sys.stderr)
+      print("Error 1", file=sys.stderr, flush=True)
 # No try checking yet
 
   i2c_one = I2C(buses[0])
@@ -66,25 +66,29 @@ if __name__ == "__main__":
     ina219_one = INA219(I2C(1), 0x4a) 
   else:
     ina219_one = INA219(i2c_one, addresses[0])
-  ina219_two = INA219(i2c_one, addresses[1])
-  ina219_three = INA219(i2c_one, addresses[2])
-  ina219_four= INA219(i2c_one, addresses[3])
-  ina219_five= INA219(i2c_two, addresses[0])  
-  ina219_six = INA219(i2c_two, addresses[1]) 
-  ina219_seven = INA219(i2c_two, addresses[2]) 
-  ina219_eight = INA219(i2c_two, addresses[3]) 
-
+  try:  
+    ina219_two = INA219(i2c_one, addresses[1])
+    ina219_three = INA219(i2c_one, addresses[2])
+    ina219_four= INA219(i2c_one, addresses[3])
+    ina219_five= INA219(i2c_two, addresses[0])  
+    ina219_six = INA219(i2c_two, addresses[1]) 
+    ina219_seven = INA219(i2c_two, addresses[2]) 
+    ina219_eight = INA219(i2c_two, addresses[3]) 
+  except:
+    print("Error 3", file=sys.stderr, flush=True)
   while (True):
-#    print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
-    print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '') 
-    print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
-    print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
-    print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
-    print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
-    print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
-    print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
-    print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current) , end = '') 
-
+    try:
+#      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+      print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '') 
+      print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
+      print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
+      print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
+      print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
+      print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
+      print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
+      print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current) , end = '') 
+    except:
+      print("Error 4", file=sys.stderr, flush=True)
     print(" ")
     inp = input()
 #   print(inp)
