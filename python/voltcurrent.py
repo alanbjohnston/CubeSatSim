@@ -53,9 +53,9 @@ if __name__ == "__main__":
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
         except:
-          print("Error 2", file=sys.stderr, flush=True)
+          print("Python Error 2", file=sys.stderr, flush=True)
     except:
-      print("Error 1", file=sys.stderr, flush=True)
+      print("Python Error 1", file=sys.stderr, flush=True)
 # No try checking yet
 
   i2c_one = I2C(buses[0])
@@ -76,7 +76,7 @@ if __name__ == "__main__":
     ina219_seven = INA219(i2c_two, addresses[2]) 
     ina219_eight = INA219(i2c_two, addresses[3]) 
   except:
-    print("Error 3", file=sys.stderr, flush=True)
+    print("Python Error 3", file=sys.stderr, flush=True)
   while (True):
     try:
 #      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
@@ -89,7 +89,7 @@ if __name__ == "__main__":
       print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
       print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current) , end = '') 
     except:
-      print("Error 4", file=sys.stderr, flush=True)
+      print("Python Error 4", file=sys.stderr, flush=True)
     print(" ")
     inp = input()
 #   print(inp)
