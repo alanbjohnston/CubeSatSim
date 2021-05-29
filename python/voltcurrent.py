@@ -37,7 +37,7 @@ if __name__ == "__main__":
         print(x,y)
         try:
   # Create library object using  Extended Bus I2C port
-        print("bus: ", x, " addr: ", y)
+          print("bus: ", x, " addr: ", y)
           if x == 0 and y == 0x45:
 #           print("Reading INA219 in MoPower Board")
             i2c_bus = I2C(1)
@@ -53,7 +53,9 @@ if __name__ == "__main__":
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
         except:
+          print("Error 2")
     except:
+      print("Error 1")
 # No try checking yet
 
   i2c_one = I2C(buses[0])
