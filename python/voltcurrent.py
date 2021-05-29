@@ -6,6 +6,7 @@ import sys
 import busio
 from adafruit_extended_bus import ExtendedI2C as I2C
 from adafruit_ina219 import INA219
+from adafruit_ina219 import ADCResolution, BusVoltageRange
 
 if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
@@ -14,18 +15,18 @@ if __name__ == "__main__":
   config = False
   
   if (len(sys.argv)) > 1:
-#   print("There are arguments!")
-#   if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
+   print("There are arguments!")
+   if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
     buses[0] = int(sys.argv[1], base=10)
     if (len(sys.argv)) > 2:
       buses[1] = int(sys.argv[2], base=10)
       if (len(sys.argv)) > 3:
         if sys.argv[3] == "c":
           config = True
-          from adafruit_ina219 import ADCResolution, BusVoltageRange
+          
 
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
-#  print("buses: ", buses, " addr: ", addresses)
+  print("buses: ", buses, " addr: ", addresses)
 
 # config
 
