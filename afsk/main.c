@@ -343,6 +343,8 @@ int main(int argc, char * argv[]) {
   strcat(pythonStr, busStr);
   strcat(pythonConfigStr, pythonStr);
   strcat(pythonConfigStr, " c");  
+
+  printf("pythonConfigStr: %s\n", pythonConfigStr);
 	
   file1 = sopen(pythonConfigStr);  // try new function
   fgets(cmdbuffer, 1000, file1);
