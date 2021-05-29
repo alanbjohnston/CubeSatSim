@@ -383,7 +383,7 @@ int main(int argc, char * argv[]) {
   {
     payload = OFF;
 
-    if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {
+    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
       char c;
       int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
