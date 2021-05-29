@@ -31,29 +31,29 @@ if __name__ == "__main__":
 # config
 
   for x in buses:
-#    try:
+    try:
       i2c_bus = I2C(x) # Device is /dev/i2c-x
       for y in addresses:
- #     print(x,y)
- #       try:
+      print(x,y)
+        try:
   # Create library object using  Extended Bus I2C port
-#        print("bus: ", x, " addr: ", y)
+        print("bus: ", x, " addr: ", y)
           if x == 0 and y == 0x45:
 #           print("Reading INA219 in MoPower Board")
             i2c_bus = I2C(1)
             ina219 = INA219(i2c_bus, 0x4a)
           else:
             ina219 = INA219(i2c_bus, y)
-#         print("ina219 test")
+         print("ina219 test")
   
-#         print("Configuring")
+         print("Configuring")
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
           ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
           ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
 # optional : change voltage range to 16V
           ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
-#        except:
-#    except:
+        except:
+    except:
 # No try checking yet
 
   i2c_one = I2C(buses[0])
