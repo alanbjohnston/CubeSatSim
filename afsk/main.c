@@ -1718,7 +1718,17 @@ void get_tlm_fox() {
   //    printf("Not resending\n");
       sleep(0.5);
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-      printf("Millis6: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
+      printf("Millis7: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
+    }
+    start = millis();  // send frame a second time
+    sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+    printf("Millis8: %d Result of socket send: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    
+    if (sock_ret < (ctr * 2 + 2)) {
+  //    printf("Not resending\n");
+      sleep(0.5);
+      sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+      printf("Millis9: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
     }
 
     if (sock_ret == -1) {
