@@ -15,7 +15,7 @@ if __name__ == "__main__":
   config = False
   
   if (len(sys.argv)) > 1:
-   print("There are arguments!", file=sys.stderr)
+#   print("There are arguments!", file=sys.stderr)
    if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
     buses[0] = int(sys.argv[1], base=10)
     if (len(sys.argv)) > 2:
@@ -26,7 +26,7 @@ if __name__ == "__main__":
           
 
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
-  print("buses: ", buses, " addr: ", addresses, file=sys.stderr)
+#  print("buses: ", buses, " addr: ", addresses, file=sys.stderr)
 
 # config
 
@@ -34,17 +34,17 @@ if __name__ == "__main__":
     try:
       i2c_bus = I2C(x) # Device is /dev/i2c-x
       for y in addresses:
-        print(x,y)
+#        print(x,y)
         try:
   # Create library object using  Extended Bus I2C port
-          print("bus: ", x, " addr: ", y)
+#          print("bus: ", x, " addr: ", y)
           if x == 0 and y == 0x45:
 #           print("Reading INA219 in MoPower Board")
             i2c_bus = I2C(1)
             ina219 = INA219(i2c_bus, 0x4a)
           else:
             ina219 = INA219(i2c_bus, y)
-          print("ina219 test")
+#          print("ina219 test")
   
           print("Configuring")
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
@@ -93,4 +93,3 @@ if __name__ == "__main__":
     print(" ")
     inp = input()
 #   print(inp)
-
