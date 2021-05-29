@@ -34,7 +34,7 @@ if __name__ == "__main__":
     try:
       i2c_bus = I2C(x) # Device is /dev/i2c-x
       for y in addresses:
-      print(x,y)
+        print(x,y)
         try:
   # Create library object using  Extended Bus I2C port
         print("bus: ", x, " addr: ", y)
