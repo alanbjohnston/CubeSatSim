@@ -97,7 +97,7 @@ if __name__ == "__main__":
 #        print("Python Error 3", file=sys.stderr, flush=True)
         three = 0
   
-     try:  
+      try:  
         ina219_four= INA219(i2c_one, addresses[3])
         ina219_four.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
         ina219_four.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
