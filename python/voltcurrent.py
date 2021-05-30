@@ -58,7 +58,7 @@ if __name__ == "__main__":
       print("Python Error 1", file=sys.stderr, flush=True)
 # No try checking yet
 
-  i2c_one = I2C(buses[0])
+
   i2c_two = I2C(buses[1])
   
 #  if buses[0] == 0 and addresses[0] == 0x45:
@@ -66,17 +66,47 @@ if __name__ == "__main__":
 #    ina219_one = INA219(I2C(1), 0x4a) 
 #  else:
   try:
-    ina219_one = INA219(i2c_one, addresses[0])
-#  try:  
-    ina219_two = INA219(i2c_one, addresses[1])
-    ina219_three = INA219(i2c_one, addresses[2])
-    ina219_four= INA219(i2c_one, addresses[3])
-    ina219_five= INA219(i2c_two, addresses[0])  
-    ina219_six = INA219(i2c_two, addresses[1]) 
-    ina219_seven = INA219(i2c_two, addresses[2]) 
-    ina219_eight = INA219(i2c_two, addresses[3]) 
+    i2c_one = I2C(buses[0])
+    try:
+      ina219_one = INA219(i2c_one, addresses[0])
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+    try:  
+      ina219_two = INA219(i2c_one, addresses[1])
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+    try:  
+      ina219_three = INA219(i2c_one, addresses[2])
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+    try:  
+      ina219_four= INA219(i2c_one, addresses[3])
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
   except:
-    print("Python Error 3", file=sys.stderr, flush=True)
+    print("Python Error 5",  file=sys.stderr, flush=True)
+    
+  try:
+    i2c_one = I2C(buses[1])
+    try:  
+      ina219_five= INA219(i2c_two, addresses[0])  
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+    try:  
+      ina219_six = INA219(i2c_two, addresses[1]) 
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+    try:  
+      ina219_seven = INA219(i2c_two, addresses[2]) 
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+    try:  
+      ina219_eight = INA219(i2c_two, addresses[3]) 
+    except:
+      print("Python Error 3", file=sys.stderr, flush=True)
+  except:
+    print("Python Error 5",  file=sys.stderr, flush=True)
+        
   while (True):
     try:
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
