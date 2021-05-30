@@ -102,56 +102,72 @@ if __name__ == "__main__":
   try:
     i2c_two = I2C(buses[1])
     try:  
-      ina219_five= INA219(i2c_two, addresses[0])  
+      ina219_five = INA219(i2c_two, addresses[0])  
+      ina219_five.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_five.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_five.bus_voltage_range = BusVoltageRange.RANGE_16V
+      five = 1  
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_six = INA219(i2c_two, addresses[1]) 
+      ina219_six.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_six.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_six.bus_voltage_range = BusVoltageRange.RANGE_16V
+      six = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_seven = INA219(i2c_two, addresses[2]) 
+      ina219_seven.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_seven.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_seven.bus_voltage_range = BusVoltageRange.RANGE_16V
+      seven = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_eight = INA219(i2c_two, addresses[3]) 
+      ina219_eight.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_eight.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_eight.bus_voltage_range = BusVoltageRange.RANGE_16V
+      eight = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
   except:
     print("Python Error 5",  file=sys.stderr, flush=True)
         
   while (True):
-    if (oneZero == 1):
+    if (one == 1):
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
     else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try:  
+    if (two == 1):  
       print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try: 
+    if (three == 1):  
       print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try:  
+    if (four == 1): 
       print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try:  
+    if (five == 1): 
       print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try:  
-      print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
-    except:
+    if (six == 1): 
+      print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '')       
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try:  
+    if (seven == 1): 
       print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    try:  
+    if (eight == 1): 
       print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current) , end = '') 
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
     print(" ")
     inp = input()
