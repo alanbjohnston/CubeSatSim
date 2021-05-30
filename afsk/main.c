@@ -699,7 +699,7 @@ void get_tlm(void) {
 //    FILE * file = popen(pythonStr, "r");
     fputc('\n', file1);
     fgets(cmdbuffer, 1000, file1);
-    //   printf("result: %s\n", cmdbuffer);
+    printf("Pyton result: %s\n", cmdbuffer);
 //    pclose(file);
 
     const char space[2] = " ";
@@ -1201,7 +1201,7 @@ void get_tlm_fox() {
 //    FILE * file = popen(pythonStr, "r");
       fputc('\n', file1);
       fgets(cmdbuffer, 1000, file1);
-//    printf("Python read Result: %s\n", cmdbuffer);
+      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
 //    pclose(file);
 /**/
       const char space[2] = " ";
