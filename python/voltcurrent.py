@@ -13,6 +13,7 @@ if __name__ == "__main__":
   
   buses = [1, 3] # default I2C buses
   config = False
+  one = two = three = four = five = six = seven = eight = 0
   
   if (len(sys.argv)) > 1:
 #   print("There are arguments!", file=sys.stderr)
@@ -72,7 +73,7 @@ if __name__ == "__main__":
         ina219_one.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
         ina219_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         ina219_one.bus_voltage_range = BusVoltageRange.RANGE_16V
-        oneF = 1
+        one = 1
       except:
         print("Python Error 3", file=sys.stderr, flush=True)
       try:  
