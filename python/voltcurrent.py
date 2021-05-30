@@ -30,32 +30,32 @@ if __name__ == "__main__":
 
 # config
 
-  for x in buses:
-    try:
-      i2c_bus = I2C(x) # Device is /dev/i2c-x
-      for y in addresses:
+#  for x in buses:
+#    try:
+#      i2c_bus = I2C(x) # Device is /dev/i2c-x
+#      for y in addresses:
 #        print(x,y)
-        try:
+#        try:
   # Create library object using  Extended Bus I2C port
 #          print("bus: ", x, " addr: ", y)
-          if x == 0 and y == 0x45:
+#          if x == 0 and y == 0x45:
 #           print("Reading INA219 in MoPower Board")
-            i2c_bus = I2C(1)
-            ina219 = INA219(i2c_bus, 0x4a)
-          else:
-            ina219 = INA219(i2c_bus, y)
+#            i2c_bus = I2C(1)
+#            ina219 = INA219(i2c_bus, 0x4a)
+#          else:
+#            ina219 = INA219(i2c_bus, y)
 #          print("ina219 test")
   
 #          print("Configuring")
 # optional : change configuration to use 32 samples averaging for both bus voltage and shunt voltage
-          ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
-          ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+#          ina219.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+#          ina219.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
 # optional : change voltage range to 16V
-          ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
-        except:
-          print("Python Error 2", file=sys.stderr, flush=True)
-    except:
-      print("Python Error 1", file=sys.stderr, flush=True)
+#          ina219.bus_voltage_range = BusVoltageRange.RANGE_16V
+#        except:
+#          print("Python Error 2", file=sys.stderr, flush=True)
+#    except:
+#      print("Python Error 1", file=sys.stderr, flush=True)
 # No try checking yet
   
 #  if buses[0] == 0 and addresses[0] == 0x45:
@@ -65,23 +65,35 @@ if __name__ == "__main__":
   try:
     i2c_one = I2C(buses[0])
     try:
-      i2c_one = INA219(i2c_one, addresses[0])
-      i2c_one.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
-      i2c_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
-      i2c_one.bus_voltage_range = BusVoltageRange.RANGE_16V
-      oneZero = 1
+      ina219_one = INA219(i2c_one, addresses[0])
+      ina219_one.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_one.bus_voltage_range = BusVoltageRange.RANGE_16V
+      one = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_two = INA219(i2c_one, addresses[1])
+      ina219_two.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_two.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_two.bus_voltage_range = BusVoltageRange.RANGE_16V
+      two = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_three = INA219(i2c_one, addresses[2])
+      ina219_three.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_three.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_three.bus_voltage_range = BusVoltageRange.RANGE_16V
+      three = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_four= INA219(i2c_one, addresses[3])
+      ina219_four.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      ina219_four.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      ina219_four.bus_voltage_range = BusVoltageRange.RANGE_16V
+      four = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
   except:
@@ -109,7 +121,7 @@ if __name__ == "__main__":
     print("Python Error 5",  file=sys.stderr, flush=True)
         
   while (True):
-    if (zeroOne == 1):
+    if (oneZero == 1):
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
     else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
