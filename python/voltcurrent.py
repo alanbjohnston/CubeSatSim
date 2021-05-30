@@ -57,9 +57,6 @@ if __name__ == "__main__":
     except:
       print("Python Error 1", file=sys.stderr, flush=True)
 # No try checking yet
-
-
-  i2c_two = I2C(buses[1])
   
 #  if buses[0] == 0 and addresses[0] == 0x45:
 #    print("Reading INA219 in MoPower Board")
@@ -68,9 +65,13 @@ if __name__ == "__main__":
   try:
     i2c_one = I2C(buses[0])
     try:
-      ina219_one = INA219(i2c_one, addresses[0])
-    except:
-      print("Python Error 3", file=sys.stderr, flush=True)
+      i2c_one = INA219(i2c_one, addresses[0])
+      i2c_one.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+      i2c_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+      i2c_one.bus_voltage_range = BusVoltageRange.RANGE_16V
+      oneZero = 1
+#    except:
+#      print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_two = INA219(i2c_one, addresses[1])
     except:
@@ -87,7 +88,7 @@ if __name__ == "__main__":
     print("Python Error 5",  file=sys.stderr, flush=True)
     
   try:
-    i2c_one = I2C(buses[1])
+    i2c_two = I2C(buses[1])
     try:  
       ina219_five= INA219(i2c_two, addresses[0])  
     except:
@@ -108,9 +109,9 @@ if __name__ == "__main__":
     print("Python Error 5",  file=sys.stderr, flush=True)
         
   while (True):
-    try:
+    if (zeroOne == 1):
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
-    except:
+    else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
     try:  
       print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
