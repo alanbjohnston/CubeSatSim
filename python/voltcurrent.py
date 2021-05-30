@@ -71,7 +71,7 @@ if __name__ == "__main__":
       i2c_one.bus_voltage_range = BusVoltageRange.RANGE_16V
       oneZero = 1
     except:
-#      print("Python Error 3", file=sys.stderr, flush=True)
+      print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_two = INA219(i2c_one, addresses[1])
     except:
