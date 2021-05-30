@@ -79,17 +79,37 @@ if __name__ == "__main__":
     print("Python Error 3", file=sys.stderr, flush=True)
   while (True):
     try:
-#      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
-      print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '') 
+      print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try:  
       print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try: 
       print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try:  
       print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try:  
       print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try:  
       print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try:  
       print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
+    except:
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
+    try:  
       print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current) , end = '') 
     except:
-      print("Python Error 4", file=sys.stderr, flush=True)
+      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0))
     print(" ")
     inp = input()
 #   print(inp)
