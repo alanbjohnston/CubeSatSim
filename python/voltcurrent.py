@@ -69,7 +69,7 @@ if __name__ == "__main__":
       ina219_one.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
       ina219_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
       ina219_one.bus_voltage_range = BusVoltageRange.RANGE_16V
-      one = 1
+      oneF = 1
     except:
       print("Python Error 3", file=sys.stderr, flush=True)
     try:  
@@ -138,7 +138,7 @@ if __name__ == "__main__":
     print("Python Error 5",  file=sys.stderr, flush=True)
         
   while (True):
-    if (one == 1):
+    if (oneF == 1):
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
     else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
