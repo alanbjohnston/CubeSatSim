@@ -101,6 +101,7 @@ if __name__ == "__main__":
     
   try:
     i2c_two = I2C(buses[1])
+    print(i2c_two)
     try:  
       ina219_five = INA219(i2c_two, addresses[0])  
       ina219_five.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
