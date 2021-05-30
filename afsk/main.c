@@ -1098,7 +1098,7 @@ void get_tlm_fox() {
       if (mode == FSK) 
 	sleep(2.3);  // No sleep at all!
       else	    
-        sleep(4.3);
+        sleep(1.3);
 	    
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
