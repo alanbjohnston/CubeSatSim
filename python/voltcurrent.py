@@ -70,7 +70,7 @@ if __name__ == "__main__":
       i2c_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
       i2c_one.bus_voltage_range = BusVoltageRange.RANGE_16V
       oneZero = 1
-#    except:
+    except:
 #      print("Python Error 3", file=sys.stderr, flush=True)
     try:  
       ina219_two = INA219(i2c_one, addresses[1])
