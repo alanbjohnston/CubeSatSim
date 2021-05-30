@@ -1260,12 +1260,13 @@ void get_tlm_fox() {
         printf("Clearing buffer of %d chars \n", charss);
         while ((charss--> 0))
           c = (char) serialGetchar(uart_fd); // clear buffer
-	      
+/*	      
         charss = (char) serialDataAvail(uart_fd);
         if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
         while ((charss--> 0))
           c = (char) serialGetchar(uart_fd); // clear buffer
+*/	      
 
         unsigned int waitTime;
         int i = 0;
