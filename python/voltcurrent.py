@@ -120,7 +120,8 @@ if __name__ == "__main__":
         ina219_five.bus_voltage_range = BusVoltageRange.RANGE_16V
         five = 1  
       except:
-        print("Python Error 3", file=sys.stderr, flush=True)
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        five = 0
       try:  
         ina219_six = INA219(i2c_two, addresses[1]) 
         ina219_six.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
@@ -128,7 +129,8 @@ if __name__ == "__main__":
         ina219_six.bus_voltage_range = BusVoltageRange.RANGE_16V
         six = 1
       except:
-        print("Python Error 3", file=sys.stderr, flush=True)
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        six = 0
       try:  
         ina219_seven = INA219(i2c_two, addresses[2]) 
         ina219_seven.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
@@ -136,7 +138,8 @@ if __name__ == "__main__":
         ina219_seven.bus_voltage_range = BusVoltageRange.RANGE_16V
         seven = 1
       except:
-        print("Python Error 3", file=sys.stderr, flush=True)
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        seven = 0
       try:  
         ina219_eight = INA219(i2c_two, addresses[3]) 
         ina219_eight.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
@@ -144,7 +147,8 @@ if __name__ == "__main__":
         ina219_eight.bus_voltage_range = BusVoltageRange.RANGE_16V
         eight = 1
       except:
-        print("Python Error 3", file=sys.stderr, flush=True)
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        eight = 0
     except:
       print("Python Error 5",  file=sys.stderr, flush=True)
 
