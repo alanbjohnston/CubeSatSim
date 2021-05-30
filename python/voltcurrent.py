@@ -25,8 +25,8 @@ if __name__ == "__main__":
         if sys.argv[3] == "c":
           config = True
           
-  print(buses[0])
-  print(buses[1])
+#  print(buses[0])
+#  print(buses[1])
 
   addresses = [0x40, 0x41, 0x44, 0x45] #INA219 addresses on the bus
 #  print("buses: ", buses, " addr: ", addresses, file=sys.stderr)
@@ -143,7 +143,7 @@ if __name__ == "__main__":
       print("Python Error 5",  file=sys.stderr, flush=True)
 
   while (True):
-    if (oneF == 1):
+    if (one == 1):
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
     else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
