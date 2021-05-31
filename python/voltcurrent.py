@@ -153,37 +153,37 @@ if __name__ == "__main__":
       print("Python Error 5",  file=sys.stderr, flush=True)
 
   while (True):
-    if (one == 1):
+    try:
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
     else:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (two == 1):  
+    try:  
       print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (three == 1):  
+    try: 
       print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (four == 1): 
+    try:  
       print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (five == 1): 
+    try:  
       print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (six == 1): 
-      print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '')       
-    else:
+    try:  
+      print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (seven == 1): 
+    try:  
       print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
-    if (eight == 1): 
+    try:  
       print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current) , end = '') 
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
     print(" ")
     inp = input()
