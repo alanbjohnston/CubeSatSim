@@ -1042,8 +1042,13 @@ void get_tlm_fox() {
 
   //	short int b[DATA_LEN];
   short int b[dataLen];
+  short int b_max[dataLen];
+  short int b_min[dataLen];
+	
   memset(b, 0, sizeof(b));
-
+  memset(b_max, 0, sizeof(b_max));
+  memset(b_min, 0, sizeof(b_min));
+	
   //	short int h[HEADER_LEN];
   short int h[headerLen];
   memset(h, 0, sizeof(h));
@@ -1486,6 +1491,13 @@ void get_tlm_fox() {
       encodeB(b, 25 + head_offset, negXi);
       encodeA(b, 27 + head_offset, negYi);
       encodeB(b, 28 + head_offset, negZi);
+	    
+      encodeA(b_max, 12 + head_offset, (int)(voltage_max[map[PLUS_X]] * 100));
+      encodeB(b_max, 13 + head_offset, (int)(voltage_max[map[PLUS_Y]] * 100));
+	    
+      encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
+      encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
+
     }
 
     encodeA(b, 30 + head_offset, PSUVoltage);
@@ -1557,8 +1569,17 @@ void get_tlm_fox() {
             data8[ctr1++] = rs_frame[j][i];
             //				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
           } else {
-            rs_frame[j][i] = b[ctr3 % dataLen];
-            update_rs(parities[j], b[ctr3 % dataLen]);
+	     if (mode == FSK)
+	     {
+            	rs_frame[j][i] = b[ctr3 % dataLen];
+            	update_rs(parities[j], b[ctr3 % dataLen]);
+	     }  else // BPSK
+            	rs_frame[j][i] = b_max[ctr3 % dataLen];
+            	update_rs(parities[j], b_max[ctr3 % dataLen]);
+		frm_type = 0x02;
+	     {
+	    }
+		  
             //  				printf("%d rs_frame[%d][%d] = %x %d \n", 
             //  					ctr1, j, i, b[ctr3 % DATA_LEN], ctr3 % DATA_LEN);
             data8[ctr1++] = rs_frame[j][i];
