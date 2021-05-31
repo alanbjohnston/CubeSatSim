@@ -155,7 +155,7 @@ if __name__ == "__main__":
   while (True):
     try:
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
-    else:
+    except:
       print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
     try:  
       print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
