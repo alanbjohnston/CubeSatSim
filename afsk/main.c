@@ -1503,12 +1503,12 @@ void get_tlm_fox() {
       encodeA(b_max, 18 + head_offset, (int)(voltage_max[map[MINUS_Y]] * 100));
       encodeB(b_max, 19 + head_offset, (int)(voltage_max[map[MINUS_Z]] * 100));
 
-      encodeA(b_max, 21 + head_offset, (int)(current_max[map[PLUS_X]] * 100));
-      encodeB(b_max, 22 + head_offset, (int)(current_max[map[PLUS_Y]] * 100));
-      encodeA(b_max, 24 + head_offset, (int)(current_max[map[PLUS_Z]] * 100));
-      encodeB(b_max, 25 + head_offset, (int)(current_max[map[MINUS_X]] * 100));
-      encodeA(b_max, 27 + head_offset, (int)(current_max[map[MINUS_Y]] * 100));
-      encodeB(b_max, 28 + head_offset, (int)(current_max[map[MINUS_Z]] * 100));	    
+      encodeA(b_max, 21 + head_offset, (int)(current_max[map[PLUS_X]] + 0.5) + 2048);
+      encodeB(b_max, 22 + head_offset, (int)(current_max[map[PLUS_Y]] + 0.5) + 2048);
+      encodeA(b_max, 24 + head_offset, (int)(current_max[map[PLUS_Z]] + 0.5) + 2048);
+      encodeB(b_max, 25 + head_offset, (int)(current_max[map[MINUS_X]] + 0.5) + 2048);
+      encodeA(b_max, 27 + head_offset, (int)(current_max[map[MINUS_Y]] + 0.5) + 2048);
+      encodeB(b_max, 28 + head_offset, (int)(current_max[map[MINUS_Z]] + 0.5) + 2048);	    
 
       encodeA(b_max, 9 + head_offset, (int)(current_max[map[BAT]] + 0.5) + 2048);
       encodeA(b_max, 3 + head_offset, (int)(voltage_max[map[BAT]] * 100));
@@ -1522,12 +1522,12 @@ void get_tlm_fox() {
       encodeA(b_min, 18 + head_offset, (int)(voltage_min[map[MINUS_Y]] * 100));
       encodeB(b_min, 19 + head_offset, (int)(voltage_min[map[MINUS_Z]] * 100));
 
-      encodeA(b_min, 21 + head_offset, (int)(current_min[map[PLUS_X]] * 100));
-      encodeB(b_min, 22 + head_offset, (int)(current_min[map[PLUS_Y]] * 100));
-      encodeA(b_min, 24 + head_offset, (int)(current_min[map[PLUS_Z]] * 100));
-      encodeB(b_min, 25 + head_offset, (int)(current_min[map[MINUS_X]] * 100));
-      encodeA(b_min, 27 + head_offset, (int)(current_min[map[MINUS_Y]] * 100));
-      encodeB(b_min, 28 + head_offset, (int)(current_min[map[MINUS_Z]] * 100));	
+      encodeA(b_min, 21 + head_offset, (int)(current_min[map[PLUS_X]] + 0.5) + 2048);
+      encodeB(b_min, 22 + head_offset, (int)(current_min[map[PLUS_Y]] + 0.5) + 2048);
+      encodeA(b_min, 24 + head_offset, (int)(current_min[map[PLUS_Z]] + 0.5) + 2048);
+      encodeB(b_min, 25 + head_offset, (int)(current_min[map[MINUS_X]] + 0.5) + 2048);
+      encodeA(b_min, 27 + head_offset, (int)(current_min[map[MINUS_Y]] + 0.5) + 2048);
+      encodeB(b_min, 28 + head_offset, (int)(current_min[map[MINUS_Z]] + 0.5) + 2048);	
 	    
       encodeA(b_min, 9 + head_offset, (int)(current_min[map[BAT]] + 0.5) + 2048);
       encodeA(b_min, 3 + head_offset, (int)(voltage_min[map[BAT]] * 100));
