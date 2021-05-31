@@ -1525,6 +1525,12 @@ void get_tlm_fox() {
       encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
       encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 	    
+      encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
+      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
+      encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
+      encodeA(b_max, 48 + head_offset, (int)(sensor_max[XS2]) + 2048);
+      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS3] * 100 + 0.5) + 2048);
+	    
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
       encodeA(b_min, 15 + head_offset, (int)(voltage_min[map[PLUS_Z]] * 100));
@@ -1553,6 +1559,12 @@ void get_tlm_fox() {
       encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
       encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
       encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
+	    
+      encodeB(b_m, 31 + head_offset, ((int)(other_m[SPIN] * 10)) + 2048);
+      encodeB(b_m, 37 + head_offset, (int)(other_m[RSSI] + 0.5) + 2048);	    
+      encodeA(b_m, 39 + head_offset, (int)(other_m[IHU_TEMP] * 10 + 0.5));
+      encodeA(b_m, 48 + head_offset, (int)(sensor_m[XS2]) + 2048);
+      encodeB(b_m, 49 + head_offset, (int)(sensor_m[XS3] * 100 + 0.5) + 2048);
 	    
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
