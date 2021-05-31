@@ -1606,7 +1606,7 @@ void get_tlm_fox() {
     
     if (mode == BPSK) {  // wod field experiments
       encodeA(b, 64 + head_offset, 0x7f);  // was 7f -> fe, ff -> 1fe  was 63
-      encodeA(b, 63 + head_offset, 0xff);  // ,65 ff -> fefe
+      encodeA(b, 63 + head_offset, 0x1e);  // ,65 ff -> fefe, ff -> e1, 
       encodeB(b, 74 + head_offset, 0xa5);  // was ff	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
@@ -1630,12 +1630,12 @@ void get_tlm_fox() {
             	rs_frame[j][i] = b[ctr3 % dataLen];
             	update_rs(parities[j], b[ctr3 % dataLen]);
 	     }  else // BPSK
-		if ((int)(ctr3/dataLen) == 4)  // was 3
+		if ((int)(ctr3/dataLen) == 3)  
 		{
             		rs_frame[j][i] = b_max[ctr3 % dataLen];
             		update_rs(parities[j], b_max[ctr3 % dataLen]);
 		}
-		else if ((int)(ctr3/dataLen) == 3)  // was 4
+		else if ((int)(ctr3/dataLen) == 4)  
 		{
             		rs_frame[j][i] = b_min[ctr3 % dataLen];
             		update_rs(parities[j], b_min[ctr3 % dataLen]);
