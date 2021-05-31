@@ -1605,7 +1605,8 @@ void get_tlm_fox() {
     }
     
     if (mode == BPSK) {  // wod field experiments
-      unsigned long val = 31234;
+      unsigned long val = 0xffffff;
+      printf("WOD: %x %x %x \n", 0xff & val, (0xff00 & val) >> 8, (0xff0000 & val) >> 16);
       encodeA(b, 63 + head_offset, 0xff & val); 
       encodeA(b, 64 + head_offset, (0xff00 & val) >> 8); 
       encodeA(b, 65 + head_offset, (0xff0000 & val) >> 16); 	    
