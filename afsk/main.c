@@ -1348,7 +1348,7 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 
-         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+//         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
       }
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
@@ -1560,11 +1560,11 @@ void get_tlm_fox() {
       encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
       encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
 	    
-      encodeB(b_m, 31 + head_offset, ((int)(other_m[SPIN] * 10)) + 2048);
-      encodeB(b_m, 37 + head_offset, (int)(other_m[RSSI] + 0.5) + 2048);	    
-      encodeA(b_m, 39 + head_offset, (int)(other_m[IHU_TEMP] * 10 + 0.5));
-      encodeA(b_m, 48 + head_offset, (int)(sensor_m[XS2]) + 2048);
-      encodeB(b_m, 49 + head_offset, (int)(sensor_m[XS3] * 100 + 0.5) + 2048);
+      encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
+      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
+      encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
+      encodeA(b_min, 48 + head_offset, (int)(sensor_min[XS2]) + 2048);
+      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS3] * 100 + 0.5) + 2048);
 	    
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
