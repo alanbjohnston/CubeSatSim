@@ -177,46 +177,164 @@ if __name__ == "__main__":
       print("Python Error 5",  file=sys.stderr, flush=True)
 
   while (True):
+    error = 0
     try:
       time.sleep(0.01)
       print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:
+        ina219_one = INA219(i2c_one, addresses[0])
+        ina219_one.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_one.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1    
+        
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+ 
+      
     try:
       time.sleep(0.01)  
       print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:  
+        ina219_two = INA219(i2c_one, addresses[1])
+        ina219_two.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_two.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_two.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1   
+        
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+
+      
     try:
       time.sleep(0.01) 
       print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:  
+        ina219_three = INA219(i2c_one, addresses[2])
+        ina219_three.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_three.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_three.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1    
+        
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')  
+      
     try:
       time.sleep(0.01)  
       print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:  
+        ina219_four= INA219(i2c_one, addresses[3])
+        ina219_four.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_four.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_four.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1    
+        
+      except:
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')    
+      
     try:
       time.sleep(0.01)  
       print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:  
+        ina219_five = INA219(i2c_two, addresses[0])  
+        ina219_five.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_five.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_five.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1    
+        
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+       
     try:
       time.sleep(0.01)  
       print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:  
+        ina219_six = INA219(i2c_two, addresses[1]) 
+        ina219_six.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_six.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_six.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1 
+        
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+          
     try:
       time.sleep(0.01)  
       print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
+      try:  
+        ina219_seven = INA219(i2c_two, addresses[2]) 
+        ina219_seven.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_seven.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_seven.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1
+       
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
+      
     try:
       time.sleep(0.01)  
-      print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current)) 
+      print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current), end = '')  
     except:
-      print("{:6.3f} ".format(0),  "{:6.3f} ".format(0)) 
-#    print(" ")
+      
+      try:  
+        ina219_eight = INA219(i2c_two, addresses[3]) 
+        ina219_eight.bus_adc_resolution = ADCResolution.ADCRES_12BIT_32S   # 1S
+        time.sleep(0.001)
+        ina219_eight.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
+        time.sleep(0.001)
+        ina219_eight.bus_voltage_range = BusVoltageRange.RANGE_16V
+        time.sleep(0.01)
+        error = 1
+        
+      except:
+#        print("Python Error 3", file=sys.stderr, flush=True)
+        print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')  
+      
+    if (error == 0):
+      print(" ")
+    else:
+      print("Python Error Recovered!")
+      
     inp = input()
 #   print(inp)
