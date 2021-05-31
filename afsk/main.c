@@ -1605,10 +1605,13 @@ void get_tlm_fox() {
     }
     
     if (mode == BPSK) {  // wod field experiments
-      encodeA(b, 64 + head_offset, 0xfff);  // was 7f -> fe, ff -> 1fe  was 63
-//      encodeA(b, 63 + head_offset, 0x1e);  // 1e -> 224,65 ff -> fefe, ff -> e1, 
-      encodeA(b, 63 + head_offset, 0xfff);  // 0x80 is 1000 0000 at 65
-      encodeA(b, 65 + head_offset, 0xfff);
+      long val = 31234;
+      encodeA(b, 63 + head_offset, 0xff & val); 
+      encodeA(b, 64 + head_offset, (0xff00 & val) >> 8); 
+      encodeA(b, 65 + head_offset, (0xff0000 & val) >> 16); 	    
+//      encodeA(b, 64 + head_offset, 0xfff);  // was 7f -> fe, ff -> 1fe  was 63
+//      encodeA(b, 63 + head_offset, 0xfff);  // 0x80 is 1000 0000 at 65
+//      encodeA(b, 65 + head_offset, 0xfff);
       encodeB(b, 74 + head_offset, 0xfff);  // was ff	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
