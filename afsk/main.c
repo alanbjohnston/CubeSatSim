@@ -1515,6 +1515,16 @@ void get_tlm_fox() {
       encodeA(b_max, 30 + head_offset, (int)(voltage_max[map[BUS]] * 100));
       encodeB(b_max, 46 + head_offset, (int)(current_max[map[BUS]] + 0.5) + 2048);
 	    
+      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
+
+      encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
+      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
+      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
+      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
+      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
+	    
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
       encodeA(b_min, 15 + head_offset, (int)(voltage_min[map[PLUS_Z]] * 100));
@@ -1533,6 +1543,17 @@ void get_tlm_fox() {
       encodeA(b_min, 3 + head_offset, (int)(voltage_min[map[BAT]] * 100));
       encodeA(b_min, 30 + head_offset, (int)(voltage_min[map[BUS]] * 100));
       encodeB(b_min, 46 + head_offset, (int)(current_min[map[BUS]] + 0.5) + 2048);	    
+	    
+      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
+
+      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
+      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
+      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
+      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
+      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
+	    
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
     //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
@@ -1585,7 +1606,7 @@ void get_tlm_fox() {
     
     if (mode == BPSK) {  // wod field experiments
       encodeA(b, 64 + head_offset, 0x7f);  // was 7f -> fe, ff -> 1fe  was 63
-      encodeA(b, 65 + head_offset, 0xff); 
+      encodeA(b, 63 + head_offset, 0xff);  // ,65 ff -> fefe
       encodeB(b, 74 + head_offset, 0xa5);  // was ff	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
