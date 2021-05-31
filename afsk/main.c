@@ -1574,8 +1574,21 @@ void get_tlm_fox() {
             	rs_frame[j][i] = b[ctr3 % dataLen];
             	update_rs(parities[j], b[ctr3 % dataLen]);
 	     }  else // BPSK
-            	rs_frame[j][i] = b_max[ctr3 % dataLen];
-            	update_rs(parities[j], b_max[ctr3 % dataLen]);
+		if ((int)(ctr3/dataLen) == 4)
+		{
+            		rs_frame[j][i] = b_max[ctr3 % dataLen];
+            		update_rs(parities[j], b_max[ctr3 % dataLen]);
+		}
+		else if ((int)(ctr3/dataLen) == 5)
+		{
+            		rs_frame[j][i] = b_min[ctr3 % dataLen];
+            		update_rs(parities[j], b_min[ctr3 % dataLen]);
+		}		
+		else
+		{
+            		rs_frame[j][i] = b[ctr3 % dataLen];
+            		update_rs(parities[j], b[ctr3 % dataLen]);
+		}
 		frm_type = 0x02;
 	     {
 	    }
