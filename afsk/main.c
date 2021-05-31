@@ -1358,34 +1358,39 @@ void get_tlm_fox() {
 
         //  printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
       }
-      if (loop % 8 == 0) {
-        printf("Sending MIN frame \n");
-        frm_type = 0x03;
-        for (int count1 = 0; count1 < 17; count1++) {
-          if (count1 < 3)
-            other[count1] = other_min[count1];
-          if (count1 < 8) {
-            voltage[count1] = voltage_min[count1];
-            current[count1] = current_min[count1];
-          }
-          if (sensor_min[count1] != 1000.0) // make sure values are valid
-            sensor[count1] = sensor_min[count1];
-        }
-      }
-      if ((loop + 4) % 8 == 0) {
-        printf("Sending MAX frame \n");
-        frm_type = 0x02;
-        for (int count1 = 0; count1 < 17; count1++) {
-          if (count1 < 3)
-            other[count1] = other_max[count1];
-          if (count1 < 8) {
-            voltage[count1] = voltage_max[count1];
-            current[count1] = current_max[count1];
-          }
-          if (sensor_max[count1] != -1000.0) // make sure values are valid
-            sensor[count1] = sensor_max[count1];
-        }
-      }	        
+      	  if (mode == FSK)
+	  {
+	      if (loop % 8 == 0) {
+		printf("Sending MIN frame \n");
+		frm_type = 0x03;
+		for (int count1 = 0; count1 < 17; count1++) {
+		  if (count1 < 3)
+		    other[count1] = other_min[count1];
+		  if (count1 < 8) {
+		    voltage[count1] = voltage_min[count1];
+		    current[count1] = current_min[count1];
+		  }
+		  if (sensor_min[count1] != 1000.0) // make sure values are valid
+		    sensor[count1] = sensor_min[count1];
+		}
+	      }
+	      if ((loop + 4) % 8 == 0) {
+		printf("Sending MAX frame \n");
+		frm_type = 0x02;
+		for (int count1 = 0; count1 < 17; count1++) {
+		  if (count1 < 3)
+		    other[count1] = other_max[count1];
+		  if (count1 < 8) {
+		    voltage[count1] = voltage_max[count1];
+		    current[count1] = current_max[count1];
+		  }
+		  if (sensor_max[count1] != -1000.0) // make sure values are valid
+		    sensor[count1] = sensor_max[count1];
+		}
+	      }
+	  }
+	  else
+	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
     }  
 	  
 //   if (mode == FSK) {	// remove this 
@@ -1589,7 +1594,6 @@ void get_tlm_fox() {
             		rs_frame[j][i] = b[ctr3 % dataLen];
             		update_rs(parities[j], b[ctr3 % dataLen]);
 		}
-		frm_type = 0x02;
 	     {
 	    }
 		  
