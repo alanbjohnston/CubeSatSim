@@ -75,7 +75,7 @@ if __name__ == "__main__":
         ina219_one.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_one.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         one = 1
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
@@ -87,7 +87,7 @@ if __name__ == "__main__":
         ina219_two.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_two.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         two = 1
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
@@ -100,7 +100,7 @@ if __name__ == "__main__":
         ina219_three.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_three.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         three = 1
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
@@ -113,7 +113,7 @@ if __name__ == "__main__":
         ina219_four.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_four.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         four = 1
       except:
         four = 0  
@@ -132,7 +132,7 @@ if __name__ == "__main__":
         ina219_five.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_five.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         five = 1  
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
@@ -144,7 +144,7 @@ if __name__ == "__main__":
         ina219_six.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_six.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         six = 1
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
@@ -156,7 +156,7 @@ if __name__ == "__main__":
         ina219_seven.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_seven.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         seven = 1
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
@@ -168,7 +168,7 @@ if __name__ == "__main__":
         ina219_eight.shunt_adc_resolution = ADCResolution.ADCRES_12BIT_32S     # 1S
         time.sleep(0.001)
         ina219_eight.bus_voltage_range = BusVoltageRange.RANGE_16V
-        time.sleep(0.001)
+        time.sleep(0.01)
         eight = 1
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
