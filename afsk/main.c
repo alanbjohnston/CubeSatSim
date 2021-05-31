@@ -1330,7 +1330,8 @@ void get_tlm_fox() {
         }   	    
       }
     }
-    if (mode == FSK) {  // just moved
+//    if (mode == FSK) 
+    {  // just moved
       for (int count1 = 0; count1 < 8; count1++) {
         if (voltage[count1] < voltage_min[count1])
           voltage_min[count1] = voltage[count1];
