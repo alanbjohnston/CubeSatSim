@@ -1533,7 +1533,7 @@ void get_tlm_fox() {
       encodeA(b_min, 3 + head_offset, (int)(voltage_min[map[BAT]] * 100));
       encodeA(b_min, 30 + head_offset, (int)(voltage_min[map[BUS]] * 100));
       encodeB(b_min, 46 + head_offset, (int)(current_min[map[BUS]] + 0.5) + 2048);	    
-	    
+    }    
     encodeA(b, 30 + head_offset, PSUVoltage);
     //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
