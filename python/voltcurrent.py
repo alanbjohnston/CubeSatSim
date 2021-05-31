@@ -191,6 +191,7 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_one.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_one.bus_voltage), "{:6.3f} ".format(ina219_one.current) , end = '')
         error = 1    
         
       except:
@@ -211,6 +212,7 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_two.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_two.bus_voltage), "{:6.3f} ".format(ina219_two.current) , end = '') 
         error = 1   
         
       except:
@@ -231,6 +233,7 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_three.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_three.bus_voltage), "{:6.3f} ".format(ina219_three.current) , end = '') 
         error = 1    
         
       except:
@@ -250,6 +253,7 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_four.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_four.bus_voltage), "{:6.3f} ".format(ina219_four.current) , end = '') 
         error = 1    
         
       except:
@@ -268,6 +272,7 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_five.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_five.bus_voltage), "{:6.3f} ".format(ina219_five.current) , end = '') 
         error = 1    
         
       except:
@@ -287,6 +292,7 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_six.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_six.bus_voltage), "{:6.3f} ".format(ina219_six.current) , end = '') 
         error = 1 
         
       except:
@@ -306,8 +312,9 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_seven.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_seven.bus_voltage), "{:6.3f} ".format(ina219_seven.current) , end = '') 
         error = 1
-       
+        
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
         print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '') 
@@ -325,8 +332,9 @@ if __name__ == "__main__":
         time.sleep(0.001)
         ina219_eight.bus_voltage_range = BusVoltageRange.RANGE_16V
         time.sleep(0.01)
+        print("{:6.3f} ".format(ina219_eight.bus_voltage), "{:6.3f} ".format(ina219_eight.current), end = '')  
         error = 1
-        
+       
       except:
 #        print("Python Error 3", file=sys.stderr, flush=True)
         print("{:6.3f} ".format(0),  "{:6.3f} ".format(0), end = '')  
