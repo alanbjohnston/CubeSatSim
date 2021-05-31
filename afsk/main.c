@@ -1348,7 +1348,7 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 
-        // printf("Vmin %f Vmax %f Imin %f Imax %f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
       }
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
@@ -1584,7 +1584,7 @@ void get_tlm_fox() {
     }
     
     if (mode == BPSK) {  // WOD field experiments
-      encodeA(b, 64 + head_offset, 0xff);  // was 63
+      encodeA(b, 64 + head_offset, 0x7f);  // was ff -> 1fe  was 63
       encodeB(b, 74 + head_offset, 0xa5);  // was ff	
     }
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
