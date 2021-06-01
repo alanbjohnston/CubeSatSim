@@ -606,7 +606,7 @@ int main(int argc, char * argv[]) {
     //  sleep(1);  // Delay 1 second
     ctr = 0;
     #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Getting TLM Data\n");
+//    fprintf(stderr, "INFO: Getting TLM Data\n");
     #endif
 
     if ((mode == AFSK) || (mode == CW)) {
@@ -742,7 +742,7 @@ void get_tlm(void) {
       cpuTemp /= 1000;
 
       #ifdef DEBUG_LOGGING
-      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+//      printf("CPU Temp Read: %6.1f\n", cpuTemp);
       #endif
 
     }
@@ -931,7 +931,7 @@ void get_tlm(void) {
       int i = 0;
 
       serialPutchar(uart_fd, '?');
-      printf("Querying payload with ?\n");
+//      printf("Querying payload with ?\n");
       waitTime = millis() + 500;
       int end = FALSE;
       while ((millis() < waitTime) && !end) {
@@ -949,7 +949,7 @@ void get_tlm(void) {
       }
       //    sensor_payload[i++] = '\n';
       sensor_payload[i] = '\0';
-      printf("Payload string: %s", sensor_payload);
+      printf("Payload string: %s\n", sensor_payload);
 
       strcat(str, sensor_payload); // append to telemetry string for transmission
     }
@@ -1118,8 +1118,6 @@ void get_tlm_fox() {
     } else
       printf("first time - no sleep\n");
 	  
-
-	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
     memset(voltage, 0, sizeof(voltage));
@@ -1130,9 +1128,9 @@ void get_tlm_fox() {
     FILE * uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", & uptime_sec);
     uptime = (int) uptime_sec;
-    #ifdef DEBUG_LOGGING
-    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-    #endif
+//    #ifdef DEBUG_LOGGING
+//    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+//    #endif
     fclose(uptime_file);	
 	  
     if (sim_mode) { // simulated telemetry 
@@ -1665,17 +1663,12 @@ void get_tlm_fox() {
     
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
-      printf("WOD: %x %x %x \n", 0xff & val, (0xff00 & val) >> 8, (0xff0000 & val) >> 16);
-//      encodeA(b, 63 + head_offset, 0xff & val); 
       encodeA(b, 64 + head_offset, 0xff & val); 
       encodeA(b, 65 + head_offset, val >> 8); 	    
       encodeA(b, 63 + head_offset, 0x00); 
       encodeA(b, 62 + head_offset, 0x01);
-	    //      encodeA(b, 64 + head_offset, 0xfff);  // was 7f -> fe, ff -> 1fe  was 63
-//      encodeA(b, 63 + head_offset, 0xfff);  // 0x80 is 1000 0000 at 65
-//      encodeA(b, 65 + head_offset, 0xfff);
-      encodeB(b, 74 + head_offset, 0xfff);  // was ff	
-    }
+      encodeB(b, 74 + head_offset, 0xfff); 
+    }	  
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
 
