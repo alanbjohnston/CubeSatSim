@@ -1517,24 +1517,27 @@ void get_tlm_fox() {
       encodeA(b_max, 30 + head_offset, (int)(voltage_max[map[BUS]] * 100));
       encodeB(b_max, 46 + head_offset, (int)(current_max[map[BUS]] + 0.5) + 2048);
 	    
-      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
-
-      encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
-      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
-      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
-      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
-      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
-	    
-      encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
       encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
-      encodeA(b_max, 48 + head_offset, (int)(sensor_max[XS2]) + 2048);
-      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS3] * 100 + 0.5) + 2048);
-      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
-      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] + 0.5));
+      encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 	    
+      if (sensor_min[0] != 1000.0) // make sure values are valid
+      {	        	    
+	      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+	      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+	      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
+
+	      encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
+	      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
+	      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
+	      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
+	      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
+
+	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[XS2]) + 2048);
+	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS3] * 100 + 0.5) + 2048);
+	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
+	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] + 0.5));
+      }	    
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
       encodeA(b_min, 15 + head_offset, (int)(voltage_min[map[PLUS_Z]] * 100));
@@ -1552,25 +1555,29 @@ void get_tlm_fox() {
       encodeA(b_min, 9 + head_offset, (int)(current_min[map[BAT]] + 0.5) + 2048);
       encodeA(b_min, 3 + head_offset, (int)(voltage_min[map[BAT]] * 100));
       encodeA(b_min, 30 + head_offset, (int)(voltage_min[map[BUS]] * 100));
-      encodeB(b_min, 46 + head_offset, (int)(current_min[map[BUS]] + 0.5) + 2048);	    
-	    
-      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
-
-      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
-      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
-      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
-      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
-      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
+      encodeB(b_min, 46 + head_offset, (int)(current_min[map[BUS]] + 0.5) + 2048);
 	    
       encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
       encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
-      encodeA(b_min, 48 + head_offset, (int)(sensor_min[XS2]) + 2048);
-      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS3] * 100 + 0.5) + 2048);
-      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
-      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] + 0.5));
+	    
+      if (sensor_min[0] != 1000.0) // make sure values are valid
+      {	        
+	      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+	      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+	      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
+
+	      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
+	      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
+	      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
+	      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
+	      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
+
+	      encodeA(b_min, 48 + head_offset, (int)(sensor_min[XS2]) + 2048);
+	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS3] * 100 + 0.5) + 2048);
+	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
+	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] + 0.5));
+    }      
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
     //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
@@ -2176,7 +2183,7 @@ int test_i2c_bus(int bus)
 //      	 	printf("%s error: %d \n", &command, error);
     	 	if (error != 0) 
     	 	{	
-    	 		printf("ERROR: %sd bus has a problem \n  Check I2C wiring and pullup resistors \n", busDev);
+    	 		printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", busDev);
 			output = -1;
     		}													
 	} else
