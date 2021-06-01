@@ -21,7 +21,7 @@
 19,realTime,negZi,12,mA,cubesatsim_current,-Z Panel,12,2,3,Current,-Z solar panel current
 20,realTime,PSUVoltage,12,V,cubesatsim_voltage|FLOAT2,PSU,5,1,3,Voltage,Power Supply voltage
 21,realTime,spin,12,rpm,cubesatsim_rpm,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
-22,realTime,Pressure,12,bar,cubesatsim_pressure,Experiments,6,3,3,Pressure,STEM Payload sensor pressure
+22,realTime,Pressure,12,hPa,cubesatsim_pressure,Experiments,6,3,3,Pressure,STEM Payload sensor pressure
 23,realTime,Altitude,12,m,cubesatsim_altitude,Experiments,6,4,3,Altitude,STEM Payload sensor altitude
 24,realTime,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
 25,realTime,rssi,12,dBm,cubesatsim_rssi|INT,Radio,1,1,3,RSSI,Received Signal Strength Indication
