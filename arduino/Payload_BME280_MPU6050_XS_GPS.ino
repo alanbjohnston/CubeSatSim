@@ -3,11 +3,13 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
+#include <TinyGPS.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
+TinyGPS gps;
 
 long timer = 0;
 int bmePresent;
@@ -19,14 +21,13 @@ int Sensor2 = 0;
 float Sensor3 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
-int first_time = true;
 
 void setup() {
 
   Serial.begin(9600); // Serial Monitor for testing
 
   Serial1.begin(9600);  // Pi UART
-
+  Serial2.begin(9600);  // GPS on STM32 pins PA2, PA3
   Serial.println("Starting!");
   
   blink_setup();
@@ -81,13 +82,11 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
-  pinMode(greenLED, OUTPUT);
-  pinMode(blueLED, OUTPUT);
 }
 
 void loop() {
 
-  if ((Serial.available() > 0)|| first_time == true) {
+  if (Serial.available() > 0) {
     blink(50);
     char result = Serial.read();
     //       Serial.println(result);
@@ -98,9 +97,8 @@ void loop() {
       setup();
     }
 
-    if ((result == '?') || first_time == true)
+    if (result == '?')
     {
-      first_time = false;
       if (bmePresent) {
         Serial.print("OK BME280 ");
         Serial.print(bme.readTemperature());
@@ -222,7 +220,30 @@ void loop() {
         led_set(blueLED, LOW);
     }
   }
-
+    bool newData = false;
+    unsigned long chars;
+    unsigned short sentences, failed;
+    
+  // For one second we parse GPS data and report some key values
+  for (unsigned long start = millis(); millis() - start < 100;) // 1000;)
+  {  
+    while (Serial2.available())
+    {
+      char c = Serial2.read();
+      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+      if (gps.encode(c)) // Did a new valid sentence come in?
+        newData = true;
+    }
+  } 
+    if (newData)
+  {
+    float flon, flat;
+    unsigned long age;
+    gps.f_get_position(&flat, &flon, &age);
+    Sensor1 = flat * 100;
+    Sensor2 = flon * 100;
+    Sensor3 = (float) gps.altitude()/100.0;
+  }
 //  delay(100);
 }
 
@@ -273,7 +294,7 @@ void blink(int length)
 
 #if defined __AVR_ATmega32U4__
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED0; //TX LED macro to turn LED ON
+  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
 }
 
