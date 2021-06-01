@@ -573,6 +573,7 @@ int main(int argc, char * argv[]) {
   loopTime = millis();	
 	
   while (loop-- != 0) {
+    fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
 
