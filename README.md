@@ -17,6 +17,7 @@ The other option is to start with any Raspberry Pi OS (Rasbian) image and run th
 - pi-power-button
 - Direwolf
 - rpitx
+- cpulimit
 - python3-pip 
 - python-smbus
 

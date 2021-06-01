@@ -81,6 +81,8 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
 }
 
 void loop() {
@@ -271,7 +273,7 @@ void blink(int length)
 
 #if defined __AVR_ATmega32U4__
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
+  TXLED0; //TX LED macro to turn LED ON
 #endif  
 }
 
