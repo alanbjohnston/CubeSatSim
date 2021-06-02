@@ -1,6 +1,12 @@
 #!/bin/bash
 
-echo $1
+# echo $1
+
+if [ "$1" = "" ]; then
+	echo "Include a configuration option:"
+	echo
+	set -- "-h"
+fi	
 
 if [ "$1" = "-r" ]; then
 	echo "Restarting CubeSatSim"
@@ -27,7 +33,7 @@ elif [ "$1" = "-s" ]; then
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-h" ]; then
-	echo "./configh.sh [OPTIONS]"
+	echo "config OPTION"
 	echo
 	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
 	echo 
@@ -131,4 +137,3 @@ echo "Restarting CubeSatSim with new configuraation file"
 fi
 
 sudo systemctl restart cubesatsim
-
