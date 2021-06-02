@@ -1005,6 +1005,7 @@ void get_tlm(void) {
       if (transmit) {
         FILE * file2 = popen(str, "r");
         pclose(file2);
+	sleep(2);
       } else {
         fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
         fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
