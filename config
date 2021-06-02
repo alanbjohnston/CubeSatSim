@@ -49,90 +49,102 @@ elif [ "$1" = "-h" ]; then
 	echo
 	exit
 
-elif [ "$1" = "-m" ]; then
+elif [ "$1" = "-c" ]; then
 
-echo -e "\nConfiguration script for CubeSatSim\n"
- 
-echo -e "Return keeps current value."
+	echo
+	
+	echo "Editing the CALLSIGN in the"
+	
+	echo  "configuration file for CubeSatSim"
+	
+	echo
 
-echo -e "Current sim.cfg configuration file: \n"
+	echo "Return keeps current value."
 
-value=`cat sim.cfg`
+#	echo -e "Current sim.cfg configuration file:"
+	
+#	echo
+	
+	value=`cat sim.cfg`
 
-echo "$value"
+	echo "$value" > /dev/null
 
-echo
+	set -- $value
 
-set -- $value
+	echo "Current value of CALLSIGN is"
+	
+	echo $1
 
-#echo $1 $2 $3 $4
+	echo
+	
+#	echo $1 $2 $3 $4
 
-echo -e "Input callsign (all capitals): "
+	echo -e "Enter callsign in all capitals: "
 
-read callsign
+	read callsign
 
-if [ -z $callsign ] ; then
+	if [ -z $callsign ] ; then
 
-	callsign="$1"
-	echo "Keeping value of" $callsign
-fi
+		callsign="$1"
+		echo "Keeping value of" $callsign
+	fi
 
-echo -e "Input reset count (integer): "
+	echo -e "Input reset count (integer): "
 
-read resets
+	read resets
 
-if [ -z $resets ] ; then
-	resets="$2"
-	echo "Keeping value of" $resets
-fi
+	if [ -z $resets ] ; then
+		resets="$2"
+		echo "Keeping value of" $resets
+	fi
 
-if ! [[ $resets =~ ^[0-9]+$ ]] ; then
-	echo "Error: not an integer!"
-	resets="$2"
-	echo "Keeping value of" $resets
-fi 
+	if ! [[ $resets =~ ^[0-9]+$ ]] ; then
+		echo "Error: not an integer!"
+		resets="$2"
+		echo "Keeping value of" $resets
+	fi 
 
-echo -e "Input latitude  (decimal degrees, positive is north): "
+	echo -e "Input latitude  (decimal degrees, positive is north): "
 
-read lat 
+	read lat 
 
-if [ -z $lat ] ; then
+	if [ -z $lat ] ; then
 
-	lat="$3"
-	echo "Keeping value of" $lat
-fi
+		lat="$3"
+		echo "Keeping value of" $lat
+	fi
 
-if ! [[ $lat =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	if ! [[ $lat =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 
-	echo "Error: not a number!"
-	lat="$3"
-	echo "Keeping value of" $lat
-fi 
+		echo "Error: not a number!"
+		lat="$3"
+		echo "Keeping value of" $lat
+	fi 
 
-echo -e "Input longitude (decimal degrees, positive is east): "
+	echo -e "Input longitude (decimal degrees, positive is east): "
 
-read long 
+	read long 
 
-if [ -z $long ] ; then
+	if [ -z $long ] ; then
 
-	long="$4"
-	echo "Keeping value of" $long
-fi
+		long="$4"
+		echo "Keeping value of" $long
+	fi
 
-if ! [[ $long =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	if ! [[ $long =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 
-	echo "Error: not a number!"
-	long="$4"
-	echo "Keeping value of" $long
-fi 
+		echo "Error: not a number!"
+		long="$4"
+		echo "Keeping value of" $long
+	fi 
 
-echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-echo $callsign $resets $lat $long
+	echo $callsign $resets $lat $long
 
-echo $callsign $resets $lat $long > sim.cfg
- 
-echo "Restarting CubeSatSim with new configuraation file"
+	echo $callsign $resets $lat $long > sim.cfg
+
+	echo "Restarting CubeSatSim with new configuraation file"
 
 fi
 
