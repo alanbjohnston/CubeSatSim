@@ -138,7 +138,7 @@ elif [ "$1" = "-l" ]; then
 	echo	
 	echo "Editing latitude and longitude in the"
 	echo "configuration file for CubeSatSim"
-	echo "(Only used for APRS telemetry)
+	echo "(Only used for APRS telemetry)"
 	echo
 	echo "Return keeps current value."
 #	echo -e "Current sim.cfg configuration file:"	
