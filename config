@@ -8,7 +8,7 @@ if [ "$1" = "" ]; then
 	set -- "-h"
 fi	
 
-if [ "$1" = "-r" ]; then
+if [ "$1" = "-i" ]; then
 	echo "Restarting CubeSatSim"
 	sudo systemctl restart cubesatsim
 	exit 
@@ -42,10 +42,11 @@ elif [ "$1" = "-h" ]; then
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
-	echo "   -r     Restarts CubeSatsim software"
-	echo "   -m     Modified the configuration file sim.cfg"
-	echo "          You can change callsign, reset count, or"
-	echo "          latitude and longitude (used for APRS)"
+	echo "   -i     Restarts CubeSatsim software"
+	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
+	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
+	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
+	echo "          Only used for APRS telemetry"
 	echo
 	exit
 
@@ -91,7 +92,7 @@ elif [ "$1" = "-c" ]; then
 elif [ "$1" = "-r" ]; then
 
 	echo	
-	echo "Editing the Reset Cou t in the"
+	echo "Editing the Reset Count in the"
 	echo  "configuration file for CubeSatSim"	
 	echo
 	echo "Return keeps current value."
@@ -101,7 +102,8 @@ elif [ "$1" = "-r" ]; then
 	value=`cat sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
-
+	
+	echo
 	echo "Current value of Reset Count is"	
 	echo $2
 	echo
@@ -148,6 +150,7 @@ elif [ "$1" = "-l" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
+	echo
 	echo "Current value of latitude is"	
 	echo $3
 	echo
@@ -171,6 +174,7 @@ elif [ "$1" = "-l" ]; then
 		echo "Keeping value of" $lat
 	fi 
 	
+	echo
 	echo "Current value of longitude is"	
 	echo $4
 	echo
