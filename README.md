@@ -4,7 +4,7 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 There are several hardware versions and software branches to go with them - see below for information.
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install. The software runs on any Raspberry Pi including the Raspberry Pi 4B, 3B, 3B+, Pi Zero or Pi Zero W.
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install. The software runs on any Raspberry Pi including the Raspberry Pi 4B, 3B, 3B+, Pi Zero or Pi Zero W.
 
 There are two ways to get the CubeSatSim software for your Pi.
 
@@ -17,12 +17,13 @@ The other option is to start with any Raspberry Pi OS (Rasbian) image and run th
 - pi-power-button
 - Direwolf
 - rpitx
+- cpulimit
 - python3-pip 
 - python-smbus
 
 ## Disk Image Option Steps
 
-See the Wiki Software Install page for details: https://github.com/alanbjohnston/CubeSatSim/wiki/Software-Install.
+See the Wiki Software Install page for details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install.
 
 ## Installation Script Option Steps
 

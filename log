@@ -1,0 +1,9 @@
+#!/bin/bash
+
+echo -e "\nLog file script for CubeSatSim\n"
+
+sudo journalctl -u cubesatsim > log.txt 
+cat log.txt
+
+echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
+

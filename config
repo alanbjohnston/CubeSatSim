@@ -1,0 +1,209 @@
+#!/bin/bash
+
+# echo $1
+
+if [ "$1" = "" ]; then
+	echo "Include a configuration option:"
+	echo
+	set -- "-h"
+fi	
+
+if [ "$1" = "-i" ]; then
+	echo "Restarting CubeSatSim"
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "-a" ]; then
+	echo "changing CubeSatSim to AFSK mode"
+	sudo echo "ARG1=a" > .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "-f" ]; then
+	echo "changing CubeSatSim to FSK mode"
+	sudo echo "ARG1=f" > .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "-b" ]; then
+	echo "changing CubeSatSim to BPSK mode"
+	sudo echo "ARG1=b" > .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "-s" ]; then
+	echo "changing CubeSatSim to SSTV mode"
+	sudo echo "ARG1=s" > .mode	
+	sudo systemctl restart cubesatsim
+	exit 
+elif [ "$1" = "-h" ]; then
+	echo "config OPTION"
+	echo
+	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
+	echo 
+	echo "   -h     This help info"
+	echo "   -a     Change to AFSK/APRS mode"
+	echo "   -f     Change to FSK/DUV mode"
+	echo "   -b     Change to BPSK mode"
+	echo "   -s     Change to SSTV mode"
+	echo "   -i     Restarts CubeSatsim software"
+	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
+	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
+	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
+	echo "          Only used for APRS telemetry"
+	echo
+	exit
+
+elif [ "$1" = "-c" ]; then
+
+	echo	
+	echo "Editing the CALLSIGN in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of CALLSIGN is"	
+	echo $1
+	echo
+	
+#	echo $1 $2 $3 $4
+
+	echo "Enter callsign in all capitals: "
+	read callsign
+
+	if [ -z $callsign ] ; then
+
+		callsign="$1"
+		echo "Keeping value of" $callsign
+	fi
+	
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+	echo $callsign $2 $3 $4
+	echo $callsign $2 $3 $4 > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuraation file"
+	echo
+
+	sudo systemctl restart cubesatsim
+	
+elif [ "$1" = "-r" ]; then
+
+	echo	
+	echo "Editing the Reset Count in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	
+	echo
+	echo "Current value of Reset Count is"	
+	echo $2
+	echo
+	
+#	echo $1 $2 $3 $4
+
+	echo -e "Enter Reset Count (integer): "
+
+	read resets
+
+	if [ -z $resets ] ; then
+		resets="$2"
+		echo "Keeping value of" $resets
+	fi
+
+	if ! [[ $resets =~ ^[0-9]+$ ]] ; then
+		echo "Error: not an integer!"
+		resets="$2"
+		echo "Keeping value of" $resets
+	fi 
+
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+	echo $1 $resets $3 $4
+	echo $1 $resets $3 $4 > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuraation file"
+	echo
+	
+	sudo systemctl restart cubesatsim
+	
+elif [ "$1" = "-l" ]; then
+
+	echo	
+	echo "Editing latitude and longitude in the"
+	echo "configuration file for CubeSatSim"
+	echo "(Only used for APRS telemetry)"
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo
+	echo "Current value of latitude is"	
+	echo $3
+	echo
+	
+#	echo $1 $2 $3 $4
+
+	echo -e "Enter latitude  (decimal degrees, positive is north): "
+
+	read lat 
+
+	if [ -z $lat ] ; then
+
+		lat="$3"
+		echo "Keeping value of" $lat
+	fi
+
+	if ! [[ $lat =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+
+		echo "Error: not a number!"
+		lat="$3"
+		echo "Keeping value of" $lat
+	fi 
+	
+	echo
+	echo "Current value of longitude is"	
+	echo $4
+	echo
+
+	echo -e "Enter longitude (decimal degrees, positive is east): "
+
+	read long 
+
+	if [ -z $long ] ; then
+
+		long="$4"
+		echo "Keeping value of" $long
+	fi
+
+	if ! [[ $long =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+
+		echo "Error: not a number!"
+		long="$4"
+		echo "Keeping value of" $long
+	fi 
+
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+	echo $1 $2 $lat $long
+	echo $1 $2 $lat $long > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuraation file"
+	echo
+	
+	sudo systemctl restart cubesatsim
+fi
+
+# sudo systemctl restart cubesatsim
