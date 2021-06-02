@@ -82,6 +82,7 @@ elif [ "$1" = "-c" ]; then
 
 	echo $callsign $2 $3 $4
 	echo $callsign $2 $3 $4 > sim.cfg
+	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
 
@@ -126,6 +127,7 @@ elif [ "$1" = "-r" ]; then
 
 	echo $1 $resets $3 $4
 	echo $1 $resets $3 $4 > sim.cfg
+	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
 	
@@ -193,6 +195,7 @@ elif [ "$1" = "-l" ]; then
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo $1 $2 $lat $long
 	echo $1 $2 $lat $long > sim.cfg
+	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
 	
