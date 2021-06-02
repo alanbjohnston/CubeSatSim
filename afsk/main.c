@@ -1250,7 +1250,7 @@ void get_tlm_fox() {
         cpuTemp /= 1000;
 
         #ifdef DEBUG_LOGGING
-        printf("CPU Temp Read: %6.1f\n", cpuTemp);
+//        printf("CPU Temp Read: %6.1f\n", cpuTemp);
         #endif
 
         other[IHU_TEMP] = (double)cpuTemp;
@@ -1279,7 +1279,7 @@ void get_tlm_fox() {
         unsigned int waitTime;
         int i = 0;
         serialPutchar(uart_fd, '?');
-        printf("Querying payload with ?\n");
+//        printf("Querying payload with ?\n");
         waitTime = millis() + 500;
         int end = FALSE;
         //  int retry = FALSE;
