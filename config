@@ -60,7 +60,7 @@ elif [ "$1" = "-c" ]; then
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	value=`cat sim.cfg`
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
@@ -82,7 +82,7 @@ elif [ "$1" = "-c" ]; then
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
 	echo $callsign $2 $3 $4
-	echo $callsign $2 $3 $4 > sim.cfg
+	echo $callsign $2 $3 $4 > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
@@ -99,7 +99,7 @@ elif [ "$1" = "-r" ]; then
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	value=`cat sim.cfg`
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 	
@@ -128,7 +128,7 @@ elif [ "$1" = "-r" ]; then
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
 	echo $1 $resets $3 $4
-	echo $1 $resets $3 $4 > sim.cfg
+	echo $1 $resets $3 $4 > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
@@ -146,7 +146,7 @@ elif [ "$1" = "-l" ]; then
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	value=`cat sim.cfg`
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
@@ -198,7 +198,7 @@ elif [ "$1" = "-l" ]; then
 
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo $1 $2 $lat $long
-	echo $1 $2 $lat $long > sim.cfg
+	echo $1 $2 $lat $long > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
