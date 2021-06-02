@@ -686,6 +686,10 @@ void get_tlm(void) {
   FILE * txResult;
 
   for (int j = 0; j < frameCnt; j++) {
+	  
+    fflush(stdout);
+    fflush(stderr);
+	  
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
     printf("Tx LED On\n");
@@ -702,7 +706,7 @@ void get_tlm(void) {
 //    FILE * file = popen(pythonStr, "r");
     fputc('\n', file1);
     fgets(cmdbuffer, 1000, file1);
-    printf("Pyton result: %s\n", cmdbuffer);
+    printf("Python result: %s\n", cmdbuffer);
 //    pclose(file);
 
     const char space[2] = " ";
