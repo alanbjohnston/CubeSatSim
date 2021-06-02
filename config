@@ -51,36 +51,25 @@ elif [ "$1" = "-h" ]; then
 
 elif [ "$1" = "-c" ]; then
 
-	echo
-	
+	echo	
 	echo "Editing the CALLSIGN in the"
-	
-	echo  "configuration file for CubeSatSim"
-	
+	echo  "configuration file for CubeSatSim"	
 	echo
-
 	echo "Return keeps current value."
-
-#	echo -e "Current sim.cfg configuration file:"
-	
+#	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
 	value=`cat sim.cfg`
-
 	echo "$value" > /dev/null
-
 	set -- $value
 
-	echo "Current value of CALLSIGN is"
-	
+	echo "Current value of CALLSIGN is"	
 	echo $1
-
 	echo
 	
 #	echo $1 $2 $3 $4
 
-	echo -e "Enter callsign in all capitals: "
-
+	echo "Enter callsign in all capitals: "
 	read callsign
 
 	if [ -z $callsign ] ; then
@@ -88,8 +77,38 @@ elif [ "$1" = "-c" ]; then
 		callsign="$1"
 		echo "Keeping value of" $callsign
 	fi
+	
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-	echo -e "Input reset count (integer): "
+	echo $callsign $2 $3 $4
+
+	echo $callsign $2 $3 $4 > sim.cfg
+
+	echo "Restarting CubeSatSim with new configuraation file"
+
+	sudo systemctl restart cubesatsim
+	
+elif [ "$1" = "-r" ]; then
+
+	echo	
+	echo "Editing the Reset Cou t in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of Reset Count is"	
+	echo $2
+	echo
+	
+#	echo $1 $2 $3 $4
+
+	echo -e "Enter Reset Count (integer): "
 
 	read resets
 
@@ -104,7 +123,38 @@ elif [ "$1" = "-c" ]; then
 		echo "Keeping value of" $resets
 	fi 
 
-	echo -e "Input latitude  (decimal degrees, positive is north): "
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+	echo $1 $resets $3 $4
+
+	echo $1 $resets $3 $4 > sim.cfg
+
+	echo "Restarting CubeSatSim with new configuraation file"
+
+	sudo systemctl restart cubesatsim
+	
+elif [ "$1" = "-l" ]; then
+
+	echo	
+	echo "Editing latitude and longitude in the"
+	echo "configuration file for CubeSatSim"
+	echo "(Only used for APRS telemetry)
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of latitude is"	
+	echo $3
+	echo
+	
+#	echo $1 $2 $3 $4
+
+	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
 	read lat 
 
@@ -120,8 +170,12 @@ elif [ "$1" = "-c" ]; then
 		lat="$3"
 		echo "Keeping value of" $lat
 	fi 
+	
+	echo "Current value of longitude is"	
+	echo $4
+	echo
 
-	echo -e "Input longitude (decimal degrees, positive is east): "
+	echo -e "Enter longitude (decimal degrees, positive is east): "
 
 	read long 
 
@@ -140,12 +194,13 @@ elif [ "$1" = "-c" ]; then
 
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-	echo $callsign $resets $lat $long
+	echo $1 $2 $lat $long
 
-	echo $callsign $resets $lat $long > sim.cfg
+	echo $1 $2 $lat $long > sim.cfg
 
 	echo "Restarting CubeSatSim with new configuraation file"
 
+	sudo systemctl restart cubesatsim
 fi
 
 sudo systemctl restart cubesatsim
