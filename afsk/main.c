@@ -203,9 +203,10 @@ int main(int argc, char * argv[]) {
   }
 
 //  char * cfg_buf[100];
-  fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file);
+  char *sim_yes[10];
+  fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file, & sim_yes);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f\n", call, reset_count, lat_file, long_file);
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
@@ -213,6 +214,8 @@ int main(int argc, char * argv[]) {
     latitude = lat_file;
     longitude = long_file;
   }
+  if (sim_yes[0] == "y")
+	  sim_mode = TRUE;
   wiringPiSetup();
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -311,7 +314,7 @@ int main(int argc, char * argv[]) {
   #endif
 
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file);
+  fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file, sim_yes);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
@@ -440,7 +443,7 @@ int main(int argc, char * argv[]) {
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
   #endif
 
-  if (i2c_bus3 == OFF) {
+  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
     sim_mode = TRUE;
 
