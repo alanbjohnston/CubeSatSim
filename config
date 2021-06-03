@@ -29,10 +29,10 @@ if [ "$1" = "" ]; then
 	echo $1 $2 $3 $4 $5
 	
 	if [ "$sim" = "y" ] ; then
-		$sim = "yes"
+		sim="yes"
 		echo "Simulated Telemetry is ON"
 	else
-		$sim = "no"
+		sim="no"
 		echo "Simulated Telemetry is OFF"
 	fi
 	
@@ -97,7 +97,7 @@ elif [ "$1" = "-m" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	if ( [ "$5" = "yes" ]; then
+	if [ "$5" = "yes" ]; then
 		echo "Simualted Telemetry is ON"
 	else
 		echo "Simualted Telemetry is OFF"
