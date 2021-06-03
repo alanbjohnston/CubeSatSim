@@ -159,7 +159,7 @@ char dest_addr[5] = "CQ";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
 int main(int argc, char * argv[]) {
-
+	
   mode = FSK;
   frameCnt = 1;
 
@@ -352,6 +352,26 @@ int main(int argc, char * argv[]) {
   fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
 	
   file1 = sopen(pythonConfigStr);  // try new function
+	
+  // test i2c buses	
+  i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
+  i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
+  i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
+
+  // check for camera	
+//  char cmdbuffer1[1000];
+  FILE * file4 = popen("vcgencmd get_camera", "r");
+  fgets(cmdbuffer, 1000, file4);
+  char camera_present[] = "supported=1 detected=1";
+  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+  camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
+  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  pclose(file4);
+
+  #ifdef DEBUG_LOGGING
+  printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
+  #endif
+		
   fgets(cmdbuffer, 1000, file1);
   fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
 /*	
@@ -424,25 +444,6 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n", strerror(errno));
     }
   }
-
-  // test i2c buses	
-  i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
-  i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
-  i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
-
-  // check for camera	
-//  char cmdbuffer1[1000];
-  FILE * file4 = popen("vcgencmd get_camera", "r");
-  fgets(cmdbuffer, 1000, file4);
-  char camera_present[] = "supported=1 detected=1";
-  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
-  camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
-  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
-  pclose(file4);
-
-  #ifdef DEBUG_LOGGING
-  printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
-  #endif
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
