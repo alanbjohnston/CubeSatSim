@@ -204,7 +204,7 @@ int main(int argc, char * argv[]) {
 
 //  char * cfg_buf[100];
   char sim_yes[10];
-  fscanf(config_file, "%s %d %f %f", call, & reset_count, & lat_file, & long_file, sim_yes);
+  fscanf(config_file, "%s %d %f %f %s", call, & reset_count, & lat_file, & long_file, sim_yes);
   fclose(config_file);
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
   reset_count = (reset_count + 1) % 0xffff;
