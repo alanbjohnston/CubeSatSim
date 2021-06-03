@@ -56,17 +56,12 @@ if __name__ == "__main__":
 				print("AFSK") 
 				while True:
 					try:
-						print("Opening file")
 						f = open("/home/pi/CubeSatSim/ready")
-						print("rpitx")
 						system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-						print("closing")
 						f.close()
-						print("deleting")
 						system("sudo rm ready")
 						time.sleep(0.5)
 					except:		  
-						print("Exception sleeping")
 						time.sleep(0.5)
 			elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
 				print("SSTV")
