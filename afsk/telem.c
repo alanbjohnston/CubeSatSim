@@ -227,7 +227,7 @@ int main(int argc, char *argv[]) {
    strcat(pythonConfigStr, pythonStr);
    strcat(pythonConfigStr, " c");
 
-  file1 = sopen(pythonConfigStr);  // try new function
+  FILE *file1 = sopen(pythonConfigStr);  // try new function
   fgets(cmdbuffer, 1000, file1);
   fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
 //   FILE* file1 = popen(pythonConfigStr, "r");
