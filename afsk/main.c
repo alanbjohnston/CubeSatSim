@@ -508,9 +508,6 @@ int main(int argc, char * argv[]) {
 
   tx_freq_hz -= tx_channel * 50000;
 
-  if (mode == AFSK)
-    sleep(10); // delay awaiting CW ID completion
-
   if (transmit == FALSE) {
 
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
