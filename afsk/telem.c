@@ -106,7 +106,8 @@ int main(int argc, char *argv[]) {
 
   		if (digitalRead(26) != HIGH)
   		{
- // 			printf("vB5 or later present\n");  // Don't print normal board detection
+  			if (debug == ON)
+				printf("vB5 or later present\n");  // Don't print normal board detection
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
