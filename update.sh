@@ -18,7 +18,7 @@ make debug
 
 FLAG=0
 
-if [[ $(grep 'cubesatsim.service' /home/pi/CubeSatSim/.updated) ]]; then
+if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
   echo "copying cubesatsim.service"
   sudo cp systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
   FLAG=1
@@ -26,7 +26,7 @@ else
   echo "no changes to cubesatsim.service"
 fi
 
-if [[ $(grep 'rpitx.service' /home/pi/CubeSatSim/.updated) ]]; then
+if [[ $(diff systemd/rpitx.service /etc/systemd/system/rpitx.service) ]]; then
   echo "copying rpitx.service"
   sudo cp systemd/rpitx.service /etc/systemd/system/rpitx.service
   FLAG=1
