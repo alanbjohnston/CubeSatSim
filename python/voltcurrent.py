@@ -344,7 +344,7 @@ if __name__ == "__main__":
     else:
       print("Python Error Recovered!")
       
-    if single != TRUE:
+    if not single:
       inp = input()
 
 #   print(inp)
