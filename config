@@ -3,7 +3,40 @@
 # echo $1
 
 if [ "$1" = "" ]; then
-	echo "Include a configuration option:"
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "$1" = "ARG1=a" ]; then
+		echo "APRS mode set"
+	elif [ "$1" = "ARG1=f" ]; then
+		echo "FSK mode set"
+	elif [ "$1" = "ARG1=b" ]; then
+		echo "BPSK mode set"	
+	elif [ "$1" = "ARG1=s" ]; then
+		echo "SSTV mode set"
+	else
+		echo 
+	fi
+	echo
+	echo -e "Current sim.cfg configuration file:"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo $1 $2 $3 $4 $5
+	
+	if [ $sim = "y" ] ; then
+		$sim = "yes"
+		echo "Simulated Telemetry is ON"
+	else
+		$sim = "no"
+		echo "Simulated Telemetry is OFF"
+	fi
+	
+	echo "To change, include an OPTION"
 	echo
 	set -- "-h"
 fi	
@@ -50,6 +83,51 @@ elif [ "$1" = "-h" ]; then
 	echo
 	exit
 
+elif [ "$1" = "-m" ]; then
+
+	echo	
+	echo "Editing the Simulated Telemetry setting in"
+	echo  "the configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if ( [ "$5" = "yes" ]; then
+		echo "Simualted Telemetry is ON"
+	else
+		echo "Simualted Telemetry is OFF"
+	fi
+	
+	echo
+	
+#	echo $1 $2 $3 $4
+
+	echo "Do you want Simulated Telemetry ON (y/n) "
+	read sim
+
+	if [ $sim = "y" ] ; then
+		$sim = "yes"
+		echo "Simulated Telemetry is ON"
+	else
+		$sim = "no"
+		echo "Simulated Telemetry is OFF"
+	fi
+	
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+	echo $callsign $2 $3 $4 $sim
+	echo $callsign $2 $3 $4 $sim > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuraation file"
+	echo
+
+	sudo systemctl restart cubesatsim
+	
 elif [ "$1" = "-c" ]; then
 
 	echo	
@@ -68,7 +146,7 @@ elif [ "$1" = "-c" ]; then
 	echo $1
 	echo
 	
-#	echo $1 $2 $3 $4
+#	echo $1 $2 $3 $4 $5
 
 	echo "Enter callsign in all capitals: "
 	read callsign
@@ -81,8 +159,45 @@ elif [ "$1" = "-c" ]; then
 	
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-	echo $callsign $2 $3 $4
-	echo $callsign $2 $3 $4 > /home/pi/CubeSatSim/sim.cfg
+	echo $callsign $2 $3 $4 $5
+	echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuraation file"
+	echo
+
+	sudo systemctl restart cubesatsimelif [ "$1" = "-c" ]; then
+
+	echo	
+	echo "Editing the CALLSIGN in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of CALLSIGN is"	
+	echo $1
+	echo
+	
+#	echo $1 $2 $3 $4 $5
+
+	echo "Enter callsign in all capitals: "
+	read callsign
+
+	if [ -z $callsign ] ; then
+
+		callsign="$1"
+		echo "Keeping value of" $callsign
+	fi
+	
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+	echo $callsign $2 $3 $4 $5
+	echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
@@ -108,7 +223,7 @@ elif [ "$1" = "-r" ]; then
 	echo $2
 	echo
 	
-#	echo $1 $2 $3 $4
+#	echo $1 $2 $3 $4 $5
 
 	echo -e "Enter Reset Count (integer): "
 
@@ -127,8 +242,8 @@ elif [ "$1" = "-r" ]; then
 
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-	echo $1 $resets $3 $4
-	echo $1 $resets $3 $4 > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $resets $3 $4 $5
+	echo $1 $resets $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
@@ -155,7 +270,7 @@ elif [ "$1" = "-l" ]; then
 	echo $3
 	echo
 	
-#	echo $1 $2 $3 $4
+#	echo $1 $2 $3 $4 $5
 
 	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
@@ -197,8 +312,8 @@ elif [ "$1" = "-l" ]; then
 	fi 
 
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-	echo $1 $2 $lat $long
-	echo $1 $2 $lat $long > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $lat $long $5
+	echo $1 $2 $lat $long $5 > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
