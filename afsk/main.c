@@ -315,7 +315,7 @@ int main(int argc, char * argv[]) {
   #endif
 
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f", call, reset_count, lat_file, long_file, sim_yes);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s", call, reset_count, lat_file, long_file, sim_yes);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
