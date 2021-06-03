@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
-	 		if (debug == ON)
+
 /*			
 			if (test_i2c_b0) != OFF)
 				strcpy(busStr,"1 ");
