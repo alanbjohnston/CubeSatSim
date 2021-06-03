@@ -10,6 +10,11 @@
 #include <string.h>
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <share.h>
 
 #define PLUS_X 0
 #define PLUS_Y 1
