@@ -59,11 +59,11 @@ if __name__ == "__main__":
 						print("Opening file")
 						f = open("/home/pi/CubeSatSim/ready")
 						print("rpitx")
-						os.system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+						system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 						print("closing")
 						close(f)
 						print("deleting")
-						os.system("sudo rm ready")
+						system("sudo rm ready")
 						time.sleep(0.5)
 					except:		  
 						print("Exception sleeping")
