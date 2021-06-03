@@ -40,9 +40,9 @@ if [ $FLAG -eq 1 ]; then
 else
   grep 'changed' /home/pi/CubeSatSim/.updated
   if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
-    echo "nothing to do"
-  else
     echo "systemctl restart cubesatsim"
     sudo systemctl restart cubesatsim
+  else
+    echo "nothing to do"
   fi  
 fi
