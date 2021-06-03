@@ -14,6 +14,7 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/socket.h>
 
 #define PLUS_X 0
 #define PLUS_Y 1
@@ -232,14 +233,14 @@ int main(int argc, char *argv[]) {
    strcat(pythonConfigStr, pythonStr);
    strcat(pythonConfigStr, " c");
 
-  FILE *file1 = sopen(pythonConfigStr);  // try new function
-  fgets(cmdbuffer, 1000, file1);
-  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
+   char cmdbuffer[1000];
+   FILE *file1 = sopen(pythonConfigStr);  // try new function
+   fgets(cmdbuffer, 1000, file1);
+   fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
 //   FILE* file1 = popen(pythonConfigStr, "r");
-//   char cmdbuffer[1000];
 //   fgets(cmdbuffer, 1000, file1);
 //   printf("pythonStr result: %s\n", cmdbuffer);
-   sclose(file1);	
+//   sclose(file1);	
 	
    int count1;
    char *token;
