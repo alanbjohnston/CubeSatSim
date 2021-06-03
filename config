@@ -8,13 +8,13 @@ if [ "$1" = "" ]; then
 	set -- $value
 
 	if [ "$1" = "ARG1=a" ]; then
-		echo "APRS mode set"
+		echo "APRS mode is set"
 	elif [ "$1" = "ARG1=f" ]; then
-		echo "FSK mode set"
+		echo "FSK mode is set"
 	elif [ "$1" = "ARG1=b" ]; then
-		echo "BPSK mode set"	
+		echo "BPSK mode is set"	
 	elif [ "$1" = "ARG1=s" ]; then
-		echo "SSTV mode set"
+		echo "SSTV mode is set"
 	else
 		echo 
 	fi
