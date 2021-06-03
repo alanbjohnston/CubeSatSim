@@ -19,7 +19,7 @@ make debug
 FLAG=0
 
 if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
-  echo "copying cubesatsim.service"
+  echo "changed cubesatsim.service"
   sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
   FLAG=1
 else
@@ -38,7 +38,7 @@ if [ $FLAG -eq 1 ]; then
   echo "systemctl daemon-reload"
   sudo systemctl daemon-reload 
 else
-  if [[ $(grep 'updated' /home/pi/CubeSatSim/.updated) ]]; then
+  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
     echo "nothing to do"
   else
     echo "systemctl restart cubesatsim"
