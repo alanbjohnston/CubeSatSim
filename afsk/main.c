@@ -1660,7 +1660,7 @@ void get_tlm_fox() {
 
     // camera = ON;
 
-    int status = STEMBoardFailure + NormalModeFailure * 2 + PayloadFailure1 * 4 + PayloadFailure2 * 8 +
+    int status = STEMBoardFailure + NormalModeFailure * 2 + !sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
