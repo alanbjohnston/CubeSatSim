@@ -27,7 +27,7 @@ else
 fi
 
 if [[ $(diff systemd/rpitx.service /etc/systemd/system/rpitx.service) ]]; then
-  echo "copying rpitx.service"
+  echo "changed rpitx.service"
   sudo cp /home/pi/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
   FLAG=1
 else
