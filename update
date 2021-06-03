@@ -20,7 +20,7 @@ FLAG=0
 
 if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
   echo "copying cubesatsim.service"
-  sudo cp systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
   FLAG=1
 else
   echo "no changes to cubesatsim.service"
@@ -28,7 +28,7 @@ fi
 
 if [[ $(diff systemd/rpitx.service /etc/systemd/system/rpitx.service) ]]; then
   echo "copying rpitx.service"
-  sudo cp systemd/rpitx.service /etc/systemd/system/rpitx.service
+  sudo cp /home/pi/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
   FLAG=1
 else
   echo "no changes to rpitx.service"
