@@ -27,6 +27,7 @@ if [ "$1" = "" ]; then
 	set -- $value
 
 	echo $1 $2 $3 $4 $5
+	echo
 	
 	if [ "$sim" = "y" ] ; then
 		sim="yes"
@@ -165,7 +166,9 @@ elif [ "$1" = "-c" ]; then
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
 
-	sudo systemctl restart cubesatsimelif [ "$1" = "-c" ]; then
+	sudo systemctl restart cubesatsim
+	
+elif [ "$1" = "-c" ]; then
 
 	echo	
 	echo "Editing the CALLSIGN in the"
