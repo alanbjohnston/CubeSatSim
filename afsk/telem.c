@@ -226,20 +226,23 @@ int main(int argc, char *argv[]) {
    strcat(pythonStr, busStr);
    strcat(pythonConfigStr, pythonStr);
    strcat(pythonConfigStr, " c");
-	
-   FILE* file1 = popen(pythonConfigStr, "r");
-   char cmdbuffer[1000];
-   fgets(cmdbuffer, 1000, file1);
+
+  file1 = sopen(pythonConfigStr);  // try new function
+  fgets(cmdbuffer, 1000, file1);
+  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
+//   FILE* file1 = popen(pythonConfigStr, "r");
+//   char cmdbuffer[1000];
+//   fgets(cmdbuffer, 1000, file1);
 //   printf("pythonStr result: %s\n", cmdbuffer);
-   pclose(file1);	
+   sclose(file1);	
 	
    int count1;
    char *token;
 	
-   FILE* file = popen(pythonStr, "r");
-   fgets(cmdbuffer, 1000, file);
+//   FILE* file = popen(pythonStr, "r");
+//   fgets(cmdbuffer, 1000, file);
 //  printf("result: %s\n", cmdbuffer);
-    pclose(file);
+//    pclose(file);
 	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
