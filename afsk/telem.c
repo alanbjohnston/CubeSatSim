@@ -15,6 +15,23 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <fcntl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <wiringPiI2C.h>
+#include <wiringPi.h>
+#include <wiringSerial.h>
+#include <time.h>
+#include <math.h>
+#include <sys/socket.h>
+#include <stdlib.h>
+#include <netinet/in.h>
+#include <string.h>
+#include <arpa/inet.h>
+#include <errno.h>
+
 #define PLUS_X 0
 #define PLUS_Y 1
 #define BAT 2
