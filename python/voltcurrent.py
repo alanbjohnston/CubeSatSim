@@ -176,7 +176,7 @@ if __name__ == "__main__":
     except:
       print("Python Error 5",  file=sys.stderr, flush=True)
 
-  while !single:
+  while not single:
     error = 0
     try:
       time.sleep(0.01)
