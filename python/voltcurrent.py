@@ -18,6 +18,7 @@ if __name__ == "__main__":
   if (len(sys.argv)) > 1:
 #   print("There are arguments!", file=sys.stderr)
 #   if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
+    print(sys.argv[1])
     buses[0] = int(sys.argv[1], base=10)
     if (len(sys.argv)) > 2:
       buses[1] = int(sys.argv[2], base=10)
