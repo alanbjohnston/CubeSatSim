@@ -28,7 +28,7 @@ if [ "$1" = "" ]; then
 
 	echo $1 $2 $3 $4 $5
 	
-	if [ $sim = "y" ] ; then
+	if [ "$sim" = "y" ] ; then
 		$sim = "yes"
 		echo "Simulated Telemetry is ON"
 	else
@@ -110,7 +110,7 @@ elif [ "$1" = "-m" ]; then
 	echo "Do you want Simulated Telemetry ON (y/n) "
 	read sim
 
-	if [ $sim = "y" ] ; then
+	if [ "$sim" = "y" ] ; then
 		$sim = "yes"
 		echo "Simulated Telemetry is ON"
 	else
