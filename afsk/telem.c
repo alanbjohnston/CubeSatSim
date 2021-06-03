@@ -14,7 +14,6 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <share.h>
 
 #define PLUS_X 0
 #define PLUS_Y 1
