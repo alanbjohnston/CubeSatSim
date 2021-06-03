@@ -22,7 +22,7 @@ if __name__ == "__main__":
     if (len(sys.argv)) > 2:
       buses[1] = int(sys.argv[2], base=10)
       if (len(sys.argv)) > 3:
-        if sys.argv[3] == "c":
+        if sys.argv[3] == "s":
           single = True
           
 #  print(buses[0])
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     except:
       print("Python Error 5",  file=sys.stderr, flush=True)
 
-  while not single:
+  while True:
     error = 0
     try:
       time.sleep(0.01)
@@ -346,5 +346,7 @@ if __name__ == "__main__":
       
     if not single:
       inp = input()
+#      print(inp)    else:
+      break()
 
-#   print(inp)
+
