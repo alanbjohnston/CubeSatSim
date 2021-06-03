@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
   	  map[BAT] = BUS;
   	  map[PLUS_Z] = BAT;
   	  map[MINUS_Z] = PLUS_Z;
-	    
+	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));	    
 /*	    
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]) {
 	  printf("vB4 Present\n");
 	  map[BAT] = BUS;
 	  map[BUS] = BAT;
-		
+	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));		
  // 	  strcpy(busStr,"1 0");
   	}
 	else
@@ -106,11 +106,11 @@ int main(int argc, char *argv[]) {
 
   		if (digitalRead(26) != HIGH)
   		{
-  			printf("vB5 Present\n");  // Don't print normal board detection
+ // 			printf("vB5 or later present\n");  // Don't print normal board detection
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
-
+			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
 /*			
 			if (test_i2c_b0) != OFF)
 				strcpy(busStr,"1 ");
@@ -183,6 +183,7 @@ int main(int argc, char *argv[]) {
   			map[BAT] = BUS;
   			map[PLUS_Z] = BAT;
   			map[MINUS_Z] = PLUS_Z;
+			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 /*			
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
@@ -228,7 +229,6 @@ int main(int argc, char *argv[]) {
    fgets(cmdbuffer, 1000, file1);
    if (debug == ON)
    {
-	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 	printf("New Bus String: %s \n", busStr);
 	fprintf(stderr, "pythonConfigStr: %s \n", pythonConfigStr);
    	fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
