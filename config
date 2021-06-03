@@ -79,6 +79,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -s     Change to SSTV mode"
 	echo "   -i     Restarts CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
+	echo "   -m     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
 	echo "          Only used for APRS telemetry"
