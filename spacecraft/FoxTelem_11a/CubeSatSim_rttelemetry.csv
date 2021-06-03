@@ -35,8 +35,8 @@
 33,RT,Sensor2,12,signed scaled,cubesatsim_sensor3|FLOAT2,Experiments,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
 34,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload,STEM Payload Board Status
 35,RT,Nominal Mode,1,-,17,Computer Software,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
-36,RT,PayloadStatus1,1,-,17,NONE,6,7,0,Exp 2,STEM Payload status 1 failure indicator
-37,RT,PayloadStatus2,1,-,17,NONE,6,8,0,Exp 3,STEM Payload status 2 failure indicator
+36,RT,SimulatedTelemetry,1,-,17,Computer Software,3,4,0,Exp 2,Simulated Telemetry, Simulated Telemetry indicator
+37,RT,PayloadStatus1,1,-,17,NONE,6,8,0,Exp 3,STEM Payload status 1 failure indicator
 38,RT,I2CBus0Failure,1,-,17,Computer Hardware,2,2,0,I2C Bus 0,I2C bus 0 failure indicator
 39,RT,I2CBus1Failure,1,-,17,Computer Hardware,2,3,0,I2C Bus 1,I2C bus 1 failure indicator
 40,RT,I2CBus3Failure,1,-,17,Computer Hardware,2,4,0,I2C Bus 3,I2C bus 3 failure indicator
