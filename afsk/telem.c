@@ -231,7 +231,7 @@ int main(int argc, char *argv[]) {
    strcpy(pythonStr, pythonCmd);
    strcat(pythonStr, busStr);
    strcat(pythonConfigStr, pythonStr);
-   strcat(pythonConfigStr, " c");
+   strcat(pythonConfigStr, " s");
 
    char cmdbuffer[1000];
    FILE *file1 = sopen(pythonConfigStr);  // try new function
