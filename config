@@ -37,6 +37,7 @@ if [ "$1" = "" ]; then
 		echo "Simulated Telemetry is OFF"
 	fi
 	
+	echo
 	echo "To change, include an OPTION"
 	echo
 	set -- "-h"
