@@ -12,7 +12,7 @@ if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
   
   buses = [1, 3] # default I2C buses
-  config = False
+  single = False
   one = two = three = four = five = six = seven = eight = 0
   
   if (len(sys.argv)) > 1:
@@ -23,7 +23,7 @@ if __name__ == "__main__":
       buses[1] = int(sys.argv[2], base=10)
       if (len(sys.argv)) > 3:
         if sys.argv[3] == "c":
-          config = True
+          single = True
           
 #  print(buses[0])
 #  print(buses[1])
@@ -176,7 +176,7 @@ if __name__ == "__main__":
     except:
       print("Python Error 5",  file=sys.stderr, flush=True)
 
-  while (True):
+  while !single:
     error = 0
     try:
       time.sleep(0.01)
@@ -344,5 +344,7 @@ if __name__ == "__main__":
     else:
       print("Python Error Recovered!")
       
-    inp = input()
+    if single != TRUE:
+      inp = input()
+
 #   print(inp)
