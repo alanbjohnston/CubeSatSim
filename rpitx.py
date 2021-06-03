@@ -56,7 +56,7 @@ if __name__ == "__main__":
 				print("AFSK") 
 				while True:
 					try:
-						f = open("ready")
+						f = open("/home/pi/CubeSatSim/ready")
 						os.system("gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 						os.system("sudo rm ready")
 						time.sleep(0.5)
