@@ -25,20 +25,21 @@
 #define PLUS_Z 6
 #define MINUS_Z 7
 
-#define OFF -1
-#define ON 1
+define OFF -1
+define ON 1
 
 int test_i2c_bus(int bus);
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 FILE *sopen(const char *program);
+int debug = OFF;
 
 int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
-	  ;
-  }
+    if ( * argv[1] == 'd') {
+      debug = ON;
 
   wiringPiSetup ();
 		
@@ -55,8 +56,6 @@ int main(int argc, char *argv[]) {
   	  map[PLUS_Z] = BAT;
   	  map[MINUS_Z] = PLUS_Z;
 	    
-	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-	  printf("New Bus String: %s \n", busStr);
 /*	    
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
@@ -97,10 +96,6 @@ int main(int argc, char *argv[]) {
 	  map[BAT] = BUS;
 	  map[BUS] = BAT;
 		
-	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-			
-	  printf("New Bus String: %s \n", busStr);
-		
  // 	  strcpy(busStr,"1 0");
   	}
 	else
@@ -114,9 +109,7 @@ int main(int argc, char *argv[]) {
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
-			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
-			
-			printf("New Bus String: %s \n", busStr);
+	 		if (debug == ON)
 /*			
 			if (test_i2c_b0) != OFF)
 				strcpy(busStr,"1 ");
@@ -189,10 +182,6 @@ int main(int argc, char *argv[]) {
   			map[BAT] = BUS;
   			map[PLUS_Z] = BAT;
   			map[MINUS_Z] = PLUS_Z;
-			
-			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-			
-			printf("New Bus String: %s \n", busStr);
 /*			
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
@@ -227,7 +216,7 @@ int main(int argc, char *argv[]) {
 	
 //  Reading I2C voltage and current sensors
 //   printf("Starting\n");
-
+	    
    strcpy(pythonStr, pythonCmd);
    strcat(pythonStr, busStr);
    strcat(pythonConfigStr, pythonStr);
@@ -236,7 +225,12 @@ int main(int argc, char *argv[]) {
    char cmdbuffer[1000];
    FILE *file1 = sopen(pythonConfigStr);  // try new function
    fgets(cmdbuffer, 1000, file1);
-   fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
+   if (debug == ON)
+   {
+	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+	printf("New Bus String: %s \n", busStr);
+   	fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
+   }
 //   FILE* file1 = popen(pythonConfigStr, "r");
 //   fgets(cmdbuffer, 1000, file1);
 //   printf("pythonStr result: %s\n", cmdbuffer);
