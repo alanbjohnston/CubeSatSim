@@ -214,7 +214,7 @@ int main(int argc, char * argv[]) {
     latitude = lat_file;
     longitude = long_file;
   }
-  if (sim_yes[0] == "y")
+  if (*sim_yes[0] == "y")
 	  sim_mode = TRUE;
   wiringPiSetup();
 
