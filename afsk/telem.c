@@ -25,8 +25,8 @@
 #define PLUS_Z 6
 #define MINUS_Z 7
 
-define OFF -1
-define ON 1
+#define OFF -1
+#define ON 1
 
 int test_i2c_bus(int bus);
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
