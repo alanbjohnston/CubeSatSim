@@ -354,13 +354,13 @@ int main(int argc, char * argv[]) {
   file1 = sopen(pythonConfigStr);  // try new function
 	
   // test i2c buses	
-  printf("Test bus 0\n);	
+  printf("Test bus 0\n");	
   i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
-  printf("Test bus 1\n);	
+  printf("Test bus 1\n");	
   i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
-  printf("Test bus 3\n);	
+  printf("Test bus 3\n");	
   i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
-  printf("Finished testing\n);	
+  printf("Finished testing\n");	
 
   // check for camera	
 //  char cmdbuffer1[1000];
