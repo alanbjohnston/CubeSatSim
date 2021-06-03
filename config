@@ -121,8 +121,8 @@ elif [ "$1" = "-m" ]; then
 	echo
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo
-	echo $callsign $2 $3 $4 $sim
-	echo $callsign $2 $3 $4 $sim > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $sim
+	echo $1 $2 $3 $4 $sim > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
