@@ -39,6 +39,8 @@ if [ $FLAG -eq 1 ]; then
   sudo systemctl daemon-reload 
 else
   if [[ $(grep 'updated' /home/pi/CubeSatSim/.updated) ]]; then
+    echo "nothing to do"
+  else
     echo "systemctl restart cubesatsim"
     sudo systemctl restart cubesatsim
   fi  
