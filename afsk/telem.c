@@ -15,23 +15,6 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
-#include <wiringSerial.h>
-#include <time.h>
-#include <math.h>
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <errno.h>
-
 #define PLUS_X 0
 #define PLUS_Y 1
 #define BAT 2
@@ -48,6 +31,7 @@ int test_i2c_bus(int bus);
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+FILE *sopen(const char *program);
 
 int main(int argc, char *argv[]) {
 	
@@ -344,3 +328,31 @@ int test_i2c_bus(int bus)
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
 }
+
+// code by https://stackoverflow.com/questions/25161377/open-a-cmd-program-with-full-functionality-i-o/25177958#25177958
+
+    FILE *sopen(const char *program)
+    {
+        int fds[2];
+        pid_t pid;
+
+        if (socketpair(AF_UNIX, SOCK_STREAM, 0, fds) < 0)
+            return NULL;
+
+        switch(pid=vfork()) {
+        case -1:    /* Error */
+            close(fds[0]);
+            close(fds[1]);
+            return NULL;
+        case 0:     /* child */
+            close(fds[0]);
+            dup2(fds[1], 0);
+            dup2(fds[1], 1);
+            close(fds[1]);
+            execl("/bin/sh", "sh", "-c", program, NULL);
+            _exit(127);
+        }
+        /* parent */
+        close(fds[1]);
+        return fdopen(fds[0], "r+");
+    }
