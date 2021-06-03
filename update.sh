@@ -35,8 +35,9 @@ else
 fi
 
 if [ $FLAG -eq 1 ]; then
-  echo "systemctl daemon-reload"
-  sudo systemctl daemon-reload 
+  echo "systemctl daemon-reload and restart"
+  sudo systemctl daemon-reload
+  sudo systemctl restart cubesatsim
 else
   grep 'changed' /home/pi/CubeSatSim/.updated
   if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
