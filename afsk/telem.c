@@ -230,6 +230,7 @@ int main(int argc, char *argv[]) {
    {
 	snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
 	printf("New Bus String: %s \n", busStr);
+	fprintf(stderr, "pythonConfigStr: %s \n", pythonConfigStr);
    	fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
    }
 //   FILE* file1 = popen(pythonConfigStr, "r");
