@@ -23,7 +23,9 @@ else:
 	txLed = 27
 	txLedOn = 1 
 	txLedOff = 0
-	
+
+time.sleep(15)  // delay to cover cubesatsim initialization time
+
 GPIO.setup(txLed, GPIO.OUT)
 print(txLedOn)
 print(txLed)
