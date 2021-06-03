@@ -38,6 +38,8 @@ if [ $FLAG -eq 1 ]; then
   echo "systemctl daemon-reload"
   sudo systemctl daemon-reload 
 else
-  echo "systemctl restart cubesatsim"
-  sudo systemctl restart cubesatsim
+  if [[ $(grep cat .updated) ]]; then
+    echo "systemctl restart cubesatsim"
+    sudo systemctl restart cubesatsim
+  fi  
 fi
