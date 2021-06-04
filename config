@@ -163,59 +163,19 @@ elif [ "$1" = "-c" ]; then
 
 		callsign="$1"
 		echo "Keeping value of" $callsign
-	fi
+		norestart=1
+	else
 	
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-	echo $callsign $2 $3 $4 $5
-	echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+		echo $callsign $2 $3 $4 $5
+		echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+	fi
 	
 	if [ "$norestart" = "1" ]; then
-		echo
+		echo "no changes"
 	else
-		echo "Restarting CubeSatSim with new configuraation file"
 		echo
-		sudo systemctl restart cubesatsim
-	fi
-	
-elif [ "$1" = "-c" ]; then
-
-	echo	
-	echo "Editing the CALLSIGN in the"
-	echo  "configuration file for CubeSatSim"	
-	echo
-	echo "Return keeps current value."
-#	echo -e "Current sim.cfg configuration file:"	
-#	echo
-	
-	value=`cat /home/pi/CubeSatSim/sim.cfg`
-	echo "$value" > /dev/null
-	set -- $value
-
-	echo "Current value of CALLSIGN is"	
-	echo $1
-	echo
-	
-#	echo $1 $2 $3 $4 $5
-
-	echo "Enter callsign in all capitals: "
-	read callsign
-
-	if [ -z $callsign ] ; then
-
-		callsign="$1"
-		echo "Keeping value of" $callsign
-	fi
-	
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-
-	echo $callsign $2 $3 $4 $5
-	echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
-	echo
-	
-	if [ "$norestart" = "1" ]; then
-		echo
-	else
 		echo "Restarting CubeSatSim with new configuraation file"
 		echo
 		sudo systemctl restart cubesatsim
@@ -255,17 +215,24 @@ elif [ "$1" = "-r" ]; then
 		echo "Error: not an integer!"
 		resets="$2"
 		echo "Keeping value of" $resets
-	fi 
+		norestart=1
+	else
 
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-	echo $1 $resets $3 $4 $5
-	echo $1 $resets $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
-	echo
-	echo "Restarting CubeSatSim with new configuraation file"
-	echo
-	
-	sudo systemctl restart cubesatsim
+		echo $1 $resets $3 $4 $5
+		echo $1 $resets $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+	fi	
+
+	if [ "$norestart" = "1" ]; then
+		echo
+		echo "no changes"
+	else
+		echo
+		echo "Restarting CubeSatSim with new configuraation file"
+		echo
+		sudo systemctl restart cubesatsim
+	fi
 	
 elif [ "$1" = "-l" ]; then
 
@@ -331,11 +298,15 @@ elif [ "$1" = "-l" ]; then
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo $1 $2 $lat $long $5
 	echo $1 $2 $lat $long $5 > /home/pi/CubeSatSim/sim.cfg
-	echo
-	echo "Restarting CubeSatSim with new configuraation file"
-	echo
 	
-	sudo systemctl restart cubesatsim
+	if [ "$norestart" = "1" ]; then
+		echo "no changes"
+	else
+		echo
+		echo "Restarting CubeSatSim with new configuraation file"
+		echo
+		sudo systemctl restart cubesatsim
+	fi
 fi
 
 # sudo systemctl restart cubesatsim
