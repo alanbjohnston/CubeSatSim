@@ -4,7 +4,7 @@ echo -e "\ninstallation script for CubeSatSim\n"
 
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
-sudo apt-get install -y wiringpi git libasound2-dev i2c-tools cpulimit
+sudo apt-get install -y wiringpi git libasound2-dev i2c-tools cpulimit python-picamera python3-picamera build-essential libgd-dev libmagic-dev
 
 cd /tmp
 
@@ -36,6 +36,7 @@ else
     echo "ARG1=f" >> .mode
 fi
 
+
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
@@ -43,6 +44,7 @@ else
     echo "creating $FILE"
     echo $1 >> sim.cfg
 fi
+
 
 cd
 
@@ -56,6 +58,7 @@ sudo make install
 
 make install-rpi
 
+
 cd
 
 git clone https://github.com/alanbjohnston/pi-power-button.git
@@ -64,13 +67,24 @@ cd pi-power-button
 
 ./script/install
 
+
 cd
 
-git clone https://github.com/F5OEO/rpitx.git
+git clone https://github.com/alanbjohnston/PiSSTVpp.git
+
+cd PiSSTVpp
+
+make pisstvpp
+
+
+cd
+
+git clone https://github.com/alanbjohnston/rpitx.git
 
 cd rpitx
 
 ./install.sh
+
 
 cd
 
@@ -82,12 +96,15 @@ sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
 
-
 sudo cp /boot/config.txt /boot/config.txt.0
 
 sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
 
+
 sudo raspi-config nonint do_i2c 0
+
+sudo raspi-config nonint do_camera 0
+
 
 #if [ "$1" = "u" ]; then
 #fi
@@ -103,11 +120,18 @@ sudo raspi-config nonint do_i2c 0
     sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
   fi
 
-  if [[ $(grep 'dtoverlay=pi3-miniuart-bt' /boot/config.txt) ]]; then
-    echo "dtoverlay=pi3-miniuart-bt already in /boot/config.txt"
+  if [[ $(grep 'enable_uart=1' /boot/config.txt) ]]; then
+    echo "enable_uart=1 already in /boot/config.txt"
   else
-    echo "adding dtoverlay=pi3-miniuart-bt to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=pi3-miniuart-bt" >> /boot/config.txt'
+    echo "adding enable_uart=1 to /boot/config.txt"
+    sudo sh -c 'echo "\nenable_uart=1" >> /boot/config.txt'
+  fi
+  
+  if [[ $(grep 'dtoverlay=disable-bt' /boot/config.txt) ]]; then
+    echo "dtoverlay=disable-bt already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=disable-bt to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=disable-bt" >> /boot/config.txt'
   fi
   
   if [[ $(grep 'dtoverlay=dwc2' /boot/config.txt) ]]; then
@@ -123,6 +147,10 @@ sudo raspi-config nonint do_i2c 0
     echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
     sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
   fi
+  
+CubeSatSim/config -c
+
+CubeSatSim/config -l
   
 echo "You need to reboot to complete the installation\n"
 
