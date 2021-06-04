@@ -163,11 +163,14 @@ elif [ "$1" = "-c" ]; then
 
 	echo $callsign $2 $3 $4 $5
 	echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
-	echo
-	echo "Restarting CubeSatSim with new configuraation file"
-	echo
-
-	sudo systemctl restart cubesatsim
+	
+	if [ "$2" = "-n" ]; then
+		echo
+	else
+		echo "Restarting CubeSatSim with new configuraation file"
+		echo
+		sudo systemctl restart cubesatsim
+	fi
 	
 elif [ "$1" = "-c" ]; then
 
@@ -203,10 +206,14 @@ elif [ "$1" = "-c" ]; then
 	echo $callsign $2 $3 $4 $5
 	echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Restarting CubeSatSim with new configuraation file"
-	echo
-
-	sudo systemctl restart cubesatsim
+	
+	if [ "$2" = "-n" ]; then
+		echo
+	else
+		echo "Restarting CubeSatSim with new configuraation file"
+		echo
+		sudo systemctl restart cubesatsim
+	fi
 	
 elif [ "$1" = "-r" ]; then
 
