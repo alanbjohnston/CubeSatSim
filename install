@@ -42,7 +42,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
     echo "creating $FILE"
-    echo $1 >> sim.cfg
+    echo "AMSAT 1 0.0 0.0" >> sim.cfg
 fi
 
 
@@ -148,9 +148,9 @@ sudo raspi-config nonint do_camera 0
     sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
   fi
   
-CubeSatSim/config -c
+CubeSatSim/config -c -n
 
-CubeSatSim/config -l
+CubeSatSim/config -l -n
   
 echo "You need to reboot to complete the installation\n"
 
