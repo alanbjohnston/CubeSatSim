@@ -173,7 +173,7 @@ elif [ "$1" = "-c" ]; then
 	fi
 	
 	if [ "$norestart" = "1" ]; then
-		echo "no changes"
+		echo 
 	else
 		echo
 		echo "Restarting CubeSatSim with new configuraation file"
@@ -226,7 +226,6 @@ elif [ "$1" = "-r" ]; then
 
 	if [ "$norestart" = "1" ]; then
 		echo
-		echo "no changes"
 	else
 		echo
 		echo "Restarting CubeSatSim with new configuraation file"
@@ -300,7 +299,7 @@ elif [ "$1" = "-l" ]; then
 	echo $1 $2 $lat $long $5 > /home/pi/CubeSatSim/sim.cfg
 	
 	if [ "$norestart" = "1" ]; then
-		echo "no changes"
+		echo 
 	else
 		echo
 		echo "Restarting CubeSatSim with new configuraation file"
