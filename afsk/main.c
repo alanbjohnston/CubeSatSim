@@ -9,7 +9,7 @@
  *  it under the terms of the GNU General Public License as published by
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,
+ *  This program is distributed in the hope that it will be useful,python3
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -151,7 +151,7 @@ double eclipse_time;
 
 int test_i2c_bus(int bus);
 
-const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
+const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
