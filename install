@@ -42,7 +42,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
     echo "creating $FILE"
-    echo "AMSAT 1 0.0 0.0" >> sim.cfg
+    echo "AMSAT 1 0.0 0.0" >> /home/pi/CubeSatSim/sim.cfg
 fi
 
 
