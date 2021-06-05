@@ -82,32 +82,29 @@ if __name__ == "__main__":
 				except:
 					print("No camera")
 					camera_present = 0
-
+				try:
+					file = open("/home/pi/CubeSatSim/initial_image.jpg")
+					print("Initial image detected")
+					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/initial_image.jpg") 
+					print ("Sending SSTV photo")
+					GPIO.output(txLed, txLedOn);		
+					system("cat /home/pi/initial_image.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+					GPIO.output(txLed, txLedOff)
+#					time.sleep(1)
+				except:
+					print("No initial image")
 #				while 1:
 				GPIO.output(txLed, txLedOff)
 				if (camera_present == 1):
-					try:
-						file = open("/home/pi/CubeSatSim/initial_image.jpg")
-						system("cp /home/pi/CubeSatSim/initial_image.jpg /home/pi/CubeSatSim/camera_out.jpg")
-						print("Initial image copied")
-					except:
-						print("No initial image")
+					while 1:
 						system("raspistill -o /home/pi/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 						print("Photo taken")
-					while 1:
-#						GPIO.output(txLed, txLedOn)
-						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/camera_out.jpg") #  > /dev/null 2>&1")
-#							GPIO.output(txLed, txLedOff)
+						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/camera_out.jpg") 
 						print ("Sending SSTV photo")
-						time.sleep(1)
-#						system("sudo killall -9 rpitx > /dev/null 2>&1")
-#						system("sudo killall -9 csdr > /dev/null 2>&1")
-#						system("sudo killall -9 cat > /dev/null 2>&1")
 						GPIO.output(txLed, txLedOn);		
 						system("cat /home/pi/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 						GPIO.output(txLed, txLedOff)
-						system("raspistill -o /home/pi/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-						print("Photo taken")
+						time.sleep(1)
 				else:
 					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 					while 1:
