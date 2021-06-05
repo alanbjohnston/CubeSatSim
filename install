@@ -152,5 +152,16 @@ CubeSatSim/config -c -n
 
 CubeSatSim/config -l -n
   
-echo "You need to reboot to complete the installation\n"
+echo "Would you like to reboot to complete the installation (y/n)?\n"
 
+$read -r ANS
+
+if [ "$ANS" = "y" ]; then
+
+    sudo reboot now
+
+else
+
+    echo "\nThe CubeSatSim software will start next time you reboot"
+    
+fi
