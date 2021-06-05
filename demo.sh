@@ -13,16 +13,16 @@ fi
 
 if [[ ("$1" = "a" ) || (("$1" = "c") && ("$(($y %4))" = 3)) ]]; then
    	echo "Mode is continuous AFSK"
-    	/home/pi/CubeSatSim/radioafsk afsk
+    	/home/pi/CubeSatSim/cubesatsim afsk
 elif [[ ("$1" = "b" ) || (("$1" = "c") && ("$(($y %4))" = 1)) ]]; then
    	echo "Mode is continuous BPSK" 
-    sudo cpulimit -l 2.5 -b -P radioafsk
-    /home/pi/CubeSatSim/radioafsk bpsk
+    sudo cpulimit -l 2.5 -b -P cubesatsim
+    /home/pi/CubeSatSim/cubesatsim bpsk
 elif [[ ("$1" = "s" ) || (("$1" = "c") && ("$(($y %4))" = 2)) ]]; then
    	echo "Mode is continuous SSTV"  
     	while true; do sleep 5; done
 else
     echo "Mode is continuous FSK"
-    /home/pi/CubeSatSim/radioafsk fsk
+    /home/pi/CubeSatSim/cubesatsim fsk
 fi
 
