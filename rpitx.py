@@ -83,7 +83,7 @@ if __name__ == "__main__":
 					print("No camera")
 					camera_present = 0
 				try:
-					file = open("/home/pi/CubeSatSim/initial_image.jpg")
+					file = open("/home/pi/initial_image.jpg")
 					print("Initial image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/initial_image.jpg") 
 					print ("Sending SSTV photo")
