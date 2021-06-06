@@ -95,9 +95,9 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
       cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
   fi
   
-  echo "You need toreboot to complete the installation.  Reboot now (y/n)?\n"
+  echo "You need to reboot to complete the installation.  Reboot now (y/n)?"
 
-  $read -r ANS
+  read -r ANS
 
   if [ "$ANS" = "y" ]; then
 
@@ -105,7 +105,7 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
 
   else
 
-      echo "\nThe CubeSatSim software may not work correctly until you reboot."
+      echo "The CubeSatSim software may not work correctly until you reboot."
 
   fi  
 
