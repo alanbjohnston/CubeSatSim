@@ -71,6 +71,8 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
   sudo apt-get install -y python-picamera python3-picamera build-essential libgd-dev libmagic-dev
 
 
+  cd
+
   git clone https://github.com/alanbjohnston/PiSSTVpp.git
 
   cd PiSSTVpp
