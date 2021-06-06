@@ -22,7 +22,6 @@ sudo pip3 install --upgrade setuptools
 sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
 
 
-git clone https://github.com/alanbjohnston/rpitx.git
 
 cd ~/CubeSatSim
 
