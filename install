@@ -154,9 +154,9 @@ CubeSatSim/config -c -n
 
 CubeSatSim/config -l -n
   
-echo "Would you like to reboot to complete the installation (y/n)?\n"
+echo "Would you like to reboot to complete the installation (y/n)?"
 
-$read -r ANS
+read -r ANS
 
 if [ "$ANS" = "y" ]; then
 
@@ -164,6 +164,6 @@ if [ "$ANS" = "y" ]; then
 
 else
 
-    echo "\nThe CubeSatSim software will start next time you reboot"
+    echo "The CubeSatSim software will start next time you reboot"
     
 fi
