@@ -97,12 +97,12 @@ if __name__ == "__main__":
 				GPIO.output(txLed, txLedOff)
 				if (camera_present == 1):
 					while 1:
-						system("raspistill -o /home/pi/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 						print("Photo taken")
-						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/camera_out.jpg") 
+						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 						print ("Sending SSTV image")
 						GPIO.output(txLed, txLedOn);		
-						system("cat /home/pi/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+						system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 						GPIO.output(txLed, txLedOff)
 						time.sleep(1)
 				else:
