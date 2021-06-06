@@ -33,7 +33,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
     echo "creating $FILE"
-    echo "ARG1=f" >> .mode
+    echo "ARG1=f" > .mode
 fi
 
 
