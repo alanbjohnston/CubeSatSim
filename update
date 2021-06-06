@@ -50,6 +50,7 @@ fi
 
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ -f "$FILE" ]; then
+  ;
 else 
     echo "Copying SSTV image 1"
     cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
@@ -57,6 +58,7 @@ fi
     
 FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 if [ -f "$FILE" ]; then
+  ;
 else 
     echo "Copying SSTV image 2"
     cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
