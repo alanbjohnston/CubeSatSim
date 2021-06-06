@@ -34,6 +34,24 @@ else
   echo "no changes to rpitx.service"
 fi
 
+FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+if [ ! -f "$FILE" ]; then
+    echo "Copying SSTV image 1"
+    cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+fi
+    
+FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+if [ ! -f "$FILE" ]; then
+    echo "Copying SSTV image 2"
+    cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+fi
+      
+grep 'update' /home/pi/CubeSatSim/.updated
+if [[ $(grep 'update' /home/pi/CubeSatSim/.updated) ]]; then
+  echo "update script updated"
+  /home/pi/CubeSatSim/update
+fi
+
 if [ $FLAG -eq 1 ]; then
   echo "systemctl daemon-reload and restart"
   sudo systemctl daemon-reload 
@@ -47,16 +65,3 @@ else
     echo "nothing to do"
   fi  
 fi
-
-FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
-if [ ! -f "$FILE" ]; then
-    echo "Copying SSTV image 1"
-    cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
-fi
-    
-FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
-if [ ! -f "$FILE" ]; then
-    echo "Copying SSTV image 2"
-    cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
-fi
-      
