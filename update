@@ -66,3 +66,48 @@ else
   fi  
 fi
 
+if [ ! -d "/home/pi/PiSSTVpp" ]; then
+
+  sudo apt-get install -y python-picamera python3-picamera build-essential libgd-dev libmagic-dev
+
+
+  git clone https://github.com/alanbjohnston/PiSSTVpp.git
+
+  cd PiSSTVpp
+
+  make pisstvpp
+
+  cd
+  
+  
+  sudo raspi-config nonint do_camera 0
+  
+
+  FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+  if [ ! -f "$FILE" ]; then
+      echo "Copying SSTV image 1"
+      cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+  fi
+
+  FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+  if [ ! -f "$FILE" ]; then
+      echo "Copying SSTV image 2"
+      cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+  fi
+  
+  echo "You need toreboot to complete the installation.  Reboot now (y/n)?\n"
+
+  $read -r ANS
+
+  if [ "$ANS" = "y" ]; then
+
+      sudo reboot now
+
+  else
+
+      echo "\nThe CubeSatSim software may not work correctly until you reboot."
+
+  fi  
+
+  
+fi
