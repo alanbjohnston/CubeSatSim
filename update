@@ -14,7 +14,9 @@ sudo sed -i 's/config.sh/config /g' /etc/motd
 
 sudo sed -i 's/installed and/installed\nand/g' /etc/motd
 
+sudo sed -i 's/more information/more\ninformation/g' /etc/motd
 
+sudo sed -i 's/update to/update\nto/g' /etc/motd
 
 cd /home/pi/CubeSatSim
 
