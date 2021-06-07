@@ -10,7 +10,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo sed -i 's/CubeSatSim/config.sh/CubeSatSim/config/g' /etc/motd
+sudo sed -i 's/config.sh/config/g' /etc/motd
 
 
 cd /home/pi/CubeSatSim
