@@ -10,6 +10,9 @@ if [ "$1" = "u" ]; then
 
 fi
 
+sudo sed -i 's/CubeSatSim/config.sh/CubeSatSim/config/g' /etc/motd
+
+
 cd /home/pi/CubeSatSim
 
 git pull > .updated
@@ -67,6 +70,8 @@ else
 fi
 
 if [ ! -d "/home/pi/PiSSTVpp" ]; then
+
+  sudo apt-get update && sudo apt-get dist-upgrade -y
 
   sudo apt-get install -y python-picamera python3-picamera build-essential libgd-dev libmagic-dev
 
