@@ -15,8 +15,7 @@ int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 9;
 int blueLED = 8;
 int Sensor1 = 0;
-int Sensor2 = 0;
-float Sensor3 = 0;
+float Sensor2 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
@@ -25,7 +24,7 @@ void setup() {
 
   Serial.begin(9600); // Serial Monitor for testing
 
-  Serial1.begin(9600);  // Pi UART
+  Serial1.begin(115200);  // Pi UART faster speed
 
   Serial.println("Starting!");
   
@@ -133,9 +132,7 @@ void loop() {
     Serial.print(" XS ");
     Serial.print(Sensor1);   
     Serial.print(" ");
-    Serial.print(Sensor2);              
-    Serial.print(" ");
-    Serial.println(Sensor3);  
+    Serial.println(Sensor2);               
       
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -201,10 +198,8 @@ void loop() {
     Serial1.print(" XS ");
     Serial1.print(Sensor1);   
     Serial1.print(" ");
-    Serial1.print(Sensor2);              
-    Serial1.print(" ");
-    Serial1.println(Sensor3);     
-    
+    Serial1.println(Sensor2);              
+     
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
