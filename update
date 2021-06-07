@@ -10,7 +10,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo sed -i 's/config.sh/config /g' /etc/motd
+sudo sed -i 's/update.sh/update /g' /etc/motd
 
 sudo sed -i 's/installed and/installed\nand/g' /etc/motd
 
