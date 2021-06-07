@@ -10,7 +10,10 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo sed -i 's/config.sh/config/g' /etc/motd
+sudo sed -i 's/config.sh/config /g' /etc/motd
+
+sudo sed -i 's/installed and/installed\nand/g' /etc/motd
+
 
 
 cd /home/pi/CubeSatSim
@@ -51,7 +54,7 @@ fi
       
 grep 'update' /home/pi/CubeSatSim/.updated
 if [[ $(grep 'update' /home/pi/CubeSatSim/.updated) ]]; then
-  echo "update script updated"
+  echo "update script updated, running again"
   /home/pi/CubeSatSim/update
 fi
 
