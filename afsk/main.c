@@ -141,7 +141,7 @@ unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float batteryThreshold = 3.0, batteryVoltage;
+float voltageThreshold = 3.0, batteryVoltage, batteryCurrent, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 
@@ -341,7 +341,7 @@ int main(int argc, char * argv[]) {
     map[PLUS_Z] = BAT;
     map[MINUS_Z] = PLUS_Z;
     snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-    batteryThreshold = 8.0;
+    voltageThreshold = 8.0;
   }
 
   strcpy(pythonStr, pythonCmd);
@@ -593,9 +593,10 @@ int main(int argc, char * argv[]) {
     loopTime = millis();
 	  
     #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Battery voltage: %f V  Battery Threshold %f V\n", batteryVoltage, batteryThreshold);
+    fprintf(stderr, "INFO: Battery voltage: %f V  Threshold %f V Current: %f mA Threshold: %f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
-    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+//    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold)) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
@@ -748,7 +749,8 @@ void get_tlm(void) {
     }
 
     batteryVoltage = voltage[map[BAT]];
-
+    batteryCurrent = current[map[BAT]];
+	  
     double cpuTemp;
 
     FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
