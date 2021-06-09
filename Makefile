@@ -1,11 +1,11 @@
 all: DEBUG_BEHAVIOR=
 all: libax5043.a
-all: radioafsk 
+all: cubesatsim 
 all: telem
 
 debug: DEBUG_BEHAVIOR = -DDEBUG_LOGGING
 debug: libax5043.a
-debug: radioafsk
+debug: cubesatsim
 debug: telem
 
 rebuild: clean
@@ -20,7 +20,7 @@ clean:
 	rm -f testax5043tx
 	rm -f testax50432freq
 	rm -f testax5043init
-	rm -f radioafsk
+	rm -f cubesatsim
 	rm -f testafsktx
 	rm -f libax5043.a
 	rm -f */*.o
@@ -78,11 +78,11 @@ testafsktx: afsktx/ax5043.o
 testafsktx: afsktx/main.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o testafsktx -Wall -Wextra -L./ afsktx/ax25.o afsktx/ax5043.o afsktx/main.o -lwiringPi -lax5043 
 
-radioafsk: libax5043.a
-radioafsk: afsk/ax25.o
-radioafsk: afsk/ax5043.o
-radioafsk: afsk/main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radioafsk -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lm
+cubesatsim: libax5043.a
+cubesatsim: afsk/ax25.o
+cubesatsim: afsk/ax5043.o
+cubesatsim: afsk/main.o
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lm
 
 telem: afsk/telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ afsk/telem.o -lwiringPi 

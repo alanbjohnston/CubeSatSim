@@ -17,6 +17,7 @@ The other option is to start with any Raspberry Pi OS (Rasbian) image and run th
 - pi-power-button
 - Direwolf
 - rpitx
+- cpulimit
 - python3-pip 
 - python-smbus
 
@@ -38,11 +39,11 @@ To get the software follow these steps:
 
 `git checkout master`
 
-You are now ready to install the software.  In the following command, CALLSIGN is your amateur radio callsign in all capitals, if you have one.  If you don't you can put some other word which will be transmitted as a CW ID.
+You are now ready to install the software using this script in the CubeSatSim directory:
 
-`./install.sh CALLSIGN`
+`./install`
 
-The installation script will run for quite a while.  It will prompt you if you want to modify /boot/config.txt file.  Type a `y` and the script will complete.  You will need to reboot.
+The installation script will run for quite a while.  You will get prompted for your amateur radio callsign in all capitals, if you have one.  If you don't you can put some other word which will be transmitted as a CW ID.  You will also be prompted for your latitude and longitude for APRS packets. The script will prompt you if you want to modify /boot/config.txt file.  Type a `y` and the script will complete.  You will need to reboot.
 
 See the Wiki for more details about the CubeSatSim https://github.com/alanbjohnston/CubeSatSim/wiki
 

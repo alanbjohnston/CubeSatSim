@@ -10,6 +10,11 @@
 #include <string.h>
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <sys/socket.h>
 
 #define PLUS_X 0
 #define PLUS_Y 1
@@ -27,13 +32,16 @@ int test_i2c_bus(int bus);
 const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
+FILE *sopen(const char *program);
+int debug = OFF;
 
 int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
-	  ;
+    if ( * argv[1] == 'd') {
+      debug = ON;
+    }
   }
-
   wiringPiSetup ();
 		
   printf("\n");
@@ -48,9 +56,7 @@ int main(int argc, char *argv[]) {
   	  map[BAT] = BUS;
   	  map[PLUS_Z] = BAT;
   	  map[MINUS_Z] = PLUS_Z;
-	    
-	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-	  printf("New Bus String: %s \n", busStr);
+	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));	    
 /*	    
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
@@ -90,11 +96,7 @@ int main(int argc, char *argv[]) {
 	  printf("vB4 Present\n");
 	  map[BAT] = BUS;
 	  map[BUS] = BAT;
-		
-	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-			
-	  printf("New Bus String: %s \n", busStr);
-		
+	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));		
  // 	  strcpy(busStr,"1 0");
   	}
 	else
@@ -104,13 +106,12 @@ int main(int argc, char *argv[]) {
 
   		if (digitalRead(26) != HIGH)
   		{
-  			printf("vB5 Present\n");  // Don't print normal board detection
+  			if (debug == ON)
+				printf("vB5 or later present\n");  // Don't print normal board detection
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
 			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
-			
-			printf("New Bus String: %s \n", busStr);
 /*			
 			if (test_i2c_b0) != OFF)
 				strcpy(busStr,"1 ");
@@ -183,10 +184,7 @@ int main(int argc, char *argv[]) {
   			map[BAT] = BUS;
   			map[PLUS_Z] = BAT;
   			map[MINUS_Z] = PLUS_Z;
-			
 			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-			
-			printf("New Bus String: %s \n", busStr);
 /*			
  	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
 	  	printf("/dev/i2c-0 is present\n\n");	    
@@ -221,25 +219,33 @@ int main(int argc, char *argv[]) {
 	
 //  Reading I2C voltage and current sensors
 //   printf("Starting\n");
-
+	    
    strcpy(pythonStr, pythonCmd);
    strcat(pythonStr, busStr);
    strcat(pythonConfigStr, pythonStr);
-   strcat(pythonConfigStr, " c");
-	
-   FILE* file1 = popen(pythonConfigStr, "r");
+   strcat(pythonConfigStr, " s");
+
    char cmdbuffer[1000];
+   FILE *file1 = sopen(pythonConfigStr);  // try new function
    fgets(cmdbuffer, 1000, file1);
+   if (debug == ON)
+   {
+	printf("New Bus String: %s \n", busStr);
+	fprintf(stderr, "pythonConfigStr: %s \n", pythonConfigStr);
+   	fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
+   }
+//   FILE* file1 = popen(pythonConfigStr, "r");
+//   fgets(cmdbuffer, 1000, file1);
 //   printf("pythonStr result: %s\n", cmdbuffer);
-   pclose(file1);	
+//   sclose(file1);	
 	
    int count1;
    char *token;
 	
-   FILE* file = popen(pythonStr, "r");
-   fgets(cmdbuffer, 1000, file);
+//   FILE* file = popen(pythonStr, "r");
+//   fgets(cmdbuffer, 1000, file);
 //  printf("result: %s\n", cmdbuffer);
-    pclose(file);
+//    pclose(file);
 	
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
@@ -290,7 +296,7 @@ int test_i2c_bus(int bus)
 	char busS[5];
 	snprintf(busS, 5, "%d", bus);
 	strcat (busDev, busS);	
-	printf("Bus Dev String: %s \n", busDev);
+//	printf("Bus Dev String: %s \n", busDev);
 	
 	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
 //	  	printf("bus is present\n\n");	    
@@ -320,3 +326,31 @@ int test_i2c_bus(int bus)
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
 }
+
+// code by https://stackoverflow.com/questions/25161377/open-a-cmd-program-with-full-functionality-i-o/25177958#25177958
+
+    FILE *sopen(const char *program)
+    {
+        int fds[2];
+        pid_t pid;
+
+        if (socketpair(AF_UNIX, SOCK_STREAM, 0, fds) < 0)
+            return NULL;
+
+        switch(pid=vfork()) {
+        case -1:    /* Error */
+            close(fds[0]);
+            close(fds[1]);
+            return NULL;
+        case 0:     /* child */
+            close(fds[0]);
+            dup2(fds[1], 0);
+            dup2(fds[1], 1);
+            close(fds[1]);
+            execl("/bin/sh", "sh", "-c", program, NULL);
+            _exit(127);
+        }
+        /* parent */
+        close(fds[1]);
+        return fdopen(fds[0], "r+");
+    }
