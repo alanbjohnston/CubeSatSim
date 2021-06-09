@@ -1019,17 +1019,17 @@ void get_tlm(void) {
 
 	    
       if (transmit) {
-	digitalWrite(txLed, txLedOn);
-	#ifdef DEBUG_LOGGING
-	printf("Tx LED On 6\n");
-	#endif	      
         FILE * file2 = popen(str, "r");
         pclose(file2);
-        digitalWrite(txLed, txLedOff);
+        digitalWrite(txLed, txLedOn);
         #ifdef DEBUG_LOGGING
-        printf("Tx LED Off 6\n");
+        printf("Tx LED On 6\n");
         #endif	      
 	sleep(2);
+	digitalWrite(txLed, txLedOff);
+	#ifdef DEBUG_LOGGING
+	printf("Tx LED Off 6\n");
+	#endif	      
       } else {
         fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
         fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
