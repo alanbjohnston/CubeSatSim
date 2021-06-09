@@ -1108,29 +1108,34 @@ void get_tlm_fox() {
     id = 7;
   else
     id = 0; // 99 in h[6]
-
+	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-
-    if (firstTime != ON) {
-      // delay for sample period
+	  
+      sleep(1.8); 	  
+      digitalWrite(txLed, txLedOff);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED Off\n");
+      #endif	  
+      sleep(0.5);
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
-//      printf("Tx LED On\n");
-      #endif
+      printf("Tx LED On\n");
+      #endif	 
+	  
+    if (firstTime != ON) {
+      // delay for sample period
+
 /*
       while ((millis() - sampleTime) < (unsigned int)samplePeriod)
         sleep((unsigned int)sleepTime);
 */
 //      if (mode == FSK) 
-	sleep(2.3);  // No sleep at all!
+//	sleep(2.3);  // No sleep at all!
 //      else	    
 //        sleep(1.3);
 	    
-      digitalWrite(txLed, txLedOff);
-      #ifdef DEBUG_LOGGING
-//      printf("Tx LED Off\n");
-      #endif
+
 
 //      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
       sampleTime = (unsigned int) millis();
