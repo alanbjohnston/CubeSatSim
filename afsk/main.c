@@ -593,7 +593,7 @@ int main(int argc, char * argv[]) {
     loopTime = millis();
 	  
     #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Battery voltage: %f V  Threshold %f V Current: %f mA Threshold: %f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
+    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
