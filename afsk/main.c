@@ -1015,6 +1015,12 @@ void get_tlm(void) {
       strcat(str, call);
       strcat(str, footer_str);
       fprintf(stderr, "String to execute: %s\n", str);
+	    
+      digitalWrite(txLed, txLedOn);
+      #ifdef DEBUG_LOGGING
+      printf("Tx LED On 6\n");
+      #endif
+	    
       if (transmit) {
         FILE * file2 = popen(str, "r");
         pclose(file2);
@@ -1028,18 +1034,14 @@ void get_tlm(void) {
       printf("Tx LED Off 6\n");
       #endif
       sleep(3);
-      digitalWrite(txLed, txLedOn);
-      #ifdef DEBUG_LOGGING
-      printf("Tx LED On 6\n");
-      #endif
     }
 
   }
 
-  digitalWrite(txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-  printf("Tx LED Off\n");
-  #endif
+//  digitalWrite(txLed, txLedOff);
+//  #ifdef DEBUG_LOGGING
+//  printf("Tx LED Off\n");
+//  #endif
 
   return;
 }
