@@ -9,7 +9,7 @@
  *  it under the terms of the GNU General Public License as published by
  *  (at your option) any later version.
  *
- *  This program is distributed in the hope that it will be useful,python3
+ *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
@@ -141,7 +141,7 @@ unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float voltageThreshold = 3.0, batteryVoltage, batteryCurrent, currentThreshold = 100;
+float voltageThreshold = 3.0, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 
@@ -596,7 +596,7 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %f V  Threshold %f V Current: %f mA Threshold: %f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold)) // currentThreshold ensures that this won't happen when running on DC power.
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
@@ -1261,6 +1261,8 @@ void get_tlm_fox() {
 //    printf("Sleep over\n");	
 	
       batteryVoltage = voltage[map[BAT]];
+      batteryCurrent = current[map[BAT]];
+	    
       if (batteryVoltage < 3.5) {
         NormalModeFailure = 1;
         printf("Safe Mode!\n");
