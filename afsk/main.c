@@ -636,7 +636,7 @@ int main(int argc, char * argv[]) {
   if (mode == BPSK) {
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
-    printf("Tx LED On\n");
+    printf("Tx LED On 1\n");
     #endif
     printf("Sleeping to allow BPSK transmission to finish.\n");
     sleep((unsigned int)(loop_count * 5));
@@ -704,7 +704,7 @@ void get_tlm(void) {
 	  
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
-    printf("Tx LED On\n");
+    printf("Tx LED On 2\n");
     #endif
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
@@ -974,19 +974,19 @@ void get_tlm(void) {
 
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
-    printf("Tx LED On\n");
+    printf("Tx LED On 3\n");
     #endif
     if (mode == CW)
       system(cw_str2);
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
-    printf("Tx LED On\n");
+    printf("Tx LED On 4\n");
     #endif
 
     if (ax5043) {
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED On\n");
+      printf("Tx LED On 5\n");
       #endif
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
@@ -1030,7 +1030,7 @@ void get_tlm(void) {
       sleep(3);
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED On\n");
+      printf("Tx LED On 6\n");
       #endif
     }
 
@@ -1120,7 +1120,7 @@ void get_tlm_fox() {
       sleep(0.5);
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED On\n");
+      printf("Tx LED On 7\n");
       #endif	 
 	  
     if (firstTime != ON) {
