@@ -972,16 +972,16 @@ void get_tlm(void) {
       strcat(str, sensor_payload); // append to telemetry string for transmission
     }
 
-    digitalWrite(txLed, txLedOn);
-    #ifdef DEBUG_LOGGING
-    printf("Tx LED On 3\n");
-    #endif
+//    digitalWrite(txLed, txLedOn);
+//    #ifdef DEBUG_LOGGING
+//    printf("Tx LED On 3\n");
+//    #endif
     if (mode == CW)
       system(cw_str2);
-    digitalWrite(txLed, txLedOn);
-    #ifdef DEBUG_LOGGING
-    printf("Tx LED On 4\n");
-    #endif
+//    digitalWrite(txLed, txLedOn);
+//    #ifdef DEBUG_LOGGING
+//    printf("Tx LED On 4\n");
+//    #endif
 
     if (ax5043) {
       digitalWrite(txLed, txLedOn);
@@ -1025,7 +1025,7 @@ void get_tlm(void) {
       }
       digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED Off\n");
+      printf("Tx LED Off 6\n");
       #endif
       sleep(3);
       digitalWrite(txLed, txLedOn);
