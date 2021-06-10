@@ -83,6 +83,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
+float toAprsFormat(float input);
 float rnd_float(double min, double max);
 void get_tlm();
 void get_tlm_fox();
@@ -242,9 +243,15 @@ int main(int argc, char * argv[]) {
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     printf("Valid latitude and longitude in config file\n");
-    latitude = lat_file;
-    longitude = long_file;
+// convert to APRS DDMM.MM format
+    latitude = toAprsFormat(lat_file);
+    longitude = toAprsFormat(long_file);
+    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+  } else { // set default
+    latitude = toAprsFormat(latitude);
+    longitude = toAprsFormat(longitude);
   }
+	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 	
@@ -2289,4 +2296,13 @@ int test_i2c_bus(int bus)
 		output = -1; 
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
+}
+
+float toAprsFormat(float input) {
+// converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
+    int dd = (int) input;
+    int mm1 = (int)((input - dd) * 60.0);
+    int mm2 = (int)((input - dd - (float)mm1/60.0) * 60.0 * 60.0);
+    float output = dd * 100 + mm1 + (float)mm2 * 0.01;
+    return(output);	
 }
