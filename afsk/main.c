@@ -247,6 +247,14 @@ int main(int argc, char * argv[]) {
   }
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
+	
+  if (mode == SSTV) {
+	  
+    fprintf(stderr, "Sleeping");
+    while (1)
+      sleep(10);
+  }
+	
   wiringPiSetup();
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
