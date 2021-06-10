@@ -136,14 +136,19 @@ if __name__ == "__main__":
 
 		elif (mode == 'b'):
 			print("BPSK")
-			system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
+			system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
+			while 1:
+				GPIO.output(txLed, txLedOff)
+				GPIO.output(txLed, txLedOn)
+				time.sleep(4.0)
+				time.sleep(0.5)
 		else:
 			print("FSK") 
 			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
 			while 1:
-				GPIO.output(txLed, txLedOn)
-				time.sleep(3.5)
 				GPIO.output(txLed, txLedOff)
+				GPIO.output(txLed, txLedOn)
+				time.sleep(4.0)
 				time.sleep(0.5)
 #		else:
 #			print("FSK") 
