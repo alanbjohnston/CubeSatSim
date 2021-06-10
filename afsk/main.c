@@ -940,13 +940,13 @@ void get_tlm(void) {
         strcat(str, header_str2);
         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
-          sprintf(header_lat, "%7.2f%c", latitude * 100.0, 'N'); // lat
+          sprintf(header_lat, "%7.2f%c", latitude, 'N'); // lat
         else
-          sprintf(header_lat, "%7.2f%c", latitude * (-100.0), 'S'); // lat
+          sprintf(header_lat, "%7.2f%c", latitude * (-1.0), 'S'); // lat
         if (longitude > 0)
-          sprintf(header_long, "%08.2f%c", longitude * 100.0, 'E'); // long
+          sprintf(header_long, "%08.2f%c", longitude , 'E'); // long
         else
-          sprintf(header_long, "%08.2f%c", longitude * (-100.0), 'W'); // long
+          sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
 
         sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
         printf("\n\nString is %s \n\n", header_str2b);
