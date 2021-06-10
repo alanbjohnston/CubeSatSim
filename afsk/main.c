@@ -191,6 +191,16 @@ int main(int argc, char * argv[]) {
         printf("No CW id\n");
       }
     }
+  } else {
+	  
+    FILE * mode_file = fopen("/home/pi/CubeSatSim/.mode", "r");
+    if (mode_file != NULL) {	
+      char mode_string[5];	
+      mode_string = fgetc(mode_file);
+      fclose(mode_file);
+      printf("Mode file /home/pi/CubeSatSim/.mode contains %s\n", mode_string);
+	    
+    }
   }
 
   // Open configuration file with callsign and reset count	
