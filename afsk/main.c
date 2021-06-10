@@ -747,11 +747,12 @@ void get_tlm(void) {
 	  
     fflush(stdout);
     fflush(stderr);
-	  
+/*	  
     digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
     printf("Tx LED On 2\n");
     #endif
+*/	  
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 
@@ -1072,10 +1073,12 @@ void get_tlm(void) {
       if (transmit) {
         FILE * file2 = popen(str, "r");
         pclose(file2);
+/*	      
         digitalWrite(txLed, txLedOn);
         #ifdef DEBUG_LOGGING
         printf("Tx LED On 6\n");
-        #endif	      
+        #endif	 
+*/	      
 	sleep(2);
 	digitalWrite(txLed, txLedOff);
 	#ifdef DEBUG_LOGGING
