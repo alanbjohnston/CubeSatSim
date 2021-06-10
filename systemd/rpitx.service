@@ -3,8 +3,7 @@ Description=CubeSatSim rpitx service
 
 [Service]
 TimeoutStopSec=5
-EnvironmentFile=/home/pi/CubeSatSim/.mode
-ExecStart=/home/pi/CubeSatSim/rpitx.sh $ARG1
+ExecStart=python3 -u /home/pi/CubeSatSim/rpitx.py
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
