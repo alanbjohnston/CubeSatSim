@@ -195,7 +195,7 @@ int main(int argc, char * argv[]) {
 	  
     FILE * mode_file = fopen("/home/pi/CubeSatSim/.mode", "r");
     if (mode_file != NULL) {	
-      char mode_string[5];	
+      char mode_string;	
       mode_string = fgetc(mode_file);
       fclose(mode_file);
       printf("Mode file /home/pi/CubeSatSim/.mode contains %s\n", mode_string);
