@@ -33,6 +33,14 @@ GPIO.output(27, 0)
 print(transmit)
 
 try:
+	file = open("/home/pi/CubeSatSim/.mode")
+	mode = file.read(1)
+except:
+	mode = "f"
+print("Mode char is: ")
+print(mode)
+
+try:
 	file = open("/home/pi/CubeSatSim/sim.cfg")
 	callsign = file.readline().split(" ")[0]
 except:
