@@ -320,7 +320,7 @@ int get_tlm(int tlm[][5]) {
       }
 	
   // Reading MoPower telemetry info
-/*	
+/**/	
       file = popen("/home/pi/mopower/mpcmd show data", "r"); 
 
       fgets(cmdbuffer, 999, file);
@@ -338,7 +338,7 @@ int get_tlm(int tlm[][5]) {
     while (pch != NULL)
     {
       strcpy(mopower[i], pch);
-//      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
+      printf ("mopwer[%d]=%s\n",i,mopower[i]); // pch);
       pch = strtok (NULL, " ");
       i++;
     }
@@ -352,7 +352,7 @@ int get_tlm(int tlm[][5]) {
         printf("Charging off\n");
 
     }
-*/	
+/**/	
 // read i2c current sensors //
     double current = 0, power = 0, y_current = 0, y_power = 0, z_current = 0, z_power = 0;	
     if (x_fd != -1) {	
