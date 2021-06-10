@@ -898,7 +898,11 @@ void get_tlm(void) {
     tlm[2][D] = (int)(50.5 + current[map[BAT]] / 10.0) % 100; // NiMH Battery current
 
 //    tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
-    tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) - 65.5) % 100;  // allow it to go negative for voltages less than 6.5 V
+    if (voltage[map[BAT]] > 4.6)	 
+    	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
+    else
+    	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
+	    
     tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100; // 5V supply to Pi
 
     tlm[4][B] = (int)((95.8 - cpuTemp) / 1.48 + 0.5) % 100;
