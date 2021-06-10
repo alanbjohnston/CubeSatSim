@@ -1166,18 +1166,19 @@ void get_tlm_fox() {
 	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-	  
+
+/*
       sleep(1.8); 	  
-      digitalWrite(txLed, txLedOff);
+//      digitalWrite(txLed, txLedOff);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED Off\n");
+//      printf("Tx LED Off\n");
       #endif	  
       sleep(0.5);
-      digitalWrite(txLed, txLedOn);
+//      digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
-      printf("Tx LED On 7\n");
+//      printf("Tx LED On 7\n");
       #endif	 
-	  
+*/	  
     if (firstTime != ON) {
       // delay for sample period
 
@@ -1186,7 +1187,7 @@ void get_tlm_fox() {
         sleep((unsigned int)sleepTime);
 */
 //      if (mode == FSK) 
-//	sleep(2.3);  // No sleep at all!
+	sleep(2.3);  // No sleep at all!
 //      else	    
 //        sleep(1.3);
 	    
