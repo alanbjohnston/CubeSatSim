@@ -74,7 +74,9 @@ if __name__ == "__main__":
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
+					GPIO.output(txLed, txLedOn);
 					system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+					GPIO.output(txLed, txLedOff);
 					f.close()
 					system("sudo rm ready")
 					time.sleep(0.5)
