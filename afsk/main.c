@@ -198,7 +198,7 @@ int main(int argc, char * argv[]) {
       char mode_string;	
       mode_string = fgetc(mode_file);
       fclose(mode_file);
-      printf("Mode file /home/pi/CubeSatSim/.mode contains %s\n", mode_string);
+      printf("Mode file /home/pi/CubeSatSim/.mode contains %c\n", mode_string);
 	    
     }
   }
