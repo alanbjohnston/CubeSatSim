@@ -18,6 +18,14 @@ sudo sed -i 's/more information/more\ninformation/g' /etc/motd
 
 sudo sed -i 's/update to/update\nto/g' /etc/motd
 
+
+cd /home/pi/pi-power-button && git pull
+
+script/install
+
+cd
+
+
 cd /home/pi/CubeSatSim
 
 git pull > .updated
