@@ -13,13 +13,13 @@ if [ "$1" = "" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "$1" = "ARG1=a" ]; then
+	if [ "$1" = "a" ]; then
 		echo "APRS mode is set"
-	elif [ "$1" = "ARG1=f" ]; then
+	elif [ "$1" = "f" ]; then
 		echo "FSK mode is set"
-	elif [ "$1" = "ARG1=b" ]; then
+	elif [ "$1" = "b" ]; then
 		echo "BPSK mode is set"	
-	elif [ "$1" = "ARG1=s" ]; then
+	elif [ "$1" = "s" ]; then
 		echo "SSTV mode is set"
 	else
 		echo 
@@ -55,22 +55,22 @@ if [ "$1" = "-i" ]; then
 	exit 
 elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
-	sudo echo "ARG1=a" > /home/pi/CubeSatSim/.mode	
+	sudo echo "a" > /home/pi/CubeSatSim/.mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-f" ]; then
 	echo "changing CubeSatSim to FSK mode"
-	sudo echo "ARG1=f" > /home/pi/CubeSatSim/.mode	
+	sudo echo "f" > /home/pi/CubeSatSim/.mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-b" ]; then
 	echo "changing CubeSatSim to BPSK mode"
-	sudo echo "ARG1=b" > /home/pi/CubeSatSim/.mode	
+	sudo echo "b" > /home/pi/CubeSatSim/.mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-s" ]; then
 	echo "changing CubeSatSim to SSTV mode"
-	sudo echo "ARG1=s" > /home/pi/CubeSatSim/.mode	
+	sudo echo "s" > /home/pi/CubeSatSim/.mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-h" ]; then

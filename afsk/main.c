@@ -83,6 +83,7 @@ ax5043_conf_t hax5043;
 ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
+float toAprsFormat(float input);
 float rnd_float(double min, double max);
 void get_tlm();
 void get_tlm_fox();
@@ -110,7 +111,8 @@ FILE *sopen(const char *program);
 #define AFSK 1
 #define FSK 2
 #define BPSK 3
-#define CW 4
+#define SSTV 4
+#define CW 5
 
 int rpitxStatus = -1;
 
@@ -191,7 +193,36 @@ int main(int argc, char * argv[]) {
         printf("No CW id\n");
       }
     }
+  } else {
+	  
+    FILE * mode_file = fopen("/home/pi/CubeSatSim/.mode", "r");
+    if (mode_file != NULL) {	
+      char mode_string;	
+      mode_string = fgetc(mode_file);
+      fclose(mode_file);
+      printf("Mode file /home/pi/CubeSatSim/.mode contains %c\n", mode_string);
+
+      if ( mode_string == 'b') {
+        mode = BPSK;
+        printf("Mode is BPSK\n");
+      } else if ( mode_string == 'a') {
+        mode = AFSK;
+        printf("Mode is AFSK\n");
+      } else if ( mode_string == 's') {
+        mode = SSTV;
+        printf("Mode is SSTV\n");
+     } else if ( mode_string == 'c') {
+        mode = CW;
+        printf("Mode is CW\n");
+      } else {
+        printf("Mode is FSK\n");
+      }
+	    
+    }
   }
+	
+  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
+  fclose(rpitx_restart);
 
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
@@ -212,11 +243,25 @@ int main(int argc, char * argv[]) {
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     printf("Valid latitude and longitude in config file\n");
-    latitude = lat_file;
-    longitude = long_file;
+// convert to APRS DDMM.MM format
+    latitude = toAprsFormat(lat_file);
+    longitude = toAprsFormat(long_file);
+    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+  } else { // set default
+    latitude = toAprsFormat(latitude);
+    longitude = toAprsFormat(longitude);
   }
+	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
+	
+  if (mode == SSTV) {
+	  
+    fprintf(stderr, "Sleeping");
+    while (1)
+      sleep(10);
+  }
+	
   wiringPiSetup();
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -852,7 +897,12 @@ void get_tlm(void) {
     tlm[2][C] = (int)(99.5 - current[map[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
     tlm[2][D] = (int)(50.5 + current[map[BAT]] / 10.0) % 100; // NiMH Battery current
 
-    tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
+//    tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
+    if (voltage[map[BAT]] > 4.6)	 
+    	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
+    else
+    	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
+	    
     tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100; // 5V supply to Pi
 
     tlm[4][B] = (int)((95.8 - cpuTemp) / 1.48 + 0.5) % 100;
@@ -895,13 +945,13 @@ void get_tlm(void) {
         strcat(str, header_str2);
         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
-          sprintf(header_lat, "%7.2f%c", latitude * 100.0, 'N'); // lat
+          sprintf(header_lat, "%7.2f%c", latitude, 'N'); // lat
         else
-          sprintf(header_lat, "%7.2f%c", latitude * (-100.0), 'S'); // lat
+          sprintf(header_lat, "%7.2f%c", latitude * (-1.0), 'S'); // lat
         if (longitude > 0)
-          sprintf(header_long, "%08.2f%c", longitude * 100.0, 'E'); // long
+          sprintf(header_long, "%08.2f%c", longitude , 'E'); // long
         else
-          sprintf(header_long, "%08.2f%c", longitude * (-100.0), 'W'); // long
+          sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
 
         sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
         printf("\n\nString is %s \n\n", header_str2b);
@@ -2251,4 +2301,13 @@ int test_i2c_bus(int bus)
 		output = -1; 
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
+}
+
+float toAprsFormat(float input) {
+// converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
+    int dd = (int) input;
+    int mm1 = (int)((input - dd) * 60.0);
+    int mm2 = (int)((input - dd - (float)mm1/60.0) * 60.0 * 60.0);
+    float output = dd * 100 + mm1 + (float)mm2 * 0.01;
+    return(output);	
 }

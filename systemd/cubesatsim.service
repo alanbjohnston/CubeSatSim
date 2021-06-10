@@ -1,15 +1,14 @@
 [Unit]
-Description=CubeSatSim demo service
+Description=CubeSatSim service
 
 [Service]
 TimeoutStopSec=5
-EnvironmentFile=/home/pi/CubeSatSim/.mode
-ExecStart=/home/pi/CubeSatSim/demo.sh $ARG1
+ExecStart=/home/pi/CubeSatSim/cubesatsim
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
-User=root
+User=pi
 CPUAccounting=true
 CPUQuota=5%
 
