@@ -110,7 +110,8 @@ FILE *sopen(const char *program);
 #define AFSK 1
 #define FSK 2
 #define BPSK 3
-#define CW 4
+#define SSTV 4
+#define CW 5
 
 int rpitxStatus = -1;
 
@@ -199,6 +200,22 @@ int main(int argc, char * argv[]) {
       mode_string = fgetc(mode_file);
       fclose(mode_file);
       printf("Mode file /home/pi/CubeSatSim/.mode contains %c\n", mode_string);
+
+      if ( mode_string == 'b') {
+        mode = BPSK;
+        printf("Mode is BPSK\n");
+      } else if ( mode_string == 'a') {
+        mode = AFSK;
+        printf("Mode is AFSK\n");
+      } else if ( mode_string == 's') {
+        mode = SSTV;
+        printf("Mode is SSTV\n");
+     } else if ( mode_string == 'c') {
+        mode = CW;
+        printf("Mode is CW\n");
+      } else {
+        printf("Mode is FSK\n");
+      }
 	    
     }
   }
