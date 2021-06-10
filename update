@@ -19,9 +19,17 @@ sudo sed -i 's/more information/more\ninformation/g' /etc/motd
 sudo sed -i 's/update to/update\nto/g' /etc/motd
 
 
-cd /home/pi/pi-power-button && git pull
+cd /home/pi/pi-power-button
 
-script/install
+git pull .updated_p
+
+  grep 'changed' /home/pi/pi-power-button/.updated_p
+  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
+    echo "reinstalling pi-power-button"
+    script/install
+  else
+    echo "nothing to do for pi-power-button"
+  fi 
 
 cd
 
