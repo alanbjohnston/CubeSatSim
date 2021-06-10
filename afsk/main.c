@@ -143,7 +143,7 @@ unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float voltageThreshold = 3.0, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
+float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 
@@ -876,8 +876,8 @@ void get_tlm(void) {
 
       //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
-      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
-      if (batt < 3.0) {
+      batt -= (batt > 3.6) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      if (batt < 3.5) {
         batt = 3.0;
         printf("Safe Mode!\n");
       }
@@ -1322,7 +1322,7 @@ void get_tlm_fox() {
       batteryVoltage = voltage[map[BAT]];
       batteryCurrent = current[map[BAT]];
 	    
-      if (batteryVoltage < 3.5) {
+      if (batteryVoltage < 3.6) {
         NormalModeFailure = 1;
         printf("Safe Mode!\n");
       } else
