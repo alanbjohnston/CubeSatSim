@@ -611,6 +611,7 @@ int main(int argc, char * argv[]) {
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
+      popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
       popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       sleep(10);
     }
