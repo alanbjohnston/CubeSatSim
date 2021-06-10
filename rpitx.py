@@ -37,7 +37,7 @@ try:
 	mode = file.read(1)
 except:
 	mode = "f"
-print("Mode char is: ")
+print("Mode is: ")
 print(mode)
 
 try:
@@ -61,88 +61,88 @@ if __name__ == "__main__":
 	
 #		print 'Length: ', len(sys.argv)
     
-		if (len(sys.argv)) > 1:
+#		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-			if (('a' == sys.argv[1]) or ('afsk' in sys.argv[1])):
-				print("AFSK")
+		if (mode == 'a'):
+			print("AFSK")
+			time.sleep(4)
+			for x in range(5):
+				GPIO.output(txLed, txLedOn);
+				system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+				GPIO.output(txLed, txLedOff);
 				time.sleep(4)
-				for x in range(5):
-					GPIO.output(txLed, txLedOn);
-					system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-					GPIO.output(txLed, txLedOff);
-					time.sleep(4)
-				while True:
-					try:
-						f = open("/home/pi/CubeSatSim/ready")
-						system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-						f.close()
-						system("sudo rm ready")
-						time.sleep(0.5)
-					except:		  
-						time.sleep(0.5)
-			elif (('s' == sys.argv[1]) or ('sstv' in sys.argv[1])):
-				print("SSTV")
-				try: 
-					from picamera import PiCamera
-#					from pysstv.sstv import SSTV
-					camera = PiCamera()
-					print("Camera present")
-					camera_present = 1
-					camera.close()
-				except:
-					print("No camera")
-					camera_present = 0
+			while True:
 				try:
-					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-					print("First SSTV stored image detected")
-					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
+					f = open("/home/pi/CubeSatSim/ready")
+					system("sudo gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+					f.close()
+					system("sudo rm ready")
+					time.sleep(0.5)
+				except:		  
+					time.sleep(0.5)
+		elif (mode == 's'):
+			print("SSTV")
+			try: 
+				from picamera import PiCamera
+#					from pysstv.sstv import SSTV
+				camera = PiCamera()
+				print("Camera present")
+				camera_present = 1
+				camera.close()
+			except:
+				print("No camera")
+				camera_present = 0
+			try:
+				file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
+				print("First SSTV stored image detected")
+				system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
+				print ("Sending SSTV image")
+				GPIO.output(txLed, txLedOn);		
+				system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+				GPIO.output(txLed, txLedOff)
+#					time.sleep(1)
+			except:
+				print("No first image")
+#				while 1:
+			GPIO.output(txLed, txLedOff)
+			if (camera_present == 1):
+				while 1:
+					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+					print("Photo taken")
+					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					print ("Sending SSTV image")
 					GPIO.output(txLed, txLedOn);		
-					system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+					system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 					GPIO.output(txLed, txLedOff)
-#					time.sleep(1)
-				except:
-					print("No first image")
-#				while 1:
-				GPIO.output(txLed, txLedOff)
-				if (camera_present == 1):
+					time.sleep(1)
+			else:
+				try:
+					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
+					print("Second SSTV stored image detected")
+					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					while 1:
-						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-						print("Photo taken")
-						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 						print ("Sending SSTV image")
 						GPIO.output(txLed, txLedOn);		
-						system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+						system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+						GPIO.output(txLed, txLedOff)
+						time.sleep(5)
+				except:					
+					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
+					while 1:
+						GPIO.output(txLed, txLedOn)
+						time.sleep(60)
 						GPIO.output(txLed, txLedOff)
 						time.sleep(1)
-				else:
-					try:
-						file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-						print("Second SSTV stored image detected")
-						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-						while 1:
-							print ("Sending SSTV image")
-							GPIO.output(txLed, txLedOn);		
-							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
-							GPIO.output(txLed, txLedOff)
-							time.sleep(5)
-					except:					
-						system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
-						while 1:
-							GPIO.output(txLed, txLedOn)
-							time.sleep(60)
-							GPIO.output(txLed, txLedOff)
-							time.sleep(1)
 
-			elif (('b' == sys.argv[1]) or ('bpsk' in sys.argv[1])):
-				print("BPSK")
-				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
-			else:
-				print("FSK") 
-				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+		elif (mode == 'b'):
+			print("BPSK")
+			system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float")
 		else:
 			print("FSK") 
 			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+#		else:
+#			print("FSK") 
+#			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 
 	else:
 		print("No Band Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
