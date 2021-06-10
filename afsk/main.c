@@ -389,7 +389,10 @@ int get_tlm(int tlm[][5]) {
 //	tlm[2][C] = (int)((time(NULL) - timestamp) / 15) % 100; 
 	tlm[2][D] = (int)(50.5 + strtof(ina219[SENSOR_45 + CURRENT], NULL)/10.0) % 100;   // NiMH Battery current
 	
-	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
+#	tlm[3][A] = abs((int)((strtof(ina219[SENSOR_45 + VOLTAGE], NULL) * 10) - 65.5) % 100);
+	tlm[3][A] = abs((int)((strtof(mopower[16], NULL) * 10) - 65.5) % 100);	
+	mopower[16]
+	
 	tlm[3][B] = (int)(strtof(ina219[SENSOR_4A + VOLTAGE], NULL) * 10.0) % 100;      // 5V supply to Pi
 		   	
         if (tempSensor != -1) {
