@@ -456,7 +456,11 @@ int main(int argc, char * argv[]) {
   fgets(cmdbuffer, 1000, file1);
   printf("pythonStr result2: %s\n", cmdbuffer);		
 */
-  // try connecting to Arduino payload using UART
+	
+popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
+	
+  // try connecting to STEM Payload board using UART
+  // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
 
   if (!ax5043 && !vB3) // don't test if AX5043 is present
   {
