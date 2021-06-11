@@ -495,7 +495,7 @@ int main(int argc, char * argv[]) {
       }
       if (payload == ON)  {	    
         printf("\nPayload is present!\n");
-	sleep(3);  // delay to give payload time to get ready
+	sleep(1);  // delay to give payload time to get ready
       }
       else
         printf("\nPayload not present!\n");
