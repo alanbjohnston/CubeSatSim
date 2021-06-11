@@ -222,7 +222,7 @@ int main(int argc, char * argv[]) {
   }
 	
   FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
-  fclose(rpitx_restart);
+  pclose(rpitx_restart);
 
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
@@ -266,6 +266,7 @@ int main(int argc, char * argv[]) {
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
   FILE * file = popen("sudo raspi-config nonint get_spi", "r");
+  pclose(file);	
   if (fgetc(file) == 48) {
     printf("SPI is enabled!\n");
 
@@ -457,7 +458,8 @@ int main(int argc, char * argv[]) {
   printf("pythonStr result2: %s\n", cmdbuffer);		
 */
 	
-popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
+ FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
+ pclose(file5);
 	
   // try connecting to STEM Payload board using UART
   // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
@@ -667,9 +669,11 @@ popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
-      popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
+      FILE * file6 = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
+      pclose(file6);
       sleep(20);	    
-      popen("sudo shutdown -h now > /dev/null 2>&1", "r");
+      file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
+      pclose(file6);
       sleep(10);
     }
 
