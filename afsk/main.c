@@ -922,7 +922,7 @@ void get_tlm(void) {
 
     tlm[6][B] = 0;
     tlm[6][D] = 49 + rand() % 3;
-
+/*
     #ifdef DEBUG_LOGGING
     // Display tlm
     int k, j;
@@ -933,6 +933,7 @@ void get_tlm(void) {
       printf("\n");
     }
     #endif
+*/	  
 
     char str[1000];
     char tlm_str[1000];
@@ -1070,7 +1071,6 @@ void get_tlm(void) {
 */
       strcat(str, sensor_payload); // append to telemetry string for transmission
     }
-    printf("\n\nTelemetry string is %s \n\n", str);
 
 //    digitalWrite(txLed, txLedOn);
 //    #ifdef DEBUG_LOGGING
@@ -1116,7 +1116,7 @@ void get_tlm(void) {
       strcat(str, footer_str);
       fprintf(stderr, "String to execute: %s\n", str);
 	    
-
+      printf("\n\nTelemetry string is %s \n\n", str);	
 	    
       if (transmit) {
         FILE * file2 = popen(str, "r");
