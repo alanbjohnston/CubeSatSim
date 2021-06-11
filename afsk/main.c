@@ -1349,9 +1349,10 @@ void get_tlm_fox() {
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
 
-  /*
+  
         char c;
-        int charss = (char) serialDataAvail(uart_fd);
+ /* 
+	int charss = (char) serialDataAvail(uart_fd);
         if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
         while ((charss--> 0))
