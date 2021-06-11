@@ -400,9 +400,9 @@ int main(int argc, char * argv[]) {
 	
   // test i2c buses	
   fflush(stdout);
-  printf("Test bus 0\n");
-  fflush(stdout);
-  i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
+  //printf("Test bus 0\n");
+  //fflush(stdout);
+  //i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
   printf("Test bus 1\n");
   fflush(stdout);	
   i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
