@@ -31,8 +31,8 @@
 29,MAX,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation|INT,NONE,9,3,3,Rotation,Angular Veolcity around Z Axis
 30,MAX,Humidity,12,%,cubesatsim_temperature,NONE,6,5,3,Sensor 1,STEM Payload Sensor Humidity 
 31,MAX,PSUCurrent,12,mA,cubesatsim_current,NONE,5,2,3,Current,Power Supply DC Current
-32,MAX,Sensor1,12,signed raw,cubesatsim_sensor2|INT,NONE,6,6,3,Sensor 1,STEM Payload Extra Sensor 1
-33,MAX,Sensor2,12,signed scaled,cubesatsim_sensor3|FLOAT2,NONE,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
+32,MAX,Sensor1,12,signed raw,cubesatsim_rpm,NONE,6,6,3,Sensor 1,STEM Payload Extra Sensor 1
+33,MAX,Sensor2,12,signed scaled,cubesatsim_rpm,NONE,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
 34,MAX,STEMPayloadStatus,1,-,17,NONE,6,1,0,STEM Payload Status,STEM Payload Board Status
 35,MAX,Nominal Mode,1,-,17,NONE,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
 36,MAX,PayloadStatus1,1,-,17,NONE,6,7,0,Exp 2,STEM Payload status 1 failure indicator
