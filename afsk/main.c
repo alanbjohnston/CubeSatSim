@@ -1674,8 +1674,8 @@ void get_tlm_fox() {
 	      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
 	      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 
-	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[XS2]) + 2048);
-	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS3] * 100 + 0.5) + 2048);
+	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[XS1]) * 10 + 0.5) + 2048);
+	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS2] * 10 + 0.5) + 2048);
 	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
 	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
       }	  
@@ -1731,8 +1731,8 @@ void get_tlm_fox() {
 	      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
 	      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
 
-	      encodeA(b_min, 48 + head_offset, (int)(sensor_min[XS2]) + 2048);
-	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS3] * 100 + 0.5) + 2048);
+	      encodeA(b_max, 48 + head_offset, (int)(sensor_min[XS1]) * 10 + 0.5) + 2048);
+	      encodeB(b_max, 49 + head_offset, (int)(sensor_min[XS2] * 10 + 0.5) + 2048);
 	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
 	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
     }      
@@ -1786,8 +1786,10 @@ void get_tlm_fox() {
     //  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
     //  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
 
-    encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
-    encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
+//    encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
+//    encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
+    encodeA(b, 48 + head_offset, (int)(sensor[XS1]) * 10 + 0.5) + 2048);
+    encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
 
     // camera = ON;
 
