@@ -967,7 +967,7 @@ void get_tlm(void) {
           sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
 
         sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-        printf("\n\nString is %s \n\n", header_str2b);
+//        printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
@@ -1070,6 +1070,7 @@ void get_tlm(void) {
 */
       strcat(str, sensor_payload); // append to telemetry string for transmission
     }
+    printf("\n\nTelemetry string is %s \n\n", str);
 
 //    digitalWrite(txLed, txLedOn);
 //    #ifdef DEBUG_LOGGING
