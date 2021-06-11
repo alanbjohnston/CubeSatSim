@@ -1464,8 +1464,10 @@ void get_tlm_fox() {
           }
           printf("\n");
         }
-//      }
-//      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+	else
+		payload = OFF;  // turn off since STEM Payload is not responding
+      }
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
         for (count1 = 0; count1 < 17; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
@@ -1473,8 +1475,6 @@ void get_tlm_fox() {
             sensor_max[count1] = sensor[count1];
             //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
         }
-	else
-		payload = OFF;  // turn off since STEM Payload is not responding
       }
     }
 //    if (mode == FSK) 
