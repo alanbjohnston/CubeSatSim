@@ -92,22 +92,24 @@ if __name__ == "__main__":
 				camera_present = 1
 				camera.close()
 			except:
-				print("No camera")
+				print("No camera available")
+				print(" -> if camera plugged in, is software enabled?")
 				camera_present = 0
-			try:
-				file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-				print("First SSTV stored image detected")
-				system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
-				print ("Sending SSTV image")
-				GPIO.output(txLed, txLedOn);		
-				system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
-				GPIO.output(txLed, txLedOff)
-#					time.sleep(1)
-			except:
-				print("No first image")
+
 #				while 1:
 			GPIO.output(txLed, txLedOff)
 			if (camera_present == 1):
+				try:
+					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
+					print("First SSTV stored image detected")
+					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
+					print ("Sending SSTV image")
+					GPIO.output(txLed, txLedOn);		
+					system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+					GPIO.output(txLed, txLedOff)
+	#					time.sleep(1)
+				except:
+					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
@@ -119,6 +121,17 @@ if __name__ == "__main__":
 					time.sleep(1)
 			else:
 				try:
+					file = open("/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg")
+					print("First SSTV stored image detected")
+					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg") 
+					print ("Sending SSTV image")
+					GPIO.output(txLed, txLedOn);		
+					system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
+					GPIO.output(txLed, txLedOff)
+					time.sleep(1)
+				except:
+					print("image 1 did not load - copy from CubeSatSim/sstv directory")
+				try:
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					print("Second SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
@@ -128,7 +141,8 @@ if __name__ == "__main__":
 						system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") #  > /dev/null 2>&1")
 						GPIO.output(txLed, txLedOff)
 						time.sleep(5)
-				except:					
+				except:	
+					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 					while 1:
 						GPIO.output(txLed, txLedOn)
