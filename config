@@ -26,7 +26,7 @@ if [ "$1" = "" ]; then
 	fi
 	echo
 	echo -e "Current sim.cfg configuration file:"	
-	echo
+#	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
