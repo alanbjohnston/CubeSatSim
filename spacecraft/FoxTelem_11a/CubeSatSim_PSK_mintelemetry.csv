@@ -31,8 +31,8 @@
 29,MIN,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation,NONE,9,3,3,Rotation,Angular Veolcity around Z Axis
 30,MIN,Humidity,12,%,cubesatsim_temperature,NONE,6,5,3,Humidity,Humidity
 31,MIN,PSUCurrent,12,mA,cubesatsim_current,NONE,5,2,3,Current,Power Supply DC Current
-32,MIN,Sensor1,12,signed raw,cubesatsim_sensor2|INT,NONE,6,6,3,Sensor 1,STEM Payload Extra Sensor 1
-33,MIN,Sensor2,12,signed raw,cubesatsim_sensor3|FLOAT2,NONE,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
+32,MIN,Sensor1,12,C,cubesatsim_rpm ,NONE,6,6,3,Diode Temperature,STEM Payload Extra Sensor 1 (Diode Temperature)
+33,MIN,Sensor2,12,signed raw,cubesatsim_rpm ,NONE,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
 34,MIN,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
 35,MIN,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
 36,MIN,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
