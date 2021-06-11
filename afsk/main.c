@@ -495,7 +495,7 @@ int main(int argc, char * argv[]) {
       }
       if (payload == ON)  {	    
         printf("\nPayload is present!\n");
-	sleep(1);  // delay to give payload time to get ready
+	sleep(1.5);  // delay to give payload time to get ready
       }
       else
         printf("\nPayload not present!\n");
@@ -623,10 +623,10 @@ int main(int argc, char * argv[]) {
         bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
-      printf("Sin map: ");	 		
+//      printf("Sin map: ");	 		
       for (int j = 0; j < sin_samples; j++) {	 		
         sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
-	printf(" %d", sin_map[j]);	 		
+//	printf(" %d", sin_map[j]);	 		
       }	 		
       printf("\n");
    }
