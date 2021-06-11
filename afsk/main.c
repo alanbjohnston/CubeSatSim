@@ -1212,9 +1212,9 @@ void get_tlm_fox() {
     FILE * uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", & uptime_sec);
     uptime = (int) uptime_sec;
-//    #ifdef DEBUG_LOGGING
-//    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-//    #endif
+    #ifdef DEBUG_LOGGING
+    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+    #endif
     fclose(uptime_file);	
 	  
     if (sim_mode) { // simulated telemetry 
