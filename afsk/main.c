@@ -1204,6 +1204,7 @@ void get_tlm_fox() {
 	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
+    sensor_payload[0] = 0;
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));
     memset(sensor, 0, sizeof(sensor));
@@ -1363,29 +1364,32 @@ void get_tlm_fox() {
 */	      
 
         unsigned int waitTime;
-        int i = 0;
-        serialPutchar(uart_fd, '?');
-//        printf("Querying payload with ?\n");
-        waitTime = millis() + 500;
-        int end = FALSE;
-        //  int retry = FALSE;
-        while ((millis() < waitTime) && !end) {
-          int chars = (char) serialDataAvail(uart_fd);
-          while ((chars--> 0) && !end) {
-            c = (char) serialGetchar(uart_fd);
-            //	printf ("%c", c);
-            //	fflush(stdout);
-            if (c != '\n') {
-              sensor_payload[i++] = c;
-            } else {
-              end = TRUE;
+	int i, end, trys = 0;
+	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 2)) {	      
+          i = 0;
+	  serialPutchar(uart_fd, '?');
+          printf("Querying payload with ?\n");
+          waitTime = millis() + 500;
+          end = FALSE;
+          //  int retry = FALSE;
+          while ((millis() < waitTime) && !end) {
+            int chars = (char) serialDataAvail(uart_fd);
+            while ((chars--> 0) && !end) {
+              c = (char) serialGetchar(uart_fd);
+              //	printf ("%c", c);
+              //	fflush(stdout);
+              if (c != '\n') {
+                sensor_payload[i++] = c;
+              } else {
+                end = TRUE;
+              }
             }
           }
-        }
+	}	
         sensor_payload[i++] = ' ';
         //  sensor_payload[i++] = '\n';
         sensor_payload[i] = '\0';
-        printf(" Payload string: %s", sensor_payload);
+        printf(" Payload string: %s\n", sensor_payload);
 
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
