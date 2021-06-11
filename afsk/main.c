@@ -495,6 +495,7 @@ int main(int argc, char * argv[]) {
       }
       if (payload == ON)
         printf("\nPayload is present!\n");
+	sleep(2);  // delay to give payload time to get ready
       else
         printf("\nPayload not present!\n");
     } else {
@@ -1377,7 +1378,7 @@ void get_tlm_fox() {
           while ((millis() < waitTime) && !end) {
             int chars = (char) serialDataAvail(uart_fd);
             while ((chars > 0) && !end) {
-	      printf("Chars: %d\n", chars);
+//	      printf("Chars: %d\ ", chars);
 	      chars--;
 	      c = (char) serialGetchar(uart_fd);
               //	printf ("%c", c);
