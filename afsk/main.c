@@ -473,21 +473,24 @@ int main(int argc, char * argv[]) {
       unsigned int waitTime;
       int i;
       for (i = 0; i < 2; i++) {
-        serialPutchar(uart_fd, 'R');
-        printf("Querying payload with R to reset\n");
-        waitTime = millis() + 500;
-        while ((millis() < waitTime) && (payload != ON)) {
-          if (serialDataAvail(uart_fd)) {
-            printf("%c", c = (char) serialGetchar(uart_fd));
-            fflush(stdout);
-            if (c == 'O') {
+	if (payload != ON) {
+          serialPutchar(uart_fd, 'R');
+          printf("Querying payload with R to reset\n");
+          waitTime = millis() + 500;
+          while ((millis() < waitTime) && (payload != ON)) {
+            if (serialDataAvail(uart_fd)) {
               printf("%c", c = (char) serialGetchar(uart_fd));
               fflush(stdout);
-              if (c == 'K')
-                payload = ON;
+              if (c == 'O') {
+                printf("%c", c = (char) serialGetchar(uart_fd));
+                fflush(stdout);
+                if (c == 'K')
+                  payload = ON;
+              }
             }
+            printf("\n");
+            //        sleep(0.75);
           }
-          //        sleep(0.75);
         }
       }
       if (payload == ON)
