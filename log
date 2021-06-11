@@ -3,7 +3,7 @@
 echo -e "\nLog file script for CubeSatSim\n"
 
 if [ "$1" = "-r" ]; then
-  sudo journalctl -u journalctl > logr.txt 
+  sudo journalctl -u rpitx > logr.txt 
   cat logr.txt
   echo -e "\nLog file also saved as /home/pi/CubeSatSim/logr.txt"
 else
