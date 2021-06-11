@@ -807,7 +807,7 @@ void get_tlm(void) {
       cpuTemp /= 1000;
 
       #ifdef DEBUG_LOGGING
-//      printf("CPU Temp Read: %6.1f\n", cpuTemp);
+      printf("CPU Temp Read: %6.1f\n", cpuTemp);
       #endif
 
     }
