@@ -1365,10 +1365,10 @@ void get_tlm_fox() {
 
         unsigned int waitTime;
 	int i, end, trys = 0;
-	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 2)) {	      
+	while ((sensor_payload[0] != 'O') && (sensor_payload[1] != 'K') && (trys++ < 3)) {	      
           i = 0;
 	  serialPutchar(uart_fd, '?');
-          printf("Querying payload with ?\n");
+          printf("%d Querying payload with ?\n", trys);
           waitTime = millis() + 500;
           end = FALSE;
           //  int retry = FALSE;
@@ -1385,12 +1385,12 @@ void get_tlm_fox() {
               }
             }
           }
-	}	
-        sensor_payload[i++] = ' ';
-        //  sensor_payload[i++] = '\n';
-        sensor_payload[i] = '\0';
-        printf(" Payload string: %s\n", sensor_payload);
-
+	
+          sensor_payload[i++] = ' ';
+          //  sensor_payload[i++] = '\n';
+          sensor_payload[i] = '\0';
+          printf(" Payload string: %s\n", sensor_payload);
+	}
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
           int count1;
