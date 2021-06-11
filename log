@@ -2,8 +2,12 @@
 
 echo -e "\nLog file script for CubeSatSim\n"
 
-sudo journalctl -u cubesatsim > log.txt 
-cat log.txt
-
-echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
-
+if [ "$1" = "-r" ]; then
+  sudo journalctl -u journalctl > logr.txt 
+  cat logr.txt
+  echo -e "\nLog file also saved as /home/pi/CubeSatSim/logr.txt"
+else
+  sudo journalctl -u cubesatsim > log.txt 
+  cat log.txt
+  echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
+fi
