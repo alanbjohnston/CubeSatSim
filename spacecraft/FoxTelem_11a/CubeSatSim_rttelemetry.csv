@@ -31,8 +31,8 @@
 29,RT,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation|INT,+Z Panel,9,3,3,Rotation,Angular Veolcity around Z Axis
 30,RT,Humidity,12,%,cubesatsim_temperature,Experiments,6,5,3,Humidity,STEM Payload Sensor Humidity
 31,RT,PSUCurrent,12,mA,cubesatsim_current,PSU,5,2,3,Current,Power Supply DC Current
-32,RT,Sensor1,12,C,cubesatsim_temperature,Experiments,6,6,3,Diode Temperature,STEM Payload Extra Sensor 1 (Diode Temperature)
-33,RT,Sensor2,12,signed scaled,cubesatsim_temperature,Experiments,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
+32,RT,Sensor1,12,C,cubesatsim_rpm,Experiments,6,6,3,Diode Temperature,STEM Payload Extra Sensor 1 (Diode Temperature)
+33,RT,Sensor2,12,signed scaled,cubesatsim_rpm,Experiments,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
 34,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload,STEM Payload Board Status
 35,RT,Nominal Mode,1,-,17,Computer Software,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
 36,RT,SimulatedTelemetry,1,-,17,Computer Software,3,4,0,Simulated Telemetry, Simulated Telemetry indicator
