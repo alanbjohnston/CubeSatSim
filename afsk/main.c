@@ -1365,7 +1365,9 @@ void get_tlm_fox() {
 
         unsigned int waitTime;
 	int i, end, trys = 0;
-	while ((sensor_payload[0] != 'O') && (sensor_payload[1] != 'K') && (trys++ < 10)) {	      
+	sensor_payload[0] = 0;
+	sensor_payload[1] = 0;
+	while ((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
           i = 0;
 	  serialPutchar(uart_fd, '?');
           printf("%d Querying payload with ?\n", trys);
