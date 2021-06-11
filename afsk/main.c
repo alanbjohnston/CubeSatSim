@@ -494,13 +494,15 @@ int main(int argc, char * argv[]) {
         }
       }
       if (payload == ON)  {	    
-        printf("\nPayload is present!\n");
-	sleep(1.5);  // delay to give payload time to get ready
+        printf("\nSTEM Payload is present!\n");
+	sleep(2);  // delay to give payload time to get ready
       }
-      else
-        printf("\nPayload not present!\n");
+      else {
+        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
+	      
+      }
     } else {
-      fprintf(stderr, "Unable to open UART: %s\n", strerror(errno));
+      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
 
@@ -997,6 +999,41 @@ void get_tlm(void) {
 
     if (payload == ON) {
       char c;
+      unsigned int waitTime;
+      int i, end, trys = 0;
+      sensor_payload[0] = 0;
+      sensor_payload[1] = 0;
+      while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
+        i = 0;
+	serialPutchar(uart_fd, '?');
+	sleep(0.05);  // added delay after ?
+        printf("%d Querying payload with ?\n", trys);
+        waitTime = millis() + 500;
+        end = FALSE;
+        //  int retry = FALSE;
+        while ((millis() < waitTime) && !end) {
+          int chars = (char) serialDataAvail(uart_fd);
+          while ((chars > 0) && !end) {
+//	    printf("Chars: %d\ ", chars);
+	    chars--;
+	    c = (char) serialGetchar(uart_fd);
+            //	printf ("%c", c);
+            //	fflush(stdout);
+            if (c != '\n') {
+              sensor_payload[i++] = c;
+            } else {
+              end = TRUE;
+            }
+          }
+        }
+	
+        sensor_payload[i++] = ' ';
+        //  sensor_payload[i++] = '\n';
+        sensor_payload[i] = '\0';
+        printf(" Response from STEM Payload board: %s\n", sensor_payload);
+	sleep(0.1);  // added sleep between loops
+      }	    
+/*	    
       int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
@@ -1025,8 +1062,8 @@ void get_tlm(void) {
       }
       //    sensor_payload[i++] = '\n';
       sensor_payload[i] = '\0';
-      printf(" Payload string: %s\n", sensor_payload);
-
+      printf(" Response from STEM Payload board: %s\n", sensor_payload);
+*/
       strcat(str, sensor_payload); // append to telemetry string for transmission
     }
 
@@ -1395,7 +1432,7 @@ void get_tlm_fox() {
           sensor_payload[i++] = ' ';
           //  sensor_payload[i++] = '\n';
           sensor_payload[i] = '\0';
-          printf(" Payload string: %s\n", sensor_payload);
+          printf(" Response from STEM Payload board: %s\n", sensor_payload);
 	  sleep(0.1);  // added sleep between loops
 	}
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
@@ -1971,26 +2008,26 @@ void get_tlm_fox() {
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-    printf("Millis6: %d Result of socket send: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
     
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
       sleep(0.5);
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-      printf("Millis7: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
+      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
     
     if (mode == BPSK)
     {	  
       start = millis();  // send frame a second time
       sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-      printf("Millis8: %d Result of socket send: %d \n\n", (unsigned int)millis() - start, sock_ret);
+      printf("socket send 3 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
     
       if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
         sleep(0.5);
         sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-        printf("Millis9: %d Result of socket send: %d \n\n", millis() - start, sock_ret);
+        printf("socket send 4 %d ms bytes: %d \n\n", millis() - start, sock_ret);
       }
     }
 
