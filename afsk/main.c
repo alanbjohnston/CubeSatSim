@@ -692,16 +692,16 @@ popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
   }
 
   if (mode == BPSK) {
-    digitalWrite(txLed, txLedOn);
+//    digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
-    printf("Tx LED On 1\n");
+//    printf("Tx LED On 1\n");
     #endif
     printf("Sleeping to allow BPSK transmission to finish.\n");
     sleep((unsigned int)(loop_count * 5));
     printf("Done sleeping\n");
-    digitalWrite(txLed, txLedOff);
+//    digitalWrite(txLed, txLedOff);
     #ifdef DEBUG_LOGGING
-    printf("Tx LED Off\n");
+//    printf("Tx LED Off\n");
     #endif
   } else if (mode == FSK) {
     printf("Sleeping to allow FSK transmission to finish.\n");
