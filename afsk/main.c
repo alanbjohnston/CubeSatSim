@@ -1114,7 +1114,7 @@ void get_tlm(void) {
       strcat(str, footer_str1);
       strcat(str, call);
       strcat(str, footer_str);
-      fprintf(stderr, "String to execute: %s\n", str);
+//      fprintf(stderr, "String to execute: %s\n", str);
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
 	    
