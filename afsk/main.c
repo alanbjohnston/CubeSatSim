@@ -1349,19 +1349,14 @@ void get_tlm_fox() {
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
 
+  /*
         char c;
         int charss = (char) serialDataAvail(uart_fd);
         if (charss != 0)
         printf("Clearing buffer of %d chars \n", charss);
         while ((charss--> 0))
           c = (char) serialGetchar(uart_fd); // clear buffer
-/*	      
-        charss = (char) serialDataAvail(uart_fd);
-        if (charss != 0)
-        printf("Clearing buffer of %d chars \n", charss);
-        while ((charss--> 0))
-          c = (char) serialGetchar(uart_fd); // clear buffer
-*/	      
+*/	      	      
 
         unsigned int waitTime;
 	int i, end, trys = 0;
@@ -1370,6 +1365,7 @@ void get_tlm_fox() {
 	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
           i = 0;
 	  serialPutchar(uart_fd, '?');
+	  sleep(0.05);  // added delay after ?
           printf("%d Querying payload with ?\n", trys);
           waitTime = millis() + 500;
           end = FALSE;
@@ -1392,6 +1388,7 @@ void get_tlm_fox() {
           //  sensor_payload[i++] = '\n';
           sensor_payload[i] = '\0';
           printf(" Payload string: %s\n", sensor_payload);
+	  sleep(0.1);  // added sleep between loops
 	}
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
