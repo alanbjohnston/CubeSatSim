@@ -1376,6 +1376,7 @@ void get_tlm_fox() {
           //  int retry = FALSE;
           while ((millis() < waitTime) && !end) {
             int chars = (char) serialDataAvail(uart_fd);
+	    printf("Chars: %d\n", chars);
             while ((chars--> 0) && !end) {
               c = (char) serialGetchar(uart_fd);
               //	printf ("%c", c);
