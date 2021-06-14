@@ -40,6 +40,9 @@ if [ ! -f "$FILE" ]; then
 		
 	sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
 	
+	sudo sed -i "s/soundCard=NONE/soundCard=RTL SDR/g" /home/pi/Documents/FITB/FoxTelem.properties	# change to FunCube
+	
+	
 	python3 /home/pi/CubeSatSim/groundstation/loc-foxtelem.py
 	
 #	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
