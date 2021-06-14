@@ -29,7 +29,17 @@ if [ ! -f "$FILE" ]; then
 	read callsign
 	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/Documents/FITB/FoxTelem.properties
 	echo
-
+		
+	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	
+	sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	
+	sudo sed -i "s/foxTelemCalcsPosition=false/foxTelemCalcsPosition=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+		
+	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+		
+	sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	
 	python3 /home/pi/CubeSatSim/groundstation/loc-foxtelem.py
 	
 #	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
