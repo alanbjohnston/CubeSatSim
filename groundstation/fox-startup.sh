@@ -49,7 +49,7 @@ else
 
 fi
 
-sudo killall -9 FoxTelem &>/dev/null
+sudo killall -9 java &>/dev/null
 
 /home/pi/Downloads/FoxTelem/FoxTelem &
 
