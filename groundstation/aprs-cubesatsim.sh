@@ -1,5 +1,5 @@
 #!/bin/bash
-# script to auto decode APRS packets on 2m
+# script to auto decode APRS packets from CubeSatSim
 
 sudo modprobe snd-aloop
 
@@ -23,7 +23,7 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
-echo -e "Script to auto decode APRS packets on 144.390 MHz\n"
+echo -e "Script to auto decode APRS packets from CubeSatSim on 434.90 MHz\n"
 
 sleep 1
 
@@ -31,8 +31,8 @@ sleep 1
 
 direwolf -t 0 &
 
-rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1
-
+#rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1
+rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1
 
 
 

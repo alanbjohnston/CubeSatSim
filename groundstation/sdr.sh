@@ -19,12 +19,16 @@ echo
 
 sudo killall -9 java &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sudo killall -9 CubicSDR &>/dev/null
+
+sudo killall -9 qsstv &>/dev/null
 
 sudo systemctl stop rtl_tcp
 
 sudo systemctl restart openwebrx
 
-/usr/bin/chromium-browser --noerrdialogs --disable-infobars http://localhost:8073 &>/dev/null & 
+chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
 
 $SHELL

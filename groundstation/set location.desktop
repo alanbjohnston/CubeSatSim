@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/CubeSatSim/groundstation/loc.sh
+Name=Set My Location
+Comment=Set Location for Gpredict 
+Icon=/home/pi/Downloads/gpredict.png
+Path=/home/pi
+Terminal=true
+Categories=HamRadio
+Keywords=Location
