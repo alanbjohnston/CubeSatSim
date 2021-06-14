@@ -8,6 +8,8 @@ cubesatsim
 id.txt
 log.txt
 shutdown_log.txt
+ready
+radioafsk
 morse.wav
 sim.cfg
 sstv_image_1_320_x_256.jpg
