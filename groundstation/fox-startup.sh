@@ -29,11 +29,13 @@ if [ ! -f "$FILE" ]; then
 	read callsign
 	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/Documents/FITB/FoxTelem.properties
 	echo
+
+	python3 /home/pi/CubeSatSim/groundstation/loc-python.py
 	
-	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
-	read grid
-	sudo sed -i "s/maidenhead=XX00xx/maidenhead=$grid/g" /home/pi/Documents/FITB/FoxTelem.properties
-	echo
+#	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
+#	read grid
+#	sudo sed -i "s/maidenhead=XX00xx/maidenhead=$grid/g" /home/pi/Documents/FITB/FoxTelem.properties
+#	echo
 
     elif [ "$ANS" = "2" ]; then
 
