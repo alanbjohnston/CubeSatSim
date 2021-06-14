@@ -11,15 +11,29 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
 transmit = False
 if GPIO.input(12) == False:
+	print("VHF vB5 or Later")
 	transmit = True
-if GPIO.input(22) == False:
+	txLed = 22
+	txLedOn = 1
+	txLedOff = 0
+elif GPIO.input(27) == False:
+	print("TFB")
+	transmit = True
+	txLed = 22
+	txLedOn = 1
+	txLedOff = 0
+elif GPIO.input(22) == False:
+	print("vB5 or Later")
 	transmit = True
 	txLed = 27
 	txLedOn = 0
 	txLedOff = 1
 else:
+	print("No BPF")
 	txLed = 27
 	txLedOn = 1 
 	txLedOff = 0
