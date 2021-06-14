@@ -30,7 +30,7 @@ if [ ! -f "$FILE" ]; then
 	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/Documents/FITB/FoxTelem.properties
 	echo
 
-	python3 /home/pi/CubeSatSim/groundstation/loc-python.py
+	python3 /home/pi/CubeSatSim/groundstation/loc-foxtelem.py
 	
 #	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
 #	read grid
