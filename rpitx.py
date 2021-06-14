@@ -24,8 +24,8 @@ elif GPIO.input(27) == False:
 	print("TFB")
 	transmit = True
 	txLed = 22
-	txLedOn = 1
-	txLedOff = 0
+	txLedOn = 0
+	txLedOff = 1
 elif GPIO.input(22) == False:
 	print("vB5 or Later")
 	transmit = True
