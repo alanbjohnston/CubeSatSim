@@ -45,6 +45,7 @@ else
 		echo "Fox-in-a-box profile is set!"
 	elif [ "$1" = "c" ]; then
 		echo "CubeSatSim Ground Station profile is set!"
+	fi
 
 fi
 
