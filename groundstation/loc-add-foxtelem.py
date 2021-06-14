@@ -3,9 +3,10 @@
 # copy or rename to loc-foxtelem.py and add api key
 
 import requests
+from os import system
 
 URL = "https://geocode.search.hereapi.com/v1/geocode"
-print("In order to upload your satellite telemetry data to the AMSAT servers, we need to know your location\n")
+print("\nIn order to upload your satellite telemetry data to the AMSAT servers, we need to know your location\n")
 print("Enter your location  including country. \n\n")
 location = input("Type your location: ") #taking user input
 api_key = '' # Acquire from developer.here.com
@@ -25,8 +26,13 @@ print(longitude)
 
 #file = open(r"/home/pi/CubeSatSim/groundstation/.profile","w+")
 
-latSedStr = 'sed -i "s/latitude=0.0/latitude=' $grid + str(latitude) + '/g" /home/pi/Documents/FITB/FoxTelem.properties'
-print (latSedStr)
+latSedStr = 'sed -i "s/latitude=0.0/latitude=' + str(latitude) + '/g" /home/pi/Documents/FITB/FoxTelem.properties'
+#print (latSedStr)
+system(latSedStr)
 
-longSedStr = 'sed -i "s/longitude=0.0/longitude=' $grid + str(longitude) + '/g" /home/pi/Documents/FITB/FoxTelem.properties'
-print (longSedStr)
+longSedStr = 'sed -i "s/longitude=0.0/longitude=' + str(longitude) + '/g" /home/pi/Documents/FITB/FoxTelem.properties'
+#print (longSedStr)
+system(longSedStr)
+
+print("\nFoxTelem configuration updated with your latitude and longitude")
+
