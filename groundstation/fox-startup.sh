@@ -45,11 +45,12 @@ sudo killall -9 java &>/dev/null
 
 if [ "$1" = "c" ]; then
 	echo "CubeSatSim Ground Station profile is set!"	
+	echo
 	/home/pi/Downloads/FoxTelem/FoxTelem &
 else
 	echo "Fox-in-a-box profile is set!"
+	echo
 	/home/pi/Downloads/FoxTelem-FITB/FoxTelem /home/pi/Documents/FITB
-
 fi
 
 $SHELL
