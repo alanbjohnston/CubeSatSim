@@ -65,7 +65,7 @@ print(callsign)
 GPIO.output(txLed, txLedOn);
 system("echo 'de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 #GPIO.output(27, 0);
-time.sleep(2);
+time.sleep(6);
 GPIO.output(txLed, txLedOff);
 
 time.sleep(2)
