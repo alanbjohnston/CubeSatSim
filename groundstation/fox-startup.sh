@@ -35,23 +35,21 @@ if [ ! -f "$FILE" ]; then
        
     fi  
     
-else
+fi    
 
-	value=`cat /home/pi/CubeSatSim/groundstation/.profile`
-	echo "$value" > /dev/null
-	set -- $value
-
-	if [ "$1" = "b" ]; then
-		echo "Fox-in-a-box profile is set!"
-	elif [ "$1" = "c" ]; then
-		echo "CubeSatSim Ground Station profile is set!"
-	fi
-
-fi
+value=`cat /home/pi/CubeSatSim/groundstation/.profile`
+echo "$value" > /dev/null
+set -- $value
 
 sudo killall -9 java &>/dev/null
 
-/home/pi/Downloads/FoxTelem/FoxTelem &
+if [ "$1" = "c" ]; then
+	echo "CubeSatSim Ground Station profile is set!"	
+	/home/pi/Downloads/FoxTelem/FoxTelem &
+else
+	echo "Fox-in-a-box profile is set!"
+	/home/pi/Downloads/FoxTelem-FITB/FoxTelem /home/pi/Documents/FITB
 
+fi
 
 $SHELL
