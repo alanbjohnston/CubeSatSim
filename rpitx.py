@@ -9,15 +9,15 @@ from os import system
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(22, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 transmit = False
 if GPIO.input(12) == False:
-	print("VHF vB5 or Later")
+	print("vB5 or Later")
 	transmit = True
-	txLed = 22
+	txLed = 27
 	txLedOn = 1
 	txLedOff = 0
 elif GPIO.input(27) == False:
@@ -26,12 +26,13 @@ elif GPIO.input(27) == False:
 	txLed = 22
 	txLedOn = 0
 	txLedOff = 1
-elif GPIO.input(22) == False:
-	print("vB5 or Later")
-	transmit = True
+elif GPIO.input(13) == False:
+	print("UHF vB5 or Later")
+	print("UHF transmit not implemented yet")
+#	transmit = True
 	txLed = 27
-	txLedOn = 0
-	txLedOff = 1
+	txLedOn = 1
+	txLedOff = 0
 else:
 	print("No BPF")
 	txLed = 27
@@ -39,10 +40,12 @@ else:
 	txLedOff = 0
 
 GPIO.setup(txLed, GPIO.OUT)
-print(txLedOn)
+GPIO.output(txLed, txLedOff)
+
+# print(txLedOn)
 print(txLed)
-GPIO.setup(27, GPIO.OUT)
-GPIO.output(27, 0)
+# GPIO.setup(27, GPIO.OUT)
+# GPIO.output(27, 0)
 
 print(transmit)
 
@@ -61,12 +64,10 @@ except:
 	callsign = "AMSAT"
 print(callsign)
 
-#GPIO.output(27, 1);
-GPIO.output(txLed, txLedOn);
+GPIO.output(txLed, txLedOn)
 system("echo 'de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
-#GPIO.output(27, 0);
 time.sleep(6);
-GPIO.output(txLed, txLedOff);
+GPIO.output(txLed, txLedOff)
 
 time.sleep(2)
 
