@@ -2,9 +2,9 @@
 0,realTime,BATT_A_V,12,V,cubesatsim_voltage|FLOAT2,NONE,4,1,3,Cell A,Battery A voltage (0-2.5V scale)
 1,realTime,BATT_B_V,12,V,cubesatsim_voltage|FLOAT2,NONE,4,2,3,Cell A+B,Battery A+B voltage (0-3.3V scale)
 2,realTime,BATT_V,12,V,cubesatsim_voltage|FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,INA219 Battery A+B+C Voltage
-3,realTime,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+X Panel,7,4,3,STEM Payload Board MPU6050 Acceleration,Acceleration around X Axis
-4,realTime,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Y Panel,8,4,3,STEM Payload Board MPU6050 Acceleration,Acceleration around Y Axis
-5,realTime,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Z Panel,9,4,3,STEM Payload Board MPU6050 Acceleration,Acceleration around Z Axis
+3,realTime,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+X Panel,7,4,3,Acceleration,STEM Payload Board MPU6050 Acceleration around X Axis
+4,realTime,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Y Panel,8,4,3,Acceleration,STEM Payload Board MPU6050 Acceleration around Y Axis
+5,realTime,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Z Panel,9,4,3,Acceleration,STEM Payload Board MPU6050 Acceleration around Z Axis
 6,realTime,battCurr,12,mA,cubesatsim_current,Battery,4,2,3,Current,INA219 Total Battery DC Current
 7,realTime,Temperature,12,C,cubesatsim_temperature,Experiments,6,2,3,BME280 Temp,BME280 STEM Payload sensor temperature
 8,realTime,posXv,12,V,cubesatsim_voltage|FLOAT2,+X Panel,7,1,3,Voltage,INA219 +X solar panel Voltage
@@ -31,9 +31,9 @@
 29,realTime,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation|INT,+Z Panel,9,3,3,Rotation,STEM Payload Board MPU6050 Angular veolcity around Z Axis
 30,realTime,Humidity,12,%,cubesatsim_temperature,Experiments,6,5,3,BME280 Humidity,BME280 Humidity
 31,realTime,PSUCurrent,12,mA,cubesatsim_current,PSU,5,2,3,Current,INA219 Power Supply DC Current
-32,realTime,Sensor1,12,C,cubesatsim_rpm,Experiments,6,6,3,Diode Temperature,STEM Payload extra Sensor 1 (Diode Temperature)
+32,realTime,Sensor1,12,C,cubesatsim_rpm,Experiments,6,6,3,Diode Temp,STEM Payload extra Sensor 1 (Diode Temperature)
 33,realTime,Sensor2,12,signed scaled,cubesatsim_rpm,Experiments,6,7,3,Sensor 2,STEM Payload extra Sensor 2
-34,realTime,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload, STEM Payload STEM Payload board failure Indicator
+34,realTime,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload Status, STEM Payload STEM Payload board failure Indicator
 35,realTime,SafeMode,1,-,STATUS_ON_OFF,Computer Software,3,2,0,Safe Mode, Safe Mode (Low Battery Voltage)
 36,realTime,SimulatedTelemetry,1,-,STATUS_ON_OFF,Computer Software,3,4,0,Simulated Telemetry,Simulated Telemetry Indicator
 37,realTime,PayloadStatus1,1,-,17,NONE,6,8,0,Exp 3,STEM Payload status 1 failure indicator
