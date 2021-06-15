@@ -25,7 +25,7 @@
 23,realTime,Altitude,12,m,cubesatsim_altitude,Experiments,6,4,3,BME280 Altitude,BME280 STEM Payload sensor altitude
 24,realTime,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
 25,realTime,rssi,12,dBm,cubesatsim_rssi|INT,Radio,1,1,3,RSSI,Received Signal Strength Indication
-26,realTime,IHUcpuTemp,12,C,cubesatsim_temperature,Computer Hardware,2,1,3,Temperature,Internal temperature of IHU from Pi
+26,realTime,IHUcpuTemp,12,C,cubesatsim_temperature,Computer Hardware,2,1,3,IHU Temp (Pi),Internal temperature of IHU from Pi
 27,realTime,SatelliteXAxisAngularVelocity,12,dps,cubesatsim_rotation|INT,+X Panel,7,3,3,Rotation,STEM Payload Board MPU6050 Angular veolcity around X Axis
 28,realTime,SatelliteYAxisAngularVelocity,12,dps,cubesatsim_rotation|INT,+Y Panel,8,3,3,Rotation,STEM Payload Board MPU6050 Angular veolcity around Y Axis
 29,realTime,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation|INT,+Z Panel,9,3,3,Rotation,STEM Payload Board MPU6050 Angular veolcity around Z Axis
