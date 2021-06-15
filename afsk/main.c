@@ -2360,6 +2360,8 @@ int test_i2c_bus(int bus)
     	 	if (error != 0) 
     	 	{	
     	 		printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", busDev);
+			if (bus == 3)
+				printf("-> If this is a CubeSatSim Lite, then this error is normal!\n");
 			output = -1;
     		}													
 	} else
