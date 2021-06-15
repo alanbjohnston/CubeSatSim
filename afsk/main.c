@@ -1323,10 +1323,10 @@ void get_tlm_fox() {
       batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
       if (batt < 3.0) {
         batt = 3.0;
-        NormalModeFailure = 1;
+        SafeMode = 1;
         printf("Safe Mode!\n");
       } else
-        NormalModeFailure = 0;
+        SafeMode= 0;
 
       if (batt > 4.5)
         batt = 4.5;
@@ -1376,10 +1376,10 @@ void get_tlm_fox() {
       batteryCurrent = current[map[BAT]];
 	    
       if (batteryVoltage < 3.6) {
-        NormalModeFailure = 1;
+        SafeMode = 1;
         printf("Safe Mode!\n");
       } else
-        NormalModeFailure = 0;
+        SafeMode = 0;
 
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
@@ -1797,7 +1797,7 @@ void get_tlm_fox() {
 
     // camera = ON;
 
-    int status = STEMBoardFailure + NormalModeFailure * 2 + !sim_mode * 4 + PayloadFailure1 * 8 +
+    int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
