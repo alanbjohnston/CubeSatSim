@@ -33,7 +33,7 @@
 31,RT,PSUCurrent,12,mA,cubesatsim_current,PSU,5,2,3,Current,INA219 Power Supply DC Current
 32,RT,Sensor1,12,C,cubesatsim_rpm,Experiments,6,6,3,Diode Temp,STEM Payload Extra Sensor 1 (Diode Temperature)
 33,RT,Sensor2,12,signed scaled,cubesatsim_rpm,Experiments,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
-34,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload,STEM Payload Board Status
+34,RT,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload Status,STEM Payload Board Status
 35,RT,SafeMode,1,-,STATUS_ON_OFF,Computer Software,3,2,0,Safe Mode, Safe Mode (Low Battery Voltage)
 36,RT,SimulatedTelemetry,1,-,STATUS_ON_OFF,Computer Software,3,4,0,Simulated Telemetry, Simulated Telemetry Indicator
 37,RT,PayloadStatus1,1,-,17,NONE,6,8,0,Exp 3,STEM Payload status 1 failure indicator
