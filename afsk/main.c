@@ -2010,12 +2010,12 @@ void get_tlm_fox() {
       printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
     
-    if (mode == BPSK)
+    if ((mode == BPSK) && (firstTime = 1)) // only do first time 
     {	  
-      start = millis();  // send frame a second time
+      start = millis();  // send frame twice 
       sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
       printf("socket send 3 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-    
+      
       if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
         sleep(0.5);
