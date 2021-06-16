@@ -1004,12 +1004,12 @@ void get_tlm(void) {
     //printf("Before 1st strcpy\n");
     strcat(cw_str2, str);
     printf("Str: %s \n", cw_str2);
-    fflush();
+    fflush(stdout);
     //printf("Before 1st strcpy\n");
 //    strcat(cw_str2, cw_footer2);
     strcat(cw_str2, cw_footer3);
     printf("Str: %s \n", cw_str2);
-    fflush();
+    fflush(stdout);
 //printf("Before 1st strcpy\n");
 
     // read payload sensor if available
@@ -1092,7 +1092,7 @@ void get_tlm(void) {
 //    #endif
     if (mode == CW) {
       printf("CW string to execute: %s\n", cw_str2);
-      fflush();
+      fflush(stdout);
 //      system(cw_str2);
       FILE * cw_file = popen(cw_str2, "r");
       pclose(cw_file);	    
