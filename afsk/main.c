@@ -957,7 +957,7 @@ void get_tlm(void) {
       strcpy(str, header_str);
     } else {
       strcpy(str, header_str3);
-      printf("Str: %s \n", str);
+//      printf("Str: %s \n", str);
       if (mode != CW) {
         strcat(str, call);
         strcat(str, header_str2);
@@ -976,7 +976,7 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
-	printf("Str: %s \n", str);
+//	printf("Str: %s \n", str);
       }
     }
 
@@ -1113,9 +1113,9 @@ void get_tlm(void) {
 */	      
 	sleep(2);
 	digitalWrite(txLed, txLedOff);
-	#ifdef DEBUG_LOGGING
-	printf("Tx LED Off 6\n");
-	#endif	      
+//	#ifdef DEBUG_LOGGING
+//	printf("Tx LED Off 6\n");
+//	#endif	      
       } else {
         fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
         fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
