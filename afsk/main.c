@@ -960,6 +960,7 @@ void get_tlm(void) {
       strcpy(str, header_str);
     } else {
       strcpy(str, header_str3);
+      printf("Str: %s \n", str);
       if (mode != CW) {
         strcat(str, call);
         strcat(str, header_str2);
@@ -978,6 +979,7 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
+	printf("Str: %s \n", str);
       }
     }
 
@@ -1000,8 +1002,10 @@ void get_tlm(void) {
  //   strcpy(cw_str2, cw_header2);
     //printf("Before 1st strcpy\n");
     strcat(cw_str2, str);
+    printf("Str: %s \n", str);
     //printf("Before 1st strcpy\n");
     strcat(cw_str2, cw_footer2);
+    printf("Str: %s \n", str);
     //printf("Before 1st strcpy\n");
 
     // read payload sensor if available
@@ -1084,7 +1088,9 @@ void get_tlm(void) {
 //    #endif
     if (mode == CW) {
       fprintf(stderr, "CW string to execute: %s\n", cw_str2);
-      system(cw_str2);
+//      system(cw_str2);
+      FILE * cw_file = popen(cw_str2, "r");
+      pclose(cw_file);	    
 //    digitalWrite(txLed, txLedOn);
 //    #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 4\n");
