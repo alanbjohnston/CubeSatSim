@@ -998,15 +998,19 @@ void get_tlm(void) {
     char cw_str2[500];
     char cw_header2[] = "echo '";
     char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+    char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
 
  //   strcpy(cw_str2, cw_header2);
     //printf("Before 1st strcpy\n");
     strcat(cw_str2, str);
-    printf("Str: %s \n", str);
+    printf("Str: %s \n", cw_str2);
+    fflush();
     //printf("Before 1st strcpy\n");
-    strcat(cw_str2, cw_footer2);
-    printf("Str: %s \n", str);
-    //printf("Before 1st strcpy\n");
+//    strcat(cw_str2, cw_footer2);
+    strcat(cw_str2, cw_footer3);
+    printf("Str: %s \n", cw_str2);
+    fflush();
+//printf("Before 1st strcpy\n");
 
     // read payload sensor if available
 
@@ -1087,7 +1091,8 @@ void get_tlm(void) {
 //    printf("Tx LED On 3\n");
 //    #endif
     if (mode == CW) {
-      fprintf(stderr, "CW string to execute: %s\n", cw_str2);
+      printf("CW string to execute: %s\n", cw_str2);
+      fflush();
 //      system(cw_str2);
       FILE * cw_file = popen(cw_str2, "r");
       pclose(cw_file);	    
