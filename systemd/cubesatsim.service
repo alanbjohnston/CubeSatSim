@@ -9,8 +9,6 @@ StandardOutput=inherit
 StandardError=inherit
 Restart=always
 User=pi
-CPUAccounting=true
-CPUQuota=5%
 
 [Install]
 WantedBy=default.target
