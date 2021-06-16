@@ -99,6 +99,20 @@ if __name__ == "__main__":
 					time.sleep(0.5)
 				except:		  
 					time.sleep(0.5)
+		elif (mode == 'c'):
+			print("CW")
+#			time.sleep(4)
+			while True:
+				try:
+					f = open("/home/pi/CubeSatSim/cwready")
+					GPIO.output(txLed, txLedOn)
+					system("sudo gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+					GPIO.output(txLed, txLedOff)
+					f.close()
+					system("sudo rm cwready")
+					time.sleep(1)
+				except:		  
+					time.sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
 			try: 
