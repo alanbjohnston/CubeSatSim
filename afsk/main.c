@@ -1108,7 +1108,8 @@ void get_tlm(void) {
 	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
         fclose(cw_file); 
-	printf("Sleeping while waiting for rpitx");
+//	printf("Sleeping while waiting for rpitx \n");
+//	fflush(stdout);      
         sleep(5);	      
       }    
     } 
