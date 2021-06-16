@@ -990,28 +990,6 @@ void get_tlm(void) {
       //        printf("%s",tlm_str);
       strcat(str, tlm_str);
     }
-    // CW
-
-    char cw_str2[1000];
-    char cw_header2[] = "echo '";
-    char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
-    char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
-
- //   strcpy(cw_str2, cw_header2);
-    //printf("Before 1st strcpy\n");
-//    printf("Str before: %s \n", cw_str2);
-    printf("Str str: %s \n", str);
-//    strcat(cw_str2, str);
-//    printf("Str: %s \n", cw_str2);
-    fflush(stdout);
-    //printf("Before 1st strcpy\n");
-//    strcat(cw_str2, cw_footer2);
-//    strcat(cw_str2, cw_footer3);
-//    printf("Str: %s \n", cw_str2);
-    strcat(str, cw_footer3);
-    printf("Str: %s \n", str);
-    fflush(stdout);
-//printf("Before 1st strcpy\n");
 
     // read payload sensor if available
 
@@ -1053,37 +1031,7 @@ void get_tlm(void) {
         printf(" Response from STEM Payload board: %s\n", sensor_payload);
 	sleep(0.1);  // added sleep between loops
       }	    
-/*	    
-      int charss = (char) serialDataAvail(uart_fd);
-      if (charss != 0)
-        printf("Clearing buffer of %d chars \n", charss);
-      while ((charss--> 0))
-        c = (char) serialGetchar(uart_fd); // clear buffer
 
-      unsigned int waitTime;
-      int i = 0;
-
-      serialPutchar(uart_fd, '?');
-//      printf("Querying payload with ?\n");
-      waitTime = millis() + 500;
-      int end = FALSE;
-      while ((millis() < waitTime) && !end) {
-        int chars = (char) serialDataAvail(uart_fd);
-        while ((chars--> 0) && !end) {
-          c = (char) serialGetchar(uart_fd);
-          //	  printf ("%c", c);
-          //	  fflush(stdout);
-          if (c != '\n') {
-            sensor_payload[i++] = c;
-          } else {
-            end = TRUE;
-          }
-        }
-      }
-      //    sensor_payload[i++] = '\n';
-      sensor_payload[i] = '\0';
-      printf(" Response from STEM Payload board: %s\n", sensor_payload);
-*/
       if (mode != CW)
         strcat(str, sensor_payload); // append to telemetry string for transmission
     }
@@ -1093,15 +1041,22 @@ void get_tlm(void) {
 //    printf("Tx LED On 3\n");
 //    #endif
     if (mode == CW) {
+
+      char cw_str2[1000];
+      char cw_header2[] = "echo '";
+      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+      char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
+
+//    printf("Str str: %s \n", str);
+//    fflush(stdout);
+      strcat(str, cw_footer3);
+//    printf("Str: %s \n", str);
+//    fflush(stdout);	    
       printf("CW string to execute: %s\n", str);
       fflush(stdout);
-//      system(cw_str2);
+
       FILE * cw_file = popen(str, "r");
       pclose(cw_file);	    
-//    digitalWrite(txLed, txLedOn);
-//    #ifdef DEBUG_LOGGING
-//    printf("Tx LED On 4\n");
-//    #endif
 	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
         fclose(cw_file); 
@@ -1137,7 +1092,9 @@ void get_tlm(void) {
         exit(EXIT_FAILURE);
       }
       sleep(2);
-    } else {
+	    
+    } else {  // APRS using rpitx
+	    
       strcat(str, footer_str1);
       strcat(str, call);
       strcat(str, footer_str);
