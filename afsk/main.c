@@ -120,6 +120,7 @@ float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000; // 1200
 short int sin_samples;
 short int sin_map[16];
+int STEMBoardFailure = 1;
 
 int smaller;
 int flip_ctr = 0;
@@ -146,6 +147,7 @@ int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onL
 float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
+double cpuTemp;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
@@ -772,7 +774,7 @@ int main(int argc, char * argv[]) {
 
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
-        double cpuTemp;
+   //     double cpuTemp;
         fscanf(cpuTempSensor, "%lf", & cpuTemp);
         cpuTemp /= 1000;
 
@@ -1378,7 +1380,7 @@ void get_tlm_fox() {
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, STEMBoardFailure = 1, NormalModeFailure = 0, groundCommandCount = 0;
+  int id, frm_type = 0x01, NormalModeFailure = 0, groundCommandCount = 0;
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
