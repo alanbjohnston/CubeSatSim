@@ -220,9 +220,11 @@ int main(int argc, char * argv[]) {
 	    
     }
   }
-	
-  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
-  pclose(rpitx_restart);
+  
+  if (mode != CW) {
+    FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
+    pclose(rpitx_restart);
+  }
 
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
@@ -1080,12 +1082,14 @@ void get_tlm(void) {
 //    #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 3\n");
 //    #endif
-    if (mode == CW)
+    if (mode == CW) {
+      fprintf(stderr, "CW string to execute: %s\n", cw_str2);
       system(cw_str2);
 //    digitalWrite(txLed, txLedOn);
 //    #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 4\n");
 //    #endif
+    }
 
     if (ax5043) {
       digitalWrite(txLed, txLedOn);
