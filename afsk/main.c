@@ -997,7 +997,7 @@ void get_tlm(void) {
     char cw_header2[] = "echo '";
     char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
 
-    strcpy(cw_str2, cw_header2);
+ //   strcpy(cw_str2, cw_header2);
     //printf("Before 1st strcpy\n");
     strcat(cw_str2, str);
     //printf("Before 1st strcpy\n");
