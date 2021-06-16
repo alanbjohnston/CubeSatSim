@@ -1002,6 +1002,8 @@ void get_tlm(void) {
 
  //   strcpy(cw_str2, cw_header2);
     //printf("Before 1st strcpy\n");
+    printf("Str before: %s \n", cw_str2);
+    printf("Str str: %s \n", str);
     strcat(cw_str2, str);
     printf("Str: %s \n", cw_str2);
     fflush(stdout);
