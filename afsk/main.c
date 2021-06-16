@@ -151,6 +151,9 @@ float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, 
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
 
+float voltage[9], current[9], sensor[17], other[3];
+char sensor_payload[500];
+
 int test_i2c_bus(int bus);
 
 const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py ";
@@ -645,9 +648,220 @@ int main(int argc, char * argv[]) {
     fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
-
+	  
+    sensor_payload[0] = 0;
+    memset(voltage, 0, sizeof(voltage));
+    memset(current, 0, sizeof(current));
+    memset(sensor, 0, sizeof(sensor));
+    memset(other, 0, sizeof(other));	
+	  
+    FILE * uptime_file = fopen("/proc/uptime", "r");
+    fscanf(uptime_file, "%f", & uptime_sec);
+    uptime = (int) uptime_sec;
+    #ifdef DEBUG_LOGGING
+    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+    #endif
+    fclose(uptime_file);
+	  
     printf("++++ Loop time: %d +++++\n", millis() - loopTime);
     loopTime = millis();
+	  	  
+    if (sim_mode) { // simulated telemetry 
+
+      double time = ((long int)millis() - time_start) / 1000.0;
+
+      if ((time - eclipse_time) > period) {
+        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse_time = time;
+        printf("\n\nSwitching eclipse mode! \n\n");
+      }
+
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+
+      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+
+      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
+      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
+      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
+
+      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+
+      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
+      tempS += +rnd_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      other[IHU_TEMP] = tempS;
+
+      voltage[map[BUS]] = rnd_float(5.0, 5.005);
+      current[map[BUS]] = rnd_float(158, 171);
+
+      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
+
+      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+
+      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      if (batt < 3.0) {
+        batt = 3.0;
+        SafeMode = 1;
+        printf("Safe Mode!\n");
+      } else
+        SafeMode= 0;
+
+      if (batt > 4.5)
+        batt = 4.5;
+
+      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+
+      // end of simulated telemetry
+    }
+    else {
+      int count1;
+      char * token;
+      fputc('\n', file1);
+      fgets(cmdbuffer, 1000, file1);
+      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
+
+      const char space[2] = " ";
+      token = strtok(cmdbuffer, space);
+
+      for (count1 = 0; count1 < 8; count1++) {
+        if (token != NULL) {
+          voltage[count1] = (float) atof(token);
+          #ifdef DEBUG_LOGGING
+          //  printf("voltage: %f ", voltage[count1]);
+          #endif
+          token = strtok(NULL, space);
+          if (token != NULL) {
+            current[count1] = (float) atof(token);
+            if ((current[count1] < 0) && (current[count1] > -0.5))
+              current[count1] *= (-1.0f);
+            #ifdef DEBUG_LOGGING
+            //  printf("current: %f\n", current[count1]);
+            #endif
+            token = strtok(NULL, space);
+          }
+        }
+      }
+	
+      batteryVoltage = voltage[map[BAT]];
+      batteryCurrent = current[map[BAT]];
+	    
+      if (batteryVoltage < 3.6) {
+        SafeMode = 1;
+        printf("Safe Mode!\n");
+      } else
+        SafeMode = 0;
+
+      FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+      if (cpuTempSensor) {
+        double cpuTemp;
+        fscanf(cpuTempSensor, "%lf", & cpuTemp);
+        cpuTemp /= 1000;
+
+        #ifdef DEBUG_LOGGING
+//        printf("CPU Temp Read: %6.1f\n", cpuTemp);
+        #endif
+
+        other[IHU_TEMP] = (double)cpuTemp;
+
+      //  IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
+      }
+      fclose(cpuTempSensor);
+
+      if (payload == ON) {  // -55
+        STEMBoardFailure = 0;
+
+  
+        char c;
+        unsigned int waitTime;
+	int i, end, trys = 0;
+	sensor_payload[0] = 0;
+	sensor_payload[1] = 0;
+	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
+          i = 0;
+	  serialPutchar(uart_fd, '?');
+	  sleep(0.05);  // added delay after ?
+          printf("%d Querying payload with ?\n", trys);
+          waitTime = millis() + 500;
+          end = FALSE;
+          //  int retry = FALSE;
+          while ((millis() < waitTime) && !end) {
+            int chars = (char) serialDataAvail(uart_fd);
+            while ((chars > 0) && !end) {
+//	      printf("Chars: %d\ ", chars);
+	      chars--;
+	      c = (char) serialGetchar(uart_fd);
+              //	printf ("%c", c);
+              //	fflush(stdout);
+              if (c != '\n') {
+                sensor_payload[i++] = c;
+              } else {
+                end = TRUE;
+              }
+            }
+          }
+	
+          sensor_payload[i++] = ' ';
+          //  sensor_payload[i++] = '\n';
+          sensor_payload[i] = '\0';
+          printf(" Response from STEM Payload board: %s\n", sensor_payload);
+	  sleep(0.1);  // added sleep between loops
+	}
+        if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
+        {
+          int count1;
+          char * token;
+          //  char cmdbuffer[1000];
+
+        //	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
+        //    	fgets(cmdbuffer, 1000, file);
+        //	printf("result: %s\n", cmdbuffer);
+        //    	pclose(file);
+
+          const char space[2] = " ";
+          token = strtok(sensor_payload, space);
+          for (count1 = 0; count1 < 17; count1++) {
+            if (token != NULL) {
+              sensor[count1] = (float) atof(token);
+              #ifdef DEBUG_LOGGING
+              //  printf("sensor: %f ", sensor[count1]);
+              #endif
+              token = strtok(NULL, space);
+            }
+          }
+          printf("\n");
+        }
+	else
+		payload = OFF;  // turn off since STEM Payload is not responding
+      }
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+        for (count1 = 0; count1 < 17; count1++) {
+          if (sensor[count1] < sensor_min[count1])
+            sensor_min[count1] = sensor[count1];
+          if (sensor[count1] > sensor_max[count1])
+            sensor_max[count1] = sensor[count1];
+            //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+        }
+      }
+    }	  
 	  
     #ifdef DEBUG_LOGGING
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
@@ -772,7 +986,9 @@ void get_tlm(void) {
     memset(tlm, 0, sizeof tlm);
 
     //  Reading I2C voltage and current sensors
-
+	  
+/*  
+	  
     int count1;
     char * token;
 //    char cmdbuffer[1000];
@@ -837,21 +1053,6 @@ void get_tlm(void) {
         eclipse_time = time;
         printf("\n\nSwitching eclipse mode! \n\n");
       }
-
-      /*
-        double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) * fabs(sin(2.0 * 3.14 * time / (46.0 * speed))) + rnd_float(-2, 2);	  
-        double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0)) * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14/2.0))) + rnd_float(-2, 2);	  
-        double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])  * fabs(sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2])) + rnd_float(-2, 2);
-      */
-/*	    
-      double Xi = eclipse * amps_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
-
-      double Xv = eclipse * volts_max[0] * sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
-*/
       float Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
       float Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
       float Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
@@ -903,6 +1104,9 @@ void get_tlm(void) {
 
       // end of simulated telemetry	
     }
+	  
+   */
+	  
     tlm[1][A] = (int)(voltage[map[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
     tlm[1][B] = (int)(99.5 - current[map[PLUS_X]] / 10.0) % 100; // +X current [4]
     tlm[1][C] = (int)(99.5 - current[map[MINUS_X]] / 10.0) % 100; // X- current [10] 
@@ -1232,7 +1436,7 @@ void get_tlm_fox() {
       sampleTime = (unsigned int) millis();
     } else
       printf("first time - no sleep\n");
-	  
+/*	  
     float voltage[9], current[9], sensor[17], other[3];
     char sensor_payload[500];
     sensor_payload[0] = 0;
@@ -1248,7 +1452,8 @@ void get_tlm_fox() {
     printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
     #endif
     fclose(uptime_file);	
-	  
+*/	  
+/*	  
     if (sim_mode) { // simulated telemetry 
 
       double time = ((long int)millis() - time_start) / 1000.0;
@@ -1318,14 +1523,10 @@ void get_tlm_fox() {
     else {
       int count1;
       char * token;
-//    char cmdbuffer[1000];
-/**/
-//    FILE * file = popen(pythonStr, "r");
       fputc('\n', file1);
       fgets(cmdbuffer, 1000, file1);
       fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
-//    pclose(file);
-/**/
+
       const char space[2] = " ";
       token = strtok(cmdbuffer, space);
 
@@ -1347,10 +1548,6 @@ void get_tlm_fox() {
           }
         }
       }
-    //	 printf("\n"); 	  
-	
-//   sleep(0.5);
-//    printf("Sleep over\n");	
 	
       batteryVoltage = voltage[map[BAT]];
       batteryCurrent = current[map[BAT]];
@@ -1382,14 +1579,6 @@ void get_tlm_fox() {
 
   
         char c;
- /* 
-	int charss = (char) serialDataAvail(uart_fd);
-        if (charss != 0)
-        printf("Clearing buffer of %d chars \n", charss);
-        while ((charss--> 0))
-          c = (char) serialGetchar(uart_fd); // clear buffer
-*/	      	      
-
         unsigned int waitTime;
 	int i, end, trys = 0;
 	sensor_payload[0] = 0;
@@ -1461,6 +1650,9 @@ void get_tlm_fox() {
         }
       }
     }
+	  
+*/
+	
 //    if (mode == FSK) 
     {  // just moved
       for (int count1 = 0; count1 < 8; count1++) {
