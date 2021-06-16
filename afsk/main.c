@@ -1105,6 +1105,12 @@ void get_tlm(void) {
 //    #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 4\n");
 //    #endif
+	    
+      while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
+        fclose(cw_file); 
+	printf("Sleeping while waiting for rpitx");
+        sleep(5);	      
+      }    
     } 
     else if (ax5043) {
       digitalWrite(txLed, txLedOn);
