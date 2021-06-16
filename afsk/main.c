@@ -216,15 +216,12 @@ int main(int argc, char * argv[]) {
         printf("Mode is CW\n");
       } else {
         printf("Mode is FSK\n");
-      }
-	    
+      }	    
     }
-  }
-  
-  if (mode != CW) {
-    FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
-    pclose(rpitx_restart);
-  }
+  } 
+
+  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
+  pclose(rpitx_restart);
 
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
