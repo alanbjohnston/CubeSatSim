@@ -995,22 +995,24 @@ void get_tlm(void) {
     }
     // CW
 
-    char cw_str2[500];
+    char cw_str2[1000];
     char cw_header2[] = "echo '";
     char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
     char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
 
  //   strcpy(cw_str2, cw_header2);
     //printf("Before 1st strcpy\n");
-    printf("Str before: %s \n", cw_str2);
+//    printf("Str before: %s \n", cw_str2);
     printf("Str str: %s \n", str);
-    strcat(cw_str2, str);
-    printf("Str: %s \n", cw_str2);
+//    strcat(cw_str2, str);
+//    printf("Str: %s \n", cw_str2);
     fflush(stdout);
     //printf("Before 1st strcpy\n");
 //    strcat(cw_str2, cw_footer2);
-    strcat(cw_str2, cw_footer3);
-    printf("Str: %s \n", cw_str2);
+//    strcat(cw_str2, cw_footer3);
+//    printf("Str: %s \n", cw_str2);
+    strcat(str, cw_footer3);
+    printf("Str: %s \n", str);
     fflush(stdout);
 //printf("Before 1st strcpy\n");
 
@@ -1085,7 +1087,8 @@ void get_tlm(void) {
       sensor_payload[i] = '\0';
       printf(" Response from STEM Payload board: %s\n", sensor_payload);
 */
-      strcat(str, sensor_payload); // append to telemetry string for transmission
+      if (mode != CW)
+        strcat(str, sensor_payload); // append to telemetry string for transmission
     }
 
 //    digitalWrite(txLed, txLedOn);
@@ -1093,16 +1096,16 @@ void get_tlm(void) {
 //    printf("Tx LED On 3\n");
 //    #endif
     if (mode == CW) {
-      printf("CW string to execute: %s\n", cw_str2);
+      printf("CW string to execute: %s\n", str);
       fflush(stdout);
 //      system(cw_str2);
-      FILE * cw_file = popen(cw_str2, "r");
+      FILE * cw_file = popen(str, "r");
       pclose(cw_file);	    
 //    digitalWrite(txLed, txLedOn);
 //    #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 4\n");
 //    #endif
-    }
+    } 
 
     if (ax5043) {
       digitalWrite(txLed, txLedOn);
