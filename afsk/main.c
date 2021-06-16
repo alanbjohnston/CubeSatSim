@@ -466,7 +466,7 @@ int main(int argc, char * argv[]) {
   // try connecting to STEM Payload board using UART
   // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
 
-  if (!ax5043 && !vB3) // don't test if AX5043 is present
+  if (!ax5043 && !vB3 && !(mode == CW)) // don't test if AX5043 is present
   {
     payload = OFF;
 
@@ -1106,8 +1106,7 @@ void get_tlm(void) {
 //    printf("Tx LED On 4\n");
 //    #endif
     } 
-
-    if (ax5043) {
+    else if (ax5043) {
       digitalWrite(txLed, txLedOn);
       #ifdef DEBUG_LOGGING
       printf("Tx LED On 5\n");
