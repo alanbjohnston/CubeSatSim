@@ -637,7 +637,7 @@ int main(int argc, char * argv[]) {
     #endif
     fclose(uptime_file);
 	  
-    printf("\n++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    printf("\n\n++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     loopTime = millis();
 	  	  
     if (sim_mode) { // simulated telemetry 
