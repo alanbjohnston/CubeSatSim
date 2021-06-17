@@ -1429,7 +1429,7 @@ void get_tlm_fox() {
 */
 //      if (mode == FSK) 
 	sleep(2.95); // 2.3);  // No sleep at all!
-	printf("Sleep time 3.0");
+	printf("Sleep time 2.95\n");
 //      else	    
 //        sleep(1.3);
 	    
