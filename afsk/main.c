@@ -2216,6 +2216,16 @@ void get_tlm_fox() {
         sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
         printf("socket send 4 %d ms bytes: %d \n\n", millis() - start, sock_ret);
       }
+       start = millis();  // send frame twice 
+      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+      printf("socket send 5 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+      
+      if (sock_ret < (ctr * 2 + 2)) {
+  //    printf("Not resending\n");
+        sleep(0.5);
+        sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+        printf("socket send 6 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+      }
     }
 
     if (sock_ret == -1) {
