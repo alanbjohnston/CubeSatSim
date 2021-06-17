@@ -2204,7 +2204,7 @@ void get_tlm_fox() {
       printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
     
-    if ((mode == BPSK) && (firstTime = 1)) // only do first time 
+    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
     {	  
       start = millis();  // send frame twice 
       sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
