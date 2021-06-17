@@ -440,7 +440,7 @@ int main(int argc, char * argv[]) {
   // try connecting to STEM Payload board using UART
   // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
 
-  if (!ax5043 && !vB3 && !(mode == CW) && (mode == SSTV)) // don't test for payload if AX5043 is present or CW or SSTV modes
+  if (!ax5043 && !vB3 && !(mode == CW) && !(mode == SSTV)) // don't test for payload if AX5043 is present or CW or SSTV modes
   {
     payload = OFF;
 
@@ -637,7 +637,7 @@ int main(int argc, char * argv[]) {
     #endif
     fclose(uptime_file);
 	  
-    printf("\n\n++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     loopTime = millis();
 	  	  
     if (sim_mode) { // simulated telemetry 
