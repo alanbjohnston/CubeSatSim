@@ -258,14 +258,14 @@ int main(int argc, char * argv[]) {
 	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
-	
+/*	
   if (mode == SSTV) {
 	  
     fprintf(stderr, "Sleeping");
     while (1)
       sleep(10);
   }
-	
+*/	
   wiringPiSetup();
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -433,37 +433,9 @@ int main(int argc, char * argv[]) {
 		
   fgets(cmdbuffer, 1000, file1);
   fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
-/*	
-  sleep(5);
-  fputc('\n', file1);
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr result2: %s\n", cmdbuffer);	
 	
-  file1 = popen(pythonConfigStr, "w");
-
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr result: %s\n", cmdbuffer);
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr resulta: %s\n", cmdbuffer);
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr resultb: %s\n", cmdbuffer);	
-//  pclose(file1);  
-
-  sleep(5);
-  fputc('\n', file1);
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr result2: %s\n", cmdbuffer);	
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr result2a: %s\n", cmdbuffer);	
-
-  sleep(5);
-  fputc('\n', file1);
-  fgets(cmdbuffer, 1000, file1);
-  printf("pythonStr result2: %s\n", cmdbuffer);		
-*/
-	
- FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
- pclose(file5);
+  FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
+  pclose(file5);
 	
   // try connecting to STEM Payload board using UART
   // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
@@ -900,9 +872,11 @@ int main(int argc, char * argv[]) {
 
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
-    } else // FSK or BPSK
-    {
+    } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
+    } else {  				// SSTV	    
+      fprintf(stderr, "Sleeping");
+      sleep(100);	    
     }
 
     #ifdef DEBUG_LOGGING
