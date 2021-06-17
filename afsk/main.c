@@ -637,7 +637,7 @@ int main(int argc, char * argv[]) {
     #endif
     fclose(uptime_file);
 	  
-    printf("++++ Loop time: %d +++++\n", millis() - loopTime);
+    printf("\n++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     loopTime = millis();
 	  	  
     if (sim_mode) { // simulated telemetry 
@@ -875,7 +875,7 @@ int main(int argc, char * argv[]) {
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	    
-      fprintf(stderr, "Sleeping");
+      fprintf(stderr, "Sleeping\n");
       sleep(100);	    
     }
 
