@@ -643,6 +643,7 @@ int main(int argc, char * argv[]) {
     fclose(uptime_file);
 	  
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    fflush(stdout);
     loopTime = millis();
 	  	  
     if (sim_mode) { // simulated telemetry 
@@ -1412,6 +1413,9 @@ void get_tlm_fox() {
 //        sleep((unsigned int)sleepTime);
 /**/
 
+//     if ((millis() - sampleTime) < 500)    // incomplete
+      
+	    
 /*	
       // most recent sleep code
       
@@ -1425,6 +1429,7 @@ void get_tlm_fox() {
       }    
 */
       printf("Sleep period: %d\n", millis() - startSleep);
+      fflush(stdout);
       
       sampleTime = (unsigned int) millis();
     } else
@@ -2174,6 +2179,7 @@ void get_tlm_fox() {
       printf("\nConnection Failed \n");
       printf("Error: %s \n", strerror(errno));
       error = 1;
+      sleep(2.0);  // sleep if socket connection refused
     }
     if (error == 1)
     ; //rpitxStatus = -1;
@@ -2187,6 +2193,7 @@ void get_tlm_fox() {
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
     printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
     
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
@@ -2217,6 +2224,7 @@ void get_tlm_fox() {
 	      }
       }
       sampleTime = (unsigned int) millis(); // resetting time for sleeping
+      fflush(stdout);
     }
 
     if (sock_ret == -1) {
