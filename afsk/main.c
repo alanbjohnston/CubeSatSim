@@ -2209,7 +2209,7 @@ void get_tlm_fox() {
       if (mode == FSK)
 	      max = 6;
       else
-	      mex = 4;
+	      max = 4;
       
       for (int times = 0; times < max; times++) 	    
       {
