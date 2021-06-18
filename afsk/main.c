@@ -148,6 +148,7 @@ float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentT
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
+int frameTime;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
@@ -580,9 +581,11 @@ int main(int argc, char * argv[]) {
 
       samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
       sleepTime = 0.1f;
-
-      printf("\n FSK Mode, %d bits per frame, %d bits per second, %f seconds per frame, %d ms sample period\n",
-        bufLen / (samples * frameCnt), bitRate, (float)((float)bufLen / (samples * frameCnt * bitRate)), samplePeriod);
+	   
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+	      
+      printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
+        bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
@@ -602,9 +605,11 @@ int main(int argc, char * argv[]) {
       //    sleepTime = 3.0;
       samplePeriod = 2200; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
+	   
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
-      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %f seconds per frame %d ms sample period\n",
-        bufLen, bufLen / (samples * frameCnt), bitRate, (float)((float)bufLen / (samples * frameCnt * bitRate)), samplePeriod);
+      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+        bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
 //      printf("Sin map: ");	 		
@@ -1397,10 +1402,16 @@ void get_tlm_fox() {
     if (firstTime != ON) {
       // delay for sample period
 
-/*
-      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
-        sleep((unsigned int)sleepTime);
-*/
+/**/
+//      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
+      while ((millis() - sampleTime) < (unsigned int)frameTime)
+        sleep(0.25);
+//        sleep((unsigned int)sleepTime);
+/**/
+
+/*	
+      // most recent sleep code
+      
       if (mode == FSK) {
 	sleep(2.3);  //
 	printf("Sleep time 2.3\n");
@@ -1409,8 +1420,8 @@ void get_tlm_fox() {
 	sleep(2.95); // 2.3);  
 	printf("Sleep time 2.95\n");
       }    
-
-//      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
+*/
+      printf("Sample period: %d\n", millis() - (unsigned int)frameTime);
       
       sampleTime = (unsigned int) millis();
     } else
