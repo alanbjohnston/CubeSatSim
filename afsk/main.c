@@ -2215,7 +2215,8 @@ void get_tlm_fox() {
 		sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
 		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
 	      }
-      }    
+      }
+      sampleTime = (unsigned int) millis(); // resetting time for sleeping
     }
 
     if (sock_ret == -1) {
