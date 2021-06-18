@@ -178,7 +178,7 @@ int main(int argc, char * argv[]) {
     } else if ( * argv[1] == 'a') {
       mode = AFSK;
       printf("Mode AFSK\n");
-    } else if ( * argv[1] == 'c') {
+    } else if ( * argv[1] == 'm') {
       mode = CW;
       printf("Mode CW\n");
     } else {
@@ -216,7 +216,7 @@ int main(int argc, char * argv[]) {
       } else if ( mode_string == 's') {
         mode = SSTV;
         printf("Mode is SSTV\n");
-     } else if ( mode_string == 'c') {
+     } else if ( mode_string == 'm') {
         mode = CW;
         printf("Mode is CW\n");
       } else {
