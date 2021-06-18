@@ -44,11 +44,11 @@ if [ "$1" = "" ]; then
 	set -- $value
 
 	echo $1 $2 $3 $4 $5
-#	echo
+	echo
 	
-	echo
-	echo "To change, include an OPTION"
-	echo
+#	echo
+#	echo "To change, include an OPTION"
+#	echo
 	set -- "-h"
 fi	
 
