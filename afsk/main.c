@@ -1405,7 +1405,7 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-      while ((millis() - sampleTime) < ((unsigned int)frameTime - 100))
+      while ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
         sleep(0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
