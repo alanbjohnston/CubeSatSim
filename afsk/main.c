@@ -1421,7 +1421,7 @@ void get_tlm_fox() {
 	printf("Sleep time 2.95\n");
       }    
 */
-      printf("Sample period: %d\n", millis() - (unsigned int)frameTime);
+      printf("Sleep period: %d\n", ((millis() - sampleTime) < (unsigned int)frameTime));
       
       sampleTime = (unsigned int) millis();
     } else
