@@ -1404,7 +1404,8 @@ void get_tlm_fox() {
 
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
-      while ((millis() - sampleTime) < (unsigned int)frameTime)
+     int startSleep = millis();	    
+      while ((millis() - sampleTime) < ((unsigned int)frameTime - 100))
         sleep(0.25);
 //        sleep((unsigned int)sleepTime);
 /**/
@@ -1421,7 +1422,7 @@ void get_tlm_fox() {
 	printf("Sleep time 2.95\n");
       }    
 */
-      printf("Sleep period: %d\n", ((millis() - sampleTime) < (unsigned int)frameTime));
+      printf("Sleep period: %d\n", millis() - startSleep);
       
       sampleTime = (unsigned int) millis();
     } else
