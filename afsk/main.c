@@ -1406,7 +1406,7 @@ void get_tlm_fox() {
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
      if ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
-        sleep(4.0); // 0.5);  // 25);  // initial period
+        sleep(3.8); // 0.5);  // 25);  // initial period
      while ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
         sleep(0.1); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
@@ -2198,7 +2198,7 @@ void get_tlm_fox() {
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
     if (firstTime == 1) // only do first time 
     {	
-      for (int times = 0; times < 6; times++) 	    
+      for (int times = 0; times < 7; times++) 	    // FSK 4 worked, trying 6 for BPSK
       {
 	      start = millis();  // send frame three times 
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
