@@ -603,8 +603,8 @@ int main(int argc, char * argv[]) {
       samplePeriod = 2200; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
 
-      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d seconds per frame %d ms sample period\n",
-        bufLen, bufLen / (samples * frameCnt), bitRate, bufLen / (samples * frameCnt * bitRate), samplePeriod);
+      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %f seconds per frame %d ms sample period\n",
+        bufLen, bufLen / (samples * frameCnt), bitRate, (float)((float)bufLen / (samples * frameCnt * bitRate)), samplePeriod);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
 //      printf("Sin map: ");	 		
