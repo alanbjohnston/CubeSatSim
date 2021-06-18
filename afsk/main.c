@@ -2204,8 +2204,14 @@ void get_tlm_fox() {
     
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
     if (firstTime == 1) // only do first time 
-    {	
-      for (int times = 0; times < 4; times++) 	    // FSK 4 worked, trying 6 for BPSK
+    {
+      int max;
+      if (mode == FSK)
+	      max = 6;
+      else
+	      mex = 4;
+      
+      for (int times = 0; times < max; times++) 	    
       {
 	      start = millis();  // send frame until buffer fills
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
