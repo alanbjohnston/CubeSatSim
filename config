@@ -15,7 +15,7 @@ if [ "$1" = "" ]; then
 
 	if [ "$1" = "a" ]; then
 		echo "APRS mode is set"
-	elif [ "$1" = "c" ]; then
+	elif [ "$1" = "m" ]; then
 		echo "CW mode is set"
 	elif [ "$1" = "f" ]; then
 		echo "FSK mode is set"
@@ -60,9 +60,9 @@ elif [ "$1" = "-a" ]; then
 	sudo echo "a" > /home/pi/CubeSatSim/.mode	
 	sudo systemctl restart cubesatsim
 	exit 
-elif [ "$1" = "-c" ]; then
+elif [ "$1" = "-m" ]; then
 	echo "changing CubeSatSim to CW mode"
-	sudo echo "c" > /home/pi/CubeSatSim/.mode	
+	sudo echo "m" > /home/pi/CubeSatSim/.mode	
 	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-f" ]; then
@@ -87,19 +87,19 @@ elif [ "$1" = "-h" ]; then
 	echo 
 	echo "   -h     This help info"
 	echo "   -a     Change to AFSK/APRS mode"
-	echo "   -c     Change to CW mode"
+	echo "   -m     Change to CW mode"
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
 	echo "   -i     Restarts CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
-	echo "   -m     Change the Simulated Telemetry setting in sim.cfg"
+	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
 	echo
 	exit
 
-elif [ "$1" = "-m" ]; then
+elif [ "$1" = "-t" ]; then
 
 	echo	
 	echo "Editing the Simulated Telemetry setting in"
