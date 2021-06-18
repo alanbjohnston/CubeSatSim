@@ -1405,9 +1405,9 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
+     if ((millis() - sampleTime) < ((unsigned int)frameTime - 100))  // was 500 for FSK
         sleep(3.8); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
+     while ((millis() - sampleTime) < ((unsigned int)frameTime - 100))  // was 100
         sleep(0.25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
@@ -2202,7 +2202,7 @@ void get_tlm_fox() {
       {
 	      start = millis();  // send frame until buffer fills
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-	      printf("socket send %d in %d ms bytes: %d \n\n",times + 1, (unsigned int)millis() - start, sock_ret);
+	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
 	      
 	      if ((millis() - start) > 500) {
 		      printf("Buffer over filled!\n");
