@@ -581,8 +581,8 @@ int main(int argc, char * argv[]) {
       samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
       sleepTime = 0.1f;
 
-      printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms sample period\n",
-        bufLen / (samples * frameCnt), bitRate, samplePeriod);
+      printf("\n FSK Mode, %d bits per frame, %d bits per second, %f seconds per frame, %d ms sample period\n",
+        bufLen / (samples * frameCnt), bitRate, (float)((float)bufLen / (samples * frameCnt * bitRate)), samplePeriod);
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
