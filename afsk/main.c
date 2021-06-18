@@ -2221,7 +2221,8 @@ void get_tlm_fox() {
   //    digitalWrite (0, HIGH);
 
 //  if (mode == FSK)
-    firstTime = 0;
+    if (socket_open == 1)	
+    	firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
 
