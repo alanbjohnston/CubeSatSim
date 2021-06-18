@@ -121,7 +121,7 @@ if __name__ == "__main__":
 					time.sleep(0.5)
 				except:		  
 					time.sleep(0.5)
-		elif (mode == 'c'):
+		elif (mode == 'm'):
 			print("CW")
 #			time.sleep(4)
 			while True:
