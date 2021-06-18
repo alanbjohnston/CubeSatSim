@@ -2198,14 +2198,14 @@ void get_tlm_fox() {
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
     if (firstTime == 1) // only do first time 
     {	
-      for (int times = 0; times < 12; times++) 	    // FSK 4 worked, trying 6 for BPSK
+      for (int times = 0; times < 4; times++) 	    // FSK 4 worked, trying 6 for BPSK
       {
-	      start = millis();  // send frame three times 
+	      start = millis();  // send frame until buffer fills
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-	      printf("socket send %d in %d ms bytes: %d \n\n",times, (unsigned int)millis() - start, sock_ret);
+	      printf("socket send %d in %d ms bytes: %d \n\n",times + 1, (unsigned int)millis() - start, sock_ret);
 	      
 	      if ((millis() - start) > 500) {
-		      printf("Buffer filled!\n");
+		      printf("Buffer over filled!\n");
 		      break;
 	      }
 
