@@ -1408,7 +1408,7 @@ void get_tlm_fox() {
      if ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
         sleep(3.8); // 0.5);  // 25);  // initial period
      while ((millis() - sampleTime) < ((unsigned int)frameTime - 500))  // was 100
-        sleep(0.1); // 0.5);  // 25);
+        sleep(0.25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
 
@@ -2203,6 +2203,11 @@ void get_tlm_fox() {
 	      start = millis();  // send frame three times 
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
 	      printf("socket send %d in %d ms bytes: %d \n\n",times, (unsigned int)millis() - start, sock_ret);
+	      
+	      if ((millis() - start) > 500) {
+		      printf("Buffer filled!\n");
+		      break;
+	      }
 
 	      if (sock_ret < (ctr * 2 + 2)) {
 	  //    printf("Not resending\n");
