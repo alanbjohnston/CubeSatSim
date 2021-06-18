@@ -37,11 +37,11 @@ if [ "$1" = "" ]; then
 	echo $1 $2 $3 $4 $5
 	echo
 	
-	if [ "$sim" = "y" ] || [ "$sim" = "yes" ] ; then
-		sim="yes"
+	if [ "$5" = "y" ] || [ "$5" = "yes" ] ; then
+#		sim="yes"
 		echo "Simulated Telemetry is ON"
 	else
-		sim="no"
+#		sim="no"
 		echo "Simulated Telemetry is OFF"
 	fi
 	
