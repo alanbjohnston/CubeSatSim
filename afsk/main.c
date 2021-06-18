@@ -2201,7 +2201,7 @@ void get_tlm_fox() {
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
       printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
-    if (mode == BPSK) {	  
+/*    if (mode == BPSK) {	  
     start = millis();
     sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
     printf("socket send 1a %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
@@ -2214,6 +2214,7 @@ void get_tlm_fox() {
       printf("socket send 2a %d ms bytes: %d \n\n", millis() - start, sock_ret);
     } 
     }
+*/	  
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
     if (firstTime == 1) // only do first time 
     {
