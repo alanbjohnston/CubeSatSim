@@ -1414,8 +1414,10 @@ void get_tlm_fox() {
 */
 
      if ((millis() - sampleTime) < 500)    //
-       sleep(4.0);
-	    
+       if (mode == BPSK)
+	  sleep(4.0);
+       else // FSK
+	  sleep(2.3);	    
 /*	
       // most recent sleep code
       
@@ -2220,7 +2222,7 @@ void get_tlm_fox() {
     {
       int max;
       if (mode == FSK)
-	      max = 6;
+	      max = 5; // was 6
       else
 	      max = 4;
       
