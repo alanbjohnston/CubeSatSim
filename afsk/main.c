@@ -1676,7 +1676,7 @@ void get_tlm_fox() {
       }
       	  if (mode == FSK)
 	  {
-	      if (loop % 16 == 0) {  // was 8
+	      if (loop % 32 == 0) {  // was 8
 		printf("Sending MIN frame \n");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
@@ -1690,7 +1690,7 @@ void get_tlm_fox() {
 		    sensor[count1] = sensor_min[count1];
 		}
 	      }
-	      if ((loop + 8) % 16 == 0) {  // was 8
+	      if ((loop + 16) % 32 == 0) {  // was 8
 		printf("Sending MAX frame \n");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
