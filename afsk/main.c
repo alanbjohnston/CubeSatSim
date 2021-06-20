@@ -2221,8 +2221,8 @@ void get_tlm_fox() {
     }
 */	  
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
-    if (firstTime == 1) // only do first time 
-    {
+//    if (firstTime == 1) // only do first time 
+    if ((firstTime == 1) || ((loop_count % 32) == 0)) // do first time and every 32 samples     {
       int max;
       if (mode == FSK)
 	      max = 5; // was 6
