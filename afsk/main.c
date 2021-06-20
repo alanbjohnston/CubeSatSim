@@ -148,6 +148,7 @@ float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentT
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
+int frameTime;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
@@ -580,9 +581,11 @@ int main(int argc, char * argv[]) {
 
       samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
       sleepTime = 0.1f;
-
-      printf("\n FSK Mode, %d bits per frame, %d bits per second, %f seconds per frame, %d ms sample period\n",
-        bufLen / (samples * frameCnt), bitRate, (float)((float)bufLen / (samples * frameCnt * bitRate)), samplePeriod);
+	   
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+	      
+      printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
+        bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
@@ -597,14 +600,16 @@ int main(int argc, char * argv[]) {
       samples = S_RATE / bitRate;
       bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-      //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+         samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
-      samplePeriod = 2200; // reduce dut to python and sensor querying delays
+      //samplePeriod = 2200; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
+	   
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
-      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %f seconds per frame %d ms sample period\n",
-        bufLen, bufLen / (samples * frameCnt), bitRate, (float)((float)bufLen / (samples * frameCnt * bitRate)), samplePeriod);
+      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+        bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
 //      printf("Sin map: ");	 		
@@ -638,6 +643,7 @@ int main(int argc, char * argv[]) {
     fclose(uptime_file);
 	  
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    fflush(stdout);
     loopTime = millis();
 	  	  
     if (sim_mode) { // simulated telemetry 
@@ -1397,10 +1403,27 @@ void get_tlm_fox() {
     if (firstTime != ON) {
       // delay for sample period
 
-/*
-      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
-        sleep((unsigned int)sleepTime);
+/**/
+//      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
+     int startSleep = millis();	    
+     if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
+        sleep(2.0); // 0.5);  // 25);  // initial period
+     while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
+        sleep(0.1); // 25); // 0.5);  // 25);
+//        sleep((unsigned int)sleepTime);
+/**/
+
+/*	    
+     if ((millis() - sampleTime) < 500)    //
+       if (mode == BPSK)
+	  sleep(4.0);
+//       else // FSK
+     if (mode == FSK)
+       sleep(2.3);	    
 */
+/*	
+      // most recent sleep code
+      
       if (mode == FSK) {
 	sleep(2.3);  //
 	printf("Sleep time 2.3\n");
@@ -1409,8 +1432,9 @@ void get_tlm_fox() {
 	sleep(2.95); // 2.3);  
 	printf("Sleep time 2.95\n");
       }    
-
-//      printf("Sample period: %d\n", millis() - (unsigned int)sampleTime);
+*/
+      printf("Sleep period: %d\n", millis() - startSleep);
+      fflush(stdout);
       
       sampleTime = (unsigned int) millis();
     } else
@@ -1657,7 +1681,7 @@ void get_tlm_fox() {
       }
       	  if (mode == FSK)
 	  {
-	      if (loop % 8 == 0) {
+	      if (loop % 32 == 0) {  // was 8
 		printf("Sending MIN frame \n");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
@@ -1671,7 +1695,7 @@ void get_tlm_fox() {
 		    sensor[count1] = sensor_min[count1];
 		}
 	      }
-	      if ((loop + 4) % 8 == 0) {
+	      if ((loop + 16) % 32 == 0) {  // was 8
 		printf("Sending MAX frame \n");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
@@ -2160,6 +2184,7 @@ void get_tlm_fox() {
       printf("\nConnection Failed \n");
       printf("Error: %s \n", strerror(errno));
       error = 1;
+      sleep(2.0);  // sleep if socket connection refused
     }
     if (error == 1)
     ; //rpitxStatus = -1;
@@ -2173,6 +2198,7 @@ void get_tlm_fox() {
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
     printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
     
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
@@ -2180,19 +2206,58 @@ void get_tlm_fox() {
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
       printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
+/*    if (mode == BPSK) {	  
+    start = millis();
+    sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+    printf("socket send 1a %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
     
-    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
-    {	  
-      start = millis();  // send frame twice 
-      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-      printf("socket send 3 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-      
-      if (sock_ret < (ctr * 2 + 2)) {
+    if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
-        sleep(0.5);
-        sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-        printf("socket send 4 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+      sleep(0.5);
+      sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+      printf("socket send 2a %d ms bytes: %d \n\n", millis() - start, sock_ret);
+    } 
+    }
+*/	  
+//    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
+//    if (firstTime == 1) // only do first time 
+    if ((firstTime == 1) || (((loop_count++ % 180) == 0) && (mode == FSK)) || (((loop_count++ % 80) == 0) && (mode == BPSK))) // do first time and was every 180 samples
+    {
+      int max;
+      if (mode == FSK)
+	      if (firstTime == 1)
+	      	max = 4;  // 5; // was 6
+              else
+		max = 3;
+      else  
+ 	      if (firstTime == 1)
+	      	max = 5;  // 5; // was 6
+              else
+		max = 4;  
+	    
+      for (int times = 0; times < max; times++) 	    
+      {
+	      start = millis();  // send frame until buffer fills
+	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
+	      
+	      if ((millis() - start) > 500) {
+		      printf("Buffer over filled!\n");
+		      break;
+	      }
+
+	      if (sock_ret < (ctr * 2 + 2)) {
+	  //    printf("Not resending\n");
+		sleep(0.5);
+		sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
+	      }
       }
+      sampleTime = (unsigned int) millis(); // resetting time for sleeping
+      fflush(stdout);
+//      if (firstTime == 1)
+//	      max -= 1;
     }
 
     if (sock_ret == -1) {
@@ -2208,7 +2273,8 @@ void get_tlm_fox() {
   //    digitalWrite (0, HIGH);
 
 //  if (mode == FSK)
-    firstTime = 0;
+    if (socket_open == 1)	
+    	firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
 
