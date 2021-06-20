@@ -2226,7 +2226,10 @@ void get_tlm_fox() {
     {
       int max;
       if (mode == FSK)
-	      max = 5; // was 6
+	      if (firstTime == 1)
+	      	max = 4;  // 5; // was 6
+              else
+		max = 3;
       else
 	      max = 4;
       
