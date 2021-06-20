@@ -2222,7 +2222,7 @@ void get_tlm_fox() {
 */	  
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
 //    if (firstTime == 1) // only do first time 
-    if ((firstTime == 1) || ((loop_count++ % 180) == 0)) // do first time and was every 180 samples
+    if ((firstTime == 1) || (((loop_count++ % 180) == 0) && (mode = FSK)) || ((loop_count++ % 80) == 0) && (mode = BPSK))) // do first time and was every 180 samples
     {
       int max;
       if (mode == FSK)
@@ -2230,9 +2230,12 @@ void get_tlm_fox() {
 	      	max = 4;  // 5; // was 6
               else
 		max = 3;
-      else
-	      max = 4;
-      
+      else  
+ 	      if (firstTime == 1)
+	      	max = 5;  // 5; // was 6
+              else
+		max = 4;  
+	    
       for (int times = 0; times < max; times++) 	    
       {
 	      start = millis();  // send frame until buffer fills
@@ -2253,6 +2256,8 @@ void get_tlm_fox() {
       }
       sampleTime = (unsigned int) millis(); // resetting time for sleeping
       fflush(stdout);
+//      if (firstTime == 1)
+//	      max -= 1;
     }
 
     if (sock_ret == -1) {
