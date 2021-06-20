@@ -600,10 +600,10 @@ int main(int argc, char * argv[]) {
       samples = S_RATE / bitRate;
       bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
 
-      //   samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+         samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
-      samplePeriod = 2200; // reduce dut to python and sensor querying delays
+      //samplePeriod = 2200; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
 	   
       frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
@@ -1406,9 +1406,9 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 100))  // was 500 for FSK
-        sleep(2.5); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 100))  // was 100
+     if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 100 500 for FSK
+        sleep(2.0); // 0.5);  // 25);  // initial period
+     while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 100
         sleep(0.25); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
