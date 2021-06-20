@@ -2222,7 +2222,7 @@ void get_tlm_fox() {
 */	  
 //    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
 //    if (firstTime == 1) // only do first time 
-    if ((firstTime == 1) || (((loop_count++ % 180) == 0) && (mode = FSK)) || ((loop_count++ % 80) == 0) && (mode = BPSK))) // do first time and was every 180 samples
+    if ((firstTime == 1) || ((loop_count++ % 180) == 0) && (mode = FSK)) || ((loop_count++ % 80) == 0) && (mode = BPSK))) // do first time and was every 180 samples
     {
       int max;
       if (mode == FSK)
