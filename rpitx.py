@@ -124,6 +124,13 @@ if __name__ == "__main__":
 		elif (mode == 'm'):
 			print("CW")
 #			time.sleep(4)
+			GPIO.output(txLed, txLedOn)
+			if (debug_mode == 1):
+				system("sudo gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+			else:
+				system("sudo gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+			GPIO.output(txLed, txLedOff)
+
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
