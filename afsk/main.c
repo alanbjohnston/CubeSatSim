@@ -18,14 +18,15 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include "cubesatsim.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "status.h"
-#include "ax5043.h"
-#include "ax25.h"
+#include "aprs/status.h"
+#include "aprs/ax5043.h"
+#include "aprs/ax25.h"
 #include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
