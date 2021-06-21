@@ -1143,13 +1143,14 @@ void get_tlm(void) {
 
     if (ax5043) {
       strcpy(str, header_str);
-    } else {
+    } else if (mode == AFSK) {
       strcpy(str, header_str3);
+      strcat(str, call);
+      strcat(str, header_str2);	    
+    }	    
 //      printf("Str: %s \n", str);
       if (mode != CW) {
-        strcat(str, call);
-        strcat(str, header_str2);
-        //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
+         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
           sprintf(header_lat, "%7.2f%c", latitude, 'N'); // lat
         else
@@ -1164,9 +1165,9 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
-//	printf("Str: %s \n", str);
       }
-    }
+//    }
+	printf("Str: %s \n", str);
 
     int channel;
     for (channel = 1; channel < 7; channel++) {
