@@ -184,6 +184,7 @@ int main(int argc, char * argv[]) {
       mode = CW;
       printf("Mode CW\n");
     } else {
+      mode = FSK;
       printf("Mode FSK\n");
     }
 
@@ -297,7 +298,7 @@ int main(int argc, char * argv[]) {
           cw_id = OFF;
 //        mode = AFSK;
         //		cycle = OFF;
-          printf("Mode AFSK with AX5043\n");
+          printf("AX5043 in use\n");
           transmit = TRUE;
 //  	sleep(10);  // just in case CW ID is sent      
         } else
