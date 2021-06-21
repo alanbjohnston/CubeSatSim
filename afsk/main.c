@@ -300,7 +300,7 @@ int main(int argc, char * argv[]) {
         printf("AX5043 not present!\n");
         pclose(file2);	    
     }
-    pclose(file);	
+//    pclose(file);	
   }
   //       else
   //       {
