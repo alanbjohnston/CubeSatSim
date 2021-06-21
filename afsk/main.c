@@ -1159,8 +1159,10 @@ void get_tlm(void) {
           sprintf(header_long, "%08.2f%c", longitude , 'E'); // long
         else
           sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
-
-        sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
+        if (ax5043)
+          sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
+        else
+          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
 //        printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
