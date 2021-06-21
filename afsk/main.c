@@ -24,16 +24,16 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "status.h"
-#include "ax5043.h"
-#include "ax25.h"
-#include "spi/ax5043spi.h"
+#include "afsk/status.h"
+#include "afsk/ax5043.h"
+#include "afsk/ax25.h"
+#include "ax5043/spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
-#include "TelemEncoding.h"
+#include "afsk/TelemEncoding.h"
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
@@ -184,6 +184,7 @@ int main(int argc, char * argv[]) {
       mode = CW;
       printf("Mode CW\n");
     } else {
+      mode = FSK;
       printf("Mode FSK\n");
     }
 
@@ -222,7 +223,8 @@ int main(int argc, char * argv[]) {
         mode = CW;
         printf("Mode is CW\n");
       } else {
-        printf("Mode is FSK\n");
+	mode = FSK;
+	printf("Mode is FSK\n");
       }	    
     }
   } 
@@ -270,45 +272,48 @@ int main(int argc, char * argv[]) {
 */	
   wiringPiSetup();
 
+  if (mode == AFSK) {	
   // Check for SPI and AX-5043 Digital Transceiver Board	
-  FILE * file = popen("sudo raspi-config nonint get_spi", "r");
+    FILE * file = popen("sudo raspi-config nonint get_spi", "r");
 //  printf("getc: %c \n", fgetc(file));
-  if (fgetc(file) == 48) {
-    printf("SPI is enabled!\n");
+    if (fgetc(file) == 48) {
+      printf("SPI is enabled!\n");
 
-    FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
+      FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
               printf("Result getc: %c \n", getc(file2));
 
-    if (fgetc(file2) != 'l') {
-      printf("SPI devices present!\n");
+      if (fgetc(file2) != 'l') {
+        printf("SPI devices present!\n");
       //	  }
 
-      setSpiChannel(SPI_CHANNEL);
-      setSpiSpeed(SPI_SPEED);
-      initializeSpi();
+        setSpiChannel(SPI_CHANNEL);
+        setSpiSpeed(SPI_SPEED);
+        initializeSpi();
       //	  char src_addr[5] = "KU2Y";
       //          char dest_addr[5] = "CQ";
-      ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
-      if (init_rf()) {
-        printf("AX5043 successfully initialized!\n");
-        ax5043 = TRUE;
-        cw_id = OFF;
-        mode = AFSK;
+        ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
+        if (init_rf()) {
+          printf("AX5043 successfully initialized!\n");
+          ax5043 = TRUE;
+          cw_id = OFF;
+//        mode = AFSK;
         //		cycle = OFF;
-        printf("Mode AFSK with AX5043\n");
-        transmit = TRUE;
-//	sleep(10);  // just in case CW ID is sent      
-      } else
-        printf("AX5043 not present!\n");
+          printf("AX5043 in use\n");
+          transmit = TRUE;
+//  	sleep(10);  // just in case CW ID is sent      
+        } else
+          printf("AX5043 not present!\n");
         pclose(file2);	    
+      }
     }
-//    pclose(file);	
+    pclose(file);	
   }
+	  
   //       else
   //       {
   //	  printf("SPI not enabled!\n");
   //       }
-  pclose(file);
+  //pclose(file);
   txLed = 0; // defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
