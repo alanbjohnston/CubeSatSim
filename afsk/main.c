@@ -1144,8 +1144,10 @@ void get_tlm(void) {
 
     if (ax5043) {
       strcpy(str, header_str);
-    } else if (mode == AFSK) {
+    } else {
       strcpy(str, header_str3);
+    }
+    if (mode == AFSK) {
       strcat(str, call);
       strcat(str, header_str2);	    
     }	    
