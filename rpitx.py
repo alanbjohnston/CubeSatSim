@@ -21,7 +21,6 @@ if GPIO.input(12) == False:
 	txLedOn = 1
 	txLedOff = 0
 elif GPIO.input(27) == False:
-	print(GPIO.input(27))
 	print("TFB")
 	transmit = True
 	txLed = 22
