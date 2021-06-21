@@ -272,11 +272,12 @@ int main(int argc, char * argv[]) {
   // Check for SPI and AX-5043 Digital Transceiver Board	
   FILE * file = popen("sudo raspi-config nonint get_spi", "r");
   pclose(file);	
+  printf("getc: %c \n", fgetc(file));
   if (fgetc(file) == 48) {
     printf("SPI is enabled!\n");
 
     FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
-    //          printf("Result getc: %c \n", getc(file2));
+              printf("Result getc: %c \n", getc(file2));
 
     if (fgetc(file2) != 'l') {
       printf("SPI devices present!\n");
