@@ -301,7 +301,7 @@ int main(int argc, char * argv[]) {
 //  	sleep(10);  // just in case CW ID is sent      
         } else
           printf("AX5043 not present!\n");
-          pclose(file2);	    
+        pclose(file2);	    
       }
     }
     pclose(file);	
@@ -311,7 +311,7 @@ int main(int argc, char * argv[]) {
   //       {
   //	  printf("SPI not enabled!\n");
   //       }
-  pclose(file);
+  //pclose(file);
   txLed = 0; // defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
