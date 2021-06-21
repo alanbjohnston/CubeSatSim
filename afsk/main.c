@@ -18,7 +18,7 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "cubesatsim.h"
+//#include "cubesatsim.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
