@@ -296,6 +296,7 @@ int main(int argc, char * argv[]) {
         //		cycle = OFF;
         printf("Mode AFSK with AX5043\n");
         transmit = TRUE;
+	sleep(10);  // just in case CW ID is sent      
       } else
         printf("AX5043 not present!\n");
         pclose(file2);	    
