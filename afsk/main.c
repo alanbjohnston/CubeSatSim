@@ -296,7 +296,7 @@ int main(int argc, char * argv[]) {
         //		cycle = OFF;
         printf("Mode AFSK with AX5043\n");
         transmit = TRUE;
-	sleep(10);  // just in case CW ID is sent      
+//	sleep(10);  // just in case CW ID is sent      
       } else
         printf("AX5043 not present!\n");
         pclose(file2);	    
@@ -1259,9 +1259,9 @@ void get_tlm(void) {
     } 
     else if (ax5043) {
       digitalWrite(txLed, txLedOn);
-      #ifdef DEBUG_LOGGING
-      printf("Tx LED On 5\n");
-      #endif
+//      #ifdef DEBUG_LOGGING
+//      printf("Tx LED On 5\n");
+//      #endif
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
       printf("data: %s \n", data);	    
@@ -1274,9 +1274,9 @@ void get_tlm(void) {
       }
       ax5043_wait_for_transmit();
       digitalWrite(txLed, txLedOff);
-      #ifdef DEBUG_LOGGING
-      printf("Tx LED Off\n");
-      #endif
+//      #ifdef DEBUG_LOGGING
+//      printf("Tx LED Off\n");
+//      #endif
 
       if (ret) {
         fprintf(stderr,
@@ -1284,7 +1284,7 @@ void get_tlm(void) {
           ret);
         exit(EXIT_FAILURE);
       }
-      sleep(2);
+      sleep(4);  // was 2
 	    
     } else {  // APRS using rpitx
 	    
