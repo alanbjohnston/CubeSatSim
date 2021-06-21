@@ -222,7 +222,8 @@ int main(int argc, char * argv[]) {
         mode = CW;
         printf("Mode is CW\n");
       } else {
-        printf("Mode is FSK\n");
+	mode = FSK;
+	printf("Mode is FSK\n");
       }	    
     }
   } 
