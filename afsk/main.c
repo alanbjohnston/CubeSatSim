@@ -1128,7 +1128,7 @@ void get_tlm(void) {
 
     char str[1000];
     char tlm_str[1000];
-    char header_str[] = "\x03\xf0hi hi ";
+    char header_str[] = "\x03\xf0"; // hi hi ";
     char header_str3[] = "echo '";
     //char header_str2[] = ">CQ:>041440zhi hi ";
     //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
