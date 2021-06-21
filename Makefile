@@ -14,7 +14,7 @@ rebuild: all
 lib: libax5043.a
 
 clean:
-	rm -f radiochat	
+#	rm -f radiochat	
 	rm -f radiopiglatin
 	rm -f testax5043rx
 	rm -f testax5043tx
@@ -29,9 +29,9 @@ clean:
 	rm -rf ax5043/doc/latex
 	rm -f telem
 
-docs:
-	mkdir -p ax5043/doc; cd ax5043; doxygen Doxyfile
-	cd ax5043/doc/latex && make && cd ../.. && cp doc/latex/refman.pdf doc/TransceiverFramework.pdf
+#docs:
+#	mkdir -p ax5043/doc; cd ax5043; doxygen Doxyfile
+#	cd ax5043/doc/latex && make && cd ../.. && cp doc/latex/refman.pdf doc/TransceiverFramework.pdf
 
 libax5043.a: ax5043/crc/crc.o
 libax5043.a: ax5043/ax5043support/ax5043tx.o
@@ -48,9 +48,9 @@ libax5043.a: ax5043/generated/configcommon.o
 libax5043.a: ax5043/spi/ax5043spi.o
 	ar rcsv libax5043.a ax5043/generated/configcommon.o ax5043/generated/configtx.o ax5043/generated/configrx.o ax5043/generated/config.o ax5043/axradio/axradioinit.o ax5043/axradio/axradiomode.o ax5043/axradio/axradiotx.o ax5043/axradio/axradiorx.o ax5043/crc/crc.o ax5043/spi/ax5043spi.o ax5043/ax5043support/ax5043tx.o ax5043/ax5043support/ax5043init.o ax5043/ax5043support/ax5043rx.o
 
-radiochat: libax5043.a
-radiochat: chat/chat_main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radiochat -pthread -L./ chat/chat_main.o -lwiringPi -lax5043
+#radiochat: libax5043.a
+#radiochat: chat/chat_main.o
+#	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o radiochat -pthread -L./ chat/chat_main.o -lwiringPi -lax5043
 
 radiopiglatin: libax5043.a
 radiopiglatin: piglatin/piglatin_main.o
