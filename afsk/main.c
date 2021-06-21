@@ -1261,6 +1261,7 @@ void get_tlm(void) {
       #endif
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
+      printf("data: %s \n", data);	    
       int ret = ax25_tx_frame( & hax25, & hax5043, data, strnlen(str, 256));
       if (ret) {
         fprintf(stderr,
