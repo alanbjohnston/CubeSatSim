@@ -2,11 +2,13 @@ all: DEBUG_BEHAVIOR=
 all: libax5043.a
 all: cubesatsim 
 all: telem
+all: cubesatsim2 
 
 debug: DEBUG_BEHAVIOR = -DDEBUG_LOGGING
 debug: libax5043.a
 debug: cubesatsim
 debug: telem
+debug: cubesatsim2
 
 rebuild: clean
 rebuild: all
@@ -28,7 +30,7 @@ clean:
 #	rm -rf ax5043/doc/html
 #	rm -rf ax5043/doc/latex
 	rm -f telem
-
+	rm -f cubesatsim2
 #docs:
 #	mkdir -p ax5043/doc; cd ax5043; doxygen Doxyfile
 #	cd ax5043/doc/latex && make && cd ../.. && cp doc/latex/refman.pdf doc/TransceiverFramework.pdf
@@ -83,6 +85,12 @@ cubesatsim: afsk/ax25.o
 cubesatsim: afsk/ax5043.o
 cubesatsim: afsk/main.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o afsk/main.o -lwiringPi -lax5043 -lm
+
+cubesatsim2: libax5043.a
+cubesatsim2: afsk/ax25.o
+cubesatsim2: afsk/ax5043.o
+cubesatsim2: main.o
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o main.o -lwiringPi -lax5043 -lm
 
 telem: afsk/telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ afsk/telem.o -lwiringPi 
