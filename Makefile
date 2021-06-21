@@ -90,7 +90,7 @@ cubesatsim2: libax5043.a
 cubesatsim2: afsk/ax25.o
 cubesatsim2: afsk/ax5043.o
 cubesatsim2: main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o main.o -lwiringPi -lax5043 -lm
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim2 -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o main.o -lwiringPi -lax5043 -lm
 
 telem: afsk/telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ afsk/telem.o -lwiringPi 
