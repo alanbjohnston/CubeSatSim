@@ -271,17 +271,17 @@ int main(int argc, char * argv[]) {
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
   FILE * file = popen("sudo raspi-config nonint get_spi", "r");
-  pclose(file);	
+//  printf("getc: %c \n", fgetc(file));
   if (fgetc(file) == 48) {
     printf("SPI is enabled!\n");
 
     FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
-    //          printf("Result getc: %c \n", getc(file2));
+              printf("Result getc: %c \n", getc(file2));
 
     if (fgetc(file2) != 'l') {
       printf("SPI devices present!\n");
       //	  }
-      pclose(file2);
+
       setSpiChannel(SPI_CHANNEL);
       setSpiSpeed(SPI_SPEED);
       initializeSpi();
@@ -296,9 +296,12 @@ int main(int argc, char * argv[]) {
         //		cycle = OFF;
         printf("Mode AFSK with AX5043\n");
         transmit = TRUE;
+//	sleep(10);  // just in case CW ID is sent      
       } else
         printf("AX5043 not present!\n");
+        pclose(file2);	    
     }
+//    pclose(file);	
   }
   //       else
   //       {
@@ -1126,7 +1129,7 @@ void get_tlm(void) {
 
     char str[1000];
     char tlm_str[1000];
-    char header_str[] = "\x03\xf0hi hi ";
+    char header_str[] = "\x03\xf0"; // hi hi ";
     char header_str3[] = "echo '";
     //char header_str2[] = ">CQ:>041440zhi hi ";
     //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
@@ -1141,13 +1144,14 @@ void get_tlm(void) {
 
     if (ax5043) {
       strcpy(str, header_str);
-    } else {
+    } else if (mode == AFSK) {
       strcpy(str, header_str3);
+      strcat(str, call);
+      strcat(str, header_str2);	    
+    }	    
 //      printf("Str: %s \n", str);
       if (mode != CW) {
-        strcat(str, call);
-        strcat(str, header_str2);
-        //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
+         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
           sprintf(header_lat, "%7.2f%c", latitude, 'N'); // lat
         else
@@ -1156,15 +1160,17 @@ void get_tlm(void) {
           sprintf(header_long, "%08.2f%c", longitude , 'E'); // long
         else
           sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
-
-        sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
+        if (ax5043)
+          sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
+        else
+          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
 //        printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
-//	printf("Str: %s \n", str);
       }
-    }
+//    }
+	printf("Str: %s \n", str);
 
     int channel;
     for (channel = 1; channel < 7; channel++) {
@@ -1253,11 +1259,12 @@ void get_tlm(void) {
     } 
     else if (ax5043) {
       digitalWrite(txLed, txLedOn);
-      #ifdef DEBUG_LOGGING
-      printf("Tx LED On 5\n");
-      #endif
+//      #ifdef DEBUG_LOGGING
+//      printf("Tx LED On 5\n");
+//      #endif
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
+      printf("data: %s \n", data);	    
       int ret = ax25_tx_frame( & hax25, & hax5043, data, strnlen(str, 256));
       if (ret) {
         fprintf(stderr,
@@ -1267,9 +1274,9 @@ void get_tlm(void) {
       }
       ax5043_wait_for_transmit();
       digitalWrite(txLed, txLedOff);
-      #ifdef DEBUG_LOGGING
-      printf("Tx LED Off\n");
-      #endif
+//      #ifdef DEBUG_LOGGING
+//      printf("Tx LED Off\n");
+//      #endif
 
       if (ret) {
         fprintf(stderr,
@@ -1277,7 +1284,7 @@ void get_tlm(void) {
           ret);
         exit(EXIT_FAILURE);
       }
-      sleep(2);
+      sleep(4);  // was 2
 	    
     } else {  // APRS using rpitx
 	    
