@@ -27,7 +27,7 @@
 #include "afsk/status.h"
 #include "afsk/ax5043.h"
 #include "afsk/ax25.h"
-#include "afsk/spi/ax5043spi.h"
+#include "ax5043/spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
