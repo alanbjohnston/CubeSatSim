@@ -27,7 +27,7 @@
 #include "status.h"
 #include "ax5043.h"
 #include "ax25.h"
-#include "ax5043/spi/ax5043spi.h"
+#include "spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
