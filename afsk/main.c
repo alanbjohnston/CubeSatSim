@@ -639,7 +639,9 @@ int main(int argc, char * argv[]) {
 	  
     FILE * uptime_file = fopen("/proc/uptime", "r");
     fscanf(uptime_file, "%f", & uptime_sec);
-    uptime = (int) uptime_sec;
+
+    uptime = (int) (uptime_sec + 0.5);
+    printf("Uptime sec: %f \n");	  
     #ifdef DEBUG_LOGGING
     printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
     #endif
