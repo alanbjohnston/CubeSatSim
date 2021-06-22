@@ -641,10 +641,10 @@ int main(int argc, char * argv[]) {
     fscanf(uptime_file, "%f", & uptime_sec);
 
     uptime = (int) (uptime_sec + 0.5);
-    printf("Uptime sec: %f \n", uptime_sec);	  
-    #ifdef DEBUG_LOGGING
+//    printf("Uptime sec: %f \n", uptime_sec);	  
+//    #ifdef DEBUG_LOGGING
     printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-    #endif
+//    #endif
     fclose(uptime_file);
 	  
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
