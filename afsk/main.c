@@ -163,7 +163,7 @@ const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py "
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
-char dest_addr[5] = "CQ";
+char dest_addr[5] = "APCSS";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
 int main(int argc, char * argv[]) {
@@ -285,8 +285,6 @@ int main(int argc, char * argv[]) {
       setSpiChannel(SPI_CHANNEL);
       setSpiSpeed(SPI_SPEED);
       initializeSpi();
-      //	  char src_addr[5] = "KU2Y";
-      //          char dest_addr[5] = "CQ";
       ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
       if (init_rf()) {
         printf("AX5043 successfully initialized!\n");
@@ -1135,14 +1133,14 @@ void get_tlm(void) {
     char header_str3[] = "echo '";
     //char header_str2[] = ">CQ:>041440zhi hi ";
     //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
-    char header_str2[] = ">CQ:";
+    char header_str2[] = ">APCSS:";
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'";
 //    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
-    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
+    char footer_str[] = ">APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
 
     if (ax5043) {
       strcpy(str, header_str);
