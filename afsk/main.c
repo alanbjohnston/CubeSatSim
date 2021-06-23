@@ -1756,7 +1756,8 @@ void get_tlm_fox() {
     //    printf("h[0] %x\n", h[0]);
     h[1] = (short int) ((reset_count >> 5) & 0xff);
     //    printf("h[1] %x\n", h[1]);
-    h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
+    if (uptime != 0)	  // if uptime is 0, leave reset count at 0
+      h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
     //    printf("h[2] %x\n", h[2]);
     h[2] = (short int) ((h[2] & 0x0e) | ((uptime & 0x1f) << 3));
     //    printf("h[2] %x\n", h[2]);
