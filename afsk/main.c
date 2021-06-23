@@ -1736,7 +1736,7 @@ void get_tlm_fox() {
     } 
 	  
     if (uptime == 0)
-      frm_type = 0xf;  // set to invalid frame type 
+      frm_type = 0x5;  // set to invalid frame type 
 	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
