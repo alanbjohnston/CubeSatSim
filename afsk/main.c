@@ -538,22 +538,6 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
-  for (int i = 0; i < 9; i++) {
-    voltage_min[i] = 1000.0;
-    current_min[i] = 1000.0;
-    voltage_max[i] = -1000.0;
-    current_max[i] = -1000.0;
-  }
-  for (int i = 0; i < 17; i++) {
-    sensor_min[i] = 1000.0;
-    sensor_max[i] = -1000.0;
- //   printf("Sensor min and max initialized!");
-  }
-  for (int i = 0; i < 3; i++) {
-    other_min[i] = 1000.0;
-    other_max[i] = -1000.0;
-  }
-
    if (mode == FSK) {
       bitRate = 200;
       rsFrames = 1;
@@ -615,7 +599,7 @@ int main(int argc, char * argv[]) {
   memset(other, 0, sizeof(other));	
 	
   if ((mode == FSK) || (mode == BPSK)) 
-      get_tlm_fox();	
+      get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
   if (!sim_mode)
@@ -631,6 +615,22 @@ int main(int argc, char * argv[]) {
 
     fgets(cmdbuffer, 1000, file1);
     fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
+  }
+
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
+  }
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+ //   printf("Sensor min and max initialized!");
+  }
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
   }
 	
   long int loopTime;
