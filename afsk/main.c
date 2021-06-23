@@ -2022,8 +2022,7 @@ void get_tlm_fox() {
         {
           if (ctr1 < headerLen) {
             rs_frame[j][i] = h[ctr1];
-	    if (uptime != 0)	// skip updated the RS FEC if uptime is 0 so the frame will fail the FEC check and be discarded  
-              update_rs(parities[j], h[ctr1]);
+            update_rs(parities[j], h[ctr1]);
             //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
             data8[ctr1++] = rs_frame[j][i];
             //				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
@@ -2088,14 +2087,17 @@ void get_tlm_fox() {
       rd = nrd; // ^ nrd;
       ctr2++;
     }
-    for (i = 0; i < parityLen; i++) {
-      for (int j = 0; j < rsFrames; j++) {
-        data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
-        nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
+    if (uptime != 0)	// skip update parties if uptime is 0 so the frame will fail the FEC check and be discarded  
+    {
+      for (i = 0; i < parityLen; i++) {
+        for (int j = 0; j < rsFrames; j++) {
+          data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
+          nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
 
-        rd = nrd;
+          rd = nrd;
+        }
       }
     }
     #ifdef DEBUG_LOGGING
