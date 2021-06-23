@@ -1733,11 +1733,7 @@ void get_tlm_fox() {
 	  }
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
-    } 
-/*	  
-    if (uptime == 0)
-      frm_type = 0x5;  // set to invalid frame type 
-*/	  
+    } 	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
@@ -2026,7 +2022,8 @@ void get_tlm_fox() {
         {
           if (ctr1 < headerLen) {
             rs_frame[j][i] = h[ctr1];
-            update_rs(parities[j], h[ctr1]);
+	    if (uptime != 0)	// skip updated the RS FEC if uptime is 0 so the frame will fail the FEC check and be discarded  
+              update_rs(parities[j], h[ctr1]);
             //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
             data8[ctr1++] = rs_frame[j][i];
             //				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
