@@ -2583,7 +2583,7 @@ int test_i2c_bus(int bus)
 	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
 //	  	printf("bus is present\n\n");	    
     	  	char result[128];		
-    	  	const char command_start[] = "timeout 10 i2cdetect -y ";
+    	  	const char command_start[] = "timeout 5 i2cdetect -y ";  // was 10
 		char command[50];
 		strcpy (command, command_start);
     	 	strcat (command, busS);
