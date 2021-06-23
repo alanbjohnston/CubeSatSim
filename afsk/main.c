@@ -618,9 +618,6 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();	
   firstTime = 1;
 	  
-  fgets(cmdbuffer, 1000, file1);
-  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
-	
   strcpy(pythonStr, pythonCmd);
   strcat(pythonStr, busStr);
   strcat(pythonConfigStr, pythonStr);
@@ -630,6 +627,9 @@ int main(int argc, char * argv[]) {
 	
   file1 = sopen(pythonConfigStr);  // python sensor polling function	  
 
+  fgets(cmdbuffer, 1000, file1);
+  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
+		
   long int loopTime;
   loopTime = millis();	
 	
