@@ -1400,6 +1400,9 @@ void get_tlm_fox() {
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
+	
+  if (uptime == 0)
+    frm_type = 0xf;  // set to invalid frame type 
 
   if (mode == FSK)
     id = 7;
