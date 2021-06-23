@@ -395,15 +395,6 @@ int main(int argc, char * argv[]) {
     snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
     voltageThreshold = 8.0;
   }
-
-  strcpy(pythonStr, pythonCmd);
-  strcat(pythonStr, busStr);
-  strcat(pythonConfigStr, pythonStr);
-  strcat(pythonConfigStr, " c");  
-
-  fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
-	
-  file1 = sopen(pythonConfigStr);  // try new function
 	
   // test i2c buses	
   fflush(stdout);
@@ -433,9 +424,6 @@ int main(int argc, char * argv[]) {
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
   #endif
 		
-  fgets(cmdbuffer, 1000, file1);
-  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
-	
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
   pclose(file5);
 	
@@ -620,6 +608,27 @@ int main(int argc, char * argv[]) {
       }	 		
       printf("\n");
    }
+	
+  memset(voltage, 0, sizeof(voltage));
+  memset(current, 0, sizeof(current));
+  memset(sensor, 0, sizeof(sensor));
+  memset(other, 0, sizeof(other));	
+	
+  if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
+      get_tlm_fox();	
+  firstTime = 1;
+	  
+  fgets(cmdbuffer, 1000, file1);
+  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
+	
+  strcpy(pythonStr, pythonCmd);
+  strcat(pythonStr, busStr);
+  strcat(pythonConfigStr, pythonStr);
+  strcat(pythonConfigStr, " c");  
+
+  fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
+	
+  file1 = sopen(pythonConfigStr);  // python sensor polling function	  
 
   long int loopTime;
   loopTime = millis();	
