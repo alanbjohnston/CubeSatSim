@@ -1734,10 +1734,10 @@ void get_tlm_fox() {
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
     } 
-	  
+/*	  
     if (uptime == 0)
       frm_type = 0x5;  // set to invalid frame type 
-	  
+*/	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
