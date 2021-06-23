@@ -614,7 +614,7 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));	
 	
-  if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
+  if ((mode == FSK) || (mode == BPSK)) 
       get_tlm_fox();	
   firstTime = 1;
 	  
