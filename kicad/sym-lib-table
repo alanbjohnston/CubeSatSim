@@ -1,3 +1,0 @@
-(sym_lib_table
-  (lib (name pihat_template-rescue)(type Legacy)(uri ${KIPRJMOD}/pihat_template-rescue.lib)(options "")(descr ""))
-)
