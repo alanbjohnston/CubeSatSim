@@ -1688,7 +1688,8 @@ FILE *sopen(const char *program)
  *  Created on: Feb 3, 2014
  *      Author: fox
  */
- 
+
+/* 
 #include <stdio.h>
 #include <stdint.h>
 #include <assert.h>
@@ -1698,7 +1699,7 @@ FILE *sopen(const char *program)
 
 #define false 0
 #define true 1
-
+*/
 void write_wave(int i, short int *buffer)
 {
 		if (mode == FSK)
