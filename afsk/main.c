@@ -600,7 +600,7 @@ int main(int argc, char * argv[]) {
 	
   if ((mode == FSK) || (mode == BPSK)) 
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
-  // firstTime = 1;
+  firstTime = 1;
 	  
   if (!sim_mode)
   {
