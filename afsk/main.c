@@ -132,8 +132,8 @@ void write_to_buffer(int i, int symbol, int val);
 void write_wave(int i, short int * buffer);
 int uart_fd;
 
-int reset_count;
-float uptime_sec;
+int reset_count = 0;
+float uptime_sec = 0;
 long int uptime;
 char call[5];
 char sim_yes[10];
@@ -395,15 +395,6 @@ int main(int argc, char * argv[]) {
     snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
     voltageThreshold = 8.0;
   }
-
-  strcpy(pythonStr, pythonCmd);
-  strcat(pythonStr, busStr);
-  strcat(pythonConfigStr, pythonStr);
-  strcat(pythonConfigStr, " c");  
-
-  fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
-	
-  file1 = sopen(pythonConfigStr);  // try new function
 	
   // test i2c buses	
   fflush(stdout);
@@ -433,10 +424,7 @@ int main(int argc, char * argv[]) {
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
   #endif
 		
-  fgets(cmdbuffer, 1000, file1);
-  fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
-	
-  FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
+  FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
   pclose(file5);
 	
   // try connecting to STEM Payload board using UART
@@ -550,22 +538,6 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
-  for (int i = 0; i < 9; i++) {
-    voltage_min[i] = 1000.0;
-    current_min[i] = 1000.0;
-    voltage_max[i] = -1000.0;
-    current_max[i] = -1000.0;
-  }
-  for (int i = 0; i < 17; i++) {
-    sensor_min[i] = 1000.0;
-    sensor_max[i] = -1000.0;
- //   printf("Sensor min and max initialized!");
-  }
-  for (int i = 0; i < 3; i++) {
-    other_min[i] = 1000.0;
-    other_max[i] = -1000.0;
-  }
-
    if (mode == FSK) {
       bitRate = 200;
       rsFrames = 1;
@@ -620,7 +592,47 @@ int main(int argc, char * argv[]) {
       }	 		
       printf("\n");
    }
+	
+  memset(voltage, 0, sizeof(voltage));
+  memset(current, 0, sizeof(current));
+  memset(sensor, 0, sizeof(sensor));
+  memset(other, 0, sizeof(other));	
+	
+  if ((mode == FSK) || (mode == BPSK)) 
+      get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
+  firstTime = 1;
+	  
+  if (!sim_mode)
+  {
+    strcpy(pythonStr, pythonCmd);
+    strcat(pythonStr, busStr);
+    strcat(pythonConfigStr, pythonStr);
+    strcat(pythonConfigStr, " c");  
 
+    fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
+	
+    file1 = sopen(pythonConfigStr);  // python sensor polling function	  
+
+    fgets(cmdbuffer, 1000, file1);
+    fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
+  }
+
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
+  }
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+ //   printf("Sensor min and max initialized!");
+  }
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
+  }
+	
   long int loopTime;
   loopTime = millis();	
 	
@@ -1388,7 +1400,7 @@ void get_tlm_fox() {
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
-
+	
   if (mode == FSK)
     id = 7;
   else
@@ -1721,7 +1733,7 @@ void get_tlm_fox() {
 	  }
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
-    }  
+    } 	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
@@ -1739,15 +1751,13 @@ void get_tlm_fox() {
     //printf("Sleep over\n");
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
-    //    printf("h[0] %x\n", h[0]);
-    h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
-    //    printf("h[0] %x\n", h[0]);
-    h[1] = (short int) ((reset_count >> 5) & 0xff);
-    //    printf("h[1] %x\n", h[1]);
-    h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
-    //    printf("h[2] %x\n", h[2]);
+     if (uptime != 0)	  // if uptime is 0, leave reset count at 0
+    {
+      h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
+      h[1] = (short int) ((reset_count >> 5) & 0xff);
+      h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
+    }
     h[2] = (short int) ((h[2] & 0x0e) | ((uptime & 0x1f) << 3));
-    //    printf("h[2] %x\n", h[2]);
     h[3] = (short int) ((uptime >> 5) & 0xff);
     h[4] = (short int) ((uptime >> 13) & 0xff);
     h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
@@ -2077,16 +2087,19 @@ void get_tlm_fox() {
       rd = nrd; // ^ nrd;
       ctr2++;
     }
-    for (i = 0; i < parityLen; i++) {
-      for (int j = 0; j < rsFrames; j++) {
-        data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
-        nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
+//    {
+      for (i = 0; i < parityLen; i++) {
+        for (int j = 0; j < rsFrames; j++) {
+          if ((uptime != 0) || (i != 0))	// don't correctly update parties if uptime is 0 so the frame will fail the FEC check and be discarded  
+            data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
+	  nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
 
-        rd = nrd;
+          rd = nrd;
+        }
       }
-    }
+ //   }
     #ifdef DEBUG_LOGGING
     // 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
     #endif
@@ -2571,7 +2584,7 @@ int test_i2c_bus(int bus)
 	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
 //	  	printf("bus is present\n\n");	    
     	  	char result[128];		
-    	  	const char command_start[] = "timeout 10 i2cdetect -y ";
+    	  	const char command_start[] = "timeout 5 i2cdetect -y ";  // was 10
 		char command[50];
 		strcpy (command, command_start);
     	 	strcat (command, busS);
