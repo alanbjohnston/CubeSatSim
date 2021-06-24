@@ -37,11 +37,10 @@ const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 FILE *sopen(const char *program);
-int debug = OFF;
 
 */
 int main(int argc, char *argv[]) {
-	
+  int debug = OFF;	
   if (argc > 1) {
     if ( * argv[1] == 'd') {
       debug = ON;
