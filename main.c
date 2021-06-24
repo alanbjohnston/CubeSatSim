@@ -93,6 +93,8 @@ void config_x25();
 void trans_x25();
 int upper_digit(int number);
 int lower_digit(int number);
+void update_rs(unsigned char parity[32], unsigned char c);
+void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
 static int init_rf();
 int socket_open = 0;
 int sock = 0;
