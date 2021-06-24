@@ -98,6 +98,11 @@ if __name__ == "__main__":
 		if (mode == 'a'):
 			print("AFSK")
 #			time.sleep(4)
+			try:
+				file = open("/home/pi/CubeSatSim/t.txt")
+				file.close()
+			except:
+				system("echo '" + callsign + ">APCSS:hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > t.txt")
 			for x in range(5):
 				GPIO.output(txLed, txLedOn)
 				if (debug_mode == 1):
