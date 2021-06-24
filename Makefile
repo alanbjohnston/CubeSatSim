@@ -1,6 +1,6 @@
 all: DEBUG_BEHAVIOR=
 all: libax5043.a
-all: cubesatsim 
+all: cube 
 all: telem
 
 debug: DEBUG_BEHAVIOR = -DDEBUG_LOGGING
@@ -78,7 +78,7 @@ libax5043.a: ax5043/spi/ax5043spi.o
 #testafsktx: afsktx/main.o
 #	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o testafsktx -Wall -Wextra -L./ afsktx/ax25.o afsktx/ax5043.o afsktx/main.o -lwiringPi -lax5043 
 
-cubesatsim: cubesatsim.h
+cubesatsim: main.h
 cubesatsim: libax5043.a
 cubesatsim: afsk/ax25.o
 cubesatsim: afsk/ax5043.o
