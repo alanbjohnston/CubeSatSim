@@ -102,7 +102,7 @@ if __name__ == "__main__":
 				file = open("/home/pi/CubeSatSim/t.txt")
 				file.close()
 			except:
-				system("echo '" + callsign + ">APCSS:hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > t.txt && echo 'AMSAT>APCSS:010101/hi hi ' >> t.txt")
+				system("echo '" + callsign + ">APCSS:hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > /home/pi/CubeSatSim/t.txt && echo 'AMSAT>APCSS:010101/hi hi ' >> /home/pi/CubeSatSim/t.txt")
 			for x in range(5):
 				GPIO.output(txLed, txLedOn)
 				if (debug_mode == 1):
@@ -129,6 +129,11 @@ if __name__ == "__main__":
 		elif (mode == 'm'):
 			print("CW")
 #			time.sleep(4)
+			try:
+				file = open("/home/pi/CubeSatSim/cw.txt")
+				file.close()
+			except:
+				system("echo 'hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > /home/pi/CubeSatSim/cw.txt")
 			GPIO.output(txLed, txLedOn)
 			if (debug_mode == 1):
 				system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
