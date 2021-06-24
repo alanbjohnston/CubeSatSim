@@ -84,7 +84,7 @@ cubesatsim: afsk/ax5043.o
 #cubesatsim: TelemEncoding.o
 #cubesatsim: afsk/main.o
 cubesatsim: main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o TelemEncoding.o main.o -lwiringPi -lax5043 -lm
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o main.o -lwiringPi -lax5043 -lm
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
