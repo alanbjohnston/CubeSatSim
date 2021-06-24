@@ -424,7 +424,7 @@ int main(int argc, char * argv[]) {
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
   #endif
 		
-  FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1", "r");
+  FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
   pclose(file5);
 	
   // try connecting to STEM Payload board using UART
