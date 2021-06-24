@@ -81,12 +81,16 @@ libax5043.a: ax5043/spi/ax5043spi.o
 cubesatsim: libax5043.a
 cubesatsim: afsk/ax25.o
 cubesatsim: afsk/ax5043.o
+#cubesatsim: TelemEncoding.o
 #cubesatsim: afsk/main.o
 cubesatsim: main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o main.o -lwiringPi -lax5043 -lm
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o TelemEncoding.o main.o -lwiringPi -lax5043 -lm
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
+
+TelemEncoding.o: TelemEncoding.h
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
