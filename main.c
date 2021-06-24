@@ -2405,7 +2405,7 @@ void get_tlm_fox() {
      transmit_word(encode_8b10b(&state,parity[i]);
 
    transmit_word(encode_8b10b(&state,-1); // Transmit end-of-frame flag
-*/
+*
 
 
 #include <string.h>
@@ -2518,7 +2518,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 	word >>= 8;
 	}
 }
-
+*/
 
 void write_wave(int i, short int *buffer)
 {
