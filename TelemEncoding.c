@@ -43,6 +43,8 @@
 #include <string.h>
 //#include "Fox.h"
 #include "TelemEncoding.h"
+#include <assert.h>
+#include <stdio.h>
 
 #ifndef NULL
 #define NULL ((void *)0)
