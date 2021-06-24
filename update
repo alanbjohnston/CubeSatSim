@@ -2,6 +2,8 @@
 
 echo -e "\nupdate script for CubeSatSim\n"
 
+sudo rm morse.wav id.txt cw.txt 
+
 if [ "$1" = "u" ]; then
 
   sudo apt-get update && sudo apt-get dist-upgrade -y
