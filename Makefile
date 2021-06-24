@@ -234,6 +234,7 @@ afsk/ax5043.o: ax5043/spi/ax5043spi.h
 #afsk/main.o: afsk/ax25.h
 #afsk/main.o: ax5043/spi/ax5043spi.h
 #	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.c; cd ..
+main.o: main.h
 main.o: main.c
 main.o: afsk/status.h
 main.o: afsk/ax5043.h
