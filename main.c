@@ -439,7 +439,7 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));	
 	
-  if (((mode == FSK) || (mode == BPSK)) && !sim_mode)
+  if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
@@ -1601,7 +1601,9 @@ void get_tlm_fox() {
     {
       int max;
       if (mode == FSK)
-	      if (firstTime == 1)
+	      if (sim_mode)
+ 		max = 6;
+              else if (firstTime == 1)
 	      	max = 4;  // 5; // was 6
               else
 		max = 3;
