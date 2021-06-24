@@ -5,6 +5,8 @@
  *
  */
 
+#include "main.h"
+/*
 #include <fcntl.h>                              
 #include <stdlib.h>
 #include <stdio.h>
@@ -37,6 +39,7 @@ int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
 FILE *sopen(const char *program);
 int debug = OFF;
 
+*/
 int main(int argc, char *argv[]) {
 	
   if (argc > 1) {
