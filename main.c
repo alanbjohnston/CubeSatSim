@@ -1,5 +1,6 @@
 /*
- *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, or BPSK format
+ *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, BPSK, or CW format
+ *  Or transmits SSTV stored images or Pi camera iamges.
  *
  *  Copyright Alan B. Johnston
  *
@@ -19,159 +20,7 @@
  */
 
 #include "main.h"
-/*
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include "afsk/status.h"
-#include "afsk/ax5043.h"
-#include "afsk/ax25.h"
-#include "ax5043/spi/ax5043spi.h"
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
-#include <wiringSerial.h>
-#include <time.h>
-#include <math.h>
-//#include "TelemEncoding.h"
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
-#include <string.h>
-#include <arpa/inet.h>
-#include <errno.h>
 
-#define PORT 8080
-
-#define A 1
-#define B 2
-#define C 3
-#define D 4
-#define PLUS_X 0
-#define PLUS_Y 1
-#define BAT 2
-#define BUS 3
-#define MINUS_X 4
-#define MINUS_Y 5
-#define PLUS_Z 6
-#define MINUS_Z 7
-#define TEMP 2
-#define PRES 3
-#define ALT 4
-#define HUMI 5
-#define GYRO_X 7
-#define GYRO_Y 8
-#define GYRO_Z 9
-#define ACCEL_X 10
-#define ACCEL_Y 11
-#define ACCEL_Z 12
-#define XS1 14
-#define XS2 15
-#define XS3 16
-
-#define RSSI 0
-#define IHU_TEMP 2
-#define SPIN 1
-
-#define OFF - 1
-#define ON 1
-
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
-uint8_t data[1024];
-uint32_t tx_channel = 0;
-
-ax5043_conf_t hax5043;
-ax25_conf_t hax25;
-
-int twosToInt(int val, int len);
-float toAprsFormat(float input);
-float rnd_float(double min, double max);
-void get_tlm();
-void get_tlm_fox();
-int encodeA(short int * b, int index, int val);
-int encodeB(short int * b, int index, int val);
-void config_x25();
-void trans_x25();
-int upper_digit(int number);
-int lower_digit(int number);
-void update_rs(unsigned char parity[32], unsigned char c);
-void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
-static int init_rf();
-int Encode_8b10b[][];
-
-int socket_open = 0;
-int sock = 0;
-int loop = -1, loop_count = 0;
-int firstTime = ON; // 0;
-long start;
-int testCount = 0;
-long time_start;
-char cmdbuffer[1000];
-FILE * file1;
-short int buffer[2336400]; // max size for 10 frames count of BPSK
-FILE *sopen(const char *program);
-
-#define S_RATE	(48000) // (44100)
-
-#define AFSK 1
-#define FSK 2
-#define BPSK 3
-#define SSTV 4
-#define CW 5
-
-int rpitxStatus = -1;
-
-float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
-float freq_Hz = 3000; // 1200
-short int sin_samples;
-short int sin_map[16];
-int STEMBoardFailure = 1;
-
-int smaller;
-int flip_ctr = 0;
-int phase = 1;
-int ctr = 0;
-int rd = 0;
-int nrd;
-void write_to_buffer(int i, int symbol, int val);
-void write_wave(int i, short int * buffer);
-int uart_fd;
-
-int reset_count = 0;
-float uptime_sec = 0;
-long int uptime;
-char call[5];
-char sim_yes[10];
-
-int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
-float sleepTime;
-unsigned int sampleTime = 0;
-int frames_sent = 0;
-int cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
-float latitude = 39.027702f, longitude = -77.078064f;
-float lat_file, long_file;
-double cpuTemp;
-int frameTime;
-
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
-int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
-double eclipse_time;
-
-float voltage[9], current[9], sensor[17], other[3];
-char sensor_payload[500];
-
-int test_i2c_bus(int bus);
-
-const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py ";
-char pythonStr[100], pythonConfigStr[100], busStr[10];
-int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
-char src_addr[5] = "";
-char dest_addr[5] = "APCSS";
-float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
-*/
 int main(int argc, char * argv[]) {
 	
   mode = FSK;
@@ -265,14 +114,7 @@ int main(int argc, char * argv[]) {
 	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
-/*	
-  if (mode == SSTV) {
-	  
-    fprintf(stderr, "Sleeping");
-    while (1)
-      sleep(10);
-  }
-*/	
+
   wiringPiSetup();
 
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -305,12 +147,8 @@ int main(int argc, char * argv[]) {
         printf("AX5043 not present!\n");
         pclose(file2);	    
     }
-//    pclose(file);	
   }
-  //       else
-  //       {
-  //	  printf("SPI not enabled!\n");
-  //       }
+
   pclose(file);
   txLed = 0; // defaults for vB3 board without TFB
   txLedOn = LOW;
@@ -532,9 +370,6 @@ int main(int argc, char * argv[]) {
     if (eclipse == 0.0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
-
-  //int ret;
-  //uint8_t data[1024];
 
   tx_freq_hz -= tx_channel * 50000;
 
@@ -830,13 +665,7 @@ int main(int argc, char * argv[]) {
         {
           int count1;
           char * token;
-          //  char cmdbuffer[1000];
-
-        //	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-        //    	fgets(cmdbuffer, 1000, file);
-        //	printf("result: %s\n", cmdbuffer);
-        //    	pclose(file);
-
+ 
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
           for (count1 = 0; count1 < 17; count1++) {
@@ -979,136 +808,9 @@ void get_tlm(void) {
 	  
     fflush(stdout);
     fflush(stderr);
-/*	  
-    digitalWrite(txLed, txLedOn);
-    #ifdef DEBUG_LOGGING
-    printf("Tx LED On 2\n");
-    #endif
-*/	  
+	  
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
-
-    //  Reading I2C voltage and current sensors
-	  
-/*  
-	  
-    int count1;
-    char * token;
-//    char cmdbuffer[1000];
-
-//    FILE * file = popen(pythonStr, "r");
-    fputc('\n', file1);
-    fgets(cmdbuffer, 1000, file1);
-    printf("Python result: %s\n", cmdbuffer);
-//    pclose(file);
-
-    const char space[2] = " ";
-    token = strtok(cmdbuffer, space);
-
-    float voltage[9], current[9];
-
-    memset(voltage, 0, sizeof(voltage));
-    memset(current, 0, sizeof(current));
-
-    for (count1 = 0; count1 < 8; count1++) {
-      if (token != NULL) {
-        voltage[count1] = (float) atof(token);
-        #ifdef DEBUG_LOGGING
-        //		 printf("voltage: %f ", voltage[count1]);
-        #endif
-        token = strtok(NULL, space);
-        if (token != NULL) {
-          current[count1] = (float) atof(token);
-          if ((current[count1] < 0) && (current[count1] > -0.5))
-            current[count1] *= (-1);
-          #ifdef DEBUG_LOGGING
-          //		    printf("current: %f\n", current[count1]);
-          #endif
-          token = strtok(NULL, space);
-        }
-      }
-    }
-
-    batteryVoltage = voltage[map[BAT]];
-    batteryCurrent = current[map[BAT]];
-	  
-    double cpuTemp;
-
-    FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-    if (cpuTempSensor) {
-      fscanf(cpuTempSensor, "%lf", & cpuTemp);
-      cpuTemp /= 1000;
-
-      #ifdef DEBUG_LOGGING
-//      printf("CPU Temp Read: %6.1f\n", cpuTemp);
-      #endif
-
-    }
-    fclose(cpuTempSensor);
-
-    if (sim_mode) {
-      // simulated telemetry 
-
-      double time = ((long int) millis() - time_start) / 1000.0;
-
-      if ((time - eclipse_time) > period) {
-        eclipse = (eclipse == 1) ? 0.0 : 1.0;
-        eclipse_time = time;
-        printf("\n\nSwitching eclipse mode! \n\n");
-      }
-      float Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      float Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      float Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
-
-      float Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      float Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      float Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
-
-      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
-
-      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
-      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
-      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
-
-      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
-
-      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
-
-      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0) : ((temp_min - tempS) / 50.0f);
-      cpuTemp = tempS + rnd_float(-1.0, 1.0);
-
-      voltage[map[BUS]] = rnd_float(5.0, 5.005);
-      current[map[BUS]] = rnd_float(158, 171);
-
-      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
-
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
-
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
-
-      batt -= (batt > 3.6) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
-      if (batt < 3.5) {
-        batt = 3.0;
-        printf("Safe Mode!\n");
-      }
-      if (batt > 4.5)
-        batt = 4.5;
-
-      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
-
-      // end of simulated telemetry	
-    }
-	  
-   */
 	  
     tlm[1][A] = (int)(voltage[map[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
     tlm[1][B] = (int)(99.5 - current[map[PLUS_X]] / 10.0) % 100; // +X current [4]
@@ -1149,15 +851,12 @@ void get_tlm(void) {
     char tlm_str[1000];
     char header_str[] = "\x03\xf0"; // hi hi ";
     char header_str3[] = "echo '";
-    //char header_str2[] = ">CQ:>041440zhi hi ";
-    //char header_str2[] = ">CQ:=4003.79N\\07534.33WShi hi ";
     char header_str2[] = ">APCSS:";
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'";
-//    char footer_str[] = ">CQ:010101/hi hi ' >> t.txt && gen_packets -o telem.wav t.txt -r 48000 > /dev/null 2>&1 && cat telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1";
     char footer_str[] = ">APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
 
     if (ax5043) {
@@ -1248,10 +947,6 @@ void get_tlm(void) {
         strcat(str, sensor_payload); // append to telemetry string for transmission
     }
 
-//    digitalWrite(txLed, txLedOn);
-//    #ifdef DEBUG_LOGGING
-//    printf("Tx LED On 3\n");
-//    #endif
     if (mode == CW) {
 
       char cw_str2[1000];
@@ -1279,9 +974,6 @@ void get_tlm(void) {
     } 
     else if (ax5043) {
       digitalWrite(txLed, txLedOn);
-//      #ifdef DEBUG_LOGGING
-//      printf("Tx LED On 5\n");
-//      #endif
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
       printf("data: %s \n", data);	    
@@ -1294,9 +986,6 @@ void get_tlm(void) {
       }
       ax5043_wait_for_transmit();
       digitalWrite(txLed, txLedOff);
-//      #ifdef DEBUG_LOGGING
-//      printf("Tx LED Off\n");
-//      #endif
 
       if (ret) {
         fprintf(stderr,
@@ -1318,17 +1007,10 @@ void get_tlm(void) {
       if (transmit) {
         FILE * file2 = popen(str, "r");
         pclose(file2);
-/*	      
-        digitalWrite(txLed, txLedOn);
-        #ifdef DEBUG_LOGGING
-        printf("Tx LED On 6\n");
-        #endif	 
-*/	      
+	      
 	sleep(2);
 	digitalWrite(txLed, txLedOff);
-//	#ifdef DEBUG_LOGGING
-//	printf("Tx LED Off 6\n");
-//	#endif	      
+      
       } else {
         fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
         fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
@@ -1339,33 +1021,17 @@ void get_tlm(void) {
 
   }
 
-//  digitalWrite(txLed, txLedOff);
-//  #ifdef DEBUG_LOGGING
-//  printf("Tx LED Off\n");
-//  #endif
-
   return;
 }
 
 void get_tlm_fox() {
 
-  //  Reading I2C voltage and current sensors
-/*
-  FILE * uptime_file = fopen("/proc/uptime", "r");
-  fscanf(uptime_file, "%f", & uptime_sec);
-  uptime = (int) uptime_sec;
-  #ifdef DEBUG_LOGGING
-  printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-  #endif
-  fclose(uptime_file);
-*/
   int i;
-  //	long int sync = SYNC_WORD;
+
   long int sync = syncWord;
 
   smaller = (int) (S_RATE / (2 * freq_Hz));
 
-  //	short int b[DATA_LEN];
   short int b[dataLen];
   short int b_max[dataLen];
   short int b_min[dataLen];
@@ -1374,16 +1040,11 @@ void get_tlm_fox() {
   memset(b_max, 0, sizeof(b_max));
   memset(b_min, 0, sizeof(b_min));
 	
-  //	short int h[HEADER_LEN];
   short int h[headerLen];
   memset(h, 0, sizeof(h));
 
   memset(buffer, 0xa5, sizeof(buffer));
 
-  //	short int b10[DATA_LEN], h10[HEADER_LEN];
-  //	short int rs_frame[RS_FRAMES][223];
-  //	unsigned char parities[RS_FRAMES][PARITY_LEN],inputByte;
-  //	short int b10[dataLen], h10[headerLen];
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
 
@@ -1394,14 +1055,6 @@ void get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0;
-  //  int xAngularVelocity = (-0.69)*(-10)*(-10) + 45.3 * (-10) + 2078, yAngularVelocity = (-0.69)*(-6)*(-6) + 45.3 * (-6) + 2078, zAngularVelocity = (-0.69)*(6)*(6) + 45.3 * (6) + 2078; // XAxisAngularVelocity
-  //  int xAngularVelocity = 2078, yAngularVelocity = 2078, zAngularVelocity = 2078;  // XAxisAngularVelocity Y and Z set to 0
-  // int xAngularVelocity = 2048, yAngularVelocity = 2048, zAngularVelocity = 2048; // XAxisAngularVelocity Y and Z set to 0
-  // int RXTemperature = 0, temp = 0, spin = 0;;
-  // float xAccel = 0.0, yAccel = 0.0, zAccel = 0.0;
-  // float BME280pressure = 0.0, BME280altitude = 0.0, BME280humidity = 0.0, BME280temperature = 0.0;
-  // float XSsensor1 = 0.0, XSsensor2 = 0.0, XSsensor3 = 0.0;
-  // int sensor1 = 0, sensor2 = 2048, sensor3 = 2048;
 
   short int buffer_test[bufLen];
   int buffSize;
@@ -1414,19 +1067,7 @@ void get_tlm_fox() {
 	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-
-/*
-      sleep(1.8); 	  
-//      digitalWrite(txLed, txLedOff);
-      #ifdef DEBUG_LOGGING
-//      printf("Tx LED Off\n");
-      #endif	  
-      sleep(0.5);
-//      digitalWrite(txLed, txLedOn);
-      #ifdef DEBUG_LOGGING
-//      printf("Tx LED On 7\n");
-      #endif	 
-*/	  
+  
     if (firstTime != ON) {
       // delay for sample period
 
@@ -1439,249 +1080,12 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-
-/*	    
-     if ((millis() - sampleTime) < 500)    //
-       if (mode == BPSK)
-	  sleep(4.0);
-//       else // FSK
-     if (mode == FSK)
-       sleep(2.3);	    
-*/
-/*	
-      // most recent sleep code
-      
-      if (mode == FSK) {
-	sleep(2.3);  //
-	printf("Sleep time 2.3\n");
-      }
-      else {	    
-	sleep(2.95); // 2.3);  
-	printf("Sleep time 2.95\n");
-      }    
-*/
       printf("Sleep period: %d\n", millis() - startSleep);
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
     } else
       printf("first time - no sleep\n");
-/*	  
-    float voltage[9], current[9], sensor[17], other[3];
-    char sensor_payload[500];
-    sensor_payload[0] = 0;
-    memset(voltage, 0, sizeof(voltage));
-    memset(current, 0, sizeof(current));
-    memset(sensor, 0, sizeof(sensor));
-    memset(other, 0, sizeof(other));	
-	  
-    FILE * uptime_file = fopen("/proc/uptime", "r");
-    fscanf(uptime_file, "%f", & uptime_sec);
-    uptime = (int) uptime_sec;
-    #ifdef DEBUG_LOGGING
-    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-    #endif
-    fclose(uptime_file);	
-*/	  
-/*	  
-    if (sim_mode) { // simulated telemetry 
-
-      double time = ((long int)millis() - time_start) / 1000.0;
-
-      if ((time - eclipse_time) > period) {
-        eclipse = (eclipse == 1) ? 0 : 1;
-        eclipse_time = time;
-        printf("\n\nSwitching eclipse mode! \n\n");
-      }
-
-      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
-
-      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
-
-      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
-
-      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
-      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
-      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
-
-      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
-
-      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
-
-      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
-      tempS += +rnd_float(-1.0, 1.0);
-      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
-      other[IHU_TEMP] = tempS;
-
-      voltage[map[BUS]] = rnd_float(5.0, 5.005);
-      current[map[BUS]] = rnd_float(158, 171);
-
-      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
-
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
-
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
-
-      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
-      if (batt < 3.0) {
-        batt = 3.0;
-        SafeMode = 1;
-        printf("Safe Mode!\n");
-      } else
-        SafeMode= 0;
-
-      if (batt > 4.5)
-        batt = 4.5;
-
-      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
-
-      // end of simulated telemetry
-    }
-    else {
-      int count1;
-      char * token;
-      fputc('\n', file1);
-      fgets(cmdbuffer, 1000, file1);
-      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
-
-      const char space[2] = " ";
-      token = strtok(cmdbuffer, space);
-
-      for (count1 = 0; count1 < 8; count1++) {
-        if (token != NULL) {
-          voltage[count1] = (float) atof(token);
-          #ifdef DEBUG_LOGGING
-          //  printf("voltage: %f ", voltage[count1]);
-          #endif
-          token = strtok(NULL, space);
-          if (token != NULL) {
-            current[count1] = (float) atof(token);
-            if ((current[count1] < 0) && (current[count1] > -0.5))
-              current[count1] *= (-1.0f);
-            #ifdef DEBUG_LOGGING
-            //  printf("current: %f\n", current[count1]);
-            #endif
-            token = strtok(NULL, space);
-          }
-        }
-      }
-	
-      batteryVoltage = voltage[map[BAT]];
-      batteryCurrent = current[map[BAT]];
-	    
-      if (batteryVoltage < 3.6) {
-        SafeMode = 1;
-        printf("Safe Mode!\n");
-      } else
-        SafeMode = 0;
-
-      FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-      if (cpuTempSensor) {
-        double cpuTemp;
-        fscanf(cpuTempSensor, "%lf", & cpuTemp);
-        cpuTemp /= 1000;
-
-        #ifdef DEBUG_LOGGING
-//        printf("CPU Temp Read: %6.1f\n", cpuTemp);
-        #endif
-
-        other[IHU_TEMP] = (double)cpuTemp;
-
-      //  IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-      }
-      fclose(cpuTempSensor);
-
-      if (payload == ON) {  // -55
-        STEMBoardFailure = 0;
-
-  
-        char c;
-        unsigned int waitTime;
-	int i, end, trys = 0;
-	sensor_payload[0] = 0;
-	sensor_payload[1] = 0;
-	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
-          i = 0;
-	  serialPutchar(uart_fd, '?');
-	  sleep(0.05);  // added delay after ?
-          printf("%d Querying payload with ?\n", trys);
-          waitTime = millis() + 500;
-          end = FALSE;
-          //  int retry = FALSE;
-          while ((millis() < waitTime) && !end) {
-            int chars = (char) serialDataAvail(uart_fd);
-            while ((chars > 0) && !end) {
-//	      printf("Chars: %d\ ", chars);
-	      chars--;
-	      c = (char) serialGetchar(uart_fd);
-              //	printf ("%c", c);
-              //	fflush(stdout);
-              if (c != '\n') {
-                sensor_payload[i++] = c;
-              } else {
-                end = TRUE;
-              }
-            }
-          }
-	
-          sensor_payload[i++] = ' ';
-          //  sensor_payload[i++] = '\n';
-          sensor_payload[i] = '\0';
-          printf(" Response from STEM Payload board: %s\n", sensor_payload);
-	  sleep(0.1);  // added sleep between loops
-	}
-        if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
-        {
-          int count1;
-          char * token;
-          //  char cmdbuffer[1000];
-
-        //	FILE *file = popen("python3 /home/pi/CubeSatSim/python/voltcurrent.py 1 11", "r");	
-        //    	fgets(cmdbuffer, 1000, file);
-        //	printf("result: %s\n", cmdbuffer);
-        //    	pclose(file);
-
-          const char space[2] = " ";
-          token = strtok(sensor_payload, space);
-          for (count1 = 0; count1 < 17; count1++) {
-            if (token != NULL) {
-              sensor[count1] = (float) atof(token);
-              #ifdef DEBUG_LOGGING
-              //  printf("sensor: %f ", sensor[count1]);
-              #endif
-              token = strtok(NULL, space);
-            }
-          }
-          printf("\n");
-        }
-	else
-		payload = OFF;  // turn off since STEM Payload is not responding
-      }
-      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (count1 = 0; count1 < 17; count1++) {
-          if (sensor[count1] < sensor_min[count1])
-            sensor_min[count1] = sensor[count1];
-          if (sensor[count1] > sensor_max[count1])
-            sensor_max[count1] = sensor[count1];
-            //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
-        }
-      }
-    }
-	  
-*/
 	
 //    if (mode == FSK) 
     {  // just moved
@@ -1746,15 +1150,6 @@ void get_tlm_fox() {
 //   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
-/*
-    FILE * uptime_file = fopen("/proc/uptime", "r");
-    fscanf(uptime_file, "%f", & uptime_sec);
-    uptime = (int) uptime_sec;
-    fclose(uptime_file);
-    printf("Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
-*/	  
-    //sleep(1);
-    //printf("Sleep over\n");
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
@@ -1800,17 +1195,12 @@ void get_tlm_fox() {
     encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
 
-    //  encodeB(b, 4 + head_offset, (int)(xAccel * 100 + 0.5) + 2048);	  // Xaccel
-    //  encodeA(b, 6 + head_offset, (int)(yAccel * 100 + 0.5) + 2048);	  // Yaccel
-    //  encodeB(b, 7 + head_offset, (int)(zAccel * 100 + 0.5) + 2048);	  // Zaccel
-
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
     encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
     encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
 
     encodeA(b, 9 + head_offset, battCurr);
 
-    //  encodeB(b, 10 + head_offset,(int)(BME280temperature * 10 + 0.5));	// Temp
     encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
 
     if (mode == FSK) {
@@ -1889,16 +1279,12 @@ void get_tlm_fox() {
 	      encodeA(b_max, 6 + head_offset, 2048); // 0
 	      encodeB(b_max, 7 + head_offset, 2048); // 0	    
 
-//	      encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
-//	      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
 	      encodeB(b_max, 40 + head_offset, 2048);
 	      encodeA(b_max, 42 + head_offset, 2048);
 	      encodeB(b_max, 43 + head_offset, 2048);
 
 	      encodeA(b_max, 48 + head_offset, 2048);
 	      encodeB(b_max, 49 + head_offset, 2048);
-//	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
-//	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] + 0.5));
       }	  	      
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
@@ -1946,62 +1332,40 @@ void get_tlm_fox() {
 	      encodeA(b_min, 6 + head_offset, 2048); // 0
 	      encodeB(b_min, 7 + head_offset, 2048); // 0	    
 
-//	      encodeA(b_min, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
-//	      encodeB(b_min, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
 	      encodeB(b_min, 40 + head_offset, 2048);
 	      encodeA(b_min, 42 + head_offset, 2048);
 	      encodeB(b_min, 43 + head_offset, 2048);
 
 	      encodeA(b_min, 48 + head_offset, 2048);
 	      encodeB(b_min, 49 + head_offset, 2048);
-//	      encodeB(b_min, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
-//	      encodeA(b_min, 45 + head_offset, (int)(sensor_max[HUMI] + 0.5));
       }	 
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
-    //  encodeB(b, 31 + head_offset,(spin * 10) + 2048);	  
-    encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
-    //  encodeA(b, 33 + head_offset,(int)(BME280pressure + 0.5));  // Pressure
-    //  encodeB(b, 34 + head_offset,(int)(BME280altitude + 0.5));   // Altitude
+    encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
     encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
 
     encodeA(b, 36 + head_offset, Resets);
-    //  encodeB(b, 37 + head_offset,  Rssi);	
     encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
 
-    //  encodeA(b, 39 + head_offset,  IHUcpuTemp);
     encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
-
-    //  encodeB(b, 40 + head_offset,  xAngularVelocity);
-    //  encodeA(b, 42 + head_offset,  yAngularVelocity);
-    //  encodeB(b, 43 + head_offset,  zAngularVelocity);
 
     encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
     encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
     encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
 
-    //  encodeA(b, 45 + head_offset, (int)(BME280humidity + 0.5));  // in place of sensor1
     encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
 
     encodeB(b, 46 + head_offset, PSUCurrent);
-    //  encodeA(b, 48 + head_offset, (int)(XSsensor2) + 2048);
-    //  encodeB(b, 49 + head_offset, (int)(XSsensor3 * 100 + 0.5) + 2048);
-
-//    encodeA(b, 48 + head_offset, (int)(sensor[XS2]) + 2048);
-//    encodeB(b, 49 + head_offset, (int)(sensor[XS3] * 100 + 0.5) + 2048);
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
-
-    // camera = ON;
 
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
-    //  encodeA(b, 51 + head_offset, STEMBoardFailure + NormalModeFailure * 2 + (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64  + (0) * 128 + 1 * 256 + 1 * 512 + 1 * 1024 + 1*2048); 
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
 
     if (txAntennaDeployed == 0) {
@@ -2077,9 +1441,6 @@ void get_tlm_fox() {
     */
     #endif
 	   
-    //sleep(1);
-    //printf("Sleep over\n");
-
     int ctr2 = 0;
     memset(data10, 0, sizeof(data10));
 
@@ -2234,22 +1595,7 @@ void get_tlm_fox() {
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
       printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
-/*    if (mode == BPSK) {	  
-    start = millis();
-    sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-    printf("socket send 1a %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-    fflush(stdout);	  
-    
-    if (sock_ret < (ctr * 2 + 2)) {
-  //    printf("Not resending\n");
-      sleep(0.5);
-      sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-      printf("socket send 2a %d ms bytes: %d \n\n", millis() - start, sock_ret);
-    } 
-    }
-*/	  
-//    if ((mode == BPSK) && (firstTime == 1)) // only do first time 
-//    if (firstTime == 1) // only do first time 
+	  
     loop_count++;	  
     if ((firstTime == 1) || (((loop_count % 180) == 0) && (mode == FSK)) || (((loop_count % 80) == 0) && (mode == BPSK))) // do first time and was every 180 samples
     {
@@ -2299,11 +1645,9 @@ void get_tlm_fox() {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
-  //    digitalWrite (0, HIGH);
 
-//  if (mode == FSK)
-    if (socket_open == 1)	
-    	firstTime = 0;
+  if (socket_open == 1)	
+    firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
 
@@ -2312,7 +1656,7 @@ void get_tlm_fox() {
 
 // code by https://stackoverflow.com/questions/25161377/open-a-cmd-program-with-full-functionality-i-o/25177958#25177958
 
-    FILE *sopen(const char *program)
+FILE *sopen(const char *program)
     {
         int fds[2];
         pid_t pid;
@@ -2354,177 +1698,6 @@ void get_tlm_fox() {
 
 #define false 0
 #define true 1
-
-//static int twosToInt(int val,int len);
-//static int encodeB(short int  *b, int index, int val);
-//static int encodeA(short int  *b, int index, int val);
-
-//	 static  int NOT_FRAME = /* 0fa */ 0xfa & 0x3ff;
-//	 static  int FRAME = /* 0fa */ ~0xfa & 0x3ff;
-	
-/*
- * TelemEncoding.c
- *
-   Fox-1 telemetry encoder
-   January 2014 Phil Karn KA9Q
-
-   This file has two external functions:
-      void update_rs(unsigned char parity[32],unsigned char data);
-      int encode_8b10b(int *state,int data).
-
-   update_rs() is the Reed-Solomon encoder. Its first argument is the 32-byte
-   encoder shift register, the second is the 8-bit data byte being encoded. It updates
-   the shift register in place and returns void. At the end of each frame, it contains
-   the parities ready for transmission, starting with parity[0].
-   Be sure to zero this array before each new frame!
-
-   encode_8b10b() is the 8b10b encoder. Its first argument is a pointer to a single integer
-   with the 1-bit encoder state (the current run disparity, or RD). Initialize it to 0
-   JUST ONCE at startup (not between frames).
-   The second argument is the data byte being encoded. It updates the state and returns
-   an integer containing the 10-bit encoded word, right justified.
-   Transmit this word from left to right.
-
-   The data argument is an int so it can hold the special value -1 to indicate end of frame;
-   it generates the 8b10b control word K.28.5, which is used as an inter-frame flag.
-
-   Some assert() calls are made to verify legality of arguments. These can be turned off in
-   production code.
-
-
-   sample frame transmission code:
-
-   unsigned char data[64]; // Data block to be sent
-   unsigned char parity[32]; // RS parities
-   void transmit_word(int);  // User provided transmit function: 10 bits of data in bits 9....0
-   int state,i;
-
-   state = 0; // Only once at startup, not between frames
-   memset(parity,0,sizeof(parity); // Do this before every frame
-   // Transmit the data, updating the RS encoder
-   for(i=0;i<64;i++){
-     update_rs(parity,data[i]);
-     transmit_word(encode_8b10b(&state,data[i]);
-   }
-   // get the RS parities
-   for(i=0;i<32;i++)
-     transmit_word(encode_8b10b(&state,parity[i]);
-
-   transmit_word(encode_8b10b(&state,-1); // Transmit end-of-frame flag
-*
-
-
-#include <string.h>
-//#include "Fox.h"
-//#include "TelemEncoding.h"
-
-#ifndef NULL
-#define NULL ((void *)0)
-#endif
-
-#define NN (0xff) // Frame size in symbols
-#define A0 (NN)   // special value for log(0)
-
-
-// GF Antilog lookup table table
-static unsigned char CCSDS_alpha_to[NN+1] = {
-0x01,0x02,0x04,0x08,0x10,0x20,0x40,0x80,0x87,0x89,0x95,0xad,0xdd,0x3d,0x7a,0xf4,
-0x6f,0xde,0x3b,0x76,0xec,0x5f,0xbe,0xfb,0x71,0xe2,0x43,0x86,0x8b,0x91,0xa5,0xcd,
-0x1d,0x3a,0x74,0xe8,0x57,0xae,0xdb,0x31,0x62,0xc4,0x0f,0x1e,0x3c,0x78,0xf0,0x67,
-0xce,0x1b,0x36,0x6c,0xd8,0x37,0x6e,0xdc,0x3f,0x7e,0xfc,0x7f,0xfe,0x7b,0xf6,0x6b,
-0xd6,0x2b,0x56,0xac,0xdf,0x39,0x72,0xe4,0x4f,0x9e,0xbb,0xf1,0x65,0xca,0x13,0x26,
-0x4c,0x98,0xb7,0xe9,0x55,0xaa,0xd3,0x21,0x42,0x84,0x8f,0x99,0xb5,0xed,0x5d,0xba,
-0xf3,0x61,0xc2,0x03,0x06,0x0c,0x18,0x30,0x60,0xc0,0x07,0x0e,0x1c,0x38,0x70,0xe0,
-0x47,0x8e,0x9b,0xb1,0xe5,0x4d,0x9a,0xb3,0xe1,0x45,0x8a,0x93,0xa1,0xc5,0x0d,0x1a,
-0x34,0x68,0xd0,0x27,0x4e,0x9c,0xbf,0xf9,0x75,0xea,0x53,0xa6,0xcb,0x11,0x22,0x44,
-0x88,0x97,0xa9,0xd5,0x2d,0x5a,0xb4,0xef,0x59,0xb2,0xe3,0x41,0x82,0x83,0x81,0x85,
-0x8d,0x9d,0xbd,0xfd,0x7d,0xfa,0x73,0xe6,0x4b,0x96,0xab,0xd1,0x25,0x4a,0x94,0xaf,
-0xd9,0x35,0x6a,0xd4,0x2f,0x5e,0xbc,0xff,0x79,0xf2,0x63,0xc6,0x0b,0x16,0x2c,0x58,
-0xb0,0xe7,0x49,0x92,0xa3,0xc1,0x05,0x0a,0x14,0x28,0x50,0xa0,0xc7,0x09,0x12,0x24,
-0x48,0x90,0xa7,0xc9,0x15,0x2a,0x54,0xa8,0xd7,0x29,0x52,0xa4,0xcf,0x19,0x32,0x64,
-0xc8,0x17,0x2e,0x5c,0xb8,0xf7,0x69,0xd2,0x23,0x46,0x8c,0x9f,0xb9,0xf5,0x6d,0xda,
-0x33,0x66,0xcc,0x1f,0x3e,0x7c,0xf8,0x77,0xee,0x5b,0xb6,0xeb,0x51,0xa2,0xc3,0x00,
-};
-
-// GF log lookup table. Special value represents log(0)
-static unsigned char CCSDS_index_of[NN+1] = {
- A0,  0,  1, 99,  2,198,100,106,  3,205,199,188,101,126,107, 42,
-  4,141,206, 78,200,212,189,225,102,221,127, 49,108, 32, 43,243,
-  5, 87,142,232,207,172, 79,131,201,217,213, 65,190,148,226,180,
-103, 39,222,240,128,177, 50, 53,109, 69, 33, 18, 44, 13,244, 56,
-  6,155, 88, 26,143,121,233,112,208,194,173,168, 80,117,132, 72,
-202,252,218,138,214, 84, 66, 36,191,152,149,249,227, 94,181, 21,
-104, 97, 40,186,223, 76,241, 47,129,230,178, 63, 51,238, 54, 16,
-110, 24, 70,166, 34,136, 19,247, 45,184, 14, 61,245,164, 57, 59,
-  7,158,156,157, 89,159, 27,  8,144,  9,122, 28,234,160,113, 90,
-209, 29,195,123,174, 10,169,145, 81, 91,118,114,133,161, 73,235,
-203,124,253,196,219, 30,139,210,215,146, 85,170, 67, 11, 37,175,
-192,115,153,119,150, 92,250, 82,228,236, 95, 74,182,162, 22,134,
-105,197, 98,254, 41,125,187,204,224,211, 77,140,242, 31, 48,220,
-130,171,231, 86,179,147, 64,216, 52,176,239, 38, 55, 12, 17, 68,
-111,120, 25,154, 71,116,167,193, 35, 83,137,251, 20, 93,248,151,
- 46, 75,185, 96, 15,237, 62,229,246,135,165, 23, 58,163, 60,183,
-};
-
-// Only half the coefficients are given here because the
-// generator polynomial is palindromic; G0 = G32, G1 = G31, etc.
-// Only G16 is unique
-static unsigned char CCSDS_poly[] = {
-  0,249,  59, 66,  4,  43,126,251, 97,  30,   3,213, 50, 66,170,   5,
-  24,
-};
-
-static inline int modnn(int x){
-  while (x >= NN) {
-    x -= NN;
-    x = (x >> 8) + (x & NN);
-  }
-  return x;
-}
-
-// Update Reed-Solomon encoder
-// parity -> 32-byte reed-solomon encoder state; clear this to zero before each frame
-void update_rs(
-   unsigned char parity[32], // 32-byte encoder state; zero before each frame
-   unsigned char c)          // Current data byte to update
-{
-  unsigned char feedback;
-  int j,t;
-
-  assert(parity != NULL);
-  feedback = CCSDS_index_of[c ^ parity[0]];
-  if(feedback != A0){ // only if feedback is non-zero
-    // Take advantage of palindromic polynomial to halve the multiplies
-    // Do G1...G15, which is the same as G17...G31
-    for(j=1;j<NP/2;j++){
-      t = CCSDS_alpha_to[modnn(feedback + CCSDS_poly[j])];
-      parity[j] ^= t;
-      parity[NP-j] ^= t;
-    }
-    // Do G16, which is used in only parity[16]
-    t = CCSDS_alpha_to[modnn(feedback + CCSDS_poly[j])];
-    parity[j] ^= t;
-  }
-  // shift left
-  memmove(&parity[0],&parity[1],NP-1);
-  // G0 is 1 in alpha form, 0 in index form; don't need to multiply by it
-  parity[NP-1] = CCSDS_alpha_to[feedback];
-  //taskYIELD();
-}
-
-#define SYNC  (0x0fa) // K.28.5, RD=-1 
- 
-void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
-{
-	unsigned buf;
-	while(num_bytes>0)
-	{   buf = word & 0xff;
-		fwrite(&buf, 1,1, wav_file);
-		num_bytes--;
-	word >>= 8;
-	}
-}
-*/
 
 void write_wave(int i, short int *buffer)
 {
