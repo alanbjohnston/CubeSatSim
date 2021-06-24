@@ -32,7 +32,7 @@
 #include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
-#include "TelemEncoding.h"
+//#include "TelemEncoding.h"
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
