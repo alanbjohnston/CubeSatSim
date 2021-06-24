@@ -2,7 +2,7 @@
 
 echo -e "\nupdate script for CubeSatSim\n"
 
-sudo rm morse.wav id.txt cw.txt 
+sudo rm morse.wav id.txt cw.txt > /dev/null 2>&1 
 
 if [ "$1" = "u" ]; then
 
