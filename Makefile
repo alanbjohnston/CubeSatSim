@@ -85,8 +85,8 @@ cubesatsim: afsk/ax5043.o
 cubesatsim: main.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o main.o -lwiringPi -lax5043 -lm
 
-telem: afsk/telem.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ afsk/telem.o -lwiringPi 
+telem: telem.o
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
