@@ -89,7 +89,7 @@ cubesatsim: main.o
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
 
-TelemEncoding.o: TelemEncoding.o
+TelemEncoding.o: TelemEncoding.c
 TelemEncoding.o: TelemEncoding.h
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
 
