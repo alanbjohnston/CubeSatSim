@@ -1,6 +1,6 @@
 all: DEBUG_BEHAVIOR=
 all: libax5043.a
-all: cube 
+all: cubesatsim 
 all: telem
 
 debug: DEBUG_BEHAVIOR = -DDEBUG_LOGGING
