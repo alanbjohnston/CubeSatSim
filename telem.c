@@ -1,6 +1,8 @@
 /*
  *  Displays voltage and current sensors for CubeSatSim
  *
+ *  uses python3 code voltagecurrenty.py
+ *
  */
 
 #include <fcntl.h>                              
