@@ -2090,7 +2090,7 @@ void get_tlm_fox() {
 //    {
       for (i = 0; i < parityLen; i++) {
         for (int j = 0; j < rsFrames; j++) {
-          if (uptime != 0) || (i % 2 != 0)	// don't correctly update parties if uptime is 0 so the frame will fail the FEC check and be discarded  
+          if ((uptime != 0) || (i % 3 != 0))	// don't correctly update parties if uptime is 0 so the frame will fail the FEC check and be discarded  
             data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
 	  nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
