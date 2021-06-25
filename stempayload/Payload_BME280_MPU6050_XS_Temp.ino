@@ -99,11 +99,15 @@ void loop() {
 
     if (result == 'R') {
       Serial.println("OK");
-      delay(500);
+      delay(100);
       setup();
     }
-
-    if ((result == '?') || first_time == true)
+    else if (result == 'C') {
+      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      eeprom_word_write(0, 0x00);
+      setup();
+    }
+    else if ((result == '?') || first_time == true)
     {
       first_time = false;
       if (bmePresent) {
@@ -171,7 +175,7 @@ void loop() {
 
     if (result == 'R') {
       Serial1.println("OK");
-      delay(500);
+      delay(100);
       setup();
     }
 
