@@ -19,6 +19,14 @@ float Sensor2 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
+int first_read = true;
+float T2 = 26.3; // Temperature data point 1
+float R2 = 167; // Reading data point 1
+float T1 = 2; // Temperature data point 2
+float R1 = 179; // Reading data point 2
+int sensorValue;
+float Temp;
+float rest;
 
 void setup() {
 
@@ -93,10 +101,16 @@ void loop() {
 
     if (result == 'R') {
       Serial.println("OK");
-      delay(500);
+      delay(100);
+      first_time = true;
       setup();
     }
-
+    else if (result == 'C') {
+      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      eeprom_word_write(0, 0x00);
+      first_time = true;
+      setup();
+    }
     if ((result == '?') || first_time == true)
     {
       first_time = false;
@@ -128,11 +142,16 @@ void loop() {
     Serial.print(mpu6050.getAccY());   
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());  
+
+    sensorValue = analogRead(A3);
+    //Serial.println(sensorValue);  
+    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+
     
     Serial.print(" XS ");
-    Serial.print(Sensor1);   
+    Serial.print(Temp);   
     Serial.print(" ");
-    Serial.println(Sensor2);               
+    Serial.println(Sensor1);               
       
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -160,7 +179,8 @@ void loop() {
 
     if (result == 'R') {
       Serial1.println("OK");
-      delay(500);
+      delay(100);
+      first_read = true;
       setup();
     }
 
@@ -194,9 +214,13 @@ void loop() {
     Serial1.print(mpu6050.getAccY());   
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
-  
+
+    sensorValue = analogRead(A3);
+    //Serial.println(sensorValue);  
+    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+
     Serial1.print(" XS ");
-    Serial1.print(Sensor1);   
+    Serial1.print(Temp);   
     Serial1.print(" ");
     Serial1.println(Sensor2);              
      
@@ -206,7 +230,12 @@ void loop() {
 //    Serial.print(" ");
 //    Serial.println(acceleration);
 
-    if (acceleration > 1.2)
+    if (first_read == true) {
+      first_read = false;
+      rest = acceleration;
+    }
+
+    if (acceleration > 1.2 * rest)
         led_set(greenLED, HIGH);
     else
         led_set(greenLED, LOW);
