@@ -863,11 +863,12 @@ void get_tlm(void) {
       strcpy(str, header_str);
     } else {
       strcpy(str, header_str3);
+//    }
+      if (mode == AFSK) {
+        strcat(str, call);
+        strcat(str, header_str2);	    
+      }	    
     }
-    if (mode == AFSK) {
-      strcat(str, call);
-      strcat(str, header_str2);	    
-    }	    
 //      printf("Str: %s \n", str);
       if (mode != CW) {
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
