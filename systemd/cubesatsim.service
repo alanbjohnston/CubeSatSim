@@ -8,7 +8,7 @@ WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
-User=pi
+User=root
 CPUAccounting=true
 CPUQuota=5%
 
