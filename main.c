@@ -585,7 +585,7 @@ int main(int argc, char * argv[]) {
         if (token != NULL) {
           voltage[count1] = (float) atof(token);
           #ifdef DEBUG_LOGGING
-          //  printf("voltage: %f ", voltage[count1]);
+            printf("voltage: %f ", voltage[count1]);
           #endif
           token = strtok(NULL, space);
           if (token != NULL) {
@@ -593,7 +593,7 @@ int main(int argc, char * argv[]) {
             if ((current[count1] < 0) && (current[count1] > -0.5))
               current[count1] *= (-1.0f);
             #ifdef DEBUG_LOGGING
-            //  printf("current: %f\n", current[count1]);
+              printf("current: %f\n", current[count1]);
             #endif
             token = strtok(NULL, space);
           }
