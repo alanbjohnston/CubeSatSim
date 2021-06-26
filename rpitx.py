@@ -47,7 +47,7 @@ print(txLed)
 # GPIO.setup(27, GPIO.OUT)
 # GPIO.output(27, 0)
 
-debug_mode = 0
+debug_mode = 1
 
 if __name__ == "__main__":
 
@@ -116,16 +116,20 @@ if __name__ == "__main__":
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
 					GPIO.output(txLed, txLedOn)
+					print("AFSK Transmitting")
 					if (debug_mode == 1):
 						system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 					else:
 						system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					GPIO.output(txLed, txLedOff)
 					f.close()
+					print("AFSK removing ready flag")
 					system("sudo rm ready")
+					print("CW Done")
 					time.sleep(0.5)
 				except:		  
 					time.sleep(0.5)
+					print("AFSK Sleeping")
 		elif (mode == 'm'):
 			print("CW")
 #			time.sleep(4)
@@ -145,16 +149,20 @@ if __name__ == "__main__":
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					GPIO.output(txLed, txLedOn)
+					print("CW Transmitting")
 					if (debug_mode == 1):
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 					else:
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					GPIO.output(txLed, txLedOff)
 					f.close()
+					print("CW Removing cwready file")
 					system("sudo rm cwready")
+					print("CW Done")
 					time.sleep(1)
 				except:		  
 					time.sleep(1)
+					print("CW Sleeping")
 		elif (mode == 's'):
 			print("SSTV")
 			try: 
