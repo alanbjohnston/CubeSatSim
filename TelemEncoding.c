@@ -124,7 +124,7 @@ void update_rs(
   if(feedback != A0){ // only if feedback is non-zero
     // Take advantage of palindromic polynomial to halve the multiplies
     // Do G1...G15, which is the same as G17...G31
-    for(j=1;j<NP/2;j++){
+    for(j=1;j<(int)(NP/2);j++){
       t = CCSDS_alpha_to[modnn(feedback + CCSDS_poly[j])];
       parity[j] ^= t;
       parity[NP-j] ^= t;
