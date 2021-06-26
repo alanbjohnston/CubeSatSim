@@ -16,7 +16,7 @@ GetAllData  Displays the results of reading the MPU6050 sensor: Temperature, X, 
 
 Payload_BME280_MPU6050_XS  This code answers the query from the Raspberry Pi CubeSatSim software over the UART so that the STEM Payload is marked "OK" in the FoxTelem CubeSatSim-FSK or CubeSatSim-BPSK Health tab and also replies with BME280 and MPU6050 sensor data.  In FoxTelem, this is displayed as the X, Y, and Z Gyro (dps) and in AFSK mode, it is appended to the telemetry string.
 
-The Sparkfun Pro Micro can also be programed using the Arduino IDE with the Sparkfun Pro Micro board and AVRISP mkII Programmer.
+The Sparkfun Pro Micro can be programed using the Arduino IDE.  Here is the Sparkfun Hookup Guide https://learn.sparkfun.com/tutorials/pro-micro--fio-v3-hookup-guide
 
 See the Wiki page for more information:
 
