@@ -117,39 +117,42 @@ int main(int argc, char * argv[]) {
 
   wiringPiSetup();
 
+  if (mode == AFSK)
+  {
   // Check for SPI and AX-5043 Digital Transceiver Board	
-  FILE * file = popen("sudo raspi-config nonint get_spi", "r");
+    FILE * file = popen("sudo raspi-config nonint get_spi", "r");
 //  printf("getc: %c \n", fgetc(file));
-  if (fgetc(file) == 48) {
-    printf("SPI is enabled!\n");
+    if (fgetc(file) == 48) {
+      printf("SPI is enabled!\n");
 
-    FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
+      FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
               printf("Result getc: %c \n", getc(file2));
 
-    if (fgetc(file2) != 'l') {
-      printf("SPI devices present!\n");
+      if (fgetc(file2) != 'l') {
+        printf("SPI devices present!\n");
       //	  }
 
-      setSpiChannel(SPI_CHANNEL);
-      setSpiSpeed(SPI_SPEED);
-      initializeSpi();
-      ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
-      if (init_rf()) {
-        printf("AX5043 successfully initialized!\n");
-        ax5043 = TRUE;
-        cw_id = OFF;
-        mode = AFSK;
+        setSpiChannel(SPI_CHANNEL);
+        setSpiSpeed(SPI_SPEED);
+        initializeSpi();
+        ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
+        if (init_rf()) {
+          printf("AX5043 successfully initialized!\n");
+          ax5043 = TRUE;
+          cw_id = OFF;
+//        mode = AFSK;
         //		cycle = OFF;
-        printf("Mode AFSK with AX5043\n");
-        transmit = TRUE;
+          printf("Mode AFSK with AX5043\n");
+          transmit = TRUE;
 //	sleep(10);  // just in case CW ID is sent      
-      } else
-        printf("AX5043 not present!\n");
-        pclose(file2);	    
+        } else
+          printf("AX5043 not present!\n");
+          pclose(file2);	    
+      }
     }
-  }
+    pclose(file);
+  }	
 
-  pclose(file);
   txLed = 0; // defaults for vB3 board without TFB
   txLedOn = LOW;
   txLedOff = HIGH;
