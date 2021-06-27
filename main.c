@@ -22,6 +22,9 @@
 #include "main.h"
 
 int main(int argc, char * argv[]) {
+
+  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
+  pclose(rpitx_restart);
 	
   mode = FSK;
   frameCnt = 1;
@@ -80,9 +83,6 @@ int main(int argc, char * argv[]) {
       }	    
     }
   } 
-
-  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
-  pclose(rpitx_restart);
 
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
