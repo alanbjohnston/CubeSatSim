@@ -86,7 +86,7 @@ if __name__ == "__main__":
 	time.sleep(4); # was 8
 	GPIO.output(txLed, txLedOff)
 
-	time.sleep(2)
+	time.sleep(1)
 
 	
 	if (transmit):
