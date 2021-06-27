@@ -1577,7 +1577,7 @@ void get_tlm_fox() {
       printf("\nConnection Failed \n");
       printf("Error: %s \n", strerror(errno));
       error = 1;
-      sleep(1.0);  // sleep if socket connection refused
+      sleep(2.0);  // sleep if socket connection refused
 
     // try again
       error = 0;
@@ -1601,7 +1601,7 @@ void get_tlm_fox() {
         printf("\nConnection Failed \n");
         printf("Error: %s \n", strerror(errno));
         error = 1;
-        sleep(1.0);  // sleep if socket connection refused
+ //       sleep(1.0);  // sleep if socket connection refused
       }	    
     }
     if (error == 1)
