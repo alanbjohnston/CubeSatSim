@@ -97,7 +97,7 @@ if __name__ == "__main__":
 #        		print("There are arguments!")
 		if (mode == 'a'):
 			print("AFSK")
-#			time.sleep(4)
+			time.sleep(4)
 			try:
 				file = open("/home/pi/CubeSatSim/t.txt")
 				file.close()
