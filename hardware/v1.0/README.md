@@ -29,3 +29,7 @@ I use PCBWay to fabricate PCBs https://pcbway.com
 
 Board sets are available on the AMSAT Store: 
 https://www.amsat.org/product/amsat-cubesatsim-pcb/ 
+
+Bill of materials https://CubeSatSim.org/bom 
+
+Instructions https://CubeSatSim.org/wiki
