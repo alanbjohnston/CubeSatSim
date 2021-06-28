@@ -26,7 +26,10 @@ if [ "$1" = "" ]; then
 	else
 		echo 
 	fi
-  	echo "$5"
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
 	
 	if [ "$5" = "y" ] || [ "$5" = "yes" ] ; then
 #		sim="yes"
@@ -40,10 +43,6 @@ if [ "$1" = "" ]; then
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	value=`cat /home/pi/CubeSatSim/sim.cfg`
-	echo "$value" > /dev/null
-	set -- $value
-
 	echo $1 $2 $3 $4 $5
 	echo
 	
