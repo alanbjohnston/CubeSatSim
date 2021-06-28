@@ -1,6 +1,8 @@
-These files are for FoxTelem, the AMSAT software by Chris Thompson AC3CZ/G0KLA for decoding and displaying Fox-1 series CubeSat telemetry.
+These are test files are FoxTelem, the AMSAT software by Chris Thompson AC3CZ/G0KLA for decoding and displaying Fox-1 series CubeSat telemetry.
 
-To use FoxTelem with the CubeSat Simulator, you will need to download the 1.09m version from:
+For normal operation, you should use the standard spacecraft files for CubeSatSim-FSK and CubeSatSim-BPSK that are included with FoxTelem.  Here is where you can download FoxTelem https://www.amsat.org/foxtelem-software-for-windows-mac-linux/
+
+You should only use these if you are using a test version from here:
 
 https://www.g0kla.com/foxtelem/downloads/test/
 
