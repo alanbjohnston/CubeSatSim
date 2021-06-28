@@ -1,5 +1,7 @@
 # CubeSatSim
 
+This is an old version of the CubeSatSim software that uses the rpitx library to send APRS telemetry.
+
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that run on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
 This is not the latest version of the CubeSatSim - look for the master branch https://github.com/alanbjohnston/CubeSatSim
