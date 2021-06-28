@@ -3,7 +3,9 @@ The files relate to the optional Raspberry Pi Ground Station.
 The Ground Station can be installed on any Windows or Linux PC or laptop, but it does require drivers to be installed (RTL-SDR)
 and virtual audio cable (for sound) to be installed.  This requires administrator privileges on the computer.
 
-A simpler approach perhaps well suited to school environments is to use a dedicated Raspberry Pi Ground Station
+A simpler approach perhaps well suited to school environments is to use a dedicated Raspberry Pi Ground Station.
+
+These scripts are part of the ARISS Radio Pi.  The setup is described here https://github.com/alanbjohnston/CubeSatSim/wiki/3.-Ground-Station
 
 The Raspberry Pi Ground Station can be used as a stand-alone ground station for receiving, decoding, and analyzing telemetry 
 from the CubeSat Simulator if an HDMI monitor, USB keyboard, and USB mouse are plugged into the Pi.
