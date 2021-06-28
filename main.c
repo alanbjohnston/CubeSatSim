@@ -854,13 +854,13 @@ void get_tlm(void) {
     char tlm_str[1000];
     char header_str[] = "\x03\xf0"; // hi hi ";
     char header_str3[] = "echo '";
-    char header_str2[] = ">APCSS:";
+    char header_str2[] = "-11>APCSS:";
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi ";
     char footer_str1[] = "\' > t.txt && echo \'";
-    char footer_str[] = ">APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
+    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
 
     if (ax5043) {
       strcpy(str, header_str);
