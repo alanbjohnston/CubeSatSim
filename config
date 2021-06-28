@@ -26,6 +26,7 @@ if [ "$1" = "" ]; then
 	else
 		echo 
 	fi
+  	echo "$5"
 	
 	if [ "$5" = "y" ] || [ "$5" = "yes" ] ; then
 #		sim="yes"
