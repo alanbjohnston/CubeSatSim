@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# echo $1
+echo "CubeSatSim v1.0 configuration tool"
 
 if [ "$2" = "-n" ]; then
 	norestart=1
