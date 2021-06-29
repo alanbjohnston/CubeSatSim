@@ -22,7 +22,21 @@
 #include "main.h"
 
 int main(int argc, char * argv[]) {
+	
+  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
+  pclose(rpitx_stop);	
+	
+  printf("Test bus 1\n");
+  fflush(stdout);	
+  i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
+  printf("Test bus 3\n");	
+  fflush(stdout);
+  i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
+  printf("Finished testing\n");	
+  fflush(stdout);
 
+//  sleep(2);
+	
   FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_restart);
 	
@@ -222,7 +236,7 @@ int main(int argc, char * argv[]) {
   if (vB4) {
     map[BAT] = BUS;
     map[BUS] = BAT;
-    snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+    snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
   } else if (vB5) {
     map[MINUS_X] = MINUS_Y;
     map[PLUS_Z] = MINUS_X;	
@@ -232,30 +246,16 @@ int main(int argc, char * argv[]) {
       printf("/dev/i2c-11 is present\n\n");
       snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
     } else {
-      snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
+      snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
     }
   } else {
     map[BUS] = MINUS_Z;
     map[BAT] = BUS;
     map[PLUS_Z] = BAT;
     map[MINUS_Z] = PLUS_Z;
-    snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
+    snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
     voltageThreshold = 8.0;
   }
-	
-  // test i2c buses	
-  fflush(stdout);
-  //printf("Test bus 0\n");
-  //fflush(stdout);
-  //i2c_bus0 = (test_i2c_bus(0) != -1) ? ON : OFF;
-  printf("Test bus 1\n");
-  fflush(stdout);	
-  i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
-  printf("Test bus 3\n");	
-  fflush(stdout);
-  i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
-  printf("Finished testing\n");	
-  fflush(stdout);
 	
   // check for camera	
 //  char cmdbuffer1[1000];
@@ -1795,7 +1795,7 @@ int test_i2c_bus(int bus)
 	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
 //	  	printf("bus is present\n\n");	    
     	  	char result[128];		
-    	  	const char command_start[] = "timeout 5 i2cdetect -y ";  // was 10
+    	  	const char command_start[] = "timeout 2 i2cdetect -y ";  // was  5 10
 		char command[50];
 		strcpy (command, command_start);
     	 	strcat (command, busS);
