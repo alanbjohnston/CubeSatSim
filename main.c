@@ -149,7 +149,7 @@ int main(int argc, char * argv[]) {
         setSpiChannel(SPI_CHANNEL);
         setSpiSpeed(SPI_SPEED);
         initializeSpi();
-        ax25_init( & hax25, (uint8_t * ) dest_addr, '1', (uint8_t * ) call, '1', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
+        ax25_init( & hax25, (uint8_t * ) dest_addr, '11', (uint8_t * ) call, '11', AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
         if (init_rf()) {
           printf("AX5043 successfully initialized!\n");
           ax5043 = TRUE;
