@@ -23,6 +23,9 @@
 
 int main(int argc, char * argv[]) {
 	
+  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
+  pclose(rpitx_stop);	
+	
   printf("Test bus 1\n");
   fflush(stdout);	
   i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
