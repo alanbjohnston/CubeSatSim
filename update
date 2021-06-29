@@ -109,6 +109,20 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
       cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
   fi
   
+  echo "You need to reboot to complete this update.  Reboot now (y/n)?"
+
+  read -r ANS
+
+  if [ "$ANS" = "y" ]; then
+
+    sudo reboot now
+
+  else
+
+    echo "The CubeSatSim software may not work correctly until you reboot."
+
+  fi 
+  
 fi
 
 cd /home/pi/pi-power-button
