@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim\n"
+echo -e "\nupdate script for CubeSatSim v1.0\n"
 
 sudo rm /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/id.txt /home/pi/CubeSatSim/cw.txt > /dev/null 2>&1 
 
