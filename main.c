@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
   printf("Finished testing\n");	
   fflush(stdout);
 
-  sleep(2);
+//  sleep(2);
 	
   FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_restart);
