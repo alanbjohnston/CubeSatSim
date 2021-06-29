@@ -1,44 +1,12 @@
 /*
  *  Displays voltage and current sensors for CubeSatSim
  *
- *  uses python3 code voltagecurrenty.py
+ *  uses python3 code ina219.py
  *
  */
 
 #include "main.h"
-/*
-#include <fcntl.h>                              
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include <string.h>
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/stat.h>
-#include <sys/types.h>
-#include <sys/socket.h>
 
-#define PLUS_X 0
-#define PLUS_Y 1
-#define BAT 2
-#define BUS 3
-#define MINUS_X 4
-#define MINUS_Y 5
-#define PLUS_Z 6
-#define MINUS_Z 7
-
-#define OFF -1
-#define ON 1
-
-int test_i2c_bus(int bus);
-const char pythonCmd[] = "python3 /home/pi/CubeSatSim/python/voltcurrent.py ";
-char pythonStr[100], pythonConfigStr[100], busStr[10];
-int map[8] = { 0, 1, 2, 3, 4, 5, 6, 7 };
-FILE *sopen(const char *program);
-
-*/
 int main(int argc, char *argv[]) {
   int debug = OFF;	
   if (argc > 1) {
@@ -61,34 +29,6 @@ int main(int argc, char *argv[]) {
   	  map[PLUS_Z] = BAT;
   	  map[MINUS_Z] = PLUS_Z;
 	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));	    
-/*	    
- 	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
-	  	printf("/dev/i2c-0 is present\n\n");	    
-    	  	char result[128];		
-    	  	char command[50] = "timeout 10 i2cdetect -y ";
-    	 	strcat (command, "0");
-//     	 	printf("Command: %s \n", command);
-    	 	FILE *i2cdetect = popen(command, "r");
-	
-    	 	while (fgets(result, 128, i2cdetect) != NULL) {
-    	 		;
-//       	 	printf("result: %s", result);
-    	 	}	
-    	 	int error = pclose(i2cdetect)/256;
-//      	 	printf("%s error: %d \n", &command, error);
-    	 	if (error != 0) 
-    	 	{	
-    	 		printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "0");
-			strcpy(busStr,"1 -1");
-    		}													
-		else	    
-	  		strcpy(busStr,"1 0");	
-	  } else
-	  {
-    	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
-		strcpy(busStr,"1 -1");  
-	  }
-*/	  
      } 
     else
     {
@@ -110,76 +50,12 @@ int main(int argc, char *argv[]) {
 
   		if (digitalRead(26) != HIGH)
   		{
-  			if (debug == ON)
-				printf("vB5 or later present\n");  // Don't print normal board detection
+ // 			if (debug == ON)
+			printf("CubeSatSim v1.0 INA219 Voltage and Current Telemetry\n");  
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
 			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
-/*			
-			if (test_i2c_b0) != OFF)
-				strcpy(busStr,"1 ");
-			else
-				strcpy(busStr,"-1 ");
-//			printf("Result: %d \n",test_i2c_bus(3));
-			
- 			if (access("/dev/i2c-11", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 11 is present			
-				printf("/dev/i2c-11 is present\n\n");
-/*				
-    				char result[128];		
-    				char command[50] = "timeout 10 i2cdetect -y ";
-    				strcat (command, "11");
-// 			   	printf("Command: %s \n", command);
-    				FILE *i2cdetect = popen(command, "r");
-	
-    				while (fgets(result, 128, i2cdetect) != NULL) {
-					;
-//        				printf("result: %s", result);
-   				 }	
-    				int error = pclose(i2cdetect)/256;
-//    				printf("%s error: %d \n", &command, error);
-   				if (error != 0) 
-*
-				if (test_i2c_bus(11) != OFF)
-   				{	
-//	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
-					strcat(busStr,"-1");
-    				}													
-				else
-					strcat(busStr,"11");
-*				printf("Bus String: %s \n", busStr);
-				
-  			} else {
-/*    				char result[128];		
-    				char command[50] = "timeout 10 i2cdetect -y ";
-    				strcat (command, "3");
-// 			   	printf("Command: %s \n", command);
-    				FILE *i2cdetect = popen(command, "r");
-	
-    				while (fgets(result, 128, i2cdetect) != NULL) {
-					;
-//        				printf("result: %s", result);
-   				 }	
-    				int error = pclose(i2cdetect)/256;
-//    				printf("%s error: %d \n", &command, error);
-   				if (error != 0) 
-   				{	
-	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "3");
-					strcpy(busStr,"1 -1");
-    				}
-				else
-					strcpy(busStr,"1 3");
- *
-				if (test_i2c_bus(3) != OFF)
-   				{	
-//	    				printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "11");
-					strcat(busStr,"-1");
-    				}													
-				else
-					strcat(busStr,"3");
-				printf("Bus String: %s \n", busStr);
-			}	  
-*/
 		}
 		else
 		{
@@ -189,34 +65,6 @@ int main(int argc, char *argv[]) {
   			map[PLUS_Z] = BAT;
   			map[MINUS_Z] = PLUS_Z;
 			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-/*			
- 	  if (access("/dev/i2c-0", W_OK | R_OK) >= 0)  {   // Test if I2C Bus 0 is present			
-	  	printf("/dev/i2c-0 is present\n\n");	    
-    	  	char result[128];		
-    	  	char command[50] = "timeout 10 i2cdetect -y ";
-    	 	strcat (command, "0");
-//     	 	printf("Command: %s \n", command);
-    	 	FILE *i2cdetect = popen(command, "r");
-	
-    	 	while (fgets(result, 128, i2cdetect) != NULL) {
-    	 		;
-//       	 	printf("result: %s", result);
-    	 	}	
-    	 	int error = pclose(i2cdetect)/256;
-//      	 	printf("%s error: %d \n", &command, error);
-    	 	if (error != 0) 
-    	 	{	
-    	 		printf("ERROR: %s bus has a problem \n  Check I2C wiring and pullup resistors \n", "0");
-			strcpy(busStr,"1 -1");
-    		}													
-		else	    
-	  		strcpy(busStr,"1 0");	
-	  } else
-	  {
-    	 	printf("ERROR: %s bus has a problem \n  Check software to see if enabled \n", "0");
-		strcpy(busStr,"1 -1");  
-	  }
-*/	  
 	}
       }
     }	
@@ -238,19 +86,10 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "pythonConfigStr: %s \n", pythonConfigStr);
    	fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);	
    }
-//   FILE* file1 = popen(pythonConfigStr, "r");
-//   fgets(cmdbuffer, 1000, file1);
-//   printf("pythonStr result: %s\n", cmdbuffer);
-//   sclose(file1);	
 	
    int count1;
    char *token;
-	
-//   FILE* file = popen(pythonStr, "r");
-//   fgets(cmdbuffer, 1000, file);
-//  printf("result: %s\n", cmdbuffer);
-//    pclose(file);
-	
+		
     const char space[2] = " ";
     token = strtok(cmdbuffer, space);
 
