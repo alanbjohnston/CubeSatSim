@@ -28,10 +28,10 @@ int main(int argc, char * argv[]) {
 	
   printf("Test bus 1\n");
   fflush(stdout);	
-  i2c_bus1 = (test_i2c_bus(1) != -1) ? ON : OFF;
+  i2c_bus1 = (test_i2c_bus(1) != -1) ? 1 : OFF;
   printf("Test bus 3\n");	
   fflush(stdout);
-  i2c_bus3 = (test_i2c_bus(3) != -1) ? ON : OFF;
+  i2c_bus3 = (test_i2c_bus(3) != -1) ? 3 : OFF;
   printf("Finished testing\n");	
   fflush(stdout);
 
