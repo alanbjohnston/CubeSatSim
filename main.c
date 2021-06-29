@@ -189,7 +189,7 @@ int main(int argc, char * argv[]) {
       pullUpDnControl(3, PUD_UP);
 
       if (digitalRead(3) != HIGH) {
-        printf("vB4 Present\n");
+        printf("vB4 Present with UHF BPF\n");
         txLed = 2;
         txLedOn = HIGH;
         txLedOff = LOW;
@@ -203,7 +203,7 @@ int main(int argc, char * argv[]) {
         pullUpDnControl(26, PUD_UP);
 
         if (digitalRead(26) != HIGH) {
-          printf("vB5 Present\n");
+          printf("v1 Present with UHF BPF\n");
           txLed = 2;
           txLedOn = HIGH;
           txLedOff = LOW;
@@ -213,6 +213,23 @@ int main(int argc, char * argv[]) {
           onLedOff = LOW;
           transmit = TRUE;
         }
+	else {
+          pinMode(23, INPUT);
+          pullUpDnControl(23, PUD_UP);
+		
+          if (digitalRead(23) != HIGH) {
+            printf("v1 Present with VHF BPF\n");
+            txLed = 2;
+            txLedOn = HIGH;
+            txLedOff = LOW;
+            vB5 = TRUE;
+            onLed = 27;
+            onLedOn = HIGH;
+            onLedOff = LOW;
+            printf("VHF BPF not yet supported so no transmit\n");
+	    transmit = FALSE;
+          }		
+	}
       }
     }
   }
