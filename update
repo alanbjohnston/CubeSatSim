@@ -29,30 +29,30 @@ make debug
 FLAG=0
 
 if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
-  echo "changed cubesatsim.service"
+  echo "changed cubesatsim.service."
   sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
   FLAG=1
 else
-  echo "no changes to cubesatsim.service"
+  echo "no changes to cubesatsim.service."
 fi
 
 if [[ $(diff systemd/rpitx.service /etc/systemd/system/rpitx.service) ]]; then
-  echo "changed rpitx.service"
+  echo "changed rpitx.service."
   sudo cp /home/pi/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
   FLAG=1
 else
-  echo "no changes to rpitx.service"
+  echo "no changes to rpitx.service."
 fi
 
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
-    echo "Copying SSTV image 1"
+    echo "Copying SSTV image 1."
     cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 fi
     
 FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
-    echo "Copying SSTV image 2"
+    echo "Copying SSTV image 2."
     cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 fi
       
@@ -72,7 +72,7 @@ else
     echo "systemctl restart cubesatsim"
     sudo systemctl restart cubesatsim
   else
-    echo "nothing to do"
+    echo "nothing to do."
   fi  
 fi
 
@@ -99,13 +99,13 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
 
   FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
   if [ ! -f "$FILE" ]; then
-      echo "Copying SSTV image 1"
+      echo "Copying SSTV image 1."
       cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
   fi
 
   FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
   if [ ! -f "$FILE" ]; then
-      echo "Copying SSTV image 2"
+      echo "Copying SSTV image 2."
       cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
   fi
   
@@ -117,7 +117,9 @@ git pull > .updated_p
 
   grep 'changed' /home/pi/pi-power-button/.updated_p
   if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
-    echo "reinstalling pi-power-button"
+  
+    echo "updating pi-power-button."
+    
     script/install
     
     echo "You need to reboot to complete this update.  Reboot now (y/n)?"
@@ -135,5 +137,7 @@ git pull > .updated_p
   fi  
 
   else
-    echo "nothing to do for pi-power-button"
+    echo "nothing to do for pi-power-button."
   fi 
+  
+  echo "CubeSatSim update complete."
