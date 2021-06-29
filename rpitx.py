@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import RPi.GPIO as GPIO
+from RPi.GPIO import output
 #import subprocess
 #import time
 from time import sleep
@@ -41,7 +42,7 @@ else:
 	txLedOff = 0
 
 GPIO.setup(txLed, GPIO.OUT)
-GPIO.output(txLed, txLedOff)
+output(txLed, txLedOff)
 
 # print(txLedOn)
 print(txLed)
@@ -78,14 +79,14 @@ if __name__ == "__main__":
 			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")		
 	print(callsign)
 
-	GPIO.output(txLed, txLedOn)
+	output(txLed, txLedOn)
 	if (debug_mode == 1):
 		system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 	else:
 		system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 		
 	sleep(4); # was 8
-	GPIO.output(txLed, txLedOff)
+	output(txLed, txLedOff)
 
 	sleep(1)
 
