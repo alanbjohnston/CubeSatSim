@@ -192,6 +192,7 @@ if __name__ == "__main__":
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
+					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg /dev/null 2>&1") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
 					if (debug_mode == 1):
