@@ -20,22 +20,6 @@ sudo sed -i 's/more information/more\ninformation/g' /etc/motd
 
 sudo sed -i 's/update to/update\nto/g' /etc/motd
 
-
-cd /home/pi/pi-power-button
-
-git pull > .updated_p
-
-  grep 'changed' /home/pi/pi-power-button/.updated_p
-  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
-    echo "reinstalling pi-power-button"
-    script/install
-  else
-    echo "nothing to do for pi-power-button"
-  fi 
-
-cd
-
-
 cd /home/pi/CubeSatSim
 
 git pull > .updated
@@ -125,19 +109,31 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
       cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
   fi
   
-  echo "You need to reboot to complete the installation.  Reboot now (y/n)?"
+fi
 
-  read -r ANS
+cd /home/pi/pi-power-button
 
-  if [ "$ANS" = "y" ]; then
+git pull > .updated_p
+
+  grep 'changed' /home/pi/pi-power-button/.updated_p
+  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
+    echo "reinstalling pi-power-button"
+    script/install
+    
+    echo "You need to reboot to complete this update.  Reboot now (y/n)?"
+
+    read -r ANS
+
+    if [ "$ANS" = "y" ]; then
 
       sudo reboot now
 
-  else
+    else
 
       echo "The CubeSatSim software may not work correctly until you reboot."
 
   fi  
 
-  
-fi
+  else
+    echo "nothing to do for pi-power-button"
+  fi 
