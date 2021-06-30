@@ -289,6 +289,7 @@ int main(int argc, char * argv[]) {
   #endif
 		
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
+  file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
   // try connecting to STEM Payload board using UART
