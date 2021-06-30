@@ -125,7 +125,7 @@ if __name__ == "__main__":
 						system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					output(txLed, txLedOff)
 					f.close()
-					system("sudo rm ready")
+					system("sudo rm /home/pi/CubeSatSim/ready")
 					sleep(0.5)
 				except:		  
 					sleep(0.5)
@@ -154,7 +154,7 @@ if __name__ == "__main__":
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					output(txLed, txLedOff)
 					f.close()
-					system("sudo rm cwready")
+					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(1)
 				except:		  
 					sleep(1)
@@ -193,7 +193,7 @@ if __name__ == "__main__":
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
-					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg /dev/null 2>&1") 
+					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
 					if (debug_mode == 1):
@@ -201,6 +201,7 @@ if __name__ == "__main__":
 					else:
 						system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					output(txLed, txLedOff)
+					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1") 
 					sleep(1)
 			else:
 				try:
