@@ -4,10 +4,10 @@ echo -e "\nLog file script for CubeSatSim\n"
 
 if [ "$1" = "-r" ]; then
   sudo journalctl -a -u rpitx > /home/pi/CubeSatSim/logr.txt 
-  cat logr.txt
+  cat /home/pi/CubeSatSim/logr.txt
   echo -e "\nLog file also saved as /home/pi/CubeSatSim/logr.txt"
 else
   sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
-  cat log.txt
+  cat /home/pi/CubeSatSim/log.txt
   echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
 fi
