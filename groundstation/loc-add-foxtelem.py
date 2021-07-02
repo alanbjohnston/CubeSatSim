@@ -26,11 +26,11 @@ print(longitude)
 
 #file = open(r"/home/pi/CubeSatSim/groundstation/.profile","w+")
 
-latSedStr = 'sed -i "s/latitude=0.0/latitude=' + str(latitude) + '/g" /home/pi/Documents/FITB/FoxTelem.properties'
+latSedStr = 'sed -i "s/latitude=0.0/latitude=' + str(latitude) + '/g" /home/pi/home/pi/FoxTelemetryData/FoxTelem.properties'
 #print (latSedStr)
 system(latSedStr)
 
-longSedStr = 'sed -i "s/longitude=0.0/longitude=' + str(longitude) + '/g" /home/pi/Documents/FITB/FoxTelem.properties'
+longSedStr = 'sed -i "s/longitude=0.0/longitude=' + str(longitude) + '/g" /home/pi/home/pi/FoxTelemetryData/FoxTelem.properties'
 #print (longSedStr)
 system(longSedStr)
 
