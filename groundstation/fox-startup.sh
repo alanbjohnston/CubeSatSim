@@ -5,7 +5,7 @@ echo "Startup script to run FoxTelem for FIAB v3"
 
 echo 
 
-FILE=/home/pi/CubeSatSim/groundstation/.profile  
+FILE=/home/pi/CubeSatSim/groundstation/.foxprofile  
 if [ ! -f "$FILE" ]; then
     echo "You need to choose your default FoxTelem profile."
     echo 
@@ -22,7 +22,7 @@ if [ ! -f "$FILE" ]; then
     if [ "$ANS" = "1" ]; then
 
         echo "You have chosen the Fox-in-a-Box profile."
-        echo "b" > /home/pi/FoxTelemetryData/.profile 
+        echo "b" > /home/pi/FoxTelemetryData/.foxprofile 
 	echo 
 	
 	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
@@ -53,7 +53,7 @@ if [ ! -f "$FILE" ]; then
     elif [ "$ANS" = "2" ]; then
 
         echo "You have chosen the CubeSatSim Ground Station profile."
-        echo "c" > /home/pi/FoxTelemetryData/.profile 
+        echo "c" > /home/pi/FoxTelemetryData/.foxprofile 
         
     else
     
@@ -63,7 +63,7 @@ if [ ! -f "$FILE" ]; then
     
 fi    
 
-value=`cat /home/pi/FoxTelemetryData/.profile`
+value=`cat /home/pi/FoxTelemetryData/.foxprofile`
 echo "$value" > /dev/null
 set -- $value
 
