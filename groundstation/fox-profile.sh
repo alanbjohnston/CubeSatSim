@@ -7,6 +7,6 @@ echo
 
 sudo rm /home/pi/FoxTelemetryData/.foxprofile  
 
-/home/pi/CubeSatSim/groundstaton/fox-startup.sh
+/home/pi/CubeSatSim/groundstation/fox-startup.sh
 
 $SHELL
