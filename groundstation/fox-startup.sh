@@ -32,7 +32,7 @@ if [ ! -f "$FILE" ]; then
 		
 	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 	
-	sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/FoxTelemetryDataFoxTelem.properties	
+	sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 	
 	sudo sed -i "s/foxTelemCalcsPosition=false/foxTelemCalcsPosition=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 		
