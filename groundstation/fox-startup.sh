@@ -5,7 +5,7 @@ echo "Startup script to run FoxTelem for FIAB v3"
 
 echo 
 
-FILE=/home/pi/CubeSatSim/groundstation/.foxprofile  
+FILE=/home/pi/FoxTelemetryData/.foxprofile  
 if [ ! -f "$FILE" ]; then
     echo "You need to choose your default FoxTelem profile."
     echo 
