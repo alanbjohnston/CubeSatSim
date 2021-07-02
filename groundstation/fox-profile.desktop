@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Exec=/home/pi/CubeSatSim/groundstation/fox-profile.sh
-Name=FoxTelem
+Name=Change FoxTelem Profile
 Comment=FIAB-v3
 Icon=/home/pi/Downloads/foxtelem.png
 Path=/home/pi
