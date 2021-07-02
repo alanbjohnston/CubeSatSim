@@ -1,7 +1,7 @@
 #!/bin/bash
 # script to run FoxTelem 
 
-echo "Startup script to run FoxTelem for ARISS Radio Pi"
+echo "Startup script to run FoxTelem for FIAB v3"
 
 echo 
 
@@ -22,25 +22,25 @@ if [ ! -f "$FILE" ]; then
     if [ "$ANS" = "1" ]; then
 
         echo "You have chosen the Fox-in-a-Box profile."
-        echo "b" > /home/pi/CubeSatSim/groundstation/.profile 
+        echo "b" > /home/pi/.profile 
 	echo 
 	
 	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
 	read callsign
-	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/Documents/FITB/FoxTelem.properties
+	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
 	echo
 		
-	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 	
-	sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/FoxTelemetryDataFoxTelem.properties	
 	
-	sudo sed -i "s/foxTelemCalcsPosition=false/foxTelemCalcsPosition=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	sudo sed -i "s/foxTelemCalcsPosition=false/foxTelemCalcsPosition=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 		
-	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 		
-	sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/Documents/FITB/FoxTelem.properties	
+	sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 	
-	sudo sed -i "s/soundCard=NONE/soundCard=RTL SDR/g" /home/pi/Documents/FITB/FoxTelem.properties	# change to FunCube
+	sudo sed -i "s/soundCard=NONE/soundCard=RTL SDR/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
 	
 	
 	python3 /home/pi/CubeSatSim/groundstation/loc-foxtelem.py
@@ -53,7 +53,7 @@ if [ ! -f "$FILE" ]; then
     elif [ "$ANS" = "2" ]; then
 
         echo "You have chosen the CubeSatSim Ground Station profile."
-        echo "c" > /home/pi/CubeSatSim/groundstation/.profile 
+        echo "c" > /home/pi/.profile 
         
     else
     
@@ -63,7 +63,7 @@ if [ ! -f "$FILE" ]; then
     
 fi    
 
-value=`cat /home/pi/CubeSatSim/groundstation/.profile`
+value=`cat /home/pi/.profile`
 echo "$value" > /dev/null
 set -- $value
 
@@ -72,11 +72,11 @@ sudo killall -9 java &>/dev/null
 if [ "$1" = "c" ]; then
 	echo "CubeSatSim Ground Station profile is set!"	
 	echo
-	/home/pi/Downloads/FoxTelem/FoxTelem &
+	/home/pi/CubeSatSim/groundstation/fox.sh
 else
 	echo "Fox-in-a-box profile is set!"
 	echo
-	/home/pi/Downloads/FoxTelem-FITB/FoxTelem /home/pi/Documents/FITB
+	/home/pi/Desktop/FoxTelem_1.11b_linux /home/pi/FoxTelemetryData
 fi
 
 $SHELL
