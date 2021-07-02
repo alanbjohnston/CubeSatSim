@@ -21,8 +21,6 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
-/home/pi/Downloads/FoxTelem/FoxTelem &
-
-#/usr/bin/chromium-browser --noerrdialogs --disable-infobars http://localhost:8073 &>/dev/null & 
+/home/pi/Desktop/FoxTelem_1.11b_linux/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
 
 $SHELL
