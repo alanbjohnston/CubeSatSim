@@ -26,7 +26,9 @@ if [ ! -f "$FILE" ]; then
         echo "You have chosen the Fox-in-a-Box profile."
         echo "b" > /home/pi/FoxTelemetryData/.foxprofile 
 	echo 
-	
+
+	cp /home/pi/FoxTelemetryData/FoxTelem.properties /home/pi/FoxTelemetryData/FoxTelem.properties.0
+
 	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
 	read callsign
 	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
@@ -56,7 +58,13 @@ if [ ! -f "$FILE" ]; then
 
         echo "You have chosen the CubeSatSim Ground Station profile."
         echo "c" > /home/pi/FoxTelemetryData/.foxprofile 
-        
+
+	cp /home/pi/FoxTelemetryData-CubeSatSim/FoxTelem.properties /home/pi/FoxTelemetryData-CubeSatSim/FoxTelem.properties.0
+	
+	sudo sed -i "s/useCostas=false/useCostas=true/g" /home/pi/FoxTelemetryData-CubeSatSim/FoxTelem.properties	
+	
+	sudo sed -i "s/findSignal=false/findSignal=true/g" /home/pi/FoxTelemetryData-CubeSatSim/FoxTelem.properties	
+	
     else
     
        echo "Please enter only 1 or 2"
