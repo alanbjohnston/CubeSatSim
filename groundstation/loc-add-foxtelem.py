@@ -9,19 +9,19 @@ import re
 latitude = 0
 longitude = 0
 
-print("\nIn order to upload your satellite telemetry data to the AMSAT servers, we need to know your location\n")
-print("\nYou can enter:")
+print("\nIn order to upload your satellite telemetry data to the AMSAT servers, we need to know your location")
+print("\nYou can enter:\n")
 print("1. Location name (e.g. country or city, state, etc)")
 print("2. Grid square (e.g. FM29)")
 print("3. Latitude and longitude")
-print("4. No location")
+print("4. No location\n")
 
 choice = input ("Enter your choice (1 -4): ")
 
 if (choice == '2'):    
   regex = '[A-Z]+[A-Z]+[0-9]+[0-9]'
 
-  grid = input("Type your 4 character grid square (i.e. FM29): ")
+  grid = input("\nType your 4 character grid square (i.e. FM29): ")
 
   if re.search(regex, grid):
     print("grid is valid!")
@@ -30,13 +30,13 @@ if (choice == '2'):
     
 elif (choice == '3'):
   
-  lat = input("Type your latitude: ")
+  lat = input("\nType your latitude: ")
   try:
           float(lat)
           print("Valid number!")
   except ValueError:
           print("Not a number!")
-  long = input("Type your longitude: ")
+  long = input("\nType your longitude: ")
   try:
           float(long)
           print("Valid number!")
@@ -46,7 +46,7 @@ elif (choice == '3'):
 elif (choice == '1'):          
   URL = "https://geocode.search.hereapi.com/v1/geocode"
 
-  print("Enter your location  including country. \n\n")
+  print("\nEnter your location  including country. \n\n")
   location = input("Type your location: ") #taking user input
   api_key = '' # Acquire from developer.here.com
   PARAMS = {'apikey':api_key,'q':location} 
