@@ -13,12 +13,12 @@ print("\nIn order to upload your satellite telemetry data to the AMSAT servers, 
 print("\nYou can enter:")
 print("1. Location name (e.g. country or city, state, etc)")
 print("2. Grid square (e.g. FM29)")
-print("3. Latitude and Longitude\n")
+print("3. Latitude and longitude")
 print("4. No location")
 
-choice = input ("Enter your choice (1 -4):")
+choice = input ("Enter your choice (1 -4): ")
 
-if (choice == 2):    
+if (choice == '2'):    
   regex = '[A-Z]+[A-Z]+[0-9]+[0-9]'
 
   grid = input("Type your 4 character grid square (i.e. FM29): ")
@@ -28,7 +28,7 @@ if (choice == 2):
   else:
     print("grid is not valid!")
     
-elif (choice == 3):
+elif (choice == '3'):
   
   lat = input("Type your latitude: ")
   try:
@@ -42,7 +42,8 @@ elif (choice == 3):
           print("Valid number!")
   except ValueError:
           print("Not a number!")
-elif (choice == 1):          
+      
+elif (choice == '1'):          
   URL = "https://geocode.search.hereapi.com/v1/geocode"
 
   print("Enter your location  including country. \n\n")
