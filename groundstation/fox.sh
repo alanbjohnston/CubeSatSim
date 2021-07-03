@@ -21,6 +21,6 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
-/home/pi/Desktop/FoxTelem_1.11b_linux/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
+/home/pi/Desktop/FoxTelem_1.11c_linux/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
 
 $SHELL
