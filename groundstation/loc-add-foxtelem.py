@@ -25,7 +25,7 @@ if (choice == 2):
 
   if re.search(regex, grid):
     print("grid is valid!")
-  else
+  else:
     print("grid is not valid!")
     
 elif (choice == 3):
