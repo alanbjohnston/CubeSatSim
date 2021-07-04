@@ -17,6 +17,10 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
+sudo systemctl stop openwebrx
+
+sleep 2
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
@@ -26,8 +30,6 @@ sudo killall -9 CubicSDR &>/dev/null
 sudo killall -9 qsstv &>/dev/null
 
 sudo systemctl stop rtl_tcp
-
-sudo systemctl stop openwebrx
 
 sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ") -D 2'
 
