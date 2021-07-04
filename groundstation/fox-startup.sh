@@ -31,7 +31,11 @@ if [ ! -f "$FILE" ]; then
 
 	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
 	read callsign
-	sudo sed -i "s/callsign=.*/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
+	
+	if [ -n "$callsign" ]; then
+		sudo sed -i "s/callsign=.*/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
+	fi
+	
 	echo
 		
 	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
@@ -45,7 +49,9 @@ if [ ! -f "$FILE" ]; then
 	sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
 
 	sudo sed -i "s/retuneCenterFrequency=false/retuneCenterFrequency=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-
+	
+	sudo sed -i "s/stationDetails=.*/stationDetails=FoxInABox/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+	
 #	sudo sed -i "s/soundCard=NONE/soundCard=RTL SDR/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
 	sudo sed -i "s/soundCard=NONE/soundCard=Direct Audio Device\: FUNcube Dongle V2.0, USB Audi/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
 		
@@ -88,7 +94,7 @@ if [ "$1" = "c" ]; then
 else
 	echo "Fox-in-a-box profile is set!"
 	echo
-	/home/pi/Desktop/FoxTelem_1.11c_linux/FoxTelem /home/pi/FoxTelemetryData
+	/home/pi/Desktop/FoxTelem_1.11d_linux/FoxTelem /home/pi/FoxTelemetryData
 fi
 
 $SHELL
