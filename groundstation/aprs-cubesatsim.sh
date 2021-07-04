@@ -1,9 +1,11 @@
 #!/bin/bash
 # script to auto decode APRS packets from CubeSatSim
 
-sudo modprobe snd-aloop
-
 sudo systemctl stop openwebrx
+
+sleep 2
+
+sudo modprobe snd-aloop
 
 sudo systemctl stop rtl_tcp
 
