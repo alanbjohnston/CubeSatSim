@@ -23,6 +23,10 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
+sudo systemctl stop openwebrx
+
+sleep 2
+
 pkill -o chromium &>/dev/null
 
 sudo killall -9 java &>/dev/null
@@ -30,8 +34,6 @@ sudo killall -9 java &>/dev/null
 sudo killall -9 rtl_fm &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
-
-sudo systemctl stop openwebrx
 
 sudo killall -9 rtl_tcp &>/dev/null
 
