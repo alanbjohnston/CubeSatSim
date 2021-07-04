@@ -33,7 +33,7 @@ sudo killall -9 CubicSDR &>/dev/null
 
 qsstv &
 
-sleep 10
+sleep 5
 
 #sudo systemctl restart cubesatsim
 
