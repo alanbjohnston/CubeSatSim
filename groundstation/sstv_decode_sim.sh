@@ -7,8 +7,6 @@ echo
 
 sudo systemctl stop openwebrx
 
-sleep 2
-
 sudo modprobe snd-aloop
 
 sudo killall -9 qsstv &>/dev/null
@@ -31,9 +29,11 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
-echo "ARG1=s" >> .mode
+#echo "s" >> .mode
 
 qsstv &
+
+sleep 10
 
 #sudo systemctl restart cubesatsim
 
