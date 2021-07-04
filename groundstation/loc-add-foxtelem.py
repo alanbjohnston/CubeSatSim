@@ -8,6 +8,7 @@ import re
 
 latitude = 0
 longitude = 0
+grid = ""
 
 print("\nIn order to upload your satellite telemetry data to the AMSAT servers, we need to know your location")
 print("\nYou can enter:\n")
