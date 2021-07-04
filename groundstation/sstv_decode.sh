@@ -5,11 +5,13 @@ echo "Script to decode SSTV from the CubeSatSim for ARISS Radio Pi"
 
 echo
 
+sudo systemctl stop openwebrx
+
+sleep 2
+
 sudo modprobe snd-aloop
 
 sudo killall -9 qsstv &>/dev/null
-
-sudo systemctl stop openwebrx
 
 sudo systemctl stop rtl_tcp
 
