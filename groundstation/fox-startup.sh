@@ -31,7 +31,7 @@ if [ ! -f "$FILE" ]; then
 
 	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
 	read callsign
-	sudo sed -i "s/callsign=NONE/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
+	sudo sed -i "s/callsign=.*/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
 	echo
 		
 	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
