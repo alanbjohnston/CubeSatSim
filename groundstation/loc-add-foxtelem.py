@@ -33,14 +33,14 @@ elif (choice == '3'):
   
   lat = input("\nType your latitude: ")
   try:
-          float(lat)
-          print("Valid number!")
+          latitude = float(lat)
+          print(latitude)
   except ValueError:
           print("Not a number!")
   long = input("\nType your longitude: ")
   try:
-          float(long)
-          print("Valid number!")
+          longitude = float(long)
+          print(longitude)
   except ValueError:
           print("Not a number!")
       
