@@ -5,6 +5,8 @@ sudo modprobe snd-aloop
 
 sudo systemctl stop openwebrx
 
+sleep 2
+
 sudo systemctl stop rtl_tcp
 
 pkill -o chromium &>/dev/null
