@@ -7,8 +7,6 @@ echo
 
 sudo systemctl stop openwebrx
 
-sleep 2
-
 sudo systemctl stop rtl_tcp
 
 pkill -o chromium &>/dev/null
@@ -22,6 +20,8 @@ sudo killall -9 java &>/dev/null
 sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
+
+sleep 5
 
 /home/pi/Desktop/FoxTelem_1.11d_linux/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
 
