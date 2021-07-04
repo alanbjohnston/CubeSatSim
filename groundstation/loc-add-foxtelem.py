@@ -75,7 +75,7 @@ else:
   
 #file = open(r"/home/pi/CubeSatSim/groundstation/.profile","w+")
 
-if ((latitude != 0) and (longitude != 0)):
+if ((latitude != 0) and (longitude != 0) or grid):
 
   latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
   #print (latSedStr)
@@ -85,7 +85,8 @@ if ((latitude != 0) and (longitude != 0)):
   #print (longSedStr)
   system(longSedStr)
 
-  print("\nFoxTelem configuration updated with your latitude and longitude")
+  if not grid:
+    print("\nFoxTelem configuration updated with your latitude and longitude")
 
 if grid:
 
