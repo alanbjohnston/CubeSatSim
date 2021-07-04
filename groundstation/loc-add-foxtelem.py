@@ -51,32 +51,48 @@ elif (choice == '1'):
   api_key = '' # Acquire from developer.here.com
   PARAMS = {'apikey':api_key,'q':location} 
 
-  # sending get request and saving the response as response object 
-  r = requests.get(url = URL, params = PARAMS) 
-  data = r.json()
+  try:
+    # sending get request and saving the response as response object 
+    r = requests.get(url = URL, params = PARAMS) 
+    data = r.json()
 
-  #print(data)
+    #print(data)
 
-  latitude = data['items'][0]['position']['lat']
-  longitude = data['items'][0]['position']['lng']
+    latitude = data['items'][0]['position']['lat']
+    longitude = data['items'][0]['position']['lng']
 
-  print(latitude)
-  print(longitude)
+    print(latitude)
+    print(longitude)
+  
+  except:
+    print("There is a problem with the location API.  Please try again")
 
 else:
-  print("You have chosen not to enter your location.")
+  print("\nYou have chosen not to enter your location.")
   print("To track satellites and upload telemetry data,") 
   print("you can set your location in Settings in FoxTelem.")
   
 #file = open(r"/home/pi/CubeSatSim/groundstation/.profile","w+")
 
-latSedStr = 'sed -i "s/latitude=0.0/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
-#print (latSedStr)
-system(latSedStr)
+if ((latitude != 0) and (longitude != 0)):
 
-longSedStr = 'sed -i "s/longitude=0.0/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
-#print (longSedStr)
-system(longSedStr)
+  latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+  #print (latSedStr)
+  system(latSedStr)
 
-print("\nFoxTelem configuration updated with your latitude and longitude")
+  longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+  #print (longSedStr)
+  system(longSedStr)
+
+  print("\nFoxTelem configuration updated with your latitude and longitude")
+
+if grid:
+
+  gridSedStr = 'sed -i "s/maidenhead=.*/maidenhead=' + grid + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+  #print (gridSedStr)
+  system(gridSedStr)
+
+  print("\nFoxTelem configuration updated with your Maidenhead grid")
+
+
 
