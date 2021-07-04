@@ -12,16 +12,16 @@ longitude = 0
 print("\nIn order to upload your satellite telemetry data to the AMSAT servers, we need to know your location")
 print("\nYou can enter:\n")
 print("1. Location name (e.g. country or city, state, etc)")
-print("2. Grid square (e.g. FM29)")
+print("2. Grid square (e.g. FM29ha)")
 print("3. Latitude and longitude")
 print("4. No location\n")
 
 choice = input ("Enter your choice (1 -4): ")
 
 if (choice == '2'):    
-  regex = '[A-Z]+[A-Z]+[0-9]+[0-9]'
+  regex = '[A-Z]+[A-Z]+[0-9]+[0-9]+[a-z]+[a-z]'
 
-  grid = input("\nType your 4 character grid square (i.e. FM29): ")
+  grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
 
   if re.search(regex, grid):
     print("grid is valid!")
