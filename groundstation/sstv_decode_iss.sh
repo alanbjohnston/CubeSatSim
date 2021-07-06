@@ -33,5 +33,9 @@ qsstv &
 
 sleep 5
 
-rtl_fm -M fm -f 145.8M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1 
+value=`aplay -l | grep "Loopback"`
+echo "$value" > /dev/null
+set -- $value
+
+rtl_fm -M fm -f 145.8M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 
 $SHELL
