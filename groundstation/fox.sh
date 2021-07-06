@@ -23,6 +23,6 @@ sudo killall -9 qsstv &>/dev/null
 
 sleep 5
 
-/home/pi/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
+/home/pi/FoxTelem/FoxTelem/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
 
 $SHELL
