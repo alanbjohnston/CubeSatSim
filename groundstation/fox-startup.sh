@@ -94,7 +94,7 @@ if [ "$1" = "c" ]; then
 else
 	echo "Fox-in-a-box profile is set!"
 	echo
-	/home/pi/FoxTelem /home/pi/FoxTelemetryData
+	/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData
 fi
 
 $SHELL
