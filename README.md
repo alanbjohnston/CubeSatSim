@@ -2,6 +2,10 @@
 
 This is an experimental balloon payload version of the CubeSatSim software.  It has issues and is not ready to fly on a high altitude balloon.
 
+Besides the usual CubeSatSim software, it has a service to take a Pi Camera picture every 30 seconds and store it in the /home/pi/payload directory
+
+
+
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
 There are several hardware versions and software branches to go with them - see below for information.
