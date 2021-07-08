@@ -22,6 +22,10 @@ sudo rm /home/pi/CubeSatSim/t.txt
 
 mkdir /home/pi/payload
 
+cp take_photos.sh ../payload
+
+cp take_photo.py ../payload
+
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
 sudo cp ~/CubeSatSim/systemd/camera.service /etc/systemd/system/camera.service
