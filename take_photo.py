@@ -7,5 +7,5 @@ camera.resolution = (2592,1944)
 camera.start_preview()
 
 current_time = time.strftime("%H;%M;%S", time.localtime())
-current_time = time.strftime("%e-%d-%H:%M:%S", time.localtime())
+current_time = time.strftime("%m-%d-%H:%M:%S", time.localtime())
 camera.capture('/home/pi/payload/img'+current_time+'.jpg')
