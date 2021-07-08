@@ -4,7 +4,7 @@ echo -e "\nScript to take pictures every 30 seconds\n"
 
 while true; do
 
-    python3 /home/pi/payload/take-photo.py
+    python3 /home/pi/CubeSatSim/take-photo.py
     echo -e "\nTaking photo!\n"
     sleep 28
 
