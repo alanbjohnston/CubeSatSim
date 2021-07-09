@@ -77,24 +77,37 @@ else:
 
 if ((latitude != 0) and (longitude != 0) or grid):
 
-  latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
-  #print (latSedStr)
-  system(latSedStr)
-
-  longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
-  #print (longSedStr)
-  system(longSedStr)
-
+  alt = input("\nType your altitude: ")
+  try:
+    altitude = float(alt)
+    print(altitude)
+     altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+#          print (altSedStr)
+    system(altSedStr)
+    print("\nFoxTelem configuration updated with your alitude")
+  
+  except ValueError:
+    print("Not a number!")
+      
   if not grid:
-    print("\nFoxTelem configuration updated with your latitude and longitude")
+      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+      #print (latSedStr)
+      system(latSedStr)
 
-if grid:
+      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+      #print (longSedStr)
+      system(longSedStr)
 
-  gridSedStr = 'sed -i "s/maidenhead=.*/maidenhead=' + grid + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
-  #print (gridSedStr)
-  system(gridSedStr)
+      print("\nFoxTelem configuration updated with your latitude and longitude")
 
-  print("\nFoxTelem configuration updated with your Maidenhead grid")
+  else:
+
+      gridSedStr = 'sed -i "s/maidenhead=.*/maidenhead=' + grid + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+      #print (gridSedStr)
+      system(gridSedStr)
+
+      print("\nFoxTelem configuration updated with your maidenhead grid square")
+
 
 
 
