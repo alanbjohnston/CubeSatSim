@@ -81,7 +81,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
   try:
     altitude = float(alt)
     print(altitude)
-     altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+    altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
 #          print (altSedStr)
     system(altSedStr)
     print("\nFoxTelem configuration updated with your alitude")
