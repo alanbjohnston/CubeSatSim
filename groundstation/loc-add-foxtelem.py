@@ -10,7 +10,7 @@ latitude = 0
 longitude = 0
 grid = ""
 
-print("\nIn order to upload your satellite telemetry data to the AMSAT servers, we need to know your location")
+print("\nIn order to track the satellites as they fly over your location and upload your satellite telemetry data to the AMSAT servers, we need to know your location")
 print("\nYou can enter:\n")
 print("1. Location name (e.g. country or city, state, etc)")
 print("2. Grid square (e.g. FM29ha)")
