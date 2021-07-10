@@ -1,0 +1,15 @@
+[Unit]
+Description=camera service
+
+[Service]
+TimeoutStopSec=5
+#EnvironmentFile=/home/pi/CubeSatSim/.mode
+ExecStart=/home/pi/CubeSatSim/take-photos.sh
+WorkingDirectory=/home/pi/payload
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=default.target
