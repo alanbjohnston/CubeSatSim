@@ -22,6 +22,8 @@ sudo pip3 install --upgrade setuptools
 sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
 
 
+mkdir ~/payload
+
 
 cd ~/CubeSatSim
 
@@ -102,6 +104,11 @@ sudo systemctl enable cubesatsim
 sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
+
+sudo cp ~/CubeSatSim/systemd/camera.service /etc/systemd/system/camera.service
+
+sudo systemctl enable camera
+
 
 sudo cp /boot/config.txt /boot/config.txt.0
 
