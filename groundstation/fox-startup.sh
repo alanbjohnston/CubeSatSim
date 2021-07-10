@@ -95,6 +95,11 @@ else
 	echo "Fox-in-a-box profile is set!"
 	echo
 	/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData
+	SCRIPTPATH=$(dirname "$0")
+	cd /home/pi/Desktop/FoxTelem
+	echo Starting $SCRIPTPATH/current_foxtelem/FoxTelem.jar
+	java -Xmx512M -jar FoxTelem.jar "/home/pi/FoxTelemetryData" < /dev/null > /dev/null &
+
 fi
 
 $SHELL
