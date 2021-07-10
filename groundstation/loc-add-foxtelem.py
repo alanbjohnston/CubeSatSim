@@ -97,7 +97,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
       print("\nFoxTelem configuration updated with your maidenhead grid square")
 
 
-  alt = input("\nType your altitude: ")
+  alt = input("\nType your altitude in integer meters: ")
   try:
     altitude = int(alt)
     #print(altitude)
