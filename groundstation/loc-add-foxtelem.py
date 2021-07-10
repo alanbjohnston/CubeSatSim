@@ -99,7 +99,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
 
   alt = input("\nType your altitude: ")
   try:
-    altitude = float(alt)
+    altitude = int(alt)
     #print(altitude)
     altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
     #print (altSedStr)
