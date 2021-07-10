@@ -89,6 +89,14 @@ if ((latitude != 0) and (longitude != 0) or grid):
       print("\nFoxTelem configuration updated with your latitude and longitude")
 
   else:
+      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+      #print (latSedStr)
+      system(latSedStr)
+
+      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+      #print (longSedStr)
+      system(longSedStr)
+
 
       gridSedStr = 'sed -i "s/maidenhead=.*/maidenhead=' + grid + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
       #print (gridSedStr)
@@ -108,5 +116,5 @@ if ((latitude != 0) and (longitude != 0) or grid):
     print("\nFoxTelem configuration updated with your alitude")
   
   except ValueError:
-    print("Not a number!")
+    print("Not an integer!")
     
