@@ -26,9 +26,12 @@ if [ ! -f "$FILE" ]; then
         echo "You have chosen the Fox-in-a-Box profile."
         echo "b" > /home/pi/FoxTelemetryData/.foxprofile 
 	echo 
-
-	cp /home/pi/FoxTelemetryData/FoxTelem.properties /home/pi/FoxTelemetryData/FoxTelem.properties.0
-
+	
+	FILE=/home/pi/FoxTelemetryData/FoxTelem.properties.0
+	if [ ! -f "$FILE" ]; then
+		cp /home/pi/FoxTelemetryData/FoxTelem.properties /home/pi/FoxTelemetryData/FoxTelem.properties.0
+	fi
+	
 	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
 	read callsign
 	
