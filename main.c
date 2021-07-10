@@ -875,7 +875,7 @@ void get_tlm(void) {
     char tlm_str[1000];
     char header_str[] = "\x03\xf0"; // hi hi ";
     char header_str3[] = "echo '";
-    char header_str2[] = "-11>APCSS:";
+    char header_str2[] = "-11>APCSS,WIDE1-1,WIDE2-1:";
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
