@@ -896,13 +896,15 @@ void get_tlm(void) {
 // get GPS
 	  
   char resBuffer[1000];
-  FILE * file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
+  FILE * file_gps;
+	  
+  file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
   fgets(resBuffer, 1000, file_gps);
   printf("GPS: %s \n", &resBuffer);
   pclose(file_gps);
 	  
   float lat_gps = 0.0f, long_gps = 0.0f, alt_gps = 0.0f;	  
-  FILE * file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
+  file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
   fscanf(file_gps, "%f %f %f", & lat_gps, & lon_gps, & alt_gps);
   printf("GPS Data: %f, %f, %f \n", lat_gps, lon_gps, alt_gps); 
   pclose(file_gps);	  
