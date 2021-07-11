@@ -903,7 +903,7 @@ void get_tlm(void) {
   printf("GPS: %s \n", &resBuffer);
   pclose(file_gps);
 	  
-  float lat_gps = 0.0f, long_gps = 0.0f, alt_gps = 0.0f;	  
+  float lat_gps = 0.0f, lon_gps = 0.0f, alt_gps = 0.0f;	  
   file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
   fscanf(file_gps, "%f %f %f", & lat_gps, & lon_gps, & alt_gps);
   printf("GPS Data: %f, %f, %f \n", lat_gps, lon_gps, alt_gps); 
