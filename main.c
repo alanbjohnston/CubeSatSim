@@ -909,6 +909,7 @@ void get_tlm(void) {
 	  
   char resBuffer[1000];
   FILE * file_gps;
+  char gps_str[1000];
 	  
   file_gps = popen("timeout 60 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
   fgets(resBuffer, 1000, file_gps);
@@ -921,12 +922,12 @@ void get_tlm(void) {
   printf("GPS Data: %f, %f, %f \n", lat_gps, lon_gps, alt_gps); 
   pclose(file_gps);
 	  
-  latitude = toAprsFormat(lat_gps);
-  longitude = toAprsFormat(lon_gps);
-	  
-  char gps_str[1000];	  
-  sprintf(gps_str, "%7.4f %7.4f %7.1f", lat_gps, lon_gps, alt_gps);	  
-	  
+  if (lat_gps != 0.0) {	  
+    latitude = toAprsFormat(lat_gps);
+    longitude = toAprsFormat(lon_gps);
+    sprintf(gps_str, "%7.4f %7.4f %7.1f", lat_gps, lon_gps, alt_gps);	  
+  }	  
+  	  	  
 //      printf("Str: %s \n", str);
       if (mode != CW) {
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
@@ -1069,8 +1070,9 @@ void get_tlm(void) {
       fprintf(telem_file, "%s %s\n", timeStampNoNl, sensor_payload);	 // write telemetry string to telem.txt file    
       fclose(telem_file);
     }	    
-      strcat(str, gps_str);  // add GPS data to the end
-	    
+    if (lat_gps != 0.0) {
+      strcat(str, gps_str);  // add GPS data to the end if present
+    }    
       strcat(str, footer_str1);
       strcat(str, call);
       strcat(str, footer_str);
