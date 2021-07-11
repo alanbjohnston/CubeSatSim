@@ -1056,6 +1056,7 @@ void get_tlm(void) {
 	    
     } else {  // APRS using rpitx
 
+     if (paylad == ON) {	    
       telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
       printf("Writing payload string\n");
       time_t timeStamp;
@@ -1067,7 +1068,7 @@ void get_tlm(void) {
       printf("TimeStamp: %s\n", timeStampNoNl);
       fprintf(telem_file, "%s %s\n", timeStampNoNl, sensor_payload);	 // write telemetry string to telem.txt file    
       fclose(telem_file);
-	    
+    }	    
       strcat(str, gps_str);  // add GPS data to the end
 	    
       strcat(str, footer_str1);
