@@ -1056,7 +1056,7 @@ void get_tlm(void) {
 	    
     } else {  // APRS using rpitx
 
-     if (paylad == ON) {	    
+     if (payload == ON) {	    
       telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
       printf("Writing payload string\n");
       time_t timeStamp;
