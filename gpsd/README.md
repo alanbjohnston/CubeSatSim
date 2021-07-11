@@ -44,7 +44,7 @@ Set mode to APRS and restart
 
 ./config -a
 
-The telemetry string should end with the three values of lat lon alt
+The telemetry string should end with the three values of lat lon alt after the sixth APRS packet is sent
 
 the APRS location will also update automatically.
 
