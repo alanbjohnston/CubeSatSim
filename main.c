@@ -107,7 +107,7 @@ int main(int argc, char * argv[]) {
   } 
 	
   // Open telemetry file with STEM Payload Data
-  *telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
+  telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
   if (telem_file == NULL) 
     printf("Error opening telem file\n");
   fclose(telem_file);
