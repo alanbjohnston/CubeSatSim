@@ -30,7 +30,7 @@ int main(int argc, char * argv[]) {
   pclose(file_deletes);	
 	
   FILE * gpsd_reset = popen("sudo killall gpsd && sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock", "r");
-  pclose(rpitx_reset);	
+  pclose(gpsd_reset);	
 	
   printf("Test bus 1\n");
   fflush(stdout);	
