@@ -9,7 +9,7 @@ if [[ $(gpspipe -w -n 5 | grep DEVICES | tail -n1|cut -d":" -f5|cut -d"," -f1 | 
   y=$(gpspipe -w -n 10 |grep lon|tail -n1|cut -d":" -f10|cut -d"," -f1)
   a=$(gpspipe -w -n 10 |grep lon|tail -n1|cut -d":" -f11|cut -d"," -f1)
   echo "$x $y $a"
-elif
+else
   echo "0 0 0"
 fi
 
