@@ -44,7 +44,7 @@ Set mode to APRS and restart
 
 ./config -a
 
-The telemetry string should end with the three values of lat lon alt after the sixth APRS packet is sent. Packets will be sent about every 30 seconds
+The telemetry string should end with the three values of lat lon alt. Packets will be sent about every 60 seconds
 
 the APRS location will also update automatically.
 
