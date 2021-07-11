@@ -30,6 +30,6 @@ sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
 
 6. You can look at the result:
 
-gpsmon
+gpsmon /dev/ttyUSB0
 
 Try running ./gps.sh script to see if you get lat lon alt output
