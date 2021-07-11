@@ -9,8 +9,8 @@ StandardOutput=inherit
 StandardError=inherit
 Restart=always
 User=root
-CPUAccounting=true
-CPUQuota=5%
+#CPUAccounting=true
+#CPUQuota=5%
 
 [Install]
 WantedBy=default.target
