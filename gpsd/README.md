@@ -16,7 +16,7 @@ sudo stty -F /dev/ttyUSB0 ispeed 4800 && cat </dev/ttyUSB0
 
 sudo apt-get -y install gpsd gpsd-clients python-gps
 
-4. disable tcp daemon
+4. disable tcp daemon with these commands:
 
 sudo systemctl stop gpsd
 
@@ -28,7 +28,7 @@ sudo systemctl disable gpsd.socket
 
 sudo killall gpsd
 
-5. Now run it manually
+5. Now run it manually:
 
 sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
 
@@ -36,4 +36,17 @@ sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock
 
 gpsmon /dev/ttyUSB0
 
-Try running ./gps.sh script to see if you get lat lon alt output
+You will need to Control-C to exit
+
+Try running /home/pi/CubeSatSim/gpsd/gps.sh script to see if you get lat lon alt output after about 10 seconds.
+
+Set mode to APRS and restart
+
+./config -a
+
+The telemetry string should end with the three values of lat lon alt
+
+the APRS location will also update automatically.
+
+
+
