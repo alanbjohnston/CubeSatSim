@@ -913,7 +913,7 @@ void get_tlm(void) {
   longitude = toAprsFormat(lon_gps);
 	  
   char gps_str[1000];	  
-  sprintf(gps_str, "%7.4f %7.4f %7.4f", lat_gps, lon_gps, alt_gps);	  
+  sprintf(gps_str, "%7.4f %7.4f %7.1f", lat_gps, lon_gps, alt_gps);	  
 	  
 //      printf("Str: %s \n", str);
       if (mode != CW) {
