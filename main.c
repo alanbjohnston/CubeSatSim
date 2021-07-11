@@ -896,7 +896,7 @@ void get_tlm(void) {
 // get GPS
 	  
   char resBuffer[1000];
-  FILE * file_gps = popen("timeout 5 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
+  FILE * file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
   fgets(resBuffer, 1000, file_gps);
   printf("GPS: %s \n", &resBuffer);	  
 	  
