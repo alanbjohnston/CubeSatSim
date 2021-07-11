@@ -907,7 +907,10 @@ void get_tlm(void) {
   file_gps = popen("timeout 15 /home/pi/CubeSatSim/gpsd/gps.sh", "r");
   fscanf(file_gps, "%f %f %f", & lat_gps, & lon_gps, & alt_gps);
   printf("GPS Data: %f, %f, %f \n", lat_gps, lon_gps, alt_gps); 
-  pclose(file_gps);	  
+  pclose(file_gps);
+	  
+  latitude = lat_gps;
+  longitude = lon_gps;	  
 	  
 //      printf("Str: %s \n", str);
       if (mode != CW) {
@@ -985,7 +988,7 @@ void get_tlm(void) {
       }	    
 
       if (mode != CW)
-        strcat(str, sensor_payload); // append to telemetry string for transmission
+        strcat(str, sensor_payload); // append to telemetry string for transmission 
     }
 
     if (mode == CW) {
@@ -1037,6 +1040,8 @@ void get_tlm(void) {
       sleep(4);  // was 2
 	    
     } else {  // APRS using rpitx
+
+      strcat(str, resBuffer);  // add GPS data to the end
 	    
       strcat(str, footer_str1);
       strcat(str, call);
