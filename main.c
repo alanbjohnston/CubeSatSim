@@ -909,8 +909,8 @@ void get_tlm(void) {
   printf("GPS Data: %f, %f, %f \n", lat_gps, lon_gps, alt_gps); 
   pclose(file_gps);
 	  
-  latitude = lat_gps;
-  longitude = lon_gps;	  
+  latitude = toAprsFormat(lat_gps);
+  longitude = toAprsFormat(lon_gps);	  
 	  
 //      printf("Str: %s \n", str);
       if (mode != CW) {
