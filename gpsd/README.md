@@ -18,6 +18,10 @@ sudo apt-get -y install gpsd gpsd-clients python-gps
 
 4. disable tcp daemon
 
+sudo systemctl stop gpsd
+
+sudo systemctl stop gpsd.socket
+
 sudo systemctl disable gpsd
 
 sudo systemctl disable gpsd.socket
