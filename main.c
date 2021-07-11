@@ -29,7 +29,9 @@ int main(int argc, char * argv[]) {
   FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
   pclose(file_deletes);	
 	
-  FILE * gpsd_reset = popen("sudo killall gpsd && sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock", "r");
+  FILE * gpsd_reset = popen("sudo killall gpsd", "r");
+  pclose(gpsd_reset);
+  gpsd_reset = popen("sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock", "r");
   pclose(gpsd_reset);	
 	
   printf("Test bus 1\n");
@@ -103,7 +105,14 @@ int main(int argc, char * argv[]) {
       }	    
     }
   } 
-
+	
+  // Open telemetry file with STEM Payload Data
+  *telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
+  if (telem_file == NULL) 
+    printf("Error opening telem file\n");
+  fclose(telem_file);
+  printf("Opened telem file\n");
+	
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   if (config_file == NULL) {
@@ -1047,6 +1056,18 @@ void get_tlm(void) {
 	    
     } else {  // APRS using rpitx
 
+      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
+      printf("Writing payload string\n");
+      time_t timeStamp;
+      time(&timeStamp);   // get timestamp 
+//      printf("Timestamp: %s\n", ctime(&timeStamp));
+	    
+      char timeStampNoNl[31];    
+      snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
+      printf("TimeStamp: %s\n", timeStampNoNl);
+      fprintf(telem_file, "%s %s\n", timeStampNoNl, sensor_payload);	 // write telemetry string to telem.txt file    
+      fclose(telem_file);
+	    
       strcat(str, gps_str);  // add GPS data to the end
 	    
       strcat(str, footer_str1);
