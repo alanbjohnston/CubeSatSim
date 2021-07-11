@@ -1,31 +1,6 @@
 # CubeSatSim
 
-Following steps from https://gpsd.gitlab.io/gpsd/installation.html
-
-gpsd steps:
-
-1. plug it in and type:
-
-sudo stty -F /dev/ttyUSB0 ispeed 4800 && cat </dev/ttyUSB0
-
-2. install gpsd software:
-
-sudo apt-get -y install gpsd gpsd-clients python-gps
-
-3. see if running:
-
-ps aux | grep gpsd
-
-4. Set to auto start:
-
-sudo dpkg-reconfigure -plow gpsd
-
-5. update firmware
-
-sudo apt-get update
-sudo apt-get dist-upgrade
-sudo rpi-update
-sudo reboot now
+This code adds gpsd support for USB GPS dongles.  See https://github.com/alanbjohnston/CubeSatSim/blob/bp-new/gpsd/README.md for the instructions.
 
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
