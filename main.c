@@ -910,7 +910,10 @@ void get_tlm(void) {
   pclose(file_gps);
 	  
   latitude = toAprsFormat(lat_gps);
-  longitude = toAprsFormat(lon_gps);	  
+  longitude = toAprsFormat(lon_gps);
+	  
+  char gps_str[1000];	  
+  sprintf(gps_str, "%7.4f %7.4f %7.4f", lat_gps, lon_gps, alt_gps);	  
 	  
 //      printf("Str: %s \n", str);
       if (mode != CW) {
@@ -1041,7 +1044,7 @@ void get_tlm(void) {
 	    
     } else {  // APRS using rpitx
 
-      strcat(str, resBuffer);  // add GPS data to the end
+      strcat(str, gps_str);  // add GPS data to the end
 	    
       strcat(str, footer_str1);
       strcat(str, call);
