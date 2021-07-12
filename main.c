@@ -29,10 +29,16 @@ int main(int argc, char * argv[]) {
   FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
   pclose(file_deletes);	
 	
-  FILE * gpsd_reset = popen("sudo killall gpsd", "r");
-  pclose(gpsd_reset);
-  gpsd_reset = popen("sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock", "r");
-  pclose(gpsd_reset);	
+  FILE * gpsd_cmd = popen("sudo killall gpsd", "r");
+  pclose(gpsd_cmd);
+  gpsd_cmd = popen("sudo killall gpspipe", "r");
+  pclose(gpsd_cmd);
+  gpsd_cmd = popen("sudo mv /home/pi/CubeSatSim/gpslog.txt /home/pi/CubeSatSim/gpslog.txt.0", "r");
+  pclose(gpsd_cmd);
+  gpsd_cmd = popen("sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock", "r");
+  pclose(gpsd_cmd);	
+  gpsd_cmd = popen("sudo gpspipe -r -t -l -o /home/pi/CubeSatSim/gpslog.txt &", "r");
+  pclose(gpsd_cmd);	
 	
   printf("Test bus 1\n");
   fflush(stdout);	
