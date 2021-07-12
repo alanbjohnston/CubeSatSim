@@ -358,8 +358,8 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
-
+//  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+  if (0) {  // Don't auto turn on sim mode
     sim_mode = TRUE;
 	    
     printf("Simulated telemetry mode!\n");
