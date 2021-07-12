@@ -5,6 +5,7 @@
 import requests
 from os import system
 import re
+import sys
 
 latitude = 0
 longitude = 0
@@ -122,4 +123,4 @@ if ((latitude != 0) and (longitude != 0) or grid):
   except ValueError:
     print("Not an integer!")
     
-return return_value
+sys.exit(return_value)
