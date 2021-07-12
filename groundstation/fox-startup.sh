@@ -32,38 +32,44 @@ if [ ! -f "$FILE" ]; then
 		cp /home/pi/FoxTelemetryData/FoxTelem.properties /home/pi/FoxTelemetryData/FoxTelem.properties.0
 	fi
 	
-	echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
-	read callsign
-	
-	if [ -n "$callsign" ]; then
-		sudo sed -i "s/callsign=.*/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
-	fi
-	
-	echo
-		
-	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-	
-	sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-	
-	sudo sed -i "s/foxTelemCalcsPosition=false/foxTelemCalcsPosition=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-		
-	sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-		
-	sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-
-	sudo sed -i "s/retuneCenterFrequency=false/retuneCenterFrequency=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-	
-	sudo sed -i "s/stationDetails=.*/stationDetails=FoxInABox/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
-	
-#	sudo sed -i "s/soundCard=NONE/soundCard=RTL SDR/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
-	sudo sed -i "s/soundCard=NONE/soundCard=Direct Audio Device\: FUNcube Dongle V2.0, USB Audi/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
-		
 	python3 /home/pi/CubeSatSim/groundstation/loc-foxtelem.py
 	
-#	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
-#	read grid
-#	sudo sed -i "s/maidenhead=XX00xx/maidenhead=$grid/g" /home/pi/Documents/FITB/FoxTelem.properties
-#	echo
+	if [ $? -eq 1 ]; then
+	
+		echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
+		read callsign
+
+		if [ -n "$callsign" ]; then
+			sudo sed -i "s/callsign=.*/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
+		fi
+
+		echo
+
+		sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+		sudo sed -i "s/foxTelemCalcsDoppler=false/foxTelemCalcsDoppler=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+		sudo sed -i "s/foxTelemCalcsPosition=false/foxTelemCalcsPosition=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+		sudo sed -i "s/uploadToServer=false/uploadToServer=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+		sudo sed -i "s/whenAboveHorizon=false/whenAboveHorizon=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+		sudo sed -i "s/retuneCenterFrequency=false/retuneCenterFrequency=true/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+		sudo sed -i "s/stationDetails=.*/stationDetails=FoxInABox/g" /home/pi/FoxTelemetryData/FoxTelem.properties	
+
+	#	sudo sed -i "s/soundCard=NONE/soundCard=RTL SDR/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
+		sudo sed -i "s/soundCard=NONE/soundCard=Direct Audio Device\: FUNcube Dongle V2.0, USB Audi/g" /home/pi/FoxTelemetryData/FoxTelem.properties	# change to FunCube
+
+
+
+	#	echo "Enter your Maidenhead grid square.  It is two letters followed by two numbers followed by two letters with no spaces.  If you don't know your gridsquare, you can look it up here https://dxcluster.ha8tks.hu/hamgeocoding/"
+	#	read grid
+	#	sudo sed -i "s/maidenhead=XX00xx/maidenhead=$grid/g" /home/pi/Documents/FITB/FoxTelem.properties
+	#	echo
+
+ 	fi
 
     elif [ "$ANS" = "2" ]; then
 
