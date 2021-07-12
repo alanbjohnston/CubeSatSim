@@ -54,6 +54,16 @@ else
   echo "no changes to camera.service."
 fi
 
+if [[ $(diff systemd/flight.service /etc/systemd/system/flight.service) ]]; then
+  echo "changed flight.service."
+  sudo cp /home/pi/CubeSatSim/systemd/flight.service /etc/systemd/system/flight.service
+  sudo systemctl daemon-reload 
+  echo "systemctl restart flight"
+#  sudo systemctl restart camera
+else
+  echo "no changes to flight.service."
+fi
+
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 1."
