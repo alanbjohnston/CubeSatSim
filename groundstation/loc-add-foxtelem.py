@@ -30,6 +30,7 @@ if (choice == '2'):
     print("grid is valid!")
   else:
     print("grid is not valid!")
+    grid = ""
     
 elif (choice == '3'):
   
