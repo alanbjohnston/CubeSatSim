@@ -175,20 +175,20 @@ if __name__ == "__main__":
 #				while 1:
 			output(txLed, txLedOff)
 			if (camera_present == 1):
-				try:
-					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-					print("First SSTV stored image detected")
-					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
-					print ("Sending SSTV image")
-					output(txLed, txLedOn)
-					if (debug_mode == 1):
-						system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
-					else:
-						system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-					output(txLed, txLedOff)
+#				try:
+#					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
+#					print("First SSTV stored image detected")
+#					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
+#					print ("Sending SSTV image")
+#					output(txLed, txLedOn)
+#					if (debug_mode == 1):
+#						system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+#					else:
+#						system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+#					output(txLed, txLedOff)
 	#					sleep(1)
-				except:
-					print("image 2 did not load - copy from CubeSatSim/sstv directory")
+#				except:
+#					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
