@@ -9,6 +9,7 @@ import re
 latitude = 0
 longitude = 0
 grid = ""
+return_value = 0
 
 print("\nIn order to track the satellites as they fly over your location and upload your satellite telemetry data to the AMSAT servers, we need to know your location")
 print("\nYou can enter:\n")
@@ -87,6 +88,8 @@ if ((latitude != 0) and (longitude != 0) or grid):
       system(longSedStr)
 
       print("\nFoxTelem configuration updated with your latitude and longitude")
+      
+      return_value = 1
 
   else:
       latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
@@ -103,7 +106,8 @@ if ((latitude != 0) and (longitude != 0) or grid):
       system(gridSedStr)
             
       print("\nFoxTelem configuration updated with your maidenhead grid square")
-
+      
+      return_value = 1
 
   alt = input("\nType your altitude in integer meters: ")
   try:
@@ -118,3 +122,4 @@ if ((latitude != 0) and (longitude != 0) or grid):
   except ValueError:
     print("Not an integer!")
     
+return return_value
