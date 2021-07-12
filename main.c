@@ -928,11 +928,11 @@ void get_tlm(void) {
   printf("GPS Data: %f, %f, %f \n", lat_gps, lon_gps, alt_gps); 
   pclose(file_gps);
 	  
-  if (lat_gps != 0.0) {	  
+//  if (lat_gps != 0.0) {	  
     latitude = toAprsFormat(lat_gps);
     longitude = toAprsFormat(lon_gps);
     sprintf(gps_str, "%7.4f %7.4f %7.1f", lat_gps, lon_gps, alt_gps);	  
-  }	  
+//  }	  
   	  	  
 //      printf("Str: %s \n", str);
       if (mode != CW) {
