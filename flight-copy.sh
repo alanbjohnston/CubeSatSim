@@ -2,7 +2,7 @@
 
 echo -e "\nScript to manage HAB flight transmissions\n"
 
-sudo systemctl enable camera
+sudo systemctl restart camera
 
 while true; do
 
@@ -10,6 +10,6 @@ while true; do
     sleep 60
 
     /home/pi/CubeSatSim/config -s
-    sleep 120 
+    sleep 105 
 
 done
