@@ -7,7 +7,7 @@ sudo systemctl restart camera
 while true; do
 
     /home/pi/CubeSatSim/config -a 
-    sleep 60
+    sleep 120
 
     /home/pi/CubeSatSim/config -s
     sleep 105 
