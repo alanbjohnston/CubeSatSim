@@ -1067,7 +1067,7 @@ void get_tlm(void) {
       char timeStampNoNl[31];    
       snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
       printf("TimeStamp: %s\n", timeStampNoNl);
-      fprintf(telem_file, "%s %s\n", timeStampNoNl, sensor_payload);	 // write telemetry string to telem.txt file    
+      fprintf(telem_file, "%s %s %s\n", timeStampNoNl, gps_str, sensor_payload);	 // write telemetry string to telem.txt file    
       fclose(telem_file);
     }	    
     if (lat_gps != 0.0) {
