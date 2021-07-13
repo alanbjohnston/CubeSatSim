@@ -35,7 +35,7 @@ int main(int argc, char * argv[]) {
   pclose(gpsd_cmd);
   gpsd_cmd = popen("sudo mv /home/pi/CubeSatSim/gpslog.txt /home/pi/CubeSatSim/gpslog.txt.0", "r");
   pclose(gpsd_cmd);
-  gpsd_cmd = popen("sudo gpsd /dev/ttyUSB0 -F /var/run/gpsd.sock", "r");
+  gpsd_cmd = popen("sudo gpsd /dev/ttyUSB0 -r -F /var/run/gpsd.sock", "r");
   pclose(gpsd_cmd);	
   gpsd_cmd = popen("sudo gpspipe -r -t -l -o /home/pi/CubeSatSim/gpslog.txt &", "r");
   pclose(gpsd_cmd);	
