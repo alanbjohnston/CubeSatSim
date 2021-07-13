@@ -17,7 +17,7 @@ if [ ! -f "$FILE" ]; then
     echo 
     echo "2. CubeSatSim Ground Station.  Use this profile if you want to receive and decode telemetry from an AMSAT CubeSatSim or CubeSatSim Lite."
     echo
-    echo "Which profile do choose?  Enter 1 or 2"
+    echo "Which profile do you choose?  Enter 1 or 2"
     
     read -r ANS
 
