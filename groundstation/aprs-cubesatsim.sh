@@ -27,7 +27,7 @@ echo -e "Script to auto decode APRS packets from CubeSatSim on 434.90 MHz\n"
 
 #sudo rtl_fm -f 144.39M -s 22050 -g 48 - | multimon-ng -a AFSK1200 -A -t raw -
 
-direwolf -t 0 &
+direwolf -r 48000 -t 0 &
 
 sleep 5
 
