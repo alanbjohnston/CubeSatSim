@@ -150,6 +150,6 @@ if ((latitude != 0) and (longitude != 0) or grid):
 
       file.close()
    
-      print("\nGpredict configuration updated with your latitude and longitude")
+      print("\nGpredict configuration updated with your latitude and longitude and altitude\n")
      
 sys.exit(return_value)
