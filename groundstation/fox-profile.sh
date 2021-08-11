@@ -9,4 +9,6 @@ sudo rm /home/pi/FoxTelemetryData/.foxprofile
 
 /home/pi/CubeSatSim/groundstation/fox-startup.sh
 
-$SHELL
+sleep 5
+
+#$SHELL
