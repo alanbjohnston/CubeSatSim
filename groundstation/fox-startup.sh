@@ -107,8 +107,10 @@ else
 	SCRIPTPATH=$(dirname "$0")
 	cd /home/pi/FoxTelem
 	echo Starting $SCRIPTPATH/current_foxtelem/FoxTelem.jar
-	java -Xmx512M -jar FoxTelem.jar "/home/pi/FoxTelemetryData" < /dev/null > /dev/null &
+	setsid java -Xmx512M -jar FoxTelem.jar "/home/pi/FoxTelemetryData" < /dev/null > /dev/null &
 
 fi
 
-$SHELL
+sleep 10
+
+#$SHELL
