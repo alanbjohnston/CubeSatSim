@@ -25,6 +25,9 @@ sleep 5
 
 #/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
 
+SCRIPTPATH=$(dirname "$0")
+cd /home/pi/FoxTelem
+echo Starting $SCRIPTPATH/current_foxtelem/FoxTelem.jar
 setsid java -Xmx512M -jar FoxTelem.jar "/home/pi/FoxTelemetryData-CubeSatSim" < /dev/null > /dev/null &
 
 sleep 10
