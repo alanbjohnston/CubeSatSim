@@ -23,6 +23,10 @@ sudo killall -9 qsstv &>/dev/null
 
 sleep 5
 
-/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
+#/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
 
-$SHELL
+setsid java -Xmx512M -jar FoxTelem.jar "/home/pi/FoxTelemetryData-CubeSatSim" < /dev/null > /dev/null &
+
+sleep 10
+
+#$SHELL
