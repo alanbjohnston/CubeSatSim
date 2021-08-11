@@ -16,7 +16,7 @@ Adafruit_LIS3MDL lis3mdl;
 long timer = 0;
 int bmePresent;
 int uvPresent;
-int magRawPresent;
+int magPresent;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 9;
 int blueLED = 8;
@@ -71,9 +71,9 @@ void setup() {
 
   if (! lis3mdl.begin_I2C()) {
     Serial.println("LIS3MDL sensor fault");
-    magRawPresent = 0;
+    magPresent = 0;
   } else {
-    magRawPresent = 1;
+    magPresent = 1;
   }
 
   mpu6050.begin();
@@ -177,7 +177,7 @@ void loop() {
       {
         Serial.print("0.0 0.0 ");
       }
-      if (magRawPresent) {
+      if (magPresent) {
         lis3mdl.read();
         magRaw = (((lis3mdl.x + lis3mdl.y + lis3mdl.z) / 3));
         magAbs = abs(magRaw);
@@ -260,7 +260,7 @@ void loop() {
       {
         Serial1.print("0.0 0.0 ");
       }
-      if (magRawPresent) {
+      if (magPresent) {
         lis3mdl.read();
         magRaw = (((lis3mdl.x + lis3mdl.y + lis3mdl.z) / 3));
         magAbs = abs(magRaw);
