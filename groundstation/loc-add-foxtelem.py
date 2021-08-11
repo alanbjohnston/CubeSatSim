@@ -9,6 +9,7 @@ import sys
 
 latitude = 0
 longitude = 0
+location = "QTH"
 grid = ""
 return_value = 0
 
@@ -21,7 +22,10 @@ print("4. No location\n")
 
 choice = input ("Enter your choice (1 -4): ")
 
-if (choice == '2'):    
+if (choice == '2'):  
+  
+  print("NOTE: To set Gpredict location using Grid square, run Gpredict and select Edit/Preferences/Ground Stations")
+  
   regex = '[A-Z]+[A-Z]+[0-9]+[0-9]+[a-z]+[a-z]'
 
   grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
@@ -90,7 +94,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
       system(longSedStr)
 
       print("\nFoxTelem configuration updated with your latitude and longitude")
-      
+    
       return_value = 1
 
   else:
@@ -119,9 +123,33 @@ if ((latitude != 0) and (longitude != 0) or grid):
     #print (altSedStr)
     system(altSedStr)
     
-    print("\nFoxTelem configuration updated with your alitude")
+    print("\nFoxTelem configuration updated with your alitude")    
   
   except ValueError:
     print("Not an integer!")
     
+  if ((latitude != 0) and (longitude != 0)):
+    
+      file = open(r"/home/pi/.config/Gpredict/MyLocation.qth","w+")
+
+      str1 = "[QTH]\n"
+      str2 = "LOCATION=" + location + "\n"
+      str3 = "LAT=" + str(latitude) + "\n"
+      str4 = "LON=" + str(longitude) + "\n"
+      str5 = "ALT=" + str(altitude) + "\n"
+      str6 = "WX=\n"
+      str7 = "QTH_TYPE=0\n"
+
+      file.write(str1)
+      file.write(str2)
+      file.write(str3)
+      file.write(str4)
+      file.write(str5)
+      file.write(str6)
+      file.write(str7)
+
+      file.close()
+   
+      print("\nGpredict configuration updated with your latitude and longitude")
+     
 sys.exit(return_value)
