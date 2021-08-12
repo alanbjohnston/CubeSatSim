@@ -39,8 +39,10 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
-sudo systemctl start rtl_tcp
+#sudo systemctl start rtl_tcp
 
-#sleep 5
+sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")
 
-$SHELL
+sleep 5
+
+#$SHELL
