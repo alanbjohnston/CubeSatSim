@@ -24,7 +24,7 @@ choice = input ("Enter your choice (1 -4): ")
 
 if (choice == '2'):  
   
-  print("NOTE: To set Gpredict location using Grid square, run Gpredict and select Edit/Preferences/Ground Stations")
+  print("\nNOTE: To set Gpredict location using Grid square, run Gpredict and select Edit/Preferences/Ground Stations")
   
   regex = '[A-Z]+[A-Z]+[0-9]+[0-9]+[a-z]+[a-z]'
 
