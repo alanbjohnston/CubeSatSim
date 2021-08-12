@@ -41,6 +41,6 @@ sudo killall -9 qsstv &>/dev/null
 
 sudo systemctl start rtl_tcp
 
-sleep 5
+#sleep 5
 
-#$SHELL
+$SHELL
