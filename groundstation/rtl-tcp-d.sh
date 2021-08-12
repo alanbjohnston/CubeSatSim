@@ -33,6 +33,6 @@ sleep 5
 
 sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ") -D 2'
 
-#sleep 5
+sleep 5
 
-$SHELL
+#$SHELL
