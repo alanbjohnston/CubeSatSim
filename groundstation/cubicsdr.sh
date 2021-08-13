@@ -9,6 +9,8 @@ echo "Note: Select Generic RTL2832 device then click Start to begin"
 
 echo
 
+sudo systemctl stop openwebrx
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
@@ -19,7 +21,7 @@ sudo systemctl stop rtl_tcp
 
 sudo killall -9 rtl_tcp &>/dev/null
 
-sudo systemctl stop openwebrx
+sleep 5
 
 CubicSDR
 

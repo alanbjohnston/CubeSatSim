@@ -25,13 +25,17 @@ sudo killall -9 CubicSDR &>/dev/null
 
 echo -e "Script to auto decode APRS packets on 144.390 MHz\n"
 
-sleep 1
-
 #sudo rtl_fm -f 144.39M -s 22050 -g 48 - | multimon-ng -a AFSK1200 -A -t raw -
 
-direwolf -t 0 &
+direwolf -r 48000 -t 0 &
 
-rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1
+sleep 5
+
+value=`aplay -l | grep "Loopback"`
+echo "$value" > /dev/null
+set -- $value
+
+rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
 
 
 
