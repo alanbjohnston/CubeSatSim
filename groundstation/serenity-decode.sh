@@ -29,12 +29,11 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sleep 5
 
-direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf-4800.conf -t 0
+setsid CubicSDR
 
 sleep 5
 
-#setsid CubicSDR
-setsid CubicSDR
+direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf-4800.conf -t 0
 
 sleep 10
 
