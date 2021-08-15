@@ -30,7 +30,7 @@ sleep 5
 #setsid CubicSDR
 CubicSDR &
 
-direwolf -r 48000 -c direwolf-4800.conf -t 0
+direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf-4800.conf -t 0
 
 sleep 10
 
