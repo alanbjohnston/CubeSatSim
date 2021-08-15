@@ -29,7 +29,8 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sleep 5
 
-setsid CubicSDR &
+#setsid CubicSDR &
+/home/pi/CubeSatSim/groundstation/cubicsdr.sh&
 
 sleep 5
 
