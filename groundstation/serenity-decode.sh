@@ -13,6 +13,8 @@ echo "Then tune 437.1 MHz NBFM"
 
 echo
 
+sudo modprobe snd-aloop
+
 sudo systemctl stop openwebrx
 
 sudo killall -9 java &>/dev/null
