@@ -30,7 +30,9 @@ sudo killall -9 rtl_tcp &>/dev/null
 sleep 5
 
 #setsid CubicSDR &
-/home/pi/CubeSatSim/groundstation/cubicsdr.sh&
+#/home/pi/CubeSatSim/groundstation/cubicsdr.sh&
+
+echo "Run CubicSDR in another window"
 
 sleep 5
 
