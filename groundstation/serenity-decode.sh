@@ -29,7 +29,7 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sleep 5
 
-setsid CubicSDR
+setsid CubicSDR &
 
 sleep 5
 
