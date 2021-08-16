@@ -5,17 +5,21 @@ echo "Script to run CubicSDR and Direwolf for ARISS Radio Pi"
 
 echo 
 
-echo "Note: Run CubicSDR, Select Generic RTL2832 device then click Start to begin"
+sudo killall -9 CubicSDR
 
-echo "Then tune to 144.39 MHz NBFM and Audio Output hw:Loopback,0"
-
-echo 
-
-echo
+sleep 5
 
 sudo modprobe snd-aloop
 
-sleep 5
+echo "Run CubicSDR, Select Generic RTL2832 device then click Start to begin"
+
+echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml"
+
+echo 
+
+choice = input ("Hit enter only when CubicSDR is running and says Audio Out: hw:Loopback,0")
+
+echo
 
 direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf.conf -t 0
 
