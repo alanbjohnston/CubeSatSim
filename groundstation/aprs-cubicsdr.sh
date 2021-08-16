@@ -5,15 +5,15 @@ echo "Script to run CubicSDR and Direwolf for ARISS Radio Pi"
 
 echo 
 
-sudo killall -9 CubicSDR
+sudo killall -9 CubicSDR &>/dev/null
 
 sleep 5
 
 sudo modprobe snd-aloop
 
-echo "Run CubicSDR, Select Generic RTL2832 device then click Start to begin"
+echo "Now run CubicSDR (Under Pi/Hamradio), Select Generic RTL2832 device then click Start to begin."
 
-echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml"
+echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml then Open."
 
 echo 
 
