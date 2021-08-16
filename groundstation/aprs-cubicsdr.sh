@@ -7,7 +7,7 @@ echo
 
 echo "Note: Run CubicSDR, Select Generic RTL2832 device then click Start to begin"
 
-echo "Then tune to 144.39 MHz NBFM and Audio Output hw:Loopback,0
+echo "Then tune to 144.39 MHz NBFM and Audio Output hw:Loopback,0"
 
 echo 
 
