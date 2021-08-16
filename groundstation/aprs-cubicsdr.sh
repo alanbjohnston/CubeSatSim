@@ -23,7 +23,7 @@ read input
 
 echo
 
-direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf.conf -t 0
+direwolf -r 48000 -c direwolf.conf -t 0
 
 sleep 10
 
