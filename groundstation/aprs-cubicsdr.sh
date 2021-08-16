@@ -17,7 +17,9 @@ echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml
 
 echo 
 
-choice = input ("Hit enter only when CubicSDR is running")
+echo "Hit enter only when CubicSDR is running"
+
+read input
 
 echo
 
