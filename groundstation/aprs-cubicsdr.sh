@@ -17,7 +17,7 @@ echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml
 
 echo 
 
-choice = input ("Hit enter only when CubicSDR is running and says Audio Out: hw:Loopback,0")
+choice = input ("Hit enter only when CubicSDR is running")
 
 echo
 
