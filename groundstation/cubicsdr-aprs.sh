@@ -4,11 +4,19 @@ sudo modprobe snd-aloop
 
 if [ ! -d "./direwolf.conf" ]; then
 
+  echo "direwolf.conf already downloaded"
+
+else
+
   wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/direwolf.conf 
 
 fi
 
 if [ ! -d "./cubicsdr-aprs-direwolf.xml" ]; then
+
+  echo "cubic-aprs-direwolf.conf already downloaded"
+
+else
 
   wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml 
 
