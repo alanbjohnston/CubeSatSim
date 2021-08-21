@@ -2,15 +2,15 @@
 
 sudo modprobe snd-aloop
 
-if [ ! -d "/home/pi/CubeSatSim/groundstation/direwolf.conf" ]; then
+if [ ! -d "direwolf.conf" ]; then
 
-  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/direwolf.conf -O /home/pi/CubeSatSim/groundstation/direwolf.conf
+  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/direwolf.conf 
 
 fi
 
-if [ ! -d "/home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml" ]; then
+if [ ! -d "cubicsdr-aprs-direwolf.xml" ]; then
 
-  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml -O /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml
+  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml 
 
 fi
 
