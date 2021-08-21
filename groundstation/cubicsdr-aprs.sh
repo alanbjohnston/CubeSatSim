@@ -5,26 +5,25 @@ sudo killall -9 direwolf &>/dev/null
 
 sleep 5
 
-CubicSDR &>/dev/null &
+echo
 
-sleep 15
+echo "Opening CubicSDR"
 
-xdotool mousemove 290 348 click 1
-sleep 1.9 
-xdotool mousemove 449 572 click 1
-sleep 1.9
-xdotool mousemove 20 77 click 1
-sleep 1.9
-xdotool mousemove 59 208 
-sleep 1.9
-xdotool mousemove 325 208 click 1
-sleep 1.9
-xdotool mousemove 290 487 click 1
-sleep 1.9
-xdotool type "cubicsdr-aprs-direwolf.xml"
-sleep 5
-xdotool mousemove 938 568 click 1
-sleep 5
+nohup CubicSDR </dev/null >/dev/null 2>&1 & 
+
+echo
+
+echo "When CubicSDR opens, select Generic RTL2832 device then click Start to begin."
+
+echo
+
+echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml then Open."
+
+echo 
+
+echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
+
+read input
 
 direwolf -c direwolf.conf -r 48000 -t 0
 
