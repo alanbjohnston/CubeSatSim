@@ -1,5 +1,11 @@
 #!/bin/sh
 
+if [ ! -d "/home/pi/CubeSatSim/groundstation/direwolf.conf" ]; then
+
+  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/direwolf.conf -o /home/pi/CubeSatSim/groundstation/direwolf.conf
+
+fi
+
 sudo killall -9 CubicSDR &>/dev/null
 sudo killall -9 direwolf &>/dev/null
 
