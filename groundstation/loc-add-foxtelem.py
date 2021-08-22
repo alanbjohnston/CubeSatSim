@@ -139,7 +139,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
         print("\nAltitude cannot be negative!")
         altitude = 0
     except ValueError:
-      print("\Altitude must be an integer!")
+      print("\nAltitude must be an integer!")
     
   if ((latitude != 0) and (longitude != 0)):
     
