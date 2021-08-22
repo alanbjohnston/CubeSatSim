@@ -28,7 +28,7 @@ if (choice == '2'):
   
   regex = '[A-Za-z]+[A-Za-z]+[0-9]+[0-9]+[A-Za-z]+[A-Za-z]'
 
-  for i in list(range(2)):
+  for i in list(range(3)):
   
     grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
 
@@ -40,18 +40,23 @@ if (choice == '2'):
       grid = ""
 
 elif (choice == '3'):
-  
-  lat = input("\nType your latitude: ")
-  try:
+
+  for i in list(range(3)):
+    lat = input("\nType your latitude: ")
+    try:
           latitude = float(lat)
           print(latitude)
-  except ValueError:
+          break
+    except ValueError:
           print("Not a number!")
-  long = input("\nType your longitude: ")
-  try:
+        
+  for i in list(range(3)):        
+    long = input("\nType your longitude: ")
+    try:
           longitude = float(long)
           print(longitude)
-  except ValueError:
+          break
+    except ValueError:
           print("Not a number!")
       
 elif (choice == '1'):          
