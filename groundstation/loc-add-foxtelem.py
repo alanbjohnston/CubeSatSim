@@ -26,7 +26,7 @@ if (choice == '2'):
   
   print("\nNOTE: To set Gpredict location using Grid square, run Gpredict and select Edit/Preferences/Ground Stations")
   
-  regex = '[A-Z]+[A-Z]+[0-9]+[0-9]+[a-z]+[a-z]'
+  regex = '[A-Za-z]+[A-Za-z]+[0-9]+[0-9]+[A-Za-z]+[A-Za-z]'
 
   grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
 
