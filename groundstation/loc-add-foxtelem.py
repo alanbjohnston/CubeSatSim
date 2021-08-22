@@ -28,14 +28,17 @@ if (choice == '2'):
   
   regex = '[A-Za-z]+[A-Za-z]+[0-9]+[0-9]+[A-Za-z]+[A-Za-z]'
 
-  grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
+  for i in list(range(2)):
+  
+    grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
 
-  if re.search(regex, grid):
-    print("grid is valid!")
-  else:
-    print("grid is not valid!")
-    grid = ""
-    
+    if re.search(regex, grid):
+      print("grid is valid!")
+      break
+    else:
+      print("grid is not valid!")
+      grid = ""
+
 elif (choice == '3'):
   
   lat = input("\nType your latitude: ")
