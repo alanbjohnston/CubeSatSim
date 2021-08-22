@@ -127,15 +127,19 @@ if ((latitude != 0) and (longitude != 0) or grid):
     alt = input("\nType your altitude in integer meters: ")
     try:
       altitude = int(alt)
-      #print(altitude)
-      altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
-      #print (altSedStr)
-      system(altSedStr)
+      if (altitude >= 0):
+        #print(altitude)
+        altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+        #print (altSedStr)
+        system(altSedStr)
     
-      print("\nFoxTelem configuration updated with your alitude")    
-      break
+        print("\nFoxTelem configuration updated with your alitude")    
+        break
+      else:
+        print("\nAltitude cannot be negative!")
+        altitude = 0
     except ValueError:
-      print("Not an integer!")
+      print("\Altitude must be an integer!")
     
   if ((latitude != 0) and (longitude != 0)):
     
