@@ -9,9 +9,6 @@ sudo killall -9 FoxTelem &>/dev/null
 
 FILE=/home/pi/FoxTelemetryData/.foxprofile  
 if [ ! -f "$FILE" ]; then
-
-   exit
-
     echo "You need to choose your default FoxTelem profile."
     echo 
     echo "The choices are:"
