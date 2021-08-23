@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/CubeSatSim/groundstation/fox-startup.sh
+Exec=/home/pi/CubeSatSim/groundstation/fox-run.sh
 Name=FoxTelem
 Comment=FIAB-v3
 Icon=/home/pi/Downloads/foxtelem.png
