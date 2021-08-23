@@ -8,11 +8,8 @@ echo
 sudo killall -9 FoxTelem &>/dev/null
 
 FILE=/home/pi/FoxTelemetryData/.foxprofile  
-if [ ! -f "$FILE" ]; then
-
-   exit
-    
-fi    
+#if [ ! -f "$FILE" ]; then
+if [ -f "$FILE" ]; then
 
 value=`cat /home/pi/FoxTelemetryData/.foxprofile`
 echo "$value" > /dev/null
@@ -36,5 +33,7 @@ else
 fi
 
 sleep 10
+
+fi    
 
 #$SHELL
