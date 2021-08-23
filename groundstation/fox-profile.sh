@@ -7,7 +7,7 @@ echo
 
 sudo rm /home/pi/FoxTelemetryData/.foxprofile  
 
-/home/pi/CubeSatSim/groundstation/fox-startup.sh
+/home/pi/CubeSatSim/groundstation/fox-run.sh
 
 sleep 5
 
