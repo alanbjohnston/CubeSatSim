@@ -12,6 +12,7 @@ longitude = 0
 location = "QTH"
 grid = ""
 return_value = 0
+altitude = 0
 
 print("\nIn order to track the satellites as they fly over your location and upload your satellite telemetry data to the AMSAT servers, we need to know your location")
 print("\nYou can enter:\n")
