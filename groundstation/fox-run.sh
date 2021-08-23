@@ -36,11 +36,11 @@ if [ ! -f "$FILE" ]; then
 	
 	if [ $? -eq 1 ]; then
 	
-		echo "Enter your CALLSIGN.  If you don't have a callsign, enter a text string that will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
-		read callsign
+		echo "Enter your Groundstation Name. If you upload telemetry data to the AMSAT servers, this name will be displayed on the FoxTelem leader board at https://amsat.org/tlm"
+		read name
 
-		if [ -n "$callsign" ]; then
-			sudo sed -i "s/callsign=.*/callsign=$callsign/g" /home/pi/FoxTelemetryData/FoxTelem.properties
+		if [ -n "$name" ]; then
+			sudo sed -i "s/callsign=.*/callsign=$name/g" /home/pi/FoxTelemetryData/FoxTelem.properties
 		fi
 
 		echo
