@@ -26,6 +26,7 @@ sudo killall -9 CubicSDR &>/dev/null
 echo
 
 echo "Choose the number for the frequency for APRS decoding:"
+echo
 echo "1. APRS US 2m (144390 kHz)"
 echo "2. CubeSatSim (434900 kHz)"
 echo "3. APRS European 2m (144800 kHz)"
@@ -65,8 +66,11 @@ frequency=$frequency"000"
 
 fi
 
-echo $frequency
+#echo $frequency
 
+echo "Note that the 'Tuned to' frequency will be different from this frequency due to the way SDRs work."
+
+echo
 
 echo -e "Script to auto decode APRS packets on $frequency\n"
 
