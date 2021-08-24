@@ -34,18 +34,34 @@ sudo killall -9 CubicSDR &>/dev/null
 echo
 
 echo "Choose the number for the frequency for SSTV decoding:"
-echo "1. ISS (145.8 MHz)"
-echo "2. CubeSatSim (434.9 MHz)"
-echo "3. Enter a frequency"
+echo "1. ISS (145800Hz)"
+echo "2. CubeSatSim (434900 kHz)"
+echo "3. Enter a frequency in kiloHertz"
 echo
 
 read -r choice
 
 if [ "$choice" = "1" ]; then
 
-frequency=145.8
+frequency=145800
+
+elif [ "$choice" = "2" ]; then
+
+frequency=434900
+
+else
+
+echo
+
+echo "Enter the frequency in kiloHertz"
+
+echo
+
+read -r frequency
 
 fi
+
+sleep 2
 
 qsstv &
 
@@ -58,7 +74,8 @@ echo "$value" > /dev/null
 set -- $value
 
 #rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 
-rtl_fm -M fm -f 434.9M -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
+#rtl_fm -M fm -f 434.9M -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
+rtl_fm -M fm -f $frequencyk -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
 
 sleep 5
 
