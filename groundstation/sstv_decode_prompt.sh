@@ -43,11 +43,11 @@ read -r choice
 
 if [ "$choice" = "1" ]; then
 
-frequency=145800
+frequency=145800000
 
 elif [ "$choice" = "2" ]; then
 
-frequency=434900
+frequency=434900000
 
 else
 
@@ -59,7 +59,11 @@ echo
 
 read -r frequency
 
+frequency=$frequency"000"
+
 fi
+
+echo $frequency
 
 sleep 2
 
@@ -75,7 +79,7 @@ set -- $value
 
 #rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 
 #rtl_fm -M fm -f 434.9M -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
-rtl_fm -M fm -f $frequencyk -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
+rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
 
 sleep 5
 
