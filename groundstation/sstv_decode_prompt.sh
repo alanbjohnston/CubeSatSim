@@ -31,6 +31,22 @@ sudo killall -9 CubicSDR &>/dev/null
 
 #echo "s" >> .mode
 
+echo
+
+echo "Choose the number for the frequency for SSTV decoding:"
+echo "1. ISS (145.8 MHz)"
+echo "2. CubeSatSim (434.9 MHz)"
+echo "3. Enter a frequency"
+echo
+
+read -r choice
+
+if [ "$choice" = "1" ]; then
+
+frequency=145.8
+
+fi
+
 qsstv &
 
 sleep 5
