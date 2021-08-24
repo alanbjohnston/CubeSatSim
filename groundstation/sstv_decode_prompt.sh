@@ -1,7 +1,6 @@
 #!/bin/bash
-# script to decode SSTV using rtl_fm and QSSTV from the CubeSatSim
 
-echo "Script to decode SSTV from the CubeSatSim for ARISS Radio Pi"
+echo "Script to decode SSTV using QSSTV with rtl_fm"
 
 echo
 
@@ -63,7 +62,15 @@ frequency=$frequency"000"
 
 fi
 
-echo $frequency
+#echo $frequency
+
+echo
+
+echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
+
+echo
+
+echo -e "Auto decoding SSTV on $frequency Hz"
 
 sleep 2
 
