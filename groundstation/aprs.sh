@@ -78,7 +78,8 @@ echo -e "Auto decoding APRS packets on $frequency Hz"
 
 #sudo rtl_fm -f 144.39M -s 22050 -g 48 - | multimon-ng -a AFSK1200 -A -t raw -
 
-direwolf -r 48000 -t 0 &
+#direwolf -r 48000 -t 0 &
+direwolf -r 48000 &
 
 sleep 5
 
