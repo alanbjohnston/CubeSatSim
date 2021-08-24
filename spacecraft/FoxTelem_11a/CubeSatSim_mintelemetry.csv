@@ -1,4 +1,4 @@
-46,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHOMIN_NAME,DESCRIPTION
+48,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHOMIN_NAME,DESCRIPTION
 0,MIN,BATT_A_V,12,V,cubesatsim_voltage|FLOAT2,NONE,0,0,3,Cell A,Battery A voltage (0-2.5V scale)
 1,MIN,BATT_B_V,12,V,cubesatsim_voltage|FLOAT2,NONE,0,0,3,Cell A+B,Battery A+B voltage (0-3.3V scale)
 2,MIN,BATT_V,12,V,cubesatsim_voltage|FLOAT2,NONE,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
@@ -44,4 +44,6 @@
 42,MIN,GroundCommands,4,-,1,NONE,3,3,0,Ground Commands,Number of ground commands received
 43,MIN,RXAntenna,1,-,16,NONE,1,3,0,RX Antenna,Receive antenna status
 44,MIN,TXAntenna,1,-,16,NONE,1,2,0,TX Antenna,Transmit antenna status
-45,MIN,Pad,58,-,0,NONE,0,0,0,NONE,NONE
+45,MIN,Sensor3,12,cm-1,0,NONE,6,8,3,IR,STEM Payload Extra Sensor 3 (Sl1145)
+46,MIN,Sensor4,12,Gs,0,NONE,6,9,3,Magnetometer,STEM Payload Extra Sensor 4 (LIS3MDL)
+47,MIN,Pad,58,-,0,NONE,0,0,0,NONE,NONE
