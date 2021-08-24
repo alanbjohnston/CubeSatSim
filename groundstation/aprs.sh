@@ -26,9 +26,11 @@ sudo killall -9 CubicSDR &>/dev/null
 echo
 
 echo "Choose the number for the frequency for APRS decoding:"
-echo "1. APRS Standard 2m US (144390Hz)"
+echo "1. APRS US 2m (144390 kHz)"
 echo "2. CubeSatSim (434900 kHz)"
-echo "3. Enter a frequency in kiloHertz"
+echo "3. APRS European 2m (144800 kHz)"
+echo "4. APRS Australian 2m (145175 kHz)"
+echo "5. Enter a frequency in kiloHertz"
 echo
 
 read -r choice
@@ -40,6 +42,14 @@ frequency=144390000
 elif [ "$choice" = "2" ]; then
 
 frequency=434900000
+
+elif [ "$choice" = "3" ]; then
+
+frequency=144800000
+
+elif [ "$choice" = "4" ]; then
+
+frequency=145175000
 
 else
 
