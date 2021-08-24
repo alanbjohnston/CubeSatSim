@@ -68,6 +68,8 @@ fi
 
 #echo $frequency
 
+echo
+
 echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
 
 echo
