@@ -488,7 +488,7 @@ int main(int argc, char * argv[]) {
     voltage_max[i] = -1000.0;
     current_max[i] = -1000.0;
   }
-  for (int i = 0; i < 17; i++) {
+  for (int i = 0; i < 19; i++) {
     sensor_min[i] = 1000.0;
     sensor_max[i] = -1000.0;
  //   printf("Sensor min and max initialized!");
@@ -692,7 +692,7 @@ int main(int argc, char * argv[]) {
  
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
-          for (count1 = 0; count1 < 17; count1++) {
+          for (count1 = 0; count1 < 19; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
               #ifdef DEBUG_LOGGING
@@ -707,7 +707,7 @@ int main(int argc, char * argv[]) {
 		payload = OFF;  // turn off since STEM Payload is not responding
       }
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (count1 = 0; count1 < 17; count1++) {
+        for (count1 = 0; count1 < 19; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
           if (sensor[count1] > sensor_max[count1])
@@ -1140,7 +1140,7 @@ void get_tlm_fox() {
 	      if (loop % 32 == 0) {  // was 8
 		printf("Sending MIN frame \n");
 		frm_type = 0x03;
-		for (int count1 = 0; count1 < 17; count1++) {
+		for (int count1 = 0; count1 < 19; count1++) {
 		  if (count1 < 3)
 		    other[count1] = other_min[count1];
 		  if (count1 < 8) {
@@ -1154,7 +1154,7 @@ void get_tlm_fox() {
 	      if ((loop + 16) % 32 == 0) {  // was 8
 		printf("Sending MAX frame \n");
 		frm_type = 0x02;
-		for (int count1 = 0; count1 < 17; count1++) {
+		for (int count1 = 0; count1 < 19; count1++) {
 		  if (count1 < 3)
 		    other[count1] = other_max[count1];
 		  if (count1 < 8) {
@@ -1297,6 +1297,8 @@ void get_tlm_fox() {
 	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS2] * 10 + 0.5) + 2048);
 	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
 	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
+	      encodeB(b_max, 53 + head_offset, (int)(sensor_max[XS3] + 0.5));
+	      encodeB(b_max, 54 + head_offset, (int)(sensor_max[XS4] + 0.5));                                                                      
       }	  
       else
       {	        	    
@@ -1310,6 +1312,8 @@ void get_tlm_fox() {
 
 	      encodeA(b_max, 48 + head_offset, 2048);
 	      encodeB(b_max, 49 + head_offset, 2048);
+	      encodeB(b_max, 53 + head_offset, 2048);          
+	      encodeB(b_max, 54 + head_offset, 2048);                                                   
       }	  	      
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
@@ -1350,6 +1354,8 @@ void get_tlm_fox() {
 	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS2] * 10 + 0.5) + 2048);
 	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
 	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
+	      encodeB(b_max, 53 + head_offset, (int)(sensor_max[XS3] + 0.5));
+	      encodeB(b_max, 54 + head_offset, (int)(sensor_max[XS4] + 0.5));                                                                      
     }      
       else
       {	        	    
@@ -1363,6 +1369,8 @@ void get_tlm_fox() {
 
 	      encodeA(b_min, 48 + head_offset, 2048);
 	      encodeB(b_min, 49 + head_offset, 2048);
+	      encodeB(b_min, 53 + head_offset, 2048);
+	      encodeB(b_min, 54 + head_offset, 2048);                                              
       }	 
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
@@ -1398,6 +1406,9 @@ void get_tlm_fox() {
       printf("TX Antenna Deployed!\n");
     }
     
+    encodeB(b, 53 + head_offset, (int)(sensor[XS3] + 0.5));
+    encodeB(b, 54 + head_offset, (int)(sensor[XS4] + 0.5));
+                                                               
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
       encodeA(b, 64 + head_offset, 0xff & val); 

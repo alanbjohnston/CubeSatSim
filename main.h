@@ -47,6 +47,7 @@
 #define XS1 14
 #define XS2 15
 #define XS3 16
+#define XS4 17
 
 #define RSSI 0
 #define IHU_TEMP 2
@@ -138,7 +139,7 @@ float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, 
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
 
-float voltage[9], current[9], sensor[17], other[3];
+float voltage[9], current[9], sensor[19], other[3];
 char sensor_payload[500];
 
 int test_i2c_bus(int bus);
@@ -149,5 +150,5 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "APCSS";
-float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[19], sensor_min[19], other_max[3], other_min[3];
 
