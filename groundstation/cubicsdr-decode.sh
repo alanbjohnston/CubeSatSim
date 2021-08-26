@@ -73,6 +73,7 @@ echo
 if [ "$choice" = "1" ]; then
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml then Open."
+  echo "Note that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting."
 
   echo 
 
@@ -85,7 +86,7 @@ if [ "$choice" = "1" ]; then
 elif [ "$choice" = "2" ]; then
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-iss-direwolf.xml then Open."
-
+  echo "Note that you won't get packets unless the ISS is passing over and the radio is in APRS digipeater mode."
   echo 
 
   echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
@@ -110,6 +111,7 @@ elif [ "$choice" = "3" ]; then
 elif [ "$choice" = "4" ]; then
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-serenity-direwolf.xml then Open."
+  echo "Note that you won't get packets unless the Serenity CubeSat is passing over and is beaconing."
 
   echo 
 
