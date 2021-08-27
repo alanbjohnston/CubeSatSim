@@ -180,8 +180,8 @@ void loop() {
       if (magPresent) {
         lis3mdl.read();
         magRaw = (((lis3mdl.x + lis3mdl.y + lis3mdl.z) / 3));
-        magAbs = abs(magRaw);
-        Serial.println(magAbs);
+        magRawAbs = abs(magRaw);
+        Serial.println(magRawAbs);
       } else
       {
         Serial.println("0.0");
@@ -263,8 +263,8 @@ void loop() {
       if (magPresent) {
         lis3mdl.read();
         magRaw = (((lis3mdl.x + lis3mdl.y + lis3mdl.z) / 3));
-        magAbs = abs(magRaw);
-        Serial1.println(magAbs);
+        magRawAbs = abs(magRaw);
+        Serial1.println(magRawAbs);
       } else
       {
         Serial1.println("0.0");
