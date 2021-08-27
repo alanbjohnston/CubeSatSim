@@ -21,21 +21,21 @@ fi
 FILE=cubicsdr-aprs-direwolf.xml
 if [ ! -f "$FILE" ]; then
 
-  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml 
+  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr-aprs-direwolf.xml 
 
 fi
 
 FILE=cubicsdr-iss-direwolf.xml
 if [ ! -f "$FILE" ]; then
 
-  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr/cubicsdr-iss-direwolf.xml 
+  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr-iss-direwolf.xml 
 
 fi
 
 FILE=cubicsdr-serenity-direwolf.xml
 if [ ! -f "$FILE" ]; then
 
-  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr/cubicsdr-serenity-direwolf.xml 
+  wget https://raw.githubusercontent.com/alanbjohnston/CubeSatSim/FIAB-v3/groundstation/cubicsdr-serenity-direwolf.xml 
 
 fi
 
@@ -60,7 +60,7 @@ read -r choice
 
 echo
 
-echo "Opening CubicSDR... (this will take a few seconds)"
+echo "CubicSDR will load in about 10 sceonds."
 
 nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
@@ -85,7 +85,7 @@ if [ "$choice" = "1" ]; then
 
 elif [ "$choice" = "2" ]; then
 
-  echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-iss-direwolf.xml then Open."
+  echo "Then select File/Session/Open Session then load cubicsdr-iss-direwolf.xml then Open."
   echo "Note that you won't get packets unless the ISS is passing over and the radio is in APRS digipeater mode."
   echo 
 
@@ -97,7 +97,7 @@ elif [ "$choice" = "2" ]; then
 
 elif [ "$choice" = "3" ]; then
 
-  echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml then Open."
+  echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml then Open."
   echo "Then tune the CubicSDR frequency to the one you want to decode."
 
   echo 
@@ -110,7 +110,7 @@ elif [ "$choice" = "3" ]; then
 
 elif [ "$choice" = "4" ]; then
 
-  echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-serenity-direwolf.xml then Open."
+  echo "Then select File/Session/Open Session then load cubicsdr-serenity-direwolf.xml then Open."
   echo "Note that you won't get packets unless the Serenity CubeSat is passing over and is beaconing."
 
   echo 
