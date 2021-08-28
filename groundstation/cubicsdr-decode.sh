@@ -52,6 +52,7 @@ echo "1. APRS US 2m (144.390 MHz)"
 echo "2. ISS APRS (145.825 MHz"
 echo "3. APRS on some other frequency"
 echo "4. Serenity CubeSat 4800 bps (437.1 MHz)"
+echo "5. Test Serenity CubeSat decoding with WAV file"
 
 echo
 
@@ -121,6 +122,21 @@ elif [ "$choice" = "4" ]; then
 
   direwolf -c direwolf-4800.conf -r 48000 -t 0
 
+elif [ "$choice" = "4" ]; then
+
+  echo "A recorded WAV file will play and you should see packets decoded"
+
+  echo 
+
+#  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
+
+#  read input
+
+  aplay -D hw:3,0,0 Recordings/437.098_2021-08-28_10-41-34.wav &
+
+
+  direwolf -c direwolf-4800.conf -r 48000 -t 0
+  
 fi
 
 sleep 5
