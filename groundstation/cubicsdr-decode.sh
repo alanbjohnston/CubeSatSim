@@ -59,19 +59,18 @@ echo
 read -r choice
 
 
-echo
-
-echo "CubicSDR will load in about 10 sceonds."
-
-nohup CubicSDR </dev/null >/dev/null 2>&1 & 
-
-echo
-
-echo "When CubicSDR opens, select Generic RTL2832 device then click Start to begin."
-
-echo
-
 if [ "$choice" = "1" ]; then
+  echo
+
+  echo "CubicSDR will load in about 10 sceonds."
+
+  nohup CubicSDR </dev/null >/dev/null 2>&1 & 
+
+  echo
+
+  echo "When CubicSDR opens, select Generic RTL2832 device then click Start to begin."
+
+  echo
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr/cubicsdr-aprs-direwolf.xml then Open."
   echo "Note that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting."
@@ -85,6 +84,17 @@ if [ "$choice" = "1" ]; then
   direwolf -c direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "2" ]; then
+  echo
+
+  echo "CubicSDR will load in about 10 sceonds."
+
+  nohup CubicSDR </dev/null >/dev/null 2>&1 & 
+
+  echo
+
+  echo "When CubicSDR opens, select Generic RTL2832 device then click Start to begin."
+
+  echo
 
   echo "Then select File/Session/Open Session then load cubicsdr-iss-direwolf.xml then Open."
   echo "Note that you won't get packets unless the ISS is passing over and the radio is in APRS digipeater mode."
@@ -97,6 +107,17 @@ elif [ "$choice" = "2" ]; then
   direwolf -c direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "3" ]; then
+  echo
+
+  echo "CubicSDR will load in about 10 sceonds."
+
+  nohup CubicSDR </dev/null >/dev/null 2>&1 & 
+
+  echo
+
+  echo "When CubicSDR opens, select Generic RTL2832 device then click Start to begin."
+
+  echo
 
   echo "Then select File/Session/Open Session then load cubicsdr-aprs-direwolf.xml then Open."
   echo "Then tune the CubicSDR frequency to the one you want to decode."
@@ -110,6 +131,17 @@ elif [ "$choice" = "3" ]; then
   direwolf -c direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "4" ]; then
+  echo
+
+  echo "CubicSDR will load in about 10 sceonds."
+
+  nohup CubicSDR </dev/null >/dev/null 2>&1 & 
+
+  echo
+
+  echo "When CubicSDR opens, select Generic RTL2832 device then click Start to begin."
+
+  echo
 
   echo "Then select File/Session/Open Session then load cubicsdr-serenity-direwolf.xml then Open."
   echo "Note that you won't get packets unless the Serenity CubeSat is passing over and is beaconing."
@@ -124,13 +156,15 @@ elif [ "$choice" = "4" ]; then
 
 elif [ "$choice" = "5" ]; then
 
-  echo "A recorded WAV file will play and you should see packets decoded"
+  echo "A recorded WAV file will play and you should see about 4 packets decoded"
 
   echo 
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
 #  read input
+
+  aplay -D hw:0,0 ~/Recordings/437.098_2021-08-28_10-41-34.wav &
 
   aplay -D hw:3,0,0 ~/Recordings/437.098_2021-08-28_10-41-34.wav &
 
