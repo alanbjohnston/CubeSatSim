@@ -168,8 +168,11 @@ elif [ "$choice" = "5" ]; then
 
   aplay -D hw:3,0,0 ~/Recordings/437.098_2021-08-28_10-41-34.wav &
 
-
-  direwolf -c direwolf-4800.conf -r 48000 -t 0
+  timeout 30 direwolf -c direwolf-4800.conf -r 48000 -t 0
+  
+  echo "Test complete.  This window will close in 10 seconds."
+  
+  sleep 5
   
 fi
 
