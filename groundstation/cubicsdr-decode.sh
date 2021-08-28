@@ -170,6 +170,8 @@ elif [ "$choice" = "5" ]; then
 
   timeout 30 direwolf -c direwolf-4800.conf -r 48000 -t 0
   
+  echo
+  
   echo "Test complete.  This window will close in 10 seconds."
   
   sleep 5
