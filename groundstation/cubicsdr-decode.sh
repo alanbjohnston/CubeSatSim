@@ -122,7 +122,7 @@ elif [ "$choice" = "4" ]; then
 
   direwolf -c direwolf-4800.conf -r 48000 -t 0
 
-elif [ "$choice" = "4" ]; then
+elif [ "$choice" = "5" ]; then
 
   echo "A recorded WAV file will play and you should see packets decoded"
 
