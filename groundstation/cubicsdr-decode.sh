@@ -132,7 +132,7 @@ elif [ "$choice" = "4" ]; then
 
 #  read input
 
-  aplay -D hw:3,0,0 Recordings/437.098_2021-08-28_10-41-34.wav &
+  aplay -D hw:3,0,0 ~/Recordings/437.098_2021-08-28_10-41-34.wav &
 
 
   direwolf -c direwolf-4800.conf -r 48000 -t 0
