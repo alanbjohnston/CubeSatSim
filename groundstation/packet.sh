@@ -96,7 +96,7 @@ else
   aplay -D hw:0,0 WAV/beacon_test_2.wav &
   aplay -D hw:${2:0:1},0,0 WAV/beacon_test_2.wav &
 
-  timeout 30 direwolf -c direwolf/direwolf-4800.conf -r 48000 -t 0
+  timeout 30 direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
   
   echo
   
@@ -118,13 +118,13 @@ if [ "$choice" = "7" ] || [ "$choice" = "8" ]; then
 
   echo -e "Auto decoding AX.25 packets on $frequency Hz"
 
-  direwolf -r 48000 -c direwolf/direwolf-4800.conf -t 0 &
+  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -t 0 &
 
 else
 
   echo -e "Auto decoding APRS packets on $frequency Hz"
 
-  direwolf -r 48000 -c direwolf/direwolf.conf -t 0 &
+  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
 
 fi
 
