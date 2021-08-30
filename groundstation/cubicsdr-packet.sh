@@ -64,7 +64,7 @@ if [ "$choice" = "1" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "2" ]; then
   echo
@@ -87,7 +87,7 @@ elif [ "$choice" = "2" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "3" ]; then
   echo
@@ -110,7 +110,7 @@ elif [ "$choice" = "3" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 
 elif [ "$choice" = "4" ]; then
@@ -134,7 +134,7 @@ elif [ "$choice" = "4" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "5" ]; then
   echo
@@ -158,7 +158,7 @@ elif [ "$choice" = "5" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "6" ]; then
   echo
@@ -181,7 +181,7 @@ elif [ "$choice" = "6" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 elif [ "$choice" = "7" ]; then
   echo
@@ -205,7 +205,7 @@ elif [ "$choice" = "7" ]; then
 
   read input
 
-  direwolf -c direwolf/direwolf-4800.conf -r 48000 -t 0
+  direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
 
 elif [ "$choice" = "8" ]; then
 
@@ -222,10 +222,10 @@ elif [ "$choice" = "8" ]; then
 
 #  aplay -D hw:0,0 WAV/SDRSharp_20210830_200034Z_437097377Hz_AF.wav &
 #  aplay -D hw:${2:0:1},0,0 WAV/SDRSharp_20210830_200034Z_437097377Hz_AF.wav &
-  aplay -D hw:0,0 WAV/beacon_test_2.wav &
-  aplay -D hw:${2:0:1},0,0 WAV/beacon_test_2.wav &
+  aplay -D hw:0,0 /home/pi/CubeSatSim/groundstation/WAV/beacon_test_2.wav &
+  aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/groundstation/WAV/beacon_test_2.wav &
 
-  timeout 30 direwolf -c direwolf/direwolf-4800.conf -r 48000 -t 0
+  timeout 30 direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
   
   echo
   
