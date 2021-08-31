@@ -45,8 +45,8 @@ read -r choice
 if [ "$choice" = "1" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
-
+  echo "CubicSDR will load in about 10 seconds."
+  
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
   echo
@@ -69,7 +69,7 @@ if [ "$choice" = "1" ]; then
 elif [ "$choice" = "2" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
+  echo "CubicSDR will load in about 10 seconds."
 
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
@@ -92,8 +92,8 @@ elif [ "$choice" = "2" ]; then
 elif [ "$choice" = "3" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
-
+  echo "CubicSDR will load in about 10 seconds."
+  
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
   echo
@@ -116,8 +116,8 @@ elif [ "$choice" = "3" ]; then
 elif [ "$choice" = "4" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
-
+  echo "CubicSDR will load in about 10 seconds."
+  
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
   echo
@@ -139,8 +139,8 @@ elif [ "$choice" = "4" ]; then
 elif [ "$choice" = "5" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
-
+  echo "CubicSDR will load in about 10 seconds."
+  
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
   echo
@@ -163,8 +163,8 @@ elif [ "$choice" = "5" ]; then
 elif [ "$choice" = "6" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
-
+  echo "CubicSDR will load in about 10 seconds."
+  
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
   echo
@@ -186,8 +186,8 @@ elif [ "$choice" = "6" ]; then
 elif [ "$choice" = "7" ]; then
   echo
 
-  echo "CubicSDR will load in about 10 sceonds."
-
+  echo "CubicSDR will load in about 10 seconds."
+  
   nohup CubicSDR </dev/null >/dev/null 2>&1 & 
 
   echo
@@ -211,7 +211,7 @@ elif [ "$choice" = "8" ]; then
 
   echo
 
-  echo "A recorded WAV file will play and you should see some packets decoded"
+  echo "A recorded WAV file will play and you should see some packets decoded."
 
   echo 
   
