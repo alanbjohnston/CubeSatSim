@@ -8,7 +8,7 @@ There are files for the main board, battery board, and STEM payload board of the
 
 * cubesatsim-main-1.1_schematic.pdf --   Schematic
 
-* cubesatsim-main-1.1_board.png     --   View of board
+* cubesatsim-main-1.1_pcb.png     --   View of board
 
 * cubesatsim-main-1.1_board_fill.png --  View of board with fill
 
