@@ -84,6 +84,8 @@ else
   #aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/telem.wav &
   (while true; do (sleep 5 && aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav); done) &
   
+  qsstv 
+  
 fi
 
 #echo $frequency
