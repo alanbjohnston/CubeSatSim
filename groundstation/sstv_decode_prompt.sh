@@ -104,6 +104,8 @@ sleep 5
 
 #sudo systemctl restart cubesatsim
 
+if [ "$choice" != "4" ]; then
+
 value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
 set -- $value
@@ -113,5 +115,7 @@ set -- $value
 rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
 
 sleep 5
+
+fi
 
 #$SHELL
