@@ -81,6 +81,7 @@ elif [ "$choice" = "2" ]; then
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr-session/cubicsdr-cubesatsim-direwolf.xml then Open."
   echo "Note that you won't get packets unless your CubeSat Simulator is transmitting in APRS digipeater mode."
+  echo "Note that you might need to adjust the frequency in CubicSDR slightly so the signal is centered."
   echo 
 
   echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
@@ -174,7 +175,8 @@ elif [ "$choice" = "6" ]; then
   echo
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr-session/cubicsdr-iss-direwolf.xml then Open."
-  echo "Note that you won't get packets unless the ISS is passing over and the radio is in APRS digipeater mode."
+  echo "Note that you won't get packets unless the ISS is passing over (see Gpredict) and the radio is in APRS digipeater mode (check social media)."
+  echo "Note that you may need to adjust the frequency due to Doppler shift."
   echo 
 
   echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
@@ -197,7 +199,7 @@ elif [ "$choice" = "7" ]; then
   echo
 
   echo "Then select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr-session/cubicsdr-serenity-direwolf.xml then Open."
-  echo "Note that you won't get packets unless the Serenity CubeSat is passing over and is beaconing."
+  echo "Note that you won't get packets unless the Serenity CubeSat is passing over (see Gpredict)and is beaconing."
 
   echo 
 
