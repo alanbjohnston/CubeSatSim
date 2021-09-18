@@ -36,6 +36,7 @@ echo "Choose the number for the frequency for SSTV decoding:"
 echo "1. ISS (145800Hz)"
 echo "2. CubeSatSim (434900 kHz)"
 echo "3. Enter a frequency in kiloHertz"
+echo "4. Play an SSTV WAV file to test"
 echo
 
 read -r choice
@@ -55,7 +56,7 @@ echo
 echo "If your CubeSatSim is transmitting in SSTV mode (mode 6) you should get images."
 echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
 
-else
+elif [ "$choice" = "3" ]; then
 
 echo
 
@@ -67,6 +68,22 @@ read -r frequency
 
 frequency=$frequency"000"
 
+else
+
+  echo "A recorded SSTV WAV file from the CubeSatSim will play and you should see an image decoded."
+
+  echo 
+ 
+  value=`aplay -l | grep "Loopback"`
+  echo "$value" > /dev/null
+  set -- $value
+
+  #aplay -D hw:0,0 /home/pi/CubeSatSim/telem.wav &
+  (while true; do (sleep 5 && aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav); done) &
+  
+  #aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/telem.wav &
+  (while true; do (sleep 5 && aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav); done) &
+  
 fi
 
 #echo $frequency
