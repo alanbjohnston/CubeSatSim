@@ -103,6 +103,16 @@ if ((latitude != 0) and (longitude != 0) or grid):
       system(longSedStr)
 
       print("\nFoxTelem configuration updated with your latitude and longitude")
+      
+      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+      #print (latSedStr)
+      system(latSedStr)
+
+      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+      #print (longSedStr)
+      system(longSedStr)
+
+      print("\nKLAtracker configuration updated with your latitude and longitude")      
     
       return_value = 1
 
@@ -122,6 +132,20 @@ if ((latitude != 0) and (longitude != 0) or grid):
             
       print("\nFoxTelem configuration updated with your maidenhead grid square")
       
+      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+      #print (latSedStr)
+      system(latSedStr)
+
+      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+      #print (longSedStr)
+      system(longSedStr)
+      
+      gridSedStr = 'sed -i "s/maidenhead_locator=.*/maidenhead_locator=' + grid + '/g" /home/pi/KLATrack/klatracker.properties'
+      #print (gridSedStr)
+      system(gridSedStr)      
+
+      print("\nKLAtracker configuration updated with your maidenhead grid square")         
+      
       return_value = 1
       
   for i in list(range(3)):
@@ -134,7 +158,14 @@ if ((latitude != 0) and (longitude != 0) or grid):
         #print (altSedStr)
         system(altSedStr)
     
-        print("\nFoxTelem configuration updated with your alitude")    
+        print("\nFoxTelem configuration updated with your alitude")  
+      
+        altSedStr = 'sed -i "s/altitude=.*/altitude=' + str(altitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+        #print (altSedStr)
+        system(altSedStr)
+    
+        print("\nKLAtracker configuration updated with your alitude")    
+
         break
       else:
         print("\nAltitude cannot be negative!")
