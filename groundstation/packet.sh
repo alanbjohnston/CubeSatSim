@@ -36,6 +36,7 @@ echo "5. APRS on another frequency"
 echo "6. APRS on ISS (145825 kHz)"
 echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
 echo "8. Test Serenity CubeSat decoding with WAV file"
+echo "9. Test APRS decoding with CubeSatSim WAV file"
 echo
 
 read -r choice
@@ -87,8 +88,7 @@ elif [ "$choice" = "7" ]; then
   echo "If the Serenity CubeSat is overhead and transmitting (see tracking application such as Gpredict), you will see packets."
   echo
 
-#elif [ "$choice" = "6" ]; then
-else
+elif [ "$choice" = "8" ]; then
 
   echo "A recorded WAV file will play and you should see some packets decoded"
 
@@ -102,6 +102,29 @@ else
 #  aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/groundstation/WAV/SDRSharp_20210830_200034Z_437097377Hz_AF.wav &
   aplay -D hw:0,0 /home/pi/CubeSatSim/groundstation/WAV/beacon_test_2.wav &
   aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/groundstation/WAV/beacon_test_2.wav &
+
+  timeout 30 direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
+  
+  echo
+  
+  echo "Test complete.  This window will close in 10 seconds."
+  
+  sleep 5
+  
+  exit
+
+else
+
+  echo "A recorded APRS WAV file from the CubeSatSim will play and you should see a packet decoded."
+
+  echo 
+ 
+  value=`aplay -l | grep "Loopback"`
+  echo "$value" > /dev/null
+  set -- $value
+
+  aplay -D hw:0,0 /home/pi/CubeSatSim/telem.wav &
+  aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/telem.wav &
 
   timeout 30 direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
   
