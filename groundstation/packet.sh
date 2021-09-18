@@ -47,6 +47,9 @@ if [ "$choice" = "1" ]; then
 elif [ "$choice" = "2" ]; then
 
   frequency=434900000
+  echo
+  echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
+  echo
 
 elif [ "$choice" = "3" ]; then
 
@@ -73,10 +76,16 @@ elif [ "$choice" = "5" ]; then
 elif [ "$choice" = "6" ]; then
 
   frequency=145825000
+  echo
+  echo "If the ISS is overhead and in APRS mode (see tracking application such as Gpredict), you will see packets."
+  echo
 
 elif [ "$choice" = "7" ]; then
 
   frequency=437100000
+  echo
+  echo "If the Serenity CubeSat is overhead and transmitting (see tracking application such as Gpredict), you will see packets."
+  echo
 
 #elif [ "$choice" = "6" ]; then
 else
