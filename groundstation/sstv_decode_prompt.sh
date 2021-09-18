@@ -43,10 +43,18 @@ read -r choice
 if [ "$choice" = "1" ]; then
 
 frequency=145800000
+echo "Frequency is " $frequency
+echo
+echo "If the ISS is overhead (check Gpredict) and in SSTV mode (see social media), you can receive images."
+echo
 
 elif [ "$choice" = "2" ]; then
 
 frequency=434900000
+echo
+echo "If your CubeSatSim is transmitting in SSTV mode (mode 6) you should get images."
+echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
+echo
 
 else
 
