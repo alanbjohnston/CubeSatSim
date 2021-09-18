@@ -70,7 +70,7 @@ frequency=$frequency"000"
 
 else
 
-  echo "A recorded SSTV WAV file from the CubeSatSim will play and you should see an image decoded."
+  echo "A recorded Scottie 2 SSTV WAV file will play and you should see an image decoded."
 
   echo 
  
