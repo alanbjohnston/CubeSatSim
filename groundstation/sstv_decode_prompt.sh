@@ -88,6 +88,9 @@ else
   
 fi
 
+
+if [ "$choice" != "4" ]; then
+
 #echo $frequency
 
 echo
@@ -106,7 +109,6 @@ sleep 5
 
 #sudo systemctl restart cubesatsim
 
-if [ "$choice" != "4" ]; then
 
 value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
