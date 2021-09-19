@@ -124,10 +124,10 @@ else
   set -- $value
 
   #aplay -D hw:0,0 /home/pi/CubeSatSim/telem.wav &
-  (while true; do (sleep 2 && aplay -D hw:0,0 /home/pi/CubeSatSim/telem.wav); done) &
+  (while true; do (sleep 2 && aplay -D hw:0,0 /home/pi/CubeSatSim/telem.wav &>/dev/null); done) &
   
   #aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/telem.wav &
-  (while true; do (sleep 2 && aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/telem.wav); done) &
+  (while true; do (sleep 2 && aplay -D hw:${2:0:1},0,0 /home/pi/CubeSatSim/telem.wav &>/dev/null); done) &
   
   timeout 30 direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
   
