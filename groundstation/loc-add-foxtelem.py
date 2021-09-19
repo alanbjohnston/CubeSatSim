@@ -36,7 +36,8 @@ if (choice == '2'):
 
     if re.search(regex, grid):
       print("grid is valid!")
-      print (mh.to_location(grid))
+      print (mh.to_location(grid)[0])
+      print (mh.to_location(grid)[1])
       break
     else:
       print("grid is not valid!")
