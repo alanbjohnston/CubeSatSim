@@ -6,6 +6,7 @@ import requests
 from os import system
 import re
 import sys
+import maidenhead as mh
 
 latitude = 0
 longitude = 0
@@ -28,10 +29,11 @@ if (choice == '2'):
 
   if re.search(regex, grid):
     print("grid is valid!")
+    print mh.to_location(grid)
   else:
     print("grid is not valid!")
     grid = ""
-    
+  
 elif (choice == '3'):
   
   lat = input("\nType your latitude: ")
