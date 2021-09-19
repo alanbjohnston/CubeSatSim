@@ -119,7 +119,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
 
       print("\nKLAtracker configuration updated with your latitude and longitude")    
       
-      receiver_gpsSedStr = 'sudo sed -i "s/receiver_gps =.*/receiver_gps = {\"lat\": ' + str(longitude) + ', \"lon\": ' + str(longitude) + '}/g" /etc/openwebrx/config_webrx.py'
+      receiver_gpsSedStr = 'sudo sed -i "s/receiver_gps =.*/receiver_gps = {"lat": ' + str(longitude) + ', "lon": ' + str(longitude) + '}/g" /etc/openwebrx/config_webrx.py'
       #print (longSedStr)
       system(receiver_gpsSedStr)
 
