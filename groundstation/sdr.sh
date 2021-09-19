@@ -27,6 +27,8 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
+sudo killall -9 direwolf &>/dev/null
+
 sudo systemctl stop rtl_tcp
 
 sudo systemctl restart openwebrx
