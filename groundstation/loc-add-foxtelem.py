@@ -38,6 +38,8 @@ if (choice == '2'):
       print("grid is valid!")
       print (mh.to_location(grid)[0])
       print (mh.to_location(grid)[1])
+      latitude = mh.to_location(grid)[0]
+      longitude = mh.to_location(grid)[1]
       break
     else:
       print("grid is not valid!")
