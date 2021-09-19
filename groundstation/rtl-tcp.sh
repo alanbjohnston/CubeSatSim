@@ -39,6 +39,8 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
+sudo killall -9 direwolf &>/dev/null
+
 #sudo systemctl start rtl_tcp
 
 sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
