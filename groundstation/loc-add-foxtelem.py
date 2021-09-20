@@ -122,8 +122,8 @@ if ((latitude != 0) and (longitude != 0) or grid):
       dquote = '\\"'
       
  #     receiver_gpsSedStr = 'sudo sed -i "s/receiver_gps =.*/receiver_gps = {' + dquote + 'lat' + dquote + ': ' + str(latitude) + ', ' + dquote + 'lon' + dquote + ': ' + str(longitude) + '}/g" /var/lib/openwebrx/settings.json'
-      receiver_gpsSedStr = 'sudo sed -i "s/        ' + dquote + 'lat' + dquote + 'lat' + dquote + 'lat' + dquote + ': .*/        ' + dquote + 'lat' + dquote + 'lat' + dquote + 'lat' + dquote + ': ' + str(latitude) + '/g" /home/pi/settings.json'
-      #print (longSedStr)
+      receiver_gpsSedStr = 'sudo sed -i "s/        ' + dquote + 'lat' + dquote  + ': .*/        ' + dquote + 'lat' + dquote +  ': ' + str(latitude) + '/g" /home/pi/settings.json'
+      print (longSedStr)
       system(receiver_gpsSedStr)
 
       print("\nOpenWebRX configuration updated with your latitude and longitude")
