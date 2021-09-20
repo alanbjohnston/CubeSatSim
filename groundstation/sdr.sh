@@ -5,9 +5,16 @@ echo "Script to run Web SDR for ARISS Radio Pi"
 
 echo 
 
+echo "The Chromium browser will load in a few seconds with OpenWebRX."
+
+echo "You can also use another web browser if you are on the same network as your Pi."
+
+
+echo 
+
 ip=$(hostname -I|cut -f1 -d ' ')
 
-echo "IP Address to use in web browsers is: $ip:8073"
+echo "IP Address to use in web browser is: $ip:8073"
 
 echo
 
