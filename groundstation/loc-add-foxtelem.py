@@ -129,7 +129,11 @@ if ((latitude != 0) and (longitude != 0) or grid):
       receiver_gpsSedStr = 'sudo sed -i "s/        ' + dquote + 'lon' + dquote  + ': .*/        ' + dquote + 'lon' + dquote +  ': ' + str(longitude) + '/g" /var/lib/openwebrx/settings.json'
       #print (receiver_gpsSedStr)
       system(receiver_gpsSedStr)
-      
+
+      nameSedStr = 'sudo sed -i "s/    ' + dquote + 'receiver_location' + dquote  + ': .*/    ' + dquote + 'receiver_location' + dquote +  ': ' + location + ',/g" /var/lib/openwebrx/settings.json'
+      #print (nameSedStr)
+      system(nameSedStr)
+        
       print("\nOpenWebRX configuration updated with your latitude and longitude")
       
     
@@ -184,7 +188,13 @@ if ((latitude != 0) and (longitude != 0) or grid):
         system(altSedStr)
     
         print("\nKLAtracker configuration updated with your alitude")    
-
+      
+        aslSedStr = 'sudo sed -i "s/    ' + dquote + 'receiver_asl' + dquote  + ': .*/    ' + dquote + 'receiver_asl' + dquote +  ': ' + str(altitude) + ',/g" /var/lib/openwebrx/settings.json'
+        #print (receiver_gpsSedStr)
+        system(aslSedStr)
+        
+        print("\nOpenWebRX configuration updated with your alitude")    
+      
         break
       else:
         print("\nAltitude cannot be negative!")
