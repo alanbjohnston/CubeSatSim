@@ -14,6 +14,7 @@ location = "QTH"
 grid = ""
 return_value = 0
 altitude = 0
+dquote = '\\"'      
 
 print("\nIn order to track the satellites as they fly over your location and upload your satellite telemetry data to the AMSAT servers, we need to know your location")
 print("\nYou can enter:\n")
@@ -118,8 +119,6 @@ if ((latitude != 0) and (longitude != 0) or grid):
       system(longSedStr)
 
       print("\nKLAtracker configuration updated with your latitude and longitude")  
-      
-      dquote = '\\"'
       
  #     receiver_gpsSedStr = 'sudo sed -i "s/receiver_gps =.*/receiver_gps = {' + dquote + 'lat' + dquote + ': ' + str(latitude) + ', ' + dquote + 'lon' + dquote + ': ' + str(longitude) + '}/g" /var/lib/openwebrx/settings.json'
       receiver_gpsSedStr = 'sudo sed -i "s/        ' + dquote + 'lat' + dquote  + ': .*/        ' + dquote + 'lat' + dquote +  ': ' + str(latitude) + ',/g" /var/lib/openwebrx/settings.json'
