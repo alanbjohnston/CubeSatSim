@@ -129,7 +129,7 @@ if ((latitude != 0) and (longitude != 0) or grid):
       #print (receiver_gpsSedStr)
       system(receiver_gpsSedStr)
 
-      nameSedStr = 'sudo sed -i "s/    ' + dquote + 'receiver_location' + dquote  + ': .*/    ' + dquote + 'receiver_location' + dquote +  ': ' + location + ',/g" /var/lib/openwebrx/settings.json'
+      nameSedStr = 'sudo sed -i "s/    ' + dquote + 'receiver_location' + dquote  + ': .*/    ' + dquote + 'receiver_location' + dquote +  ': ' + dquote + location + dquote + ',/g" /var/lib/openwebrx/settings.json'
       #print (nameSedStr)
       system(nameSedStr)
         
