@@ -97,9 +97,9 @@ else:
   
 #file = open(r"/home/pi/CubeSatSim/groundstation/.profile","w+")
 
-if ((latitude != 0) and (longitude != 0) or grid):
+if (latitude != 0) and (longitude != 0):
 
-  if not grid:
+#  if not grid:
       latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
       #print (latSedStr)
       system(latSedStr)
@@ -130,45 +130,44 @@ if ((latitude != 0) and (longitude != 0) or grid):
       system(receiver_gpsSedStr)
 
       nameSedStr = 'sudo sed -i "s/    ' + dquote + 'receiver_location' + dquote  + ': .*/    ' + dquote + 'receiver_location' + dquote +  ': ' + dquote + location + dquote + ',/g" /var/lib/openwebrx/settings.json'
-      print (nameSedStr)
+      #print (nameSedStr)
       system(nameSedStr)
         
       print("\nOpenWebRX configuration updated with your latitude and longitude")
-      
-    
+         
       return_value = 1
 
-  else:
-      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+#  else:
+#      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
       #print (latSedStr)
-      system(latSedStr)
+#      system(latSedStr)
 
-      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+#      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
       #print (longSedStr)
-      system(longSedStr)
+#      system(longSedStr)
 
 
-      gridSedStr = 'sed -i "s/maidenhead=.*/maidenhead=' + grid + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
+ #     gridSedStr = 'sed -i "s/maidenhead=.*/maidenhead=' + grid + '/g" /home/pi/FoxTelemetryData/FoxTelem.properties'
       #print (gridSedStr)
-      system(gridSedStr)
+  #    system(gridSedStr)
             
-      print("\nFoxTelem configuration updated with your maidenhead grid square")
+ #     print("\nFoxTelem configuration updated with your maidenhead grid square")
       
-      latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+ #     latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/KLATrack/klatracker.properties'
       #print (latSedStr)
-      system(latSedStr)
+ #     system(latSedStr)
 
-      longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/KLATrack/klatracker.properties'
+ #     longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/KLATrack/klatracker.properties'
       #print (longSedStr)
-      system(longSedStr)
+ #     system(longSedStr)
       
-      gridSedStr = 'sed -i "s/maidenhead_locator=.*/maidenhead_locator=' + grid + '/g" /home/pi/KLATrack/klatracker.properties'
+#      gridSedStr = 'sed -i "s/maidenhead_locator=.*/maidenhead_locator=' + grid + '/g" /home/pi/KLATrack/klatracker.properties'
       #print (gridSedStr)
-      system(gridSedStr)      
+#      system(gridSedStr)      
 
-      print("\nKLAtracker configuration updated with your maidenhead grid square")         
+#      print("\nKLAtracker configuration updated with your maidenhead grid square")         
       
-      return_value = 1
+#      return_value = 1
       
   for i in list(range(3)):
     alt = input("\nType your altitude in integer meters: ")
