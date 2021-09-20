@@ -48,7 +48,7 @@ if (choice == '2'):
 elif (choice == '3'):
 
   for i in list(range(3)):
-    lat = input("\nType your latitude (South is negative):"): ")
+    lat = input("\nType your latitude (South is negative): ")
     try:
           latitude = float(lat)
           print(latitude)
@@ -57,7 +57,7 @@ elif (choice == '3'):
           print("Not a number!")
         
   for i in list(range(3)):        
-    long = input("\nType your longitude (West is negative):"): ")
+    long = input("\nType your longitude (West is negative): ")
     try:
           longitude = float(long)
           print(longitude)
