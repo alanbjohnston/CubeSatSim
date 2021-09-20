@@ -10,30 +10,28 @@ import maidenhead as mh
 
 latitude = 0
 longitude = 0
-location = "QTH"
+location = "My Location"
 grid = ""
 return_value = 0
 altitude = 0
 dquote = '\\"'      
 
-print("\nIn order to track the satellites as they fly over your location and upload your satellite telemetry data to the AMSAT servers, we need to know your location")
+print("\nIn order to track the satellites as they fly over your location and upload your satellite telemetry data to the AMSAT servers, you need to set your location.")
 print("\nYou can enter:\n")
 print("1. Location name (e.g. country or city, state, etc)")
 print("2. Grid square (e.g. FM29ha)")
 print("3. Latitude and longitude")
-print("4. No location\n")
+print("4. Leave location unchanged\n")
 
-choice = input ("Enter your choice (1 -4): ")
+choice = input ("Enter your choice (1 - 4): ")
 
 if (choice == '2'):  
-  
-  print("\nNOTE: To set Gpredict location using Grid square, run Gpredict and select Edit/Preferences/Ground Stations")
   
   regex = '[A-Za-z]+[A-Za-z]+[0-9]+[0-9]+[A-Za-z]+[A-Za-z]'
 
   for i in list(range(3)):
   
-    grid = input("\nType your 6 character character grid square (i.e. FM29ha): ")
+    grid = input("\nEnter your 6 character character grid square (i.e. FM29ha): ")
 
     if re.search(regex, grid):
       print("grid is valid!")
@@ -41,6 +39,7 @@ if (choice == '2'):
       print (mh.to_location(grid)[1])
       latitude = mh.to_location(grid)[0]
       longitude = mh.to_location(grid)[1]
+      location = input("\nEnter the name of your location (or hit Return to leave blank): ")
       break
     else:
       print("grid is not valid!")
@@ -49,7 +48,7 @@ if (choice == '2'):
 elif (choice == '3'):
 
   for i in list(range(3)):
-    lat = input("\nType your latitude: ")
+    lat = input("\nType your latitude (South is negative):"): ")
     try:
           latitude = float(lat)
           print(latitude)
@@ -58,19 +57,20 @@ elif (choice == '3'):
           print("Not a number!")
         
   for i in list(range(3)):        
-    long = input("\nType your longitude: ")
+    long = input("\nType your longitude (West is negative):"): ")
     try:
           longitude = float(long)
           print(longitude)
           break
     except ValueError:
           print("Not a number!")
-      
+    location = input("\nEnter the name of your location (or hit Return to leave blank): ")
+    
 elif (choice == '1'):          
   URL = "https://geocode.search.hereapi.com/v1/geocode"
 
-  print("\nEnter your location  including country. \n\n")
-  location = input("Type your location: ") #taking user input
+  #print("\nEnter your location  including country. \n\n")
+  location = input("Enter your location including country: ") #taking user input
   api_key = '' # Acquire from developer.here.com
   PARAMS = {'apikey':api_key,'q':location} 
 
@@ -88,10 +88,10 @@ elif (choice == '1'):
     print(longitude)
   
   except:
-    print("There is a problem with the location API.  Please try again")
+    print("There is a problem with the location API.  Try setting your location by latitude and longitude or grid square.")
 
 else:
-  print("\nYou have chosen not to enter your location.")
+  print("\nYour location is unchanged.")
   print("To track satellites and upload telemetry data,") 
   print("you can set your location in Settings in FoxTelem.")
   
