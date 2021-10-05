@@ -24,6 +24,12 @@ sudo killall -9 CubicSDR &>/dev/null
 
 #sleep 5
 
+frequency=$(zenity --list 2>/dev/null --title="Choose the frequency" --column="kHz" --column="Use" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
+
+#echo $frequency
+
+if [ -z "$frequency" ]; then 
+
 echo
 
 echo "Choose the number for the type of decoding:"
@@ -41,8 +47,9 @@ echo
 
 read -r choice
 
+fi
 
-if [ "$choice" = "1" ]; then
+if [ "$choice" = "1" ] || [ "$frequency" = "144390" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -66,7 +73,7 @@ if [ "$choice" = "1" ]; then
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
-elif [ "$choice" = "2" ]; then
+elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -90,7 +97,7 @@ elif [ "$choice" = "2" ]; then
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
-elif [ "$choice" = "3" ]; then
+elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -114,7 +121,7 @@ elif [ "$choice" = "3" ]; then
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
 
-elif [ "$choice" = "4" ]; then
+elif [ "$choice" = "4" ] || [ "$frequency" = "145175" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -137,7 +144,7 @@ elif [ "$choice" = "4" ]; then
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
-elif [ "$choice" = "5" ]; then
+elif [ "$choice" = "5" ] || [ "$frequency" = "Other" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -161,7 +168,7 @@ elif [ "$choice" = "5" ]; then
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
-elif [ "$choice" = "6" ]; then
+elif [ "$choice" = "6" ] || [ "$frequency" = "145825" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -185,7 +192,7 @@ elif [ "$choice" = "6" ]; then
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
-elif [ "$choice" = "7" ]; then
+elif [ "$choice" = "7" ] || [ "$frequency" = "437100" ] ; then
   echo
 
   echo "CubicSDR will load in about 10 seconds."
@@ -209,7 +216,7 @@ elif [ "$choice" = "7" ]; then
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
 
-elif [ "$choice" = "8" ]; then
+elif [ "$choice" = "8" ] || [ "$frequency" = "Serenity" ] ; then
 
   echo
 
