@@ -28,7 +28,7 @@ echo
 
 frequency=$(zenity --error 2>/dev/null --list --title="Choose the frequency" --column="kHz" --column="Use" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 2>/dev/null)"000"
 
-if [$frequency -eq "000"]; then 
+if [[ $frequency -eq "000" ]]; then 
 
 echo "Choose the number for the packet decoding option:"
 echo
