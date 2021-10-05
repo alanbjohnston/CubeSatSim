@@ -49,7 +49,7 @@ read -r choice
 
 fi
 
-if [ "$choice" = "1" ]; then
+if [ "$choice" = "1" ] || [ "$frequency" = "144390" ]; then
 
   frequency=144390000
 
@@ -60,11 +60,11 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
   echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
   echo
 
-elif [ "$choice" = "3" ]; then
+elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ]; then
 
   frequency=144800000
 
-elif [ "$choice" = "4" ]; then
+elif [ "$choice" = "4" ] || [ "$frequency" = "145175" ]; then
 
   frequency=145175000
 
