@@ -26,7 +26,7 @@ sudo killall -9 CubicSDR &>/dev/null
 
 echo
 
-frequency=$(zenity --list --title="Choose the frequency" --column="kHz" --column="Use" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m")
+frequency=$(zenity --list --title="Choose the frequency" --column="kHz" --column="Use" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m")"000"
 
 if [ -z "$frequency" ]; then 
 
