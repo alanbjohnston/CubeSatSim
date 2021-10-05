@@ -68,7 +68,7 @@ elif [ "$choice" = "4" ]; then
 
   frequency=145175000
 
-elif [ "$choice" = "5" ]; then
+elif [ "$choice" = "5" ] || [ "$frequency" = "Other" ] ; then
 
   echo
 
@@ -82,21 +82,21 @@ elif [ "$choice" = "5" ]; then
 
   #echo $frequency
 
-elif [ "$choice" = "6" ]; then
+elif [ "$choice" = "6" ]  || [ "$frequency" = "145825" ] ; then
 
   frequency=145825000
   echo
   echo "If the ISS is overhead and in APRS mode (see tracking application such as Gpredict), you will see packets."
   echo
 
-elif [ "$choice" = "7" ]; then
+elif [ "$choice" = "7" ] || [ "$frequency" = "437100" ] ; then
 
   frequency=437100000
   echo
   echo "If the Serenity CubeSat is overhead and transmitting (see tracking application such as Gpredict), you will see packets."
   echo
 
-elif [ "$choice" = "8" ]; then
+elif [ "$choice" = "8" ] || [ "$frequency" = "Serenity" ] ; then
 
   echo "A recorded WAV file will play and you should see some packets decoded"
 
@@ -121,7 +121,7 @@ elif [ "$choice" = "8" ]; then
   
   exit
 
-else
+elif [ "$choice" = "8" ] || [ "$frequency" = "APRS" ] ; then
 
   echo "A recorded APRS WAV file from the CubeSatSim will play and you should see a packet decoded."
 
