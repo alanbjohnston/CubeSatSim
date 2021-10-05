@@ -30,7 +30,7 @@ sudo killall -9 CubicSDR &>/dev/null
 
 #echo "s" >> .mode
 
-frequency=$(zenity --list 2>/dev/null --title="Choose the frequency" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" 144800 Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
+frequency=$(zenity --list 2>/dev/null --title="Choose the frequency for SSTV decoding:" --column="Frequency in kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
 
 #echo $frequency
 
@@ -57,7 +57,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ]; then
 frequency=434900000
 echo "Frequency is" $frequency
 echo
-echo "If your CubeSatSim is transmitting in SSTV mode (mode 6) you should get images."
+echo "If your CubeSatSim is transmitting in SSTV mode (mode 5) you should get images."
 echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "Other" ]; then
