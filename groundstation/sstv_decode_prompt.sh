@@ -32,7 +32,7 @@ sudo killall -9 CubicSDR &>/dev/null
 
 frequency=$(zenity --list 2>/dev/null --title="Choose the frequency for SSTV decoding:" --column="Frequency in kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
 
-#echo $frequency
+echo $frequency
 
 echo
 
