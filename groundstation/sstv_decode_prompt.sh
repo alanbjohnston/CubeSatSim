@@ -34,6 +34,8 @@ frequency=$(zenity --list 2>/dev/null --title="Choose the frequency for SSTV dec
 
 echo $frequency
 
+if [ -z "$frequency" ]; then 
+
 echo
 
 echo "Choose the number for the frequency for SSTV decoding:"
@@ -44,6 +46,8 @@ echo "4. Play an SSTV WAV file to test"
 echo
 
 read -r choice
+
+fi
 
 if [ "$choice" = "1" ] || [ "$frequency" = "145800" ]; then
 
