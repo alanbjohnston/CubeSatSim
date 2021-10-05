@@ -47,6 +47,8 @@ echo
 
 read -r choice
 
+fi
+
 if [ "$choice" = "1" ]; then
 
   frequency=144390000
@@ -145,7 +147,7 @@ else
   
   exit
 
-fi
+#fi
 
 fi
 
