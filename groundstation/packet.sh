@@ -26,6 +26,10 @@ sudo killall -9 CubicSDR &>/dev/null
 
 echo
 
+frequency=$(zenity --list --title="Choose the frequency" --column="kHz" --column="Use" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m")
+
+if [ -z "$frequency" ]; then 
+
 echo "Choose the number for the packet decoding option:"
 echo
 echo "1. APRS US 2m (144390 kHz)"
@@ -138,6 +142,8 @@ else
   sleep 5
   
   exit
+
+fi
 
 fi
 
