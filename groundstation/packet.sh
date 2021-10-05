@@ -157,7 +157,7 @@ echo "Note that the 'Tuned to' frequency will be different from the chosen frequ
 
 echo
 
-if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ]  || [ "$frequency" = "437100" ] ; then
+if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ]  || [ "$frequency" = "437100000" ] ; then
 
   echo -e "Auto decoding 4800 bps AX.25 packets on $frequency Hz"
 
