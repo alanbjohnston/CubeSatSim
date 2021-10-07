@@ -9,6 +9,13 @@ sudo killall -9 FoxTelem &>/dev/null
 
 FILE=/home/pi/FoxTelemetryData/.foxprofile  
 if [ ! -f "$FILE" ]; then
+
+   profile=$(zenity --list 2>/dev/null --width=710 --height=1200 --title="Choose your default FoxTelem profile:" --column="Profile" --column="Application" Fox-in-a-Box "Receive and decode telemetry from the AMSAT Fox satellites" "CubeSatSim Ground Station" "Receive and decode telemetry from an AMSAT CubeSatSim")
+
+   echo $profile
+
+   if [ -z "$profile" ]; then 
+
     echo "You need to choose your default FoxTelem profile."
     echo 
     echo "The choices are:"
@@ -20,8 +27,10 @@ if [ ! -f "$FILE" ]; then
     echo "Which profile do you choose?  Enter 1 or 2"
     
     read -r ANS
+    
+    fi
 
-    if [ "$ANS" = "1" ]; then
+    if [ "$ANS" = "1" ] || [ "$profile" = "Fox-in-a-Box" ] ; then
 
         echo "You have chosen the Fox-in-a-Box profile."
         echo "b" > /home/pi/FoxTelemetryData/.foxprofile 
@@ -71,7 +80,7 @@ if [ ! -f "$FILE" ]; then
 
  	fi
 
-    elif [ "$ANS" = "2" ]; then
+    elif [ "$ANS" = "2" ] || [ "$profile" = "CubeSatSim Ground Station" ] ; then
 
         echo "You have chosen the CubeSatSim Ground Station profile."
         echo "c" > /home/pi/FoxTelemetryData/.foxprofile 
