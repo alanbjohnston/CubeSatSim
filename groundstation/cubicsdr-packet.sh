@@ -69,7 +69,9 @@ if [ "$choice" = "1" ] || [ "$frequency" = "144390" ] ; then
 
   echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  read input
+  result=$(zenity --info --text="Click OK!")
+
+  [[ ! -z "$result" ]] && read input
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
