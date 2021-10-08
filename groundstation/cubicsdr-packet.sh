@@ -69,7 +69,7 @@ if [ "$choice" = "1" ] || [ "$frequency" = "144390" ] ; then
 
   echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --text="Click OK!")
+  result=$(zenity --info --text="When CubicSDR opens, select Generic RTL2832 device then click Start to begin.\nThen click OK")
 
   [[ ! -z "$result" ]] && read input
 
