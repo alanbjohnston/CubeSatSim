@@ -66,6 +66,8 @@ if [ "$choice" = "1" ] || [ "$frequency" = "144390" ] ; then
   echo "Note that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting."
 
   echo 
+  
+  sleep 10
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
