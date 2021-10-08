@@ -69,7 +69,7 @@ if [ "$choice" = "1" ] || [ "$frequency" = "144390" ] ; then
 
   echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --text="When CubicSDR opens, select Generic RTL2832 device then click Start to begin.\nThen click OK")
+  result=$(zenity --info --width=410 --height=410 --title="CubicSDR Instructions" --text="When CubicSDR opens, select Generic RTL2832 device then click Start to begin.\nThen select File/Session/Open Session then load /home/pi/CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-direwolf.xml then Open.\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\nThen click OK to start Direwolf!")
 
   [[ ! -z "$result" ]] && read input
 
