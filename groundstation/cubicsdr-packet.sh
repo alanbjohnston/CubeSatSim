@@ -66,8 +66,6 @@ if [ "$choice" = "1" ] || [ "$frequency" = "144390" ] ; then
   echo "Note that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting."
 
   echo 
-  
-  sleep 10
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
@@ -99,7 +97,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-cubesatsim-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won't get packets unless your CubeSat Simulator is transmitting in APRS digipeater mode.\n\nNote that you might need to adjust the frequency in CubicSDR slightly so the signal is centered.\n\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
+  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-cubesatsim-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won&#39;t get packets unless your CubeSat Simulator is transmitting in APRS digipeater mode.\n\nNote that you might need to adjust the frequency in CubicSDR slightly so the signal is centered.\n\nNote that you won&#39;t hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
@@ -122,7 +120,7 @@ elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ] ; then
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-eu-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
+  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-eu-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won&#39;t hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
@@ -146,7 +144,7 @@ elif [ "$choice" = "4" ] || [ "$frequency" = "145175" ] ; then
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-au-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
+  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-au-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won&#39;t hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
@@ -170,7 +168,7 @@ elif [ "$choice" = "5" ] || [ "$frequency" = "Other" ] ; then
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-direwolf.xml</tt> then <b>Open</b>.\n\nThen tune the CubicSDR frequency to the one you want to decode.\n\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
+  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-aprs-direwolf.xml</tt> then <b>Open</b>.\n\nThen tune the CubicSDR frequency to the one you want to decode.\n\nNote that you won&#39;t hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
@@ -194,7 +192,7 @@ elif [ "$choice" = "6" ] || [ "$frequency" = "145825" ] ; then
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-iss-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won't get packets unless the ISS is passing over (see Gpredict) and the radio is in APRS digipeater mode (check social media).\n\n"Note that you may need to adjust the frequency due to Doppler shift.\n\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
+  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-iss-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won&#39;t get packets unless the ISS is passing over (see Gpredict) and the radio is in APRS digipeater mode (check social media).\n\n"Note that you may need to adjust the frequency due to Doppler shift.\n\nNote that you won&#39;t hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -r 48000 -t 0
 
@@ -218,7 +216,7 @@ elif [ "$choice" = "7" ] || [ "$frequency" = "437100" ] ; then
 
 #  echo "Hit the Return key when you have done this in CubicSDR and Direwolf will start"
 
-  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-serenity-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won&#39;t get packets unless the Serenity CubeSat is passing over (see Gpredict)and is beaconing.\n\nNote that you won't hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
+  result=$(zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen select <b>File/Session/Open Session</b> then load <tt>CubeSatSim/groundstation/cubicsdr-session/cubicsdr-serenity-direwolf.xml</tt> then <b>Open</b>.\n\nNote that you won&#39;t get packets unless the Serenity CubeSat is passing over (see Gpredict)and is beaconing.\n\nNote that you won&#39;t hear anything as the audio is routed to Direwolf for decoding.  To hear the signal, change the Audio Out setting.\n\nThen click <b>OK</b> to start Direwolf!")
 
   direwolf -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -r 48000 -t 0
 
