@@ -24,6 +24,14 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
+sudo killall -9 cubicsdr-packet.sh &>/dev/null
+
+sudo kill `ps -aux | grep cubicsdr-packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo kill `ps -aux | grep sstv_decode_prompt| grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo killall -9 zenity &>/dev/null
+
 echo
 
 frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
