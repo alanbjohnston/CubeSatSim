@@ -29,6 +29,14 @@ sudo killall -9 qsstv &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
+sudo kill `ps -aux | grep cubicsdr-packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo kill `ps -aux | grep packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo kill `ps -aux | grep sstv_decode_prompt| grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo killall -9 zenity &>/dev/null
+
 sudo systemctl stop rtl_tcp
 
 sleep 5
