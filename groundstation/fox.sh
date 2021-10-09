@@ -21,6 +21,14 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
+sudo kill `ps -aux | grep cubicsdr-packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo kill `ps -aux | grep packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo kill `ps -aux | grep sstv_decode_prompt| grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo killall -9 zenity &>/dev/null
+
 sleep 5
 
 #/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
