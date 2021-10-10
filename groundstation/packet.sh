@@ -40,20 +40,26 @@ frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet D
 
 if [ -z "$frequency" ]; then 
 
-echo "Choose the number for the packet decoding option:"
-echo
-echo "1. APRS US 2m (144390 kHz)"
-echo "2. CubeSatSim (434900 kHz)"
-echo "3. APRS European 2m (144800 kHz)"
-echo "4. APRS Australian 2m (145175 kHz)"
-echo "5. APRS on another frequency"
-echo "6. APRS on ISS (145825 kHz)"
-echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
-echo "8. Test Serenity CubeSat decoding with WAV file"
-echo "9. Test APRS decoding with CubeSatSim WAV file"
-echo
+echo "No choice made.  Exiting."
 
-read -r choice
+sleep 3
+
+exit
+
+#echo "Choose the number for the packet decoding option:"
+#echo
+#echo "1. APRS US 2m (144390 kHz)"
+#echo "2. CubeSatSim (434900 kHz)"
+#echo "3. APRS European 2m (144800 kHz)"
+#echo "4. APRS Australian 2m (145175 kHz)"
+#echo "5. APRS on another frequency"
+#echo "6. APRS on ISS (145825 kHz)"
+#echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
+#echo "8. Test Serenity CubeSat decoding with WAV file"
+#echo "9. Test APRS decoding with CubeSatSim WAV file"
+#echo
+
+#read -r choice
 
 fi
 
