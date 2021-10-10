@@ -42,16 +42,20 @@ echo $frequency
 
 if [ -z "$frequency" ]; then 
 
-echo
+echo "No choice made.  Exiting."
 
-echo "Choose the number for the frequency for SSTV decoding:"
-echo "1. ISS (145800Hz)"
-echo "2. CubeSatSim (434900 kHz)"
-echo "3. Enter a frequency in kiloHertz"
-echo "4. Play an SSTV WAV file to test"
-echo
+sleep 3
 
-read -r choice
+exit
+
+#echo "Choose the number for the frequency for SSTV decoding:"
+#echo "1. ISS (145800Hz)"
+#echo "2. CubeSatSim (434900 kHz)"
+#echo "3. Enter a frequency in kiloHertz"
+#echo "4. Play an SSTV WAV file to test"
+#echo
+
+#read -r choice
 
 fi
 
