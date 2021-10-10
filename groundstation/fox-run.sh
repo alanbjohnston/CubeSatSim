@@ -17,18 +17,24 @@ if [ ! -f "$FILE" ]; then
    echo $profile
 
    if [ -z "$profile" ]; then 
-
-    echo "You need to choose your default FoxTelem profile."
-    echo 
-    echo "The choices are:"
-    echo
-    echo "1. Fox-in-a-Box.  Use this profile if you want to receive and decode telemetry from the AMSAT Fox satellites.  If you enter a callsign and a grid square, you can upload to the AMSAT telemetry server."
-    echo 
-    echo "2. CubeSatSim Ground Station.  Use this profile if you want to receive and decode telemetry from an AMSAT CubeSatSim or CubeSatSim Lite."
-    echo
-    echo "Which profile do you choose?  Enter 1 or 2"
+   
+    echo "No choice made.  Exiting."
     
-    read -r ANS
+    sleep 3
+    
+    exit
+
+    #echo "You need to choose your default FoxTelem profile."
+    #echo 
+    #echo "The choices are:"
+    #echo
+    #echo "1. Fox-in-a-Box.  Use this profile if you want to receive and decode telemetry from the AMSAT Fox satellites.  If you enter a callsign and a grid square, you can upload to the AMSAT telemetry server."
+    #echo 
+    #echo "2. CubeSatSim Ground Station.  Use this profile if you want to receive and decode telemetry from an AMSAT CubeSatSim or CubeSatSim Lite."
+    #echo
+    #echo "Which profile do you choose?  Enter 1 or 2"
+    
+    #read -r ANS
     
     fi
 
