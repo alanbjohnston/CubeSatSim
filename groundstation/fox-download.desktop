@@ -1,9 +1,9 @@
 [Desktop Entry]
 Type=Application
-Exec=/home/pi/CubeSatSim/groundstation/fox-run.sh
-Name=FoxTelem
+Exec=/home/pi/CubeSatSim/groundstation/fox-download.sh
+Name=FoxTelem Download
 Comment=FIAB-v3
-Icon=/home/pi/Downloads/foxtelem.png
+Icon=/home/pi/Icons/FoxTelemDownload.png
 Path=/home/pi
 Terminal=true
 Categories=HamRadio
