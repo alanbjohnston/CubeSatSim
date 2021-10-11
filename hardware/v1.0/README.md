@@ -1,5 +1,7 @@
 Here is information about the CubeSatSim v1.0 hardware
 
+Note: this is not the latest hardware!
+
 There are files for the main board, battery board, and STEM payload board of these types:
 
 * cubesatsim-STEM-1.0_gerbers.zip  --    All gerber files used to fabricate PCBs

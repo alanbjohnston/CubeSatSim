@@ -1,0 +1,23 @@
+<?xml version="1.0" ?>
+<cubicsdr_session>
+    <header>
+        <version>%30%2e%32%2e%35</version>
+        <center_freq>145490000</center_freq>
+        <sample_rate>2048000</sample_rate>
+        <solo_mode>0</solo_mode>
+    </header>
+    <demodulators>
+        <demodulator>
+            <bandwidth>12500</bandwidth>
+            <frequency>145825000</frequency>
+            <type>NBFM</type>
+            <user_label></user_label>
+            <squelch_level>-100</squelch_level>
+            <squelch_enabled>1</squelch_enabled>
+            <output_device>hw:Loopback,0</output_device>
+            <gain>1</gain>
+            <muted>0</muted>
+            <active>1</active>
+        </demodulator>
+    </demodulators>
+</cubicsdr_session>

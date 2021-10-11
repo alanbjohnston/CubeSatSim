@@ -1,0 +1,5 @@
+"Qty";"Value";"Device";"Package";"Parts";"Description";"DESCRIPTION";"DIGI-KEY_PART_NUMBER";"MF";"MP";"PACKAGE";"PURCHASE-URL";
+"2";"";"CONN_01PTH_NO_SILK_KIT";"1X01NS_KIT";"J1, J2";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";
+"1";"AA battery holder BH3AA-PC";"BH3AA-PC";"BAT_BH3AA-PC";"BT1";"Holder Batt 3-Aa Cells Pc Mount";" Battery Holder (Open) AA 3 Cell PC Pin ";"BH3AA-PC-ND";"MPD";"BH3AAPC";"None";"https://pricing.snapeda.com/search/part/BH3AAPC/?ref=eda";
+"1";"CONN_20X2";"CONN_20X2";"2X20";"J3";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";
+"1";"Micro JST";"M02JST-PTH-VERT";"JST-2-PTH-VERT";"J4";"Standard 2-pin 0.1" header. Use with";"";"";"";"";"";"";

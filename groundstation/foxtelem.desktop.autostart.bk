@@ -1,4 +1,0 @@
-[Desktop Entry]
-Type=Application
-Name=FoxTelem
-Exec=/home/pi/CubeSatSim/groundstation/fox.sh

@@ -1,0 +1,11 @@
+
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/Desktop/KlaTrack_1.01d_linux/KlaTrack
+Name=G0KLA Tracker
+Comment=ISS and Satellite Tracker
+Icon=/home/pi/Icons/KLAtracker.png
+Path=/home/pi
+Terminal=false
+Categories=HamRadio
+Keywords=Ham Radio;AMSAT

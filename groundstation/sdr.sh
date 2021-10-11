@@ -5,9 +5,16 @@ echo "Script to run Web SDR for ARISS Radio Pi"
 
 echo 
 
+echo "The Chromium browser will load in a few seconds with OpenWebRX."
+
+echo "You can also use another web browser if you are on the same network as your Pi."
+
+
+echo 
+
 ip=$(hostname -I|cut -f1 -d ' ')
 
-echo "IP Address to use in web browsers is: $ip:8073"
+echo "IP Address to use in web browser is: $ip:8073"
 
 echo
 
@@ -21,14 +28,30 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
+sudo killall -9 rtl_tcp &>/dev/null
+
 sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
+
+sudo killall -9 direwolf &>/dev/null
+
+#sudo kill `ps -aux | grep cubicsdr-packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+#sudo kill `ps -aux | grep packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+#sudo kill `ps -aux | grep sstv_decode_prompt| grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo killall -9 zenity &>/dev/null
 
 sudo systemctl stop rtl_tcp
 
 sudo systemctl restart openwebrx
 
-chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
+sleep 10
 
-$SHELL
+setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
+
+sleep 10
+
+#$SHELL

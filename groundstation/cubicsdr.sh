@@ -9,6 +9,8 @@ echo "Note: Select Generic RTL2832 device then click Start to begin"
 
 echo
 
+sudo systemctl stop openwebrx
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
@@ -19,8 +21,18 @@ sudo systemctl stop rtl_tcp
 
 sudo killall -9 rtl_tcp &>/dev/null
 
-sudo systemctl stop openwebrx
+#sudo kill `ps -aux | grep cubicsdr-packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
 
-CubicSDR
+#sudo kill `ps -aux | grep packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
 
-$SHELL
+#sudo kill `ps -aux | grep sstv_decode_prompt| grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
+
+sudo killall -9 zenity &>/dev/null
+
+sleep 5
+
+setsid CubicSDR
+
+sleep 10
+
+#$SHELL
