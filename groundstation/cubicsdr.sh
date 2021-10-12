@@ -13,13 +13,21 @@ sudo systemctl stop openwebrx
 
 sudo killall -9 java &>/dev/null
 
+sudo systemctl stop rtl_tcp
+
+pkill -o chromium &>/dev/null
+
 sudo killall -9 rtl_fm &>/dev/null
+
+sudo killall -9 direwolf &>/dev/null
+
+sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
-sudo systemctl stop rtl_tcp
-
 sudo killall -9 rtl_tcp &>/dev/null
+
+sudo killall -9 CubicSDR &>/dev/null
 
 #sudo kill `ps -aux | grep cubicsdr-packet | grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
 
