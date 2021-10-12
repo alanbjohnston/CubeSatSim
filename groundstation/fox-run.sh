@@ -44,6 +44,10 @@ if [ ! -f "$FILE" ]; then
         echo "b" > /home/pi/FoxTelemetryData/.foxprofile 
 	echo 
 	
+	sudo killall -9 java &>/dev/null
+
+	sudo killall -9 gpredict &>/dev/null
+	
 	FILE=/home/pi/FoxTelemetryData/FoxTelem.properties.0
 	if [ ! -f "$FILE" ]; then
 		cp /home/pi/FoxTelemetryData/FoxTelem.properties /home/pi/FoxTelemetryData/FoxTelem.properties.0
