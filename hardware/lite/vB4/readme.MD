@@ -6,4 +6,6 @@ cubesat-sim-lite-0.4_schematic.pdf -- Schematic
 
 cubesat-sim-lite-0.4.mnb
 
-cubesat-sim-lite-0.4.mnt
+cubesat-sim-lite-0.4_pcb.png -- image of board
+
+cubesat-sim-lite-0.4.csv.txt -- Bill of Materials (BOM)
