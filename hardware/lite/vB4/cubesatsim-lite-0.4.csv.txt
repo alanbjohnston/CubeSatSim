@@ -1,0 +1,15 @@
+"Qty";"Value";"Device";"Package";"Parts";"Description";"AVAILABILITY";"DESCRIPTION";"MF";"MP";"MPN";"PACKAGE";"PRICE";"PROD_ID";"PURCHASE-URL";"VALUE";
+"1";"0R";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"R14";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"1";"1.0K";"RESISTOR0603";"0603-RES";"R11";"Resistor";"";"";"";"";"";"";"";"";"";"";
+"1";"10pF";"CERAMIC-10PF-50V-5%-NPO(0603)";"C0603";"C2";"302010097";"";"";"";"";"";"";"";"";"";"10pf";
+"1";"12pF";"CERAMIC-10PF-50V-5%-NPO(0603)";"C0603";"C1";"302010097";"";"";"";"";"";"";"";"";"";"10pf";
+"1";"13nH";"SMD-FERRITE-CHIP-120-OHM-500MA(0603)";"L0603";"L1";"303030001";"";"";"";"";"BLM18AG121SN1D";"";"";"";"";"120";
+"1";"3.3K";"RESISTOR0603-RES";"0603-RES";"R12";"Resistor";"";"";"";"";"";"";"";"";"";"";
+"1";"ANT-916-CHP-T";"ANT-916-CHP-T";"XDCR_ANT-916-CHP-T";"E1";"868MHz ISM, LoRa, Sensor Networks, SigFox Chip RF Antenna 863MHz ~ 873MHz 0.5dBi Solder Surface Mount  Check prices";"Warning";" 915 MHz Monopole Ceramic Chip Antenna ";"Linx Technologies";"ANT-916-CHP-T";"";"Antenna Linx Technologies";"None";"";"https://pricing.snapeda.com/search/part/ANT-916-CHP-T/?ref=eda";"";
+"1";"BLUE";"LED-BLUE0603";"LED-0603";"D2";"Blue SMD LED";"";"";"";"";"";"";"";"DIO-08575";"";"BLUE";
+"1";"CONN_20X2";"CONN_20X2";"2X20";"J1";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";"";"";"";"";
+"1";"DNI/0R";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"R15";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"2";"DNI/1K";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"R2, R6";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"2";"DTSM-6";"DTSM-6";"DTSM-6";"S1, S2";"";"";"";"";"";"";"";"";"";"";"";
+"1";"GREEN";"LED-GREEN0603";"LED-0603";"D1";"Green SMD LED";"";"";"";"";"";"";"";"DIO-00821";"";"GREEN";
+"1";"SMA-VERT";"SMA-VERT";"SMA-VERT";"X11";"";"";"";"";"";"";"";"";"";"";"";
