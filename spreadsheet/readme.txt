@@ -1,4 +1,4 @@
-This spreadsheet is for analyzing the CubeSatSim APRS and CW telemetry ONLY.
+This spreadsheet is for analyzing the CubeSatSim APRS and CW telemetry ONLY.  Note that this spreadsheet is based on the original AMSAT OSCAR 7 AO-7 Morse Code Telemetry Decoder spreadsheet: https://www.amsat.org/amsat/ftp/software/spreadsheet/AO7tlmSS.xls 
 
 The best telemetry for the CubeSatSim is FSK which uses the AMSAT FoxTelem software to automatically demodulate, decode, and graph the data.
 
