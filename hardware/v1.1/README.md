@@ -2,6 +2,8 @@ Here is information about the CubeSatSim v1.1 hardware
 
 NOTE: The change between v1.0 and v1.1 is changing the BPF to a LPF.  Only the SMD components change - all the rest are identical
 
+NOTE: The STEM Payload Board has a 1.1a version.  The only change is a cutout on the edge of the PCB to increase clearance for the Pi Camera.  Otherwsie, it is identical to the 1.1 version.
+
 There are files for the main board, battery board, and STEM payload board of these types:
 
 * cubesatsim-main-1.1_gerbers.zip  --    All gerber files used to fabricate PCBs
