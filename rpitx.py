@@ -164,6 +164,7 @@ if __name__ == "__main__":
 #				from picamera import PiCamera
 #					from pysstv.sstv import SSTV
 #				camera = PiCamera()
+				print("Testing for camera")
 				system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
 				f = open("/home/pi/CubeSatSim/camera_out.jpg") 
 				print("Camera present")
