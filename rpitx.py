@@ -190,7 +190,7 @@ if __name__ == "__main__":
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
-					system("libcamera-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+					system("libcamera-jpeg -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
