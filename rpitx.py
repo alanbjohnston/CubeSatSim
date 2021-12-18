@@ -161,12 +161,12 @@ if __name__ == "__main__":
 		elif (mode == 's'):
 			print("SSTV")
 			try: 
-				from picamera import PiCamera
+#				from picamera import PiCamera
 #					from pysstv.sstv import SSTV
-				camera = PiCamera()
+#				camera = PiCamera()
 				print("Camera present")
 				camera_present = 1
-				camera.close()
+#				camera.close()
 			except:
 				print("No camera available")
 				print(" -> if camera plugged in, is software enabled?")
@@ -190,7 +190,7 @@ if __name__ == "__main__":
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
-					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+					system("libcamera-still -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
