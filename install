@@ -1,10 +1,11 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v1.0\n"
+echo -e "\ninstallation script for CubeSatSim v1.0 for Bullseye\n"
 
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
-sudo apt-get install -y wiringpi git libasound2-dev i2c-tools python-picamera python3-picamera build-essential libgd-dev libmagic-dev
+# removed wiringpi and python-picamera python3-picamera 
+sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev
 
 cd /tmp
 
@@ -15,7 +16,8 @@ sudo dpkg -i wiringpi-latest.deb
 
 cd
 
-sudo apt install -y python3-pip python-smbus
+#changed to python3-smbus
+sudo apt install -y python3-pip python3-smbus
 
 sudo pip3 install --upgrade setuptools
 
