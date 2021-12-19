@@ -114,6 +114,7 @@ sudo raspi-config nonint do_i2c 0
 
 sudo raspi-config nonint do_camera 0
 
+sudo raspi-config nonint do_legacy 0
 
 #if [ "$1" = "u" ]; then
 #fi
