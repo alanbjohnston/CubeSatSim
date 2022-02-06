@@ -78,7 +78,8 @@ if __name__ == "__main__":
 		if (debug_mode == 1):
 			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")		
 	print(callsign)
-
+        GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
+	
 	sleep(1)
 	output(txLed, txLedOn)
 	if (debug_mode == 1):
