@@ -2,10 +2,22 @@
 
 echo -e "\ninstallation script for CubeSatSim v1.1\n"
 
+FILE=/home/pi/CubeSatSim/sim.cfg
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
+fi
+
+CubeSatSim/config -c -n
+
+CubeSatSim/config -l -n
+  
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
 # removed wiringpi and python-picamera python3-picamera 
-sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev
+sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
 
 cd /tmp
 
@@ -38,16 +50,6 @@ else
     echo "creating $FILE"
     echo "ARG1=f" > .mode
 fi
-
-
-FILE=/home/pi/CubeSatSim/sim.cfg
-if [ -f "$FILE" ]; then
-    echo "$FILE exists."
-else 
-    echo "creating $FILE"
-    echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
-fi
-
 
 cd
 
@@ -159,10 +161,6 @@ sudo raspi-config nonint do_legacy 0
     echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
     sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
   fi
-  
-CubeSatSim/config -c -n
-
-CubeSatSim/config -l -n
   
 echo "Would you like to reboot to complete the installation (y/n)?"
 
