@@ -9,6 +9,8 @@ from time import sleep
 import sys
 from os import system
 
+print("CubeSatSim v1.1 rpitx.py starting...")
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
