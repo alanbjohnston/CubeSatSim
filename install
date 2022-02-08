@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v1.0 for Bullseye\n"
+echo -e "\ninstallation script for CubeSatSim v1.1\n"
 
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
