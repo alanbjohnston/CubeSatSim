@@ -44,15 +44,10 @@ else:
 # GPIO.setup(txLed, GPIO.OUT)
 # output(txLed, txLedOff)
 
-GPIO.setmode(GPIO.BCM)
+GPIO.setmode(GPIO.BCM) # Repeat to make LED work on Pi 4
 GPIO.setwarnings(False)
-
 GPIO.setup(txLed, GPIO.OUT)
 
-output(txLed, txLedOn)
-sleep(1)
-output(txLed, txLedOff)
-sleep(1)
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
