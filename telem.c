@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   		if (digitalRead(26) != HIGH)
   		{
  // 			if (debug == ON)
-			printf("CubeSatSim v1.0 INA219 Voltage and Current Telemetry\n");  
+			printf("CubeSatSim v1.1 INA219 Voltage and Current Telemetry\n");  
 			map[MINUS_X] = MINUS_Y;
 			map[PLUS_Z] = MINUS_X;	
 			map[MINUS_Y] = PLUS_Z;			
