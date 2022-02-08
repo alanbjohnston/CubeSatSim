@@ -41,7 +41,20 @@ else:
 	txLedOn = 1 
 	txLedOff = 0
 
+# GPIO.setup(txLed, GPIO.OUT)
+# output(txLed, txLedOff)
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
 GPIO.setup(txLed, GPIO.OUT)
+
+output(txLed, txLedOn)
+sleep(1)
+output(txLed, txLedOff)
+sleep(1)
+output(txLed, txLedOn)
+sleep(1)
 output(txLed, txLedOff)
 
 # print(txLedOn)
