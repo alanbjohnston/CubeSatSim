@@ -8,9 +8,11 @@ if [ "$1" = "u" ]; then
 
   sudo apt-get update && sudo apt-get dist-upgrade -y
 
-  sudo apt-get install -y wiringpi git libasound2-dev i2c-tools python-picamera python3-picamera build-essential libgd-dev libmagic-dev minicom
+  sudo apt-get install -y wiringpi git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev python3-pip minicom
 
 fi
+
+sudo apt-get install -y python3-smbus
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
