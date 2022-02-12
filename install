@@ -10,6 +10,8 @@ else
     echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
 fi
 
+cd
+
 CubeSatSim/config -c -n
 
 CubeSatSim/config -l -n
