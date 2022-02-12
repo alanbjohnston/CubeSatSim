@@ -72,7 +72,7 @@ git clone https://github.com/alanbjohnston/pi-power-button.git
 
 cd pi-power-button
 
-git checkout bullseye
+git checkout master
 
 ./script/install
 
