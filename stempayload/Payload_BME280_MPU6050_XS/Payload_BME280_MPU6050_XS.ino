@@ -183,9 +183,23 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
- 
-/**/    if (result == '?')
+   
+  if (result == 'R') {
+      Serial1.println("OK");
+      delay(100);
+      first_read = true;
+      setup();
+    }
+  else if (result == 'C') {
+      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      eeprom_word_write(0, 0x00);
+      first_time = true;
+      setup();
+    }  
+   
+ if ((result == '?') || first_time == true)
     {
+      first_time = false;
       if (bmePresent) {
         Serial.print("OK BME280 ");
         Serial.print(bme.readTemperature());
