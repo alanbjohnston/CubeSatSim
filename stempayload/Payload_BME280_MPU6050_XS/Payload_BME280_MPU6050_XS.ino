@@ -142,12 +142,8 @@ void loop() {
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
  
-#if defined __AVR_ATmega32U4__ 
-    sensorValue = analogRead(A3);
-#endif
-#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
-    sensorValue = analogRead(PA7);
-#endif
+    sensorValue = read_analog();
+     
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
  
@@ -218,14 +214,8 @@ void loop() {
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());   
     
-#if defined __AVR_ATmega32U4__ 
-//    sensorValue = analogRead(A3);
-    sensorValue = analogRead(3);
-#endif
-#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
-//    sensorValue = analogRead(PA7);
-    sensorValue = analogRead(7);
-#endif
+    sensorValue = read_analog();
+ 
     Serial.print(" | ");  
     Serial.print(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
@@ -323,4 +313,16 @@ void led_set(int ledPin, bool state)
 #if defined __AVR_ATmega32U4__
   digitalWrite(ledPin, state);   
 #endif  
+}
+
+int read_analog()
+{
+    int sensorValue;
+ #if defined __AVR_ATmega32U4__ 
+    sensorValue = analogRead(A3);
+#endif
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+    sensorValue = analogRead(PA7);
+#endif
+    return(sensorValue); 
 }
