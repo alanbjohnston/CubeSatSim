@@ -1,5 +1,6 @@
-// code for STM32F104C on the CubeSat Simulator STEM Payload board
-// answers "OK" on the serial port when queried by the Pi
+// code for Pro Micro or STM32 on the CubeSat Simulator STEM Payload board
+// answers "OK" on the serial port Serial1 when queried by the Pi
+
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
