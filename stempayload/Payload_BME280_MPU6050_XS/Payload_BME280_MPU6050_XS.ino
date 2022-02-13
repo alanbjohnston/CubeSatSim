@@ -5,9 +5,8 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
- 
 #define SEALEVELPRESSURE_HPA (1013.25)
- 
+
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
  
@@ -39,25 +38,16 @@ float R1 = 695; // Reading data point 2
 int sensorValue;
 float Temp;
 float rest;
-int counter = 0;
   
 void setup() {
-/*
-  Serial1.begin(115200);
-  pinMode(PC13, OUTPUT);
-    digitalWrite(PC13, LOW);   // turn the LED on 
-    delay(50);              // wait for a second
-    digitalWrite(PC13, HIGH);    // turn the LED off
-*/ 
- 
+
   Serial.begin(9600); // Serial Monitor for testing
  
   Serial1.begin(115200);  // Pi UART faster speed
 //  Serial1.begin(9600);  // Pi UART faster speed
  
-//  Serial.println("Starting!");
+  Serial.println("Starting!");
  
-  /**/
   blink_setup();
  
   blink(500);
@@ -70,8 +60,7 @@ void setup() {
   led_set(blueLED, HIGH);
   delay(250);
   led_set(blueLED, LOW);
-/**/  
-/**/
+
   if (bme.begin(0x76)) {
     bmePresent = 1;
   } else {
@@ -118,13 +107,9 @@ void loop() {
  
   if (Serial1.available() > 0) {
     blink(50);
-//    digitalWrite(PC13, LOW);   // turn the LED on
-//    delay(50);              // wait for a second
-//    digitalWrite(PC13, HIGH);    // turn the LED off
     char result = Serial1.read();
 //  Serial1.println(result);
 //  Serial1.println("OK");
-//  Serial1.println(counter++); 
  
 //    if (result == '?')
     {
@@ -197,13 +182,10 @@ void loop() {
 
   if (Serial.available() > 0) {
     blink(50);
-//    digitalWrite(PC13, LOW);   // turn the LED on
-//    delay(50);              // wait for a second
-//    digitalWrite(PC13, HIGH);    // turn the LED off
     char result = Serial.read();
-//    Serial1.println(result);
-//    Serial1.println("OK");
-//  Serial1.println(counter++); 
+//    Serial.println(result);
+//    Serial.println("OK");
+//    Serial.println(counter++); 
  
 /**/    if (result == '?')
     {
@@ -274,10 +256,7 @@ void loop() {
     else
         led_set(blueLED, LOW);
     }
-   
-  }
-
-  
+  }  
   delay(100);
 }
  
