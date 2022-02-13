@@ -231,15 +231,16 @@ void loop() {
     
     sensorValue = read_analog();
  
-    Serial.print(" | ");  
-    Serial.print(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
  
     Serial.print(" XS ");
     Serial.print(Temp);   
     Serial.print(" ");
-    Serial.println(Sensor2);              
-     
+    Serial.print(Sensor2);              
+    Serial.print(" (");  
+    Serial.print(sensorValue);   
+    Serial.println(")"); 
+  
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
