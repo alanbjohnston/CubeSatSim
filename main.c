@@ -317,7 +317,7 @@ int main(int argc, char * argv[]) {
       for (i = 0; i < 2; i++) {
 	if (payload != ON) {
           serialPutchar(uart_fd, 'R');
-          printf("Querying payload with R to reset\n");
+          printf("Querying Payload with R to reset\n");
           waitTime = millis() + 500;
           while ((millis() < waitTime) && (payload != ON)) {
             if (serialDataAvail(uart_fd)) {
@@ -661,7 +661,7 @@ int main(int argc, char * argv[]) {
           i = 0;
 	  serialPutchar(uart_fd, '?');
 	  sleep(0.05);  // added delay after ?
-          printf("%d Querying payload with ?\n", trys);
+          printf("%d Querying Payload with ?\n", trys);
           waitTime = millis() + 500;
           end = FALSE;
           //  int retry = FALSE;
@@ -943,7 +943,7 @@ void get_tlm(void) {
         i = 0;
 	serialPutchar(uart_fd, '?');
 	sleep(0.05);  // added delay after ?
-        printf("%d Querying payload with ?\n", trys);
+        printf("%d Querying Payload with ?\n", trys);
         waitTime = millis() + 500;
         end = FALSE;
         //  int retry = FALSE;
