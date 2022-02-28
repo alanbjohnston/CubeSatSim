@@ -1,4 +1,4 @@
-Here is information about the CubeSatSim v1.1 hardware
+Here is information about the CubeSatSim v1.2 hardware
 
 NOTE: The change between v1.1 and v1.2 is changing the USB charging connector from a micro USB to a USB-C connector. Some labels also changed
 
