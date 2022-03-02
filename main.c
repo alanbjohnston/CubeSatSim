@@ -27,10 +27,15 @@ int main(int argc, char * argv[]) {
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
-  fprintf(stderr, "test result: %s\n", resbuffer);
+//  fprintf(stderr, "test result: %s\n", resbuffer);
   fclose(file_test);	
-
-  sleep(5);  // try sleep at start to help boot
+  
+  if (resbuffer <> NULL) 
+  {
+    sleep(5);  // try sleep at start to help boot
+    voltageThreshold = 3.7;
+    printf("Pi Zero 2 detected");
+  }
 	
   printf("\n\nCubeSatSim v1.1 starting...\n\n");
 	
