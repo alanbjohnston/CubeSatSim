@@ -30,8 +30,8 @@ int main(int argc, char * argv[]) {
 //  fprintf(stderr, "test result: %s\n", resbuffer);
   fclose(file_test);	
   
-  fprintf(stderr, sizeof(resbuffer));
-  if (sizeof(resbuffer) != 0) 
+  fprintf(stderr, strlen(resbuffer));
+  if (strlen(resbuffer) != 0) 
   {
     sleep(5);  // try sleep at start to help boot
     voltageThreshold = 3.7;
