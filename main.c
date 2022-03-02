@@ -24,7 +24,7 @@
 int main(int argc, char * argv[]) {
 
   char resbuffer[1000];
-  constant char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "test result: %s\n", resbuffer);
