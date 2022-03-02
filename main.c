@@ -22,6 +22,8 @@
 #include "main.h"
 
 int main(int argc, char * argv[]) {
+
+  sleep(5);  // try sleep at start to help boot
 	
   printf("\n\nCubeSatSim v1.1 starting...\n\n");
 	
@@ -723,6 +725,8 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+
+/**/
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -745,7 +749,7 @@ int main(int argc, char * argv[]) {
       pclose(file6);
       sleep(10);
     }
-
+/**/
     //  sleep(1);  // Delay 1 second
     ctr = 0;
     #ifdef DEBUG_LOGGING
