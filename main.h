@@ -128,7 +128,7 @@ unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
+float voltageThreshold = 3.55, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
