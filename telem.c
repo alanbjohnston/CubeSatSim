@@ -15,71 +15,11 @@ int main(int argc, char *argv[]) {
     }
   }
 
-/*
-
-  wiringPiSetup ();
-		
-  printf("\n");
-	
-    pinMode (2, INPUT);
-    pullUpDnControl (2, PUD_UP);
-
-    if (digitalRead(2) != HIGH)
-    {
-	  printf("vB3 with TFB Present\n");
-  	  map[BUS] = MINUS_Z;
-  	  map[BAT] = BUS;
-  	  map[PLUS_Z] = BAT;
-  	  map[MINUS_Z] = PLUS_Z;
-	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));	    
-     } 
-    else
-    {
-  	pinMode (3, INPUT);
-  	pullUpDnControl (3, PUD_UP);
-
-  	if (digitalRead(3) != HIGH)
-  	{
-	  printf("vB4 Present\n");
-	  map[BAT] = BUS;
-	  map[BUS] = BAT;
-	  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));	
- // 	  strcpy(busStr,"1 0");
-  	}
-	else
-	{
-		pinMode (26, INPUT);
-  		pullUpDnControl (26, PUD_UP);
-
-  		if (digitalRead(26) != HIGH)
-  		{
- // 			if (debug == ON)
-			printf("CubeSatSim v1.1 INA219 Voltage and Current Telemetry\n");  
-			map[MINUS_X] = MINUS_Y;
-			map[PLUS_Z] = MINUS_X;	
-			map[MINUS_Y] = PLUS_Z;			
-			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
-		}
-		else
-		{
-			printf("VB3 Present\n");
-  			map[BUS] = MINUS_Z;
-  			map[BAT] = BUS;
-  			map[PLUS_Z] = BAT;
-  			map[MINUS_Z] = PLUS_Z;
-			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(0));
-	}
-      }
-    }	
-*/
-
-			printf("CubeSatSim v1.1 INA219 Voltage and Current Telemetry\n");  
-			map[MINUS_X] = MINUS_Y;
-			map[PLUS_Z] = MINUS_X;	
-			map[MINUS_Y] = PLUS_Z;			
-			snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
-
-
+  printf("CubeSatSim v1.1 INA219 Voltage and Current Telemetry\n");  
+  map[MINUS_X] = MINUS_Y;
+  map[PLUS_Z] = MINUS_X;	
+  map[MINUS_Y] = PLUS_Z;			
+  snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(3));
 	
 //  Reading I2C voltage and current sensors
 //   printf("Starting\n");
