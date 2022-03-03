@@ -22,6 +22,22 @@
 #include "main.h"
 
 int main(int argc, char * argv[]) {
+
+  char resbuffer[1000];
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
+  FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
+  fgets(resbuffer, 1000, file_test);
+//  fprintf(stderr, "test result: %s\n", resbuffer);
+  fclose(file_test);	
+  
+//  fprintf(stderr, " %x ", resbuffer[0]);
+//  fprintf(stderr, " %x ", resbuffer[1]);	
+  if (resbuffer[1] != 0) 
+  {
+    sleep(5);  // try sleep at start to help boot
+    voltageThreshold = 3.7;
+    printf("Pi Zero 2 detected");
+  }
 	
   printf("\n\nCubeSatSim v1.1 starting...\n\n");
 	
@@ -723,6 +739,8 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+
+/**/
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -745,7 +763,7 @@ int main(int argc, char * argv[]) {
       pclose(file6);
       sleep(10);
     }
-
+/**/
     //  sleep(1);  // Delay 1 second
     ctr = 0;
     #ifdef DEBUG_LOGGING
