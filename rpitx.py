@@ -168,7 +168,7 @@ if __name__ == "__main__":
 						else:
 							system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 145.9e3 > /dev/null 2>&1")							
 					output(txLed, txLedOff)
-					f.close()145
+					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(1)
 				except:		  
