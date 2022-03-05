@@ -16,6 +16,8 @@ GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 transmit = False
+uhf = True
+
 if GPIO.input(12) == False:
 	print("Version is v1 with UHF BPF")
 	transmit = True
@@ -30,8 +32,9 @@ elif GPIO.input(27) == False:
 	txLedOff = 1
 elif GPIO.input(13) == False:
 	print("Version is v1 with VHF BPF")
-	print("VHF transmit not implemented yet")
-#	transmit = True
+#	print("VHF transmit not implemented yet")
+	transmit = True
+	vhf = False
 	txLed = 27
 	txLedOn = 1
 	txLedOff = 0
