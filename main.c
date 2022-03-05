@@ -247,8 +247,8 @@ int main(int argc, char * argv[]) {
             onLed = 27;
             onLedOn = HIGH;
             onLedOff = LOW;
-            printf("VHF BPF not yet supported so no transmit\n");
-	    transmit = FALSE;
+//            printf("VHF BPF not yet supported so no transmit\n");
+	    transmit = TRUE;
           }		
 	}
       }
