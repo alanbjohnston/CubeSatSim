@@ -135,9 +135,9 @@ if __name__ == "__main__":
 					output(txLed, txLedOff)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/ready")
-					sleep(0.5)
+					sleep(30)  # was 0.5
 				except:		  
-					sleep(0.5)
+					sleep(0.5)  
 		elif (mode == 'm'):
 			print("CW")
 #			sleep(4)
