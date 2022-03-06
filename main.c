@@ -950,7 +950,7 @@ void get_tlm(void) {
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
 //          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-          sprintf(header_str2b, "=%s%c%c%sOhi hi ", header_lat, "/", header_long); // add APRS lat and long	    
+          sprintf(header_str2b, "=%s/%sOhi hi ", header_lat, header_long); // add APRS lat and long	    
         printf("\n\nAPRS string is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
