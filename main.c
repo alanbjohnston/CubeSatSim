@@ -949,8 +949,9 @@ void get_tlm(void) {
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
-          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-//        printf("\n\nString is %s \n\n", header_str2b);
+//          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
+          sprintf(header_str2b, "=%s%c%c%sOhi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
+        printf("\n\nAPRS string is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
         strcat(str, header_str4);
@@ -958,6 +959,8 @@ void get_tlm(void) {
 //    }
 	printf("Str: %s \n", str);
 
+// No AO-7 format telemetry for HAB	  
+/*
     int channel;
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
@@ -968,6 +971,7 @@ void get_tlm(void) {
       //        printf("%s",tlm_str);
       strcat(str, tlm_str);
     }
+*/	  
 
     // read payload sensor if available
 
