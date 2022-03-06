@@ -488,7 +488,8 @@ int main(int argc, char * argv[]) {
   if (!sim_mode)
   {
     strcpy(pythonStr, pythonCmd);
-    strcat(pythonStr, busStr);
+//    strcat(pythonStr, busStr);
+    strcat(pythonStr, "-1 -1");
     strcat(pythonConfigStr, pythonStr);
     strcat(pythonConfigStr, " c");  
 
