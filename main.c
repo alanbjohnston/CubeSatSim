@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero 2 detected");
   }
 	
-  printf("\n\nCubeSatSim v1.1 starting...\n\n");
+  printf("\n\nCubeSatSim v1.2 starting...\n\n");
 	
   FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   pclose(rpitx_stop);
