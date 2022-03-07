@@ -936,6 +936,7 @@ void get_tlm(void) {
   } else {
      latitude += rnd_float(-0.0005, 0.0005);
      longitude += rnd_float(-0.0005, 0.0005);
+       printf("GPS Data with Rnd: %f, %f \n", latitude, longitude); 
   }
     sprintf(gps_str, "%7.4f %7.4f %7.1f", toAprsFormat(lat_gps), toAprsFormat(lon_gps), alt_gps);	  
   	  	  
