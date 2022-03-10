@@ -61,6 +61,9 @@ for i in range(len(chunks)):
         x_rotate = chunks[i+1]       
         y_rotate = chunks[i+2] 
         z_rotate = chunks[i+3] 
+        x_accel = chunks[i+4] 
+        y_accel = chunks[i+5] 
+        z_accel = chunks[i+6] 
         
 #print(telem_string)
  
@@ -141,10 +144,41 @@ data = {
 result = my_device.insert(data)
 
 print(result)
+
 data = {
             'variable': 'z_rotate',               
             'unit'    : '%',                                   
             'value'   : z_rotate,                                                   
+            'time'    : timestamp,                          
+            'location': {'lat': lat, 'lng': lon}   
+} 
+result = my_device.insert(data)
+print(result)
+
+data = {
+            'variable': 'x_accel',               
+            'unit'    : '%',                                   
+            'value'   : x_accel,                                                   
+            'time'    : timestamp,                          
+            'location': {'lat': lat, 'lng': lon}   
+} 
+result = my_device.insert(data)
+print(result)
+
+data = {
+            'variable': 'y_accel',               
+            'unit'    : '%',                                   
+            'value'   : y_accel,                                                   
+            'time'    : timestamp,                          
+            'location': {'lat': lat, 'lng': lon}   
+} 
+result = my_device.insert(data)
+print(result)
+
+data = {
+            'variable': 'z_accel',               
+            'unit'    : '%',                                   
+            'value'   : z_accel,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
 } 
