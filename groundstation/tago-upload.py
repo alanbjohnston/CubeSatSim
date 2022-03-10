@@ -59,7 +59,9 @@ for i in range(len(chunks)):
     if (chunks[i] == "MPU6050"):
         print("Found MPU6050")
         x_rotate = chunks[i+1]       
- 
+        y_rotate = chunks[i+2] 
+        z_rotate = chunks[i+3] 
+        
 #print(telem_string)
  
  
@@ -116,10 +118,39 @@ data = {
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
 } 
-
 result = my_device.insert(data)
 print(result)
- 
+
+data = {
+            'variable': 'x_rotate',               
+            'unit'    : '%',                                   
+            'value'   : x_rotate,                                                   
+            'time'    : timestamp,                          
+            'location': {'lat': lat, 'lng': lon}   
+} 
+result = my_device.insert(data)
+print(result)
+
+data = {
+            'variable': 'y_rotate',               
+            'unit'    : '%',                                   
+            'value'   : y_rotate,                                                   
+            'time'    : timestamp,                          
+            'location': {'lat': lat, 'lng': lon}   
+} 
+result = my_device.insert(data)
+
+print(result)
+data = {
+            'variable': 'z_rotate',               
+            'unit'    : '%',                                   
+            'value'   : z_rotate,                                                   
+            'time'    : timestamp,                          
+            'location': {'lat': lat, 'lng': lon}   
+} 
+result = my_device.insert(data)
+print(result)
+
 data = {
   "variable": "location",
   "value": "Villanova University HAB-2",
