@@ -56,7 +56,9 @@ for i in range(len(chunks)):
         humidity = chunks[i+4]
         print(temp)
         print(humidity)
-       
+    if (chunks[i] == "MPU6050"):
+        print("Found MPU6050")
+        x_rotate = chunks[i+1]       
  
 #print(telem_string)
  
