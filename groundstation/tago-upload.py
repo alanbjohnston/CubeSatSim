@@ -66,7 +66,13 @@ while (True):
          x_accel = chunks[i+4] 
          y_accel = chunks[i+5] 
          z_accel = chunks[i+6] 
-
+     if (chunks[i] == "SGP30"):
+         print("Found SGP30")
+         tvoc = chunks[i+1]
+         e_co2 = chunks[i+2]
+         raw_h2 = chunks[i+3]
+         raw_ethanol= chunks[i+4]
+        
  #print(telem_string)
 
 
@@ -181,6 +187,46 @@ while (True):
              'variable': 'z_accel',               
              'unit'    : 'g',                                   
              'value'   : z_accel,                                                   
+             'time'    : timestamp,                          
+             'location': {'lat': lat, 'lng': lon}   
+ } 
+ result = my_device.insert(data)
+ print(result)
+ 
+ data = {
+             'variable': 'tvoc',               
+             'unit'    : 'ppb',                                   
+             'value'   : tvoc,                                                   
+             'time'    : timestamp,                          
+             'location': {'lat': lat, 'lng': lon}   
+ } 
+ result = my_device.insert(data)
+ print(result)
+
+  data = {
+             'variable': 'e_co2',               
+             'unit'    : 'ppm',                                   
+             'value'   : e_co2,                                                   
+             'time'    : timestamp,                          
+             'location': {'lat': lat, 'lng': lon}   
+ } 
+ result = my_device.insert(data)
+ print(result)
+ 
+  data = {
+             'variable': 'raw_h2',               
+             'unit'    : 'raw',                                   
+             'value'   : raw_h2,                                                   
+             'time'    : timestamp,                          
+             'location': {'lat': lat, 'lng': lon}   
+ } 
+ result = my_device.insert(data)
+ print(result)
+ 
+  data = {
+             'variable': 'raw_ethanol',               
+             'unit'    : 'raw',                                   
+             'value'   : raw_ethanol,                                                   
              'time'    : timestamp,                          
              'location': {'lat': lat, 'lng': lon}   
  } 
