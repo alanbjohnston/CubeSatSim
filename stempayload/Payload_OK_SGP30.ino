@@ -211,7 +211,7 @@ void loop() {
     Serial1.print(" ");
     //Serial.print("Raw Ethanol "); 
     Serial1.print(sgp.rawEthanol); 
-    Serial1.println("-");     
+    Serial1.println(" ");     
     }
    
   }
@@ -324,7 +324,7 @@ void loop() {
     Serial.print(" ");
     //Serial.print("Raw Ethanol "); 
     Serial.print(sgp.rawEthanol); 
-    Serial.println("-");
+    Serial.println(" ");
   }  
   delay(100);
 }
