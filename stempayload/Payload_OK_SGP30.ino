@@ -162,12 +162,12 @@ void loop() {
      
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
- 
+/* 
     Serial1.print(" XS ");
     Serial1.print(Temp);   
     Serial1.print(" ");
     Serial1.println(Sensor2);              
-     
+*/     
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
@@ -188,6 +188,30 @@ void loop() {
         led_set(blueLED, HIGH);
     else
         led_set(blueLED, LOW);
+    
+    //SGP SENSOR DATA
+     if (! sgp.IAQmeasure()) {
+      Serial.println("SGP 30 Measurement failed");
+//      return;
+    }
+    Serial1.print(" SGP30 "); 
+    Serial1.print(sgp.TVOC); 
+    Serial1.print(" ");
+    //Serial.print("eCO2 "); 
+    Serial1.print(sgp.eCO2); 
+    Serial1.print(" ");
+  
+    if (! sgp.IAQmeasureRaw()) {
+      Serial1.println("SGP 30 Raw Measurement failed");
+//      return;
+    }
+    
+    //Serial.print("Raw H2 "); 
+    Serial1.print(sgp.rawH2); 
+    Serial1.print(" ");
+    //Serial.print("Raw Ethanol "); 
+    Serial1.print(sgp.rawEthanol); 
+    Serial1.println("-");     
     }
    
   }
