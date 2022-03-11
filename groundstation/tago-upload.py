@@ -126,7 +126,7 @@ print(result)
 
 data = {
             'variable': 'x_rotate',               
-            'unit'    : '%',                                   
+            'unit'    : 'dps',                                   
             'value'   : x_rotate,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
@@ -136,7 +136,7 @@ print(result)
 
 data = {
             'variable': 'y_rotate',               
-            'unit'    : '%',                                   
+            'unit'    : 'dps',                                   
             'value'   : y_rotate,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
@@ -147,7 +147,7 @@ print(result)
 
 data = {
             'variable': 'z_rotate',               
-            'unit'    : '%',                                   
+            'unit'    : 'dps',                                   
             'value'   : z_rotate,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
@@ -157,7 +157,7 @@ print(result)
 
 data = {
             'variable': 'x_accel',               
-            'unit'    : '%',                                   
+            'unit'    : 'g',                                   
             'value'   : x_accel,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
@@ -167,7 +167,7 @@ print(result)
 
 data = {
             'variable': 'y_accel',               
-            'unit'    : '%',                                   
+            'unit'    : 'g',                                   
             'value'   : y_accel,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
@@ -177,7 +177,7 @@ print(result)
 
 data = {
             'variable': 'z_accel',               
-            'unit'    : '%',                                   
+            'unit'    : 'g',                                   
             'value'   : z_accel,                                                   
             'time'    : timestamp,                          
             'location': {'lat': lat, 'lng': lon}   
