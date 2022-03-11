@@ -1,6 +1,6 @@
 import tago
 
-while (true):
+while (True):
  
  print("Input telemetry string (or Control-C to exit)")
 
