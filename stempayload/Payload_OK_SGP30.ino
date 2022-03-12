@@ -107,7 +107,7 @@ void setup() {
 /**/ 
   if (! sgp.begin()){
     Serial.println("Sensor not found :(");
-    while (1);
+//    while (1);
   }
   Serial.print("Found SGP30 serial #");
   Serial.print(sgp.serialnumber[0], HEX);
@@ -300,7 +300,6 @@ void loop() {
         led_set(blueLED, HIGH);
     else
         led_set(blueLED, LOW);
-    }
 
     //SGP SENSOR DATA
      if (! sgp.IAQmeasure()) {
@@ -325,7 +324,8 @@ void loop() {
     //Serial.print("Raw Ethanol "); 
     Serial.print(sgp.rawEthanol); 
     Serial.println(" ");
-  }  
+  } 
+ }
   delay(100);
 }
  
