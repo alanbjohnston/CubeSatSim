@@ -106,14 +106,13 @@ void setup() {
   }
 /**/ 
   if (! sgp.begin()){
-    Serial.println("Sensor not found :(");
-//    while (1);
+    Serial.println("SGP30 sensor not found :(");
+  } else {
+    Serial.print("Found SGP30 serial #");
+    Serial.print(sgp.serialnumber[0], HEX);
+    Serial.print(sgp.serialnumber[1], HEX);
+    Serial.println(sgp.serialnumber[2], HEX);
   }
-  Serial.print("Found SGP30 serial #");
-  Serial.print(sgp.serialnumber[0], HEX);
-  Serial.print(sgp.serialnumber[1], HEX);
-  Serial.println(sgp.serialnumber[2], HEX);
-
   // If you have a baseline measurement from before you can assign it to start, to 'self-calibrate'
   //sgp.setIAQBaseline(0x8E68, 0x8F41);  // Will vary for each sensor!
      
@@ -190,30 +189,29 @@ void loop() {
         led_set(blueLED, LOW);
     
     //SGP SENSOR DATA
-     if (! sgp.IAQmeasure()) {
-      Serial.println("SGP 30 Measurement failed");
-//      return;
+    if (! sgp.IAQmeasure()) {
+//      Serial.println("SGP 30 Measurement failed");
+      Serial1.print(" SGP30 0 0 ");
+    } else {
+      Serial1.print(" SGP30 "); 
+      Serial1.print(sgp.TVOC); 
+      Serial1.print(" ");
+      //Serial.print("eCO2 "); 
+      Serial1.print(sgp.eCO2); 
+      Serial1.print(" ");
     }
-    Serial1.print(" SGP30 "); 
-    Serial1.print(sgp.TVOC); 
-    Serial1.print(" ");
-    //Serial.print("eCO2 "); 
-    Serial1.print(sgp.eCO2); 
-    Serial1.print(" ");
-  
     if (! sgp.IAQmeasureRaw()) {
-      Serial1.println("SGP 30 Raw Measurement failed");
-//      return;
-    }
-    
-    //Serial.print("Raw H2 "); 
-    Serial1.print(sgp.rawH2); 
-    Serial1.print(" ");
-    //Serial.print("Raw Ethanol "); 
-    Serial1.print(sgp.rawEthanol); 
-    Serial1.println(" ");     
-    }
-   
+//      Serial.println(" SGP 30 Raw Measurement failed");
+      Serial1.println(" 0 0 ");    
+    ) else {
+      //Serial.print("Raw H2 "); 
+      Serial1.print(sgp.rawH2); 
+      Serial1.print(" ");
+      //Serial.print("Raw Ethanol "); 
+      Serial1.print(sgp.rawEthanol); 
+      Serial1.println(" ");  
+    } 
+   }   
   }
 
   if (Serial.available() > 0) {
@@ -304,26 +302,34 @@ void loop() {
     //SGP SENSOR DATA
      if (! sgp.IAQmeasure()) {
       Serial.println("SGP 30 Measurement failed");
-//      return;
-    }
-    Serial.print(" SGP30 "); 
-    Serial.print(sgp.TVOC); 
-    Serial.print(" ");
-    //Serial.print("eCO2 "); 
-    Serial.print(sgp.eCO2); 
-    Serial.print(" ");
-  
+      Serial1.print(" SGP30 0 0 ");
+    } else {
+      Serial.print(" SGP30 "); 
+      Serial.print(sgp.TVOC); 
+      Serial.print(" ");
+      //Serial.print("eCO2 "); 
+      Serial.print(sgp.eCO2); 
+      Serial.print(" ");
+     }
     if (! sgp.IAQmeasureRaw()) {
-      Serial.println("SGP 30 Raw Measurement failed");
-//      return;
-    }
-    
-    //Serial.print("Raw H2 "); 
-    Serial.print(sgp.rawH2); 
-    Serial.print(" ");
-    //Serial.print("Raw Ethanol "); 
-    Serial.print(sgp.rawEthanol); 
-    Serial.println(" ");
+//      Serial.println("SGP 30 Raw Measurement failed");
+      Serial1.println("0 0");
+    } else {
+      //Serial.print("Raw H2 "); 
+      Serial.print(sgp.rawH2); 
+      Serial.print(" ");
+      //Serial.print("Raw Ethanol "); 
+      Serial.print(sgp.rawEthanol); 
+      Serial.println(" ");
+     
+      uint16_t TVOC_base, eCO2_base;
+      if (! sgp.getIAQBaseline(&eCO2_base, &TVOC_base)) {
+        Serial.println("Failed to get baseline readings");
+      }
+      Serial.print("****Baseline values: eCO2: 0x"); Serial.print(eCO2_base, HEX);
+      Serial.print(" & TVOC: 0x"); Serial.println(TVOC_base, HEX);     
+     
+    } 
   } 
  }
   delay(100);
