@@ -233,7 +233,7 @@ while (True):
  result = my_device.insert(data)
  print(result)
  
-  data = {
+ data = {
              'variable': 'raw_ethanol',               
              'unit'    : 'raw',                                   
              'value'   : raw_ethanol,                                                   
