@@ -9,9 +9,9 @@ while (True):
  
  telem_string = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json')
  
- print(telem_string)
+ print(telem_string.text)
 
- chunks = telem_string.split(' ')
+ chunks = telem_string.text.split(' ')
 
  #printchunks = str.split(' ')
 
