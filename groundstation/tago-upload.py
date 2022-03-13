@@ -29,7 +29,8 @@ while (True):
  altitude = 0
  humidity = 0
 
- timestamp = chunks[0] + " " + chunks[1]
+ time = chunks[0] + " " + chunks[1]
+ timestamp = datetime.utcfromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
  print(timestamp)
 
  for i in range(len(chunks)):
