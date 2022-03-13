@@ -14,8 +14,8 @@ while (True):
  lon = telem_json['entries'][0]['lng']
  telem_string = telem_json['entries'][0]['comment']
 
- print(lat_json)
- print(lon_json)
+ print(lat)
+ print(lon)
  print(telem_string)
 
  chunks = telem_string.split(' ')
