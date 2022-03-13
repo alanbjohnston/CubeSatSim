@@ -15,7 +15,8 @@ while (True):
  lat = float(telem_json['entries'][0]['lat'])
  lon = float(telem_json['entries'][0]['lng'])
  telem_string = telem_json['entries'][0]['comment']
- times = int(telem_json['timestamp'])
+ times = int(telem_json['entries'][0]['time'])
+
  
  print(lat)
  print(lon)
