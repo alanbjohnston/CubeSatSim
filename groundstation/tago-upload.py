@@ -1,6 +1,7 @@
 import tago
 import requests
 import json
+from datetime import datetime
 
 while (True):
  
@@ -13,7 +14,8 @@ while (True):
  lat = telem_json['entries'][0]['lat']
  lon = telem_json['entries'][0]['lng']
  telem_string = telem_json['entries'][0]['comment']
-
+ time = int(telem_json['timestamp'])
+ 
  print(lat)
  print(lon)
  print(telem_string)
@@ -29,8 +31,8 @@ while (True):
  altitude = 0
  humidity = 0
 
- time = chunks[0] + " " + chunks[1]
- timestamp = datetime.utcfromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
+
+ timestamp = datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
  print(timestamp)
 
  for i in range(len(chunks)):
