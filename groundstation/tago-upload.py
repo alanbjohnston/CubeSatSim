@@ -208,7 +208,7 @@ while (True):
  result = my_device.insert(data)
  print(result)
 
-  data = {
+ data = {
              'variable': 'e_co2',               
              'unit'    : 'ppm',                                   
              'value'   : e_co2,                                                   
@@ -218,7 +218,7 @@ while (True):
  result = my_device.insert(data)
  print(result)
  
-  data = {
+ data = {
              'variable': 'raw_h2',               
              'unit'    : 'raw',                                   
              'value'   : raw_h2,                                                   
