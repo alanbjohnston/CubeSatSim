@@ -1,10 +1,15 @@
 import tago
+import requests
 
 while (True):
  
  print("Input telemetry string (or Control-C to exit)")
 
- telem_string = input()
+ # telem_string = input()
+ 
+ telem_string = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json')
+ 
+ print(telem_string)
 
  chunks = telem_string.split(' ')
 
@@ -243,3 +248,5 @@ while (True):
  }
  result = my_device.insert(data)
  print(result)
+
+ sleep(90)
