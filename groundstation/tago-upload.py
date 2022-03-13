@@ -8,15 +8,17 @@ while (True):
 
  # telem_string = input()
  
- telem_json = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json')
+ telem_json = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json').json() 
  
- telem_parsed = json.loads(telem_json)
- 
- telem_string = telem_parsed["comment"]
- 
+ lat = telem_json['entries'][0]['lat']
+ lon = telem_json['entries'][0]['lng']
+ telem_string = telem_json['entries'][0]['comment']
+
+ print(lat_json)
+ print(lon_json)
  print(telem_string)
 
- chunks = telem_string.text.split(' ')
+ chunks = telem_string.split(' ')
 
  #printchunks = str.split(' ')
 
@@ -29,35 +31,6 @@ while (True):
 
  timestamp = chunks[0] + " " + chunks[1]
  print(timestamp)
-
- lat1 = chunks[3].split("=")
- lat2_dm = lat1[1].split("N")
- lat_float = float(lat2_dm[0])
-
- lon1 = lat2_dm[1].split("/")
- lon2_dm = lon1[1].split("W")
- lon_float = float(lon2_dm[0])
-
- print(lat_float)
- print(lon_float)
-
- lat_int = int(lat_float/100)
- lat_mm = int(lat_float - lat_int * 100)
- lat_mm2 = lat_float - int(lat_float) * 100
-
- lat = lat_int + (lat_mm / 60.0) + (lat_mm2 / (60.0 * 60.0))
-
- lon_int = int(lon_float/100)
- lon_mm = int(lon_float - lon_int * 100)
- lon_mm2 = lon_float - int(lon_float) * 100
-
- lon = -1.0 * (lon_int + (lon_mm / 60.0) + (lon_mm2 / (60.0 * 60.0)))
-
- print(lat)
- print(lon)
-
- lat = lat_float / 100.0
- lon = lon_float / (-100.0)
 
  for i in range(len(chunks)):
      if (chunks[i] == "BME280"):
