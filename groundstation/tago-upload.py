@@ -1,5 +1,6 @@
 import tago
 import requests
+import json
 
 while (True):
  
@@ -7,9 +8,13 @@ while (True):
 
  # telem_string = input()
  
- telem_string = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json')
+ telem_json = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json')
  
- print(telem_string.text)
+ telem_parsed = json.loads(telem_json)
+ 
+ telem_string = telem_parsed["comment"]
+ 
+ print(telem_string)
 
  chunks = telem_string.text.split(' ')
 
