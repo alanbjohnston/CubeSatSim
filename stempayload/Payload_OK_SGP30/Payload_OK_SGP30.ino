@@ -24,6 +24,11 @@ int Sensor1 = 0;
 float Sensor2 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
+void blink_setup();
+void blink(int length);
+int read_analog();
+void led_set(int ledPin, bool state);
+
 int first_time = true;
 int first_read = true;
 
@@ -203,7 +208,7 @@ void loop() {
     if (! sgp.IAQmeasureRaw()) {
 //      Serial.println(" SGP 30 Raw Measurement failed");
       Serial1.println(" 0 0 ");    
-    ) else {
+    } else {
       //Serial.print("Raw H2 "); 
       Serial1.print(sgp.rawH2); 
       Serial1.print(" ");
@@ -301,8 +306,8 @@ void loop() {
 
     //SGP SENSOR DATA
      if (! sgp.IAQmeasure()) {
-      Serial.println("SGP 30 Measurement failed");
-      Serial1.print(" SGP30 0 0 ");
+ //     Serial.println("SGP 30 Measurement failed");
+      Serial.print(" SGP30 0 0 ");
     } else {
       Serial.print(" SGP30 "); 
       Serial.print(sgp.TVOC); 
@@ -313,7 +318,7 @@ void loop() {
      }
     if (! sgp.IAQmeasureRaw()) {
 //      Serial.println("SGP 30 Raw Measurement failed");
-      Serial1.println("0 0");
+      Serial.println("0 0");
     } else {
       //Serial.print("Raw H2 "); 
       Serial.print(sgp.rawH2); 
@@ -410,6 +415,4 @@ int read_analog()
     sensorValue = analogRead(PA7);
 #endif
     return(sensorValue); 
-
-    
 }
