@@ -2,6 +2,7 @@ import tago
 import requests
 import json
 from datetime import datetime
+import time
 
 while (True):
  
@@ -11,10 +12,10 @@ while (True):
  
  telem_json = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json').json() 
  
- lat = telem_json['entries'][0]['lat']
- lon = telem_json['entries'][0]['lng']
+ lat = float(telem_json['entries'][0]['lat'])
+ lon = float(telem_json['entries'][0]['lng'])
  telem_string = telem_json['entries'][0]['comment']
- time = int(telem_json['timestamp'])
+ times = int(telem_json['timestamp'])
  
  print(lat)
  print(lon)
@@ -32,7 +33,7 @@ while (True):
  humidity = 0
 
 
- timestamp = datetime.fromtimestamp(time).strftime('%Y-%m-%d %H:%M:%S')
+ timestamp = datetime.utcfromtimestamp(times).strftime('%Y-%m-%d %H:%M:%S')
  print(timestamp)
 
  for i in range(len(chunks)):
@@ -230,4 +231,4 @@ while (True):
  result = my_device.insert(data)
  print(result)
 
- sleep(90)
+ time.sleep(60)
