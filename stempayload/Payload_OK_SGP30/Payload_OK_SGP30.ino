@@ -44,6 +44,8 @@ float R2 = 671; // Reading data point 1
 float T1 = 15.5; // Temperature data point 2
 float R1 = 695; // Reading data point 2
 #endif
+float TEMP;
+float HUMID;
 
 int sensorValue;
 float Temp;
@@ -117,9 +119,10 @@ void setup() {
     Serial.print(sgp.serialnumber[0], HEX);
     Serial.print(sgp.serialnumber[1], HEX);
     Serial.println(sgp.serialnumber[2], HEX);
-  }
+   
   // If you have a baseline measurement from before you can assign it to start, to 'self-calibrate'
-  //sgp.setIAQBaseline(0x8E68, 0x8F41);  // Will vary for each sensor!
+    sgp.setIAQBaseline(0x98B1, 0x9CEE);  // From 12 hour run
+  }
      
 }
  
@@ -136,12 +139,16 @@ void loop() {
       if (bmePresent) {
         Serial1.print("OK BME280 ");
         Serial1.print(bme.readTemperature());
+        TEMP = bme.readTemperature();
         Serial1.print(" ");
         Serial1.print(bme.readPressure() / 100.0F);
         Serial1.print(" ");
         Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
         Serial1.print(" ");
         Serial1.print(bme.readHumidity());
+        HUMID = bme.readHumidity()
+//        Serial.print(HUMID);
+        sgp.setHumidity(getAbsoluteHumidity(TEMP, HUMID));
       } else
       {
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
