@@ -90,7 +90,7 @@ while (True):
 
  data = {
              'variable': 'pressure',               
-             'unit'    : 'kPa',                                   
+             'unit'    : 'hPa',                                   
              'value'   : pressure,                                                   
              'time'    : timestamp,                          
              'location': {'lat': lat, 'lng': lon}   
