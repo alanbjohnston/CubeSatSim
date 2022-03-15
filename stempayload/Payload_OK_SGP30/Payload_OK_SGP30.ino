@@ -121,7 +121,7 @@ void setup() {
     Serial.println(sgp.serialnumber[2], HEX);
    
   // If you have a baseline measurement from before you can assign it to start, to 'self-calibrate'
-    sgp.setIAQBaseline(0x98B1, 0x9CEE);  // From 12 hour run
+    sgp.setIAQBaseline(0x987D, 0x9D94);  // From 12 hour run
   }
      
 }
