@@ -146,7 +146,7 @@ void loop() {
         Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
         Serial1.print(" ");
         Serial1.print(bme.readHumidity());
-        HUMID = bme.readHumidity()
+        HUMID = bme.readHumidity();
 //        Serial.print(HUMID);
         sgp.setHumidity(getAbsoluteHumidity(TEMP, HUMID));
       } else
