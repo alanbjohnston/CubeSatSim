@@ -235,5 +235,5 @@ while (True):
 
   time.sleep(60)
  except:
-  print("There was a problem!)
+  print("There was a problem!")
   time.sleep(60)
