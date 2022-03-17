@@ -11,7 +11,7 @@ while (True):
 
   # telem_string = input()
 
-  telem_json = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=156390.XlXpKVPvnWcbNdn4&format=json', headers = {"User-Agent": "cubesatsim-aprs-tago-upload (+http://cubesatsim.org)"}).json() 
+  telem_json = requests.get('https://api.aprs.fi/api/get?name=W3YP-11&what=loc&apikey=APIKEY&format=json', headers = {"User-Agent": "cubesatsim-aprs-tago-upload (+http://cubesatsim.org)"}).json() 
 
   lat = float(telem_json['entries'][0]['lat'])
   lon = float(telem_json['entries'][0]['lng'])
