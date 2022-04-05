@@ -1,0 +1,17 @@
+"Part";"Value";"Device";"Package";"Description";"AVAILABILITY";"DESCRIPTION";"MF";"MP";"MPN";"PACKAGE";"PRICE";"PROD_ID";"PURCHASE-URL";"VALUE";
+"C1";"12pF";"CERAMIC-10PF-50V-5%-NPO(0603)";"C0603";"302010097";"";"";"";"";"";"";"";"";"";"10pf";
+"C2";"10pF";"CERAMIC-10PF-50V-5%-NPO(0603)";"C0603";"302010097";"";"";"";"";"";"";"";"";"";"10pf";
+"D1";"GREEN";"LED-GREEN0603";"LED-0603";"Green SMD LED";"";"";"";"";"";"";"";"DIO-00821";"";"GREEN";
+"D2";"BLUE";"LED-BLUE0603";"LED-0603";"Blue SMD LED";"";"";"";"";"";"";"";"DIO-08575";"";"BLUE";
+"E1";"ANT-916-CHP-T";"ANT-916-CHP-T";"XDCR_ANT-916-CHP-T";"868MHz ISM, LoRa, Sensor Networks, SigFox Chip RF Antenna 863MHz ~ 873MHz 0.5dBi Solder Surface Mount  Check prices";"Warning";" 915 MHz Monopole Ceramic Chip Antenna ";"Linx Technologies";"ANT-916-CHP-T";"";"Antenna Linx Technologies";"None";"";"https://pricing.snapeda.com/search/part/ANT-916-CHP-T/?ref=eda";"";
+"J1";"CONN_20X2";"CONN_20X2";"2X20";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";"";"";"";"";
+"L1";"13nH";"SMD-FERRITE-CHIP-120-OHM-500MA(0603)";"L0603";"303030001";"";"";"";"";"BLM18AG121SN1D";"";"";"";"";"120";
+"R2";"DNI/1K";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"R6";"DNI/1K";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"R11";"1.0K";"RESISTOR0603";"0603-RES";"Resistor";"";"";"";"";"";"";"";"";"";"";
+"R12";"3.3K";"RESISTOR0603-RES";"0603-RES";"Resistor";"";"";"";"";"";"";"";"";"";"";
+"R14";"0R";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"R15";"DNI/0R";"SMD-RES-1.2K-1%-1/10W(0603)";"R0603";"301010206";"";"";"";"";"RC0603FR-071K2L";"";"";"";"";"1.2K";
+"S1";"DTSM-6";"DTSM-6";"DTSM-6";"";"";"";"";"";"";"";"";"";"";"";
+"S2";"DTSM-6";"DTSM-6";"DTSM-6";"";"";"";"";"";"";"";"";"";"";"";
+"X11";"SMA-VERT";"SMA-VERT";"SMA-VERT";"";"";"";"";"";"";"";"";"";"";"";
