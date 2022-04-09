@@ -1,10 +1,25 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v1.0\n"
+echo -e "\ninstallation script for CubeSatSim v1.2\n"
 
+FILE=/home/pi/CubeSatSim/sim.cfg
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
+fi
+
+cd
+
+CubeSatSim/config -c -n
+
+CubeSatSim/config -l -n
+  
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
-sudo apt-get install -y wiringpi git libasound2-dev i2c-tools python-picamera python3-picamera build-essential libgd-dev libmagic-dev
+# removed wiringpi and python-picamera python3-picamera 
+sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
 
 cd /tmp
 
@@ -15,7 +30,8 @@ sudo dpkg -i wiringpi-latest.deb
 
 cd
 
-sudo apt install -y python3-pip python-smbus
+#changed to python3-smbus
+sudo apt install -y python3-pip python3-smbus
 
 sudo pip3 install --upgrade setuptools
 
@@ -37,16 +53,6 @@ else
     echo "ARG1=f" > .mode
 fi
 
-
-FILE=/home/pi/CubeSatSim/sim.cfg
-if [ -f "$FILE" ]; then
-    echo "$FILE exists."
-else 
-    echo "creating $FILE"
-    echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
-fi
-
-
 cd
 
 git clone https://github.com/alanbjohnston/direwolf.git
@@ -65,6 +71,8 @@ cd
 git clone https://github.com/alanbjohnston/pi-power-button.git
 
 cd pi-power-button
+
+git checkout master
 
 ./script/install
 
@@ -112,6 +120,7 @@ sudo raspi-config nonint do_i2c 0
 
 sudo raspi-config nonint do_camera 0
 
+sudo raspi-config nonint do_legacy 0
 
 #if [ "$1" = "u" ]; then
 #fi
@@ -154,10 +163,6 @@ sudo raspi-config nonint do_camera 0
     echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
     sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
   fi
-  
-CubeSatSim/config -c -n
-
-CubeSatSim/config -l -n
   
 echo "Would you like to reboot to complete the installation (y/n)?"
 

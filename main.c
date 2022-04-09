@@ -22,6 +22,24 @@
 #include "main.h"
 
 int main(int argc, char * argv[]) {
+
+  char resbuffer[1000];
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
+  FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
+  fgets(resbuffer, 1000, file_test);
+//  fprintf(stderr, "test result: %s\n", resbuffer);
+  fclose(file_test);	
+  
+//  fprintf(stderr, " %x ", resbuffer[0]);
+//  fprintf(stderr, " %x ", resbuffer[1]);	
+  if (resbuffer[1] != 0) 
+  {
+    sleep(5);  // try sleep at start to help boot
+    voltageThreshold = 3.7;
+    printf("Pi Zero 2 detected");
+  }
+	
+  printf("\n\nCubeSatSim v1.2 starting...\n\n");
 	
   FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   pclose(rpitx_stop);
@@ -645,7 +663,7 @@ int main(int argc, char * argv[]) {
       //  IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
       }
       fclose(cpuTempSensor);
-
+    } 
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
 
@@ -707,7 +725,7 @@ int main(int argc, char * argv[]) {
 		payload = OFF;  // turn off since STEM Payload is not responding
       }
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (count1 = 0; count1 < 17; count1++) {
+        for (int count1 = 0; count1 < 17; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
           if (sensor[count1] > sensor_max[count1])
@@ -715,12 +733,14 @@ int main(int argc, char * argv[]) {
             //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
         }
       }
-    }	  
+//  }	  
 	  
     #ifdef DEBUG_LOGGING
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+
+/**/
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -743,7 +763,7 @@ int main(int argc, char * argv[]) {
       pclose(file6);
       sleep(10);
     }
-
+/**/
     //  sleep(1);  // Delay 1 second
     ctr = 0;
     #ifdef DEBUG_LOGGING
@@ -1764,10 +1784,10 @@ void write_wave(int i, short int *buffer)
 		else
 		{
 			if ((ctr - flip_ctr) < smaller)
-//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
+//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
 		else
-//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 		buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
+//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
 //		printf("%d %d \n", i, buffer[ctr - 1]);
 
@@ -1813,7 +1833,7 @@ int test_i2c_bus(int bus)
 	strcat (busDev, busS);	
 	printf("I2C Bus Tested: %s \n", busDev);
 	
-	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present			
+	if (access(busDev, W_OK | R_OK) >= 0)  {   // Test if I2C Bus is present
 //	  	printf("bus is present\n\n");	    
     	  	char result[128];		
     	  	const char command_start[] = "timeout 2 i2cdetect -y ";  // was  5 10
@@ -1835,7 +1855,7 @@ int test_i2c_bus(int bus)
 			if (bus == 3)
 				printf("-> If this is a CubeSatSim Lite, then this error is normal!\n");
 			output = -1;
-    		}													
+    		}								
 	} else
 	{
     	 	printf("ERROR: %s bus has a problem \n  Check software to see if I2C enabled \n", busDev);

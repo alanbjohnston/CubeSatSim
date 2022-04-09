@@ -9,6 +9,8 @@ from time import sleep
 import sys
 from os import system
 
+print("CubeSatSim v1.1 rpitx.py starting...")
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -41,7 +43,15 @@ else:
 	txLedOn = 1 
 	txLedOff = 0
 
+# GPIO.setup(txLed, GPIO.OUT)
+# output(txLed, txLedOff)
+
+GPIO.setmode(GPIO.BCM) # Repeat to make LED work on Pi 4
+GPIO.setwarnings(False)
 GPIO.setup(txLed, GPIO.OUT)
+
+output(txLed, txLedOn)
+sleep(1)
 output(txLed, txLedOff)
 
 # print(txLedOn)
@@ -78,7 +88,9 @@ if __name__ == "__main__":
 		if (debug_mode == 1):
 			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")		
 	print(callsign)
-
+	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
+	GPIO.setup(txLed, GPIO.OUT)
+	
 	sleep(1)
 	output(txLed, txLedOn)
 	if (debug_mode == 1):
@@ -161,12 +173,15 @@ if __name__ == "__main__":
 		elif (mode == 's'):
 			print("SSTV")
 			try: 
-				from picamera import PiCamera
+#				from picamera import PiCamera
 #					from pysstv.sstv import SSTV
-				camera = PiCamera()
+#				camera = PiCamera()
+				print("Testing for camera")
+				system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
+				f = open("/home/pi/CubeSatSim/camera_out.jpg") 
 				print("Camera present")
 				camera_present = 1
-				camera.close()
+#				camera.close()
 			except:
 				print("No camera available")
 				print(" -> if camera plugged in, is software enabled?")

@@ -4,13 +4,13 @@ The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low 
 
 There are several hardware versions and software branches to go with them - see below for information.
 
-See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install. The software runs on any Raspberry Pi including the Raspberry Pi 4B, 3B, 3B+, Pi Zero or Pi Zero W.
+See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install. The software runs on any Raspberry Pi including the Raspberry Pi 4B, 3B, 3B+, Pi Zero, Pi Zero W, or Pi Zero 2 W.
 
 There are two ways to get the CubeSatSim software for your Pi.
 
 One option is to download the disk image file and write it to a 16GB micro SD card or larger.  The image is based on Raspberry Pi OS (Rasbian) Lite, dated December 2020. All software is installed, you just need to login to change your password and set your amateur radio callsign if you have one.  You can run the ./update.sh script to update all packages and update and compile the latest CubeSatSim software.
 
-The other option is to start with any Raspberry Pi OS (Rasbian) image and run the installation script ./install.sh which will install and compile all the related software.  This includes the following packages:
+The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or Buster works) and run the installation script ./install.sh which will install and compile all the related software.  This includes the following packages:
 - wiringpi
 - git
 - libasound2-dev
@@ -18,7 +18,7 @@ The other option is to start with any Raspberry Pi OS (Rasbian) image and run th
 - Direwolf
 - rpitx
 - python3-pip 
-- python-smbus
+- python3-smbus
 
 ## Disk Image Option Steps
 
@@ -26,7 +26,7 @@ See the Wiki Software Install page for details: https://github.com/alanbjohnston
 
 ## Installation Script Option Steps
 
-CubeSatSim runs on any version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.
+CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.  
 
 To get the software follow these steps:
 
