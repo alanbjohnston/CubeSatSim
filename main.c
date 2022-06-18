@@ -226,7 +226,7 @@ int main(int argc, char * argv[]) {
 //        pullUpDnControl(26, PUD_UP);
 
 //        if (digitalRead(26) != HIGH) {
-	{
+	if (1) {
           printf("v1 Present with UHF BPF\n");
           txLed = 2;
           txLedOn = HIGH;
