@@ -150,7 +150,7 @@ int main(int argc, char * argv[]) {
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 
-  wiringPiSetup();
+//  wiringPiSetup();
 
   if (mode == AFSK)
   {
@@ -192,10 +192,11 @@ int main(int argc, char * argv[]) {
   txLedOn = LOW;
   txLedOff = HIGH;
   if (!ax5043) {
-    pinMode(2, INPUT);
-    pullUpDnControl(2, PUD_UP);
+//    pinMode(2, INPUT);
+//    pullUpDnControl(2, PUD_UP);
 
-    if (digitalRead(2) != HIGH) {
+//    if (digitalRead(2) != HIGH) {
+    if (0) {
       printf("vB3 with TFB Present\n");
       vB3 = TRUE;
       txLed = 3;
@@ -206,11 +207,12 @@ int main(int argc, char * argv[]) {
       onLedOff = HIGH;
       transmit = TRUE;
     } else {
-      pinMode(3, INPUT);
-      pullUpDnControl(3, PUD_UP);
+//      pinMode(3, INPUT);
+//      pullUpDnControl(3, PUD_UP);
 
-      if (digitalRead(3) != HIGH) {
-        printf("vB4 Present with UHF BPF\n");
+//      if (digitalRead(3) != HIGH) {
+     if (0) {
+	printf("vB4 Present with UHF BPF\n");
         txLed = 2;
         txLedOn = HIGH;
         txLedOff = LOW;
@@ -220,10 +222,11 @@ int main(int argc, char * argv[]) {
         onLedOff = LOW;
         transmit = TRUE;
       } else {
-        pinMode(26, INPUT);
-        pullUpDnControl(26, PUD_UP);
+//        pinMode(26, INPUT);
+//        pullUpDnControl(26, PUD_UP);
 
-        if (digitalRead(26) != HIGH) {
+//        if (digitalRead(26) != HIGH) {
+	{
           printf("v1 Present with UHF BPF\n");
           txLed = 2;
           txLedOn = HIGH;
@@ -235,10 +238,11 @@ int main(int argc, char * argv[]) {
           transmit = TRUE;
         }
 	else {
-          pinMode(23, INPUT);
-          pullUpDnControl(23, PUD_UP);
+//          pinMode(23, INPUT);
+//          pullUpDnControl(23, PUD_UP);
 		
-          if (digitalRead(23) != HIGH) {
+ //         if (digitalRead(23) != HIGH) {
+	    if (0) {
             printf("v1 Present with VHF BPF\n");
             txLed = 2;
             txLedOn = HIGH;
