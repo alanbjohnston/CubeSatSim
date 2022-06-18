@@ -258,13 +258,13 @@ int main(int argc, char * argv[]) {
       }
     }
   }
-  pinMode(txLed, OUTPUT);
-  digitalWrite(txLed, txLedOff);
+//  pinMode(txLed, OUTPUT);
+//  digitalWrite(txLed, txLedOff);
   #ifdef DEBUG_LOGGING
   printf("Tx LED Off\n");
   #endif
-  pinMode(onLed, OUTPUT);
-  digitalWrite(onLed, onLedOn);
+//  pinMode(onLed, OUTPUT);
+//  digitalWrite(onLed, onLedOn);
   #ifdef DEBUG_LOGGING
   printf("Power LED On\n");
   #endif
@@ -748,17 +748,17 @@ int main(int argc, char * argv[]) {
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
-      digitalWrite(txLed, txLedOff);
-      digitalWrite(onLed, onLedOff);
+ //     digitalWrite(txLed, txLedOff);
+ //     digitalWrite(onLed, onLedOff);
       
       sleep(1);
-      digitalWrite(onLed, onLedOn);
+ //     digitalWrite(onLed, onLedOn);
       sleep(1);
-      digitalWrite(onLed, onLedOff);
+//      digitalWrite(onLed, onLedOff);
       sleep(1);
-      digitalWrite(onLed, onLedOn);
+//      digitalWrite(onLed, onLedOn);
       sleep(1);
-      digitalWrite(onLed, onLedOff);
+//      digitalWrite(onLed, onLedOff);
 
       FILE * file6 = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
       pclose(file6);
