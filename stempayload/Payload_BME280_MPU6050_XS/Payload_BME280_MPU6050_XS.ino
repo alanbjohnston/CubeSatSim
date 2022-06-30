@@ -33,8 +33,10 @@ void setup() {
 
 #if defined ARDUINO_ARCH_RP2040
   for(int i = 0; i < 29; i++)  // set all Pico GPIOs to input
-    if (i != 25) // don't do GPIO25 which is LEDBUILTIN
-      pinMode(i,INPUT);
+    pinMode(i,INPUT);
+
+  pinMode(25, OUTPUT);
+  digitalWrite(25, HIGH);  // built-in LED off  
 #endif  
 
   Serial.begin(9600); // Serial Monitor for testing
@@ -295,7 +297,11 @@ void blink(int length)
   digitalWrite(RXLED, LOW);   // set the RX LED ON
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
-
+  
+#if defined ARDUINO_ARCH_RP2040
+  digitalWrite(25, LOW);   // set the built-in LED ON
+#endif 
+  
   delay(length);              // wait for a lenth of time
 
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
@@ -306,6 +312,10 @@ void blink(int length)
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
   TXLED0; //TX LED macro to turn LED ON
 #endif  
+  
+#if defined ARDUINO_ARCH_RP2040
+  digitalWrite(25, HIGH);   // set the built-in LED off
+#endif   
 }
 
 void led_set(int ledPin, bool state)
