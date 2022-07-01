@@ -545,6 +545,9 @@ void setup {
 	
   long int loopTime;
   loopTime = millis();	
+}
+
+void loop() {
 	
   while (loop-- != 0) {
 ///    fflush(stdout);
@@ -676,23 +679,24 @@ void setup {
       } else
         SafeMode = 0;
 
-      FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-      if (cpuTempSensor) {
+///      FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+///      if (cpuTempSensor) {
    //     double cpuTemp;
-        fscanf(cpuTempSensor, "%lf", & cpuTemp);
-        cpuTemp /= 1000;
+///        fscanf(cpuTempSensor, "%lf", & cpuTemp);
+///        cpuTemp /= 1000;
 
-        #ifdef DEBUG_LOGGING
+///        #ifdef DEBUG_LOGGING
 //        printf("CPU Temp Read: %6.1f\n", cpuTemp);
-        #endif
+///        #endif
 
         other[IHU_TEMP] = (double)cpuTemp;
 
       //  IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
-      }
-      fclose(cpuTempSensor);
+//      }
+//      fclose(cpuTempSensor);
     } 
-      if (payload == ON) {  // -55
+/*
+	  if (payload == ON) {  // -55
         STEMBoardFailure = 0;
 
   
@@ -762,13 +766,13 @@ void setup {
         }
       }
 //  }	  
-	  
+*/	  
     #ifdef DEBUG_LOGGING
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
 
-/**/
+/*
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -791,12 +795,12 @@ void setup {
       pclose(file6);
       sleep(10);
     }
-/**/
+*/
     //  sleep(1);  // Delay 1 second
     ctr = 0;
-    #ifdef DEBUG_LOGGING
+///    #ifdef DEBUG_LOGGING
 //    fprintf(stderr, "INFO: Getting TLM Data\n");
-    #endif
+///    #endif
 
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
@@ -807,11 +811,11 @@ void setup {
       sleep(50);	    
     }
 
-    #ifdef DEBUG_LOGGING
+///    #ifdef DEBUG_LOGGING
 //    fprintf(stderr, "INFO: Getting ready to send\n");
-    #endif
+///    #endif
   }
-
+/*
   if (mode == BPSK) {
 //    digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
@@ -831,6 +835,7 @@ void setup {
   }
 
   return 0;
+*/	
 }
 
 //  Returns lower digit of a number which must be less than 99
@@ -841,7 +846,7 @@ int lower_digit(int number) {
   if (number < 100)
     digit = number - ((int)(number / 10) * 10);
   else
-    fprintf(stderr, "ERROR: Not a digit in lower_digit!\n");
+   Serial.println("ERROR: Not a digit in lower_digit!\n");
   return digit;
 }
 
@@ -854,10 +859,10 @@ int upper_digit(int number) {
 
     digit = (int)(number / 10);
   else
-    fprintf(stderr, "ERROR: Not a digit in upper_digit!\n");
+    Serial.println("ERROR: Not a digit in upper_digit!\n");
   return digit;
 }
-
+/*
 static int init_rf() {
   int ret;
   fprintf(stderr, "Initializing AX5043\n");
@@ -871,7 +876,7 @@ static int init_rf() {
   }
   return (1);
 }
-
+*/
 void get_tlm(void) {
 
   FILE * txResult;
@@ -1021,30 +1026,33 @@ void get_tlm(void) {
     }
 
     if (mode == CW) {
-
-      char cw_str2[1000];
-      char cw_header2[] = "echo '";
-      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
-      char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
+	Serial.println("CW Mode);
+		       
+///      char cw_str2[1000];
+///      char cw_header2[] = "echo '";
+///      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+///      char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
 
 //    printf("Str str: %s \n", str);
 //    fflush(stdout);
-      strcat(str, cw_footer3);
+///      strcat(str, cw_footer3);
 //    printf("Str: %s \n", str);
 //    fflush(stdout);	    
-      printf("CW string to execute: %s\n", str);
-      fflush(stdout);
+///      printf("CW string to execute: %s\n", str);
+///      fflush(stdout);
 
-      FILE * cw_file = popen(str, "r");
-      pclose(cw_file);	    
-	    
+///      FILE * cw_file = popen(str, "r");
+///      pclose(cw_file);	    
+/*	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
         fclose(cw_file); 
 //	printf("Sleeping while waiting for rpitx \n");
 //	fflush(stdout);      
         sleep(5);	      
+*/
       }    
     } 
+/*		       
     else if (ax5043) {
       digitalWrite(txLed, txLedOn);
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
@@ -1091,6 +1099,7 @@ void get_tlm(void) {
 
       sleep(3);
     }
+		       */
 
   }
 
@@ -1503,7 +1512,7 @@ void get_tlm_fox() {
       }
     }
 
-    #ifdef DEBUG_LOGGING
+    ///#ifdef DEBUG_LOGGING
     //	printf("\nAt end of data8 write, %d ctr1 values written\n\n", ctr1);
     /*
     	  printf("Parities ");
@@ -1512,7 +1521,7 @@ void get_tlm_fox() {
     		}
     		printf("\n");
     */
-    #endif
+   /// #endif
 	   
     int ctr2 = 0;
     memset(data10, 0, sizeof(data10));
@@ -1540,17 +1549,17 @@ void get_tlm_fox() {
         }
       }
  //   }
-    #ifdef DEBUG_LOGGING
+ ///   #ifdef DEBUG_LOGGING
     // 	printf("\nAt end of data10 write, %d ctr2 values written\n\n", ctr2);
-    #endif
+ ///   #endif
 
     int data;
     int val;
     //int offset = 0;
 
-    #ifdef DEBUG_LOGGING
+///    #ifdef DEBUG_LOGGING
     //	printf("\nAt start of buffer loop, syncBits %d samples %d ctr %d\n", syncBits, samples, ctr);
-    #endif
+///    #endif
 
     for (i = 1; i <= syncBits * samples; i++) {
       write_wave(ctr, buffer);
@@ -1576,9 +1585,9 @@ void get_tlm_fox() {
         }
       }
     }
-    #ifdef DEBUG_LOGGING
+///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
-    #endif
+///    #endif
     for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
     {
       write_wave(ctr, buffer);
@@ -1605,10 +1614,10 @@ void get_tlm_fox() {
       }
     }
   }
-  #ifdef DEBUG_LOGGING
+  ///#ifdef DEBUG_LOGGING
   //	printf("\nValue of ctr after looping: %d Buffer Len: %d\n", ctr, buffSize);
   //	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
-  #endif
+ /// #endif
 
   int error = 0;
   // int count;
@@ -1755,7 +1764,7 @@ void get_tlm_fox() {
 }
 
 // code by https://stackoverflow.com/questions/25161377/open-a-cmd-program-with-full-functionality-i-o/25177958#25177958
-
+/*
 FILE *sopen(const char *program)
     {
         int fds[2];
@@ -1765,11 +1774,11 @@ FILE *sopen(const char *program)
             return NULL;
 
         switch(pid=vfork()) {
-        case -1:    /* Error */
+        case -1:    * Error *
             close(fds[0]);
             close(fds[1]);
             return NULL;
-        case 0:     /* child */
+        case 0:     * child *
             close(fds[0]);
             dup2(fds[1], 0);
             dup2(fds[1], 1);
@@ -1777,11 +1786,11 @@ FILE *sopen(const char *program)
             execl("/bin/sh", "sh", "-c", program, NULL);
             _exit(127);
         }
-        /* parent */
+        * parent *
         close(fds[1]);
         return fdopen(fds[0], "r+");
     }
-
+*/
  /*
  * TelemEncoding.h
  *
@@ -1851,7 +1860,9 @@ float rnd_float(double min,double max) {   // returns 2 decimal point random num
 	
       return(ret);
 }
-
+		       
+/*
+		       
 int test_i2c_bus(int bus)
 {
 	int output = bus; // return bus number if OK, otherwise return -1
@@ -1891,6 +1902,7 @@ int test_i2c_bus(int bus)
 	}
 	return(output);	// return bus number or -1 if there is a problem with the bus
 }
+ */
 
 float toAprsFormat(float input) {
 // converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
