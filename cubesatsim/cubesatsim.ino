@@ -130,12 +130,11 @@ void loop() {
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
-  delay(3000);	
+//  delay(3000);	
+  sleep(3000);
 	
   digitalWrite(LED_BUILTIN, HIGH);	
 	
-//  sleep(3000);
-  
   // send telemetry
   
   // delay some time
@@ -663,9 +662,9 @@ float toAprsFormat(float input) {
     return(output);	
 }
 
-void sleep(int time) {
+void sleep(unsigned long time) {
 
-  int startSleep = millis();	    
+  unsigned long startSleep = millis();	    
   while ((millis() - startSleep) < time)
     delay(100);		
 }
