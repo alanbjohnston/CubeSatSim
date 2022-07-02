@@ -22,6 +22,8 @@
 
 #define PORT 8080
 #define FREQUENCY_OFFSET 0
+#define TRUE 1
+#define FALSE 0
 
 #define A 1
 #define B 2
