@@ -25,7 +25,9 @@
 void setup() {
 
   Serial.begin(9600);
-  
+	
+  delay(2000);
+	
   Serial.println("Pico v0.1 starting...\n\n");
 
 
@@ -124,7 +126,9 @@ void loop() {
 	
   test_radio();
 	
-  sleep(3000);
+  delay(3000);	
+	
+//  sleep(3000);
   
   // send telemetry
   
@@ -1360,6 +1364,8 @@ void configure_radio()
 void test_radio()
 {
 // send a carrier for 3 seconds
+  Serial.println("Testing radio...\n\n");
+	
   digitalWrite(PTT_PIN, LOW);
   delay(3000);
   digitalWrite(PTT_PIN, HIGH);
