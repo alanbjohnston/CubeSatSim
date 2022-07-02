@@ -448,7 +448,7 @@ void get_tlm_fox() {
         {
           if (ctr1 < headerLen) {
             rs_frame[j][i] = h[ctr1];
-///            update_rs(parities[j], h[ctr1]);
+            update_rs(parities[j], h[ctr1]);
             //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
             data8[ctr1++] = rs_frame[j][i];
             //				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
