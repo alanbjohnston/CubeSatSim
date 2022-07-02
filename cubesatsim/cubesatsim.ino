@@ -153,12 +153,12 @@ void loop() {
 
 void send_packet() {
   digitalWrite(PTT_PIN, LOW);
-  digitalWrite(LED_BUILTIN, LOW);
+//  digitalWrite(LED_BUILTIN, LOW);
 
   send_packet(_FIXPOS_STATUS);
   
   digitalWrite(PTT_PIN, HIGH);
-  digitalWrite(LED_BUILTIN, HIGH);		
+//  digitalWrite(LED_BUILTIN, HIGH);		
 }
 
 void get_tlm_fox() {
