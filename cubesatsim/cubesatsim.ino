@@ -254,9 +254,9 @@ void get_tlm_fox() {
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
     if (mode == BPSK)
       h[6] = 99;
-    posXi = (int)(current[map[PLUS_X]] + 0.5) + 2048;
-    posYi = (int)(current[map[PLUS_Y]] + 0.5) + 2048;
-    posZi = (int)(current[map[PLUS_Z]] + 0.5) + 2048;
+    posXi = (int)(current[mapping[PLUS_X]] + 0.5) + 2048;
+    posYi = (int)(current[mapping[PLUS_Y]] + 0.5) + 2048;
+    posZi = (int)(current[mapping[PLUS_Z]] + 0.5) + 2048;
     negXi = (int)(current[map[MINUS_X]] + 0.5) + 2048;
     negYi = (int)(current[map[MINUS_Y]] + 0.5) + 2048;
     negZi = (int)(current[map[MINUS_Z]] + 0.5) + 2048;
