@@ -21,6 +21,7 @@
 
 #include "cubesatsim.h"
 #include "DumbTXSWS.h"
+#include <Arduino-APRS-Library.h>
 
 void setup() {
 
@@ -40,9 +41,11 @@ void setup() {
 // otherwise, run CubeSatSim Pico code
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
+	
+  mode = AFSK;	
   
-  mode = FSK;
-  frameCnt = 1;
+//  mode = FSK;
+//  frameCnt = 1;
   
   Serial.println("v1 Present with UHF BPF\n");
   txLed = 2;
@@ -105,9 +108,15 @@ void setup() {
     for (int j = 0; j < sin_samples; j++) {	 		
       sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
   //	printf(" %d", sin_map[j]);	 		
-//   }	 		
-//      printf("\n");
+  //   }	 		
+  //      printf("\n");
      }
+  } else if (mode == AFSK) {
+	  
+    set_pin(AUDIO_OUT_PIN);
+
+    char callsign[] = "W3ZM";
+    set_callsign(callsign);	  
   }
 	
 // program Transceiver board  
@@ -122,9 +131,12 @@ void loop() {
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
-  get_tlm_fox();
+  if ((mode == BPSK) || (mode = FSK))
+	  get_tlm_fox();
+  else if (mode == AFSK)
+	  send_packet();
 	
-  test_radio();
+//  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
@@ -137,6 +149,16 @@ void loop() {
   
   // delay some time
   
+}
+
+void send_packet() {
+  digitalWrite(PTT_PIN, LOW);
+  digitalWrite(LED_BUILTIN, LOW);
+
+  send_packet(_FIXPOS_STATUS);
+  
+  digitalWrite(PTT_PIN, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);		
 }
 
 void get_tlm_fox() {
