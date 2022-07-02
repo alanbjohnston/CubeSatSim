@@ -123,4 +123,42 @@ void loop() {
   
 }
 
+int encodeA(short int  *b, int index, int val) {
+//    printf("Encoding A\n");
+    b[index] = val & 0xff;
+    b[index + 1] = (short int) ((b[index + 1] & 0xf0) | ((val >> 8) & 0x0f));
+    return 0;	
+}
 
+int encodeB(short int  *b, int index, int val) {
+//    printf("Encoding B\n");
+    b[index] =  (short int) ((b[index] & 0x0f)  |  ((val << 4) & 0xf0));
+    b[index + 1] = (val >> 4 ) & 0xff;
+    return 0;	
+}
+
+int twosToInt(int val,int len) {   // Convert twos compliment to integer
+// from https://www.raspberrypi.org/forums/viewtopic.php?t=55815
+	
+      if(val & (1 << (len - 1)))
+         val = val - (1 << len);
+
+      return(val);
+}
+
+float rnd_float(double min,double max) {   // returns 2 decimal point random number
+	
+	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
+	float ret = ((float)(val)/100);
+	
+      return(ret);
+}
+
+float toAprsFormat(float input) {
+// converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
+    int dd = (int) input;
+    int mm1 = (int)((input - dd) * 60.0);
+    int mm2 = (int)((input - dd - (float)mm1/60.0) * 60.0 * 60.0);
+    float output = dd * 100 + mm1 + (float)mm2 * 0.01;
+    return(output);	
+}
