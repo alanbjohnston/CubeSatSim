@@ -90,7 +90,7 @@ int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
 FILE * file1;
-short int buffer[10240]; // was 2336400]; // max size for 10 frames count of BPSK
+short int buffer[1024]; // was 2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 
 #define S_RATE	(48000) // (44100)
@@ -147,8 +147,8 @@ char sensor_payload[500];
 int test_i2c_bus(int bus);
 
 //const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py ";
-const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/ina219.py ";
-char pythonStr[100], pythonConfigStr[100], busStr[10];
+//const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/ina219.py ";
+//char pythonStr[100], pythonConfigStr[100], busStr[10];
 int mapping[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[6] = "APCSS";
