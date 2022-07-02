@@ -106,13 +106,11 @@ void setup() {
       sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
   //	printf(" %d", sin_map[j]);	 		
 //   }	 		
-      printf("\n");
-   }
-  
+//      printf("\n");
+     }
+  }
+	
 // program Transceiver board  
-	  
-  
-}
   configure_radio();	
 }
 
@@ -124,7 +122,7 @@ void loop() {
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
-//  get_tlm_fox();
+  get_tlm_fox();
 	
   test_radio();
 	
