@@ -19,7 +19,7 @@
 // This code is an Arduino sketch for the Raspberry Pi Pico
 // based on the Raspberry Pi Code
 
-#include "main.h"
+#include "cubesaatsim.h"
 
 void setup() {
 
