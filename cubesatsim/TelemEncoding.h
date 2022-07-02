@@ -8,10 +8,12 @@
 #ifndef TELEMENCODING_H_
 #define TELEMENCODING_H_
 
+/*
 void update_rs(
    unsigned char parity[32], // 32-byte encoder state; zero before each frame
    unsigned char c          // Current data byte to update
 );
+*/
 
 #define CHARACTER_BITS 10
 #define CHARACTERS_PER_LONGWORD 3
