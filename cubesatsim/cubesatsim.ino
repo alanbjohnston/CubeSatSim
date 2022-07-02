@@ -118,6 +118,8 @@ void loop() {
   // query INA219 sensors and Payload sensors
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
+	
+  get_tlm_fox();
   
   // send telemetry
   
