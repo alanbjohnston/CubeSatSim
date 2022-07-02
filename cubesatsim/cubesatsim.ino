@@ -500,8 +500,8 @@ void get_tlm_fox() {
     memset(data10, 0, sizeof(data10));
     for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
     {
-      data10[ctr2] = (Encode_8b10b[rd][((int) data8[ctr2])] & 0x3ff);
-      nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
+///      data10[ctr2] = (Encode_8b10b[rd][((int) data8[ctr2])] & 0x3ff);
+///      nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
       //		printf ("data10[%d] = encoded data8[%d] = %x \n",
       //		 	ctr2, ctr2, data10[ctr2]); 
       rd = nrd; // ^ nrd;
@@ -511,8 +511,8 @@ void get_tlm_fox() {
       for (i = 0; i < parityLen; i++) {
         for (int j = 0; j < rsFrames; j++) {
           if ((uptime != 0) || (i != 0))	// don't correctly update parties if uptime is 0 so the frame will fail the FEC check and be discarded  
-            data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
-	  nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
+///            data10[ctr2++] = (Encode_8b10b[rd][((int) parities[j][i])] & 0x3ff);
+///	  nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
 
