@@ -20,6 +20,7 @@
 // based on the Raspberry Pi Code
 
 #include "cubesatsim.h"
+#include "DumbTXSWS.h"
 
 void setup() {
 
@@ -1327,4 +1328,27 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 		num_bytes--;
 	word >>= 8;
 	}
+}
+
+void configure_radio()
+{
+  pinMode(LED_BUILTIN, OUTPUT);
+  
+  pinMode(17, OUTPUT);
+  digitalWrite(17, HIGH);
+
+  pinMode(22, OUTPUT);
+  digitalWrite(22, HIGH);
+
+  pinMode(28, INPUT);
+  pinMode(27, INPUT);
+
+  DumbTXSWS mySerial(14); // TX pin
+  mySerial.begin(9600);
+    
+  for (int i = 0; i < 5; i++) {
+    delay(500);
+//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
+    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
+  }
 }
