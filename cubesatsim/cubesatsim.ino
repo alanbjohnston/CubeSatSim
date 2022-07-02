@@ -699,7 +699,7 @@ void sleep(int time) {
 
 #include <string.h>
 //#include "Fox.h"
-#include "TelemEncoding.h"
+//#include "TelemEncoding.h"
 #include <assert.h>
 #include <stdio.h>
 
