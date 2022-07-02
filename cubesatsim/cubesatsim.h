@@ -20,6 +20,23 @@
 //#include <arpa/inet.h>
 //#include <errno.h>
 
+// Pico GPIO pin assignments
+#define LPF_PIN 8  // LPF is installed
+#define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero
+#define PB_PIN 10 // Main board PB pushbutton pin
+#define TXC_PIN 11 // Transceiver Board is present
+#define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
+#define SQUELCH 15 // SR_FRS_05W Squelch out
+#define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
+#define STEM_LED1 18 // STEM board LED1 Green
+#define STEM_LED1 19 // STEM board LED2 Blue
+#define MAIN_LED1 20 // Main board LED1 
+#define MAIN_LED2 21 // Main board LED1 
+#define PD_PIN 22 // SR_FRS_05W PD pin - enable
+#define AUDIO_OUT_PIN 26 // SR_FRS_05W audio out pin
+#define AUDIO_IN_PIN 27 // SR_FRS_05W audio in pin
+#define TEMPERATURE_PIN 28  // Diode temperature analog pin
+
 #define PORT 8080
 #define FREQUENCY_OFFSET 0
 #define TRUE 1
