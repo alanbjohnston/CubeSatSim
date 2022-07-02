@@ -21,6 +21,7 @@
 //#include <errno.h>
 
 #define PORT 8080
+#define FREQUENCY_OFFSET 0
 
 #define A 1
 #define B 2
