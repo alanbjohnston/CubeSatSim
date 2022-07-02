@@ -137,6 +137,7 @@ int rd = 0;
 int nrd;
 void write_to_buffer(int i, int symbol, int val);
 void write_wave(int i, short int * buffer);
+void sleep(float time);
 int uart_fd;
 
 int reset_count = 0;
