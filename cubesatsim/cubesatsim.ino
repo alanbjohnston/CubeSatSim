@@ -448,7 +448,7 @@ void get_tlm_fox() {
         {
           if (ctr1 < headerLen) {
             rs_frame[j][i] = h[ctr1];
-            update_rs(parities[j], h[ctr1]);
+///            update_rs(parities[j], h[ctr1]);
             //      				printf("header %d rs_frame[%d][%d] = %x \n", ctr1, j, i, h[ctr1]);
             data8[ctr1++] = rs_frame[j][i];
             //				printf ("data8[%d] = %x \n", ctr1 - 1, rs_frame[j][i]);
@@ -456,22 +456,22 @@ void get_tlm_fox() {
 	     if (mode == FSK)
 	     {
             	rs_frame[j][i] = b[ctr3 % dataLen];
-            	update_rs(parities[j], b[ctr3 % dataLen]);
+///            	update_rs(parities[j], b[ctr3 % dataLen]);
 	     }  else // BPSK
 		if ((int)(ctr3/dataLen) == 3)  
 		{
             		rs_frame[j][i] = b_max[ctr3 % dataLen];
-            		update_rs(parities[j], b_max[ctr3 % dataLen]);
+   ///         		update_rs(parities[j], b_max[ctr3 % dataLen]);
 		}
 		else if ((int)(ctr3/dataLen) == 4)  
 		{
             		rs_frame[j][i] = b_min[ctr3 % dataLen];
-            		update_rs(parities[j], b_min[ctr3 % dataLen]);
+      ///      		update_rs(parities[j], b_min[ctr3 % dataLen]);
 		}		
 		else
 		{
             		rs_frame[j][i] = b[ctr3 % dataLen];
-            		update_rs(parities[j], b[ctr3 % dataLen]);
+         ///   		update_rs(parities[j], b[ctr3 % dataLen]);
 		}
 	     {
 	    }
