@@ -110,8 +110,10 @@ void setup() {
    }
   
 // program Transceiver board  
+	  
   
 }
+  configure_radio();	
 }
 
 void loop() {
@@ -122,11 +124,15 @@ void loop() {
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
-  get_tlm_fox();
+//  get_tlm_fox();
 	
   test_radio();
 	
+  digitalWrite(LED_BUILTIN, LOW);	
+	
   delay(3000);	
+	
+  digitalWrite(LED_BUILTIN, HIGH);	
 	
 //  sleep(3000);
   
