@@ -1,24 +1,24 @@
-#include <fcntl.h>
+//#include <fcntl.h>
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h>
+//#include <unistd.h>
 #include <string.h>
-#include "afsk/status.h"
-#include "afsk/ax5043.h"
-#include "afsk/ax25.h"
-#include "ax5043/spi/ax5043spi.h"
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
-#include <wiringSerial.h>
+//#include "afsk/status.h"
+//#include "afsk/ax5043.h"
+//#include "afsk/ax25.h"
+//#include "ax5043/spi/ax5043spi.h"
+//#include <wiringPiI2C.h>
+//#include <wiringPi.h>
+//#include <wiringSerial.h>
 #include <time.h>
 #include <math.h>
 //#include "TelemEncoding.h"
-#include <sys/socket.h>
-#include <stdlib.h>
-#include <netinet/in.h>
+//#include <sys/socket.h>
+//#include <stdlib.h>
+//#include <netinet/in.h>
 #include <string.h>
-#include <arpa/inet.h>
-#include <errno.h>
+//#include <arpa/inet.h>
+//#include <errno.h>
 
 #define PORT 8080
 
