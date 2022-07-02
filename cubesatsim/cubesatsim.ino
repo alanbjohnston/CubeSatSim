@@ -644,10 +644,9 @@ float toAprsFormat(float input) {
     return(output);	
 }
 
-sleep(int time) {
+void sleep(int time) {
 
   int startSleep = millis();	    
   while ((millis() - startSleep) < time)
-    delay(100);	
-	
+    delay(100);		
 }
