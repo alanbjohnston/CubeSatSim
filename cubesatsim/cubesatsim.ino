@@ -500,8 +500,8 @@ void get_tlm_fox() {
     memset(data10, 0, sizeof(data10));
     for (i = 0; i < dataLen * payloads + headerLen; i++) // 476 for BPSK
     {
-///      data10[ctr2] = (Encode_8b10b[rd][((int) data8[ctr2])] & 0x3ff);
-///      nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
+      data10[ctr2] = (Encode_8b10b[rd][((int) data8[ctr2])] & 0x3ff);
+      nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
       //		printf ("data10[%d] = encoded data8[%d] = %x \n",
       //		 	ctr2, ctr2, data10[ctr2]); 
       rd = nrd; // ^ nrd;
