@@ -113,6 +113,8 @@ void setup() {
 
 void loop() {
   
+  loop_cnt++;
+	
   // query INA219 sensors and Payload sensors
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
@@ -200,7 +202,7 @@ void get_tlm_fox() {
       }
       	  if (mode == FSK)
 	  {
-	      if (loop % 32 == 0) {  // was 8
+	      if (loop_cnt % 32 == 0) {  // was 8  /// was loop now loop_cnt
 		printf("Sending MIN frame \n");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
@@ -214,7 +216,7 @@ void get_tlm_fox() {
 		    sensor[count1] = sensor_min[count1];
 		}
 	      }
-	      if ((loop + 16) % 32 == 0) {  // was 8
+	      if ((loop_cnt + 16) % 32 == 0) {  // was 8
 		printf("Sending MAX frame \n");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
