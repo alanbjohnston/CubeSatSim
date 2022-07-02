@@ -122,14 +122,14 @@ void loop() {
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
-  get_tlm_fox();
+//  get_tlm_fox();
 	
   test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
 //  delay(3000);	
-  sleep(3000);
+  sleep(3.0);
 	
   digitalWrite(LED_BUILTIN, HIGH);	
 	
@@ -660,10 +660,11 @@ float toAprsFormat(float input) {
     return(output);	
 }
 
-void sleep(unsigned long time) {
+void sleep(float time) {
 
+  unsigned long time_ms = (unsigned long)(time * 1000f);	
   unsigned long startSleep = millis();	    
-  while ((millis() - startSleep) < time)
+  while ((millis() - startSleep) < time_ms)
     delay(100);		
 }
 
