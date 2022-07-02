@@ -1628,66 +1628,67 @@ void get_tlm_fox() {
 
   // socket write
 
-  if (!socket_open && transmit) {
-    printf("Opening socket!\n");
+///  if (!socket_open && transmit) {
+///    printf("Opening socket!\n");
  //   struct sockaddr_in address;
  //   int valread;
-    struct sockaddr_in serv_addr;
+///    struct sockaddr_in serv_addr;
     //    char *hello = "Hello from client"; 
     //    char buffer[1024] = {0}; 
-    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-      printf("\n Socket creation error \n");
-      error = 1;
-    }
+///    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+///      printf("\n Socket creation error \n");
+///      error = 1;
+///    }
 
-    memset( & serv_addr, '0', sizeof(serv_addr));
+///    memset( & serv_addr, '0', sizeof(serv_addr));
 
-    serv_addr.sin_family = AF_INET;
-    serv_addr.sin_port = htons(PORT);
+	
+///    serv_addr.sin_family = AF_INET;
+///    serv_addr.sin_port = htons(PORT);
 
     // Convert IPv4 and IPv6 addresses from text to binary form 
-    if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
-      printf("\nInvalid address/ Address not supported \n");
-      error = 1;
-    }
+///    if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+///      printf("\nInvalid address/ Address not supported \n");
+///      error = 1;
+///    }
 
-    if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
-      printf("\nConnection Failed \n");
-      printf("Error: %s \n", strerror(errno));
-      error = 1;
-      sleep(2.0);  // sleep if socket connection refused
+///    if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+///      printf("\nConnection Failed \n");
+///      printf("Error: %s \n", strerror(errno));
+///      error = 1;
+///      sleep(2.0);  // sleep if socket connection refused
 
     // try again
-      error = 0;
-      if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-        printf("\n Socket creation error \n");
-        error = 1;
-      }
+///      error = 0;
+///      if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+///        printf("\n Socket creation error \n");
+///        error = 1;
+///      }
 
-      memset( & serv_addr, '0', sizeof(serv_addr));
+////      memset( & serv_addr, '0', sizeof(serv_addr));
 
-      serv_addr.sin_family = AF_INET;
-      serv_addr.sin_port = htons(PORT);
+///      serv_addr.sin_family = AF_INET;
+///      serv_addr.sin_port = htons(PORT);
 
       // Convert IPv4 and IPv6 addresses from text to binary form 
-      if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
-        printf("\nInvalid address/ Address not supported \n");
-        error = 1;
-      }
+///      if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+///        printf("\nInvalid address/ Address not supported \n");
+///        error = 1;
+///      }
 
-      if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
-        printf("\nConnection Failed \n");
-        printf("Error: %s \n", strerror(errno));
-        error = 1;
- //       sleep(1.0);  // sleep if socket connection refused
-      }	    
-    }
-    if (error == 1)
-    ; //rpitxStatus = -1;
-    else
-      socket_open = 1;
-  }
-
+///      if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+///        printf("\nConnection Failed \n");
+///        printf("Error: %s \n", strerror(errno));
+///        error = 1;
+///       sleep(1.0);  // sleep if socket connection refused
+///      }	    
+///    }
+///    if (error == 1)
+///    ; //rpitxStatus = -1;
+///    else
+///      socket_open = 1;
+///  }
+/*
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
@@ -1759,7 +1760,7 @@ void get_tlm_fox() {
     firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
-
+*/
   return;
 }
 
