@@ -121,6 +121,10 @@ void loop() {
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
   get_tlm_fox();
+	
+  test_radio();
+	
+  sleep(3000);
   
   // send telemetry
   
@@ -1334,16 +1338,16 @@ void configure_radio()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   
-  pinMode(17, OUTPUT);
-  digitalWrite(17, HIGH);
+  pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
+  digitalWrite(PTT_PIN, HIGH);
 
-  pinMode(22, OUTPUT);
-  digitalWrite(22, HIGH);
+  pinMode(PD_PIN, OUTPUT);  // PD active HIGH
+  digitalWrite(PD_PIN, HIGH);
 
-  pinMode(28, INPUT);
-  pinMode(27, INPUT);
+  pinMode(TEMPERATURE_PIN, INPUT);
+  pinMode(AUDIO_IN_PIN, INPUT);
 
-  DumbTXSWS mySerial(14); // TX pin
+  DumbTXSWS mySerial(SWTX_PIN); // TX pin
   mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
@@ -1351,4 +1355,12 @@ void configure_radio()
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
   }
+}
+
+void test_radio()
+{
+// send a carrier for 3 seconds
+  digitalWrite(PTT_PIN, LOW);
+  delay(3000);
+  digitalWrite(PTT_PIN, HIGH);
 }
