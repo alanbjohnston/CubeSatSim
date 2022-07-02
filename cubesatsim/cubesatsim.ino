@@ -662,7 +662,7 @@ float toAprsFormat(float input) {
 
 void sleep(float time) {
 
-  unsigned long time_ms = (unsigned long)(time * 1000f);	
+  unsigned long time_ms = (unsigned long)(time * 1000.0);	
   unsigned long startSleep = millis();	    
   while ((millis() - startSleep) < time_ms)
     delay(100);		
