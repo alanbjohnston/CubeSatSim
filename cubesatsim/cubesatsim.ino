@@ -1546,4 +1546,28 @@ void read_sensors()
 {
 	
 }	
-	
+
+//  Returns lower digit of a number which must be less than 99
+//
+int lower_digit(int number) {
+
+  int digit = 0;
+  if (number < 100)
+    digit = number - ((int)(number / 10) * 10);
+  else
+   Serial.println("ERROR: Not a digit in lower_digit!\n");
+  return digit;
+}
+
+// Returns upper digit of a number which must be less than 99
+//
+int upper_digit(int number) {
+
+  int digit = 0;
+  if (number < 100)
+
+    digit = (int)(number / 10);
+  else
+    Serial.println("ERROR: Not a digit in upper_digit!\n");
+  return digit;
+}
