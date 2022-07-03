@@ -188,7 +188,7 @@ void loop() {
 	  send_packet();
 
   delay(2000);
-  test_radio();
+//  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
@@ -223,10 +223,10 @@ void send_packet() {
 
 void get_tlm_ao7() {
 
-  for (int l = 0; l < frameCnt; l++) {
+//  for (int l = 0; l < frameCnt; l++) {
 	  
-    fflush(stdout);
-    fflush(stderr);
+//    fflush(stdout);
+//    fflush(stderr);
 	  
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
@@ -266,7 +266,7 @@ void get_tlm_ao7() {
       Serial.println("\n");
     }
 /**/	  
-  }	
+//  }	
 }
 
 void get_tlm_fox() {
