@@ -269,6 +269,9 @@ void get_tlm_ao7() {
     char str[1000];
     char tlm_str[1000];	
     int channel;
+    char header_str[] = "hi hi ";
+    strcpy(str, header_str);
+	
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
