@@ -136,7 +136,7 @@ void loop() {
   else if (mode == AFSK)
 	  send_packet();
 	
-//  test_radio();
+  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
