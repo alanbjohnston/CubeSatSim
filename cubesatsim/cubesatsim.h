@@ -181,6 +181,29 @@ char src_addr[5] = "";
 char dest_addr[6] = "APCSS";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
+// Payload OK 
+
+Adafruit_BME280 bme;
+MPU6050 mpu6050(Wire);
+
+long timer = 0;
+int bmePresent;
+int RXLED = 17;  // The RX LED has a defined Arduino pin
+int greenLED = 19;
+int blueLED = 18;
+int Sensor1 = 0;
+float Sensor2 = 0;
+void eeprom_word_write(int addr, int val);
+short eeprom_word_read(int addr);
+int first_time = true;
+int first_read = true;
+float T2 = 26.3; // Temperature data point 1
+float R2 = 167; // Reading data point 1
+float T1 = 2; // Temperature data point 2
+float R1 = 179; // Reading data point 2
+int sensorValue;
+float Temp;
+float rest;
 
 /*
  * TelemEncoding.h
