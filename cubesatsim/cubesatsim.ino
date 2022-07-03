@@ -134,13 +134,13 @@ void setup() {
 	  
     set_pin(AUDIO_OUT_PIN);
 
-    const char callsign[] = "W3ZM";
+    char callsign[] = "W3ZM";
     set_callsign(callsign);
-    const char *lat_default = "0610.55S";
-    const char *lon_default = "10649.62E";
-    const char sym_ovl_default = 'H';
-    const char sym_tab_default = 'a';
-    const char *icon = 'Ha';
+    char *lat_default = "0610.55S";
+    char *lon_default = "10649.62E";
+    char sym_ovl_default = 'H';
+    char sym_tab_default = 'a';
+    char *icon = 'Ha';
     set_lat_lon_icon(lat_default, lon_default, icon);
 
   }
