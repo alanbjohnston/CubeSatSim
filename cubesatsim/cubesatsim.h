@@ -103,6 +103,7 @@ void send_packet();
 void read_ina219();
 void read_sensors();
 void get_tlm_ao7();
+void print_string();
 
 extern int Encode_8b10b[][256];
 
