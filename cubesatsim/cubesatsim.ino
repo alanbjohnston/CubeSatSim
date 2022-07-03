@@ -1449,10 +1449,19 @@ void read_ina219()
   float current_mA = 0;
   float loadvoltage = 0;
 	
-  shuntvoltage = ina219_2_0x44.getShuntVoltage_mV();
-  busvoltage = ina219_2_0x44.getBusVoltage_V();
-  current_mA = ina219_2_0x44.getCurrent_mA();
+  shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
+  busvoltage = ina219_1_0x40.getBusVoltage_V();
+  current_mA = ina219_1_0x40.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("1 0x40 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[0] = loadvoltage;
+  current[0] = current_ma;
 	
 }
 
