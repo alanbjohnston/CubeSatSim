@@ -135,7 +135,8 @@ void loop() {
 	  get_tlm_fox();
   else if (mode == AFSK)
 	  send_packet();
-	
+
+  delay(2000);
   test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
@@ -157,6 +158,8 @@ void send_packet() {
 
   send_packet(_FIXPOS_STATUS);
   
+  delay(1000);	
+	
   digitalWrite(PTT_PIN, HIGH);
 //  digitalWrite(LED_BUILTIN, HIGH);		
 }
