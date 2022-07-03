@@ -282,7 +282,7 @@ void get_tlm_ao7() {
         strcat(str, tlm_str);
     }
     print_string(str);
-	
+    set_status(str);	
 //  }	
 }
 
