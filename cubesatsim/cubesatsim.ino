@@ -174,6 +174,7 @@ void loop() {
   loop_count++;
 	
   // query INA219 sensors and Payload sensors
+  read_ina219();
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
@@ -183,7 +184,7 @@ void loop() {
 	  send_packet();
 
   delay(2000);
-//  test_radio();
+  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
@@ -201,6 +202,8 @@ void loop() {
 void send_packet() {
   digitalWrite(PTT_PIN, LOW);
 //  digitalWrite(LED_BUILTIN, LOW);
+	
+  Serial.println("Sending APRS packet!");	
 
   send_packet(_FIXPOS_STATUS);
   
