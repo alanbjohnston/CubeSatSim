@@ -280,7 +280,7 @@ void get_tlm_ao7() {
     }
     Serial.println(*str);
     Serial.println("string");
-    print_string(str)
+    print_string(str);
 	
 //  }	
 }
@@ -1574,7 +1574,7 @@ int upper_digit(int number) {
   return digit;
 }
 
-void print_string(*string);
+void print_string(*string)
 {
   int count = 0;
   while ((count++ < 250) && (string[i] != NULL))
