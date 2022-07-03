@@ -44,11 +44,12 @@ void setup() {
 
 
 // set all Pico GPIO pins to input
+/*	
   for (int i = 6; i < 29; i++) {
     pinMode(i, INPUT);	  
   }
   pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
-  
+*/  
 // detect Pi Zero using 3.3V
   
 // if Pi is present, run Payload OK software
@@ -73,6 +74,7 @@ void setup() {
   transmit = TRUE;  
   
   if (mode == FSK) {
+    Serial.println("Configuring for FSK\n");
     bitRate = 200;
     rsFrames = 1;
     payloads = 1;
@@ -94,6 +96,7 @@ void setup() {
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
   } else if (mode == BPSK) {
+    Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
     rsFrames = 3;
     payloads = 6;
@@ -127,6 +130,8 @@ void setup() {
   //      printf("\n");
      }
   } else if (mode == AFSK) {
+
+    Serial.println("Configuring for AFSK\n");
 	  
     set_pin(AUDIO_OUT_PIN);
 
