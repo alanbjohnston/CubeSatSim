@@ -43,13 +43,12 @@ void setup() {
   Serial.println("Pico v0.1 starting...\n\n");
 
 
-// set all Pico GPIO pins to input
-/*	
+// set all Pico GPIO pins to input	
   for (int i = 6; i < 29; i++) {
     pinMode(i, INPUT);	  
   }
   pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
-*/  
+  
 // detect Pi Zero using 3.3V
   
 // if Pi is present, run Payload OK software
@@ -183,7 +182,7 @@ void loop() {
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
-  if ((mode == BPSK) || (mode = FSK))
+  if ((mode == BPSK) || (mode == FSK))
 	  get_tlm_fox();
   else if (mode == AFSK)
 	  send_packet();
