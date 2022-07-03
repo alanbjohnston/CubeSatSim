@@ -44,6 +44,10 @@ void setup() {
 
 
 // set all Pico GPIO pins to input
+  for (int i = 6; i < 29; i++) {
+    pinMode(i, INPUT);	  
+  }
+  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   
 // detect Pi Zero using 3.3V
   
