@@ -1574,7 +1574,7 @@ int upper_digit(int number) {
   return digit;
 }
 
-void print_string(*string)
+void print_string(char *string)
 {
   int count = 0;
   while ((count++ < 250) && (string[i] != NULL))
