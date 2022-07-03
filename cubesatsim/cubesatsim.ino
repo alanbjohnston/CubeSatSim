@@ -137,7 +137,7 @@ void loop() {
 	  send_packet();
 
   delay(2000);
-  test_radio();
+//  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
