@@ -278,7 +278,9 @@ void get_tlm_ao7() {
       //        printf("%s",tlm_str);
       strcat(str, tlm_str);
     }
-    Serial.println(str);
+    Serial.println(*str);
+    Serial.println("string");
+    print_string(str)
 	
 //  }	
 }
@@ -1571,3 +1573,15 @@ int upper_digit(int number) {
     Serial.println("ERROR: Not a digit in upper_digit!\n");
   return digit;
 }
+
+void print_string(*string);
+{
+  int count = 0;
+  while ((count++ < 250) && (string[i] != NULL))
+  {
+    Serial.print(string[i++]);	  
+  }
+  Serial.println(" ");	
+}
+
+
