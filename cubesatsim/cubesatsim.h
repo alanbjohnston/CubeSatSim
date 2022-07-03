@@ -19,6 +19,13 @@
 #include <string.h>
 //#include <arpa/inet.h>
 //#include <errno.h>
+#include "DumbTXSWS.h"
+#include <Wire.h>
+#include <Adafruit_INA219.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
+#include <MPU6050_tockn.h>
+#include <EEPROM.h>
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
