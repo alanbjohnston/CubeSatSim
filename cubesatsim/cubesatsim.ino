@@ -265,7 +265,21 @@ void get_tlm_ao7() {
       }
       Serial.println("\n");
     }
-/**/	  
+/**/
+    char str[1000];
+    char tlm_str[1000];	
+    int channel;
+    for (channel = 1; channel < 7; channel++) {
+      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+        channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
+        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+      //        printf("%s",tlm_str);
+      strcat(str, tlm_str);
+    }
+    Serial.println(str);
+	
 //  }	
 }
 
