@@ -1577,9 +1577,9 @@ int upper_digit(int number) {
 void print_string(char *string)
 {
   int count = 0;
-  while ((count++ < 250) && (string[i] != NULL))
+  while ((count < 250) && (string[count] != NULL))
   {
-    Serial.print(string[i++]);	  
+    Serial.print(string[count++]);	  
   }
   Serial.println(" ");	
 }
