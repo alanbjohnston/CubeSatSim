@@ -22,6 +22,17 @@
 #include "cubesatsim.h"
 #include "DumbTXSWS.h"
 #include <Arduino-APRS-Library.h>
+#include <Wire.h>
+#include <Adafruit_INA219.h>
+
+Adafruit_INA219 ina219_1_0x40;
+Adafruit_INA219 ina219_1_0x41(0x41);
+Adafruit_INA219 ina219_1_0x44(0x44);
+Adafruit_INA219 ina219_1_0x45(0x45);
+Adafruit_INA219 ina219_2_0x40(0x40);
+Adafruit_INA219 ina219_2_0x41(0x41);
+Adafruit_INA219 ina219_2_0x44(0x44);
+Adafruit_INA219 ina219_2_0x45(0x45);
 
 void setup() {
 
@@ -118,6 +129,37 @@ void setup() {
     char callsign[] = "W3ZM";
     set_callsign(callsign);	  
   }
+	
+// configure ina219s
+	
+  pinMode(MAIN_INA219, OUTPUT);
+  digitalWrite(MAIN_INA219, HIGH);
+
+  ina219_1_0x40.begin();
+  ina219_1_0x41.begin();
+  ina219_1_0x44.begin();
+  ina219_1_0x45.begin();
+   
+  Wire1.setSDA(2); 
+  Wire1.setSCL(3);
+  Wire1.begin(); 
+	
+  ina219_2_0x40.begin(&Wire1);
+  ina219_2_0x41.begin(&Wire1);
+  ina219_2_0x44.begin(&Wire1);
+  ina219_2_0x45.begin(&Wire1);
+	
+  ina219_1_0x40.setCalibration_16V_400mA(); 
+  ina219_1_0x41.setCalibration_16V_400mA(); 
+  ina219_1_0x44.setCalibration_16V_400mA(); 
+  ina219_1_0x45.setCalibration_16V_400mA(); 	
+	
+  ina219_2_0x40.setCalibration_16V_400mA(); 
+  ina219_2_0x41.setCalibration_16V_400mA(); 
+  ina219_2_0x44.setCalibration_16V_400mA(); 
+  ina219_2_0x45.setCalibration_16V_400mA(); 
+	
+// configure STEM Payload sensors	
 	
 // program Transceiver board  
   configure_radio();	
@@ -1399,3 +1441,23 @@ void test_radio()
   delay(3000);
   digitalWrite(PTT_PIN, HIGH);
 }
+
+void read_ina219()
+{
+  float shuntvoltage = 0;
+  float busvoltage = 0;
+  float current_mA = 0;
+  float loadvoltage = 0;
+	
+  shuntvoltage = ina219_2_0x44.getShuntVoltage_mV();
+  busvoltage = ina219_2_0x44.getBusVoltage_V();
+  current_mA = ina219_2_0x44.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+}
+
+void read_sensors()
+{
+	
+}	
+	
