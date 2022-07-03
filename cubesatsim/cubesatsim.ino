@@ -263,8 +263,8 @@ void get_tlm_ao7() {
         Serial.print(tlm[k][j]);
 	Serial.print(" ");
       }
-      Serial.println("\n");
     }
+    Serial.println(" ");
 /**/
     char str[1000];
     char tlm_str[1000];	
