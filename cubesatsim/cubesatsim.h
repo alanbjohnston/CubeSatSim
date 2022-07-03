@@ -27,6 +27,7 @@
 #define TXC_PIN 11 // Transceiver Board is present
 #define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
 #define SQUELCH 15 // SR_FRS_05W Squelch out
+#define MAIN_INA219  // Power the INA219s on the Main board
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
 #define STEM_LED1 18 // STEM board LED1 Green
 #define STEM_LED2 19 // STEM board LED2 Blue
@@ -99,6 +100,8 @@ static int init_rf();
 void test_radio();
 void configure_radio();
 void send_packet();
+void read_ina219();
+void read_sensors();
 
 extern int Encode_8b10b[][256];
 
