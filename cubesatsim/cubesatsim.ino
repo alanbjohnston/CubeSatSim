@@ -276,11 +276,9 @@ void get_tlm_ao7() {
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
-      strcat(str, tlm_str);
+//      strcat(str, tlm_str);
     }
-    Serial.println(*str);
-    Serial.println("string");
-    print_string(str);
+    print_string(tlm_str);
 	
 //  }	
 }
