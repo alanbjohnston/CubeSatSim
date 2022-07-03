@@ -179,6 +179,7 @@ void setup() {
   ina219_2_0x45.setCalibration_16V_400mA(); 
 	
 // configure STEM Payload sensors	
+  start_payload();	
 	
 // program Transceiver board  
   configure_radio();	
@@ -1596,4 +1597,66 @@ void print_string(char *string)
   Serial.println(" ");	
 }
 
+void start_payload() {
+	
+Serial1.begin(115200);  // Pi UART faster speed
+
+  Serial.println("Starting!");
+  
+  blink_setup();
+
+  blink(500);
+  delay(250);
+  blink(500);
+  delay(250);
+  led_set(greenLED, HIGH);
+  delay(250);
+  led_set(greenLED, LOW);
+  led_set(blueLED, HIGH);
+  delay(250);
+  led_set(blueLED, LOW);
+      
+  if (bme.begin(0x76)) {
+    bmePresent = 1;
+  } else {
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+    bmePresent = 0;
+  }
+
+  mpu6050.begin();
+
+  if (eeprom_word_read(0) == 0xA07)
+  {
+    Serial.println("Reading gyro offsets from EEPROM\n");
+
+    float xOffset = ((float)eeprom_word_read(1)) / 100.0;
+    float yOffset = ((float)eeprom_word_read(2)) / 100.0;
+    float zOffset = ((float)eeprom_word_read(3)) / 100.0;
+
+    Serial.println(xOffset, DEC);
+    Serial.println(yOffset, DEC);
+    Serial.println(zOffset, DEC);
+
+    mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
+  }
+  else
+  {
+    Serial.println("Calculating gyro offsets and storing in EEPROM\n");
+
+    mpu6050.calcGyroOffsets(true);
+
+    eeprom_word_write(0, 0xA07);
+    eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
+    eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
+    eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
+
+    Serial.println(eeprom_word_read(0), HEX);
+    Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
+    Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
+    Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
+  }
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED, OUTPUT);
+	
+}
 
