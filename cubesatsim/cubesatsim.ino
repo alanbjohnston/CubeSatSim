@@ -223,7 +223,7 @@ void send_packet() {
 
 void get_tlm_ao7() {
 
-  for (int j = 0; j < frameCnt; j++) {
+  for (int l = 0; l < frameCnt; l++) {
 	  
     fflush(stdout);
     fflush(stderr);
