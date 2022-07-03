@@ -1461,7 +1461,7 @@ void read_ina219()
   Serial.println(" mA");
 
   voltage[0] = loadvoltage;
-  current[0] = current_ma;
+  current[0] = current_mA;
 	
 }
 
