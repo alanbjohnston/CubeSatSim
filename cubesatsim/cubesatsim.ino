@@ -138,9 +138,9 @@ void setup() {
     set_callsign(callsign);
     char lat_default[] = "0610.554";
     char lon_default[] = "10649.61E";
-    char sym_ovl_default[] = 'H';
-    char sym_tab_default[] = 'a';
-    char icon[] = 'Ha';
+    char sym_ovl_default = 'H';
+    char sym_tab_default = 'a';
+    char icon[] = "Ha";
     set_lat_lon_icon(lat_default, lon_default, icon);
 
   }
