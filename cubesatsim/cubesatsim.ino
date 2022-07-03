@@ -205,6 +205,10 @@ void loop() {
 
 void send_packet() {
   digitalWrite(PTT_PIN, LOW);
+	
+// encode telemetry
+  get_tlm_ao7();
+	
 //  digitalWrite(LED_BUILTIN, LOW);
 	
   Serial.println("Sending APRS packet!");	
@@ -215,6 +219,54 @@ void send_packet() {
 	
   digitalWrite(PTT_PIN, HIGH);
 //  digitalWrite(LED_BUILTIN, HIGH);		
+}
+
+void get_tlm_ao7() {
+
+  for (int j = 0; j < frameCnt; j++) {
+	  
+    fflush(stdout);
+    fflush(stderr);
+	  
+    int tlm[7][5];
+    memset(tlm, 0, sizeof tlm);
+	  
+    tlm[1][A] = (int)(voltage[map[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
+    tlm[1][B] = (int)(99.5 - current[map[PLUS_X]] / 10.0) % 100; // +X current [4]
+    tlm[1][C] = (int)(99.5 - current[map[MINUS_X]] / 10.0) % 100; // X- current [10] 
+    tlm[1][D] = (int)(99.5 - current[map[PLUS_Y]] / 10.0) % 100; // +Y current [7]
+
+    tlm[2][A] = (int)(99.5 - current[map[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
+    tlm[2][B] = (int)(99.5 - current[map[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+    tlm[2][C] = (int)(99.5 - current[map[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
+    tlm[2][D] = (int)(50.5 + current[map[BAT]] / 10.0) % 100; // NiMH Battery current
+
+//    tlm[3][A] = abs((int)((voltage[map[BAT]] * 10.0) - 65.5) % 100);
+    if (voltage[map[BAT]] > 4.6)	 
+    	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
+    else
+    	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
+	    
+    tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100; // 5V supply to Pi
+
+    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+		
+    tlm[6][B] = 0;
+    tlm[6][D] = 49 + rand() % 3;
+
+/**/	  
+    // Display tlm
+    int k, j;
+    Serial.print("TLM: ");
+    for (k = 1; k < 7; k++) {
+      for (j = 1; j < 5; j++) {
+        Serial.print(tlm[k][j]);
+	Serial.print(" ");
+      }
+      Serial.println("\n");
+    }
+/**/	  
+  }	
 }
 
 void get_tlm_fox() {
