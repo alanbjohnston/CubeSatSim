@@ -38,6 +38,8 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
+char payload_str[100];
+
 void setup() {
 
   Serial.begin(9600);
@@ -296,6 +298,7 @@ void get_tlm_ao7() {
         strcat(str, tlm_str);
     }
     print_string(str);
+    strcat(str, payload_str);	
     set_status(str);	
 //  }	
 }
@@ -1671,7 +1674,6 @@ void read_payload()
     char result = Serial.read();
     //       Serial.println(result);
 	  
-    char payload_str[100];
 //    char str[100];
     if (bmePresent) 
     	sprintf(payload_str, "OK BME280 %4.2f %6.2f %6.2 %5.2f ", 
