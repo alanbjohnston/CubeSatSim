@@ -113,6 +113,12 @@ void read_sensors();
 void get_tlm_ao7();
 void print_string(char *string);
 void start_payload(); 
+void led_set(int ledPin, bool state);
+void blink(int length);
+void blink_setup();
+short eeprom_word_read(int addr)
+void eeprom_word_write(int addr, int val)
+   
 
 extern int Encode_8b10b[][256];
 
