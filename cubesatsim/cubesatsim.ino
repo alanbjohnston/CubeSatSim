@@ -314,7 +314,7 @@ void get_tlm_fox() {
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
 	
-  for (n = 0; n < 17; n++)
+  for (int n = 0; n < 17; n++)
 	  sensor[n] = 1.0;
 	
   if (mode == FSK)
