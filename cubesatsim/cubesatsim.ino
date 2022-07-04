@@ -95,11 +95,13 @@ void setup() {
     parityLen = 32;
     amplitude = 32767 / 3;
     samples = S_RATE / bitRate;
+    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-
+    Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
-    sleepTime = 0.1f;
-
+    sleepTime = 0.1;
+    Serial.println(samplePeriod);
+	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
