@@ -27,6 +27,12 @@
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
 #include <Arduino-APRS-Library.h>
+#include <stdio.h>
+#include "pico/stdlib.h"   // stdlib 
+#include "hardware/irq.h"  // interrupts
+#include "hardware/pwm.h"  // pwm 
+#include "hardware/sync.h" // wait for interrupt 
+
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
@@ -84,6 +90,8 @@
 #define OFF - 1
 #define ON 1
 
+#define WAV_DATA_LENGTH 100000
+
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
@@ -120,20 +128,23 @@ short eeprom_word_read(int addr);
 void eeprom_word_write(int addr, int val);
 void read_payload();
 void start_ina219();
-  
+void pwm_interrupt_handler();
+void start_pwm() ;
+
 extern int Encode_8b10b[][256];
 
-int socket_open = 0;
-int sock = 0;
+//int socket_open = 0;
+//int sock = 0;
 int loop_count = 0;
 int firstTime = ON; // 0;
 long start;
 int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
-FILE * file1;
+//FILE * file1;//
 short int buffer[100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
-FILE *sopen(const char *program);
+short int buffer[WAV_DATA_LENGTH];
+//FILE *sopen(const char *program);
 
 #define S_RATE	(8000) //(48000) // (44100)
 
@@ -222,6 +233,8 @@ float R1 = 179; // Reading data point 2
 int sensorValue;
 float Temp;
 float rest;
+
+int wav_position = 0;
 
 /*
  * TelemEncoding.h
