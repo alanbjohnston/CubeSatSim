@@ -1672,9 +1672,11 @@ void read_payload()
   {
     blink(50);
     char result = Serial.read();
+    char header[] = "OK BME280 ";
     //       Serial.println(result);
 	  
 //    char str[100];
+    strcpy(payload_str, header);	  
     if (bmePresent) 
     	sprintf(payload_str, "OK BME280 %4.2f %6.2f %6.2 %5.2f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
