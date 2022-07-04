@@ -744,6 +744,7 @@ void get_tlm_fox() {
 ///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 ///    #endif
+    Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
     for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
     {
       write_wave(ctr, buffer);
@@ -773,6 +774,7 @@ void get_tlm_fox() {
       }
 	Serial.println("BB");     
     }
+	Serial.println("CC");     
   }
   Serial.println(" ");	
   Serial.println("Returning");	
