@@ -747,7 +747,8 @@ void get_tlm_fox() {
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 ///    #endif
     Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
-    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+//    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
