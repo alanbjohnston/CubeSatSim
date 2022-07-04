@@ -266,7 +266,8 @@ void get_tlm_ao7() {
 	    
     tlm[3][B] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
-    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+//    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+    tlm[4][A] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
     tlm[6][B] = 0;
     tlm[6][D] = 49 + rand() % 3;
