@@ -58,7 +58,7 @@ void setup() {
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
   digitalWrite(MAIN_LED_GREEN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(MAIN_LED_BLUE, LOW);	
   
 // detect Pi Zero using 3.3V
   
@@ -232,10 +232,12 @@ void send_packet() {
 	
 //  digitalWrite(LED_BUILTIN, LOW);
 	
-  Serial.println("Sending APRS packet!");	
+  Serial.println("Sending APRS packet!");
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);
   send_packet(_FIXPOS_STATUS);
   digitalWrite(PTT_PIN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, LOW);	
 	
 //  delay(1000);	
 	
