@@ -1670,7 +1670,18 @@ void read_payload()
     blink(50);
     char result = Serial.read();
     //       Serial.println(result);
+/*	  
+    char payload_str[100];
+    
+     sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+        channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
+        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
+        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+      //        printf("%s",tlm_str);
+        strcat(str, tlm_str);
 
+*/
     if (result == 'R') {
       Serial.println("OK");
       delay(100);
