@@ -1670,9 +1670,22 @@ void read_payload()
     blink(50);
     char result = Serial.read();
     //       Serial.println(result);
-/*	  
+	  
     char payload_str[100];
+//    char str[100];
+    if (bmePresent) 
+    	sprintf(payload_str, "OK BME280 %4.2f %6.2f %6.2 %5.2f ", 
+	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
+    else
+        sprintf(payload_str, "OK BME280 0.0 0.0 0.0 0.0 "); 
+
+    mpu6050.update();
+
+    sprintf(payload_str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
+      mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
     
+    print_string(payload_str);
+/*    
      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
