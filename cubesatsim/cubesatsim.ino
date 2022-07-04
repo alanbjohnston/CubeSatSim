@@ -162,6 +162,9 @@ void setup() {
 
   }
 	
+// start pwm
+start_pwm();
+	
 // configure ina219s	
 start_ina219();
 	
