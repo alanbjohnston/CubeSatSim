@@ -322,7 +322,7 @@ void get_tlm_fox() {
   Serial.println("About to do frame loop");	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-    Serial.println("Frame loop); 
+    Serial.println("Frame loop"); 
     if (firstTime != ON) {
       // delay for sample period
 /**/
