@@ -135,7 +135,7 @@ FILE * file1;
 short int buffer[250000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 
-#define S_RATE	(48000) // (44100)
+#define S_RATE	(8000) //(48000) // (44100)
 
 #define AFSK 1
 #define FSK 2
