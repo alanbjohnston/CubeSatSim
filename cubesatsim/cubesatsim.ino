@@ -1678,7 +1678,7 @@ void read_payload()
     strcpy(payload_str, header);
     print_string(str);		  
     if (bmePresent) 
-    	sprintf(str, "OK BME280 %4.2f %6.2f %6.2 %5.2f ", 
+    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
     else
         sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
