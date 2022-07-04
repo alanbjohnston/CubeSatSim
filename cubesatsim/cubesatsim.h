@@ -198,6 +198,8 @@ float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max
 
 // Payload OK 
 
+#define SEALEVELPRESSURE_HPA (1013.25)
+
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
 
