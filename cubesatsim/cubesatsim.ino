@@ -611,7 +611,7 @@ void get_tlm_fox() {
 	  	      Serial.println("E");	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
-      printf("TX Antenna Deployed!\n");
+      Serial.println("TX Antenna Deployed!");
     }
 	  	      Serial.println("F");    
     if (mode == BPSK) {  // wod field experiments
