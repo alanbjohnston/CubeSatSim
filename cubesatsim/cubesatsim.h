@@ -90,7 +90,7 @@
 #define OFF - 1
 #define ON 1
 
-#define WAV_DATA_LENGTH 100000
+#define WAV_DATA_LENGTH 50000
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
@@ -142,7 +142,7 @@ int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
 //FILE * file1;//
-short int buffer[100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+//short int buffer[100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 short int buffer[WAV_DATA_LENGTH];
 //FILE *sopen(const char *program);
 
