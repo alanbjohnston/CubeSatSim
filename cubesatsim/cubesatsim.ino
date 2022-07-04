@@ -191,6 +191,8 @@ void loop() {
 	
   // query INA219 sensors and Payload sensors
   read_ina219();
+	
+  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)
 	
@@ -1659,6 +1661,168 @@ Serial1.begin(115200);  // Pi UART faster speed
   pinMode(blueLED, OUTPUT);
 	
 }
+
+void read_payload()
+{
+
+//  if ((Serial.available() > 0)|| first_time == true) 
+  {
+    blink(50);
+    char result = Serial.read();
+    //       Serial.println(result);
+
+    if (result == 'R') {
+      Serial.println("OK");
+      delay(100);
+      first_time = true;
+      setup();
+    }
+    else if (result == 'C') {
+      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      eeprom_word_write(0, 0x00);
+      first_time = true;
+      setup();
+    }
+//    if ((result == '?') || first_time == true)
+    if (true)
+    {
+      first_time = false;
+      if (bmePresent) {
+        Serial.print("OK BME280 ");
+        Serial.print(bme.readTemperature());
+        Serial.print(" ");
+        Serial.print(bme.readPressure() / 100.0F);
+        Serial.print(" ");
+        Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial.print(" ");
+        Serial.print(bme.readHumidity());
+      } else
+      {
+        Serial.print("OK BME280 0.0 0.0 0.0 0.0");
+      }
+      mpu6050.update();
+
+      Serial.print(" MPU6050 ");
+      Serial.print(mpu6050.getGyroX());
+      Serial.print(" ");
+      Serial.print(mpu6050.getGyroY());
+      Serial.print(" ");
+      Serial.print(mpu6050.getGyroZ());
+
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccX());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccY());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccZ());  
+
+    sensorValue = analogRead(A3);
+    //Serial.println(sensorValue);  
+    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+
+    
+    Serial.print(" XS ");
+    Serial.print(Temp);   
+    Serial.print(" ");
+    Serial.println(Sensor1);               
+      
+    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
+    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+//    Serial.print(rotation);
+//    Serial.print(" ");
+//    Serial.println(acceleration);
+
+    if (acceleration > 1.2)
+        led_set(greenLED, HIGH);
+    else
+        led_set(greenLED, LOW);
+        
+    if (rotation > 5)
+        led_set(blueLED, HIGH);
+    else
+        led_set(blueLED, LOW);          
+    }    
+  }
+
+  if (Serial1.available() > 0) {
+ 
+    blink(50);
+    char result = Serial1.read();
+    //    Serial1.println(result);
+
+    if (result == 'R') {
+      Serial1.println("OK");
+      delay(100);
+      first_read = true;
+      setup();
+    }
+
+    if (result == '?')
+    {
+      if (bmePresent) {
+        Serial1.print("OK BME280 ");
+        Serial1.print(bme.readTemperature());
+        Serial1.print(" ");
+        Serial1.print(bme.readPressure() / 100.0F);
+        Serial1.print(" ");
+        Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial1.print(" ");
+        Serial1.print(bme.readHumidity());
+      } else
+      {
+        Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
+      }
+      mpu6050.update();
+
+      Serial1.print(" MPU6050 ");
+      Serial1.print(mpu6050.getGyroX());
+      Serial1.print(" ");
+      Serial1.print(mpu6050.getGyroY());
+      Serial1.print(" ");
+      Serial1.print(mpu6050.getGyroZ());
+
+    Serial1.print(" ");
+    Serial1.print(mpu6050.getAccX());   
+    Serial1.print(" ");
+    Serial1.print(mpu6050.getAccY());   
+    Serial1.print(" ");
+    Serial1.print(mpu6050.getAccZ());   
+
+    sensorValue = analogRead(A3);
+    //Serial.println(sensorValue);  
+    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+
+    Serial1.print(" XS ");
+    Serial1.print(Temp);   
+    Serial1.print(" ");
+    Serial1.println(Sensor2);              
+     
+    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
+    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+//    Serial.print(rotation);
+//    Serial.print(" ");
+//    Serial.println(acceleration);
+
+    if (first_read == true) {
+      first_read = false;
+      rest = acceleration;
+    }
+
+    if (acceleration > 1.2 * rest)
+        led_set(greenLED, HIGH);
+    else
+        led_set(greenLED, LOW);
+        
+    if (rotation > 5)
+        led_set(blueLED, HIGH);
+    else
+        led_set(blueLED, LOW);
+    }
+  }
+
+//  delay(100);
+}
+	
 
 void eeprom_word_write(int addr, int val)
 {
