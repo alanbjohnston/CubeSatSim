@@ -44,7 +44,7 @@ void setup() {
 
   Serial.begin(9600);
 	
-  delay(2000);
+  delay(12000);
 	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
@@ -772,9 +772,9 @@ void get_tlm_fox() {
             flip_ctr = ctr;
           }
         }
-	Serial.println("AA");      
+//	Serial.println("AA");      
       }
-	Serial.println("BB");     
+//	Serial.println("BB");     
     }
 	Serial.println("CC");     
   }
