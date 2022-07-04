@@ -286,6 +286,8 @@ void get_tlm_ao7() {
 }
 
 void get_tlm_fox() {
+  Serial.println("get_tlm_fox");
+	
   int i;
   long int sync = syncWord;
   smaller = (int) (S_RATE / (2 * freq_Hz));
@@ -332,12 +334,12 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-      printf("Sleep period: %d\n", millis() - startSleep);
+      Serial.println"Sleep period: %d\n", millis() - startSleep);
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
     } else
-      printf("first time - no sleep\n");
+      Serial.println("first time - no sleep\n");
 	
 //    if (mode == FSK) 
     {  // just moved
@@ -363,7 +365,7 @@ void get_tlm_fox() {
       	  if (mode == FSK)
 	  {
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
-		printf("Sending MIN frame \n");
+		Serial.println("Sending MIN frame \n");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -377,7 +379,7 @@ void get_tlm_fox() {
 		}
 	      }
 	      if ((loop_count + 16) % 32 == 0) {  // was 8
-		printf("Sending MAX frame \n");
+		Serial.println("Sending MAX frame \n");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
