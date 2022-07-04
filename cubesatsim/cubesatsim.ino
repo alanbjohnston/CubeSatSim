@@ -299,7 +299,9 @@ void get_tlm_ao7() {
         strcat(str, tlm_str);
     }
     print_string(str);
-//    strcat(str, payload_str);	
+    strcat(str, payload_str);	
+    print_string(str);
+    Serial.println(strlen(str));
     set_status(str);	
 //  }	
 }
