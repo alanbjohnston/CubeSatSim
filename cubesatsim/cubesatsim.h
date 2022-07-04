@@ -119,6 +119,7 @@ void blink_setup();
 short eeprom_word_read(int addr);
 void eeprom_word_write(int addr, int val);
 void read_payload();
+void start_ina219();
   
 extern int Encode_8b10b[][256];
 
@@ -131,10 +132,10 @@ int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
 FILE * file1;
-short int buffer[10240]; // was 2336400]; // max size for 10 frames count of BPSK
+short int buffer[100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 
-#define S_RATE	(48000) // (44100)
+#define S_RATE	(8000) //(48000) // (44100)
 
 #define AFSK 1
 #define FSK 2
@@ -163,7 +164,7 @@ int uart_fd;
 
 int reset_count = 0;
 float uptime_sec = 0;
-long int uptime;
+long int uptime = 0;
 char call[5];
 char sim_yes[10];
 

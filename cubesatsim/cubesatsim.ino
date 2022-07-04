@@ -44,7 +44,7 @@ void setup() {
 
   Serial.begin(9600);
 	
-  delay(2000);
+  delay(12000);
 	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
@@ -70,8 +70,7 @@ void setup() {
 	
   mode = AFSK;	
   
-//  mode = FSK;
-//  frameCnt = 1;
+  frameCnt = 1; 
   
   Serial.println("v1 Present with UHF BPF\n");
   txLed = 2;
@@ -96,11 +95,13 @@ void setup() {
     parityLen = 32;
     amplitude = 32767 / 3;
     samples = S_RATE / bitRate;
+    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-
+    Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
-    sleepTime = 0.1f;
-
+    sleepTime = 0.1;
+    Serial.println(samplePeriod);
+	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
@@ -156,34 +157,8 @@ void setup() {
 
   }
 	
-// configure ina219s
-	
-  pinMode(MAIN_INA219, OUTPUT);
-  digitalWrite(MAIN_INA219, HIGH);
-
-  ina219_1_0x40.begin();
-  ina219_1_0x41.begin();
-  ina219_1_0x44.begin();
-  ina219_1_0x45.begin();
-   
-  Wire1.setSDA(2); 
-  Wire1.setSCL(3);
-  Wire1.begin(); 
-	
-  ina219_2_0x40.begin(&Wire1);
-  ina219_2_0x41.begin(&Wire1);
-  ina219_2_0x44.begin(&Wire1);
-  ina219_2_0x45.begin(&Wire1);
-	
-  ina219_1_0x40.setCalibration_16V_400mA(); 
-  ina219_1_0x41.setCalibration_16V_400mA(); 
-  ina219_1_0x44.setCalibration_16V_400mA(); 
-  ina219_1_0x45.setCalibration_16V_400mA(); 	
-	
-  ina219_2_0x40.setCalibration_16V_400mA(); 
-  ina219_2_0x41.setCalibration_16V_400mA(); 
-  ina219_2_0x44.setCalibration_16V_400mA(); 
-  ina219_2_0x45.setCalibration_16V_400mA(); 
+// configure ina219s	
+start_ina219();
 	
 // configure STEM Payload sensors	
   start_payload();	
@@ -197,19 +172,17 @@ void loop() {
   loop_count++;
 	
   // query INA219 sensors and Payload sensors
-  read_ina219();
-	
+  read_ina219();	
   read_payload();	
   
-  // encode as digits (APRS or CW mode) or binary (DUV FSK)
-	
+  // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))
 	  get_tlm_fox();
   else if (mode == AFSK)
 	  send_packet();
 
   delay(2000);
-//  test_radio();
+  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
@@ -225,7 +198,6 @@ void loop() {
 }
 
 void send_packet() {
-
 	
 // encode telemetry
   get_tlm_ao7();
@@ -315,6 +287,8 @@ void get_tlm_ao7() {
 }
 
 void get_tlm_fox() {
+  Serial.println("get_tlm_fox");
+	
   int i;
   long int sync = syncWord;
   smaller = (int) (S_RATE / (2 * freq_Hz));
@@ -342,14 +316,18 @@ void get_tlm_fox() {
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
 	
+  for (int n = 0; n < 17; n++)
+	  sensor[n] = 1.0;
+	
   if (mode == FSK)
     id = 7;
   else
     id = 0; // 99 in h[6]
+  Serial.println("About to do frame loop");
 	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-  
+    Serial.println("Frame loop"); 
     if (firstTime != ON) {
       // delay for sample period
 /**/
@@ -361,12 +339,13 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-      printf("Sleep period: %d\n", millis() - startSleep);
-      fflush(stdout);
+      Serial.print("Sleep period: ");
+      Serial.println(millis() - startSleep);
+//      fflush(stdout);
       
       sampleTime = (unsigned int) millis();
     } else
-      printf("first time - no sleep\n");
+      Serial.println("first time - no sleep\n");
 	
 //    if (mode == FSK) 
     {  // just moved
@@ -381,18 +360,24 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 //         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+	Serial.print(voltage_min[count1]);
+	Serial.print(" ");
       }
+      Serial.println(" ");	    
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
           other_min[count1] = other[count1];
         if (other[count1] > other_max[count1])
           other_max[count1] = other[count1];
-        //  printf("Other min %f max %f \n", other_min[count1], other_max[count1]);
+	Serial.print(other_min[count1]);
+	Serial.print(" ");
       }
-      	  if (mode == FSK)
+      Serial.println(" ");
+          if (mode == FSK)
 	  {
+	      Serial.println("Starting");	  
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
-		printf("Sending MIN frame \n");
+		Serial.println("Sending MIN frame");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -406,7 +391,7 @@ void get_tlm_fox() {
 		}
 	      }
 	      if ((loop_count + 16) % 32 == 0) {  // was 8
-		printf("Sending MAX frame \n");
+		Serial.println("Sending MAX frame");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -419,19 +404,25 @@ void get_tlm_fox() {
 		    sensor[count1] = sensor_max[count1];
 		}
 	      }
+	      Serial.println("Here");	  
 	  }
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
-    } 	  
+    } 
+    Serial.println("Continuing");	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
 //   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
+    Serial.println("After memset");      
+
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
+    Serial.println("After h[0]");	  
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
+      Serial.println("After uptime test");
       h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
       h[1] = (short int) ((reset_count >> 5) & 0xff);
       h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
@@ -441,6 +432,7 @@ void get_tlm_fox() {
     h[4] = (short int) ((uptime >> 13) & 0xff);
     h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
+      Serial.println("h[5]");	  
     if (mode == BPSK)
       h[6] = 99;
     posXi = (int)(current[mapping[PLUS_X]] + 0.5) + 2048;
@@ -459,17 +451,20 @@ void get_tlm_fox() {
     battCurr = (int)(current[mapping[BAT]] + 0.5) + 2048;
     PSUVoltage = (int)(voltage[mapping[BUS]] * 100);
     PSUCurrent = (int)(current[mapping[BUS]] + 0.5) + 2048;
-    if (payload == ON)
+//    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
+    Serial.println("Before encoding");
     encodeA(b, 0 + head_offset, batt_a_v);
+    Serial.println("After encoding");	  
     encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
     encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
     encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
     encodeA(b, 9 + head_offset, battCurr);
-    encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
+    encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	
+	      Serial.println("A");
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
       encodeB(b, 13 + head_offset, negXv);
@@ -483,6 +478,7 @@ void get_tlm_fox() {
       encodeB(b, 25 + head_offset, negYi);
       encodeA(b, 27 + head_offset, posZi);
       encodeB(b, 28 + head_offset, negZi);
+	    	      Serial.println("B");
     } else // BPSK
     {
       encodeA(b, 12 + head_offset, posXv);
@@ -593,7 +589,8 @@ void get_tlm_fox() {
 	      encodeA(b_min, 48 + head_offset, 2048);
 	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
-    }    
+    }
+	  	      Serial.println("C");
     encodeA(b, 30 + head_offset, PSUVoltage);
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
@@ -608,15 +605,17 @@ void get_tlm_fox() {
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
+	  	      Serial.println("D");	  
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
+	  	      Serial.println("E");	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
-      printf("TX Antenna Deployed!\n");
+      Serial.println("TX Antenna Deployed!");
     }
-    
+	  	      Serial.println("F");    
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
       encodeA(b, 64 + head_offset, 0xff & val); 
@@ -624,7 +623,8 @@ void get_tlm_fox() {
       encodeA(b, 63 + head_offset, 0x00); 
       encodeA(b, 62 + head_offset, 0x01);
       encodeB(b, 74 + head_offset, 0xfff); 
-    }	  
+    }
+    Serial.println("Finished encoding");	  
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
     int ctr1 = 0;
@@ -746,7 +746,9 @@ void get_tlm_fox() {
 ///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 ///    #endif
-    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+    Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
+//    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
@@ -756,6 +758,8 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+	Serial.print(val, HEX);   // Debugging print!!!  
+	Serial.print(" ");      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
@@ -769,9 +773,14 @@ void get_tlm_fox() {
             flip_ctr = ctr;
           }
         }
+//	Serial.println("AA");      
       }
+//	Serial.println("BB");     
     }
+	Serial.println("CC");     
   }
+  Serial.println(" ");	
+  Serial.println("Returning");	
 }
 
 void write_wave(int i, short int *buffer)
@@ -1544,10 +1553,12 @@ void test_radio()
 {
 // send a carrier for 3 seconds
   Serial.println("Testing radio...\n\n");
-	
+
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);
   delay(3000);
   digitalWrite(PTT_PIN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, LOW);
 }
 
 void read_ina219()
@@ -1930,4 +1941,34 @@ void led_set(int ledPin, bool state)
 #if defined __AVR_ATmega32U4__ || ARDUINO_ARCH_RP2040
   digitalWrite(ledPin, state);   
 #endif  
+}
+
+void start_ina219() {
+	
+  pinMode(MAIN_INA219, OUTPUT);
+  digitalWrite(MAIN_INA219, HIGH);
+
+  ina219_1_0x40.begin();
+  ina219_1_0x41.begin();
+  ina219_1_0x44.begin();
+  ina219_1_0x45.begin();
+   
+  Wire1.setSDA(2); 
+  Wire1.setSCL(3);
+  Wire1.begin(); 
+	
+  ina219_2_0x40.begin(&Wire1);
+  ina219_2_0x41.begin(&Wire1);
+  ina219_2_0x44.begin(&Wire1);
+  ina219_2_0x45.begin(&Wire1);
+	
+  ina219_1_0x40.setCalibration_16V_400mA(); 
+  ina219_1_0x41.setCalibration_16V_400mA(); 
+  ina219_1_0x44.setCalibration_16V_400mA(); 
+  ina219_1_0x45.setCalibration_16V_400mA(); 	
+	
+  ina219_2_0x40.setCalibration_16V_400mA(); 
+  ina219_2_0x41.setCalibration_16V_400mA(); 
+  ina219_2_0x44.setCalibration_16V_400mA(); 
+  ina219_2_0x45.setCalibration_16V_400mA(); 	
 }
