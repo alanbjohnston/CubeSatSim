@@ -414,6 +414,7 @@ void get_tlm_fox() {
     Serial.println("After memset");      
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
+    Serial.println("After h[0]");	  
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
       h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
