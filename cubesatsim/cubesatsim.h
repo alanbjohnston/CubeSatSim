@@ -118,6 +118,7 @@ void blink(int length);
 void blink_setup();
 short eeprom_word_read(int addr);
 void eeprom_word_write(int addr, int val);
+void read_payload();
   
 extern int Encode_8b10b[][256];
 
