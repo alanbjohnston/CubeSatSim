@@ -225,7 +225,7 @@ void loop() {
 }
 
 void send_packet() {
-  digitalWrite(PTT_PIN, LOW);
+
 	
 // encode telemetry
   get_tlm_ao7();
@@ -233,12 +233,13 @@ void send_packet() {
 //  digitalWrite(LED_BUILTIN, LOW);
 	
   Serial.println("Sending APRS packet!");	
-
+  digitalWrite(PTT_PIN, LOW);
   send_packet(_FIXPOS_STATUS);
-  
-  delay(1000);	
-	
   digitalWrite(PTT_PIN, HIGH);
+	
+//  delay(1000);	
+	
+
 //  digitalWrite(LED_BUILTIN, HIGH);		
 }
 
