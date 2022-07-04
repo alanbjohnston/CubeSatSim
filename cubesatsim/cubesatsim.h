@@ -26,6 +26,7 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
+#include <Arduino-APRS-Library.h>
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
