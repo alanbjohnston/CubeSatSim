@@ -461,7 +461,8 @@ void get_tlm_fox() {
     encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
     encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
     encodeA(b, 9 + head_offset, battCurr);
-    encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
+    encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	
+	      Serial.println("A");
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
       encodeB(b, 13 + head_offset, negXv);
@@ -475,6 +476,7 @@ void get_tlm_fox() {
       encodeB(b, 25 + head_offset, negYi);
       encodeA(b, 27 + head_offset, posZi);
       encodeB(b, 28 + head_offset, negZi);
+	    	      Serial.println("B");
     } else // BPSK
     {
       encodeA(b, 12 + head_offset, posXv);
@@ -585,7 +587,8 @@ void get_tlm_fox() {
 	      encodeA(b_min, 48 + head_offset, 2048);
 	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
-    }    
+    }
+	  	      Serial.println("C");
     encodeA(b, 30 + head_offset, PSUVoltage);
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
