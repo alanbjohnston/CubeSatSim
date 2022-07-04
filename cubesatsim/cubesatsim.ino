@@ -1984,7 +1984,7 @@ void start_pwm() {
   set_sys_clock_khz(125000, true); 
   gpio_set_function(AUDIO_OUT_PIN, GPIO_FUNC_PWM);
 
-  int audio_pin_slice = pwm_gpio_to_slice_num(AUDIO_PIN);
+  int audio_pin_slice = pwm_gpio_to_slice_num(AUDIO_OUT_PIN);
 
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(audio_pin_slice);
