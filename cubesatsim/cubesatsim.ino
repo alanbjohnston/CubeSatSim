@@ -370,6 +370,7 @@ void get_tlm_fox() {
       Serial.println(" ");
           if (mode == FSK)
 	  {
+	      Serial.println("Starting");	  
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
 		Serial.println("Sending MIN frame");
 		frm_type = 0x03;
@@ -399,10 +400,12 @@ void get_tlm_fox() {
 		}
 		Serial.println("Sending regular frame");      
 	      }
+	      Serial.println("Here");	  
 	  }
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
-    } 	  
+    } 
+    Serial.println("Continuing");	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
