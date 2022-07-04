@@ -1679,7 +1679,8 @@ void read_payload()
     strcpy(payload_str, header);
     print_string(str);		  
     if (bmePresent) 
-    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
+//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
+   	sprintf(str, "%f %f %f %f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
     else
         sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
@@ -1688,7 +1689,8 @@ void read_payload()
     print_string(payload_str);	
     mpu6050.update();
 
-    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
+//    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
+    sprintf(str, " MPU6050 %f %f %f %f %f %f ",
       mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
     
     strcat(payload_str, str);
