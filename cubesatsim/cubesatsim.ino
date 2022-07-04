@@ -314,6 +314,9 @@ void get_tlm_fox() {
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
 	
+  for (n = 0; n < 17; n++)
+	  sensor[n] = 1.0;
+	
   if (mode == FSK)
     id = 7;
   else
@@ -417,6 +420,7 @@ void get_tlm_fox() {
     Serial.println("After h[0]");	  
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
+      Serial.println("After uptime test");
       h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
       h[1] = (short int) ((reset_count >> 5) & 0xff);
       h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
@@ -426,6 +430,7 @@ void get_tlm_fox() {
     h[4] = (short int) ((uptime >> 13) & 0xff);
     h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
+      Serial.println("h[5]");	  
     if (mode == BPSK)
       h[6] = 99;
     posXi = (int)(current[mapping[PLUS_X]] + 0.5) + 2048;
@@ -447,7 +452,9 @@ void get_tlm_fox() {
 //    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
+    Serial.println("Before encoding");
     encodeA(b, 0 + head_offset, batt_a_v);
+    Serial.println("After encoding");	  
     encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
