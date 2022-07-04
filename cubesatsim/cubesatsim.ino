@@ -1660,3 +1660,75 @@ Serial1.begin(115200);  // Pi UART faster speed
 	
 }
 
+void eeprom_word_write(int addr, int val)
+{
+  EEPROM.write(addr * 2, lowByte(val));
+  EEPROM.write(addr * 2 + 1, highByte(val));
+}
+
+short eeprom_word_read(int addr)
+{
+  return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
+}
+
+void blink_setup() 
+{
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)  
+  // initialize digital pin PB1 as an output.
+  pinMode(PC13, OUTPUT);
+  pinMode(PB9, OUTPUT);
+  pinMode(PB8, OUTPUT);
+#endif
+
+#if defined __AVR_ATmega32U4__ || ARDUINO_ARCH_RP2040
+  pinMode(RXLED, OUTPUT);  // Set RX LED as an output
+  // TX LED is set as an output behind the scenes
+  pinMode(greenLED, OUTPUT);
+  pinMode(blueLED,OUTPUT);
+#endif
+}
+
+void blink(int length)
+{
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  digitalWrite(PC13, LOW);   // turn the LED on (HIGH is the voltage level)
+#endif
+
+#if defined __AVR_ATmega32U4__
+  digitalWrite(RXLED, LOW);   // set the RX LED ON
+  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
+#endif  
+  
+#if defined ARDUINO_ARCH_RP2040
+  digitalWrite(25, LOW);   // set the built-in LED ON
+#endif 
+  
+  delay(length);              // wait for a lenth of time
+
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  digitalWrite(PC13, HIGH);    // turn the LED off by making the voltage LOW
+#endif
+
+#if defined __AVR_ATmega32U4__
+  digitalWrite(RXLED, HIGH);    // set the RX LED OFF
+  TXLED0; //TX LED macro to turn LED ON
+#endif  
+  
+#if defined ARDUINO_ARCH_RP2040
+  digitalWrite(25, HIGH);   // set the built-in LED off
+#endif   
+}
+
+void led_set(int ledPin, bool state)
+{
+#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  if (ledPin == greenLED)
+    digitalWrite(PB9, state);
+  else if (ledPin == blueLED)
+    digitalWrite(PB8, state);    
+#endif
+
+#if defined __AVR_ATmega32U4__ || ARDUINO_ARCH_RP2040
+  digitalWrite(ledPin, state);   
+#endif  
+}
