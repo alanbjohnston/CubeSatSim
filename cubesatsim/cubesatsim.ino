@@ -398,7 +398,6 @@ void get_tlm_fox() {
 		  if (sensor_max[count1] != -1000.0) // make sure values are valid
 		    sensor[count1] = sensor_max[count1];
 		}
-		Serial.println("Sending regular frame");      
 	      }
 	      Serial.println("Here");	  
 	  }
@@ -412,6 +411,8 @@ void get_tlm_fox() {
 //   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
+    Serial.println("After memset");      
+
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
