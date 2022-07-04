@@ -271,7 +271,7 @@ void get_tlm_ao7() {
     tlm[6][B] = 0;
     tlm[6][D] = 49 + rand() % 3;
 
-/**/	  
+/*	  
     // Display tlm
     int k, j;
     Serial.print("TLM: ");
@@ -282,7 +282,7 @@ void get_tlm_ao7() {
       }
     }
     Serial.println(" ");
-/**/
+*/
     char str[1000];
     char tlm_str[1000];	
     int channel;
@@ -1677,7 +1677,7 @@ void read_payload()
     char str[100];
 	  
     strcpy(payload_str, header);
-    print_string(str);		  
+//    print_string(str);		  
     if (bmePresent) 
 //    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
    	sprintf(str, "%f %f %f %f ", 
@@ -1686,7 +1686,7 @@ void read_payload()
         sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
 	  
-    print_string(payload_str);	
+//    print_string(payload_str);	
     mpu6050.update();
 
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
@@ -1695,16 +1695,7 @@ void read_payload()
     
     strcat(payload_str, str);
     print_string(payload_str);
-/*    
-     sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
-        channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
-        channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
-        channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
-        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-      //        printf("%s",tlm_str);
-        strcat(str, tlm_str);
 
-*/
     if (result == 'R') {
       Serial.println("OK");
       delay(100);
