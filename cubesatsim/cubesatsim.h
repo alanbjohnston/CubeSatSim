@@ -132,7 +132,7 @@ int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
 FILE * file1;
-short int buffer[10240]; // was 2336400]; // max size for 10 frames count of BPSK
+short int buffer[250000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 
 #define S_RATE	(48000) // (44100)
