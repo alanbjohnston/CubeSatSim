@@ -164,7 +164,7 @@ int uart_fd;
 
 int reset_count = 0;
 float uptime_sec = 0;
-long int uptime;
+long int uptime = 0;
 char call[5];
 char sim_yes[10];
 
