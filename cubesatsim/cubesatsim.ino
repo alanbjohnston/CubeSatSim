@@ -68,7 +68,7 @@ void setup() {
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
-  mode = AFSK;	
+  mode = FSK;  // AFSK;	
   
 //  mode = FSK;
 //  frameCnt = 1;
@@ -156,34 +156,8 @@ void setup() {
 
   }
 	
-// configure ina219s
-	
-  pinMode(MAIN_INA219, OUTPUT);
-  digitalWrite(MAIN_INA219, HIGH);
-
-  ina219_1_0x40.begin();
-  ina219_1_0x41.begin();
-  ina219_1_0x44.begin();
-  ina219_1_0x45.begin();
-   
-  Wire1.setSDA(2); 
-  Wire1.setSCL(3);
-  Wire1.begin(); 
-	
-  ina219_2_0x40.begin(&Wire1);
-  ina219_2_0x41.begin(&Wire1);
-  ina219_2_0x44.begin(&Wire1);
-  ina219_2_0x45.begin(&Wire1);
-	
-  ina219_1_0x40.setCalibration_16V_400mA(); 
-  ina219_1_0x41.setCalibration_16V_400mA(); 
-  ina219_1_0x44.setCalibration_16V_400mA(); 
-  ina219_1_0x45.setCalibration_16V_400mA(); 	
-	
-  ina219_2_0x40.setCalibration_16V_400mA(); 
-  ina219_2_0x41.setCalibration_16V_400mA(); 
-  ina219_2_0x44.setCalibration_16V_400mA(); 
-  ina219_2_0x45.setCalibration_16V_400mA(); 
+// configure ina219s	
+start_ina219();
 	
 // configure STEM Payload sensors	
   start_payload();	
@@ -197,19 +171,17 @@ void loop() {
   loop_count++;
 	
   // query INA219 sensors and Payload sensors
-  read_ina219();
-	
+  read_ina219();	
   read_payload();	
   
-  // encode as digits (APRS or CW mode) or binary (DUV FSK)
-	
+  // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))
 	  get_tlm_fox();
   else if (mode == AFSK)
 	  send_packet();
 
   delay(2000);
-//  test_radio();
+  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
@@ -225,7 +197,6 @@ void loop() {
 }
 
 void send_packet() {
-
 	
 // encode telemetry
   get_tlm_ao7();
@@ -756,6 +727,7 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+	Serial.print(val, HEX);   // Debugging print!!!      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
@@ -772,6 +744,7 @@ void get_tlm_fox() {
       }
     }
   }
+  Serial.println(" ");	
 }
 
 void write_wave(int i, short int *buffer)
@@ -1930,4 +1903,34 @@ void led_set(int ledPin, bool state)
 #if defined __AVR_ATmega32U4__ || ARDUINO_ARCH_RP2040
   digitalWrite(ledPin, state);   
 #endif  
+}
+
+void start_ina219() {
+	
+  pinMode(MAIN_INA219, OUTPUT);
+  digitalWrite(MAIN_INA219, HIGH);
+
+  ina219_1_0x40.begin();
+  ina219_1_0x41.begin();
+  ina219_1_0x44.begin();
+  ina219_1_0x45.begin();
+   
+  Wire1.setSDA(2); 
+  Wire1.setSCL(3);
+  Wire1.begin(); 
+	
+  ina219_2_0x40.begin(&Wire1);
+  ina219_2_0x41.begin(&Wire1);
+  ina219_2_0x44.begin(&Wire1);
+  ina219_2_0x45.begin(&Wire1);
+	
+  ina219_1_0x40.setCalibration_16V_400mA(); 
+  ina219_1_0x41.setCalibration_16V_400mA(); 
+  ina219_1_0x44.setCalibration_16V_400mA(); 
+  ina219_1_0x45.setCalibration_16V_400mA(); 	
+	
+  ina219_2_0x40.setCalibration_16V_400mA(); 
+  ina219_2_0x41.setCalibration_16V_400mA(); 
+  ina219_2_0x44.setCalibration_16V_400mA(); 
+  ina219_2_0x45.setCalibration_16V_400mA(); 	
 }
