@@ -143,8 +143,8 @@ void setup() {
 
     char callsign[] = "W3ZM";
     set_callsign(callsign);
-    char lat_default[] = "0610.554";
-    char lon_default[] = "10649.61E";
+    char lat_default[] = "0610.55S";
+    char lon_default[] = "10649.62E";
     char sym_ovl_default = 'H';
     char sym_tab_default = 'a';
     char icon[] = "Ha";
