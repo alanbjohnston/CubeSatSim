@@ -46,8 +46,9 @@ void setup() {
 	
   delay(2000);
 	
-  Serial.println("Pico v0.1 starting...\n\n");
-
+#ifndef ARDUINO_ARCH_RP2040
+  Serial.println("This code is written for the Raspberry Pi Pico hardware.");
+#endif	
 
 // set all Pico GPIO pins to input	
   for (int i = 6; i < 29; i++) {
