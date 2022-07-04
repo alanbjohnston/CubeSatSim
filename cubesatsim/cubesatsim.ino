@@ -1553,10 +1553,12 @@ void test_radio()
 {
 // send a carrier for 3 seconds
   Serial.println("Testing radio...\n\n");
-	
+
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);
   delay(3000);
   digitalWrite(PTT_PIN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, LOW);
 }
 
 void read_ina219()
