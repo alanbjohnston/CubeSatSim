@@ -73,7 +73,7 @@ void setup() {
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
-  mode = AFSK;	
+  mode = FSK; // AFSK;	
   
   frameCnt = 1; 
   
