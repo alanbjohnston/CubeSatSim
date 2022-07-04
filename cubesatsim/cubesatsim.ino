@@ -443,7 +443,7 @@ void get_tlm_fox() {
     battCurr = (int)(current[mapping[BAT]] + 0.5) + 2048;
     PSUVoltage = (int)(voltage[mapping[BUS]] * 100);
     PSUCurrent = (int)(current[mapping[BUS]] + 0.5) + 2048;
-    if (payload == ON)
+//    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
     encodeA(b, 0 + head_offset, batt_a_v);
