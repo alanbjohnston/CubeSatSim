@@ -37,10 +37,10 @@
 #define SQUELCH 15 // SR_FRS_05W Squelch out
 #define MAIN_INA219 16 // Power the INA219s on the Main board
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
-#define STEM_LED1 18 // STEM board LED1 Green
-#define STEM_LED2 19 // STEM board LED2 Blue
-#define MAIN_LED1 20 // Main board LED1 
-#define MAIN_LED2 21 // Main board LED1 
+#define STEM_LED_GREEN 18 // STEM board LED1 Green
+#define STEM_LED_BLUE 19 // STEM board LED2 Blue
+#define MAIN_LED_GREEN 20 // Main board LED1 
+#define MAIN_LED_BLUE 21 // Main board LED1 
 #define PD_PIN 22 // SR_FRS_05W PD pin - enable
 #define AUDIO_OUT_PIN 26 // SR_FRS_05W audio out pin
 #define AUDIO_IN_PIN 27 // SR_FRS_05W audio in pin
