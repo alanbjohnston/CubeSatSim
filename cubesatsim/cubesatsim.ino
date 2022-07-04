@@ -355,7 +355,9 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 //         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
+	Serial.print(voltage_min[count1]);
       }
+      Serial.println(" ");	    
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
           other_min[count1] = other[count1];
@@ -366,7 +368,7 @@ void get_tlm_fox() {
       	  if (mode == FSK)
 	  {
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
-		Serial.println("Sending MIN frame \n");
+		Serial.println("Sending MIN frame");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -380,7 +382,7 @@ void get_tlm_fox() {
 		}
 	      }
 	      if ((loop_count + 16) % 32 == 0) {  // was 8
-		Serial.println("Sending MAX frame \n");
+		Serial.println("Sending MAX frame");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -392,6 +394,7 @@ void get_tlm_fox() {
 		  if (sensor_max[count1] != -1000.0) // make sure values are valid
 		    sensor[count1] = sensor_max[count1];
 		}
+		Serial.println("Sending regular frame");      
 	      }
 	  }
 	  else
