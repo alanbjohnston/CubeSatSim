@@ -608,7 +608,8 @@ void get_tlm_fox() {
       encodeA(b, 63 + head_offset, 0x00); 
       encodeA(b, 62 + head_offset, 0x01);
       encodeB(b, 74 + head_offset, 0xfff); 
-    }	  
+    }
+    Serial.println("Finished encoding");	  
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
     int ctr1 = 0;
