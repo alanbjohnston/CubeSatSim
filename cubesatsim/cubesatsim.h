@@ -111,7 +111,7 @@ void read_ina219();
 void read_sensors();
 void get_tlm_ao7();
 void print_string(char *string);
-void start_payload() 
+void start_payload(); 
 
 extern int Encode_8b10b[][256];
 
