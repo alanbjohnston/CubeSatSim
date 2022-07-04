@@ -55,6 +55,10 @@ void setup() {
     pinMode(i, INPUT);	  
   }
   pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
+  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
+  digitalWrite(MAIN_LED_GREEN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
   
 // detect Pi Zero using 3.3V
   
