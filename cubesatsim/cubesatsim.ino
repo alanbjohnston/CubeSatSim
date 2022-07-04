@@ -70,8 +70,7 @@ void setup() {
 	
   mode = FSK;  // AFSK;	
   
-//  mode = FSK;
-//  frameCnt = 1;
+  frameCnt = 1; 
   
   Serial.println("v1 Present with UHF BPF\n");
   txLed = 2;
@@ -319,7 +318,8 @@ void get_tlm_fox() {
     id = 7;
   else
     id = 0; // 99 in h[6]
-  Serial.println("About to do frame loop");	
+  Serial.println("About to do frame loop");
+	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
     Serial.println("Frame loop"); 
