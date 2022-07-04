@@ -603,15 +603,17 @@ void get_tlm_fox() {
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
+	  	      Serial.println("D");	  
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
+	  	      Serial.println("E");	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
     }
-    
+	  	      Serial.println("F");    
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
       encodeA(b, 64 + head_offset, 0xff & val); 
