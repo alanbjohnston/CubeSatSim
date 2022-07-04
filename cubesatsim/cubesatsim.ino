@@ -27,6 +27,7 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
+#include <Arduino-APRS-Library.h>
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
