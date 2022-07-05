@@ -142,7 +142,8 @@ int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
 //FILE * file1;//
-short int buffer[2^15]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+unsigned int buffer_size = 2^16;
+short int buffer[buffer_size]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 //short int buffer[(WAV_DATA_LENGTH/8)];
 //FILE *sopen(const char *program);
 
@@ -234,7 +235,7 @@ int sensorValue;
 float Temp;
 float rest;
 
-int wav_position = 0;
+unsigned int wav_position = 0;
 
 /*
  * TelemEncoding.h
