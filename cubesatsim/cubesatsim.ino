@@ -2051,16 +2051,16 @@ void pwm_interrupt_handler() {
 //            pwm_rnd_bit *= (-1.0);
 
           pwm_rnd_bit = (buffer[wav_position] > 0) ? 1 : 0;
-	  Serial.print(pwm_rnd_bit);
-	  Serial.print(" ");
+//	  Serial.print(pwm_rnd_bit);
+//	  Serial.print(" ");
 		
           if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
             pwm_value = 128 + pwm_amplitude;
-            Serial.print("-");
+//            Serial.print("-");
           }
           else {
             pwm_value = 128 - pwm_amplitude; 
-            Serial.print("_");
+//            Serial.print("_");
           }
 		pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
 //		Serial.println("wav_position: ");
