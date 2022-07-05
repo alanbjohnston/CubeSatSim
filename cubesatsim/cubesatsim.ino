@@ -108,7 +108,7 @@ void setup() {
     Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-
+    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
   } else if (mode == BPSK) {
@@ -755,8 +755,8 @@ void get_tlm_fox() {
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 ///    #endif
     Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
-//    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
-    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
+    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+//    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
@@ -795,9 +795,9 @@ void write_wave(int i, short int *buffer)
 {
 	if (mode == FSK)
 	{
-		if ((ctr - flip_ctr) < smaller)
-			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
-		else
+//		if ((ctr - flip_ctr) < smaller)  // No wave shaping
+//			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
+//		else
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 	}
 	else
