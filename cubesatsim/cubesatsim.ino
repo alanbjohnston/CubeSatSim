@@ -162,9 +162,6 @@ void setup() {
 
   }
 	
-// start pwm
-start_pwm();
-	
 // configure ina219s	
 start_ina219();
 	
@@ -173,6 +170,11 @@ start_ina219();
 	
 // program Transceiver board  
   configure_radio();	
+	
+// start pwm
+start_pwm();
+	
+	
 }
 
 void loop() {
@@ -383,7 +385,7 @@ void get_tlm_fox() {
       Serial.println(" ");
           if (mode == FSK)
 	  {
-	      Serial.println("Starting");	  
+//	      Serial.println("Starting");	  
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
 		Serial.println("Sending MIN frame");
 		frm_type = 0x03;
@@ -1638,7 +1640,7 @@ void start_payload() {
 	
 Serial1.begin(115200);  // Pi UART faster speed
 
-  Serial.println("Starting!");
+  Serial.println("Starting payload!");
   
   blink_setup();
 
@@ -1986,6 +1988,8 @@ void start_ina219() {
 void start_pwm() {
 // based on code https://github.com/rgrosset/pico-pwm-audio
 //
+  Serial.println"Starting pwm!");
+	
   pwm_value = 128 - pwm_amplitude;
 	
   set_sys_clock_khz(125000, true); 
@@ -2052,15 +2056,16 @@ void pwm_interrupt_handler() {
 		
           if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
             pwm_value = 128 + pwm_amplitude;
-            Serial.print(".");
+            Serial.print("-");
           }
           else {
             pwm_value = 128 - pwm_amplitude; 
-            Serial.print("-");
+            Serial.print("_");
           }
         }  
         pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);  
-        if (wav_position++ > 950)
+        if (wav_position++ > 300) {
 		wav_position = 0;
-	
+		Serial.println("Reset wav_position");
+	}
 }
