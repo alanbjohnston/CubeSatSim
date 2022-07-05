@@ -2063,7 +2063,9 @@ void pwm_interrupt_handler() {
             Serial.print("_");
           }
         }  
-        pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);  
+        pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
+	Serial.printl("wav_position: ");
+	Serial.println(wav_position);
         if (wav_position++ > 300) {
 		wav_position = 0;
 		Serial.println("Reset wav_position");
