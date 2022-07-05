@@ -1984,6 +1984,8 @@ void start_ina219() {
 void start_pwm() {
 // based on code https://github.com/rgrosset/pico-pwm-audio
 //
+  pwm_value = 128 - pwm_amplitude;
+	
   set_sys_clock_khz(125000, true); 
   gpio_set_function(AUDIO_OUT_PIN, GPIO_FUNC_PWM);
 
@@ -2016,7 +2018,7 @@ void start_pwm() {
     pwm_set_gpio_level(AUDIO_OUT_PIN, 0);
 	
 }
-
+/*
 void pwm_interrupt_handler() {
 // based on code https://github.com/rgrosset/pico-pwm-audio
 //	
@@ -2031,4 +2033,26 @@ void pwm_interrupt_handler() {
         // reset to start
         wav_position = 0;
     }
+}
+*/
+	
+void pwm_interrupt_handler() {
+    pwm_clear_irq(pwm_gpio_to_slice_num(AUDIO_OUT_PIN)); 
+    	pwm_counter++;   
+        if (pwm_counter > pwm_counter_max) {
+          pwm_counter -= pwm_counter_max;
+          if (random(0,2) == 1)
+            pwm_rnd_bit *= (-1.0);
+        
+          if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
+            pwm_value = 128 + pwm_amplitude;
+            Serial.print(".");
+          }
+          else {
+            pwm_value = 128 - pwm_amplitude; 
+            Serial.print(" ");
+          }
+        }  
+        pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);  
+//        wav_position++;
 }
