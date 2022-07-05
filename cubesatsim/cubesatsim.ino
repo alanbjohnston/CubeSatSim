@@ -800,6 +800,7 @@ void write_wave(int i, short int *buffer)
 //		else
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 		        Serial.print(buffer[ctr - 1]);
+		        Serial.print(" ");
 	}
 	else
 	{
