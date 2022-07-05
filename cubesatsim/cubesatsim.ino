@@ -766,7 +766,7 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-	Serial.print(data, BIN);   // Debugging print!!!  
+//	Serial.print(data, BIN);   // Debugging print!!!  
 //	Serial.print(" ");      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
