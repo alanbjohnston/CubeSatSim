@@ -799,6 +799,7 @@ void write_wave(int i, short int *buffer)
 //			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
 //		else
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
+		        Serial.print(buffer[ctr - 1]);
 	}
 	else
 	{
