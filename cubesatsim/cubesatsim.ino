@@ -1988,7 +1988,7 @@ void start_ina219() {
 void start_pwm() {
 // based on code https://github.com/rgrosset/pico-pwm-audio
 //
-  Serial.println"Starting pwm!");
+  Serial.println("Starting pwm!");
 	
   pwm_value = 128 - pwm_amplitude;
 	
