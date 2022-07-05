@@ -766,8 +766,8 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-	Serial.print(val, HEX);   // Debugging print!!!  
-	Serial.print(" ");      
+	Serial.print(data, BIN);   // Debugging print!!!  
+//	Serial.print(" ");      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
@@ -785,7 +785,7 @@ void get_tlm_fox() {
       }
 //	Serial.println("BB");     
     }
-	Serial.println("CC");     
+//	Serial.println("CC");     
   }
   Serial.println(" ");	
   Serial.println("Returning");	
@@ -2041,9 +2041,11 @@ void pwm_interrupt_handler() {
     	pwm_counter++;   
         if (pwm_counter > pwm_counter_max) {
           pwm_counter -= pwm_counter_max;
-          if (random(0,2) == 1)
-            pwm_rnd_bit *= (-1.0);
-        
+//          if (random(0,2) == 1)
+//            pwm_rnd_bit *= (-1.0);
+
+          pwm_rnd = (buffer[wave_position] > 0) ? 1 : 0;
+		
           if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
             pwm_value = 128 + pwm_amplitude;
             Serial.print(".");
@@ -2054,5 +2056,7 @@ void pwm_interrupt_handler() {
           }
         }  
         pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);  
-//        wav_position++;
+        if (wav_position++ > 950)
+		wave_position = 0;
+	
 }
