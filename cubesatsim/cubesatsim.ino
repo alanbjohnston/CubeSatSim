@@ -2044,7 +2044,7 @@ void pwm_interrupt_handler() {
 //          if (random(0,2) == 1)
 //            pwm_rnd_bit *= (-1.0);
 
-          pwm_rnd = (buffer[wave_position] > 0) ? 1 : 0;
+          pwm_rnd_bit = (buffer[wave_position] > 0) ? 1 : 0;
 		
           if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
             pwm_value = 128 + pwm_amplitude;
