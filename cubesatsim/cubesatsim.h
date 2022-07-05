@@ -236,10 +236,11 @@ float Temp;
 float rest;
 
 unsigned int wav_position = 0;
-int counter = 0;
-int counter_max = 420;
-int amplitude = 50; //100;
-int value;
+int pwm_counter = 0;
+int pwm_counter_max = 420;
+int pwm_amplitude = 50; //100;
+int pwm_value;
+int pwm_rnd_bit = 1;
 /*
  * TelemEncoding.h
  *
