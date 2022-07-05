@@ -289,7 +289,7 @@ void get_tlm_ao7() {
     print_string(str);
     strcat(str, payload_str);	
     print_string(str);
-    Serial.println(strlen(str));
+//    Serial.println(strlen(str));
     set_status(str);	
 //  }	
 }
@@ -331,11 +331,11 @@ void get_tlm_fox() {
     id = 7;
   else
     id = 0; // 99 in h[6]
-  Serial.println("About to do frame loop");
+//  Serial.println("About to do frame loop");
 	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-    Serial.println("Frame loop"); 
+//    Serial.println("Frame loop"); 
     if (firstTime != ON) {
       // delay for sample period
 /**/
@@ -412,25 +412,25 @@ void get_tlm_fox() {
 		    sensor[count1] = sensor_max[count1];
 		}
 	      }
-	      Serial.println("Here");	  
+//	      Serial.println("Here");	  
 	  }
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
     } 
-    Serial.println("Continuing");	  
+//    Serial.println("Continuing");	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
 //   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
-    Serial.println("After memset");      
+//    Serial.println("After memset");      
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
-    Serial.println("After h[0]");	  
+//    Serial.println("After h[0]");	  
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
-      Serial.println("After uptime test");
+//      Serial.println("After uptime test");
       h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
       h[1] = (short int) ((reset_count >> 5) & 0xff);
       h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
@@ -440,7 +440,7 @@ void get_tlm_fox() {
     h[4] = (short int) ((uptime >> 13) & 0xff);
     h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
-      Serial.println("h[5]");	  
+//      Serial.println("h[5]");	  
     if (mode == BPSK)
       h[6] = 99;
     posXi = (int)(current[mapping[PLUS_X]] + 0.5) + 2048;
@@ -462,9 +462,9 @@ void get_tlm_fox() {
 //    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
-    Serial.println("Before encoding");
+//    Serial.println("Before encoding");
     encodeA(b, 0 + head_offset, batt_a_v);
-    Serial.println("After encoding");	  
+//    Serial.println("After encoding");	  
     encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
@@ -472,7 +472,7 @@ void get_tlm_fox() {
     encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
     encodeA(b, 9 + head_offset, battCurr);
     encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	
-	      Serial.println("A");
+//	      Serial.println("A");
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
       encodeB(b, 13 + head_offset, negXv);
@@ -486,7 +486,7 @@ void get_tlm_fox() {
       encodeB(b, 25 + head_offset, negYi);
       encodeA(b, 27 + head_offset, posZi);
       encodeB(b, 28 + head_offset, negZi);
-	    	      Serial.println("B");
+//	    	      Serial.println("B");
     } else // BPSK
     {
       encodeA(b, 12 + head_offset, posXv);
@@ -598,7 +598,7 @@ void get_tlm_fox() {
 	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
     }
-	  	      Serial.println("C");
+//	  	      Serial.println("C");
     encodeA(b, 30 + head_offset, PSUVoltage);
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
@@ -613,17 +613,17 @@ void get_tlm_fox() {
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
-	  	      Serial.println("D");	  
+//	  	      Serial.println("D");	  
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
-	  	      Serial.println("E");	  
+//	  	      Serial.println("E");	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
-      Serial.println("TX Antenna Deployed!");
+//      Serial.println("TX Antenna Deployed!");
     }
-	  	      Serial.println("F");    
+//	  	      Serial.println("F");    
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
       encodeA(b, 64 + head_offset, 0xff & val); 
@@ -632,7 +632,7 @@ void get_tlm_fox() {
       encodeA(b, 62 + head_offset, 0x01);
       encodeB(b, 74 + head_offset, 0xfff); 
     }
-    Serial.println("Finished encoding");	  
+//    Serial.println("Finished encoding");	  
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
     int ctr1 = 0;
@@ -754,7 +754,7 @@ void get_tlm_fox() {
 ///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 ///    #endif
-    Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
+//    Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
     for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 //    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
@@ -787,8 +787,8 @@ void get_tlm_fox() {
     }
 //	Serial.println("CC");     
   }
-  Serial.println(" ");	
-  Serial.println("Returning");	
+//  Serial.println(" ");	
+//  Serial.println("Returning");	
 }
 
 void write_wave(int i, short int *buffer)
@@ -799,8 +799,8 @@ void write_wave(int i, short int *buffer)
 //			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
 //		else
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
-		        Serial.print(buffer[ctr - 1]);
-		        Serial.print(" ");
+//		        Serial.print(buffer[ctr - 1]);
+//		        Serial.print(" ");
 	}
 	else
 	{
@@ -2047,6 +2047,8 @@ void pwm_interrupt_handler() {
 //            pwm_rnd_bit *= (-1.0);
 
           pwm_rnd_bit = (buffer[wav_position] > 0) ? 1 : 0;
+	  Serial.print(pwm_rnd_bit);
+	  Serial.print(" ");
 		
           if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
             pwm_value = 128 + pwm_amplitude;
@@ -2054,7 +2056,7 @@ void pwm_interrupt_handler() {
           }
           else {
             pwm_value = 128 - pwm_amplitude; 
-            Serial.print(" ");
+            Serial.print("-");
           }
         }  
         pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);  
