@@ -2022,7 +2022,7 @@ void pwm_interrupt_handler() {
 //	
     pwm_clear_irq(pwm_gpio_to_slice_num(AUDIO_OUT_PIN));    
 //    if (wav_position < (WAV_DATA_LENGTH<<3) - 1) { 
-    if (wav_position > (buffer_size - 1)) { 
+    if (wav_position > (BUFFER_SIZE - 1)) { 
         // set pwm level 
         // allow the pwm value to repeat for 8 cycles this is >>3 
         pwm_set_gpio_level(AUDIO_OUT_PIN, buffer[wav_position]);  
