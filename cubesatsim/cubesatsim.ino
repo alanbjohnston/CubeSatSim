@@ -173,7 +173,9 @@ start_ina219();
 	
 // start pwm
 start_pwm();
-	
+
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(PTT_PIN, LOW);
 	
 }
 
@@ -191,8 +193,8 @@ void loop() {
   else if (mode == AFSK)
 	  send_packet();
 
-  delay(2000);
-  test_radio();
+//  delay(2000);
+//  test_radio();
 	
   digitalWrite(LED_BUILTIN, LOW);	
 	
@@ -790,7 +792,8 @@ void get_tlm_fox() {
 //	Serial.println("CC");     
   }
 //  Serial.println(" ");	
-//  Serial.println("Returning");	
+  Serial.print("get_fox_tlm eturning with counter: ");
+  Serial.println(ctr);
 }
 
 void write_wave(int i, short int *buffer)
