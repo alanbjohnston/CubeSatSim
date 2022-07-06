@@ -104,7 +104,7 @@ void loop() {
   loop_count++;
 	
   if (sim_mode == TRUE) 
-    generate_simualted_telem();
+    generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
     read_ina219();
