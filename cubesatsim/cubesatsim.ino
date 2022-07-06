@@ -2235,6 +2235,16 @@ void setup1() {
 	
   pinMode(AUDIO_OUT_PIN, OUTPUT);
   Serial.println("Setup1");
+	
+  digitalWrite(AUDIO_OUT_PIN, HIGH);
+  delay(500);	
+  digitalWrite(AUDIO_OUT_PIN, LOW);
+  delay(500);	
+  digitalWrite(AUDIO_OUT_PIN, HIGH);
+  delay(500);
+  digitalWrite(AUDIO_OUT_PIN, LOW);
+  delay(500);	
+	
 }
 
 void loop1() {
@@ -2264,5 +2274,5 @@ void loop1() {
 		wav_position = wav_position - BUFFER_SIZE;
 //		Serial.print("R");
 	  }
-	  delay(5);
+	  delay(50);
 }
