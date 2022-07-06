@@ -132,7 +132,8 @@ void pwm_interrupt_handler();
 void start_pwm();
 void transmit_on(); 
 void transmit_off(); 
-
+void config_telem();
+   
 extern int Encode_8b10b[][256];
 
 //int socket_open = 0;
