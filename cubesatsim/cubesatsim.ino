@@ -134,7 +134,7 @@ void loop() {
   // send telemetry
   
   // delay some time
-  Serial.print("Loop time: ");	
+  Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
   
 }
