@@ -446,7 +446,7 @@ void config_simulated_telem()
 }
 
 void get_tlm_fox() {
-  Serial.println("get_tlm_fox");
+//  Serial.println("get_tlm_fox");
 	
   int i;
   long int sync = syncWord;
@@ -521,8 +521,8 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 //         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
-	Serial.print(voltage_min[count1]);
-	Serial.print(" ");
+//	Serial.print(voltage_min[count1]);
+//	Serial.print(" ");
       }
       Serial.println(" ");	    
        for (int count1 = 0; count1 < 3; count1++) {
@@ -530,10 +530,10 @@ void get_tlm_fox() {
           other_min[count1] = other[count1];
         if (other[count1] > other_max[count1])
           other_max[count1] = other[count1];
-	Serial.print(other_min[count1]);
-	Serial.print(" ");
+//	Serial.print(other_min[count1]);
+//	Serial.print(" ");
       }
-      Serial.println(" ");
+//      Serial.println(" ");
           if (mode == FSK)
 	  {
 //	      Serial.println("Starting");	  
@@ -941,8 +941,8 @@ void get_tlm_fox() {
 //	Serial.println("CC");     
   }
 //  Serial.println(" ");	
-  Serial.print("get_fox_tlm eturning with counter: ");
-  Serial.println(ctr);
+//  Serial.print("get_fox_tlm eturning with counter: ");
+//  Serial.println(ctr);
 }
 
 void write_wave(int i, short int *buffer)
@@ -2221,7 +2221,7 @@ void pwm_interrupt_handler() {
 //	  Serial.println(wav_position);
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
-		Serial.println("Reset wav_position");
+		Serial.print("R");
 	  }
         }  
 
