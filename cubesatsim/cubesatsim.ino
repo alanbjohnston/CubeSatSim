@@ -340,19 +340,19 @@ void generate_simulated_telem() {
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
-      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
-      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
-      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
-      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
-      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
-      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
+      current[mapping[PLUS_X]] = (Xi >= 0) ? Xi : 0;
+      current[mapping[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
+      current[mapping[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
+      current[mapping[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
+      current[mapping[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
+      current[mapping[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
-      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
+      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
+      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
+      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
 
       // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
@@ -361,17 +361,17 @@ void generate_simulated_telem() {
       //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-      voltage[map[BUS]] = rnd_float(5.0, 5.005);
-      current[map[BUS]] = rnd_float(158, 171);
+      voltage[mapping[BUS]] = rnd_float(5.0, 5.005);
+      current[mapping[BUS]] = rnd_float(158, 171);
 
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
+      current[mapping[BAT]] = ((current[mapping[BUS]] * voltage[mapping[BUS]]) / batt) - charging;
 
       //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
-      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      batt -= (batt > 3.5) ? current[mapping[BAT]] / 30000 : current[mapping[BAT]] / 3000;
       if (batt < 3.0) {
         batt = 3.0;
         SafeMode = 1;
@@ -382,7 +382,7 @@ void generate_simulated_telem() {
       if (batt > 4.5)
         batt = 4.5;
 
-      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+      voltage[mapping[BAT]] = batt + rnd_float(-0.01, 0.01);
 
       // end of simulated telemetry
 }
