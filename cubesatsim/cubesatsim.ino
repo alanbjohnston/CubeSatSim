@@ -87,7 +87,7 @@ void setup() {
 
 	
 // configure STEM Payload sensors	
-  start_payload();	
+//  start_payload();	
 	
 // program Transceiver board  
   config_radio();	
@@ -108,9 +108,10 @@ void loop() {
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-    read_ina219();
+//    read_ina219();
+    ;	
 	
-  read_payload();	
+//  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))
@@ -1708,7 +1709,7 @@ void config_radio()
   mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
-    delay(500);
+    sleep(0.5); // delay(500);
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
   }
@@ -1721,7 +1722,7 @@ void test_radio()
 
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);
-  delay(3000);
+  sleep(3.0); // delay(3000);
   digitalWrite(PTT_PIN, HIGH);
   digitalWrite(MAIN_LED_BLUE, LOW);
 }
@@ -1798,14 +1799,14 @@ Serial1.begin(115200);  // Pi UART faster speed
   blink_setup();
 
   blink(500);
-  delay(250);
+  sleep(0.25); // delay(250);
   blink(500);
-  delay(250);
+  sleep(0.25); // delay(250);
   led_set(greenLED, HIGH);
-  delay(250);
+  sleep(0.25); // delay(250);
   led_set(greenLED, LOW);
   led_set(blueLED, HIGH);
-  delay(250);
+  sleep(0.25); // delay(250);
   led_set(blueLED, LOW);
       
   if (bme.begin(0x76)) {
@@ -2078,7 +2079,7 @@ void blink(int length)
   digitalWrite(25, LOW);   // set the built-in LED ON
 #endif 
   
-  delay(length);              // wait for a lenth of time
+  sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
   digitalWrite(PC13, HIGH);    // turn the LED off by making the voltage LOW
