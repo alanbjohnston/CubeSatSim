@@ -243,7 +243,7 @@ float rest;
 unsigned int wav_position = 0;
 int pwm_counter = 0;
 int pwm_counter_max = 420;
-int pwm_amplitude = 100; //50 //100;
+int pwm_amplitude = 10; //50 //100;
 int pwm_value;
 int pwm_rnd_bit = 1;
 /*
