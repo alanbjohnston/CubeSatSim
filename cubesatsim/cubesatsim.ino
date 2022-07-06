@@ -2210,18 +2210,18 @@ void pwm_interrupt_handler() {
 		
           if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
             pwm_value = 128 + pwm_amplitude;
-            Serial.print("-");
+//            Serial.print("-");
           }
           else {
             pwm_value = 128 - pwm_amplitude; 
-            Serial.print("_");
+//            Serial.print("_");
           }
 	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
 //	  Serial.println("wav_position: ");
 //	  Serial.println(wav_position);
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
-		Serial.print("R");
+//		Serial.print("R");
 	  }
         }  
 
