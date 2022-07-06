@@ -2171,7 +2171,7 @@ void start_pwm() {
      *  2.0f for 44 KHz etc
      */
     pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
-    pwm_config_set_wrap(&config, 250); 
+    pwm_config_set_wrap(&config, 178); // 250); 
     pwm_init(audio_pin_slice, &config, true);
 
     pwm_set_gpio_level(AUDIO_OUT_PIN, 0);
