@@ -93,7 +93,8 @@ void setup() {
   config_radio();	
 	
 // start pwm
-  start_pwm();
+//  start_pwm();
+	
 
   transmit_on();
 	
@@ -2225,4 +2226,38 @@ void pwm_interrupt_handler() {
 	  }
         }  
 
+}
+
+void setup1() {
+	
+	  pinMode(AUDIO_OUT_PIN, OUTPUT);	
+}
+
+void loop1() {
+
+        if (pwm_counter > pwm_counter_max) {
+          pwm_counter -= pwm_counter_max;
+		
+        pwm_rnd_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
+	digitalWrite(AUDIO_OUT_PIN, pwm_rnd_bit);	
+/*		
+          pwm_rnd_bit = (buffer[wav_position] > 0) ? 1 : 0;
+		
+          if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
+            pwm_value = 128 + pwm_amplitude;
+//            Serial.print("-");
+          }
+          else {
+            pwm_value = 128 - pwm_amplitude; 
+//            Serial.print("_");
+          }
+	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
+//	  Serial.println("wav_position: ");
+//	  Serial.println(wav_position);
+*/		
+	  if (wav_position++ > BUFFER_SIZE) { // 300) {
+		wav_position = wav_position - BUFFER_SIZE;
+//		Serial.print("R");
+	  }
+	  delay(5);
 }
