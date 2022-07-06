@@ -131,9 +131,9 @@ void send_packet() {
 //  digitalWrite(LED_BUILTIN, LOW);
 	
   Serial.println("Sending APRS packet!");
-  transmit_on()
+  transmit_on();
   send_packet(_FIXPOS_STATUS);
-  transmit_off()	
+  transmit_off();	
 	
 //  delay(1000);	
 	
