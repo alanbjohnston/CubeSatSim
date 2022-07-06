@@ -2247,18 +2247,21 @@ void pwm_interrupt_handler() {
 void setup1() {
   Serial.begin(9600);
   sleep(10.0);
+
+  if (mode == FSK) {
+	  
+    pinMode(AUDIO_OUT_PIN, OUTPUT);
+    Serial.println("Setup1");
 	
-  pinMode(AUDIO_OUT_PIN, OUTPUT);
-  Serial.println("Setup1");
-	
-  digitalWrite(AUDIO_OUT_PIN, HIGH);
-  delay(500);	
-  digitalWrite(AUDIO_OUT_PIN, LOW);
-  delay(500);	
-  digitalWrite(AUDIO_OUT_PIN, HIGH);
-  delay(500);
-  digitalWrite(AUDIO_OUT_PIN, LOW);
-  delay(500);	
+//  digitalWrite(AUDIO_OUT_PIN, HIGH);
+//  delay(500);	
+//  digitalWrite(AUDIO_OUT_PIN, LOW);
+//  delay(500);	
+//  digitalWrite(AUDIO_OUT_PIN, HIGH);
+//  delay(500);
+//  digitalWrite(AUDIO_OUT_PIN, LOW);
+//  delay(500);	
+  }
 	
 }
 
@@ -2267,6 +2270,7 @@ void loop1() {
 //        if (pwm_counter > pwm_counter_max) {
 //          pwm_counter -= pwm_counter_max;
 		
+  if (mode == FSK) {
         pwm_rnd_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 	
 	digitalWrite(AUDIO_OUT_PIN, pwm_rnd_bit);	
@@ -2288,5 +2292,6 @@ void loop1() {
 		wav_position = wav_position - BUFFER_SIZE;
 //		Serial.print("R");
 	  }
-	  delay(1); //5);
+  }	  
+	  delay(5); //1);
 }
