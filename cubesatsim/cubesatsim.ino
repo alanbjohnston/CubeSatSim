@@ -2252,7 +2252,7 @@ void setup1() {
   {
 	  
     pinMode(AUDIO_OUT_PIN, OUTPUT);
-    Serial.println("Setup1");
+    Serial.println("Setup1 for FSK mode");
 	
 //  digitalWrite(AUDIO_OUT_PIN, HIGH);
 //  delay(500);	
@@ -2295,5 +2295,5 @@ void loop1() {
 //		Serial.print("R");
 	  }
   }	  
-	  delay(2); //5 1);
+	  delay(5); //2 1);
 }
