@@ -2288,5 +2288,5 @@ void loop1() {
 		wav_position = wav_position - BUFFER_SIZE;
 //		Serial.print("R");
 	  }
-	  delay(5);
+	  delay(1); //5);
 }
