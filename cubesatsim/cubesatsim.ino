@@ -73,6 +73,7 @@ void setup() {
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
+  sim_mode = FALSE;	
   mode = FSK; // AFSK;	
   
   config_telem();	
@@ -97,8 +98,12 @@ void loop() {
   
   loop_count++;
 	
+  if (sim_mode == TRUE) 
+    generate_simualted_telem();
+  else
   // query INA219 sensors and Payload sensors
-  read_ina219();	
+    read_ina219();
+	
   read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
@@ -308,6 +313,59 @@ void get_tlm_ao7() {
 //    Serial.println(strlen(str));
     set_status(str);	
 //  }	
+}
+
+void generate_simulated_telem() {
+
+    sim_mode = TRUE;
+	    
+    Serial.println("Simulated telemetry mode!\n");
+
+    srand((unsigned int)time(0));
+
+    axis[0] = rnd_float(-0.2, 0.2);
+    if (axis[0] == 0)
+      axis[0] = rnd_float(-0.2, 0.2);
+    axis[1] = rnd_float(-0.2, 0.2);
+    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+
+    angle[0] = (float) atan(axis[1] / axis[2]);
+    angle[1] = (float) atan(axis[2] / axis[0]);
+    angle[2] = (float) atan(axis[1] / axis[0]);
+
+    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
+    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
+    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+
+    float amps_avg = rnd_float(150, 300);
+
+    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
+    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
+    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+
+    batt = rnd_float(3.8, 4.3);
+    speed = rnd_float(1.0, 2.5);
+    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
+    period = rnd_float(150, 300);
+    tempS = rnd_float(20, 55);
+    temp_max = rnd_float(50, 70);
+    temp_min = rnd_float(10, 20);
+
+    #ifdef DEBUG_LOGGING
+    for (int i = 0; i < 3; i++)
+      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+    #endif
+
+    time_start = (long int) millis();
+
+    eclipse_time = (long int)(millis() / 1000.0);
+    if (eclipse == 0.0)
+      eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
+//  }
+
+  tx_freq_hz -= tx_channel * 50000;
+	
 }
 
 void get_tlm_fox() {
