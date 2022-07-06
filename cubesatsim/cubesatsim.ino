@@ -73,13 +73,18 @@ void setup() {
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
-  sim_mode = FALSE;	
-  mode = FSK; // AFSK;	
+  sim_mode = FALSE;
+  if (sim_mode)
+    configure_simulated_telem();
+  else
+    // configure ina219s	
+    start_ina219();
+	
+  mode = FSK; // AFSK;		
   
   config_telem();	
 	
-// configure ina219s	
-  start_ina219();
+
 	
 // configure STEM Payload sensors	
   start_payload();	
@@ -317,6 +322,74 @@ void get_tlm_ao7() {
 
 void generate_simulated_telem() {
 
+      double time = ((long int)millis() - time_start) / 1000.0;
+
+      if ((time - eclipse_time) > period) {
+        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse_time = time;
+        Serial.println"\n\nSwitching eclipse mode! \n\n");
+      }
+
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+
+      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+
+      current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
+      current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
+      current[map[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
+      current[map[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
+      current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
+      current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
+
+      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
+      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
+      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+
+      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
+      tempS += +rnd_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      other[IHU_TEMP] = tempS;
+
+      voltage[map[BUS]] = rnd_float(5.0, 5.005);
+      current[map[BUS]] = rnd_float(158, 171);
+
+      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+
+      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
+
+      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+
+      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      if (batt < 3.0) {
+        batt = 3.0;
+        SafeMode = 1;
+        printf("Safe Mode!\n");
+      } else
+        SafeMode= 0;
+
+      if (batt > 4.5)
+        batt = 4.5;
+
+      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+
+      // end of simulated telemetry
+}
+
+void config_simulated_telemetry()
+{
+
     sim_mode = TRUE;
 	    
     Serial.println("Simulated telemetry mode!\n");
@@ -351,11 +424,11 @@ void generate_simulated_telem() {
     temp_max = rnd_float(50, 70);
     temp_min = rnd_float(10, 20);
 
-    #ifdef DEBUG_LOGGING
-    for (int i = 0; i < 3; i++)
-      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
-    #endif
+//    #ifdef DEBUG_LOGGING
+//    for (int i = 0; i < 3; i++)
+//      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+//    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+//    #endif
 
     time_start = (long int) millis();
 
