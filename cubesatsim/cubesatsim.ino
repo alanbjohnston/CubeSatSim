@@ -2235,8 +2235,8 @@ void setup1() {
 
 void loop1() {
 
-        if (pwm_counter > pwm_counter_max) {
-          pwm_counter -= pwm_counter_max;
+//        if (pwm_counter > pwm_counter_max) {
+//          pwm_counter -= pwm_counter_max;
 		
         pwm_rnd_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 	digitalWrite(AUDIO_OUT_PIN, pwm_rnd_bit);	
