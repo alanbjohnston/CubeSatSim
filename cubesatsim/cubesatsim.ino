@@ -75,7 +75,7 @@ void setup() {
 	
   sim_mode = FALSE;
   if (sim_mode)
-    configure_simulated_telem();
+    config_simulated_telem();
   else
     // configure ina219s	
     start_ina219();
@@ -90,7 +90,7 @@ void setup() {
   start_payload();	
 	
 // program Transceiver board  
-  configure_radio();	
+  config_radio();	
 	
 // start pwm
   start_pwm();
@@ -1688,7 +1688,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 	}
 }
 
-void configure_radio()
+void config_radio()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   
