@@ -50,6 +50,7 @@ void setup() {
   Serial.begin(9600);
 	
 //  delay(12000);
+  sleep(10.0);	
 	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
@@ -2229,6 +2230,8 @@ void pwm_interrupt_handler() {
 }
 
 void setup1() {
+  Serial.begin(9600);
+  sleep(10.0);
 	
   pinMode(AUDIO_OUT_PIN, OUTPUT);
   Serial.println("Setup1");
