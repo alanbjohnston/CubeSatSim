@@ -55,7 +55,9 @@ void setup() {
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
   digitalWrite(MAIN_LED_GREEN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, LOW);		
+  digitalWrite(MAIN_LED_BLUE, LOW);	
+
+  mode = FSK; // AFSK;		
 
   Serial.begin(9600);
 	
@@ -81,9 +83,7 @@ void setup() {
     config_simulated_telem();
   else
     // configure ina219s	
-    start_ina219();
-	
-  mode = AFSK; FSK; // AFSK;		
+    start_ina219();	
   
   config_telem();	
 	
