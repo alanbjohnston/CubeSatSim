@@ -100,7 +100,8 @@ void setup() {
 }
 
 void loop() {
-  
+	
+  int startSleep = millis();	
   loop_count++;
 	
   if (sim_mode == TRUE) 
@@ -130,6 +131,8 @@ void loop() {
   // send telemetry
   
   // delay some time
+  Serial.print("Loop time: ");	
+  Serial.println(millis() - startSleep);	
   
 }
 
@@ -2217,7 +2220,7 @@ void pwm_interrupt_handler() {
 //	  Serial.println(wav_position);
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
-//		Serial.println("Reset wav_position");
+		Serial.println("Reset wav_position");
 	  }
         }  
 
