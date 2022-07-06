@@ -83,7 +83,7 @@ void setup() {
     // configure ina219s	
     start_ina219();
 	
-  mode = FSK; // AFSK;		
+  mode = AFSK; FSK; // AFSK;		
   
   config_telem();	
 	
@@ -2248,7 +2248,8 @@ void setup1() {
   Serial.begin(9600);
   sleep(10.0);
 
-  if (mode == FSK) {
+  if (mode == FSK) 
+  {
 	  
     pinMode(AUDIO_OUT_PIN, OUTPUT);
     Serial.println("Setup1");
@@ -2270,7 +2271,8 @@ void loop1() {
 //        if (pwm_counter > pwm_counter_max) {
 //          pwm_counter -= pwm_counter_max;
 		
-  if (mode == FSK) {
+  if (mode == FSK) 
+  {
         pwm_rnd_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 	
 	digitalWrite(AUDIO_OUT_PIN, pwm_rnd_bit);	
