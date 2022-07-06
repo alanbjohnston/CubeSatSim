@@ -2259,7 +2259,7 @@ void loop1() {
 //	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
 //	  Serial.println("wav_position: ");
 //	  Serial.println(wav_position);
-*/		
+		
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
 //		Serial.print("R");
