@@ -95,7 +95,19 @@ void setup() {
 	
 // start pwm
 //  start_pwm();
+
+  pinMode(AUDIO_OUT_PIN, OUTPUT);
+  Serial.println("Setup0");
 	
+  digitalWrite(AUDIO_OUT_PIN, HIGH);
+  delay(500);	
+  digitalWrite(AUDIO_OUT_PIN, LOW);
+  delay(500);	
+  digitalWrite(AUDIO_OUT_PIN, HIGH);
+  delay(500);
+  digitalWrite(AUDIO_OUT_PIN, LOW);
+  delay(500);	
+		
 
   transmit_on();
 	
