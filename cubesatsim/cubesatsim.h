@@ -133,8 +133,9 @@ void start_pwm();
 void transmit_on(); 
 void transmit_off(); 
 void config_telem();
-void generate_simulated_telem(); 
-   
+void config_simulated_telem(); 
+void generate_simualted_telem();
+
 extern int Encode_8b10b[][256];
 
 //int socket_open = 0;
