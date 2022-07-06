@@ -327,7 +327,7 @@ void generate_simulated_telem() {
       if ((time - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
         eclipse_time = time;
-        Serial.println"\n\nSwitching eclipse mode! \n\n");
+        Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
 
       double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
