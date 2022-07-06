@@ -2295,5 +2295,5 @@ void loop1() {
 //		Serial.print("R");
 	  }
   }	  
-	  delay(5); //1);
+	  delay(2); //5 1);
 }
