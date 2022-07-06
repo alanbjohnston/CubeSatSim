@@ -49,7 +49,7 @@ void setup() {
 
   Serial.begin(9600);
 	
-  delay(12000);
+//  delay(12000);
 	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
