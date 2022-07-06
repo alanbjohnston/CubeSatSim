@@ -46,6 +46,16 @@ Adafruit_INA219 ina219_2_0x45(0x45);
 char payload_str[100];
 
 void setup() {
+	
+// set all Pico GPIO pins to input	
+  for (int i = 6; i < 29; i++) {
+    pinMode(i, INPUT);	  
+  }
+  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
+  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
+  digitalWrite(MAIN_LED_GREEN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, LOW);		
 
   Serial.begin(9600);
 	
@@ -56,15 +66,7 @@ void setup() {
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
 #endif	
 
-// set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
-    pinMode(i, INPUT);	  
-  }
-  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
-  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
-  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
-  digitalWrite(MAIN_LED_GREEN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, LOW);	
+
   
 // detect Pi Zero using 3.3V
   
@@ -96,6 +98,7 @@ void setup() {
 // start pwm
 //  start_pwm();
 
+/*	
   pinMode(AUDIO_OUT_PIN, OUTPUT);
   Serial.println("Setup0");
 	
@@ -107,7 +110,7 @@ void setup() {
   delay(500);
   digitalWrite(AUDIO_OUT_PIN, LOW);
   delay(500);	
-		
+*/		
 
   transmit_on();
 	
@@ -2286,5 +2289,5 @@ void loop1() {
 		wav_position = wav_position - BUFFER_SIZE;
 //		Serial.print("R");
 	  }
-	  delay(50);
+	  delay(5);
 }
