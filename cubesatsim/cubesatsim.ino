@@ -73,7 +73,7 @@ void setup() {
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
-  sim_mode = TRUE; // FALSE;
+  sim_mode = FALSE;
   if (sim_mode)
     config_simulated_telem();
   else
