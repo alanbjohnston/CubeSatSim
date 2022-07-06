@@ -390,7 +390,7 @@ void generate_simulated_telem() {
       // end of simulated telemetry
 }
 
-void config_simulated_telemetry()
+void config_simulated_telem()
 {
 
     sim_mode = TRUE;
@@ -497,8 +497,8 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-      Serial.print("Sleep period: ");
-      Serial.println(millis() - startSleep);
+//      Serial.print("Sleep period: ");
+//      Serial.println(millis() - startSleep);
 //      fflush(stdout);
       
       sampleTime = (unsigned int) millis();
