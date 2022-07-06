@@ -2230,7 +2230,8 @@ void pwm_interrupt_handler() {
 
 void setup1() {
 	
-	  pinMode(AUDIO_OUT_PIN, OUTPUT);	
+  pinMode(AUDIO_OUT_PIN, OUTPUT);
+  Serial.println("Setup1");
 }
 
 void loop1() {
