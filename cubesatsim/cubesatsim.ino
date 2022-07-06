@@ -75,6 +75,84 @@ void setup() {
 	
   mode = FSK; // AFSK;	
   
+  config_telem();	
+	
+// configure ina219s	
+  start_ina219();
+	
+// configure STEM Payload sensors	
+  start_payload();	
+	
+// program Transceiver board  
+  configure_radio();	
+	
+// start pwm
+  start_pwm();
+
+  transmit_on();
+	
+}
+
+void loop() {
+  
+  loop_count++;
+	
+  // query INA219 sensors and Payload sensors
+  read_ina219();	
+  read_payload();	
+  
+  // encode as digits (APRS or CW mode) or binary (DUV FSK)	
+  if ((mode == BPSK) || (mode == FSK))
+	  get_tlm_fox();
+  else if (mode == AFSK)
+	  send_packet();
+
+//  delay(2000);
+//  test_radio();
+	
+  digitalWrite(LED_BUILTIN, LOW);	
+	
+//  delay(3000);	
+  sleep(3.0);
+	
+  digitalWrite(LED_BUILTIN, HIGH);	
+	
+  // send telemetry
+  
+  // delay some time
+  
+}
+
+void send_packet() {
+	
+// encode telemetry
+  get_tlm_ao7();
+	
+//  digitalWrite(LED_BUILTIN, LOW);
+	
+  Serial.println("Sending APRS packet!");
+  transmit_on()
+  send_packet(_FIXPOS_STATUS);
+  transmit_off()	
+	
+//  delay(1000);	
+	
+
+//  digitalWrite(LED_BUILTIN, HIGH);		
+}
+
+void transmit_on() {
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(PTT_PIN, LOW);
+}
+
+void transmit_off() {
+  digitalWrite(PTT_PIN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, LOW);	
+}
+
+void config_telem() {
+	
   frameCnt = 1; 
   
   Serial.println("v1 Present with UHF BPF\n");
@@ -159,74 +237,8 @@ void setup() {
     char sym_tab_default = 'a';
     char icon[] = "Ha";
     set_lat_lon_icon(lat_default, lon_default, icon);
-
   }
-	
-// configure ina219s	
-start_ina219();
-	
-// configure STEM Payload sensors	
-  start_payload();	
-	
-// program Transceiver board  
-  configure_radio();	
-	
-// start pwm
-start_pwm();
-
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
-  digitalWrite(PTT_PIN, LOW);
-	
-}
-
-void loop() {
-  
-  loop_count++;
-	
-  // query INA219 sensors and Payload sensors
-  read_ina219();	
-  read_payload();	
-  
-  // encode as digits (APRS or CW mode) or binary (DUV FSK)	
-  if ((mode == BPSK) || (mode == FSK))
-	  get_tlm_fox();
-  else if (mode == AFSK)
-	  send_packet();
-
-//  delay(2000);
-//  test_radio();
-	
-  digitalWrite(LED_BUILTIN, LOW);	
-	
-//  delay(3000);	
-  sleep(3.0);
-	
-  digitalWrite(LED_BUILTIN, HIGH);	
-	
-  // send telemetry
-  
-  // delay some time
-  
-}
-
-void send_packet() {
-	
-// encode telemetry
-  get_tlm_ao7();
-	
-//  digitalWrite(LED_BUILTIN, LOW);
-	
-  Serial.println("Sending APRS packet!");
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
-  digitalWrite(PTT_PIN, LOW);
-  send_packet(_FIXPOS_STATUS);
-  digitalWrite(PTT_PIN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, LOW);	
-	
-//  delay(1000);	
-	
-
-//  digitalWrite(LED_BUILTIN, HIGH);		
+  firstTime = ON;	
 }
 
 void get_tlm_ao7() {
@@ -356,8 +368,10 @@ void get_tlm_fox() {
 //      fflush(stdout);
       
       sampleTime = (unsigned int) millis();
-    } else
+    } else {
       Serial.println("first time - no sleep\n");
+      firstTime = OFF;
+    }
 	
 //    if (mode == FSK) 
     {  // just moved
@@ -806,6 +820,8 @@ void write_wave(int i, short int *buffer)
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 //		        Serial.print(buffer[ctr - 1]);
 //		        Serial.print(" ");
+		if (ctr > BUFFER_SIZE)
+			ctr = ctr - BUFFER_SIZE;
 	}
 	else
 	{
@@ -2065,12 +2081,12 @@ void pwm_interrupt_handler() {
             pwm_value = 128 - pwm_amplitude; 
 //            Serial.print("_");
           }
-		pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
-//		Serial.println("wav_position: ");
-//		Serial.println(wav_position);
-		if (wav_position++ > 300) {
-			wav_position = 0;
-//			Serial.println("Reset wav_position");
+	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
+//	  Serial.println("wav_position: ");
+//	  Serial.println(wav_position);
+	  if (wav_position++ > BUFFER_SIZE) { // 300) {
+		wav_position = wav_position - BUFFER_SIZE;
+//		Serial.println("Reset wav_position");
 	  }
         }  
 
