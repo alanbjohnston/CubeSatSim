@@ -73,7 +73,7 @@ void setup() {
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
-  sim_mode = TRUE; // FALSE;
+  sim_mode = FALSE;
   if (sim_mode)
     config_simulated_telem();
   else
@@ -497,8 +497,8 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-//      Serial.print("Sleep period: ");
-//      Serial.println(millis() - startSleep);
+      Serial.print("Sleep period: ");
+      Serial.println(millis() - startSleep);
 //      fflush(stdout);
       
       sampleTime = (unsigned int) millis();
