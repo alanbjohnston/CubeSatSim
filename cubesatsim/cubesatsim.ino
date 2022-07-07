@@ -2101,7 +2101,7 @@ void start_ina219() {
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
-  Serial.println(digitalRead(PI_3V3_PIN);
+  Serial.println(digitalRead(PI_3V3_PIN));
 
   // Supply power to the Main board INA219s		 
   pinMode(MAIN_INA219, OUTPUT);
