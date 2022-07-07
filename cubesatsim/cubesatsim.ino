@@ -48,14 +48,13 @@ char payload_str[100];
 void setup() {
 	
   Serial.begin(9600);
+
+  sleep(5.0);		
 	
   config_gpio();	
 
   mode = FSK; // AFSK;		
 
-//  delay(12000);
-  sleep(5.0);	
-	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
 #endif	
