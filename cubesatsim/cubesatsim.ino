@@ -536,7 +536,8 @@ void get_tlm_fox() {
       
       sampleTime = (unsigned int) millis();
     } else {
-      Serial.println("first time - no sleep");
+      Serial.println("first time - short sleep");
+      sleep(3.0);	    
 //      firstTime = OFF;
     }
 	
