@@ -113,10 +113,12 @@ void setup() {
 */		
 
   transmit_on();
-
-			Serial.print("s");
-			Serial.print(" ");
-			Serial.println(millis());	
+	
+  ready = TRUE;  // flag for core1 to start looping
+	
+  Serial.print("s");
+  Serial.print(" ");
+ Serial.println(millis());	
 }
 
 void loop() {
@@ -2253,7 +2255,7 @@ void pwm_interrupt_handler() {
 
 void setup1() {
   Serial.begin(9600);
-  sleep(10.0);
+//  sleep(10.0);
 
   if (mode == FSK) 
   {
@@ -2271,9 +2273,12 @@ void setup1() {
 //  delay(500);	
   }
 
-			Serial.print("S");
-			Serial.print(" ");
-			Serial.println(millis());	
+  while(!ready)  // wait for core0 to start
+    sleep(0.1);
+	
+  Serial.print("S");
+  Serial.print(" ");
+  Serial.println(millis());	
 }
 
 void loop1() {
