@@ -143,14 +143,17 @@ void loop() {
 
 //  delay(2000);
 //  test_radio();
-	
-  digitalWrite(LED_BUILTIN, LOW);	
-	
-//  delay(3000);	
-  sleep(2.845); // 3.0);
-	
-  digitalWrite(LED_BUILTIN, HIGH);	
-	
+
+  if (mode == FSK) {	
+	  digitalWrite(LED_BUILTIN, LOW);	
+	  digitalWrite(MAIN_LED_BLUE, LOW);
+
+	//  delay(3000);	
+	  sleep(0.5); // 2.845); // 3.0);
+
+	  digitalWrite(LED_BUILTIN, HIGH);
+	  digitalWrite(MAIN_LED_BLUE, HIGH);
+  }	
   // send telemetry
   
   // delay some time
@@ -533,7 +536,7 @@ void get_tlm_fox() {
       
       sampleTime = (unsigned int) millis();
     } else {
-      Serial.println("first time - no sleep\n");
+      Serial.println("first time - no sleep");
 //      firstTime = OFF;
     }
 	
@@ -553,7 +556,7 @@ void get_tlm_fox() {
 //	Serial.print(voltage_min[count1]);
 //	Serial.print(" ");
       }
-      Serial.println(" ");	    
+//      Serial.println(" ");	    
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
           other_min[count1] = other[count1];
