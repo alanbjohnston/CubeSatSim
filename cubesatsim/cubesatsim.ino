@@ -56,6 +56,8 @@ void setup() {
   pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
   digitalWrite(MAIN_LED_GREEN, HIGH);
   digitalWrite(MAIN_LED_BLUE, LOW);	
+	
+  pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
 
   mode = FSK; // AFSK;		
 
@@ -1009,13 +1011,7 @@ float toAprsFormat(float input) {
     return(output);	
 }
 
-void sleep(float time) {
 
-  unsigned long time_ms = (unsigned long)(time * 1000.0);	
-  unsigned long startSleep = millis();	    
-  while ((millis() - startSleep) < time_ms)
-    delay(100);		
-}
 
 /*
  * TelemEncoding.c
@@ -2289,5 +2285,34 @@ void loop1() {
 		Serial.print(" ");
 		Serial.println(millis());	  }
   }	  
-	  delay(5); //2 1);
+  delay(5); //2 1);
+	
+// check pushbutton
+    pb_value = digitalRead(MAIN_PB_PIN);
+    if (pb_value == PRESSED) {
+	if (pb_state == RELEASED) {
+	  pb_press_start = millis();	
+	} else {  // still held
+	   if ((millis() - pb_press_start) > 1000) {
+	     blink();	   
+	}
+   
+    }  else if (pb_state == HELD) {
+      //  pushbutton is released
+      Serial.print("New mode is: ");
+      Serial.println(mode_count);
+      pb_state = RELEASED;
+    }  	
 }
+
+void sleep(float time) {
+
+  unsigned long time_ms = (unsigned long)(time * 1000.0);	
+  unsigned long startSleep = millis();	    
+  while ((millis() - startSleep) < time_ms)  {
+	  
+    delay(100);	
+	 
+  }
+}
+
