@@ -2310,7 +2310,7 @@ void process_pushbutton() {
   int release = FALSE;
 	
   sleep(1.0);
-  pb_value = digitalRead(MAIN_PB_PIN);
+  int pb_value = digitalRead(MAIN_PB_PIN);
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
