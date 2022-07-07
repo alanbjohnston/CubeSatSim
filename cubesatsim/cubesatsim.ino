@@ -54,7 +54,7 @@ void setup() {
   mode = FSK; // AFSK;		
 
 //  delay(12000);
-//  sleep(3.0);	
+  sleep(5.0);	
 	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
@@ -2218,7 +2218,7 @@ void pwm_interrupt_handler() {
 
 void setup1() {
   Serial.begin(9600);
-//  sleep(10.0);
+  sleep(5.0);
 
 //  if (mode == FSK) 
   {
