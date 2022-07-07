@@ -2389,7 +2389,8 @@ void process_pushbutton() {
     digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	  
 	  
-  }		  
+  }
+  sleep(2.0);	
 /*	
 	GPIO.output(powerPin, 0); # blink once
 	time.sleep(0.1);
