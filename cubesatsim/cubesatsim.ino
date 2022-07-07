@@ -147,7 +147,7 @@ void loop() {
   digitalWrite(LED_BUILTIN, LOW);	
 	
 //  delay(3000);	
-  sleep(3.0);
+  sleep(2.9); // 3.0);
 	
   digitalWrite(LED_BUILTIN, HIGH);	
 	
@@ -527,7 +527,7 @@ void get_tlm_fox() {
       sampleTime = (unsigned int) millis();
     } else {
       Serial.println("first time - no sleep\n");
-//      firstTime = OFF;
+      firstTime = OFF;
     }
 	
 //    if (mode == FSK) 
