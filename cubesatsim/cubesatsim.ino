@@ -974,7 +974,9 @@ void write_wave(int i, short int *buffer)
 //		        Serial.print(" ");
 		if (ctr > BUFFER_SIZE) {
 			ctr = ctr - BUFFER_SIZE;
-			Serial.println("r");
+			Serial.print("r");
+			Serial.print(" ");
+			Serial.println(millis());
 		}
 	}
 	else
@@ -2295,7 +2297,8 @@ void loop1() {
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
 		Serial.print("R");
-	  }
+		Serial.print(" ");
+		Serial.println(millis());	  }
   }	  
 	  delay(5); //2 1);
 }
