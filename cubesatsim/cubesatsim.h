@@ -248,6 +248,15 @@ int pwm_value;
 int pwm_rnd_bit = 1;
 
 int ready = FALSE;
+
+#define PRESSED 0
+#define HELD 0
+#define RELEASED 1
+int pb_state = RELEASED;
+int mode_count = 0;
+unsigned long pb_press_start;
+
+
 /*
  * TelemEncoding.h
  *
