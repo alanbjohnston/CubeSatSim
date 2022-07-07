@@ -138,7 +138,7 @@ void loop() {
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
     get_tlm_fox();
-    while ((millis() - sampleTime) < ((unsigned int)samplePeriod - 250))  // was 250 100
+    while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
       sleep(0.1); // 25); // 0.5);  // 25);
     sampleTime = (unsigned int) millis();	  
   }
