@@ -112,7 +112,6 @@ void setup() {
   delay(500);	
 */		
 
-  transmit_on();
 	
   ready = TRUE;  // flag for core1 to start looping
 	
@@ -1754,6 +1753,9 @@ void config_radio()
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
   }
+	
+  if (mode == AFSK)	  
+    transmit_on();
 }
 
 void test_radio()
