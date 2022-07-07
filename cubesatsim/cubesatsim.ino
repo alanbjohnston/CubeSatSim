@@ -2521,6 +2521,8 @@ void config_gpio() {
   for (int i = 6; i < 29; i++) {
     pinMode(i, INPUT);	  
   }
+  // set audio out to TXC board
+  pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
   // set LEDs and blink once	
   pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
