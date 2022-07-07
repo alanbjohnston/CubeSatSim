@@ -972,8 +972,10 @@ void write_wave(int i, short int *buffer)
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 //		        Serial.print(buffer[ctr - 1]);
 //		        Serial.print(" ");
-		if (ctr > BUFFER_SIZE)
+		if (ctr > BUFFER_SIZE) {
 			ctr = ctr - BUFFER_SIZE;
+			Serial.println("r");
+		}
 	}
 	else
 	{
@@ -2238,7 +2240,7 @@ void pwm_interrupt_handler() {
 //	  Serial.println(wav_position);
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
-//		Serial.print("R");
+		Serial.print("R");
 	  }
         }  
 
