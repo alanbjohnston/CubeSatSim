@@ -2294,7 +2294,7 @@ void loop1() {
 	  pb_press_start = millis();	
 	} else {  // still held
 	   if ((millis() - pb_press_start) > 1000) {
-	     blink();	   
+	     blink(150);	   
 	}
    
     }  else if (pb_state == HELD) {
