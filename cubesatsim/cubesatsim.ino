@@ -113,7 +113,10 @@ void setup() {
 */		
 
   transmit_on();
-	
+
+			Serial.print("s");
+			Serial.print(" ");
+			Serial.println(millis());	
 }
 
 void loop() {
@@ -2267,7 +2270,10 @@ void setup1() {
 //  digitalWrite(AUDIO_OUT_PIN, LOW);
 //  delay(500);	
   }
-	
+
+			Serial.print("S");
+			Serial.print(" ");
+			Serial.println(millis());	
 }
 
 void loop1() {
