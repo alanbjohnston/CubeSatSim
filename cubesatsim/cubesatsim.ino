@@ -57,7 +57,7 @@ void setup() {
   digitalWrite(MAIN_LED_GREEN, HIGH);
   digitalWrite(MAIN_LED_BLUE, LOW);	
 
-  mode = FSK; // AFSK;		
+  mode = AFSK; // FSK; // AFSK;		
 
   Serial.begin(9600);
 	
