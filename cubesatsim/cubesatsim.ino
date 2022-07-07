@@ -46,6 +46,8 @@ Adafruit_INA219 ina219_2_0x45(0x45);
 char payload_str[100];
 
 void setup() {
+	
+  config_gpio()	
 
   mode = FSK; // AFSK;		
 
@@ -58,12 +60,8 @@ void setup() {
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
 #endif	
 
-
-  
 // detect Pi Zero using 3.3V
-  
 // if Pi is present, run Payload OK software
-  
 // otherwise, run CubeSatSim Pico code
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
@@ -76,9 +74,7 @@ void setup() {
     start_ina219();	
   
   config_telem();	
-	
-
-	
+		
 // configure STEM Payload sensors	
   start_payload();	
 	
