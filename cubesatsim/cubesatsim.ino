@@ -2563,7 +2563,7 @@ void config_gpio() {
 
   // set anlog inputs and read	
   Serial.print("Diode voltage (temperature): ");
-  Serial.println(analogRead(TEMPERATURE));	
+  Serial.println(analogRead(TEMPERATURE_PIN));	
 	
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));	
