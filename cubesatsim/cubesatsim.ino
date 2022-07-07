@@ -2530,13 +2530,13 @@ void config_gpio() {
   // set LEDs and blink once	
   pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
-  blink(MAIN_LED_GREEN, 150);	
+  blink_pin(MAIN_LED_GREEN, 150);	
   pinMode(MAIN_LED_BLUE, OUTPUT);  // Set Main Blue LED pin to output
-  blink(MAIN_LED_BLUE, 150);	
+  blink_pin(MAIN_LED_BLUE, 150);	
   pinMode(STEM_LED_GREEN, OUTPUT);  // Set STEM Green LED pin to output
-  blink(STEM_LED_GREEN, 150);	
+  blink_pin(STEM_LED_GREEN, 150);	
   pinMode(STEM_LED_BLUE, OUTPUT);  // Set STEM Blue LED pin to output
-  blink(STEM_LED_BLUE, 150);
+  blink_pin(STEM_LED_BLUE, 150);
 
   // set input pins and read	
   pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
