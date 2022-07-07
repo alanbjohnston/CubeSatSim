@@ -46,18 +46,6 @@ Adafruit_INA219 ina219_2_0x45(0x45);
 char payload_str[100];
 
 void setup() {
-	
-// set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
-    pinMode(i, INPUT);	  
-  }
-  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
-  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
-  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
-  digitalWrite(MAIN_LED_GREEN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, LOW);	
-	
-  pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
 
   mode = FSK; // AFSK;		
 
@@ -2110,7 +2098,12 @@ void led_set(int ledPin, bool state)
 }
 
 void start_ina219() {
-	
+  // check if Pi is present by 3.3V voltage
+  pinMode(PI_3V3_PIN, INPUT); 	
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN);
+
+  // Supply power to the Main board INA219s		 
   pinMode(MAIN_INA219, OUTPUT);
   digitalWrite(MAIN_INA219, HIGH);
 
@@ -2519,3 +2512,60 @@ void blinkTimes(int blinks) {
   }
 }
 
+void blink_pin(int pin, int duration) {
+	
+  digitalWrite(pin, HIGH);
+  sleep((float)duration / 1000.00);
+  digitalWrite(pin, LOW);	
+	
+}
+
+void config_gpio() {
+	
+  // set all Pico GPIO pins to input	
+  for (int i = 6; i < 29; i++) {
+    pinMode(i, INPUT);	  
+  }
+
+  // set LEDs and blink once	
+  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
+  blink(MAIN_LED_GREEN, 150);	
+  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set Main Blue LED pin to output
+  blink(MAIN_LED_BLUE, 150);	
+  pinMode(STEM_LED_GREEN, OUTPUT);  // Set STEM Green LED pin to output
+  blink(STEM_LED_GREEN, 150);	
+  pinMode(STEM_LED_BLUE, OUTPUT);  // Set STEM Blue LED pin to output
+  blink(STEM_LED_BLUE, 150);
+
+  // set input pins and read	
+  pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
+  pinMode(TXC_PIN, INPUT_PULLUP);  // Read TXC to see if present	
+  pinMode(LPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
+  pinMode(SQUELCH, INPUT);	// Squelch from TXC
+
+  if (digitalRead(LPF_PIN) == FALSE)
+    Serial.println("LPF present");
+  else
+    Serial.println("LPF not present");	  
+	
+  if (digitalRead(TXC_PIN) == FALSE)
+    Serial.println("TXC present");
+  else
+    Serial.println("TXC not present");	
+
+  Serial.print("Squelch: ");
+  Serial.println(digitalRead(SQUELCH));
+	
+
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN));
+
+  // set anlog inputs and read	
+  Serial.print("Diode voltage (temperature): ");
+  Serial.println(analogRead(TEMPERATURE));	
+	
+  Serial.print("Audio In: ");
+  Serial.println(analogRead(AUDIO_IN_PIN));	
+	
+}
