@@ -2310,15 +2310,79 @@ void process_pushbutton() {
   int release = FALSE;
 	
   sleep(1.0);
+	
   int pb_value = digitalRead(MAIN_PB_PIN);
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
-    sleep(10.0);
   }
-  digitalWrite(MAIN_PB_PIN, LOW);
-  sleep(0.1);
-  digitalWrite(MAIN_PB_PIN, HIGH);
+	
+  blinkTimes(1);
+  sleep(1.5);
+	
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to AFSK");
+    release = TRUE;
+
+  if (release == FALSE) {
+    blinkTimes(2);
+    sleep(1.5);
+  }
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to FSK");
+    release = TRUE;
+
+  if (release == FALSE) {
+    blinkTimes(3);
+    sleep(1.5);
+  }
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to BPSK");
+    release = TRUE;
+
+  if (release == FALSE) {
+    digitalWrite(MAIN_PB_PIN, LOW);
+    blinkTimes(4);
+    sleep(1.5);
+  }	
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to SSTV");
+    release = TRUE;
+
+  if (release == FALSE) {
+    digitalWrite(MAIN_PB_PIN, LOW);
+    blinkTimes(5);
+    sleep(1.5);
+  }	
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to CW");
+    release = TRUE;
+
+  if (release == FALSE) {
+    Serial.println("PB: Shutdown!");
+    digitalWrite(MAIN_PB_PIN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_PB_PIN, HIGH);
+    sleep(0.5);
+    digitalWrite(MAIN_PB_PIN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_PB_PIN, HIGH);
+    sleep(0.5);	  
+    digitalWrite(MAIN_PB_PIN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_PB_PIN, HIGH);
+    sleep(0.5);	  
+	  
+  }		  
 /*	
 	GPIO.output(powerPin, 0); # blink once
 	time.sleep(0.1);
@@ -2438,4 +2502,14 @@ void process_pushbutton() {
 		GPIO.output(txPin, 0)	
 	
 */	
+}
+
+void blinkTimes(int blinks) {
+  for (int i = 0; i < blinks; i++) {
+    digitalWrite(MAIN_PB_PIN, LOW);
+    sleep(0.1);
+    digitalWrite(MAIN_PB_PIN, HIGH);
+    sleep(0.1);
+  }
+}
 }
