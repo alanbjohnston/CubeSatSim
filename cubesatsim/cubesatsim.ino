@@ -53,7 +53,7 @@ void setup() {
 	
   config_gpio();	
 
-  mode = FSK; // AFSK;		
+//  mode = FSK; // AFSK;		
 
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
@@ -2314,6 +2314,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
+    mode = AFSK;
+    setup();	  
   }
 	
   if (release == FALSE) {
@@ -2325,6 +2327,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to FSK");
     release = TRUE;
+    mode = FSK;
+    setup();
   }
 	
   if (release == FALSE) {
