@@ -2240,7 +2240,7 @@ void pwm_interrupt_handler() {
 //	  Serial.println(wav_position);
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
-		Serial.print("R");
+//		Serial.print("R");
 	  }
         }  
 
@@ -2294,7 +2294,7 @@ void loop1() {
 		
 	  if (wav_position++ > BUFFER_SIZE) { // 300) {
 		wav_position = wav_position - BUFFER_SIZE;
-//		Serial.print("R");
+		Serial.print("R");
 	  }
   }	  
 	  delay(5); //2 1);
