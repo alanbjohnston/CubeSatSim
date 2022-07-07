@@ -502,34 +502,6 @@ void get_tlm_fox() {
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
 //    Serial.println("Frame loop"); 
-    if (firstTime != ON) {
-      // delay for sample period
-/**/
-//      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
-     int startSleep = millis();	   
-//     if ((millis() - sampleTime) < ((unsigned int)samplePeriod - 750))  // was 250 100 500 for FSK
-//        sleep(2.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)samplePeriod - 250))  // was 250 100
-        sleep(0.1); // 25); // 0.5);  // 25);
-	    
-/*	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
-        sleep(2.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
-        sleep(0.1); // 25); // 0.5);  // 25);
-*/
-//        sleep((unsigned int)sleepTime);
-/**/
-//      Serial.print("Sleep period: ");
-//      Serial.println(millis() - startSleep);
-//      fflush(stdout);
-      
-      sampleTime = (unsigned int) millis();
-    } else {
-      Serial.println("first time - short sleep");
- //     sleep(3.0);	    
-//      firstTime = OFF;
-    }
 	
 //    if (mode == FSK) 
     {  // just moved
