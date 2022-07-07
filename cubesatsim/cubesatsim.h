@@ -136,6 +136,7 @@ void config_telem();
 void config_simulated_telem(); 
 void generate_simualted_telem();
 void process_pushbutton();
+void blinkTimes(int blinks);
 
 extern int Encode_8b10b[][256];
 
