@@ -2324,7 +2324,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
-
+  }
+	
   if (release == FALSE) {
     blinkTimes(2);
     sleep(1.5);
@@ -2334,7 +2335,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to FSK");
     release = TRUE;
-
+  }
+	
   if (release == FALSE) {
     blinkTimes(3);
     sleep(1.5);
@@ -2344,7 +2346,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to BPSK");
     release = TRUE;
-
+  }
+	
   if (release == FALSE) {
     digitalWrite(MAIN_PB_PIN, LOW);
     blinkTimes(4);
@@ -2355,7 +2358,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to SSTV");
     release = TRUE;
-
+  }
+	
   if (release == FALSE) {
     digitalWrite(MAIN_PB_PIN, LOW);
     blinkTimes(5);
@@ -2366,7 +2370,8 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to CW");
     release = TRUE;
-
+  }
+	
   if (release == FALSE) {
     Serial.println("PB: Shutdown!");
     digitalWrite(MAIN_PB_PIN, LOW);
@@ -2512,4 +2517,4 @@ void blinkTimes(int blinks) {
     sleep(0.1);
   }
 }
-}
+
