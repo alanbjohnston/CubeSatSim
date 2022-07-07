@@ -128,7 +128,9 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }	
   // send telemetry
-  
+ 
+  mode = new_mode;  // change modes if button pressed
+	
   // delay some time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
@@ -2314,7 +2316,7 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
-    mode = AFSK;
+    new_mode = AFSK;
     setup();	  
   }
 	
@@ -2327,7 +2329,7 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to FSK");
     release = TRUE;
-    mode = FSK;
+    new_mode = FSK;
     setup();
   }
 	
