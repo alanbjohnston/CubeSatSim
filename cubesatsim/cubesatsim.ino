@@ -128,9 +128,11 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }	
   // send telemetry
- 
-  mode = new_mode;  // change modes if button pressed
-	
+ if (mode != new_mode) {
+    mode = new_mode;  // change modes if button pressed
+    config_telem();
+    config_radio();
+ }	
   // delay some time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
