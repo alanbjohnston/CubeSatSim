@@ -137,6 +137,8 @@ void config_simulated_telem();
 void generate_simualted_telem();
 void process_pushbutton();
 void blinkTimes(int blinks);
+void blink_pin(int pin, int duration);
+void config_gpio();
 
 extern int Encode_8b10b[][256];
 
