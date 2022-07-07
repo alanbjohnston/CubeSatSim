@@ -281,6 +281,8 @@ void config_telem() {
     char sym_tab_default = 'a';
     char icon[] = "Ha";
     set_lat_lon_icon(lat_default, lon_default, icon);
+	  
+    samplePeriod = 5000; 	  
   }
   firstTime = ON;	
 }
