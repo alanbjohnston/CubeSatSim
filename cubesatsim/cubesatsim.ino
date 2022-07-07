@@ -2290,8 +2290,8 @@ void loop1() {
 // check pushbutton
     int pb_value;
     pb_value = digitalRead(MAIN_PB_PIN);
-    Serial.print("PB: ");
-    Serial.println(pb_value);
+//    Serial.print("PB: ");
+//    Serial.println(pb_value);
     if (pb_value == PRESSED) 
       process_pushbutton();
 }	    
@@ -2376,17 +2376,17 @@ void process_pushbutton() {
 	
   if (release == FALSE) {
     Serial.println("PB: Shutdown!");
-    digitalWrite(MAIN_PB_PIN, LOW);
+    digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
-    digitalWrite(MAIN_PB_PIN, HIGH);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);
-    digitalWrite(MAIN_PB_PIN, LOW);
+    digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
-    digitalWrite(MAIN_PB_PIN, HIGH);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	  
-    digitalWrite(MAIN_PB_PIN, LOW);
+    digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
-    digitalWrite(MAIN_PB_PIN, HIGH);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	  
 	  
   }		  
@@ -2513,9 +2513,9 @@ void process_pushbutton() {
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
-    digitalWrite(MAIN_PB_PIN, LOW);
+    digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.1);
-    digitalWrite(MAIN_PB_PIN, HIGH);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.1);
   }
 }
