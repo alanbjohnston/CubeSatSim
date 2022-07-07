@@ -514,9 +514,9 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	   
-     if ((millis() - sampleTime) < ((unsigned int)sampleTime - 250))  // was 250 100 500 for FSK
+     if ((millis() - sampleTime) < ((unsigned int)samplePeriod - 250))  // was 250 100 500 for FSK
         sleep(2.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)sampleTime - 250))  // was 250 100
+     while ((millis() - sampleTime) < ((unsigned int)samplePeriod - 250))  // was 250 100
         sleep(0.1); // 25); // 0.5);  // 25);
 	    
 /*	    
