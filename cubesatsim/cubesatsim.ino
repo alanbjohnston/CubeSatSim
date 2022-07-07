@@ -246,7 +246,7 @@ void config_telem() {
     //samplePeriod = 2200; // reduce dut to python and sensor querying delays
     sleepTime = 2.2f;
 
-    frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+    frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms	  
 
 //    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
 //      bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
@@ -513,11 +513,18 @@ void get_tlm_fox() {
       // delay for sample period
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
-     int startSleep = millis();	    
+     int startSleep = millis();	   
+     if ((millis() - sampleTime) < ((unsigned int)sampleTime - 250))  // was 250 100 500 for FSK
+        sleep(2.0); // 0.5);  // 25);  // initial period
+     while ((millis() - sampleTime) < ((unsigned int)sampleTime - 250))  // was 250 100
+        sleep(0.1); // 25); // 0.5);  // 25);
+	    
+/*	    
      if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
         sleep(2.0); // 0.5);  // 25);  // initial period
      while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
         sleep(0.1); // 25); // 0.5);  // 25);
+*/
 //        sleep((unsigned int)sleepTime);
 /**/
 //      Serial.print("Sleep period: ");
