@@ -47,7 +47,7 @@ char payload_str[100];
 
 void setup() {
 	
-  config_gpio()	
+  config_gpio();	
 
   mode = FSK; // AFSK;		
 
