@@ -128,13 +128,13 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }	
   // send telemetry
-/*	
+	
  if (mode != new_mode) {
     mode = new_mode;  // change modes if button pressed
     config_telem();
     config_radio();
  }
-*/ 
+ 
   //  Calculate loop time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
@@ -2321,7 +2321,7 @@ void process_pushbutton() {
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
     new_mode = AFSK;
-    setup();	  
+//    setup();	  
   }
 	
   if (release == FALSE) {
@@ -2334,7 +2334,7 @@ void process_pushbutton() {
     Serial.println("PB: Switch to FSK");
     release = TRUE;
     new_mode = FSK;
-    setup();
+//    setup();
   }
 	
   if (release == FALSE) {
