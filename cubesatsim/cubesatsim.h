@@ -37,7 +37,7 @@
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
 #define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero
-#define PB_PIN 10 // Main board PB pushbutton pin
+#define MAIN_PB_PIN 10 // Main board PB pushbutton pin
 #define TXC_PIN 11 // Transceiver Board is present
 #define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
 #define SQUELCH 15 // SR_FRS_05W Squelch out
