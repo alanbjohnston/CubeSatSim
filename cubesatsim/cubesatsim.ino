@@ -2255,7 +2255,7 @@ void pwm_interrupt_handler() {
 
 void setup1() {
   Serial.begin(9600);
-//  sleep(10.0);
+  sleep(10.0);
 
   if (mode == FSK) 
   {
