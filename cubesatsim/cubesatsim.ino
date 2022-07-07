@@ -2290,21 +2290,9 @@ void loop1() {
 // check pushbutton
     int pb_value;
     pb_value = digitalRead(MAIN_PB_PIN);
-    if (pb_value == PRESSED) {
-	if (pb_state == RELEASED) {
-	  pb_press_start = millis();	
-	} else {  // still held
-	   if ((millis() - pb_press_start) > 1000) {
-	     blink(150);	   
-	}
-   
-    }  else if (pb_state == HELD) {
-      //  pushbutton is released
-      Serial.print("New mode is: ");
-      Serial.println(mode_count);
-      pb_state = RELEASED;
-    }  	
-}
+    if (pb_value == PRESSED) 
+      process_pushbutton();
+}	    
 
 void sleep(float time) {
 
@@ -2317,3 +2305,137 @@ void sleep(float time) {
   }
 }
 
+void process_pushbutton() {
+
+  int release = FALSE;
+	
+  sleep(1.0);
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if (pb_value == RELEASED) {
+    Serial.println("PB: Reboot!");
+    release = TRUE;
+    sleep(10.0);
+  }
+  digitalWrite(MAIN_PB_PIN, LOW);
+  sleep(0.1);
+  digitalWrite(MAIN_PB_PIN, HIGH);
+/*	
+	GPIO.output(powerPin, 0); # blink once
+	time.sleep(0.1);
+	GPIO.output(powerPin, 1);
+	time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to AFSK")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("a")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink twice
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to FSK")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("f")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink three times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to BPSK")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("b")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink four times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to SSTV")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("s")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink five times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to CW")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("m")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		print("sudo shutdown -h now")
+		GPIO.setwarnings(False)
+		GPIO.setup(powerPin, GPIO.OUT)
+		GPIO.output(powerPin, 0); # blink slowly to indicate shutdown
+		time.sleep(0.5);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.5);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.5);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.5);
+		GPIO.output(powerPin, 0);
+		subprocess.call(['shutdown', '-h', 'now'], shell=False)	
+	if (txPin != 0):
+		GPIO.setwarnings(False)
+		GPIO.output(txPin, 0)	
+	
+*/	
+}
