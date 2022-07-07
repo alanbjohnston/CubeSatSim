@@ -27,11 +27,17 @@
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
 #include <Arduino-APRS-Library.h>
+#include <stdio.h>
+#include "pico/stdlib.h"   // stdlib 
+#include "hardware/irq.h"  // interrupts
+#include "hardware/pwm.h"  // pwm 
+#include "hardware/sync.h" // wait for interrupt 
+
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
 #define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero
-#define PB_PIN 10 // Main board PB pushbutton pin
+#define MAIN_PB_PIN 10 // Main board PB pushbutton pin
 #define TXC_PIN 11 // Transceiver Board is present
 #define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
 #define SQUELCH 15 // SR_FRS_05W Squelch out
@@ -84,6 +90,8 @@
 #define OFF - 1
 #define ON 1
 
+//#define WAV_DATA_LENGTH (50000 * 8)
+
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
@@ -106,7 +114,7 @@ void update_rs(unsigned char parity[32], unsigned char c);
 void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
 static int init_rf();
 void test_radio();
-void configure_radio();
+void config_radio();
 void send_packet();
 void read_ina219();
 void read_sensors();
@@ -120,22 +128,35 @@ short eeprom_word_read(int addr);
 void eeprom_word_write(int addr, int val);
 void read_payload();
 void start_ina219();
-  
+void pwm_interrupt_handler();
+void start_pwm();
+void transmit_on(); 
+void transmit_off(); 
+void config_telem();
+void config_simulated_telem(); 
+void generate_simualted_telem();
+void process_pushbutton();
+void blinkTimes(int blinks);
+void blink_pin(int pin, int duration);
+void config_gpio();
+
 extern int Encode_8b10b[][256];
 
-int socket_open = 0;
-int sock = 0;
+//int socket_open = 0;
+//int sock = 0;
 int loop_count = 0;
 int firstTime = ON; // 0;
 long start;
 int testCount = 0;
 long time_start;
 //char cmdbuffer[1000];
-FILE * file1;
-short int buffer[100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
-FILE *sopen(const char *program);
+//FILE * file1;//
+#define BUFFER_SIZE  970 // (970 * 2) //  * 2)
+short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+//short int buffer[(WAV_DATA_LENGTH/8)];
+//FILE *sopen(const char *program);
 
-#define S_RATE	(8000) //(48000) // (44100)
+#define S_RATE	(200) // (8000) //(48000) // (44100)
 
 #define AFSK 1
 #define FSK 2
@@ -168,7 +189,9 @@ long int uptime = 0;
 char call[5];
 char sim_yes[10];
 
-int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
+int mode = FSK;
+int new_mode = FSK;
+int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
 unsigned int sampleTime = 0;
 int frames_sent = 0;
@@ -222,6 +245,23 @@ float R1 = 179; // Reading data point 2
 int sensorValue;
 float Temp;
 float rest;
+
+unsigned int wav_position = 0;
+int pwm_counter = 0;
+int pwm_counter_max = 420;
+int pwm_amplitude = 50; //50 //100;
+int pwm_value;
+int pwm_rnd_bit = 1;
+
+int ready = FALSE;
+
+#define PRESSED 0
+#define HELD 0
+#define RELEASED 1
+int pb_state = RELEASED;
+int mode_count = 0;
+unsigned long pb_press_start;
+
 
 /*
  * TelemEncoding.h

@@ -28,6 +28,11 @@
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
 #include <Arduino-APRS-Library.h>
+#include <stdio.h>
+#include "pico/stdlib.h"   // stdlib 
+#include "hardware/irq.h"  // interrupts
+#include "hardware/pwm.h"  // pwm 
+#include "hardware/sync.h" // wait for interrupt 
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -41,35 +46,131 @@ Adafruit_INA219 ina219_2_0x45(0x45);
 char payload_str[100];
 
 void setup() {
-
+	
   Serial.begin(9600);
+
+  sleep(5.0);		
 	
-  delay(12000);
-	
+  config_gpio();	
+
+//  mode = FSK; // AFSK;		
+
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
 #endif	
 
-// set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
-    pinMode(i, INPUT);	  
-  }
-  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
-  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set LED pin to output
-  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set LED pin to output
-  digitalWrite(MAIN_LED_GREEN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, LOW);	
-  
 // detect Pi Zero using 3.3V
-  
 // if Pi is present, run Payload OK software
-  
 // otherwise, run CubeSatSim Pico code
   
   Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
-  mode = AFSK;	
+  sim_mode = FALSE;
+  if (sim_mode)
+    config_simulated_telem();
+  else
+    // configure ina219s	
+    start_ina219();	
   
+  config_telem();	
+		
+// configure STEM Payload sensors	
+  start_payload();	
+	
+// program Transceiver board  
+  config_radio();		
+
+  sampleTime = (unsigned int) millis();		
+	
+  ready = TRUE;  // flag for core1 to start looping
+	
+  Serial.print("s");
+  Serial.print(" ");
+  Serial.println(millis());	
+}
+
+void loop() {
+	
+  int startSleep = millis();	
+  loop_count++;
+	
+  if (sim_mode == TRUE) 
+    generate_simulated_telem();
+  else
+  // query INA219 sensors and Payload sensors
+    read_ina219();	
+	
+  read_payload();	
+  
+  // encode as digits (APRS or CW mode) or binary (DUV FSK)	
+  if ((mode == BPSK) || (mode == FSK))  
+  {
+    get_tlm_fox();
+  }
+  else if (mode == AFSK)
+    send_packet();
+
+  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
+    sleep(0.1); // 25); // 0.5);  // 25);
+  sampleTime = (unsigned int) millis();	  
+	
+//  delay(2000);
+//  test_radio();
+
+  if (mode == FSK) {	
+	  digitalWrite(LED_BUILTIN, LOW);	
+	  digitalWrite(MAIN_LED_BLUE, LOW);
+
+	//  delay(3000);	
+	  sleep(0.5); // 2.845); // 3.0);
+
+	  digitalWrite(LED_BUILTIN, HIGH);
+	  digitalWrite(MAIN_LED_BLUE, HIGH);
+  }	
+  // send telemetry
+	
+ if (mode != new_mode) {
+    mode = new_mode;  // change modes if button pressed
+    config_telem();
+    config_radio();
+ }
+ 
+  //  Calculate loop time
+  Serial.print("\nLoop time: ");	
+  Serial.println(millis() - startSleep);	
+  
+}
+
+void send_packet() {
+	
+// encode telemetry
+  get_tlm_ao7();
+	
+//  digitalWrite(LED_BUILTIN, LOW);
+	
+  Serial.println("Sending APRS packet!");
+  transmit_on();
+  send_packet(_FIXPOS_STATUS);
+  transmit_off();	
+	
+//  delay(1000);	
+	
+
+//  digitalWrite(LED_BUILTIN, HIGH);		
+}
+
+void transmit_on() {
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(PTT_PIN, LOW);
+}
+
+void transmit_off() {
+  digitalWrite(PTT_PIN, HIGH);
+  digitalWrite(MAIN_LED_BLUE, LOW);	
+}
+
+void config_telem() {
+	
   frameCnt = 1; 
   
   Serial.println("v1 Present with UHF BPF\n");
@@ -103,7 +204,7 @@ void setup() {
     Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-
+    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
   } else if (mode == BPSK) {
@@ -127,7 +228,7 @@ void setup() {
     //samplePeriod = 2200; // reduce dut to python and sensor querying delays
     sleepTime = 2.2f;
 
-    frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+    frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms	  
 
 //    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
 //      bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
@@ -154,67 +255,10 @@ void setup() {
     char sym_tab_default = 'a';
     char icon[] = "Ha";
     set_lat_lon_icon(lat_default, lon_default, icon);
-
+	  
+    samplePeriod = 5000; 	  
   }
-	
-// configure ina219s	
-start_ina219();
-	
-// configure STEM Payload sensors	
-  start_payload();	
-	
-// program Transceiver board  
-  configure_radio();	
-}
-
-void loop() {
-  
-  loop_count++;
-	
-  // query INA219 sensors and Payload sensors
-  read_ina219();	
-  read_payload();	
-  
-  // encode as digits (APRS or CW mode) or binary (DUV FSK)	
-  if ((mode == BPSK) || (mode == FSK))
-	  get_tlm_fox();
-  else if (mode == AFSK)
-	  send_packet();
-
-  delay(2000);
-  test_radio();
-	
-  digitalWrite(LED_BUILTIN, LOW);	
-	
-//  delay(3000);	
-  sleep(3.0);
-	
-  digitalWrite(LED_BUILTIN, HIGH);	
-	
-  // send telemetry
-  
-  // delay some time
-  
-}
-
-void send_packet() {
-	
-// encode telemetry
-  get_tlm_ao7();
-	
-//  digitalWrite(LED_BUILTIN, LOW);
-	
-  Serial.println("Sending APRS packet!");
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
-  digitalWrite(PTT_PIN, LOW);
-  send_packet(_FIXPOS_STATUS);
-  digitalWrite(PTT_PIN, HIGH);
-  digitalWrite(MAIN_LED_BLUE, LOW);	
-	
-//  delay(1000);	
-	
-
-//  digitalWrite(LED_BUILTIN, HIGH);		
+  firstTime = ON;	
 }
 
 void get_tlm_ao7() {
@@ -281,13 +325,134 @@ void get_tlm_ao7() {
     print_string(str);
     strcat(str, payload_str);	
     print_string(str);
-    Serial.println(strlen(str));
+//    Serial.println(strlen(str));
     set_status(str);	
 //  }	
 }
 
+void generate_simulated_telem() {
+
+      double time = ((long int)millis() - time_start) / 1000.0;
+
+      if ((time - eclipse_time) > period) {
+        eclipse = (eclipse == 1) ? 0 : 1;
+        eclipse_time = time;
+        Serial.println("\n\nSwitching eclipse mode! \n\n");
+      }
+
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+
+      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+
+      current[mapping[PLUS_X]] = (Xi >= 0) ? Xi : 0;
+      current[mapping[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
+      current[mapping[PLUS_Y]] = (Yi >= 0) ? Yi : 0;
+      current[mapping[MINUS_Y]] = (Yi >= 0) ? 0 : ((-1.0f) * Yi);
+      current[mapping[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
+      current[mapping[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
+
+      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
+      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
+      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
+      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+
+      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+
+      tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
+      tempS += +rnd_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      other[IHU_TEMP] = tempS;
+
+      voltage[mapping[BUS]] = rnd_float(5.0, 5.005);
+      current[mapping[BUS]] = rnd_float(158, 171);
+
+      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+
+      current[mapping[BAT]] = ((current[mapping[BUS]] * voltage[mapping[BUS]]) / batt) - charging;
+
+      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+
+      batt -= (batt > 3.5) ? current[mapping[BAT]] / 30000 : current[mapping[BAT]] / 3000;
+      if (batt < 3.0) {
+        batt = 3.0;
+        SafeMode = 1;
+        printf("Safe Mode!\n");
+      } else
+        SafeMode= 0;
+
+      if (batt > 4.5)
+        batt = 4.5;
+
+      voltage[mapping[BAT]] = batt + rnd_float(-0.01, 0.01);
+
+      // end of simulated telemetry
+}
+
+void config_simulated_telem()
+{
+
+    sim_mode = TRUE;
+	    
+    Serial.println("Simulated telemetry mode!\n");
+
+    srand((unsigned int)time(0));
+
+    axis[0] = rnd_float(-0.2, 0.2);
+    if (axis[0] == 0)
+      axis[0] = rnd_float(-0.2, 0.2);
+    axis[1] = rnd_float(-0.2, 0.2);
+    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+
+    angle[0] = (float) atan(axis[1] / axis[2]);
+    angle[1] = (float) atan(axis[2] / axis[0]);
+    angle[2] = (float) atan(axis[1] / axis[0]);
+
+    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
+    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
+    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+
+    float amps_avg = rnd_float(150, 300);
+
+    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
+    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
+    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+
+    batt = rnd_float(3.8, 4.3);
+    speed = rnd_float(1.0, 2.5);
+    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
+    period = rnd_float(150, 300);
+    tempS = rnd_float(20, 55);
+    temp_max = rnd_float(50, 70);
+    temp_min = rnd_float(10, 20);
+
+//    #ifdef DEBUG_LOGGING
+//    for (int i = 0; i < 3; i++)
+//      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+//    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+//    #endif
+
+    time_start = (long int) millis();
+
+    eclipse_time = (long int)(millis() / 1000.0);
+    if (eclipse == 0.0)
+      eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
+//  }
+
+  tx_freq_hz -= tx_channel * 50000;
+	
+}
+
 void get_tlm_fox() {
-  Serial.println("get_tlm_fox");
+//  Serial.println("get_tlm_fox");
 	
   int i;
   long int sync = syncWord;
@@ -323,29 +488,11 @@ void get_tlm_fox() {
     id = 7;
   else
     id = 0; // 99 in h[6]
-  Serial.println("About to do frame loop");
+//  Serial.println("About to do frame loop");
 	
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
-    Serial.println("Frame loop"); 
-    if (firstTime != ON) {
-      // delay for sample period
-/**/
-//      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
-     int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
-        sleep(2.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
-        sleep(0.1); // 25); // 0.5);  // 25);
-//        sleep((unsigned int)sleepTime);
-/**/
-      Serial.print("Sleep period: ");
-      Serial.println(millis() - startSleep);
-//      fflush(stdout);
-      
-      sampleTime = (unsigned int) millis();
-    } else
-      Serial.println("first time - no sleep\n");
+//    Serial.println("Frame loop"); 
 	
 //    if (mode == FSK) 
     {  // just moved
@@ -360,22 +507,22 @@ void get_tlm_fox() {
         if (current[count1] > current_max[count1])
           current_max[count1] = current[count1];
 //         printf("Vmin %4.2f Vmax %4.2f Imin %4.2f Imax %4.2f \n", voltage_min[count1], voltage_max[count1], current_min[count1], current_max[count1]);
-	Serial.print(voltage_min[count1]);
-	Serial.print(" ");
+//	Serial.print(voltage_min[count1]);
+//	Serial.print(" ");
       }
-      Serial.println(" ");	    
+//      Serial.println(" ");	    
        for (int count1 = 0; count1 < 3; count1++) {
         if (other[count1] < other_min[count1])
           other_min[count1] = other[count1];
         if (other[count1] > other_max[count1])
           other_max[count1] = other[count1];
-	Serial.print(other_min[count1]);
-	Serial.print(" ");
+//	Serial.print(other_min[count1]);
+//	Serial.print(" ");
       }
-      Serial.println(" ");
+//      Serial.println(" ");
           if (mode == FSK)
 	  {
-	      Serial.println("Starting");	  
+//	      Serial.println("Starting");	  
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
 		Serial.println("Sending MIN frame");
 		frm_type = 0x03;
@@ -404,25 +551,25 @@ void get_tlm_fox() {
 		    sensor[count1] = sensor_max[count1];
 		}
 	      }
-	      Serial.println("Here");	  
+//	      Serial.println("Here");	  
 	  }
 	  else
 	  	frm_type = 0x02;  // BPSK always send MAX MIN frame
     } 
-    Serial.println("Continuing");	  
+//    Serial.println("Continuing");	  
     sensor_payload[0] = 0;  // clear for next payload
 	  
 //   if (mode == FSK) {	// remove this 
 //   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
-    Serial.println("After memset");      
+//    Serial.println("After memset");      
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
-    Serial.println("After h[0]");	  
+//    Serial.println("After h[0]");	  
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
-      Serial.println("After uptime test");
+//      Serial.println("After uptime test");
       h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
       h[1] = (short int) ((reset_count >> 5) & 0xff);
       h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
@@ -432,7 +579,7 @@ void get_tlm_fox() {
     h[4] = (short int) ((uptime >> 13) & 0xff);
     h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
-      Serial.println("h[5]");	  
+//      Serial.println("h[5]");	  
     if (mode == BPSK)
       h[6] = 99;
     posXi = (int)(current[mapping[PLUS_X]] + 0.5) + 2048;
@@ -454,9 +601,9 @@ void get_tlm_fox() {
 //    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
-    Serial.println("Before encoding");
+//    Serial.println("Before encoding");
     encodeA(b, 0 + head_offset, batt_a_v);
-    Serial.println("After encoding");	  
+//    Serial.println("After encoding");	  
     encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
@@ -464,7 +611,7 @@ void get_tlm_fox() {
     encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
     encodeA(b, 9 + head_offset, battCurr);
     encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	
-	      Serial.println("A");
+//	      Serial.println("A");
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
       encodeB(b, 13 + head_offset, negXv);
@@ -478,7 +625,7 @@ void get_tlm_fox() {
       encodeB(b, 25 + head_offset, negYi);
       encodeA(b, 27 + head_offset, posZi);
       encodeB(b, 28 + head_offset, negZi);
-	    	      Serial.println("B");
+//	    	      Serial.println("B");
     } else // BPSK
     {
       encodeA(b, 12 + head_offset, posXv);
@@ -590,7 +737,7 @@ void get_tlm_fox() {
 	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
     }
-	  	      Serial.println("C");
+//	  	      Serial.println("C");
     encodeA(b, 30 + head_offset, PSUVoltage);
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
@@ -605,17 +752,17 @@ void get_tlm_fox() {
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
-	  	      Serial.println("D");	  
+//	  	      Serial.println("D");	  
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
-	  	      Serial.println("E");	  
+//	  	      Serial.println("E");	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
-      Serial.println("TX Antenna Deployed!");
+//      Serial.println("TX Antenna Deployed!");
     }
-	  	      Serial.println("F");    
+//	  	      Serial.println("F");    
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
       encodeA(b, 64 + head_offset, 0xff & val); 
@@ -624,7 +771,7 @@ void get_tlm_fox() {
       encodeA(b, 62 + head_offset, 0x01);
       encodeB(b, 74 + head_offset, 0xfff); 
     }
-    Serial.println("Finished encoding");	  
+//    Serial.println("Finished encoding");	  
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
     int ctr1 = 0;
@@ -746,9 +893,9 @@ void get_tlm_fox() {
 ///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
 ///    #endif
-    Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
-//    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
-    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
+//    Serial.println(10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples);	  
+    for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
+//    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
@@ -758,8 +905,8 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-	Serial.print(val, HEX);   // Debugging print!!!  
-	Serial.print(" ");      
+//	Serial.print(data, BIN);   // Debugging print!!!  
+//	Serial.print(" ");      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
@@ -777,20 +924,29 @@ void get_tlm_fox() {
       }
 //	Serial.println("BB");     
     }
-	Serial.println("CC");     
+//	Serial.println("CC");     
   }
-  Serial.println(" ");	
-  Serial.println("Returning");	
+//  Serial.println(" ");	
+//  Serial.print("get_fox_tlm eturning with counter: ");
+//  Serial.println(ctr);
 }
 
 void write_wave(int i, short int *buffer)
 {
 	if (mode == FSK)
 	{
-		if ((ctr - flip_ctr) < smaller)
-			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
-		else
+//		if ((ctr - flip_ctr) < smaller)  // No wave shaping
+//			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
+//		else
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
+//		        Serial.print(buffer[ctr - 1]);
+//		        Serial.print(" ");
+		if (ctr > BUFFER_SIZE) {
+			ctr = ctr - BUFFER_SIZE;
+			Serial.print("r");
+			Serial.print(" ");
+			Serial.println(millis());
+		}
 	}
 	else
 	{
@@ -844,13 +1000,7 @@ float toAprsFormat(float input) {
     return(output);	
 }
 
-void sleep(float time) {
 
-  unsigned long time_ms = (unsigned long)(time * 1000.0);	
-  unsigned long startSleep = millis();	    
-  while ((millis() - startSleep) < time_ms)
-    delay(100);		
-}
 
 /*
  * TelemEncoding.c
@@ -1526,7 +1676,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 	}
 }
 
-void configure_radio()
+void config_radio()
 {
   pinMode(LED_BUILTIN, OUTPUT);
   
@@ -1543,10 +1693,15 @@ void configure_radio()
   mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
-    delay(500);
+    sleep(0.5); // delay(500);
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
   }
+	
+  if (mode == FSK)	  
+    transmit_on();
+// start pwm
+//  start_pwm();	
 }
 
 void test_radio()
@@ -1556,7 +1711,7 @@ void test_radio()
 
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);
-  delay(3000);
+  sleep(3.0); // delay(3000);
   digitalWrite(PTT_PIN, HIGH);
   digitalWrite(MAIN_LED_BLUE, LOW);
 }
@@ -1628,19 +1783,19 @@ void start_payload() {
 	
 Serial1.begin(115200);  // Pi UART faster speed
 
-  Serial.println("Starting!");
+  Serial.println("Starting payload!");
   
   blink_setup();
 
   blink(500);
-  delay(250);
+  sleep(0.25); // delay(250);
   blink(500);
-  delay(250);
+  sleep(0.25); // delay(250);
   led_set(greenLED, HIGH);
-  delay(250);
+  sleep(0.25); // delay(250);
   led_set(greenLED, LOW);
   led_set(blueLED, HIGH);
-  delay(250);
+  sleep(0.25); // delay(250);
   led_set(blueLED, LOW);
       
   if (bme.begin(0x76)) {
@@ -1913,7 +2068,7 @@ void blink(int length)
   digitalWrite(25, LOW);   // set the built-in LED ON
 #endif 
   
-  delay(length);              // wait for a lenth of time
+  sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
   digitalWrite(PC13, HIGH);    // turn the LED off by making the voltage LOW
@@ -1944,7 +2099,12 @@ void led_set(int ledPin, bool state)
 }
 
 void start_ina219() {
-	
+  // check if Pi is present by 3.3V voltage
+  pinMode(PI_3V3_PIN, INPUT); 	
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN));
+
+  // Supply power to the Main board INA219s		 
   pinMode(MAIN_INA219, OUTPUT);
   digitalWrite(MAIN_INA219, HIGH);
 
@@ -1971,4 +2131,449 @@ void start_ina219() {
   ina219_2_0x41.setCalibration_16V_400mA(); 
   ina219_2_0x44.setCalibration_16V_400mA(); 
   ina219_2_0x45.setCalibration_16V_400mA(); 	
+}
+
+void start_pwm() {
+// based on code https://github.com/rgrosset/pico-pwm-audio
+//
+  Serial.println("Starting pwm!");
+	
+  pwm_value = 128 - pwm_amplitude;
+	
+  set_sys_clock_khz(125000, true); 
+  gpio_set_function(AUDIO_OUT_PIN, GPIO_FUNC_PWM);
+
+  int audio_pin_slice = pwm_gpio_to_slice_num(AUDIO_OUT_PIN);
+
+  // Setup PWM interrupt to fire when PWM cycle is complete
+  pwm_clear_irq(audio_pin_slice);
+  pwm_set_irq_enabled(audio_pin_slice, true);
+  // set the handle function above
+  irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler); 
+  irq_set_enabled(PWM_IRQ_WRAP, true);	
+	
+  // Setup PWM for audio output
+    pwm_config config = pwm_get_default_config();
+    /* Base clock 176,000,000 Hz divide by wrap 250 then the clock divider further divides
+     * to set the interrupt rate. 
+     * 
+     * 11 KHz is fine for speech. Phone lines generally sample at 8 KHz
+     * 
+     * 
+     * So clkdiv should be as follows for given sample rate
+     *  8.0f for 11 KHz
+     *  4.0f for 22 KHz
+     *  2.0f for 44 KHz etc
+     */
+    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
+    pwm_config_set_wrap(&config, 178); // 250); 
+    pwm_init(audio_pin_slice, &config, true);
+
+    pwm_set_gpio_level(AUDIO_OUT_PIN, 0);
+	
+}
+/*
+void pwm_interrupt_handler() {
+// based on code https://github.com/rgrosset/pico-pwm-audio
+//	
+    pwm_clear_irq(pwm_gpio_to_slice_num(AUDIO_OUT_PIN));    
+//    if (wav_position < (WAV_DATA_LENGTH<<3) - 1) { 
+    if (wav_position > (BUFFER_SIZE - 1)) { 
+        // set pwm level 
+        // allow the pwm value to repeat for 8 cycles this is >>3 
+        pwm_set_gpio_level(AUDIO_OUT_PIN, buffer[wav_position]);  
+        wav_position++;
+    } else {
+        // reset to start
+        wav_position = 0;
+    }
+}
+*/
+	
+void pwm_interrupt_handler() {
+    pwm_clear_irq(pwm_gpio_to_slice_num(AUDIO_OUT_PIN)); 
+    	pwm_counter++;   
+        if (pwm_counter > pwm_counter_max) {
+          pwm_counter -= pwm_counter_max;
+//          if (random(0,2) == 1)
+//            pwm_rnd_bit *= (-1.0);
+
+          pwm_rnd_bit = (buffer[wav_position] > 0) ? 1 : 0;
+//	  Serial.print(pwm_rnd_bit);
+//	  Serial.print(" ");
+		
+          if ((pwm_value == (128 - pwm_amplitude)) && (pwm_rnd_bit == 1)) {
+            pwm_value = 128 + pwm_amplitude;
+//            Serial.print("-");
+          }
+          else {
+            pwm_value = 128 - pwm_amplitude; 
+//            Serial.print("_");
+          }
+	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
+//	  Serial.println("wav_position: ");
+//	  Serial.println(wav_position);
+	  if (wav_position++ > BUFFER_SIZE) { // 300) {
+		wav_position = wav_position - BUFFER_SIZE;
+//		Serial.print("R");
+	  }
+        }  
+
+}
+
+void setup1() {
+  Serial.begin(9600);
+  sleep(5.0);
+
+//  if (mode == FSK) 
+  {
+	  
+    pinMode(AUDIO_OUT_PIN, OUTPUT);
+    Serial.println("Setup1 for FSK mode");
+	
+//  digitalWrite(AUDIO_OUT_PIN, HIGH);
+//  delay(500);	
+//  digitalWrite(AUDIO_OUT_PIN, LOW);
+//  delay(500);	
+//  digitalWrite(AUDIO_OUT_PIN, HIGH);
+//  delay(500);
+//  digitalWrite(AUDIO_OUT_PIN, LOW);
+//  delay(500);	
+  }
+
+  while(!ready)  // wait for core0 to start
+    sleep(0.1);
+	
+  Serial.print("S");
+  Serial.print(" ");
+  Serial.println(millis());	
+}
+
+void loop1() {
+
+//        if (pwm_counter > pwm_counter_max) {
+//          pwm_counter -= pwm_counter_max;
+		
+  if (mode == FSK) 
+  {
+        pwm_rnd_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
+	
+	digitalWrite(AUDIO_OUT_PIN, pwm_rnd_bit);	
+		
+//          pwm_rnd_bit = (buffer[wav_position] > 0) ? 1 : 0;
+/*		
+          if (pwm_rnd_bit == 1) {
+            Serial.print("-");
+          }
+          else {
+            Serial.print("_");
+          }
+*/	
+//	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
+//	  Serial.println("wav_position: ");
+//	  Serial.println(wav_position);
+		
+	  if (wav_position++ > BUFFER_SIZE) { // 300) {
+		wav_position = wav_position - BUFFER_SIZE;
+		Serial.print("R");
+		Serial.print(" ");
+		Serial.println(millis());	  }
+  }	  
+  delay(5); //2 1);
+	
+// check pushbutton
+    int pb_value;
+    pb_value = digitalRead(MAIN_PB_PIN);
+//    Serial.print("PB: ");
+//    Serial.println(pb_value);
+    if (pb_value == PRESSED) 
+      process_pushbutton();
+}	    
+
+void sleep(float time) {
+
+  unsigned long time_ms = (unsigned long)(time * 1000.0);	
+  unsigned long startSleep = millis();	    
+  while ((millis() - startSleep) < time_ms)  {
+	  
+    delay(100);	
+	 
+  }
+}
+
+void process_pushbutton() {
+
+  int release = FALSE;
+	
+  sleep(1.0);
+	
+  int pb_value = digitalRead(MAIN_PB_PIN);
+  if (pb_value == RELEASED) {
+    Serial.println("PB: Reboot!");
+    release = TRUE;
+  }
+	
+  blinkTimes(1);
+  sleep(1.5);
+	
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to AFSK");
+    release = TRUE;
+    new_mode = AFSK;
+//    setup();	  
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(2);
+    sleep(1.5);
+  }
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to FSK");
+    release = TRUE;
+    new_mode = FSK;
+//    setup();
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(3);
+    sleep(1.5);
+  }
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to BPSK");
+    release = TRUE;
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(4);
+    sleep(1.5);
+  }	
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to SSTV");
+    release = TRUE;
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(5);
+    sleep(1.5);
+  }	
+	  
+  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((pb_value == RELEASED) && (release == FALSE)) {
+    Serial.println("PB: Switch to CW");
+    release = TRUE;
+  }
+	
+  if (release == FALSE) {
+    Serial.println("PB: Shutdown!");
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.5);	  
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.5);	  
+	  
+  }
+  sleep(2.0);	
+/*	
+	GPIO.output(powerPin, 0); # blink once
+	time.sleep(0.1);
+	GPIO.output(powerPin, 1);
+	time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to AFSK")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("a")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink twice
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to FSK")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("f")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink three times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to BPSK")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("b")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink four times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to SSTV")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("s")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		GPIO.output(powerPin, 0); # blink five times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+	if (GPIO.input(26) and (release == False)):
+		print("switch to CW")
+		f = open("/home/pi/CubeSatSim/.mode", "w")
+		f.write("m")
+		f.close()
+		os.system("sudo systemctl restart cubesatsim")
+		release = True;
+	if (release == False):
+		print("sudo shutdown -h now")
+		GPIO.setwarnings(False)
+		GPIO.setup(powerPin, GPIO.OUT)
+		GPIO.output(powerPin, 0); # blink slowly to indicate shutdown
+		time.sleep(0.5);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.5);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.5);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.5);
+		GPIO.output(powerPin, 0);
+		subprocess.call(['shutdown', '-h', 'now'], shell=False)	
+	if (txPin != 0):
+		GPIO.setwarnings(False)
+		GPIO.output(txPin, 0)	
+	
+*/	
+}
+
+void blinkTimes(int blinks) {
+  for (int i = 0; i < blinks; i++) {
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.1);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.1);
+  }
+}
+
+void blink_pin(int pin, int duration) {
+	
+  digitalWrite(pin, HIGH);
+  sleep((float)duration / 1000.00);
+  digitalWrite(pin, LOW);	
+	
+}
+
+void config_gpio() {
+	
+  // set all Pico GPIO pins to input	
+  for (int i = 6; i < 29; i++) {
+    pinMode(i, INPUT);	  
+  }
+  // set audio out to TXC board
+  pinMode(AUDIO_OUT_PIN, OUTPUT);	
+
+  // set LEDs and blink once	
+  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+  pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
+  blink_pin(MAIN_LED_GREEN, 150);
+  digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
+  pinMode(MAIN_LED_BLUE, OUTPUT);  // Set Main Blue LED pin to output
+  blink_pin(MAIN_LED_BLUE, 150);	
+  pinMode(STEM_LED_GREEN, OUTPUT);  // Set STEM Green LED pin to output
+  blink_pin(STEM_LED_GREEN, 150);	
+  pinMode(STEM_LED_BLUE, OUTPUT);  // Set STEM Blue LED pin to output
+  blink_pin(STEM_LED_BLUE, 150);
+
+  // set input pins and read	
+  pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
+  pinMode(TXC_PIN, INPUT_PULLUP);  // Read TXC to see if present	
+  pinMode(LPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
+  pinMode(SQUELCH, INPUT);	// Squelch from TXC
+
+  if (digitalRead(LPF_PIN) == FALSE)
+    Serial.println("LPF present");
+  else
+    Serial.println("LPF not present");	  
+	
+  if (digitalRead(TXC_PIN) == FALSE)
+    Serial.println("TXC present");
+  else
+    Serial.println("TXC not present");	
+
+  Serial.print("Squelch: ");
+  Serial.println(digitalRead(SQUELCH));
+	
+
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN));
+
+  // set anlog inputs and read	
+  Serial.print("Diode voltage (temperature): ");
+  Serial.println(analogRead(TEMPERATURE_PIN));	
+	
+  Serial.print("Audio In: ");
+  Serial.println(analogRead(AUDIO_IN_PIN));	
+	
 }
