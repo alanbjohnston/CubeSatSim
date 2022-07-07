@@ -2290,6 +2290,8 @@ void loop1() {
 // check pushbutton
     int pb_value;
     pb_value = digitalRead(MAIN_PB_PIN);
+    Serial.print("PB: ");
+    Serial.println(pb_value);
     if (pb_value == PRESSED) 
       process_pushbutton();
 }	    
