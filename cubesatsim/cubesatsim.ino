@@ -128,12 +128,14 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }	
   // send telemetry
+/*	
  if (mode != new_mode) {
     mode = new_mode;  // change modes if button pressed
     config_telem();
     config_radio();
- }	
-  // delay some time
+ }
+*/ 
+  //  Calculate loop time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
   
@@ -2535,7 +2537,8 @@ void config_gpio() {
   // set LEDs and blink once	
   pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
-  blink_pin(MAIN_LED_GREEN, 150);	
+  blink_pin(MAIN_LED_GREEN, 150);
+  digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
   pinMode(MAIN_LED_BLUE, OUTPUT);  // Set Main Blue LED pin to output
   blink_pin(MAIN_LED_BLUE, 150);	
   pinMode(STEM_LED_GREEN, OUTPUT);  // Set STEM Green LED pin to output
