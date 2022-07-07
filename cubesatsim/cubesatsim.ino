@@ -1713,7 +1713,7 @@ void config_radio()
     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
   }
 	
-  if (mode == AFSK)	  
+  if (mode == FSK)	  
     transmit_on();
 // start pwm
 //  start_pwm();	
