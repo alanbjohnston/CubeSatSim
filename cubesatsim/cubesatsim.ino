@@ -90,34 +90,18 @@ void setup() {
 
 	
 // configure STEM Payload sensors	
-//  start_payload();	
+  start_payload();	
 	
 // program Transceiver board  
-  config_radio();	
-	
-// start pwm
-//  start_pwm();
+  config_radio();		
 
-/*	
-  pinMode(AUDIO_OUT_PIN, OUTPUT);
-  Serial.println("Setup0");
-	
-  digitalWrite(AUDIO_OUT_PIN, HIGH);
-  delay(500);	
-  digitalWrite(AUDIO_OUT_PIN, LOW);
-  delay(500);	
-  digitalWrite(AUDIO_OUT_PIN, HIGH);
-  delay(500);
-  digitalWrite(AUDIO_OUT_PIN, LOW);
-  delay(500);	
-*/		
-
+  sampleTime = (unsigned int) millis();		
 	
   ready = TRUE;  // flag for core1 to start looping
 	
   Serial.print("s");
   Serial.print(" ");
- Serial.println(millis());	
+  Serial.println(millis());	
 }
 
 void loop() {
@@ -129,10 +113,9 @@ void loop() {
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-//    read_ina219();
-    ;	
+    read_ina219();	
 	
-//  read_payload();	
+  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  
@@ -142,9 +125,9 @@ void loop() {
   else if (mode == AFSK)
     send_packet();
 
-    while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
-      sleep(0.1); // 25); // 0.5);  // 25);
-    sampleTime = (unsigned int) millis();	  
+  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
+    sleep(0.1); // 25); // 0.5);  // 25);
+  sampleTime = (unsigned int) millis();	  
 	
 //  delay(2000);
 //  test_radio();
@@ -1760,6 +1743,8 @@ void config_radio()
 	
   if (mode == AFSK)	  
     transmit_on();
+// start pwm
+//  start_pwm();	
 }
 
 void test_radio()
