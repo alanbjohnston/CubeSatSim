@@ -2288,7 +2288,7 @@ void loop1() {
   delay(5); //2 1);
 	
 // check pushbutton
-    pb_value = digitalRead(MAIN_PB_PIN);
+    int pb_value = digitalRead(MAIN_PB_PIN);
     if (pb_value == PRESSED) {
 	if (pb_state == RELEASED) {
 	  pb_press_start = millis();	
