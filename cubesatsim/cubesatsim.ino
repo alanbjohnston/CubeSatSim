@@ -2351,7 +2351,6 @@ void process_pushbutton() {
   }
 	
   if (release == FALSE) {
-    digitalWrite(MAIN_PB_PIN, LOW);
     blinkTimes(4);
     sleep(1.5);
   }	
@@ -2363,7 +2362,6 @@ void process_pushbutton() {
   }
 	
   if (release == FALSE) {
-    digitalWrite(MAIN_PB_PIN, LOW);
     blinkTimes(5);
     sleep(1.5);
   }	
