@@ -1736,7 +1736,104 @@ void read_ina219()
 
   voltage[0] = loadvoltage;
   current[0] = current_mA;
+
+  shuntvoltage = ina219_1_0x41.getShuntVoltage_mV();
+  busvoltage = ina219_1_0x41.getBusVoltage_V();
+  current_mA = ina219_1_0x41.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
 	
+  Serial.print("1 0x41 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[1] = loadvoltage;
+  current[1] = current_mA;
+	
+  shuntvoltage = ina219_1_0x44.getShuntVoltage_mV();
+  busvoltage = ina219_1_0x44.getBusVoltage_V();
+  current_mA = ina219_1_0x44.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("1 0x44 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[2] = loadvoltage;
+  current[2] = current_mA;
+
+  shuntvoltage = ina219_1_0x45.getShuntVoltage_mV();
+  busvoltage = ina219_1_0x45.getBusVoltage_V();
+  current_mA = ina219_1_0x45.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("1 0x45 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[3] = loadvoltage;
+  current[3] = current_mA;	
+	
+  shuntvoltage = ina219_2_0x40.getShuntVoltage_mV();
+  busvoltage = ina219_2_0x40.getBusVoltage_V();
+  current_mA = ina219_2_0x40.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("2 0x40 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[4] = loadvoltage;
+  current[4] = current_mA;
+
+  shuntvoltage = ina219_2_0x41.getShuntVoltage_mV();
+  busvoltage = ina219_2_0x41.getBusVoltage_V();
+  current_mA = ina219_2_0x41.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("2 0x41 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[5] = loadvoltage;
+  current[5] = current_mA;
+	
+  shuntvoltage = ina219_2_0x44.getShuntVoltage_mV();
+  busvoltage = ina219_2_0x44.getBusVoltage_V();
+  current_mA = ina219_2_0x44.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("2 0x44 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[6] = loadvoltage;
+  current[6] = current_mA;
+
+  shuntvoltage = ina219_2_0x45.getShuntVoltage_mV();
+  busvoltage = ina219_2_0x45.getBusVoltage_V();
+  current_mA = ina219_2_0x45.getCurrent_mA();
+  loadvoltage = busvoltage + (shuntvoltage / 1000);
+	
+  Serial.print("2 0x45 Voltage:  "); 
+  Serial.print(loadvoltage);
+  Serial.print("V  Current:       "); 
+  Serial.print(current_mA); 
+  Serial.println(" mA");
+
+  voltage[7] = loadvoltage;
+  current[7] = current_mA;		
 }
 
 void read_sensors()
