@@ -2201,6 +2201,7 @@ void start_ina219() {
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == LOW)  {
+    Serial.println("Powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
@@ -2208,7 +2209,7 @@ void start_ina219() {
     pinMode(MAIN_INA219, OUTPUT);
     digitalWrite(MAIN_INA219, HIGH);
   }
-	  
+  sleep(0.1);	  
   ina219_1_0x40.begin();
   ina219_1_0x41.begin();
   ina219_1_0x44.begin();
