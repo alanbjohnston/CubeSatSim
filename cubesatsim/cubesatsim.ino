@@ -1696,7 +1696,7 @@ void config_radio()
     sleep(0.5); // delay(500);
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
 //    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
-   mySerial.println("AT+DMOSETGROUP=0,434.9100,434.9100,0,2,0,4\r");  
+   mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,2,0,0\r");  
    sleep(0.1);	  
    mySerial.println("AT+DMOSETMIC=8,0\r");  
   }
