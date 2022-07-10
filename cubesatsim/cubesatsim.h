@@ -255,6 +255,7 @@ int pwm_value;
 int tx_bit = 1;
 float delay_ms_time;
 bool  polarity = true;
+pwm_config config;
 
 int ready = FALSE;
 
