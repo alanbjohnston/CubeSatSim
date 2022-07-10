@@ -252,7 +252,7 @@ int pwm_counter_max = 420;
 int pwm_amplitude = 50; //50 //100;
 int pwm_value;
 int pwm_rnd_bit = 1;
-int delay_ms;
+float delay_ms;
 
 int ready = FALSE;
 
