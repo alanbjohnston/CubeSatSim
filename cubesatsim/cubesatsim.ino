@@ -2403,8 +2403,8 @@ void loop1() {
 //    Serial.print("PB: ");
 //    Serial.println(pb_value);
 //    if (pb_value == PRESSED) 
-///    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
-///      process_pushbutton();
+    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
+      process_pushbutton();
 }	    
 
 /*
