@@ -2210,9 +2210,9 @@ void start_ina219() {
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
-  // Supply power to the Main board INA219s		 
-    pinMode(MAIN_INA219, OUTPUT);
-    digitalWrite(MAIN_INA219, HIGH);
+    Serial.prinln("Not powering INA219s since 3.3V is present");	  
+//    pinMode(MAIN_INA219, OUTPUT);
+//    digitalWrite(MAIN_INA219, HIGH);
   }
   sleep(0.1);	  
   ina219_1_0x40.begin();
@@ -2242,41 +2242,35 @@ void start_ina219() {
 
 void start_pwm() {
 // based on code https://github.com/rgrosset/pico-pwm-audio
+// and
+//  https://qiita.com/keyyum/items/8cb419f5278e13b6db4d	
 //
   Serial.println("Starting pwm!");
 	
   pwm_value = 128 - pwm_amplitude;
 	
-  set_sys_clock_khz(125000, true); 
-  gpio_set_function(AUDIO_OUT_PIN, GPIO_FUNC_PWM);
+//  set_sys_clock_khz(125000, true); 
+  set_sys_clock_khz(133000, true); 	
+  gpio_set_function(BPSK_PWM_PIN, GPIO_FUNC_PWM);
 
-  int audio_pin_slice = pwm_gpio_to_slice_num(AUDIO_OUT_PIN);
-
+  int bpsk_pin_slice = pwm_gpio_to_slice_num(BPSK_PWM_PIN);
+/*
   // Setup PWM interrupt to fire when PWM cycle is complete
-  pwm_clear_irq(audio_pin_slice);
+  pwm_clear_irq(bpsk_pin_slice);
   pwm_set_irq_enabled(audio_pin_slice, true);
   // set the handle function above
   irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler); 
   irq_set_enabled(PWM_IRQ_WRAP, true);	
-	
-  // Setup PWM for audio output
+*/	
     pwm_config config = pwm_get_default_config();
-    /* Base clock 176,000,000 Hz divide by wrap 250 then the clock divider further divides
-     * to set the interrupt rate. 
-     * 
-     * 11 KHz is fine for speech. Phone lines generally sample at 8 KHz
-     * 
-     * 
-     * So clkdiv should be as follows for given sample rate
-     *  8.0f for 11 KHz
-     *  4.0f for 22 KHz
-     *  2.0f for 44 KHz etc
-     */
-    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
-    pwm_config_set_wrap(&config, 178); // 250); 
-    pwm_init(audio_pin_slice, &config, true);
-
-    pwm_set_gpio_level(AUDIO_OUT_PIN, 0);
+//    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
+    pwm_config_set_clkdiv(&config, 1.0f); 
+//    pwm_config_set_wrap(&config, 178); // 250); 
+    pwm_config_set_wrap(&config, 3);
+	
+    pwm_config_set_output_polarity( &config, polarity, polarity);	
+    pwm_init(bpsk_pin_slice, &config, true);
+    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);
 	
 }
 /*
@@ -2296,7 +2290,7 @@ void pwm_interrupt_handler() {
     }
 }
 */
-	
+/*	
 void pwm_interrupt_handler() {
     pwm_clear_irq(pwm_gpio_to_slice_num(AUDIO_OUT_PIN)); 
     	pwm_counter++;   
@@ -2327,7 +2321,7 @@ void pwm_interrupt_handler() {
         }  
 
 }
-
+*/
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
@@ -2365,43 +2359,35 @@ void setup1() {
 
 void loop1() {
 
-//        if (pwm_counter > pwm_counter_max) {
-//          pwm_counter -= pwm_counter_max;
-		
-  if (mode == FSK) 
+   if (mode == FSK) 
   {
-        pwm_rnd_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
+        tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 	
-	digitalWrite(AUDIO_OUT_PIN, pwm_rnd_bit);	
+	digitalWrite(AUDIO_OUT_PIN, tx_bit);	
 		
-//          pwm_rnd_bit = (buffer[wav_position] > 0) ? 1 : 0;
-/*		
-          if (pwm_rnd_bit == 1) {
-            Serial.print("-");
-          }
-          else {
-            Serial.print("_");
-          }
-*/	
-//	  pwm_set_gpio_level(AUDIO_OUT_PIN, pwm_value);
-//	  Serial.println("wav_position: ");
-//	  Serial.println(wav_position);
-		
-	  if (wav_position++ > BUFFER_SIZE) { // 300) {
-		wav_position = wav_position - BUFFER_SIZE;
-		Serial.print("R");
-		Serial.print(" ");
-		Serial.println(millis());	  }
-  }	  
+  } else if (mode == BPSK)  {
+    tx_bit = (buffer[wav_position] > 0) ? true: false;
+	  
+    pwm_config_set_output_polarity( &config, tx_but, tx_bit);	
+    pwm_init(bpsk_pin_slice, &config, true);
+    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	  
+  }
+  if (wav_position++ > BUFFER_SIZE) { // 300) {
+	wav_position = wav_position - BUFFER_SIZE;
+	Serial.print("R");
+	Serial.print(" ");
+	Serial.println(millis());	
+  }
 //  delay(5); //2 1);
   sleep(delay_ms_time);	
 	
 // check pushbutton
-    int pb_value;
-    pb_value = digitalRead(MAIN_PB_PIN);
+//    int pb_value;
+//    pb_value = digitalRead(MAIN_PB_PIN);
 //    Serial.print("PB: ");
 //    Serial.println(pb_value);
-    if (pb_value == PRESSED) 
+//    if (pb_value == PRESSED) 
+    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       process_pushbutton();
 }	    
 
