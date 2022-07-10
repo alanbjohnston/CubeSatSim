@@ -2364,7 +2364,9 @@ void setup1() {
 }
 
 void loop1() {
-  Serial.println("Starting loop1");	
+  Serial.print("l1 ");
+  Serial.print(wav_position);
+  Serial.print(" ");
 
   if (mode == FSK) 
   {
@@ -2398,8 +2400,8 @@ void loop1() {
 //    Serial.print("PB: ");
 //    Serial.println(pb_value);
 //    if (pb_value == PRESSED) 
-    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
-      process_pushbutton();
+///    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
+///      process_pushbutton();
 }	    
 
 /*
