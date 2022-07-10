@@ -263,7 +263,8 @@ void config_telem() {
     char icon[] = "Ha";
     set_lat_lon_icon(lat_default, lon_default, icon);
 	  
-    samplePeriod = 5000; 	  
+    samplePeriod = 5000;
+    bufLen = 1000;
   }
   firstTime = ON;	
 }
