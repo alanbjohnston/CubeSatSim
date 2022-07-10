@@ -241,7 +241,7 @@ void config_telem() {
   //	printf(" %d", sin_map[j]);	 		
   //   }	 		
   //      printf("\n");
-     }
+//     }
   } else if (mode == AFSK) {
 
     Serial.println("Configuring for AFSK\n");
