@@ -46,6 +46,7 @@ Adafruit_INA219 ina219_2_0x45(0x45);
 char payload_str[100];
 
 void setup() {
+  new_mode = mode;
 	
   Serial.begin(9600);
 
@@ -90,7 +91,7 @@ void setup() {
 }
 
 void loop() {
-	
+		
   int startSleep = millis();	
   loop_count++;
 	
