@@ -189,8 +189,8 @@ long int uptime = 0;
 char call[5];
 char sim_yes[10];
 
-int mode = FSK;
-int new_mode = FSK;
+int mode = BPSK; // FSK;
+int new_mode = BPSK; // FSK;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
 unsigned int sampleTime = 0;
@@ -252,6 +252,7 @@ int pwm_counter_max = 420;
 int pwm_amplitude = 50; //50 //100;
 int pwm_value;
 int pwm_rnd_bit = 1;
+float delay_ms_time;
 
 int ready = FALSE;
 
@@ -291,4 +292,3 @@ void update_rs(
 #define DATA_BYTES_PER_CODE_WORD 223
 
 #endif /* TELEMENCODING_H_ */
-
