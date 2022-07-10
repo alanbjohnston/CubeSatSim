@@ -2367,19 +2367,19 @@ void setup1() {
 }
 
 void loop1() {
-  Serial.print("l1 ");
-  Serial.print(wav_position);
-  Serial.print(" ");
+//  Serial.print("l1 ");
+//  Serial.print(wav_position);
+//  Serial.print(" ");
 
   if (mode == FSK) 
   {
-        tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
+        tx_bit = (buffer[wav_position++] > 0) ? HIGH: LOW;
 	
 	digitalWrite(AUDIO_OUT_PIN, tx_bit);	
 		
   } 
   else if (mode == BPSK)  {
-    tx_bit = (buffer[wav_position] > 0) ? true: false;
+    tx_bit = (buffer[wav_position++] > 0) ? true: false;
 	  
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
     pwm_init(bpsk_pin_slice, &config, true);
@@ -2388,7 +2388,7 @@ void loop1() {
 	
 //  if (wav_position++ > BUFFER_SIZE) { // 300) {
 //	wav_position = wav_position - BUFFER_SIZE;
-  if (wav_position++ > bufLen) { // 300) {
+  if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
 	Serial.print("R");
 	Serial.print(" ");
