@@ -2253,7 +2253,7 @@ void start_pwm() {
   set_sys_clock_khz(133000, true); 	
   gpio_set_function(BPSK_PWM_PIN, GPIO_FUNC_PWM);
 
-  int bpsk_pin_slice = pwm_gpio_to_slice_num(BPSK_PWM_PIN);
+  bpsk_pin_slice = pwm_gpio_to_slice_num(BPSK_PWM_PIN);
 /*
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
