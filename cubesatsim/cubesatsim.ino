@@ -195,7 +195,9 @@ void config_telem() {
     syncWord = 0b0011111010;
     parityLen = 32;
     amplitude = 32767 / 3;
-    samples = S_RATE / bitRate;
+    sample_rate = 200;	  
+//    samples = S_RATE / bitRate;
+    samples = sample_rate / bitRate;
     Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
     Serial.println(bufLen);	  
@@ -219,7 +221,9 @@ void config_telem() {
     syncWord = 0b1000111110011010010000101011101;
     parityLen = 32;
     amplitude = 32767;
-    samples = S_RATE / bitRate;
+    sample_rate = 1200;	  
+//    samples = S_RATE / bitRate;
+    samples = sample_rate / bitRate;
     Serial.println(samples);	
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
     Serial.println(bufLen);	
