@@ -2377,7 +2377,7 @@ void loop1() {
 	digitalWrite(AUDIO_OUT_PIN, tx_bit);	
 		
   } 
-	else if (mode == BPSK)  {
+  else if (mode == BPSK)  {
     tx_bit = (buffer[wav_position] > 0) ? true: false;
 	  
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
@@ -2393,8 +2393,8 @@ void loop1() {
 	Serial.print(" ");
 	Serial.println(millis());	
   }
-  delay(1); //2 1);
-//  sleep(delay_ms_time);	
+//  delay(1); //2 1);
+  sleep(delay_ms_time);	
 	
 // check pushbutton
 //    int pb_value;
