@@ -191,7 +191,7 @@ char call[5];
 char sim_yes[10];
 
 int mode = BPSK; // FSK;
-int new_mode = BPSK; // FSK;
+int new_mode = FSK; // BPSK; // FSK;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
 unsigned int sampleTime = 0;
