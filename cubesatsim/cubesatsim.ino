@@ -131,6 +131,7 @@ void loop() {
   // send telemetry
 	
  if (mode != new_mode) {
+    Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
     config_telem();
     config_radio();
