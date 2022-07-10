@@ -2334,7 +2334,7 @@ void setup1() {
   Serial.begin(9600);
   sleep(5.0);
 
-  if ((mode == FSK) || (mode = BPSK)) 
+  if ((mode == FSK) || (mode == BPSK)) 
   {
 	  
     pinMode(AUDIO_OUT_PIN, OUTPUT);
