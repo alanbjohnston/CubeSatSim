@@ -2210,7 +2210,7 @@ void start_ina219() {
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
-    Serial.prinln("Not powering INA219s since 3.3V is present");	  
+    Serial.println("Not powering INA219s since 3.3V is present");	  
 //    pinMode(MAIN_INA219, OUTPUT);
 //    digitalWrite(MAIN_INA219, HIGH);
   }
