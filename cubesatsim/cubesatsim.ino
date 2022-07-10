@@ -2364,6 +2364,7 @@ void setup1() {
 }
 
 void loop1() {
+  Serial.println("Starting loop1");	
 
   if (mode == FSK) 
   {
