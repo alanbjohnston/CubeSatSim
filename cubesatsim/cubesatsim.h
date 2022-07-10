@@ -42,6 +42,7 @@
 #define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
 #define SQUELCH 15 // SR_FRS_05W Squelch out
 #define MAIN_INA219 16 // Power the INA219s on the Main board
+#define BPSK_PWM_PIN 16 // PWM Output to BPF
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
 #define STEM_LED_GREEN 18 // STEM board LED1 Green
 #define STEM_LED_BLUE 19 // STEM board LED2 Blue
