@@ -2337,10 +2337,10 @@ void setup1() {
     pinMode(AUDIO_OUT_PIN, OUTPUT);
     if (mode == FSK) {	  
       Serial.println("Setup1 for FSK mode");
-      delay_ms = ((1.0 / 200.0) * 1000.0);	    
+      delay_ms_time = ((1.0 / 200.0) * 1000.0);	    
     }  else {
       Serial.println("Setup1 for BPSK mode");
-      delay_ms = ((1.0 / 1200.0) * 1000.0);	   	    
+      delay_ms_time = ((1.0 / 1200.0) * 1000.0);	   	    
     }
 	    
 	
@@ -2393,7 +2393,7 @@ void loop1() {
 		Serial.println(millis());	  }
   }	  
 //  delay(5); //2 1);
-  sleep(delay_ms);	
+  sleep(delay_ms_time);	
 	
 // check pushbutton
     int pb_value;
