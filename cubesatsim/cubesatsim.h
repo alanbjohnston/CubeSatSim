@@ -257,6 +257,8 @@ float delay_ms_time;
 bool  polarity = true;
 pwm_config config;
 int bpsk_pin_slice;
+int sample_rate; 
+int buffer_size;
 
 int ready = FALSE;
 
