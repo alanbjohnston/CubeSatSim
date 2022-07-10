@@ -227,7 +227,7 @@ void config_telem() {
     Serial.println(samples);	
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
     Serial.println(bufLen);	
-    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
     //    samplePeriod = 3000;
     //    sleepTime = 3.0;
     //samplePeriod = 2200; // reduce dut to python and sensor querying delays
@@ -958,8 +958,10 @@ void write_wave(int i, short int *buffer)
 			buffer[ctr++] = (short int)(phase); 
 	} 			
 	//		printf("%d %d \n", i, buffer[ctr - 1]);
-	if (ctr > BUFFER_SIZE) {
-		ctr = ctr - BUFFER_SIZE;
+//	if (ctr > BUFFER_SIZE) {
+//		ctr = ctr - BUFFER_SIZE;
+	if (ctr > bufLen) {
+		ctr = ctr - bufLen;
 		Serial.print("r");
 		Serial.print(" ");
 		Serial.println(millis());
@@ -2376,8 +2378,10 @@ void loop1() {
     pwm_init(bpsk_pin_slice, &config, true);
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	  
   }
-  if (wav_position++ > BUFFER_SIZE) { // 300) {
-	wav_position = wav_position - BUFFER_SIZE;
+//  if (wav_position++ > BUFFER_SIZE) { // 300) {
+//	wav_position = wav_position - BUFFER_SIZE;
+  if (wav_position++ > bufLen) { // 300) {
+	wav_position = wav_position - bufLen;
 	Serial.print("R");
 	Serial.print(" ");
 	Serial.println(millis());	
