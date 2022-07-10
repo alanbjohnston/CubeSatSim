@@ -941,23 +941,24 @@ void write_wave(int i, short int *buffer)
 			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
 //		        Serial.print(buffer[ctr - 1]);
 //		        Serial.print(" ");
-		if (ctr > BUFFER_SIZE) {
-			ctr = ctr - BUFFER_SIZE;
-			Serial.print("r");
-			Serial.print(" ");
-			Serial.println(millis());
-		}
 	}
 	else
 	{
-		if ((ctr - flip_ctr) < smaller)
+//		if ((ctr - flip_ctr) < smaller)
 	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
-	else
+//			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
+//	else
 	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
+//			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
+			buffer[ctr++] = (short int)(phase); 
+	} 			
 	//		printf("%d %d \n", i, buffer[ctr - 1]);
-
+	if (ctr > BUFFER_SIZE) {
+		ctr = ctr - BUFFER_SIZE;
+		Serial.print("r");
+		Serial.print(" ");
+		Serial.println(millis());
+	}
 }
 
 int encodeA(short int  *b, int index, int val) {
@@ -1701,7 +1702,7 @@ void config_radio()
    mySerial.println("AT+DMOSETMIC=6,0\r");  
   }
 	
-  if (mode == FSK)	  
+  if ((mode == FSK) || (mode == BPSK))	  
     transmit_on();
 // start pwm
 //  start_pwm();	
@@ -2330,11 +2331,18 @@ void setup1() {
   Serial.begin(9600);
   sleep(5.0);
 
-//  if (mode == FSK) 
+  if ((mode == FSK) || (mode = BPSK)) 
   {
 	  
     pinMode(AUDIO_OUT_PIN, OUTPUT);
-    Serial.println("Setup1 for FSK mode");
+    if (mode == FSK) {	  
+      Serial.println("Setup1 for FSK mode");
+      delay_ms = ((1.0 / 200.0) * 1000.0);	    
+    }  else {
+      Serial.println("Setup1 for BPSK mode");
+      delay_ms = ((1.0 / 1200.0) * 1000.0);	   	    
+    }
+	    
 	
 //  digitalWrite(AUDIO_OUT_PIN, HIGH);
 //  delay(500);	
@@ -2384,7 +2392,8 @@ void loop1() {
 		Serial.print(" ");
 		Serial.println(millis());	  }
   }	  
-  delay(5); //2 1);
+//  delay(5); //2 1);
+  sleep(delay_ms);	
 	
 // check pushbutton
     int pb_value;
