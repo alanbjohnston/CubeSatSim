@@ -1690,7 +1690,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 void config_radio()
 {
   pinMode(LED_BUILTIN, OUTPUT);
-  
+  	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
 
@@ -1712,10 +1712,14 @@ void config_radio()
 //   mySerial.println("AT+DMOSETMIC=6,0\r");  
   }
 	
-  if ((mode == FSK) || (mode == BPSK))	  
-    if (mode == BPSK)	
-      start_pwm();	
+  if (mode == FSK)	  {
+    delay_time = (1.0 / 200.0);	
     transmit_on();
+  } else if (mode == BPSK)  {
+    delay_time = (1.0 / 1200.0);	  
+    start_pwm();	
+    transmit_on();	
+  }
 }
 
 void test_radio()
@@ -2334,31 +2338,6 @@ void pwm_interrupt_handler() {
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
-
-  if ((mode == FSK) || (mode == BPSK)) 
-  {
-	  
-    pinMode(AUDIO_OUT_PIN, OUTPUT);
-    if (mode == FSK) {	  
-      Serial.println("Setup1 for FSK mode");
-      delay_time = (1.0 / 200.0);	    
-    }  else {
-      Serial.println("Setup1 for BPSK mode");
-      delay_time = (1.0 / 1200.0);	   	    
-    }
-    Serial.print("Delay time: ");
-    Serial.println(delay_time);	  
-	    
-	
-//  digitalWrite(AUDIO_OUT_PIN, HIGH);
-//  delay(500);	
-//  digitalWrite(AUDIO_OUT_PIN, LOW);
-//  delay(500);	
-//  digitalWrite(AUDIO_OUT_PIN, HIGH);
-//  delay(500);
-//  digitalWrite(AUDIO_OUT_PIN, LOW);
-//  delay(500);	
-  }
 
   while(!ready)  // wait for core0 to start
     sleep(0.1);
