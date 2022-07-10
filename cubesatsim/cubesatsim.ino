@@ -1699,14 +1699,14 @@ void config_radio()
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
 //    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=6,0\r");  
+//   sleep(0.5);	  
+//   mySerial.println("AT+DMOSETMIC=6,0\r");  
   }
 	
   if ((mode == FSK) || (mode == BPSK))	  
+    if (mode == BPSK)	
+      start_pwm();	
     transmit_on();
-// start pwm
-//  start_pwm();	
 }
 
 void test_radio()
