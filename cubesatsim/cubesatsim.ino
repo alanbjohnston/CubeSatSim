@@ -2262,7 +2262,7 @@ void start_pwm() {
   irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler); 
   irq_set_enabled(PWM_IRQ_WRAP, true);	
 */	
-    pwm_config config = pwm_get_default_config();
+    config = pwm_get_default_config();
 //    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
     pwm_config_set_clkdiv(&config, 1.0f); 
 //    pwm_config_set_wrap(&config, 178); // 250); 
