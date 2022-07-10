@@ -253,7 +253,7 @@ int pwm_counter_max = 420;
 int pwm_amplitude = 50; //50 //100;
 int pwm_value;
 int tx_bit = 1;
-float delay_ms_time;
+float delay_time;
 bool  polarity = true;
 pwm_config config;
 int bpsk_pin_slice;
