@@ -2346,6 +2346,8 @@ void setup1() {
       Serial.println("Setup1 for BPSK mode");
       delay_time = (1.0 / 1200.0);	   	    
     }
+    Serial.print("Delay time: ");
+    Serial.println(delay_time);	  
 	    
 	
 //  digitalWrite(AUDIO_OUT_PIN, HIGH);
@@ -2423,7 +2425,7 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
   unsigned long time_us = (unsigned long)(time * 1000000.0);	
   unsigned long startSleep = micros();	    
   while ((micros() - startSleep) < time_us)  {	  
-    busy_wait_us(10);	 
+    busy_wait_us(100);	 
   }
 }
 
