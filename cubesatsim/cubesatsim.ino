@@ -886,11 +886,11 @@ void get_tlm_fox() {
         } else {
           if (data == 0) {
             phase *= -1;
-            if ((ctr - smaller) > 0) {
-              for (int j = 1; j <= smaller; j++)
-                buffer[ctr - j] = buffer[ctr - j] * 0.4;
-            }
-            flip_ctr = ctr;
+//            if ((ctr - smaller) > 0) {
+//              for (int j = 1; j <= smaller; j++)
+//                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+ //           }
+//            flip_ctr = ctr;
           }
         }
       }
@@ -918,11 +918,11 @@ void get_tlm_fox() {
         } else {
           if (data == 0) {
             phase *= -1;
-            if ((ctr - smaller) > 0) {
-              for (int j = 1; j <= smaller; j++)
-                buffer[ctr - j] = buffer[ctr - j] * 0.4;
-            }
-            flip_ctr = ctr;
+//            if ((ctr - smaller) > 0) {
+//              for (int j = 1; j <= smaller; j++)
+//                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+//            }
+//            flip_ctr = ctr;
           }
         }
 //	Serial.println("AA");      
