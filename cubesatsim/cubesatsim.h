@@ -189,8 +189,8 @@ long int uptime = 0;
 char call[5];
 char sim_yes[10];
 
-int mode = FSK;
-int new_mode = FSK;
+int mode = BPSK; // FSK;
+int new_mode = BPSK; // FSK;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
 unsigned int sampleTime = 0;
