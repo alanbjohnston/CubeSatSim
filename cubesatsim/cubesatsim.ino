@@ -974,7 +974,7 @@ void write_wave(int i, short int *buffer)
 //		ctr = ctr - BUFFER_SIZE;
 	if (ctr > bufLen) {
 		ctr = ctr - bufLen;
-		Serial.print("r");
+		Serial.print("\r");
 		Serial.print(" ");
 		Serial.println(millis());
 	}
@@ -2713,6 +2713,11 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print(" ");
 
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
+	
+    if (tx_bit)
+      Serial.print("-");
+    else
+      Serial.print("_");
 	  
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
     pwm_init(bpsk_pin_slice, &config, true);
@@ -2720,7 +2725,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 	
   if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
-	Serial.print("R");
+	Serial.print("\nR");
 	Serial.print(" ");
 	Serial.println(millis());	
   }
