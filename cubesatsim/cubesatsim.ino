@@ -2712,7 +2712,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print(wav_position);
 //  Serial.print(" ");
 
-        tx_bit = (buffer[wav_position++] > 0) ? HIGH: LOW;
+        tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 	
 	digitalWrite(AUDIO_OUT_PIN, tx_bit);		
 
@@ -2729,9 +2729,9 @@ bool TimerHandler0(struct repeating_timer *t) {
 	
   if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
-	Serial.print("\nR");
-	Serial.print(" ");
-	Serial.println(millis());	
+//	Serial.print("\nR");
+//	Serial.print(" ");
+//	Serial.println(millis());	
   }
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
@@ -2742,6 +2742,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 void start_isr() {
 	
 	Serial.println("Starting ISR");
+	
+	pinMode(AUDIO_OUT_PIN, OUTPUT);
 	
   if (ITimer0.attachInterruptInterval(833, TimerHandler0))
   {
