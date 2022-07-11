@@ -2342,6 +2342,8 @@ void pwm_interrupt_handler() {
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
+	
+  Serial.println("Setup1");	
 
   while(!ready)  // wait for core0 to start
     sleep(0.1);
