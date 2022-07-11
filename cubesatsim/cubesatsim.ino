@@ -188,6 +188,7 @@ void config_telem() {
   if (mode == FSK) {
     Serial.println("Configuring for FSK\n");
     bitRate = 200;
+    delay_time = (1.0 / 200.0);		  
     rsFrames = 1;
     payloads = 1;
     rsFrameLen = 64;
@@ -214,6 +215,7 @@ void config_telem() {
   } else if (mode == BPSK) {
     Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
+    delay_time = (1.0 / 1200.0);	
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
@@ -1713,10 +1715,8 @@ void config_radio()
   }
 	
   if (mode == FSK)	  {
-    delay_time = (1.0 / 200.0);	
     transmit_on();
   } else if (mode == BPSK)  {
-    delay_time = (1.0 / 1200.0);	  
     start_pwm();	
     transmit_on();	
   }
@@ -2453,6 +2453,7 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to BPSK");
     release = TRUE;
+    new_mode = BPSK;	  
   }
 	
   if (release == FALSE) {
