@@ -2387,8 +2387,8 @@ void loop1() {
 	Serial.print(" ");
 	Serial.println(millis());	
   }
-//  delay(1); //2 1);
-  sleep(delay_time);	
+  delay(1); //2 1);
+//  sleep(delay_time);	
 	
 // check pushbutton
 //    int pb_value;
