@@ -271,6 +271,7 @@ int mode_count = 0;
 unsigned long pb_press_start;
 
 bool TimerHandler0(struct repeating_timer *t);
+RPI_PICO_Timer ITimer0(0);
 
 /*
  * TelemEncoding.h
