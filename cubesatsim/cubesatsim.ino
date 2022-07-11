@@ -2729,7 +2729,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      process_pushbutton();	
 }
 
-void set_isr() {
+void start_isr() {
 	
   if (ITimer0.attachInterruptInterval(833, TimerHandler0))
   {
