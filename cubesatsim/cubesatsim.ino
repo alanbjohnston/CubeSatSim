@@ -2727,6 +2727,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
 //      process_pushbutton();	
+  return true;	
 }
 
 void start_isr() {
