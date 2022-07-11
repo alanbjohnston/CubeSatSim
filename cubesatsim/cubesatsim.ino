@@ -1724,7 +1724,8 @@ void config_radio()
   if (mode == FSK)	  {
     transmit_on();
   } else if (mode == BPSK)  {
-    start_pwm();	
+//    start_pwm();
+    start_isr();	  
     transmit_on();	
   }
 }
@@ -2342,6 +2343,8 @@ void pwm_interrupt_handler() {
 
 }
 */
+
+/*  ///
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
@@ -2371,13 +2374,13 @@ void loop1() {
   } 
   else if (mode == BPSK)  {
 	  ;
-/*	  
+*	  
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
 	  
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
     pwm_init(bpsk_pin_slice, &config, true);
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	  
-*/	  
+*	  
   }
 	
 //  if (wav_position++ > BUFFER_SIZE) { // 300) {
@@ -2400,6 +2403,8 @@ void loop1() {
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       process_pushbutton();
 }	    
+
+*///
 
 /*
 void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
