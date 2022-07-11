@@ -1724,7 +1724,7 @@ void config_radio()
   if (mode == FSK)	  {
     transmit_on();
   } else if (mode == BPSK)  {
-//    start_pwm();
+    start_pwm();
     start_isr();	  
     transmit_on();	
   }
