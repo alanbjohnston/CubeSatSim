@@ -32,7 +32,7 @@
 #include "hardware/irq.h"  // interrupts
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
-
+#include "RPi_Pico_TimerInterrupt.h"
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
