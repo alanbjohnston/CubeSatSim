@@ -190,7 +190,7 @@ long int uptime = 0;
 char call[5];
 char sim_yes[10];
 
-int mode = AFSK;  //BPSK; // AFSK; // FSK;
+int mode = BPSK; // AFSK; // FSK;
 int new_mode;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
@@ -269,6 +269,7 @@ int pb_state = RELEASED;
 int mode_count = 0;
 unsigned long pb_press_start;
 
+bool TimerHandler0(struct repeating_timer *t);
 
 /*
  * TelemEncoding.h
