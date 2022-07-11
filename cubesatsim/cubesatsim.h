@@ -140,6 +140,7 @@ void process_pushbutton();
 void blinkTimes(int blinks);
 void blink_pin(int pin, int duration);
 void config_gpio();
+void start_isr();
 
 extern int Encode_8b10b[][256];
 
