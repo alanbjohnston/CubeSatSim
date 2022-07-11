@@ -2352,9 +2352,9 @@ void setup1() {
 }
 
 void loop1() {
-//  Serial.print("l1 ");
-//  Serial.print(wav_position);
-//  Serial.print(" ");
+  Serial.print("l1 ");
+  Serial.print(wav_position);
+  Serial.print(" ");
 
   if (mode == FSK) 
   {
