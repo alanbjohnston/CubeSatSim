@@ -2741,6 +2741,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 
 void start_isr() {
 	
+	return;
+	
 	Serial.println("Starting ISR");
 	
 	pinMode(AUDIO_OUT_PIN, OUTPUT);
