@@ -70,9 +70,10 @@ void setup() {
   if (sim_mode)
     config_simulated_telem();
   else
-    // configure ina219s	
-    start_ina219();	
-  
+    ; // configure ina219s
+    	  
+//   start_ina219();	
+    
   config_telem();	
 		
 // configure STEM Payload sensors	
@@ -99,7 +100,7 @@ void loop() {
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-    read_ina219();	
+    ; // read_ina219();	
 	
 //  read_payload();	
   
