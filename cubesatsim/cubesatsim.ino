@@ -167,8 +167,12 @@ void transmit_on() {
 }
 
 void transmit_off() {
-  digitalWrite(PTT_PIN, HIGH);
   digitalWrite(MAIN_LED_BLUE, LOW);	
+  if ((mode == AFSK) || (mode == FSK))
+      digitalWrite(PTT_PIN, HIGH);
+  else if (mode == BPSK) {
+    pwm_set_gpio_level(BPSK_PWM_PIN, 0);	  
+  }	
 }
 
 void config_telem() {
@@ -2494,6 +2498,8 @@ void process_pushbutton() {
     sleep(0.5);	  
 	  
   }
+  if (new_mode != mode)
+    transmit_off();
   sleep(2.0);	
 /*	
 	GPIO.output(powerPin, 0); # blink once
