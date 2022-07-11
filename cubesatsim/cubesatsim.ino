@@ -2345,9 +2345,10 @@ void setup1() {
 	
   Serial.println("Setup1");	
 
-  while(!ready)  // wait for core0 to start
+  while(!ready) { // wait for core0 to start
     sleep(0.1);
-	
+    Serial.println(ready);	  
+  }	
   Serial.print("S");
   Serial.print(" ");
   Serial.println(millis());	
