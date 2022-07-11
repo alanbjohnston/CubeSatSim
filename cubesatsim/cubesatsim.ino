@@ -220,7 +220,8 @@ void config_telem() {
   } else if (mode == BPSK) {
     Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
-    delay_time = (1.0 / 1200.0);	
+//    delay_time = (1.0 / 1200.0);	
+    delay_time = (1.0 / 200.0);	
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
