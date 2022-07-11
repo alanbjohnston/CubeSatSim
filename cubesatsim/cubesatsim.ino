@@ -33,6 +33,7 @@
 #include "hardware/irq.h"  // interrupts
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
+#include "RPi_Pico_TimerInterrupt.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -2699,3 +2700,38 @@ void config_gpio() {
   Serial.println(analogRead(AUDIO_IN_PIN));	
 	
 }
+
+
+bool TimerHandler0(struct repeating_timer *t) {
+  Serial.print("l1 ");
+  Serial.print(wav_position);
+  Serial.print(" ");
+
+    tx_bit = (buffer[wav_position++] > 0) ? true: false;
+	  
+    pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
+    pwm_init(bpsk_pin_slice, &config, true);
+    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
+	
+  if (wav_position > bufLen) { // 300) {
+	wav_position = wav_position - bufLen;
+	Serial.print("R");
+	Serial.print(" ");
+	Serial.println(millis());	
+  }
+    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
+      Serial.println("PB pressed!");  
+//      process_pushbutton();	
+}
+
+void set_isr() {
+	
+  if (ITimer0.attachInterruptInterval(833, TimerHandler0))
+  {
+    Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
+  }
+  else
+    Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
+
+}
+  
