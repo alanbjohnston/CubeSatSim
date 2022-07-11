@@ -2713,17 +2713,15 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print(" ");
 
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
-	
-    if (tx_bit)
-      Serial.print("-");
-    else
-      Serial.print("_");
-	
+		
    digitalWrite(AUDIO_OUT_PIN, tx_bit);		
 
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
 /*	
-
+    if (tx_bit)
+      Serial.print("-");
+    else
+      Serial.print("_");
 */	  
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
     pwm_init(bpsk_pin_slice, &config, true);
