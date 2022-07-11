@@ -2708,9 +2708,9 @@ void config_gpio() {
 
 
 bool TimerHandler0(struct repeating_timer *t) {
-  Serial.print("l1 ");
-  Serial.print(wav_position);
-  Serial.print(" ");
+//  Serial.print("l1 ");
+//  Serial.print(wav_position);
+//  Serial.print(" ");
 
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
 	  
