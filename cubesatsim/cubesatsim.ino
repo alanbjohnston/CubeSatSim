@@ -2731,6 +2731,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 }
 
 void start_isr() {
+
+	RPI_PICO_Timer ITimer0(0);
 	
   if (ITimer0.attachInterruptInterval(833, TimerHandler0))
   {
