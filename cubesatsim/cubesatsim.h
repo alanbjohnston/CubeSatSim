@@ -260,7 +260,8 @@ int tx_bit = 1;
 float delay_time;
 bool  polarity = true;
 pwm_config config;
-int bpsk_pin_slice;
+int bpsk_pin_slice_A;
+int bpsk_pin_slice_B;
 int sample_rate; 
 int buffer_size;
 
