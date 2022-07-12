@@ -2270,8 +2270,8 @@ void start_pwm() {
 	
   pwm_value = 128 - pwm_amplitude;
 	
-//  set_sys_clock_khz(125000, true); 
-  set_sys_clock_khz(133000, true); 	
+  set_sys_clock_khz(125000, true); 
+//  set_sys_clock_khz(133000, true); 	
   gpio_set_function(BPSK_PWM_PIN, GPIO_FUNC_PWM);
 
   bpsk_pin_slice = pwm_gpio_to_slice_num(BPSK_PWM_PIN);
