@@ -2741,7 +2741,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 
 void start_isr() {
 	
-	return;
+//	return;
 	
 	Serial.println("Starting ISR");
 	
