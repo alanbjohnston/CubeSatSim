@@ -2751,7 +2751,7 @@ void start_isr() {
 	pinMode(AUDIO_OUT_PIN, OUTPUT);
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
-  if (ITimer0.attachInterruptInterval(5000, TimerHandler0))
+  if (ITimer0.attachInterruptInterval(1666, TimerHandler0))
   {
     Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
   }
