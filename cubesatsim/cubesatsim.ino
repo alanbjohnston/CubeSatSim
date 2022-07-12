@@ -2278,6 +2278,15 @@ void start_pwm() {
 	
   bpsk_pin_slice_A = pwm_gpio_to_slice_num(BPSK_PWM_A_PIN);
   bpsk_pin_slice_B = pwm_gpio_to_slice_num(BPSK_PWM_B_PIN);
+	
+  Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_A_PIN));
+  Serial.print(" ");	
+  Serial.print(pwm_gpio_to_channel(BPSK_PWM_A_PIN));
+  Serial.print(" ");		
+  Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_B_PIN));
+  Serial.print(" ");	
+  Serial.print(pwm_gpio_to_channel(BPSK_PWM_V_PIN));
+  Serial.println(" ");		
 /*
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
