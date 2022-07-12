@@ -2267,7 +2267,7 @@ void start_pwm() {
 // and
 //  https://qiita.com/keyyum/items/8cb419f5278e13b6db4d	
 //
-  Serial.println("Starting pwm!");
+  Serial.println("Starting pwm f=434.9 MHz!");
 	
 //  pwm_value = 128 - pwm_amplitude;
 	
