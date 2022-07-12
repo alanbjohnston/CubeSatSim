@@ -2307,7 +2307,7 @@ void start_pwm() {
     pwm_init(bpsk_pin_slice_A, &config, true);
     pwm_init(bpsk_pin_slice_B, &config, true);
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
 }
 /*
 void pwm_interrupt_handler() {
