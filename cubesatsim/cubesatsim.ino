@@ -2406,7 +2406,7 @@ void loop1() {
 
 *///
 
-/*
+/**/
 void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
 
   unsigned long time_ms = (unsigned long)(time * 1000.0);	
@@ -2415,8 +2415,8 @@ void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
     delay(100);		 
   }
 }
-*/
-
+/**/
+/*
 void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
 
   unsigned long time_us = (unsigned long)(time * 1000000.0);	
@@ -2426,6 +2426,7 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
     delayMicroseconds(100);
   }
 }
+*/
 
 void process_pushbutton() {
 
