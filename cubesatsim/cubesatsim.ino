@@ -2285,9 +2285,9 @@ void start_pwm() {
 */	
     config = pwm_get_default_config();
 //    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
-    pwm_config_set_clkdiv(&config, 4.0f); // 1.0f); 
+    pwm_config_set_clkdiv(&config, 2.0f); // 1.0f); 
 //    pwm_config_set_wrap(&config, 178); // 250); 
-    pwm_config_set_wrap(&config, 1);
+    pwm_config_set_wrap(&config, 3);
 	
     pwm_config_set_output_polarity( &config, polarity, polarity);	
     pwm_init(bpsk_pin_slice, &config, true);
