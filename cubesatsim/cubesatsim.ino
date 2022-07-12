@@ -2712,11 +2712,11 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-
+/*
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 		
    digitalWrite(AUDIO_OUT_PIN, tx_bit);		
-
+*/
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
 /*	
     if (tx_bit)
