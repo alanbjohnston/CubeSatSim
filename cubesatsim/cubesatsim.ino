@@ -2275,6 +2275,7 @@ void start_pwm() {
   set_sys_clock_khz(133000, true); 	
   gpio_set_function(BPSK_PWM_A_PIN, GPIO_FUNC_PWM);
   //gpio_set_function(BPSK_PWM_B_PIN, GPIO_FUNC_PWM);
+  pinMode(BPSK_PWM_B_PIN, INPUT);	
 	
   bpsk_pin_slice_A = pwm_gpio_to_slice_num(BPSK_PWM_A_PIN);
   bpsk_pin_slice_B = pwm_gpio_to_slice_num(BPSK_PWM_B_PIN);
