@@ -2285,7 +2285,7 @@ void start_pwm() {
   Serial.print(" ");		
   Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_B_PIN));
   Serial.print(" ");	
-  Serial.print(pwm_gpio_to_channel(BPSK_PWM_V_PIN));
+  Serial.print(pwm_gpio_to_channel(BPSK_PWM_B_PIN));
   Serial.println(" ");		
 /*
   // Setup PWM interrupt to fire when PWM cycle is complete
