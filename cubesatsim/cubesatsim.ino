@@ -2299,7 +2299,7 @@ void start_pwm() {
 //    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
     pwm_config_set_clkdiv(&config, 16.0); //1.0f); // 1.0f); 
 //    pwm_config_set_wrap(&config, 178); // 250); 
-    pwm_config_set_wrap(&config, 255); // 3);
+    pwm_config_set_wrap(&config, 3); // 255); // 3);
 	
 //    pwm_config_set_output_polarity( &config, polarity, polarity);	
     pwm_config_set_output_polarity( &config, true, false);	
