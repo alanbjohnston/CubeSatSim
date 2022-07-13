@@ -873,7 +873,7 @@ void get_tlm_fox() {
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
           if (firstTime) {
-	    Serial.print(data10[ctr2], HEX);
+	    Serial.print(data10[ctr2-1], HEX);  // added -1 due to ++
 	    Serial.print(".");
           }
           rd = nrd;
