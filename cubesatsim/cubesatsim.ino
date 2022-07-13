@@ -239,7 +239,8 @@ void config_telem() {
     Serial.println(samples);	
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
     Serial.println(bufLen);	
-    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+//    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000; //  - 500;
     //    samplePeriod = 3000;
     //    sleepTime = 3.0;
     //samplePeriod = 2200; // reduce dut to python and sensor querying delays
@@ -873,7 +874,7 @@ void get_tlm_fox() {
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
           if (firstTime) {
 	    Serial.print(data10[ctr2], HEX);
-	    Serial.print(" ");
+	    Serial.print(".");
           }
           rd = nrd;
         }
@@ -2278,7 +2279,7 @@ void start_pwm() {
 // and
 //  https://qiita.com/keyyum/items/8cb419f5278e13b6db4d	
 //
-  Serial.println("Starting pwm f=434.9 MHz!");
+  Serial.println("Starting pwm f=432.250 MHz!");
 	
 //  pwm_value = 128 - pwm_amplitude;
 	
