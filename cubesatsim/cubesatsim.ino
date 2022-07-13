@@ -180,7 +180,7 @@ void transmit_off() {
 
 void config_telem() {
 	
-  frameCnt = 1; 
+  frameCnt = 2; 
   
   Serial.println("v1 Present with UHF BPF\n");
   txLed = 2;
