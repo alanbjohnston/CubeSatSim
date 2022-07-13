@@ -2729,10 +2729,12 @@ bool TimerHandler0(struct repeating_timer *t) {
 	
   if (buffer[wav_position++] > 0) {
     digitalWrite(BPSK_CONTROL_A, HIGH);
+    delayMicroseconds(1);    	  
     digitalWrite(BPSK_CONTROL_B, LOW);  	  
   } else {
-    digitalWrite(BPSK_CONTROL_A, LOW);
-    digitalWrite(BPSK_CONTROL_B, HIGH);  	    
+    digitalWrite(BPSK_CONTROL_B, HIGH);  
+    delayMicroseconds(1);    	  
+    digitalWrite(BPSK_CONTROL_A, LOW);	    
   }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
