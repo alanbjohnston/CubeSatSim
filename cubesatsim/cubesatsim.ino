@@ -858,7 +858,7 @@ void get_tlm_fox() {
       //		 	ctr2, ctr2, data10[ctr2]); 
       if (firstTime) {
         Serial.print(data10[ctr2], HEX);
-	Serial.print(" ")
+	Serial.print(" ");
       }
       rd = nrd; // ^ nrd;
       ctr2++;
@@ -873,7 +873,7 @@ void get_tlm_fox() {
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
           if (firstTime) {
 	    Serial.print(data10[ctr2], HEX);
-	    Serial.print(" ")
+	    Serial.print(" ");
           }
           rd = nrd;
         }
