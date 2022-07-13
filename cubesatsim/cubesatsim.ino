@@ -957,7 +957,7 @@ void get_tlm_fox() {
 //  Serial.println(ctr);
   if (firstTime) {
     Serial.println(" ");
-    firstTime = FALSE;	
+    firstTime = TRUE; // FALSE;	
   }
 }
 
