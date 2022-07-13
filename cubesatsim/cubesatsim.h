@@ -189,7 +189,7 @@ void sleep(float time);
 int uart_fd;
 
 int reset_count = 0;
-float uptime_sec = 0;
+float uptime_sec = 1000;
 long int uptime = 0;
 char call[5];
 char sim_yes[10];
