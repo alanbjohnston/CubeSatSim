@@ -856,6 +856,10 @@ void get_tlm_fox() {
       nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
       //		printf ("data10[%d] = encoded data8[%d] = %x \n",
       //		 	ctr2, ctr2, data10[ctr2]); 
+      if (firstTime) {
+        Serial.print(data10[ctr2], HEX);
+	Serial.print(" ")
+      }
       rd = nrd; // ^ nrd;
       ctr2++;
     }
@@ -867,7 +871,10 @@ void get_tlm_fox() {
 	  nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
-
+          if (firstTime) {
+	    Serial.print(data10[ctr2], HEX);
+	    Serial.print(" ")
+          }
           rd = nrd;
         }
       }
@@ -947,6 +954,10 @@ void get_tlm_fox() {
 //  Serial.println(" ");	
 //  Serial.print("get_fox_tlm eturning with counter: ");
 //  Serial.println(ctr);
+  if (firstTime) {
+    Serial.println(" ");
+    firstTime = FALSE;	
+  }
 }
 
 void write_wave(int i, short int *buffer)
