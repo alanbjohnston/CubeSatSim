@@ -2796,7 +2796,8 @@ void start_isr() {
 	pinMode(BPSK_CONTROL_B, OUTPUT);	
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
-  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
+//  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
+  if (ITimer0.attachInterruptInterval(828, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
   {
     Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
