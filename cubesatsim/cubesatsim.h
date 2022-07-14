@@ -264,7 +264,7 @@ int bpsk_pin_slice_A;
 int bpsk_pin_slice_B;
 int sample_rate; 
 int buffer_size;
-
+long micro_timer;
 int ready = FALSE;
 
 #define PRESSED 0
