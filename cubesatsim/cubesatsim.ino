@@ -2795,6 +2795,7 @@ void start_isr() {
 	pinMode(BPSK_CONTROL_A, OUTPUT);
 	pinMode(BPSK_CONTROL_B, OUTPUT);	
 	
+  if (ITimer0.attachInterruptInterval(804, TimerHandler0))		
   if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
   {
