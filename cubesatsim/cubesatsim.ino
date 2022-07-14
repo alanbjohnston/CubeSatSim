@@ -1955,8 +1955,9 @@ Serial1.begin(115200);  // Pi UART faster speed
   }
 	
   Wire.begin();
-  if (Wire.beginTransmission(0x68) != 0)  {
-    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+  Wire.beginTransmission(0x68);
+  if (Wire.endTransmission() != 0)  {
+    Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
     mpuPresent = 0;
   }
   else {
