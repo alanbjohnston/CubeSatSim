@@ -2293,6 +2293,7 @@ void start_pwm() {
 //  set_sys_clock_khz(125000, true); 
   set_sys_clock_khz(133000, true); 
   gpio_set_function(AUDIO_OUT_PIN, GPIO_FUNC_PWM);
+  bpsk_pin_slice = pwm_gpio_to_slice_num(AUDIO_OUT_PIN);
 	
 /* // working switching code	
   gpio_set_function(BPSK_PWM_A_PIN, GPIO_FUNC_PWM);
@@ -2331,7 +2332,9 @@ void start_pwm() {
     pwm_init(bpsk_pin_slice_B, &config, true);
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
     pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
-*/	
+*/
+    pwm_init(bpsk_pin_slice, &config, true);
+    pwm_set_gpio_level(AUDIO_OUT_PIN, (config.top + 1) * 0.5);	
 }
 /*
 void pwm_interrupt_handler() {
