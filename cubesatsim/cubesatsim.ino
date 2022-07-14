@@ -2314,7 +2314,7 @@ void start_pwm() {
 /**/
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
-  pwm_set_irq_enabled(audio_pin_slice, true);
+  pwm_set_irq_enabled(bpsk_pin_slice, true);
   // set the handle function above
   irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler); 
   irq_set_enabled(PWM_IRQ_WRAP, true);	
