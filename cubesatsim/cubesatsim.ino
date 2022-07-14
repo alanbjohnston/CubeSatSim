@@ -2311,14 +2311,14 @@ void start_pwm() {
   Serial.print(pwm_gpio_to_channel(BPSK_PWM_B_PIN));
   Serial.println(" ");	
 */	
-/*
+/**/
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
   pwm_set_irq_enabled(audio_pin_slice, true);
   // set the handle function above
   irq_set_exclusive_handler(PWM_IRQ_WRAP, pwm_interrupt_handler); 
   irq_set_enabled(PWM_IRQ_WRAP, true);	
-*/	
+/**/	
     config = pwm_get_default_config();
 //    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
     pwm_config_set_clkdiv(&config, 1.0f); // 2.0f); // 1.0f); // 16.0); //1.0f); // 1.0f); 
@@ -2750,7 +2750,9 @@ void config_gpio() {
 }
 
 
-bool TimerHandler0(struct repeating_timer *t) {
+//bool TimerHandler0(struct repeating_timer *t) {
+void pwm_interrupt_handler() {	
+  pwm_clear_irq(pwm_gpio_to_slice_num(AUDIO_OUT_PIN)); 	
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
@@ -2799,12 +2801,12 @@ bool TimerHandler0(struct repeating_timer *t) {
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
 //      process_pushbutton();	
-  return true;	
+//  return true;	
 }
 
 void start_isr() {
 	
-//	return;
+	return;
 	
 	Serial.println("Starting ISR");
 	
