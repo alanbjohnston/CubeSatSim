@@ -895,7 +895,7 @@ void get_tlm_fox() {
 ///    #endif
 
     for (i = 1; i <= syncBits * samples; i++) {
-      k(ctr, buffer);
+      write_wave(ctr, buffer);
       //		printf("%d ",ctr);
       if ((i % samples) == 0) {
         int bit = syncBits - i / samples + 1;
