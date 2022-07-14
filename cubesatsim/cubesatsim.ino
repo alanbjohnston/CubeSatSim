@@ -1771,6 +1771,7 @@ void read_ina219()
   float current_mA = 0;
   float loadvoltage = 0;
 	
+  if (i2c_bus1) {	
   shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
   busvoltage = ina219_1_0x40.getBusVoltage_V();
   current_mA = ina219_1_0x40.getCurrent_mA();
@@ -1826,7 +1827,9 @@ void read_ina219()
 
   voltage[3] = loadvoltage;
   current[3] = current_mA;	
+  }
 	
+  if (i2c_bus3) {	
   shuntvoltage = ina219_2_0x40.getShuntVoltage_mV();
   busvoltage = ina219_2_0x40.getBusVoltage_V();
   current_mA = ina219_2_0x40.getCurrent_mA();
@@ -1881,7 +1884,8 @@ void read_ina219()
   Serial.println(" mA");
 
   voltage[7] = loadvoltage;
-  current[7] = current_mA;		
+  current[7] = current_mA;
+  }	  
 }
 
 void read_sensors()
@@ -2257,8 +2261,8 @@ void start_ina219() {
 //    pinMode(MAIN_INA219, OUTPUT);
 //    digitalWrite(MAIN_INA219, HIGH);
   }
-  sleep(0.1);	  
-  ina219_1_0x40.begin();
+  sleep(0.1);
+  i2c_bus1 = ina219_1_0x40.begin();  // check i2c bus 1
   ina219_1_0x41.begin();
   ina219_1_0x44.begin();
   ina219_1_0x45.begin();
@@ -2267,20 +2271,23 @@ void start_ina219() {
   Wire1.setSCL(3);
   Wire1.begin(); 
 	
-  ina219_2_0x40.begin(&Wire1);
+  i2c_bus3 = ina219_2_0x40.begin(&Wire1);  // check i2c bus 2
   ina219_2_0x41.begin(&Wire1);
   ina219_2_0x44.begin(&Wire1);
   ina219_2_0x45.begin(&Wire1);
-	
+  
+  if (i2c_bus1) {	
   ina219_1_0x40.setCalibration_16V_400mA(); 
   ina219_1_0x41.setCalibration_16V_400mA(); 
   ina219_1_0x44.setCalibration_16V_400mA(); 
   ina219_1_0x45.setCalibration_16V_400mA(); 	
-	
+  }
+  if (i2c_bus3) {	 	
   ina219_2_0x40.setCalibration_16V_400mA(); 
   ina219_2_0x41.setCalibration_16V_400mA(); 
   ina219_2_0x44.setCalibration_16V_400mA(); 
   ina219_2_0x45.setCalibration_16V_400mA(); 	
+  }
 }
 
 void start_pwm() {
