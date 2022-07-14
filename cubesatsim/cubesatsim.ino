@@ -280,6 +280,7 @@ void config_telem() {
     set_lat_lon_icon(lat_default, lon_default, icon);
 	  
     samplePeriod = 5000;
+    frameTime = 5000;	  
     bufLen = 1000;
   }
   firstTime = TRUE;	
