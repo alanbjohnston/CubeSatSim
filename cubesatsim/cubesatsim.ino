@@ -895,7 +895,7 @@ void get_tlm_fox() {
 ///    #endif
 
     for (i = 1; i <= syncBits * samples; i++) {
-      write_wave(ctr, buffer);
+//      write_wave(ctr, buffer);  // moved after phase calculation
       //		printf("%d ",ctr);
       if ((i % samples) == 0) {
         int bit = syncBits - i / samples + 1;
@@ -917,6 +917,7 @@ void get_tlm_fox() {
           }
         }
       }
+      write_wave(ctr, buffer);	    
     }
 ///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
@@ -925,7 +926,7 @@ void get_tlm_fox() {
     for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 //    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
-      write_wave(ctr, buffer);
+//      write_wave(ctr, buffer);  // moved to after phase calculation
       if ((i % samples) == 0) {
         int symbol = (int)((i - 1) / (samples * 10));
         int bit = 10 - (i - symbol * samples * 10) / samples + 1;
@@ -950,6 +951,7 @@ void get_tlm_fox() {
         }
 //	Serial.println("AA");      
       }
+      write_wave(ctr, buffer);	    
 //	Serial.println("BB");     
     }
 //	Serial.println("CC");     
