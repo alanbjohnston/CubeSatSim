@@ -2778,7 +2778,11 @@ bool TimerHandler0(struct repeating_timer *t) {
   }
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
-//      process_pushbutton();	
+//      process_pushbutton();
+  Serial.print("Microseconds: ");
+  Serial.println(micros() - micro_timer);
+  micro_timer = micros();	
+	
   return true;	
 }
 
