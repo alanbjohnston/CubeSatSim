@@ -895,7 +895,7 @@ void get_tlm_fox() {
 ///    #endif
 
     for (i = 1; i <= syncBits * samples; i++) {
-      write_wave(ctr, buffer);
+      k(ctr, buffer);
       //		printf("%d ",ctr);
       if ((i % samples) == 0) {
         int bit = syncBits - i / samples + 1;
@@ -954,9 +954,9 @@ void get_tlm_fox() {
     }
 //	Serial.println("CC");     
   }
-//  Serial.println(" ");	
-//  Serial.print("get_fox_tlm eturning with counter: ");
-//  Serial.println(ctr);
+  Serial.println(" ");	
+  Serial.print("get_fox_tlm eturning with counter: ");
+  Serial.println(ctr);
   if (firstTime) {
     Serial.println(" ");
     firstTime = TRUE; // FALSE;	
