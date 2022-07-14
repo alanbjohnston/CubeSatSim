@@ -262,6 +262,7 @@ bool  polarity = true;
 pwm_config config;
 int bpsk_pin_slice_A;
 int bpsk_pin_slice_B;
+int bpsk_pin_slice;
 int sample_rate; 
 int buffer_size;
 long micro_timer;
