@@ -219,6 +219,7 @@ void config_telem() {
     Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+    memset(buffer, 0xa5, sizeof(buffer)); 
   } else if (mode == BPSK) {
     Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
@@ -259,6 +260,7 @@ void config_telem() {
   //   }	 		
   //      printf("\n");
 //     }
+    memset(buffer, 0xa5, sizeof(buffer)); 	  
   } else if (mode == AFSK) {
 
     Serial.println("Configuring for AFSK\n");
@@ -486,7 +488,7 @@ void get_tlm_fox() {
 	
   short int h[headerLen];
   memset(h, 0, sizeof(h));
-  memset(buffer, 0xa5, sizeof(buffer));
+//  memset(buffer, 0xa5, sizeof(buffer));
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
   int id, frm_type = 0x01, NormalModeFailure = 0, groundCommandCount = 0;
