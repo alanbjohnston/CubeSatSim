@@ -233,7 +233,7 @@ Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
 
 long timer = 0;
-int bmePresent;
+int bmePresent, mpuPresent;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 19;
 int blueLED = 18;
