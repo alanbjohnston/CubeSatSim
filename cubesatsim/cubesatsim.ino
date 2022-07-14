@@ -2291,7 +2291,10 @@ void start_pwm() {
 //  pwm_value = 128 - pwm_amplitude;
 	
 //  set_sys_clock_khz(125000, true); 
-  set_sys_clock_khz(133000, true); 	
+  set_sys_clock_khz(133000, true); 
+  gpio_set_function(AUDIO_OUT_PIN, GPIO_FUNC_PWM);
+	
+/* // working switching code	
   gpio_set_function(BPSK_PWM_A_PIN, GPIO_FUNC_PWM);
   gpio_set_function(BPSK_PWM_B_PIN, GPIO_FUNC_PWM);
 	
@@ -2305,7 +2308,8 @@ void start_pwm() {
   Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_B_PIN));
   Serial.print(" ");	
   Serial.print(pwm_gpio_to_channel(BPSK_PWM_B_PIN));
-  Serial.println(" ");		
+  Serial.println(" ");	
+*/	
 /*
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
@@ -2320,12 +2324,14 @@ void start_pwm() {
 //    pwm_config_set_wrap(&config, 178); // 250); 
     pwm_config_set_wrap(&config, 3); // 255); // 3);
 	
-//    pwm_config_set_output_polarity( &config, polarity, polarity);	
+    pwm_config_set_output_polarity( &config, polarity, polarity);
+/* // Working switching code	
     pwm_config_set_output_polarity( &config, true, false);	
     pwm_init(bpsk_pin_slice_A, &config, true);
     pwm_init(bpsk_pin_slice_B, &config, true);
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
     pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+*/	
 }
 /*
 void pwm_interrupt_handler() {
@@ -2745,7 +2751,9 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-	
+
+/// Working switching code 
+/*	
   if (buffer[wav_position++] > 0) {
     digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
@@ -2755,24 +2763,27 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_A, LOW);	    
   }
+*/	
+///	
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 		
    digitalWrite(AUDIO_OUT_PIN, tx_bit);		
-
+*/
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
-*/    
+    
 /*	
     if (tx_bit)
       Serial.print("-");
     else
       Serial.print("_");
 */
-/*	
+/* */	// software phase switching
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
     pwm_init(bpsk_pin_slice, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
-*/	
+//    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
+    pwm_set_gpio_level(AUDIO_OUT_PIN, (config.top + 1) * 0.5);	 
+/* */	
   if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
 //	Serial.print("\nR");
