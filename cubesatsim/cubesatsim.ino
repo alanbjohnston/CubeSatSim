@@ -961,7 +961,7 @@ void get_tlm_fox() {
   Serial.println(ctr);
   if (firstTime) {
     Serial.println(" ");
-    firstTime = TRUE; // FALSE;	
+    firstTime = FALSE;	
   }
 }
 
@@ -2779,10 +2779,11 @@ bool TimerHandler0(struct repeating_timer *t) {
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
 //      process_pushbutton();
+/*	
   Serial.print("Microseconds ");
   Serial.println(micros() - micro_timer);
   micro_timer = micros();	
-	
+*/	
   return true;	
 }
 
