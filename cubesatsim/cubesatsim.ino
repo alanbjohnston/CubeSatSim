@@ -2779,7 +2779,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
 //      process_pushbutton();
-  Serial.print("Microseconds: ");
+  Serial.print("Microseconds ");
   Serial.println(micros() - micro_timer);
   micro_timer = micros();	
 	
@@ -2796,7 +2796,7 @@ void start_isr() {
 	pinMode(BPSK_CONTROL_B, OUTPUT);	
 	
   if (ITimer0.attachInterruptInterval(804, TimerHandler0))		
-  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
+//  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
   {
     Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
