@@ -279,7 +279,7 @@ void config_telem() {
     samplePeriod = 5000;
     bufLen = 1000;
   }
-  firstTime = ON;	
+  firstTime = TRUE;	
 }
 
 void get_tlm_ao7() {
@@ -895,7 +895,7 @@ void get_tlm_fox() {
 ///    #endif
 
     for (i = 1; i <= syncBits * samples; i++) {
-//      write_wave(ctr, buffer);  // moved after phase calculation
+      write_wave(ctr, buffer);
       //		printf("%d ",ctr);
       if ((i % samples) == 0) {
         int bit = syncBits - i / samples + 1;
@@ -917,7 +917,6 @@ void get_tlm_fox() {
           }
         }
       }
-      write_wave(ctr, buffer);	    
     }
 ///    #ifdef DEBUG_LOGGING
     //	printf("\n\nValue of ctr after header: %d Buffer Len: %d\n\n", ctr, buffSize);
@@ -926,7 +925,7 @@ void get_tlm_fox() {
     for (i = 1; i <= (10 * (headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // 572   
 //    for (i = 1; i <= ((headerLen + dataLen * payloads + rsFrames * parityLen) * samples); i++) // Not 10 * anymore 572   
     {
-//      write_wave(ctr, buffer);  // moved to after phase calculation
+      write_wave(ctr, buffer);
       if ((i % samples) == 0) {
         int symbol = (int)((i - 1) / (samples * 10));
         int bit = 10 - (i - symbol * samples * 10) / samples + 1;
@@ -951,7 +950,6 @@ void get_tlm_fox() {
         }
 //	Serial.println("AA");      
       }
-      write_wave(ctr, buffer);	    
 //	Serial.println("BB");     
     }
 //	Serial.println("CC");     
@@ -2774,16 +2772,14 @@ bool TimerHandler0(struct repeating_timer *t) {
 	wav_position = wav_position - bufLen;
 //	Serial.print("\nR");
 //	Serial.print(" ");
-//	Serial.println(millis());	
+//	Serial.println(millis());
+	Serial.print("R Microseconds: ");
+        Serial.println(micros() - micro_timer);
+        micro_timer = micros();
   }
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       Serial.println("PB pressed!");  
-//      process_pushbutton();
-/*	
-  Serial.print("Microseconds ");
-  Serial.println(micros() - micro_timer);
-  micro_timer = micros();	
-*/	
+//      process_pushbutton();	
   return true;	
 }
 
@@ -2796,8 +2792,8 @@ void start_isr() {
 	pinMode(BPSK_CONTROL_A, OUTPUT);
 	pinMode(BPSK_CONTROL_B, OUTPUT);	
 	
-  if (ITimer0.attachInterruptInterval(804, TimerHandler0))		
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
+  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
   {
     Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
