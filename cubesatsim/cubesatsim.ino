@@ -1953,8 +1953,15 @@ Serial1.begin(115200);  // Pi UART faster speed
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     bmePresent = 0;
   }
-
-  mpu6050.begin();
+	
+  Wire.begin();
+  if (Wire.beginTransmission(0x68) != 0)  {
+    Serial.println("Could not find a valid BME280 sensor, check wiring!");
+    mpuPresent = 0;
+  }
+  else {
+    mpuPresent = 1;
+    mpu6050.begin();	  
 
   if (eeprom_word_read(0) == 0xA07)
   {
@@ -1986,6 +1993,7 @@ Serial1.begin(115200);  // Pi UART faster speed
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
+  }	  
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED, OUTPUT);
 	
@@ -2010,7 +2018,8 @@ void read_payload()
     else
         sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
-	  
+
+    if (mpuPresent) 	 { 
 //    print_string(payload_str);	
     mpu6050.update();
 
@@ -2020,7 +2029,7 @@ void read_payload()
     
     strcat(payload_str, str);
     print_string(payload_str);
-
+    }
     if (result == 'R') {
       Serial.println("OK");
       delay(100);
