@@ -2572,125 +2572,97 @@ void process_pushbutton() {
   if (new_mode != mode)
     transmit_off();
   sleep(2.0);	
-/*	
-	GPIO.output(powerPin, 0); # blink once
-	time.sleep(0.1);
-	GPIO.output(powerPin, 1);
-	time.sleep(1.5)
-	if (GPIO.input(26) and (release == False)):
-		print("switch to AFSK")
-		f = open("/home/pi/CubeSatSim/.mode", "w")
-		f.write("a")
-		f.close()
-		os.system("sudo systemctl restart cubesatsim")
-		release = True;
-	if (release == False):
-		GPIO.output(powerPin, 0); # blink twice
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(1.5)
-	if (GPIO.input(26) and (release == False)):
-		print("switch to FSK")
-		f = open("/home/pi/CubeSatSim/.mode", "w")
-		f.write("f")
-		f.close()
-		os.system("sudo systemctl restart cubesatsim")
-		release = True;
-	if (release == False):
-		GPIO.output(powerPin, 0); # blink three times
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(1.5)
-	if (GPIO.input(26) and (release == False)):
-		print("switch to BPSK")
-		f = open("/home/pi/CubeSatSim/.mode", "w")
-		f.write("b")
-		f.close()
-		os.system("sudo systemctl restart cubesatsim")
-		release = True;
-	if (release == False):
-		GPIO.output(powerPin, 0); # blink four times
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
-	if (GPIO.input(26) and (release == False)):
-		print("switch to SSTV")
-		f = open("/home/pi/CubeSatSim/.mode", "w")
-		f.write("s")
-		f.close()
-		os.system("sudo systemctl restart cubesatsim")
-		release = True;
-	if (release == False):
-		GPIO.output(powerPin, 0); # blink five times
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.1)
-		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
-		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
-	if (GPIO.input(26) and (release == False)):
-		print("switch to CW")
-		f = open("/home/pi/CubeSatSim/.mode", "w")
-		f.write("m")
-		f.close()
-		os.system("sudo systemctl restart cubesatsim")
-		release = True;
-	if (release == False):
-		print("sudo shutdown -h now")
-		GPIO.setwarnings(False)
-		GPIO.setup(powerPin, GPIO.OUT)
-		GPIO.output(powerPin, 0); # blink slowly to indicate shutdown
-		time.sleep(0.5);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.5);
-		GPIO.output(powerPin, 0);
-		time.sleep(0.5);
-		GPIO.output(powerPin, 1);
-		time.sleep(0.5);
-		GPIO.output(powerPin, 0);
-		subprocess.call(['shutdown', '-h', 'now'], shell=False)	
-	if (txPin != 0):
-		GPIO.setwarnings(False)
-		GPIO.output(txPin, 0)	
+}
+
+void process_bootsel() {
+
+  int release = FALSE;
 	
-*/	
+  sleep(1.0);
+	
+//  int pb_value = digitalRead(MAIN_PB_PIN);
+  if (!BOOTSEL) {
+    Serial.println("BOOTSEL: Reboot!");
+    release = TRUE;
+  }
+	
+  blinkTimes(1);
+  sleep(1.5);
+	
+//  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((!BOOTSEL) && (release == FALSE)) {
+    Serial.println("BOOTSEL: Switch to AFSK");
+    release = TRUE;
+    new_mode = AFSK;
+//    setup();	  
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(2);
+    sleep(1.5);
+  }
+	  
+//  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((!BOOTSEL) && (release == FALSE)) {
+    Serial.println("BOOTSEL: Switch to FSK");
+    release = TRUE;
+    new_mode = FSK;
+//    setup();
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(3);
+    sleep(1.5);
+  }
+	  
+//  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((!BOOTSEL) && (release == FALSE)) {
+    Serial.println("BOOTSEL: Switch to BPSK");
+    release = TRUE;
+    new_mode = BPSK;	  
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(4);
+    sleep(1.5);
+  }	
+	  
+//  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((!BOOTSEL)D) && (release == FALSE)) {
+    Serial.println("BOOTSEL: Switch to SSTV");
+    release = TRUE;
+  }
+	
+  if (release == FALSE) {
+    blinkTimes(5);
+    sleep(1.5);
+  }	
+	  
+//  pb_value = digitalRead(MAIN_PB_PIN);
+  if ((!BOOTSEL) && (release == FALSE)) {
+    Serial.println("BOOTSEL: Switch to CW");
+    release = TRUE;
+  }
+	
+  if (release == FALSE) {
+    Serial.println("BOOTSEL: Shutdown!");
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.5);	  
+    digitalWrite(MAIN_LED_GREEN, LOW);
+    sleep(0.5);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+    sleep(0.5);	  
+	  
+  }
+  if (new_mode != mode)
+    transmit_off();
+  sleep(2.0);	
 }
 
 void blinkTimes(int blinks) {
@@ -2805,9 +2777,11 @@ bool TimerHandler0(struct repeating_timer *t) {
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
   }
-    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
+    if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
 //      Serial.println("PB pressed!");  
-      process_pushbutton();	
+      process_pushbutton();
+   if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
 	
   return true;	
 }
