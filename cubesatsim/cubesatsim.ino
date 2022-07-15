@@ -173,8 +173,10 @@ void send_packet() {
 }
 
 void transmit_on() {
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
-  digitalWrite(PTT_PIN, LOW);
+  if (mode == AFSK) {	
+    digitalWrite(MAIN_LED_BLUE, HIGH);	
+    digitalWrite(PTT_PIN, LOW);
+  }
 }
 
 void transmit_off() {
@@ -1733,24 +1735,28 @@ void config_radio()
   digitalWrite(PTT_PIN, HIGH);
 
   pinMode(PD_PIN, OUTPUT);  // PD active HIGH
-  digitalWrite(PD_PIN, HIGH);
+  digitalWrite(PD_PIN, LOW);  
 
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
+	
+  if (mode == AFSK) {
+	  
+    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS  	  
 
-  DumbTXSWS mySerial(SWTX_PIN); // TX pin
-  mySerial.begin(9600);
+    DumbTXSWS mySerial(SWTX_PIN); // TX pin
+    mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
-    sleep(0.5); // delay(500);
+     sleep(0.5); // delay(500);
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
 //    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
-   mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //   sleep(0.5);	  
 //   mySerial.println("AT+DMOSETMIC=6,0\r");  
   }
-	
-  if (mode == FSK)	  {
+  	
+  } else if (mode == FSK)	  {
     transmit_on();
   } else if (mode == BPSK)  {
     start_pwm();
