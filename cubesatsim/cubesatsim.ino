@@ -140,6 +140,13 @@ void loop() {
     config_telem();
     config_radio();
  }
+	
+	  
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();		
  
   //  Calculate loop time
   Serial.print("\nLoop time: ");	
@@ -2479,13 +2486,7 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
   unsigned long startSleep = micros();	    
   while ((micros() - startSleep) < time_us)  {	  
 //    busy_wait_us(100);
-    delayMicroseconds(100);
-	  
-// check for button press upon coming out of sleep
-  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
-      process_pushbutton();
-  if (BOOTSEL)	  // boot selector button is pressed on Pico
-      process_bootsel();	  
+    delayMicroseconds(100);  
   }
 }
 
