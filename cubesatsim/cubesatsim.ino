@@ -2094,7 +2094,7 @@ void read_payload()
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
-  }
+ 
     if (acceleration > 1.2)
         led_set(greenLED, HIGH);
     else
@@ -2103,8 +2103,9 @@ void read_payload()
     if (rotation > 5)
         led_set(blueLED, HIGH);
     else
-        led_set(blueLED, LOW);          
-    }    
+        led_set(blueLED, LOW);  
+    } 
+   }    
   }
 
   if (Serial1.available() > 0) {
