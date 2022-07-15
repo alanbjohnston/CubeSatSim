@@ -2668,8 +2668,10 @@ void process_bootsel() {
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
+    digitalWrite(LED_BUILTIN, HIGH);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
+    digitalWrite(LED_BUILTIN, LOW);
     sleep(0.1);
   }
 }
