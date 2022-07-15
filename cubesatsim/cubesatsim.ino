@@ -2487,6 +2487,8 @@ void process_pushbutton() {
 
   int release = FALSE;
 	
+ digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
+	
   sleep(1.0);
 	
   int pb_value = digitalRead(MAIN_PB_PIN);
@@ -2577,6 +2579,8 @@ void process_pushbutton() {
 void process_bootsel() {
 
   int release = FALSE;
+	
+digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
 	
