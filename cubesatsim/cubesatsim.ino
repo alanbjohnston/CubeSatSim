@@ -1740,7 +1740,7 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 	
-  if (mode == AFSK) {
+  if ((mode == AFSK) || (mode == FSK)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS  	  
 
@@ -1756,13 +1756,16 @@ void config_radio()
 //   mySerial.println("AT+DMOSETMIC=6,0\r");  
   }
   	
-  } else if (mode == FSK)	  {
-    transmit_on();
+//  } else if (mode == FSK)	  {  // moved to below
+//    transmit_on();
   } else if (mode == BPSK)  {
     start_pwm();
     start_isr();	  
     transmit_on();	
   }
+	
+  if (mode == FSK)
+    transmit_on();
 }
 
 void test_radio()
