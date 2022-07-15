@@ -32,7 +32,7 @@
 #include "hardware/irq.h"  // interrupts
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
-
+#include "RPi_Pico_TimerInterrupt.h"
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
@@ -41,8 +41,11 @@
 #define TXC_PIN 11 // Transceiver Board is present
 #define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
 #define SQUELCH 15 // SR_FRS_05W Squelch out
-#define MAIN_INA219 16 // Power the INA219s on the Main board
-#define BPSK_PWM_PIN 16 // PWM Output to BPF
+//#define MAIN_INA219 16 // Power the INA219s on the Main board
+#define BPSK_PWM_A_PIN 6 // PWM Output Phase A to switch
+#define BPSK_PWM_B_PIN 7 // PWM Output Phase B to switch
+#define BPSK_CONTROL_A 16   // control for Phase A to switch
+#define BPSK_CONTROL_B 15   // control for Phase A to switch
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
 #define STEM_LED_GREEN 18 // STEM board LED1 Green
 #define STEM_LED_BLUE 19 // STEM board LED2 Blue
@@ -140,6 +143,7 @@ void process_pushbutton();
 void blinkTimes(int blinks);
 void blink_pin(int pin, int duration);
 void config_gpio();
+void start_isr();
 
 extern int Encode_8b10b[][256];
 
@@ -185,12 +189,12 @@ void sleep(float time);
 int uart_fd;
 
 int reset_count = 0;
-float uptime_sec = 0;
-long int uptime = 0;
+float uptime_sec = 1000;
+long int uptime = 1000;
 char call[5];
 char sim_yes[10];
 
-int mode = AFSK;  //BPSK; // AFSK; // FSK;
+int mode = BPSK; // AFSK; // FSK;
 int new_mode;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
@@ -229,7 +233,7 @@ Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
 
 long timer = 0;
-int bmePresent;
+int bmePresent, mpuPresent;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 19;
 int blueLED = 18;
@@ -256,10 +260,12 @@ int tx_bit = 1;
 float delay_time;
 bool  polarity = true;
 pwm_config config;
+int bpsk_pin_slice_A;
+int bpsk_pin_slice_B;
 int bpsk_pin_slice;
 int sample_rate; 
 int buffer_size;
-
+long micro_timer;
 int ready = FALSE;
 
 #define PRESSED 0
@@ -269,6 +275,8 @@ int pb_state = RELEASED;
 int mode_count = 0;
 unsigned long pb_press_start;
 
+bool TimerHandler0(struct repeating_timer *t);
+RPI_PICO_Timer ITimer0(0);
 
 /*
  * TelemEncoding.h

@@ -33,6 +33,7 @@
 #include "hardware/irq.h"  // interrupts
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
+#include "RPi_Pico_TimerInterrupt.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -72,12 +73,12 @@ void setup() {
   else
     ; // configure ina219s
     	  
-//   start_ina219();	
+   start_ina219();	
     
   config_telem();	
 		
 // configure STEM Payload sensors	
-//  start_payload();	
+  start_payload();	
 	
 // program Transceiver board  
   config_radio();		
@@ -100,9 +101,10 @@ void loop() {
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-    ; // read_ina219();	
+//    ; // 
+   read_ina219();	
 	
-//  read_payload();	
+  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  
@@ -112,7 +114,8 @@ void loop() {
   else if (mode == AFSK)
     send_packet();
 
-  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
+//  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
     sleep(0.1); // 25); // 0.5);  // 25);
   sampleTime = (unsigned int) millis();	  
 	
@@ -172,7 +175,8 @@ void transmit_off() {
   if ((mode == AFSK) || (mode == FSK))
       digitalWrite(PTT_PIN, HIGH);
   else if (mode == BPSK) {
-    pwm_set_gpio_level(BPSK_PWM_PIN, 0);	  
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	 
   }	
 }
 
@@ -217,6 +221,7 @@ void config_telem() {
     Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+    memset(buffer, 0xa5, sizeof(buffer)); 
   } else if (mode == BPSK) {
     Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
@@ -235,9 +240,11 @@ void config_telem() {
 //    samples = S_RATE / bitRate;
     samples = sample_rate / bitRate;
     Serial.println(samples);	
-    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+//    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples); // * 2;  // 2 *
+    bufLen = 5751; // instead of 5841	  
     Serial.println(bufLen);	
-    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+//    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
+    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000; //  - 500;
     //    samplePeriod = 3000;
     //    sleepTime = 3.0;
     //samplePeriod = 2200; // reduce dut to python and sensor querying delays
@@ -256,6 +263,7 @@ void config_telem() {
   //   }	 		
   //      printf("\n");
 //     }
+    memset(buffer, 0xa5, sizeof(buffer)); 	  
   } else if (mode == AFSK) {
 
     Serial.println("Configuring for AFSK\n");
@@ -272,9 +280,10 @@ void config_telem() {
     set_lat_lon_icon(lat_default, lon_default, icon);
 	  
     samplePeriod = 5000;
+    frameTime = 5000;	  
     bufLen = 1000;
   }
-  firstTime = ON;	
+  firstTime = TRUE;	
 }
 
 void get_tlm_ao7() {
@@ -483,7 +492,7 @@ void get_tlm_fox() {
 	
   short int h[headerLen];
   memset(h, 0, sizeof(h));
-  memset(buffer, 0xa5, sizeof(buffer));
+//  memset(buffer, 0xa5, sizeof(buffer));
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
   int id, frm_type = 0x01, NormalModeFailure = 0, groundCommandCount = 0;
@@ -579,7 +588,8 @@ void get_tlm_fox() {
 //   }
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
-//    Serial.println("After memset");      
+//    Serial.println("After memset");   
+   uptime = (int)(millis() / 1000.0);	  
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
 //    Serial.println("After h[0]");	  
@@ -854,6 +864,11 @@ void get_tlm_fox() {
       nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
       //		printf ("data10[%d] = encoded data8[%d] = %x \n",
       //		 	ctr2, ctr2, data10[ctr2]); 
+/*      if (firstTime) {
+        Serial.print(data10[ctr2], HEX);
+	Serial.print(" ");
+      }
+*/
       rd = nrd; // ^ nrd;
       ctr2++;
     }
@@ -865,7 +880,11 @@ void get_tlm_fox() {
 	  nrd = (Encode_8b10b[rd][((int) parities[j][i])] >> 10) & 1;
         //	printf ("data10[%d] = encoded parities[%d][%d] = %x \n",
         //		 ctr2 - 1, j, i, data10[ctr2 - 1]); 
-
+/*          if (firstTime) {
+	    Serial.print(data10[ctr2-1], HEX);  // added -1 due to ++
+	    Serial.print(" ");
+          }
+*/
           rd = nrd;
         }
       }
@@ -942,9 +961,13 @@ void get_tlm_fox() {
     }
 //	Serial.println("CC");     
   }
-//  Serial.println(" ");	
-//  Serial.print("get_fox_tlm eturning with counter: ");
-//  Serial.println(ctr);
+  Serial.println(" ");	
+  Serial.print("get_fox_tlm eturning with counter: ");
+  Serial.println(ctr);
+  if (firstTime) {
+    Serial.println(" ");
+    firstTime = FALSE;	
+  }
 }
 
 void write_wave(int i, short int *buffer)
@@ -973,7 +996,7 @@ void write_wave(int i, short int *buffer)
 //		ctr = ctr - BUFFER_SIZE;
 	if (ctr > bufLen) {
 		ctr = ctr - bufLen;
-		Serial.print("r");
+		Serial.print("\r");
 		Serial.print(" ");
 		Serial.println(millis());
 	}
@@ -1723,7 +1746,8 @@ void config_radio()
   if (mode == FSK)	  {
     transmit_on();
   } else if (mode == BPSK)  {
-    start_pwm();	
+    start_pwm();
+    start_isr();	  
     transmit_on();	
   }
 }
@@ -1747,6 +1771,7 @@ void read_ina219()
   float current_mA = 0;
   float loadvoltage = 0;
 	
+  if (i2c_bus1) {	
   shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
   busvoltage = ina219_1_0x40.getBusVoltage_V();
   current_mA = ina219_1_0x40.getCurrent_mA();
@@ -1802,7 +1827,9 @@ void read_ina219()
 
   voltage[3] = loadvoltage;
   current[3] = current_mA;	
+  }
 	
+  if (i2c_bus3) {	
   shuntvoltage = ina219_2_0x40.getShuntVoltage_mV();
   busvoltage = ina219_2_0x40.getBusVoltage_V();
   current_mA = ina219_2_0x40.getCurrent_mA();
@@ -1857,7 +1884,8 @@ void read_ina219()
   Serial.println(" mA");
 
   voltage[7] = loadvoltage;
-  current[7] = current_mA;		
+  current[7] = current_mA;
+  }	  
 }
 
 void read_sensors()
@@ -1925,8 +1953,16 @@ Serial1.begin(115200);  // Pi UART faster speed
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
     bmePresent = 0;
   }
-
-  mpu6050.begin();
+	
+  Wire.begin();
+  Wire.beginTransmission(0x68);
+  if (Wire.endTransmission() != 0)  {
+    Serial.println("Could not find a valid MPU6050 sensor, check wiring!");
+    mpuPresent = 0;
+  }
+  else {
+    mpuPresent = 1;
+    mpu6050.begin();	  
 
   if (eeprom_word_read(0) == 0xA07)
   {
@@ -1958,6 +1994,7 @@ Serial1.begin(115200);  // Pi UART faster speed
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
   }
+  }	  
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED, OUTPUT);
 	
@@ -1982,7 +2019,8 @@ void read_payload()
     else
         sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
-	  
+
+    if (mpuPresent) 	 { 
 //    print_string(payload_str);	
     mpu6050.update();
 
@@ -1992,7 +2030,7 @@ void read_payload()
     
     strcat(payload_str, str);
     print_string(payload_str);
-
+    }
     if (result == 'R') {
       Serial.println("OK");
       delay(100);
@@ -2022,6 +2060,7 @@ void read_payload()
       {
         Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
+    if (mpuPresent) 	 { 
       mpu6050.update();
 
       Serial.print(" MPU6050 ");
@@ -2037,7 +2076,8 @@ void read_payload()
     Serial.print(mpu6050.getAccY());   
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());  
-
+    }
+	    
     sensorValue = analogRead(A3);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
@@ -2047,13 +2087,14 @@ void read_payload()
     Serial.print(Temp);   
     Serial.print(" ");
     Serial.println(Sensor1);               
-      
+  
+  if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
-
+ 
     if (acceleration > 1.2)
         led_set(greenLED, HIGH);
     else
@@ -2062,8 +2103,9 @@ void read_payload()
     if (rotation > 5)
         led_set(blueLED, HIGH);
     else
-        led_set(blueLED, LOW);          
-    }    
+        led_set(blueLED, LOW);  
+    } 
+   }    
   }
 
   if (Serial1.available() > 0) {
@@ -2233,8 +2275,8 @@ void start_ina219() {
 //    pinMode(MAIN_INA219, OUTPUT);
 //    digitalWrite(MAIN_INA219, HIGH);
   }
-  sleep(0.1);	  
-  ina219_1_0x40.begin();
+  sleep(0.1);
+  i2c_bus1 = ina219_1_0x40.begin();  // check i2c bus 1
   ina219_1_0x41.begin();
   ina219_1_0x44.begin();
   ina219_1_0x45.begin();
@@ -2243,20 +2285,23 @@ void start_ina219() {
   Wire1.setSCL(3);
   Wire1.begin(); 
 	
-  ina219_2_0x40.begin(&Wire1);
+  i2c_bus3 = ina219_2_0x40.begin(&Wire1);  // check i2c bus 2
   ina219_2_0x41.begin(&Wire1);
   ina219_2_0x44.begin(&Wire1);
   ina219_2_0x45.begin(&Wire1);
-	
+  
+  if (i2c_bus1) {	
   ina219_1_0x40.setCalibration_16V_400mA(); 
   ina219_1_0x41.setCalibration_16V_400mA(); 
   ina219_1_0x44.setCalibration_16V_400mA(); 
   ina219_1_0x45.setCalibration_16V_400mA(); 	
-	
+  }
+  if (i2c_bus3) {	 	
   ina219_2_0x40.setCalibration_16V_400mA(); 
   ina219_2_0x41.setCalibration_16V_400mA(); 
   ina219_2_0x44.setCalibration_16V_400mA(); 
   ina219_2_0x45.setCalibration_16V_400mA(); 	
+  }
 }
 
 void start_pwm() {
@@ -2264,15 +2309,26 @@ void start_pwm() {
 // and
 //  https://qiita.com/keyyum/items/8cb419f5278e13b6db4d	
 //
-  Serial.println("Starting pwm!");
+  Serial.println("Starting pwm f=432.250 MHz!");
 	
-  pwm_value = 128 - pwm_amplitude;
+//  pwm_value = 128 - pwm_amplitude;
 	
 //  set_sys_clock_khz(125000, true); 
   set_sys_clock_khz(133000, true); 	
-  gpio_set_function(BPSK_PWM_PIN, GPIO_FUNC_PWM);
-
-  bpsk_pin_slice = pwm_gpio_to_slice_num(BPSK_PWM_PIN);
+  gpio_set_function(BPSK_PWM_A_PIN, GPIO_FUNC_PWM);
+  gpio_set_function(BPSK_PWM_B_PIN, GPIO_FUNC_PWM);
+	
+  bpsk_pin_slice_A = pwm_gpio_to_slice_num(BPSK_PWM_A_PIN);
+  bpsk_pin_slice_B = pwm_gpio_to_slice_num(BPSK_PWM_B_PIN);
+	
+  Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_A_PIN));
+  Serial.print(" ");	
+  Serial.print(pwm_gpio_to_channel(BPSK_PWM_A_PIN));
+  Serial.print(" ");		
+  Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_B_PIN));
+  Serial.print(" ");	
+  Serial.print(pwm_gpio_to_channel(BPSK_PWM_B_PIN));
+  Serial.println(" ");		
 /*
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
@@ -2283,14 +2339,16 @@ void start_pwm() {
 */	
     config = pwm_get_default_config();
 //    pwm_config_set_clkdiv(&config, 8.0); //16.0);   // 8.0f);  was 16 for some reason
-    pwm_config_set_clkdiv(&config, 1.0f); 
+    pwm_config_set_clkdiv(&config, 1.0f); // 2.0f); // 1.0f); // 16.0); //1.0f); // 1.0f); 
 //    pwm_config_set_wrap(&config, 178); // 250); 
-    pwm_config_set_wrap(&config, 3);
+    pwm_config_set_wrap(&config, 3); // 255); // 3);
 	
-    pwm_config_set_output_polarity( &config, polarity, polarity);	
-    pwm_init(bpsk_pin_slice, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);
-	
+//    pwm_config_set_output_polarity( &config, polarity, polarity);	
+    pwm_config_set_output_polarity( &config, true, false);	
+    pwm_init(bpsk_pin_slice_A, &config, true);
+    pwm_init(bpsk_pin_slice_B, &config, true);
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
 }
 /*
 void pwm_interrupt_handler() {
@@ -2341,6 +2399,8 @@ void pwm_interrupt_handler() {
 
 }
 */
+
+/*  ///
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
@@ -2370,13 +2430,13 @@ void loop1() {
   } 
   else if (mode == BPSK)  {
 	  ;
-/*	  
+*	  
     tx_bit = (buffer[wav_position++] > 0) ? true: false;
 	  
     pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
     pwm_init(bpsk_pin_slice, &config, true);
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	  
-*/	  
+*	  
   }
 	
 //  if (wav_position++ > BUFFER_SIZE) { // 300) {
@@ -2400,6 +2460,8 @@ void loop1() {
       process_pushbutton();
 }	    
 
+*///
+
 /*
 void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
 
@@ -2416,7 +2478,8 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
   unsigned long time_us = (unsigned long)(time * 1000000.0);	
   unsigned long startSleep = micros();	    
   while ((micros() - startSleep) < time_us)  {	  
-    busy_wait_us(100);	 
+//    busy_wait_us(100);
+    delayMicroseconds(100);
   }
 }
 
@@ -2699,3 +2762,74 @@ void config_gpio() {
   Serial.println(analogRead(AUDIO_IN_PIN));	
 	
 }
+
+
+bool TimerHandler0(struct repeating_timer *t) {
+//  Serial.print("l1 ");
+//  Serial.print(wav_position);
+//  Serial.print(" ");
+	
+  if (buffer[wav_position++] > 0) {
+    digitalWrite(BPSK_CONTROL_A, HIGH);
+//    delayMicroseconds(2);    	  
+    digitalWrite(BPSK_CONTROL_B, LOW);  	  
+  } else {
+    digitalWrite(BPSK_CONTROL_B, HIGH);  
+//    delayMicroseconds(2);    	  
+    digitalWrite(BPSK_CONTROL_A, LOW);	    
+  }
+/*	
+    tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
+		
+   digitalWrite(AUDIO_OUT_PIN, tx_bit);		
+
+    tx_bit = (buffer[wav_position++] > 0) ? true: false;
+*/    
+/*	
+    if (tx_bit)
+      Serial.print("-");
+    else
+      Serial.print("_");
+*/
+/*	
+    pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
+    pwm_init(bpsk_pin_slice, &config, true);
+    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
+*/	
+  if (wav_position > bufLen) { // 300) {
+	wav_position = wav_position - bufLen;
+//	Serial.print("\nR");
+//	Serial.print(" ");
+//	Serial.println(millis());
+	Serial.print("R Microseconds: ");
+        Serial.println((micros() - micro_timer)/bufLen);
+        micro_timer = micros();
+  }
+    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
+//      Serial.println("PB pressed!");  
+      process_pushbutton();	
+	
+  return true;	
+}
+
+void start_isr() {
+	
+//	return;
+	
+	Serial.println("Starting ISR");
+	
+	pinMode(BPSK_CONTROL_A, OUTPUT);
+	pinMode(BPSK_CONTROL_B, OUTPUT);	
+	
+//  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
+//  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
+  if (ITimer0.attachInterruptInterval(828, TimerHandler0))	
+//  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
+  {
+    Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
+  }
+  else
+    Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
+
+}
+  
