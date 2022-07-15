@@ -2306,6 +2306,7 @@ void start_ina219() {
   ina219_2_0x44.begin(&Wire1);
   ina219_2_0x45.begin(&Wire1);
   
+/*	
   if (i2c_bus1) {	
   ina219_1_0x40.setCalibration_16V_400mA(); 
   ina219_1_0x41.setCalibration_16V_400mA(); 
@@ -2318,6 +2319,7 @@ void start_ina219() {
   ina219_2_0x44.setCalibration_16V_400mA(); 
   ina219_2_0x45.setCalibration_16V_400mA(); 	
   }
+*/  
 }
 
 void start_pwm() {
