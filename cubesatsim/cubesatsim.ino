@@ -2060,6 +2060,7 @@ void read_payload()
       {
         Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
+    if (mpuPresent) 	 { 
       mpu6050.update();
 
       Serial.print(" MPU6050 ");
@@ -2075,7 +2076,8 @@ void read_payload()
     Serial.print(mpu6050.getAccY());   
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());  
-
+    }
+	    
     sensorValue = analogRead(A3);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
@@ -2085,13 +2087,14 @@ void read_payload()
     Serial.print(Temp);   
     Serial.print(" ");
     Serial.println(Sensor1);               
-      
+  
+  if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
-
+  }
     if (acceleration > 1.2)
         led_set(greenLED, HIGH);
     else
