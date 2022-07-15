@@ -2628,7 +2628,7 @@ void process_bootsel() {
   }	
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
-  if ((!BOOTSEL)D) && (release == FALSE)) {
+  if ((!BOOTSEL) && (release == FALSE)) {
     Serial.println("BOOTSEL: Switch to SSTV");
     release = TRUE;
   }
