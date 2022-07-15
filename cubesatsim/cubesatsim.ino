@@ -122,7 +122,7 @@ void loop() {
 //  delay(2000);
 //  test_radio();
 
-  if (mode == FSK) {	
+  if ((mode == FSK) || (mode == BPSK)) {	
 	  digitalWrite(LED_BUILTIN, LOW);	
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
