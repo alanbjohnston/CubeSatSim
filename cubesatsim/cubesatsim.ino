@@ -2480,11 +2480,19 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
   while ((micros() - startSleep) < time_us)  {	  
 //    busy_wait_us(100);
     delayMicroseconds(100);
+	  
+// check for button press upon coming out of sleep
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();	  
   }
 }
 
 void process_pushbutton() {
-
+	
+//  Serial.println("PB pressed!");  
+	
   int release = FALSE;
 	
  digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
@@ -2578,6 +2586,8 @@ void process_pushbutton() {
 
 void process_bootsel() {
 
+//  Serial.println("BOOTSEL pressed!");  
+	
   int release = FALSE;
 	
 digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
@@ -2783,12 +2793,12 @@ bool TimerHandler0(struct repeating_timer *t) {
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
   }
-    if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
-//      Serial.println("PB pressed!");  
+/*	
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
-   if (BOOTSEL)	  // boot selector button is pressed on Pico
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
-	
+*/	
   return true;	
 }
 
