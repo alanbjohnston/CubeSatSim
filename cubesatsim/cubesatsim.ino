@@ -2763,11 +2763,13 @@ void config_gpio() {
 
 
 bool TimerHandler0(struct repeating_timer *t) {
+
+  if (mode == BPSK) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
 	
-  if (buffer[wav_position++] > 0) {
+  if (buffer[wav_position++] > 0) {	  
     digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_B, LOW);  	  
@@ -2803,12 +2805,14 @@ bool TimerHandler0(struct repeating_timer *t) {
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
   }
+  }
 /*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
-*/	
+*/
+
   return true;	
 }
 
