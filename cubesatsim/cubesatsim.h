@@ -39,13 +39,13 @@
 #define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero
 #define MAIN_PB_PIN 10 // Main board PB pushbutton pin
 #define TXC_PIN 11 // Transceiver Board is present
-#define SWTX_PIN 14 // SR_FRS_05W Transmit Pico software serial port 
-#define SQUELCH 15 // SR_FRS_05W Squelch out
+#define SWTX_PIN 16 // was 14 SR_FRS_05W Transmit Pico software serial port 
+//#define SQUELCH 15 // SR_FRS_05W Squelch out
 //#define MAIN_INA219 16 // Power the INA219s on the Main board
-#define BPSK_PWM_A_PIN 6 // PWM Output Phase A to switch
-#define BPSK_PWM_B_PIN 7 // PWM Output Phase B to switch
-#define BPSK_CONTROL_A 16   // control for Phase A to switch
-#define BPSK_CONTROL_B 15   // control for Phase A to switch
+#define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
+#define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
+#define BPSK_CONTROL_A 6 // was 16   // control for Phase A to switch
+#define BPSK_CONTROL_B 7 // was 15   // control for Phase A to switch
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
 #define STEM_LED_GREEN 18 // STEM board LED1 Green
 #define STEM_LED_BLUE 19 // STEM board LED2 Blue
