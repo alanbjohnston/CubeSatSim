@@ -2735,7 +2735,7 @@ void config_gpio() {
   pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
   pinMode(TXC_PIN, INPUT_PULLUP);  // Read TXC to see if present	
   pinMode(LPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
-  pinMode(SQUELCH, INPUT);	// Squelch from TXC
+//  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
   if (digitalRead(LPF_PIN) == FALSE)
     Serial.println("LPF present");
@@ -2747,8 +2747,8 @@ void config_gpio() {
   else
     Serial.println("TXC not present");	
 
-  Serial.print("Squelch: ");
-  Serial.println(digitalRead(SQUELCH));
+//  Serial.print("Squelch: ");
+//  Serial.println(digitalRead(SQUELCH));
 	
 
   Serial.print("Pi 3.3V: ");
