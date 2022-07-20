@@ -1946,7 +1946,9 @@ void print_string(char *string)
 
 void start_payload() {
 	
-Serial1.begin(115200);  // Pi UART faster speed
+  EEPROM.begin(512);	
+	
+  Serial1.begin(115200);  // Pi UART faster speed
 
   Serial.println("Starting payload!");
   
@@ -1980,7 +1982,9 @@ Serial1.begin(115200);  // Pi UART faster speed
     mpuPresent = 1;
     mpu6050.begin();	  
 
-  if (eeprom_word_read(0) == 0xA07)
+//	    if (eeprom_word_read(0) == 0xA07)
+ 
+  if (EEPROM.read(0) == 0xA7)
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
 
@@ -1999,16 +2003,24 @@ Serial1.begin(115200);  // Pi UART faster speed
     Serial.println("Calculating gyro offsets and storing in EEPROM\n");
 
     mpu6050.calcGyroOffsets(true);
-
+/*
     eeprom_word_write(0, 0xA07);
     eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
     eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
+*/	  
+    EEPROM.put(0, (float) 0xA07);
+    EEPROM.put(4, (float)mpu6050.getGyroXoffset());
+    EEPROM.put(8, (float)mpu6050.getGyroYoffset());
+    EEPROM.put(12, (float)mpu6050.getGyroZoffset());	  
 
-    Serial.println(eeprom_word_read(0), HEX);
-    Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
-    Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
-    Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
+    float f;
+    Serial.println((int)EEPROM.get(0), HEX);	  
+    for (int i = 4; i += 4; i < 12) {
+	EEPROM.get(i, f);  
+        Serial.println(f);	    
+    }
+
   }
   }	  
   pinMode(greenLED, OUTPUT);
