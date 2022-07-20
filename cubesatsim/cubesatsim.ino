@@ -183,7 +183,7 @@ void read_reset_count() {
     reset_flag = 0xA07;
     EEPROM.put(16, reset_flag);	
     stored_reset = 0;	
-    EEPROM.put(20, stored_reset);
+    EEPROM.put(20, stored_reset + 1);
     if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
     } else {
