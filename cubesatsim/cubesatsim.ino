@@ -2081,7 +2081,8 @@ void start_payload() {
 
 void read_payload()
 {
-
+  payload_str[0] = '\0';  // clear the payload string
+	
 //  if ((Serial.available() > 0)|| first_time == true) 
   {
     blink(50);
