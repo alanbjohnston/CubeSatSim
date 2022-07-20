@@ -2034,8 +2034,9 @@ void start_payload() {
 
     Serial.println(" ");	  
     float f;
-    EEPROM.get(0, f);  		  
-    Serial.println((int)f, HEX);
+    long la;	  
+    EEPROM.get(0, la);  		  
+    Serial.println(la, HEX);
     EEPROM.get(4, f);  
     Serial.println(f);		  
     EEPROM.get(8, f);  
