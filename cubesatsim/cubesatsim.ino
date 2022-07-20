@@ -1986,7 +1986,7 @@ void start_payload() {
   float flag;
   EEPROM.get(0, flag);
 	  
-  if ((int)flag == 0xA07)
+  if (flag == (float)0xA07)
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
 
