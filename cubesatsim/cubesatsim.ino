@@ -179,7 +179,8 @@ void read_reset_count() {
     }	
   } else  {                  // first time, store flag and reset count as 0
 
-    Serial.println("Storing reset count of 0 in EEPROM");	  
+    Serial.println("Storing initial reset count in EEPROM");	  
+    Serial.println("Reset count is 0");	
     reset_flag = 0xA07;
     EEPROM.put(16, reset_flag);	
     stored_reset = 0;	
