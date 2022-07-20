@@ -1983,10 +1983,22 @@ void start_payload() {
     mpu6050.begin();	  
 
 //	    if (eeprom_word_read(0) == 0xA07)
+	  
+   Serial.println(" ");	  
+    float fa;
+    EEPROM.get(0, fa);  		  
+    Serial.println((int)fa, HEX);
+    EEPROM.get(4, fa);  
+    Serial.println(fa);		  
+    EEPROM.get(8, fa);  
+    Serial.println(fa);	
+    EEPROM.get(12, fa);  
+    Serial.println(fa);	
+	  
   float flag;
   EEPROM.get(0, flag);
 	  
-  if (flag == (float)0xA07)
+  if (flag == 0xA07)
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
 
