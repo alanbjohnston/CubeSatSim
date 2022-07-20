@@ -2019,14 +2019,16 @@ void start_payload() {
     EEPROM.put(8, (float)mpu6050.getGyroYoffset());
     EEPROM.put(12, (float)mpu6050.getGyroZoffset());	  
 
+    Serial.println(" ");	  
     float f;
     EEPROM.get(0, f);  		  
-    Serial.println((int)f, HEX);	  
-    for (int i = 4; i += 4; i < 12) {
-	EEPROM.get(i, f);  
-        Serial.println(f);	    
-    }
-
+    Serial.println((int)f, HEX);
+    EEPROM.get(4, f);  
+    Serial.println(f);		  
+    EEPROM.get(8, f);  
+    Serial.println(f);	
+    EEPROM.get(12, f);  
+    Serial.println(f);		  
   }
   }	  
   pinMode(greenLED, OUTPUT);
