@@ -1983,14 +1983,19 @@ void start_payload() {
     mpu6050.begin();	  
 
 //	    if (eeprom_word_read(0) == 0xA07)
- 
-  if (EEPROM.read(0) == 0xA7)
+  float flag;
+  EEPROM.get(0, flag);
+	  
+  if ((int)flag == 0xA7)
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
 
-    float xOffset = ((float)eeprom_word_read(1)) / 100.0;
-    float yOffset = ((float)eeprom_word_read(2)) / 100.0;
-    float zOffset = ((float)eeprom_word_read(3)) / 100.0;
+    float xOffset;
+    float yOffset;	  
+    float zOffset;
+    EEPROM.get(4, xOffset);
+    EEPROM.get(8, yOffset);
+    EEPROM.get(12, zOffset);	  
 
     Serial.println(xOffset, DEC);
     Serial.println(yOffset, DEC);
@@ -2015,7 +2020,8 @@ void start_payload() {
     EEPROM.put(12, (float)mpu6050.getGyroZoffset());	  
 
     float f;
-    Serial.println((int)EEPROM.get(0), HEX);	  
+    EEPROM.get(0, f);  		  
+    Serial.println((int)f, HEX);	  
     for (int i = 4; i += 4; i < 12) {
 	EEPROM.get(i, f);  
         Serial.println(f);	    
@@ -2067,7 +2073,7 @@ void read_payload()
     }
     else if (result == 'C') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
-      eeprom_word_write(0, 0x00);
+      EEPROM.put(0, (float)0.0);
       first_time = true;
       setup();
     }
@@ -2215,7 +2221,7 @@ void read_payload()
 //  delay(100);
 }
 	
-
+/*
 void eeprom_word_write(int addr, int val)
 {
   EEPROM.write(addr * 2, lowByte(val));
@@ -2226,6 +2232,7 @@ short eeprom_word_read(int addr)
 {
   return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
 }
+*/
 
 void blink_setup() 
 {
