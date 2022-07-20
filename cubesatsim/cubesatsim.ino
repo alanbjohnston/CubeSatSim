@@ -157,7 +157,9 @@ void loop() {
 }
 
 void read_reset_count() {
-
+	
+  EEPROM.begin(512);	
+	
   long stored_reset, reset_flag;
   EEPROM.get(16, reset_flag);
 	  
@@ -1981,8 +1983,6 @@ void print_string(char *string)
 }
 
 void start_payload() {
-	
-  EEPROM.begin(512);	
 	
   Serial1.begin(115200);  // Pi UART faster speed
 
