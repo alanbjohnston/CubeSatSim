@@ -144,6 +144,7 @@ void blinkTimes(int blinks);
 void blink_pin(int pin, int duration);
 void config_gpio();
 void start_isr();
+void read_reset_count();
 
 extern int Encode_8b10b[][256];
 
