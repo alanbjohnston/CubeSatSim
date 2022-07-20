@@ -83,7 +83,9 @@ void setup() {
   start_payload();	
 	
 // program Transceiver board  
-  config_radio();		
+  config_radio();	
+
+  start_button_isr(); 	
 
   sampleTime = (unsigned int) millis();		
 	
@@ -142,17 +144,20 @@ void loop() {
     config_telem();
     config_radio();
  }
-	
-	  
+  //  Calculate loop time
+  Serial.print("\nLoop time: ");	
+  Serial.println(millis() - startSleep);	
+}	
+
+bool TimerHandler1(struct repeating_timer *t) {
+
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();		
  
-  //  Calculate loop time
-  Serial.print("\nLoop time: ");	
-  Serial.println(millis() - startSleep);	
+ return(true);	
   
 }
 
@@ -2901,6 +2906,20 @@ void start_isr() {
   }
   else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
+
+}
+  
+void start_button_isr() {
+
+  Serial.println("Starting pushbutton ISR");
+	
+  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))	
+  {
+    Serial.print(F("Starting ITimer1 OK, micros() = ")); 
+    Serial.println(micros());
+  }
+  else
+    Serial.println(F("Can't set ITimer1. Select another Timer, freq. or timer"));
 
 }
   
