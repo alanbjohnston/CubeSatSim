@@ -53,7 +53,9 @@ void setup() {
 
   sleep(5.0);		
 	
-  config_gpio();	
+  config_gpio();
+	
+  read_reset_count();	
 
 //  mode = FSK; // AFSK;		
 
@@ -152,6 +154,40 @@ void loop() {
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
   
+}
+
+void read_reset_count() {
+
+  long stored_reset, reset_flag;
+  EEPROM.get(16, reset_flag);
+	  
+  if (reset_flag == 0xA07)  // not first time, read stored reset count
+  {	
+
+    EEPROM.get(20, stored_reset);
+    reset_count = (int) stored_reset;
+    Serial.print("Reading reset count from EEPROM as ");	
+    Serial.println(reset_count);		  
+    stored_reset += 1;	  // increment for next boot
+    EEPROM.put(20, stored_reset);
+    if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed");
+    } else {
+      Serial.println("ERROR! EEPROM commit failed");
+    }	
+  } else  {                  // first time, store flag and reset count as 0
+
+    Serial.println("Storing reset count of 0 in EEPROM");	  
+    reset_flag = 0xA07;
+    EEPROM.put(16, reset_flag);	
+    stored_reset = 0;	
+    EEPROM.put(20, stored_reset);
+    if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed");
+    } else {
+      Serial.println("ERROR! EEPROM commit failed");
+    }		
+  }	  	
 }
 
 void send_packet() {
@@ -1982,20 +2018,6 @@ void start_payload() {
     mpuPresent = 1;
     mpu6050.begin();	  
 
-//	    if (eeprom_word_read(0) == 0xA07)
-	  
-   Serial.println(" ");	  
-    float fa;
-    long la;	  
-    EEPROM.get(0, la);  		  
-    Serial.println(la, HEX);
-    EEPROM.get(4, fa);  
-    Serial.println(fa);		  
-    EEPROM.get(8, fa);  
-    Serial.println(fa);	
-    EEPROM.get(12, fa);  
-    Serial.println(fa);	
-	  
   long flag;
   EEPROM.get(0, flag);
 	  
@@ -2005,16 +2027,17 @@ void start_payload() {
 
     float xOffset;
     float yOffset;	  
-    float zOffset;
+    float zOffset;	  
     EEPROM.get(4, xOffset);
     EEPROM.get(8, yOffset);
-    EEPROM.get(12, zOffset);	  
-
+    EEPROM.get(12, zOffset);
+	  
     Serial.println(xOffset, DEC);
     Serial.println(yOffset, DEC);
     Serial.println(zOffset, DEC);
 
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
+	  	  
   }
   else
   {
@@ -2039,10 +2062,9 @@ void start_payload() {
     }
 	  
     Serial.println(" ");	  
-    float f;
-    long la;	  
-    EEPROM.get(0, la);  		  
-    Serial.println(la, HEX);
+    float f;	  
+    EEPROM.get(0, flag);  		  
+    Serial.println(flag, HEX);
     EEPROM.get(4, f);  
     Serial.println(f);		  
     EEPROM.get(8, f);  
