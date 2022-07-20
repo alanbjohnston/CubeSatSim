@@ -145,6 +145,7 @@ void blink_pin(int pin, int duration);
 void config_gpio();
 void start_isr();
 void read_reset_count();
+void start_button_isr();
 
 extern int Encode_8b10b[][256];
 
@@ -278,6 +279,7 @@ unsigned long pb_press_start;
 
 bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);
+RPI_PICO_Timer ITimer1(0);
 
 /*
  * TelemEncoding.h
