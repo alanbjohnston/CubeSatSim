@@ -1986,8 +1986,9 @@ void start_payload() {
 	  
    Serial.println(" ");	  
     float fa;
-    EEPROM.get(0, fa);  		  
-    Serial.println((int)fa, HEX);
+    long la;	  
+    EEPROM.get(0, la);  		  
+    Serial.println(la, HEX);
     EEPROM.get(4, fa);  
     Serial.println(fa);		  
     EEPROM.get(8, fa);  
@@ -1995,7 +1996,7 @@ void start_payload() {
     EEPROM.get(12, fa);  
     Serial.println(fa);	
 	  
-  float flag;
+  long flag;
   EEPROM.get(0, flag);
 	  
   if (flag == 0xA07)
@@ -2026,7 +2027,7 @@ void start_payload() {
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
     eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
 */	  
-    EEPROM.put(0, (float) 0xA07);
+    EEPROM.put(0, (long) 0xA07);
     EEPROM.put(4, (float)mpu6050.getGyroXoffset());
     EEPROM.put(8, (float)mpu6050.getGyroYoffset());
     EEPROM.put(12, (float)mpu6050.getGyroZoffset());	  
