@@ -395,9 +395,9 @@ void get_tlm_ao7() {
       //        printf("%s",tlm_str);
         strcat(str, tlm_str);
     }
-    print_string(str);
+//    print_string(str);
     strcat(str, payload_str);	
-    print_string(str);
+//    print_string(str);
 //    Serial.println(strlen(str));
     set_status(str);	
 //  }	
@@ -2109,7 +2109,7 @@ void read_payload()
       mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
     
     strcat(payload_str, str);
-    print_string(payload_str);
+//    print_string(payload_str);
     }
     if (result == 'R') {
       Serial.println("OK");
