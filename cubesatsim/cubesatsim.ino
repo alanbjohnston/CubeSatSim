@@ -2030,8 +2030,14 @@ void start_payload() {
     EEPROM.put(0, (long) 0xA07);
     EEPROM.put(4, (float)mpu6050.getGyroXoffset());
     EEPROM.put(8, (float)mpu6050.getGyroYoffset());
-    EEPROM.put(12, (float)mpu6050.getGyroZoffset());	  
-
+    EEPROM.put(12, (float)mpu6050.getGyroZoffset());
+	  
+    if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed");
+    } else {
+      Serial.println("ERROR! EEPROM commit failed");
+    }
+	  
     Serial.println(" ");	  
     float f;
     long la;	  
