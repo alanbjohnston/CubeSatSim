@@ -146,6 +146,7 @@ void config_gpio();
 void start_isr();
 void read_reset_count();
 void start_button_isr();
+void payload_OK_only();
 
 extern int Encode_8b10b[][256];
 
