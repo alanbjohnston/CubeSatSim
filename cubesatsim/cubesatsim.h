@@ -153,7 +153,18 @@ void payload_OK_only();
 void client_print_string(char *string)'
 bool check_for_wifi();
 void check_for_browser();
+void configure_wifi();
 
+#ifndef STASSID
+#define STASSID "Pico"
+#define STAPSK "picoPassword"
+#endif
+
+WiFiServer server(port);
+WiFiClient client;
+const char* ssid = STASSID;
+const char* password = STAPSK;
+int port = 7373;
 bool wifi = false;
 
 extern int Encode_8b10b[][256];
