@@ -150,7 +150,7 @@ void start_isr();
 void read_reset_count();
 void start_button_isr();
 void payload_OK_only();
-void client_print_string(char *string)'
+void client_print_string(char *string);
 bool check_for_wifi();
 void check_for_browser();
 void configure_wifi();
