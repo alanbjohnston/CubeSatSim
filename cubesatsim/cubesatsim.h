@@ -160,8 +160,6 @@ void configure_wifi();
 #define STAPSK "picoPassword"
 #endif
 
-WiFiServer server(port);
-WiFiClient client;
 const char* ssid = STASSID;
 const char* password = STAPSK;
 int port = 7373;
