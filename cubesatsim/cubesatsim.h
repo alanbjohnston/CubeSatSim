@@ -33,6 +33,9 @@
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_TimerInterrupt.h"
+#include <WiFi.h>
+#include "hardware/gpio.h"
+#include "hardware/adc.h"
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
@@ -147,6 +150,11 @@ void start_isr();
 void read_reset_count();
 void start_button_isr();
 void payload_OK_only();
+void client_print_string(char *string)'
+bool check_for_wifi();
+void check_for_browser();
+
+bool wifi = false;
 
 extern int Encode_8b10b[][256];
 
