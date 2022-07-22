@@ -34,6 +34,9 @@
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_TimerInterrupt.h"
+#include <WiFi.h>
+#include "hardware/gpio.h"
+#include "hardware/adc.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -94,7 +97,12 @@ void setup() {
 	
 // program Transceiver board  
   config_radio();	
-
+	
+  if (check_for_wifi()) {
+     wifi = true;	
+     configure_wifi();	  
+  }
+	
   start_button_isr(); 	
 
   sampleTime = (unsigned int) millis();		
@@ -165,7 +173,10 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
-      process_bootsel();		
+      process_bootsel();
+
+  if (wifi) 
+    check_for_browser();
  
  return(true);	
   
@@ -3121,3 +3132,139 @@ void start_button_isr() {
 
 }
   
+void client_print_string(char *string)
+{
+  int count = 0;
+  while ((count < 250) && (string[count] != 0))
+  {
+    client.print(string[count++]);    
+  }
+  client.println(" ");  
+}
+
+bool check_for_wifi() {
+
+//     stdio_init_all();
+
+   adc_init();
+   adc_gpio_init(29);
+   adc_select_input(3);
+   const float conversion_factor = 3.3f / (1 << 12);
+   uint16_t result = adc_read();
+//   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
+
+  if (result < 0x100) {
+    Serial.println("\nPico W detected!\n");
+    return(true);
+  }
+  else {
+     Serial.println("\nPico detected!\n");
+     return(false);  
+  }
+}
+
+
+void check_for_browser() {
+  if (!wifi)
+    return;
+     
+  client = server.available();
+  if (!client) {
+    return;
+  }
+  client.printf("CubeSatSim Pico configuration\r\n\r\n");
+  while (!client.available()) {
+    delay(10);
+  }
+  String req = client.readStringUntil('\n');
+//  Serial.print("Got: ");
+//  Serial.println(req);
+  
+  char * token;
+  const char question[2] = "?";
+  const char equal[2] = "=";
+  const char space[2] = " ";
+  char reqstr[255];
+  char str2[255];
+  char str3[255];
+  char var[255];
+  char val[255];
+  strcpy(val, NULL);
+  strcpy(reqstr, req.c_str());
+  token = strtok(reqstr, space);
+  if (token != NULL) {
+//     print_string(token);
+     token = strtok(NULL, space);
+     if (token != NULL) {
+//       print_string(token);
+       strcpy(str2, token);    
+       token = strtok(str2, question);
+       if (token != NULL) {
+//         print_string(token); 
+         token = strtok(NULL, question);
+         if (token != NULL) {
+//           print_string(token);    
+           strcpy(str3, token);    
+           token = strtok(str3, equal);
+           if (token != NULL) {
+//             print_string(token);
+             strcpy(var, token);   
+             token = strtok(NULL, equal);
+             if (token != NULL) {
+//               print_string(token);
+               strcpy(val, token);     
+             }
+           }
+         }
+       }
+     }
+  }
+/*
+  Serial.println(" ");
+  print_string(var);
+  print_string(val);
+  Serial.println(" "); 
+  Serial.println(strlen(val));
+*/
+  if (!strcmp(var, "call") && (strlen(val) > 0)) {
+     Serial.print("Changing callsign to ");
+     print_string(val);
+     client.print("Changing callsign to ");
+     client_print_string(val);
+  } else if (!strcmp(var, "mode") && (strlen(val) > 0)) {
+     Serial.print("Changing mode to ");
+     Serial.println(atoi(val));
+     client.print("Changing mode to ");
+     client.println(atoi(val));
+  }
+//    client.println("To change the callsign, add call=W3ZM to the URL");
+  client.printf("\nTo change the callsign to CALL, type %s:%d/set?call=CALL as the URL", WiFi.localIP().toString().c_str(), port);
+  client.printf("\nTo change the mode to N, type %s:%d/set?mode=N as the URL\n", WiFi.localIP().toString().c_str(), port);
+
+  client.flush();
+}
+
+void configure_wifi() {
+  if (wifi) {
+    WiFi.mode(WIFI_AP);
+    WiFi.setHostname("PicoW2");
+    Serial.printf("Setting up WiFi '%s' with password '%s'\n", ssid, password);
+//    Serial.printf("\nConnected to WiFi. Connect to server at %s:%d\n", WiFi.localIP().toString().c_str(), port);
+    const char no_address[] = "(IP unset)";
+//    if (!strcmp(WiFi.localIP().toString().c_str(), no_address))
+//       Serial.println("No WiFi");
+    WiFi.begin(ssid, password);
+    Serial.println("Starting WiFi");
+  //  while (WiFi.status() != WL_CONNECTED) {
+    while(!strcmp(WiFi.localIP().toString().c_str(), no_address)) {  
+  //    if (!strcmp(WiFi.localIP().toString().c_str(), no_address))
+       Serial.print("No WiFi ");
+       Serial.println(WiFi.localIP().toString());
+       delay(500);
+    }
+    delay(5000);
+    Serial.printf("\nTo configure, connect to server on WiFi at http://%s:%d\n", WiFi.localIP().toString().c_str(), port);
+  
+    server.begin();
+  }
+}
