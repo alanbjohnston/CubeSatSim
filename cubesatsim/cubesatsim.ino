@@ -64,7 +64,7 @@ void setup() {
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
-  if (digitalRead(PI_3V3_PIN) == LOW)  {
+  if (digitalRead(PI_3V3_PIN) == HIGH)  {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
