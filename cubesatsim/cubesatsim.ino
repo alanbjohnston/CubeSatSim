@@ -2136,14 +2136,38 @@ void read_payload()
 
     if (mpuPresent) 	 { 
 //    print_string(payload_str);	
-    mpu6050.update();
+      mpu6050.update();
 
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
-    sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
-      mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
+      sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
+        mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
+
+      float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
+      float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+//    Serial.print(rotation);
+//    Serial.print(" ");
+//    Serial.println(acceleration);
+ 
+      if (acceleration > 1.2)
+        led_set(STEM_LED_GREEN, HIGH);
+      else
+        led_set(STEM_LED_GREEN, LOW);
+        
+      if (rotation > 5)
+        led_set(STEM_LED_BLUE, HIGH);
+      else
+        led_set(STEM_LED_BLUE, LOW);  	    
+	    
     }   else
         sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
+	  
+    sensorValue = analogRead(A3);
+    //Serial.println(sensorValue);  
+    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+    sprintf(str, "XS %.1f %.1f\n", Temp, Sensor1);
+    strcat(payload_str, str);
+	  
     print_string(payload_str);
 
 /*	  
@@ -2197,17 +2221,12 @@ void read_payload()
     Serial.print(mpu6050.getAccZ());  
     }
    else
-        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 "); 
-*/	    
-    sensorValue = analogRead(A3);
-    //Serial.println(sensorValue);  
-    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 "); 	    
 
-    
     Serial.print(" XS ");
     Serial.print(Temp);   
     Serial.print(" ");
-    Serial.println(Sensor1);               
+    Serial.println(Sensor1);    	  
   
   if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
@@ -2226,6 +2245,8 @@ void read_payload()
     else
         led_set(blueLED, LOW);  
     } 
+*/
+	  
 //   }    
   }
 
