@@ -2131,7 +2131,7 @@ void read_payload()
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
     else
-        sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
+        sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
 
     if (mpuPresent) 	 { 
@@ -2139,13 +2139,14 @@ void read_payload()
     mpu6050.update();
 
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
-    sprintf(str, " MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
+    sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
       mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
     }   else
-        sprintf(str, " MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
+        sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
-//    print_string(payload_str);
+    print_string(payload_str);
 
+/*	  
     if (result == 'R') {
       Serial.println("OK");
       delay(100);
@@ -2158,7 +2159,10 @@ void read_payload()
       first_time = true;
       setup();
     }
+*/	  
 //    if ((result == '?') || first_time == true)
+	  
+/*
     if (true)
     {
       first_time = false;
@@ -2194,7 +2198,7 @@ void read_payload()
     }
    else
         Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 "); 
-	    
+*/	    
     sensorValue = analogRead(A3);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
@@ -2827,7 +2831,7 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
+//    new_mode = FSK;
 //    setup();
   }
 	
