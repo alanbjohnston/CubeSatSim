@@ -52,6 +52,8 @@ char payload_str[100];
 WiFiServer server(port);
 WiFiClient client;
 
+// #define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+
 void setup() {
   new_mode = mode;
 	
@@ -3156,6 +3158,12 @@ void client_print_string(char *string)
 }
 
 bool check_for_wifi() {
+	
+#ifndef PICO_W
+
+  return(false);  // skip check if not Pico W board or compilation will fail
+	
+#endif
 	
 //     stdio_init_all();
 
