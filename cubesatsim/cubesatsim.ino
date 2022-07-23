@@ -2136,7 +2136,8 @@ void read_payload()
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
     sprintf(str, " MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
       mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
-    
+   else
+        sprintf(str, " MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
 //    print_string(payload_str);
     }
@@ -2186,6 +2187,8 @@ void read_payload()
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());  
     }
+   else
+        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 "); 
 	    
     sensorValue = analogRead(A3);
     //Serial.println(sensorValue);  
