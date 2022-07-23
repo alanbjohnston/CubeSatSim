@@ -138,29 +138,27 @@ void loop() {
   }
   else if (mode == AFSK)
     send_packet();
-
-  Serial.println("X");	
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
     sleep(0.1); // 25); // 0.5);  // 25);
   sampleTime = (unsigned int) millis();	  
-  Serial.println("X");	
 	
 //  delay(2000);
 //  test_radio();
 
-  if ((mode == FSK) || (mode == BPSK)) {	
-	  digitalWrite(LED_BUILTIN, LOW);	
+  if ((mode == FSK) || (mode == BPSK)) {
+	  if (!wifi) 
+	    digitalWrite(LED_BUILTIN, LOW);	
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
 	//  delay(3000);	
 	  sleep(0.5); // 2.845); // 3.0);
 
-	  digitalWrite(LED_BUILTIN, HIGH);
+	  if (!wifi) 
+	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
-   Serial.println("X");	
   // send telemetry
 	
  if (mode != new_mode) {
@@ -1801,7 +1799,8 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
-  pinMode(LED_BUILTIN, OUTPUT);
+  if (!wifi) 
+     pinMode(LED_BUILTIN, OUTPUT);
   	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
@@ -2795,8 +2794,8 @@ void process_pushbutton() {
 //  Serial.println("PB pressed!");  
 	
   int release = FALSE;
-	
- digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
+  if (!wifi) 	   	
+   digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
 	
@@ -2891,7 +2890,8 @@ void process_bootsel() {
 	
   int release = FALSE;
 	
-digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
+  if (!wifi) 
+    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
 	
@@ -2983,10 +2983,12 @@ digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinkin
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-    digitalWrite(LED_BUILTIN, LOW);
+    if (!wifi) 
+      digitalWrite(LED_BUILTIN, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    digitalWrite(LED_BUILTIN, HIGH);
+    if (!wifi) 
+       digitalWrite(LED_BUILTIN, HIGH);
     sleep(0.1);
   }
 }
@@ -3009,7 +3011,8 @@ void config_gpio() {
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
   // set LEDs and blink once	
-  pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+  if (!wifi) 
+    pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
   digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
