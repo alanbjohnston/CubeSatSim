@@ -3157,8 +3157,6 @@ void client_print_string(char *string)
 
 bool check_for_wifi() {
 	
-  return(false); 	
-
 //     stdio_init_all();
 
    adc_init();
