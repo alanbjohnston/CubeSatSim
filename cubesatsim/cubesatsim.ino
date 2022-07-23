@@ -139,10 +139,13 @@ void loop() {
   else if (mode == AFSK)
     send_packet();
 
+  Serial.println("X");	
+	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
     sleep(0.1); // 25); // 0.5);  // 25);
   sampleTime = (unsigned int) millis();	  
+  Serial.println("X");	
 	
 //  delay(2000);
 //  test_radio();
@@ -156,7 +159,8 @@ void loop() {
 
 	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
-  }	
+  }
+   Serial.println("X");	
   // send telemetry
 	
  if (mode != new_mode) {
@@ -1039,7 +1043,7 @@ void get_tlm_fox() {
 //	Serial.println("CC");     
   }
   Serial.println(" ");	
-  Serial.print("get_fox_tlm eturning with counter: ");
+  Serial.print("get_fox_tlm returning with counter: ");
   Serial.println(ctr);
   if (firstTime) {
     Serial.println(" ");
