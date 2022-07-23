@@ -2226,7 +2226,7 @@ void read_payload()
     else
         led_set(blueLED, LOW);  
     } 
-   }    
+//   }    
   }
 
   if (Serial1.available() > 0) {
