@@ -143,7 +143,7 @@ void loop() {
   }
   else if (mode == AFSK)
   {
-    send_callsign(callsign);
+    transmit_callsign(callsign);
     sleep(1000);	  
     send_packet();
   }	
@@ -3340,9 +3340,9 @@ void transmit_callsign(char *callsign) {
   strcat(id, de);
   strcat(id, callsign);
 	
-  transmit_on()
+  transmit_on();
   transmit_string(id);	  
-  transmit_off()
+  transmit_off();
 }
 
 void transmit_string(char *string) {
@@ -3352,6 +3352,7 @@ void transmit_string(char *string) {
       transmit_char(string[i++]);
     else
       sleep(3 * morse_timing);
+  }
 }
 
 void transmit_char(char character) {
