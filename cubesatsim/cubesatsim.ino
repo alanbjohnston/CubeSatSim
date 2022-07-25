@@ -3336,7 +3336,7 @@ void transmit_mili(int freq, float duration) {  // freq in Hz, duration in milli
 }
 
 void transmit_callsign(char *callsign) {
-  char de[] = "DE ";	
+  char de[] = "HI HI DE ";	
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
