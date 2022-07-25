@@ -36,6 +36,7 @@
 #include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
+#include <ctype.h>
 
 // Pico GPIO pin assignments
 #define LPF_PIN 8  // LPF is installed
