@@ -3360,6 +3360,7 @@ void transmit_char(char character) {
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
     transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	    	
   sleep(morse_timing);	
+  }
 }
 	
 
