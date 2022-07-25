@@ -3352,8 +3352,9 @@ void transmit_string(char *string) {
     if (string[i] != ' ')	  
       transmit_char(string[i++]);
     else {
-      Serial.println((3.0 * (float)morse_timing)/1000.0);	    
+//      Serial.println((3.0 * (float)morse_timing)/1000.0);	    
       sleep((3.0 * (float)morse_timing)/1000.0);
+      i++;	    
     }
   }
 }
@@ -3369,7 +3370,3 @@ void transmit_char(char character) {
   sleep(morse_timing/1000);	
   }
 }
-	
-
-
-	
