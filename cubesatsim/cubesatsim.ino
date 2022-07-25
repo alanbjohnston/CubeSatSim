@@ -146,7 +146,7 @@ void loop() {
   {
     transmit_callsign(callsign);
     sleep(1.0);	  
-    send_packet();
+//    send_packet();
   }	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
@@ -3353,7 +3353,7 @@ void transmit_string(char *string) {
     if (string[i] != ' ')	  
       transmit_char(string[i++]);
     else {
-      sleep((3.0 * (float)morse_timing)/1000.0);
+      sleep((6.0 * (float)morse_timing)/1000.0);
       i++;	    
     }
   }
@@ -3365,7 +3365,7 @@ void transmit_char(char character) {
 //    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
     transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
   }
-  sleep((float)morse_timing/1000.0);
+  sleep((float)(morse_timing * 3.0)/1000.0);
 //  Serial.println(" ");
 
 }
