@@ -3352,7 +3352,6 @@ void transmit_string(char *string) {
     if (string[i] != ' ')	  
       transmit_char(string[i++]);
     else {
-//      Serial.println((3.0 * (float)morse_timing)/1000.0);	    
       sleep((3.0 * (float)morse_timing)/1000.0);
       i++;	    
     }
@@ -3360,13 +3359,16 @@ void transmit_string(char *string) {
 }
 
 void transmit_char(char character) {
-  Serial.print("transmit_char ");
-  Serial.println(character);
-  return;
+//  Serial.print("transmit_char ");
+//  Serial.println(character);
+//  return;
 	
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
+    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
     transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
-  sleep(morse_timing/1000);	
   }
+  sleep((float)morse_timing/1000.0);
+  Serial.println(" ");
+
 }
