@@ -156,6 +156,9 @@ bool check_for_wifi();
 void check_for_browser();
 void configure_wifi();
 void transmit_mili(int freq, float duration);
+void transmit_char(char character);
+void transmit_string(char *string);
+void transmit_callsign(char *callsign);
 
 #ifndef STASSID
 #define STASSID "Pico"
