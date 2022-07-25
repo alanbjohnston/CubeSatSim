@@ -113,6 +113,9 @@ void setup() {
 
   char call[] = "AMSAT";
   strcpy(callsign, call);
+	
+  transmit_callsign(callsign);
+  // sleep(1.0);		
 
   sampleTime = (unsigned int) millis();		
 	
@@ -143,10 +146,8 @@ void loop() {
     get_tlm_fox();
   }
   else if (mode == AFSK)
-  {
-    transmit_callsign(callsign);
-    sleep(1.0);	  
-//    send_packet();
+  {  
+    send_packet();
   }	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
