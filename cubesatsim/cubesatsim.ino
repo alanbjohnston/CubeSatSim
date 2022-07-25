@@ -3352,8 +3352,8 @@ void transmit_string(char *string) {
     if (string[i] != ' ')	  
       transmit_char(string[i++]);
     else {
-      Serial.println((3 * morse_timing)/1000);	    
-      sleep((3 * morse_timing)/1000);
+      Serial.println((3f * )morse_timing)/1000f);	    
+      sleep((3f * morse_timing)/1000f);
     }
   }
 }
