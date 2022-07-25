@@ -3340,7 +3340,7 @@ void transmit_callsign(char *callsign) {
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
-  print_string(id);	
+//  print_string(id);	
   transmit_on();
   transmit_string(id);	  
   transmit_off();
@@ -3358,17 +3358,13 @@ void transmit_string(char *string) {
   }
 }
 
-void transmit_char(char character) {
-//  Serial.print("transmit_char ");
-//  Serial.println(character);
-//  return;
-	
+void transmit_char(char character) {	
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
-    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
+//    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
     transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
   }
   sleep((float)morse_timing/1000.0);
-  Serial.println(" ");
+//  Serial.println(" ");
 
 }
