@@ -3340,7 +3340,8 @@ void transmit_callsign(char *callsign) {
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
-//  print_string(id);	
+  Serial.print("Transmitting id: ");	
+  print_string(id);	
   transmit_on();
   transmit_string(id);	  
   transmit_off();
