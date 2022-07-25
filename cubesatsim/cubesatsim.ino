@@ -108,7 +108,10 @@ void setup() {
      configure_wifi();	  
   }
 	
-  start_button_isr(); 	
+  start_button_isr(); 
+
+  char call[] = "AMSAT";
+  strcpy(callsign, call);
 
   sampleTime = (unsigned int) millis();		
 	
@@ -139,8 +142,11 @@ void loop() {
     get_tlm_fox();
   }
   else if (mode == AFSK)
+  {
+    send_callsign(callsign);
+    sleep(1000);	  
     send_packet();
-	
+  }	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
     sleep(0.1); // 25); // 0.5);  // 25);
@@ -3321,20 +3327,38 @@ void transmit_mili(int freq, float duration) {  // freq in Hz, duration in milli
   float period_us = (1.0E6) / (float)(freq);
   bool phase = HIGH;	
   while((micros() - start) < duration_us)  {
-    digitalWrite(AUDIO_OUT_PIN, phase);
+    digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
     phase = !phase;	 
     sleep(min(start + duration_us - micros(), period_us) * 1000.0);   
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
 }
 
-void transmit_callsign() {
-  int freq = 1500;
+void transmit_callsign(char *callsign) {
+  char de[] = "DE ";	
+  char id[20];
+  strcat(id, de);
+  strcat(id, callsign);
+	
+  transmit_on()
+  transmit_string(id);	  
+  transmit_off()
+}
+
+void transmit_string(char *string) {
   int i = 0;
-  char c = 'V'	
-  while ((morse_table[char - 48][i] != 0) && (i < 5)) {
-    transmit_mili(freq, morse_table[char - 48][i++] * 200);	  
-  }	  
+  while ((string[i] != '\0') && (i < 256)) {
+    if (string[i] != ' ')	  
+      transmit_char(string[i++]);
+    else
+      sleep(3 * morse_timing);
+}
+
+void transmit_char(char character) {
+  int i = 0;
+  while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
+    transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	    	
+  sleep(morse_timing);	
 }
 	
 
