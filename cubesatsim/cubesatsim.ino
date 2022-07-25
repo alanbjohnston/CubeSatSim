@@ -70,7 +70,7 @@ void setup() {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
-	  payload_OK_only();    
+      payload_OK_only();    
     }
   }
   read_reset_count();	
@@ -98,7 +98,7 @@ void setup() {
   config_telem();	
 		
 // configure STEM Payload sensors	
-  start_payload();	
+//  start_payload();	
 	
 // program Transceiver board  
   config_radio();	
