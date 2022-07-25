@@ -144,7 +144,7 @@ void loop() {
   else if (mode == AFSK)
   {
     transmit_callsign(callsign);
-    sleep(1000);	  
+    sleep(1.0);	  
     send_packet();
   }	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
@@ -3351,7 +3351,7 @@ void transmit_string(char *string) {
     if (string[i] != ' ')	  
       transmit_char(string[i++]);
     else
-      sleep(3 * morse_timing);
+      sleep((3 * morse_timing)/1000);
   }
 }
 
@@ -3359,7 +3359,7 @@ void transmit_char(char character) {
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
     transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	    	
-  sleep(morse_timing);	
+  sleep(morse_timing/1000);	
   }
 }
 	
