@@ -300,7 +300,7 @@ bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);
 RPI_PICO_Timer ITimer1(0);
 
-int morse_table[36][5] = {  // 0-9, A-Z only by (ASCII - 48)
+int morse_table[44][5] = {  // 0-9, A-Z only by (ASCII - 48)
   { 1, 1, 1, 1, 1 },	// 0		
   { 1, 3, 3, 3, 3 },	// 1		
   { 1, 1, 3, 3, 3 },	// 2		
