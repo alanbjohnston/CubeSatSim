@@ -144,8 +144,8 @@ void loop() {
   }
   else if (mode == AFSK)
   {
-//    transmit_callsign(callsign);
-//    sleep(1.0);	  
+    transmit_callsign(callsign);
+    sleep(1.0);	  
     send_packet();
   }	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
