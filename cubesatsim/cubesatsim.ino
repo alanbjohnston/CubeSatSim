@@ -3314,3 +3314,29 @@ void configure_wifi() {
     server.begin();
   }
 }
+
+void transmit_mili(int freq, float duration) {  // freq in Hz, duration in milliseconds
+  unsigned long start = micros();
+  unsigned long duration_us = duration * 1000;
+  float period_us = (1.0E6) / (float)(freq);
+  bool phase = HIGH;	
+  while((micros() - start) < duration_us)  {
+    digitalWrite(AUDIO_OUT_PIN, phase);
+    phase = !phase;	 
+    sleep(min(start + duration_us - micros(), period_us) * 1000.0);   
+  }
+  digitalWrite(AUDIO_OUT_PIN, LOW);	
+}
+
+void transmit_callsign() {
+  int freq = 1500;
+  int i = 0;
+  char c = 'V'	
+  while ((morse_table[char - 48][i] != 0) && (i < 5)) {
+    transmit_mili(freq, morse_table[char - 48][i++] * 200);	  
+  }	  
+}
+	
+
+
+	
