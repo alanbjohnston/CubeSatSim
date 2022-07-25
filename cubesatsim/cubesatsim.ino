@@ -143,8 +143,8 @@ void loop() {
   }
   else if (mode == AFSK)
   {
-    transmit_callsign(callsign);
-    sleep(1.0);	  
+//    transmit_callsign(callsign);
+//    sleep(1.0);	  
     send_packet();
   }	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
@@ -3329,7 +3329,7 @@ void transmit_mili(int freq, float duration) {  // freq in Hz, duration in milli
   while((micros() - start) < duration_us)  {
     digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
     phase = !phase;	 
-    sleep(min(start + duration_us - micros(), period_us) * 1000.0);   
+    sleep(min(start + duration_us - micros(), period_us) / 1.0E6);   
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
 }
