@@ -106,12 +106,12 @@ void setup() {
 	
 // program Transceiver board  
   config_radio();	
-	
+/*	
   if (check_for_wifi()) {
      wifi = true;	
      configure_wifi();	  
   }
-	
+*/	
   start_button_isr(); 
 
   char call[] = "AMSAT";
