@@ -66,7 +66,7 @@ void setup() {
 
   config_gpio();		
 	
-/**/	
+/*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
@@ -77,7 +77,9 @@ void setup() {
       payload_OK_only();    
     }
   }
-/**/	
+*/
+  start_payload();  // above code not working, so forcing it
+	
   read_reset_count();	
 
 //  mode = FSK; // AFSK;		
