@@ -257,6 +257,10 @@ void transmit_on() {
     digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);
   }
+  else if (mode == BPSK) {	
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+  }
 }
 
 void transmit_off() {
