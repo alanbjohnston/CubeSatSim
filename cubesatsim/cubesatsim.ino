@@ -66,7 +66,7 @@ void setup() {
 
   config_gpio();		
 	
-/*	
+/**/	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
@@ -77,7 +77,7 @@ void setup() {
       payload_OK_only();    
     }
   }
-*/	
+/**/	
   read_reset_count();	
 
 //  mode = FSK; // AFSK;		
@@ -143,7 +143,7 @@ void loop() {
 //    ; // 
    read_ina219();	
 	
-//  read_payload();	
+  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  
