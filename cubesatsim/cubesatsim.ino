@@ -57,14 +57,15 @@ WiFiClient client;
 void setup() {
   new_mode = mode;
 	
-  config_gpio();	
-	
   Serial.begin(9600);
 	
-  blinkTimes(2);	
+  pinMode(LED_BUILTIN, OUTPUT);	
+  blinkTimes(1);	
 
   sleep(5.0);		
 
+  config_gpio();		
+	
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -113,13 +114,14 @@ void setup() {
   }
 */	
   start_button_isr(); 
-
+	
+/*
   char call[] = "AMSAT";
   strcpy(callsign, call);
 	
   transmit_callsign(callsign);
    sleep(5.0);		
-
+*/
   sampleTime = (unsigned int) millis();		
 	
   ready = TRUE;  // flag for core1 to start looping
