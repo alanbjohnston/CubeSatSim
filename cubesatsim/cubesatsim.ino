@@ -57,11 +57,14 @@ WiFiClient client;
 void setup() {
   new_mode = mode;
 	
+  config_gpio();	
+	
   Serial.begin(9600);
+	
+  blinkTimes(2);	
 
   sleep(5.0);		
-	
-  config_gpio();
+
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
