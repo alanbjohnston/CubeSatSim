@@ -272,12 +272,13 @@ void transmit_on() {
 
 void transmit_off() {
   digitalWrite(MAIN_LED_BLUE, LOW);	
-  if ((mode == AFSK) || (mode == FSK))
+//  if ((mode == AFSK) || (mode == FSK))
       digitalWrite(PTT_PIN, HIGH);
-  else if (mode == BPSK) {
+//  else if (mode == BPSK) {
+    ITimer0.stopTimer();     // stop isr
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	 
-  }	
+//  }	
 }
 
 void config_telem() {
