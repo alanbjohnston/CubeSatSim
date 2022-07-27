@@ -2201,7 +2201,7 @@ void read_payload()
         sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
 	  
-    sensorValue = analogRead(A3);
+    sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 //    sprintf(str, "XS %.1f %.1f\n", Temp, Sensor1);
@@ -2334,7 +2334,7 @@ void read_payload()
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
 
-    sensorValue = analogRead(A3);
+    sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
@@ -2448,7 +2448,7 @@ void payload_OK_only()
     Serial.print(mpu6050.getAccZ());  
     }
 	    
-    sensorValue = analogRead(A3);
+    sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
@@ -2522,7 +2522,7 @@ void payload_OK_only()
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
 
-    sensorValue = analogRead(A3);
+    sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
