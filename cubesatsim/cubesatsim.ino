@@ -3171,7 +3171,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 void start_isr() {
 	
 //	return;
-  if (!Timer0_on) {	
+  if (!timer0_on) {	
 	Serial.println("Starting ISR");
 	
 	pinMode(BPSK_CONTROL_A, OUTPUT);
@@ -3183,6 +3183,7 @@ void start_isr() {
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
   {
     Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
+    timer0_on = true;	  
   }
   else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
