@@ -64,7 +64,18 @@ void setup() {
 
   sleep(5.0);		
 
-  config_gpio();		
+  config_gpio();	
+	
+
+#ifndef ARDUINO_ARCH_RP2040
+  Serial.println("This code is written for the Raspberry Pi Pico hardware.");
+#endif	
+
+// detect Pi Zero using 3.3V
+// if Pi is present, run Payload OK software
+// otherwise, run CubeSatSim Pico code
+  
+  Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
 	
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
@@ -78,21 +89,10 @@ void setup() {
     }
   }
 */
+// configure STEM Payload sensors	
   start_payload();  // above code not working, so forcing it
 	
-  read_reset_count();	
-
-//  mode = FSK; // AFSK;		
-
-#ifndef ARDUINO_ARCH_RP2040
-  Serial.println("This code is written for the Raspberry Pi Pico hardware.");
-#endif	
-
-// detect Pi Zero using 3.3V
-// if Pi is present, run Payload OK software
-// otherwise, run CubeSatSim Pico code
-  
-  Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
+  read_reset_count();		
 	
   sim_mode = FALSE;
   if (sim_mode)
@@ -100,14 +100,11 @@ void setup() {
   else
     ; // configure ina219s
     	  
-   start_ina219();	
+  start_ina219();	
     
   config_telem();	
-		
-// configure STEM Payload sensors	
-//  start_payload();	
 	
-// program Transceiver board  
+// setup radio depending on mode 
   config_radio();	
 /*	
   if (check_for_wifi()) {
@@ -142,7 +139,6 @@ void loop() {
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-//    ; // 
    read_ina219();	
 	
   read_payload();	
@@ -170,14 +166,14 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
 	//  delay(3000);	
-	  sleep(0.5); // 2.845); // 3.0);
+	  sleep(0.2); // 2.845); // 3.0);
 
 	  if (!wifi) 
 	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
-  // send telemetry
 	
+  // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
@@ -201,7 +197,6 @@ bool TimerHandler1(struct repeating_timer *t) {
     check_for_browser();
  
  return(true);	
-  
 }
 
 void read_reset_count() {
@@ -241,8 +236,7 @@ void read_reset_count() {
   }	  	
 }
 
-void send_packet() {
-	
+void send_packet() {	
 // encode telemetry
   get_tlm_ao7();
 	
@@ -251,12 +245,7 @@ void send_packet() {
   Serial.println("Sending APRS packet!");
   transmit_on();
   send_packet(_FIXPOS_STATUS);
-  transmit_off();	
-	
-//  delay(1000);	
-	
-
-//  digitalWrite(LED_BUILTIN, HIGH);		
+  transmit_off();		
 }
 
 void transmit_on() {
@@ -386,6 +375,7 @@ void config_telem() {
   }
 
 // clearing min and max values
+  Serial.println("Clearing min and max telemetry values");	
 	
   for (int i = 0; i < 9; i++) {
     voltage_min[i] = 1000.0;
@@ -401,8 +391,7 @@ void config_telem() {
   for (int i = 0; i < 3; i++) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
-  }
-		
+  }		
 	
   firstTime = TRUE;	
 }
@@ -545,7 +534,6 @@ void generate_simulated_telem() {
 
 void config_simulated_telem()
 {
-
     sim_mode = TRUE;
 	    
     Serial.println("Simulated telemetry mode!\n");
@@ -593,7 +581,7 @@ void config_simulated_telem()
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
 //  }
 
-  tx_freq_hz -= tx_channel * 50000;
+//  tx_freq_hz -= tx_channel * 50000;
 	
 }
 
@@ -3429,8 +3417,8 @@ void parse_payload() {
 	  for (count1 = 0; count1 < 17; count1++) {
 	    if (token != NULL) {
 	      sensor[count1] = (float) atof(token);
-	      Serial.print("sensor: ");
-	      Serial.println(sensor[count1]);
+//	      Serial.print("sensor: ");
+//	      Serial.println(sensor[count1]);
 	      token = strtok(NULL, space);
 	    }
 	  }
