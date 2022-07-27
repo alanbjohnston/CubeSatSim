@@ -384,6 +384,26 @@ void config_telem() {
     frameTime = 5000;	  
     bufLen = 1000;
   }
+
+// clearing min and max values
+	
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
+  }
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+ //   printf("Sensor min and max initialized!");
+  }
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
+  }
+		
+	
   firstTime = TRUE;	
 }
 
