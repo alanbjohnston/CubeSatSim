@@ -66,7 +66,8 @@ void setup() {
 
   config_gpio();	
 	
-
+  EEPROM.begin(512);	
+	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
 #endif	
@@ -92,7 +93,7 @@ void setup() {
 // configure STEM Payload sensors	
   start_payload();  // above code not working, so forcing it
 	
-  read_reset_count();		
+//  read_reset_count();		
 	
   sim_mode = FALSE;
   if (sim_mode)
@@ -200,8 +201,6 @@ bool TimerHandler1(struct repeating_timer *t) {
 }
 
 void read_reset_count() {
-	
-  EEPROM.begin(512);	
 	
   long stored_reset, reset_flag;
   EEPROM.get(16, reset_flag);
