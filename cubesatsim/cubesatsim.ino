@@ -2093,15 +2093,15 @@ void start_payload() {
     mpu6050.begin();	  
 
   long flag;
+  float xOffset;
+  float yOffset;	  
+  float zOffset;		  
   EEPROM.get(0, flag);
 	  
   if (flag == 0xA07)
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
 
-    float xOffset;
-    float yOffset;	  
-    float zOffset;	  
     EEPROM.get(4, xOffset);
     EEPROM.get(8, yOffset);
     EEPROM.get(12, zOffset);
@@ -2123,11 +2123,16 @@ void start_payload() {
     eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
     eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
-*/	  
-    EEPROM.put(0, (long) 0xA07);
-    EEPROM.put(4, (float)mpu6050.getGyroXoffset());
-    EEPROM.put(8, (float)mpu6050.getGyroYoffset());
-    EEPROM.put(12, (float)mpu6050.getGyroZoffset());
+*/
+    flag = 0xA07;
+    xOffset = mpu6050.getGyroXoffset();
+    yOffset = mpu6050.getGyroYoffset();
+    zOffset = mpu6050.getGyroZoffset();
+	  
+    EEPROM.put(0, flag);
+    EEPROM.put(4, xOffset);
+    EEPROM.put(8, yOffset);
+    EEPROM.put(12, zOffset);
 	  
     if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
