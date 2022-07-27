@@ -710,7 +710,7 @@ void get_tlm_fox() {
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
 //      Serial.println("h[5]");	  
     if (mode == BPSK)
-      h[6] = 99;
+      h[6] = 99;	  
     posXi = (int)(current[mapping[PLUS_X]] + 0.5) + 2048;
     posYi = (int)(current[mapping[PLUS_Y]] + 0.5) + 2048;
     posZi = (int)(current[mapping[PLUS_Z]] + 0.5) + 2048;
@@ -727,6 +727,14 @@ void get_tlm_fox() {
     battCurr = (int)(current[mapping[BAT]] + 0.5) + 2048;
     PSUVoltage = (int)(voltage[mapping[BUS]] * 100);
     PSUCurrent = (int)(current[mapping[BUS]] + 0.5) + 2048;
+	  
+    Serial.print("voltage[PLUS_X] = ");
+    Serial.println(voltage[PLUS_X]);
+    Serial.print("voltage[mapping[PLUS_X]] = ");
+    Serial.println(voltage[mappig[PLUS_X]]);
+    Serial.print("posXv = ");
+    Serial.println(posXv);		  
+	  
 //    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
