@@ -607,6 +607,8 @@ void get_tlm_fox() {
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
 	
+  parse_payload();	
+	
   for (int n = 0; n < 17; n++)
 	  sensor[n] = 1.0;
 	
@@ -3383,4 +3385,37 @@ void transmit_char(char character) {
   sleep((float)(morse_timing * 3.0)/1000.0);
 //  Serial.println(" ");
 
+}
+
+void parse_payload() {
+
+	if ((payload_str[0] == 'O') && (payload_str[1] == 'K')) // only process if valid payload response
+	{
+	  int count1;
+	  char * token;
+
+	  const char space[2] = " ";
+	  token = strtok(payload_str, space);
+	  for (count1 = 0; count1 < 17; count1++) {
+	    if (token != NULL) {
+	      sensor[count1] = (float) atof(token);
+	      Serial.print("sensor: ");
+	      Serial.println(sensor[count1]);
+	      token = strtok(NULL, space);
+	    }
+	  }
+//	  printf("\n");
+	}
+	else
+		payload = OFF;  // turn off since STEM Payload is not responding
+	}
+	if ((payload_str[0] == 'O') && (payload_str[1] == 'K')) {
+		for (int count1 = 0; count1 < 17; count1++) {
+		  if (sensor[count1] < sensor_min[count1])
+		    sensor_min[count1] = sensor[count1];
+		  if (sensor[count1] > sensor_max[count1])
+		    sensor_max[count1] = sensor[count1];
+		    //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+		}
+	}		
 }
