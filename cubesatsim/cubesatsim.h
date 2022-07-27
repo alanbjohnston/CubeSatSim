@@ -269,10 +269,10 @@ void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
 int first_read = true;
-float T2 = 26.3; // Temperature data point 1
-float R2 = 167; // Reading data point 1
-float T1 = 2; // Temperature data point 2
-float R1 = 179; // Reading data point 2
+float T2 = 27; // Temperature data point 1
+float R2 = 170; // Reading data point 1
+float T1 = 7; // Temperature data point 2
+float R1 = 184; // Reading data point 2
 int sensorValue;
 float Temp;
 float rest;
