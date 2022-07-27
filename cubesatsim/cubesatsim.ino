@@ -731,7 +731,7 @@ void get_tlm_fox() {
     Serial.print("voltage[PLUS_X] = ");
     Serial.println(voltage[PLUS_X]);
     Serial.print("voltage[mapping[PLUS_X]] = ");
-    Serial.println(voltage[mappig[PLUS_X]]);
+    Serial.println(voltage[mappnig[PLUS_X]]);
     Serial.print("posXv = ");
     Serial.println(posXv);		  
 	  
