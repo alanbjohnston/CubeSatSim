@@ -93,7 +93,7 @@ void setup() {
 // configure STEM Payload sensors	
   start_payload();  // above code not working, so forcing it
 	
-//  read_reset_count();		
+  read_reset_count();		
 	
   sim_mode = FALSE;
   if (sim_mode)
