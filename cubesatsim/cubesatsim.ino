@@ -2216,7 +2216,8 @@ void read_payload()
     sensorValue = analogRead(A3);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
-    sprintf(str, "XS %.1f %.1f\n", Temp, Sensor1);
+//    sprintf(str, "XS %.1f %.1f\n", Temp, Sensor1);
+    sprintf(str, "XS %.1f 0.0\n", Temp);
     strcat(payload_str, str);
 	  
     print_string(payload_str);
