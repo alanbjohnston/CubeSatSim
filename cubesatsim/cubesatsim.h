@@ -304,6 +304,7 @@ unsigned long pb_press_start;
 bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);
 RPI_PICO_Timer ITimer1(0);
+bool timer0_on = false;
 
 char callsign[20];
 int morse_timing = 60;  // ms for a dit
