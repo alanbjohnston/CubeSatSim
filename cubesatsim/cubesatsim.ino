@@ -3405,17 +3405,17 @@ void parse_payload() {
 	    }
 	  }
 //	  printf("\n");
-	}
-	else
-		payload = OFF;  // turn off since STEM Payload is not responding
-	}
-	if ((payload_str[0] == 'O') && (payload_str[1] == 'K')) {
-		for (int count1 = 0; count1 < 17; count1++) {
-		  if (sensor[count1] < sensor_min[count1])
-		    sensor_min[count1] = sensor[count1];
-		  if (sensor[count1] > sensor_max[count1])
-		    sensor_max[count1] = sensor[count1];
-		    //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
-		}
+//	}
+//	else
+//		payload = OFF;  // turn off since STEM Payload is not responding
+//	}
+//	if ((payload_str[0] == 'O') && (payload_str[1] == 'K')) {
+	  for (int count1 = 0; count1 < 17; count1++) {
+	    if (sensor[count1] < sensor_min[count1])
+	      sensor_min[count1] = sensor[count1];
+	    if (sensor[count1] > sensor_max[count1])
+	      sensor_max[count1] = sensor[count1];
+	    //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+  	  }
 	}		
 }
