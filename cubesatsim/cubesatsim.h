@@ -159,6 +159,7 @@ void transmit_mili(int freq, float duration);
 void transmit_char(char character);
 void transmit_string(char *string);
 void transmit_callsign(char *callsign);
+void parse_payload();
 
 #ifndef STASSID
 #define STASSID "Pico"
