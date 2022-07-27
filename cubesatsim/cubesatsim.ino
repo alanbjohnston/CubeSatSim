@@ -275,7 +275,7 @@ void transmit_off() {
 //  if ((mode == AFSK) || (mode == FSK))
       digitalWrite(PTT_PIN, HIGH);
 //  else if (mode == BPSK) {
-    ITimer0.stopTimer();     // stop isr
+//    ITimer0.stopTimer();     // stop isr
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	 
 //  }	
@@ -609,8 +609,8 @@ void get_tlm_fox() {
 	
   parse_payload();	
 	
-  for (int n = 0; n < 17; n++)
-	  sensor[n] = 1.0;
+//  for (int n = 0; n < 17; n++)
+//	  sensor[n] = 1.0;
 	
   if (mode == FSK)
     id = 7;
@@ -727,14 +727,14 @@ void get_tlm_fox() {
     battCurr = (int)(current[mapping[BAT]] + 0.5) + 2048;
     PSUVoltage = (int)(voltage[mapping[BUS]] * 100);
     PSUCurrent = (int)(current[mapping[BUS]] + 0.5) + 2048;
-	  
+/*	  
     Serial.print("voltage[PLUS_X] = ");
     Serial.println(voltage[PLUS_X]);
     Serial.print("voltage[mapping[PLUS_X]] = ");
     Serial.println(voltage[mapping[PLUS_X]]);
     Serial.print("posXv = ");
     Serial.println(posXv);		  
-	  
+*/	  
 //    if (payload == ON)
       STEMBoardFailure = 0;
     // read payload sensor if available
@@ -3171,7 +3171,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 void start_isr() {
 	
 //	return;
-	
+  if (!Timer0_on) {	
 	Serial.println("Starting ISR");
 	
 	pinMode(BPSK_CONTROL_A, OUTPUT);
@@ -3186,7 +3186,7 @@ void start_isr() {
   }
   else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
-
+  }
 }
   
 void start_button_isr() {
