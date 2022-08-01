@@ -3372,7 +3372,7 @@ void configure_wifi() {
   }
 }
 
-void transmit_mili(int freq, float duration) {  // freq in Hz, duration in milliseconds
+void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
   unsigned long start = micros();
   unsigned long duration_us = duration * 1000;
   float period_us = (1.0E6) / (float)(freq);
@@ -3413,7 +3413,7 @@ void transmit_char(char character) {
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
 //    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
-    transmit_mili(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
+    transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
     sleep((float)(morse_timing)/1000.0);
   }
   sleep((float)(morse_timing * 3.0)/1000.0);
