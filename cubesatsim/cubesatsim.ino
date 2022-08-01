@@ -37,6 +37,7 @@
 #include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
+#include <SSTV-Arduino-Scottie1-Library.h>
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -95,7 +96,7 @@ void setup() {
 	
   read_reset_count();		
 	
-  sim_mode = TRUE;
+  sim_mode = FALSE;
   if (sim_mode)
     config_simulated_telem();
   else
@@ -152,7 +153,11 @@ void loop() {
   else if (mode == AFSK)
   {  
     send_packet();
-  }	
+  } else if (mode == SSTV)
+  {
+      Serial.println("\nSending SSTV image!");	  
+  }
+	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
     sleep(0.1); // 25); // 0.5);  // 25);
@@ -371,8 +376,13 @@ void config_telem() {
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
-  }
-
+  }   else if (mode == SSTV) {
+    Serial.println("Configuring for SSTV\n");
+	  
+    samplePeriod = 5000;
+    frameTime = 5000;	  
+    bufLen = 1000;
+  } 
 // clearing min and max values
   Serial.println("Clearing min and max telemetry values");	
 	
@@ -1850,7 +1860,7 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 	
-  if ((mode == AFSK) || (mode == FSK)) {
+  if ((mode == AFSK) || (mode == FSK) || (mode == SSTV)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS  	  
 
@@ -1875,7 +1885,7 @@ void config_radio()
     transmit_on();	
   }
 	
-  if (mode == FSK)
+  if ((mode == FSK) || (mode == SSTV))
     transmit_on();
 }
 
@@ -2920,6 +2930,7 @@ void process_pushbutton() {
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to SSTV");
+    new_mode = SSTV;
     release = TRUE;
   }
 	
@@ -3016,6 +3027,7 @@ void process_bootsel() {
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
     Serial.println("BOOTSEL: Switch to SSTV");
+    new_mode = SSTV;
     release = TRUE;
   }
 	
