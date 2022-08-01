@@ -153,10 +153,13 @@ void loop() {
   else if (mode == AFSK)
   {  
     send_packet();
-  } else if (mode == SSTV)
+  } 
+  else if (mode == SSTV)
   {
       Serial.println("\nSending SSTV image!");	  
-  }
+  } 
+  else
+      Serial.println("Unknown mode!");
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
@@ -3003,7 +3006,7 @@ void process_bootsel() {
   if ((!BOOTSEL) && (release == FALSE)) {
     Serial.println("BOOTSEL: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
+//    new_mode = FSK;
 //    setup();
   }
 	
