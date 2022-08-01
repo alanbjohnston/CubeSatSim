@@ -256,25 +256,26 @@ void send_packet() {
 }
 
 void transmit_on() {
-  if (mode == AFSK) {	
+  if ((mode == AFSK) || (mode == SSTV)) {
+    Serial.println("Transmit on!");
     digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);
   }
   else if (mode == BPSK) {	
+    Serial.println("Transmit on!");
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
     pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
   }
+  else
+    Serial.println("No transmit!");
 }
 
 void transmit_off() {
+  digitalWrite(PTT_PIN, HIGH);
+  Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);	
-//  if ((mode == AFSK) || (mode == FSK))
-      digitalWrite(PTT_PIN, HIGH);
-//  else if (mode == BPSK) {
-//    ITimer0.stopTimer();     // stop isr
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	 
-//  }	
+  pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
+  pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	 
 }
 
 void config_telem() {
