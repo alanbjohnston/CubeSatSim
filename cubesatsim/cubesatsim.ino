@@ -384,7 +384,7 @@ void config_telem() {
     bufLen = 1000;
   }   else if (mode == SSTV) {
     Serial.println("Configuring for SSTV\n");
-	  
+    set_sstv_pin(AUDIO_OUT_PIN);    	  
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
