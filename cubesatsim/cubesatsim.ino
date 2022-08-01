@@ -466,21 +466,21 @@ void get_tlm_ao7() {
 
 void generate_simulated_telem() {
 
-      double time = ((long int)millis() - time_start) / 1000.0;
+      double time_stamp = ((long int)millis() - time_start) / 1000.0;
 
-      if ((time - eclipse_time) > period) {
+      if ((time_stamp - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
-        eclipse_time = time;
+        eclipse_time = time_stamp;
         Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
 
-      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotatation_speed)) + rnd_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
 
-      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
@@ -537,7 +537,7 @@ void config_simulated_telem()
 	    
     Serial.println("Simulated telemetry mode!\n");
 
-    srand((unsigned int)time(0));
+//    srand((unsigned int)time(0));
 
     axis[0] = rnd_float(-0.2, 0.2);
     if (axis[0] == 0)
@@ -560,7 +560,7 @@ void config_simulated_telem()
     amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
 
     batt = rnd_float(3.8, 4.3);
-    speed = rnd_float(1.0, 2.5);
+    rotation_speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
