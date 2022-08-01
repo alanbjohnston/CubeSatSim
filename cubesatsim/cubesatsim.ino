@@ -1868,7 +1868,9 @@ void config_radio()
 	
   if ((mode == AFSK) || (mode == FSK) || (mode == SSTV)) {
 	  
-    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS  	  
+    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
+	  
+    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
 
     DumbTXSWS mySerial(SWTX_PIN); // TX pin
     mySerial.begin(9600);
