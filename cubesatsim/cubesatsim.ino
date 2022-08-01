@@ -95,7 +95,7 @@ void setup() {
 	
   read_reset_count();		
 	
-  sim_mode = FALSE;
+  sim_mode = TRUE;
   if (sim_mode)
     config_simulated_telem();
   else
