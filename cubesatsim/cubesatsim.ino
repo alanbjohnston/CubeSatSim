@@ -156,7 +156,9 @@ void loop() {
   } 
   else if (mode == SSTV)
   {
-      Serial.println("\nSending SSTV image!");	  
+      Serial.println("\nSending SSTV image!");
+      send_sstv();
+      Serial.println("\nImage sent!");
   } 
   else
       Serial.println("Unknown mode!");
