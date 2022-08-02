@@ -8,7 +8,7 @@
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of 
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
@@ -3183,7 +3183,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     pwm_init(bpsk_pin_slice, &config, true);
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
 */	
-  if (wav_position > bufLen) { // 300) {
+    if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
 //	Serial.print("\nR");
 //	Serial.print(" ");
@@ -3191,10 +3191,10 @@ bool TimerHandler0(struct repeating_timer *t) {
 	Serial.print("R Microseconds: ");
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
-  }
+    }
 //  } 
   } else if (mode == SSTV)
-	  sstv_TimerHandler1();	  
+       sstv_TimerHandler1();	  
 //  }
 /*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
@@ -3230,7 +3230,7 @@ void start_isr() {
 //  } else {
 //     ITimer0.restartTimer();
 //     Serial.println("Restarting ITimer0 for BPSK");	  
-//  }
+  }
 }
   
 void start_button_isr() {
