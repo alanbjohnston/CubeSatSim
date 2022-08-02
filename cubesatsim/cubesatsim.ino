@@ -2829,7 +2829,9 @@ void loop1() {
     check_for_browser();
 */	
 
-  sleep(0.5);	
+//  sleep(0.5);	
+	
+	 delayMicroseconds(100000);  
 }	
 /*	
   if (mode == FSK) 
