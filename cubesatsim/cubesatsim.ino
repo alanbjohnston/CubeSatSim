@@ -2814,7 +2814,7 @@ void setup1() {
 }
 
 void loop1() {
-//  Serial.print("l1 ");
+  Serial.println("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
 
@@ -2895,7 +2895,7 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
 
 void process_pushbutton() {
 	
-//  Serial.println("PB pressed!");  
+  Serial.println("PB pressed!");  
 	
   int release = FALSE;
   if (!wifi) 	   	
