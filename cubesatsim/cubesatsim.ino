@@ -276,7 +276,7 @@ void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
-  ITimer0.stopTimer();	  // stop BPSK ISR timer
+//  ITimer0.stopTimer();	  // stop BPSK ISR timer
   pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
   pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   sstv_end();
@@ -3164,7 +3164,6 @@ bool TimerHandler0(struct repeating_timer *t) {
     digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_A, LOW);	    
-  }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 		
@@ -3192,7 +3191,9 @@ bool TimerHandler0(struct repeating_timer *t) {
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
   }
-  }
+  } else if (mode == SSTV)
+	  sstv_TimerHandler1();	  
+//  }
 /*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
@@ -3224,10 +3225,10 @@ void start_isr() {
     else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
 	  
-  } else {
-     ITimer0.restartTimer();
-     Serial.println("Restarting ITimer0 for BPSK");	  
-  }
+//  } else {
+//     ITimer0.restartTimer();
+//     Serial.println("Restarting ITimer0 for BPSK");	  
+//  }
 }
   
 void start_button_isr() {
