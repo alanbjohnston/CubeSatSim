@@ -114,7 +114,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-  start_button_isr(); 
+//  start_button_isr(); 
 	
 /*
   char call[] = "AMSAT";
@@ -2797,7 +2797,7 @@ void pwm_interrupt_handler() {
 }
 */
 
-/*  ///
+
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
@@ -2814,10 +2814,22 @@ void setup1() {
 }
 
 void loop1() {
-  Serial.print("l1 ");
-  Serial.print(wav_position);
-  Serial.print(" ");
+//  Serial.print("l1 ");
+//  Serial.print(wav_position);
+//  Serial.print(" ");
 
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
+
+  if (wifi) 
+    check_for_browser();
+
+  sleep(0.1);	
+}	
+/*	
   if (mode == FSK) 
   {
         tx_bit = (buffer[wav_position++] > 0) ? HIGH: LOW;
@@ -2845,6 +2857,7 @@ void loop1() {
 	Serial.println(millis());	
   }
   delay(1); //2 1);
+*/	
 //  sleep(delay_time);	
 	
 // check pushbutton
@@ -2853,11 +2866,11 @@ void loop1() {
 //    Serial.print("PB: ");
 //    Serial.println(pb_value);
 //    if (pb_value == PRESSED) 
-    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
-      process_pushbutton();
-}	    
+//    if (digitalRead(MAIN_PB_PIN) == PRESSED) 
+//      process_pushbutton();
+// }	    
 
-*///
+
 
 /*
 void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
