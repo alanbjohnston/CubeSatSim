@@ -2819,6 +2819,7 @@ void loop1() {
 //  Serial.print(" ");
 
 // check for button press 
+/*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
@@ -2826,8 +2827,9 @@ void loop1() {
 
   if (wifi) 
     check_for_browser();
+*/	
 
-  sleep(0.1);	
+  sleep(0.5);	
 }	
 /*	
   if (mode == FSK) 
