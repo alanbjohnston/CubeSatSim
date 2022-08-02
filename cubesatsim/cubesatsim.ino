@@ -3202,10 +3202,9 @@ bool TimerHandler0(struct repeating_timer *t) {
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 */
-}
   return true;	
 }
-
+//}
 
 void start_isr() {
 	
