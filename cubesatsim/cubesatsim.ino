@@ -3163,7 +3163,8 @@ bool TimerHandler0(struct repeating_timer *t) {
   } else {
     digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_A, LOW);	    
+    digitalWrite(BPSK_CONTROL_A, LOW);
+  }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 		
@@ -3191,7 +3192,7 @@ bool TimerHandler0(struct repeating_timer *t) {
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
   }
-  } 
+//  } 
   } else if (mode == SSTV)
 	  sstv_TimerHandler1();	  
 //  }
