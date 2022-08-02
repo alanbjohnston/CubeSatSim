@@ -8,7 +8,7 @@
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of 
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
@@ -52,8 +52,6 @@ char payload_str[100];
 
 WiFiServer server(port);
 WiFiClient client;
-
-extern RPI_PICO_Timer ITimer0(0);
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
@@ -278,7 +276,7 @@ void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
-//  ITimer0.stopTimer();	  // stop BPSK ISR timer
+  ITimer0.stopTimer();	  // stop BPSK ISR timer
   pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
   pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   sstv_end();
@@ -3165,7 +3163,7 @@ bool TimerHandler0(struct repeating_timer *t) {
   } else {
     digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_A, LOW);
+    digitalWrite(BPSK_CONTROL_A, LOW);	    
   }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
@@ -3185,7 +3183,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     pwm_init(bpsk_pin_slice, &config, true);
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
 */	
-    if (wav_position > bufLen) { // 300) {
+  if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
 //	Serial.print("\nR");
 //	Serial.print(" ");
@@ -3193,20 +3191,17 @@ bool TimerHandler0(struct repeating_timer *t) {
 	Serial.print("R Microseconds: ");
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
-    }
-//  } 
-  } else if (mode == SSTV)
-       sstv_TimerHandler1();	  
-//  }
+  }
+  }
 /*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 */
+
   return true;	
 }
-//}
 
 void start_isr() {
 	
@@ -3229,9 +3224,9 @@ void start_isr() {
     else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
 	  
-//  } else {
-//     ITimer0.restartTimer();
-//     Serial.println("Restarting ITimer0 for BPSK");	  
+  } else {
+     ITimer0.restartTimer();
+     Serial.println("Restarting ITimer0 for BPSK");	  
   }
 }
   
