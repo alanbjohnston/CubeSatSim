@@ -160,7 +160,6 @@ void transmit_char(char character);
 void transmit_string(char *string);
 void transmit_callsign(char *callsign);
 void parse_payload();
-bool sstv_TimerHandler1(struct repeating_timer *t);
 
 #ifndef STASSID
 #define STASSID "Pico"
@@ -303,7 +302,7 @@ int mode_count = 0;
 unsigned long pb_press_start;
 
 bool TimerHandler0(struct repeating_timer *t);
-//RPI_PICO_Timer ITimer0(0);
+RPI_PICO_Timer ITimer0(0);
 RPI_PICO_Timer ITimer1(1);
 bool timer0_on = false;
 
