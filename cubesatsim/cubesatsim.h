@@ -160,6 +160,7 @@ void transmit_char(char character);
 void transmit_string(char *string);
 void transmit_callsign(char *callsign);
 void parse_payload();
+bool sstv_TimerHandler1(struct repeating_timer *t);
 
 #ifndef STASSID
 #define STASSID "Pico"
