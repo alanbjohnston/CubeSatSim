@@ -3193,7 +3193,7 @@ bool TimerHandler0(struct repeating_timer *t) {
   }
   } 
   } else if (mode == SSTV)
-	  sstv_TimerHandler1();	  
+	  sstv_TimerHandler1(null);	  
 //  }
 /*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
