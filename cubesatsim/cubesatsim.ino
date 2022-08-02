@@ -53,6 +53,8 @@ char payload_str[100];
 WiFiServer server(port);
 WiFiClient client;
 
+extern RPI_PICO_Timer ITimer0(0);
+
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 void setup() {
