@@ -3242,7 +3242,7 @@ void start_isr() {
      Serial.println("Restarting ITimer0 for BPSK");	  
   }
 }
-  
+/*  
 void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
@@ -3256,6 +3256,7 @@ void start_button_isr() {
     Serial.println(F("Can't set ITimer1. Select another Timer, freq. or timer"));
 
 }
+*/
   
 void client_print_string(char *string)
 {
