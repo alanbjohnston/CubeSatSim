@@ -3191,6 +3191,7 @@ bool TimerHandler0(struct repeating_timer *t) {
         Serial.println((micros() - micro_timer)/bufLen);
         micro_timer = micros();
   }
+  } 
   } else if (mode == SSTV)
 	  sstv_TimerHandler1();	  
 //  }
