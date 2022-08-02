@@ -275,7 +275,8 @@ void transmit_on() {
 void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   Serial.println("Transmit off!");
-  digitalWrite(MAIN_LED_BLUE, LOW);	
+  digitalWrite(MAIN_LED_BLUE, LOW);
+  ITimer0.stopTimer();	  // stop BPSK ISR timer
   pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
   pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   sstv_end();
@@ -3205,7 +3206,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 void start_isr() {
 	
 //	return;
-  if (!timer0_on) {	
+//  if (!timer0_on) {	
+  if (true) {	                         // always start ISR handler
 	Serial.println("Starting ISR");
 	
 	pinMode(BPSK_CONTROL_A, OUTPUT);
