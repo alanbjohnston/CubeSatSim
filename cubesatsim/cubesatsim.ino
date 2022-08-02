@@ -2831,7 +2831,7 @@ void loop1() {
 
 //  sleep(0.5);	
 	
-	 delayMicroseconds(100000);  
+//	 delayMicroseconds(100000);  
 }	
 /*	
   if (mode == FSK) 
