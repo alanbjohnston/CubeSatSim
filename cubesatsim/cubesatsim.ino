@@ -276,7 +276,7 @@ void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
-  ITimer0.stopTimer();	  // stop BPSK ISR timer
+// ITimer0.stopTimer();	  // stop BPSK ISR timer
   pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
   pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   sstv_end();
@@ -3225,8 +3225,9 @@ void start_isr() {
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
 	  
   } else {
-     ITimer0.restartTimer();
-     Serial.println("Restarting ITimer0 for BPSK");	  
+//     ITimer0.restartTimer();
+//     Serial.println("Restarting ITimer0 for BPSK");	  
+	Serial.println("Don't restart ITimer0 for BPSK");	
   }
 }
   
