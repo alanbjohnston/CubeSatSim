@@ -279,8 +279,7 @@ void transmit_off() {
   ITimer0.stopTimer();	  // stop BPSK ISR timer
   pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
   pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
-  sstv_stop = true;	
-//  sstv_end();
+  sstv_end();
 }
 
 void config_telem() {
