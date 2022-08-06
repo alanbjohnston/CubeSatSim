@@ -169,7 +169,7 @@ void parse_payload();
 const char* ssid = STASSID;
 const char* password = STAPSK;
 int port = 7373;
-bool wifi = false;
+volatile bool wifi = false;
 
 extern int Encode_8b10b[][256];
 
@@ -221,7 +221,7 @@ char call[5];
 char sim_yes[10];
 
 int mode = BPSK;
-int new_mode;
+volatile int new_mode;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
 unsigned int sampleTime = 0;
