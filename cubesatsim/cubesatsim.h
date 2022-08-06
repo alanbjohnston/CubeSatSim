@@ -302,8 +302,8 @@ int mode_count = 0;
 unsigned long pb_press_start;
 
 bool TimerHandler0(struct repeating_timer *t);
-RPI_PICO_Timer ITimer0(0);
-RPI_PICO_Timer ITimer1(1);
+RPI_PICO_Timer ITimer0(1);
+RPI_PICO_Timer ITimer1(0);
 bool timer0_on = false;
 
 char callsign[20];
