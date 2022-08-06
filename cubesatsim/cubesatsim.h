@@ -304,8 +304,8 @@ unsigned long pb_press_start;
 bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);
 RPI_PICO_Timer ITimer1(1);
-RPI_PICO_Timer dds_ITimer2(2);
-RPI_PICO_Timer sstv_ITimer3(3);
+global RPI_PICO_Timer dds_ITimer2(2);
+global RPI_PICO_Timer sstv_ITimer3(3);
 
 
 bool timer0_on = false;
