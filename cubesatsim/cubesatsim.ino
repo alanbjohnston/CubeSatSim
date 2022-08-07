@@ -38,7 +38,7 @@
 #include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
-#include "SSTV-Arduino-Scottie1.h"
+#include "SSTV-Arduino-Scottie1-Library.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
