@@ -295,6 +295,7 @@ int sample_rate;
 int buffer_size;
 long micro_timer;
 int ready = FALSE;
+bool cw_stop = false;
 
 #define PRESSED 0
 #define HELD 0
