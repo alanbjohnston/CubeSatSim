@@ -505,16 +505,16 @@ void get_tlm_ao7() {
     char str[1000];
     int channel;
     char header_str[] = "hi hi ";
-    strcpy(str, header_str);
+    strcpy(tlm_str, header_str);
 	
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+      sprintf(tlm, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
-        strcat(str, tlm_str);
+        strcat(tlm_str, str);
     }
 //    print_string(str);
 //    strcat(str, payload_str);	
@@ -3464,18 +3464,21 @@ void transmit_callsign(char *callsign) {
 }
 
 void transmit_string(char *string) {
-  int i = 0;
+  int j = 0;
   Serial.println("Transmit on");
   digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);	
 	
-  while ((string[i] != '\0') && (i < 256)) {
-    if (string[i] != ' ')	  
-      transmit_char(string[i++]);
+  while ((string[j] != '\0') && (j < 256)) {
+    Serial.print("j = ");
+    Serial.println(j);
+    if (string[j] != ' ')	  
+      transmit_char(string[j++]);
     else {
+      Serial.println("space between words);
       sleep((6.0 * (float)morse_timing)/1000.0);
-      i++;	    
+      j++;	    
     }
   }
   Serial.println("Transmit off");
@@ -3487,12 +3490,14 @@ void transmit_string(char *string) {
 void transmit_char(char character) {	
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
+    Serial.print("i = ");
+    Serial.println(i);
 //    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
     transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
     sleep((float)(morse_timing)/1000.0);
   }
   sleep((float)(morse_timing * 3.0)/1000.0);
-//  Serial.println(" ");
+  Serial.println("space between characters");
 
 }
 
