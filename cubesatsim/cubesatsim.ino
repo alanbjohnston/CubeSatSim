@@ -160,16 +160,17 @@ void loop() {
   read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
-  if ((mode == BPSK) || (mode == FSK))  
-  {
+  if ((mode == BPSK) || (mode == FSK))  {
     get_tlm_fox();
   }
-  else if (mode == AFSK)
-  {  
-    send_packet();
-  } 
-  else if (mode == SSTV)
-  {
+  else if ((mode == AFSK) || (mode == CW)) {
+    get_tlm_a07();	
+    if (mode == AFSK) {  
+      send_packet();
+    } else if (mode == CW) {
+      send_cw();	  
+  }
+  else if (mode == SSTV) {
       Serial.println("\nSending SSTV image!");
       send_sstv("/cam.raw");
       Serial.println("\nImage sent!");
@@ -262,11 +263,12 @@ void read_reset_count() {
   }	  	
 }
 
-void send_packet() {	
-// encode telemetry
-  get_tlm_ao7();
-	
+void send_packet() {		
 //  digitalWrite(LED_BUILTIN, LOW);
+
+  char str[1000];	
+  strcat(str, payload_str);	
+  set_status(str);		
 	
   Serial.println("Sending APRS packet!");
   transmit_on();
@@ -287,6 +289,23 @@ void transmit_on() {
   }
   else
     Serial.println("No transmit!");
+}
+
+void send_cw() {
+  char de[] = " HI HI DE ";	
+  char telem[1000];
+  char space[] = " ";	
+	
+  Serial.println("Sending CW packet!");
+	
+  strcpy(telem, de);
+  strcat(telem, callsign);
+  strcat(telem, space);
+  strcat(telem, payload_str);
+  print_string(telem);
+  Serial.println(strlen(telem));
+ 
+  transmit_string(telem);	
 }
 
 void transmit_off() {
@@ -495,10 +514,10 @@ void get_tlm_ao7() {
         strcat(str, tlm_str);
     }
 //    print_string(str);
-    strcat(str, payload_str);	
+//    strcat(str, payload_str);	
 //    print_string(str);
 //    Serial.println(strlen(str));
-    set_status(str);	
+//    set_status(str);	
 //  }	
 }
 
@@ -2978,6 +2997,7 @@ void process_pushbutton() {
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to CW");
+    new_mode = CW;
     release = TRUE;
   }
 	
@@ -3075,6 +3095,7 @@ void process_bootsel() {
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
     Serial.println("BOOTSEL: Switch to CW");
+    new_mode = CW;
     release = TRUE;
   }
 	
@@ -3436,9 +3457,7 @@ void transmit_callsign(char *callsign) {
   strcat(id, callsign);
   Serial.print("Transmitting id: ");	
   print_string(id);	
-//  transmit_on();
   transmit_string(id);	  
-//  transmit_off();
 }
 
 void transmit_string(char *string) {
