@@ -142,7 +142,7 @@ void transmit_on();
 void transmit_off(); 
 void config_telem();
 void config_simulated_telem(); 
-void generate_simualted_telem();
+void generate_simulated_telem();
 void process_pushbutton();
 void blinkTimes(int blinks);
 void blink_pin(int pin, int duration);
