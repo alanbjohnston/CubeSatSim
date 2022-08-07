@@ -131,7 +131,8 @@ void setup() {
 /**/
   Serial.println("Transmitting callsign");	
   strcpy(callsign, call);	
-  transmit_callsign(callsign);
+  if (mode != CW)
+    transmit_callsign(callsign);
   sleep(5.0);		
 /**/
 	
@@ -203,7 +204,8 @@ void loop() {
     Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
 	 
-    transmit_callsign(callsign);
+    if (new_mode != CW)
+      transmit_callsign(callsign);
     sleep(0.5);	 
     config_telem();
     config_radio();
@@ -3471,12 +3473,12 @@ void transmit_string(char *string) {
   digitalWrite(PTT_PIN, LOW);	
 	
   while ((string[j] != '\0') && (j < 256)) {
-    Serial.print("j = ");
-    Serial.println(j);
+//    Serial.print("j = ");
+//    Serial.println(j);
     if (string[j] != ' ')	  
       transmit_char(string[j++]);
     else {
-      Serial.println("space between words");
+//      Serial.println("space between words");
       sleep((6.0 * (float)morse_timing)/1000.0);
       j++;	    
     }
@@ -3490,14 +3492,14 @@ void transmit_string(char *string) {
 void transmit_char(char character) {	
   int i = 0;
   while (morse_table[(toupper(character) - '0') % 44][i] != 0) {
-    Serial.print("i = ");
-    Serial.println(i);
+//    Serial.print("i = ");
+//    Serial.println(i);
 //    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
     transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
     sleep((float)(morse_timing)/1000.0);
   }
   sleep((float)(morse_timing * 3.0)/1000.0);
-  Serial.println("space between characters");
+//  Serial.println("space between characters");
 
 }
 
