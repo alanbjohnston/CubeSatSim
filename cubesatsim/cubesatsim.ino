@@ -130,6 +130,7 @@ void setup() {
   start_pwm();
 	
 /**/
+  Serial.println("Transmitting callsign");	
   char call[] = "AMSAT";
   strcpy(callsign, call);
 	
@@ -3455,8 +3456,8 @@ void transmit_string(char *string) {
   }
   Serial.println("Transmit off");
   digitalWrite(MAIN_LED_BLUE, LOW);	
-  digitalWrite(PD_PIN, HIGH);  // disable SR_FRS 
   digitalWrite(PTT_PIN, HIGH);	
+  digitalWrite(PD_PIN, LOW);  // disable SR_FRS 
 }
 
 void transmit_char(char character) {	
