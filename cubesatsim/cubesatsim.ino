@@ -3164,7 +3164,7 @@ void config_gpio() {
 
 bool TimerHandler0(struct repeating_timer *t) {
 
-  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
+//  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
 
   if (mode == BPSK) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
 //  Serial.print("l1 ");
@@ -3230,7 +3230,7 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(828, TimerHandler0))	
+    if (ITimer0.attachInterruptInterval(827, TimerHandler0))	// was 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
