@@ -3489,7 +3489,7 @@ void transmit_string(char *string) {
 
 void transmit_char(char character) {	
   int i = 0;
-  while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
+  while (morse_table[(toupper(character) - '0') % 44][i] != 0) {
     Serial.print("i = ");
     Serial.println(i);
 //    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
