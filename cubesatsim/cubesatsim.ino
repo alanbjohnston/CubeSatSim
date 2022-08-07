@@ -298,15 +298,19 @@ void send_cw() {
 }
 
 void transmit_on() {
-  if ((mode == AFSK) || (mode == SSTV)) {
+  if (mode == SSTV) {
     Serial.println("Transmit on!");
     digitalWrite(MAIN_LED_BLUE, HIGH);	
-    digitalWrite(PTT_PIN, LOW);
-  }
+    digitalWrite(PTT_PIN, LOW);  
+  } 
   else if (mode == BPSK) {	
     Serial.println("Transmit on!");
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
     pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+  }
+  else if (mode == CW) {
+ //   Serial.println("Transmit on!");
+    cw_stop = false;
   }
   else
     Serial.println("No transmit!");
@@ -321,8 +325,10 @@ void transmit_off() {
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   }
-  if (mode == SSTV) 
+  else if (mode == SSTV) 
     sstv_end();
+  else if (mode == CW)
+    cw_stop = true;
 }
 
 void config_telem() {
@@ -3470,7 +3476,7 @@ void transmit_string(char *string) {
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);	
 	
-  while ((string[j] != '\0') && (j < 256)) {
+  while ((string[j] != '\0') && (j < 256) && !cw_stop) {
 //    Serial.print("j = ");
 //    Serial.println(j);
     if (string[j] != ' ')	  
