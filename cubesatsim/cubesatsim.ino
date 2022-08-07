@@ -129,13 +129,14 @@ void setup() {
   start_isr();
   start_pwm();
 	
-/*
+/**/
   char call[] = "AMSAT";
   strcpy(callsign, call);
 	
   transmit_callsign(callsign);
    sleep(5.0);		
-*/
+/**/
+	
   sampleTime = (unsigned int) millis();		
 	
   ready = TRUE;  // flag for core1 to start looping
@@ -3432,13 +3433,17 @@ void transmit_callsign(char *callsign) {
   strcat(id, callsign);
   Serial.print("Transmitting id: ");	
   print_string(id);	
-  transmit_on();
+//  transmit_on();
   transmit_string(id);	  
-  transmit_off();
+//  transmit_off();
 }
 
 void transmit_string(char *string) {
   int i = 0;
+  Serial.println("Transmit on");
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(PTT_PIN, LOW);	
+	
   while ((string[i] != '\0') && (i < 256)) {
     if (string[i] != ' ')	  
       transmit_char(string[i++]);
@@ -3447,6 +3452,9 @@ void transmit_string(char *string) {
       i++;	    
     }
   }
+  Serial.println("Transmit off");
+  digitalWrite(MAIN_LED_BLUE, LOW);	
+  digitalWrite(PTT_PIN, HIGH);	
 }
 
 void transmit_char(char character) {	
