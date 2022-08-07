@@ -186,6 +186,8 @@ long time_start;
 short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 //short int buffer[(WAV_DATA_LENGTH/8)];
 //FILE *sopen(const char *program);
+char tlm_str[1000];	
+char payload_str[100];
 
 #define S_RATE	(200) // (8000) //(48000) // (44100)
 
