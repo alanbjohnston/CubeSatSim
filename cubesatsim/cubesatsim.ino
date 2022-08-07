@@ -3476,7 +3476,7 @@ void transmit_string(char *string) {
     if (string[j] != ' ')	  
       transmit_char(string[j++]);
     else {
-      Serial.println("space between words);
+      Serial.println("space between words");
       sleep((6.0 * (float)morse_timing)/1000.0);
       j++;	    
     }
