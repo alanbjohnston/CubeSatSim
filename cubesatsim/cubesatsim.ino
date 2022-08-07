@@ -49,8 +49,6 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-char payload_str[100];
-
 WiFiServer server(port);
 WiFiClient client;
 
@@ -267,7 +265,10 @@ void read_reset_count() {
 void send_packet() {		
 //  digitalWrite(LED_BUILTIN, LOW);
 
-  char str[1000];	
+  char str[1000];
+  char header_str[] = "hi hi ";
+  strcpy(str, header_str);	
+  strcpy(str, tlm_str);	
   strcat(str, payload_str);	
   set_status(str);		
 	
@@ -275,6 +276,25 @@ void send_packet() {
   transmit_on();
   send_packet(_FIXPOS_STATUS);
   transmit_off();		
+}
+
+void send_cw() {
+  char de[] = " HI HI DE ";	
+  char telem[1000];
+  char space[] = " ";	
+	
+  Serial.println("Sending CW packet!");
+	
+  strcpy(telem, de);
+  strcat(telem, callsign);
+  strcat(telem, space);
+  strcat(telem, tlm_str);
+  strcat(telem, space);
+  strcat(telem, payload_str);
+  print_string(telem);
+  Serial.println(strlen(telem));
+ 
+  transmit_string(telem);	
 }
 
 void transmit_on() {
@@ -290,23 +310,6 @@ void transmit_on() {
   }
   else
     Serial.println("No transmit!");
-}
-
-void send_cw() {
-  char de[] = " HI HI DE ";	
-  char telem[1000];
-  char space[] = " ";	
-	
-  Serial.println("Sending CW packet!");
-	
-  strcpy(telem, de);
-  strcat(telem, callsign);
-  strcat(telem, space);
-  strcat(telem, payload_str);
-  print_string(telem);
-  Serial.println(strlen(telem));
- 
-  transmit_string(telem);	
 }
 
 void transmit_off() {
@@ -500,7 +503,6 @@ void get_tlm_ao7() {
     Serial.println(" ");
 */
     char str[1000];
-    char tlm_str[1000];	
     int channel;
     char header_str[] = "hi hi ";
     strcpy(str, header_str);
