@@ -57,6 +57,7 @@ WiFiClient client;
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 byte green_led_counter = 0;
+char call[] = "AMSAT";   // put your callsign here
 
 void setup() {
 
@@ -131,11 +132,9 @@ void setup() {
 	
 /**/
   Serial.println("Transmitting callsign");	
-  char call[] = "AMSAT";
-  strcpy(callsign, call);
-	
+  strcpy(callsign, call);	
   transmit_callsign(callsign);
-   sleep(5.0);		
+  sleep(5.0);		
 /**/
 	
   sampleTime = (unsigned int) millis();		
@@ -203,6 +202,9 @@ void loop() {
  if (mode != new_mode) {
     Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
+	 
+    transmit_callsign(callsign);
+    sleep(0.5);	 
     config_telem();
     config_radio();
  }
@@ -3417,7 +3419,7 @@ void configure_wifi() {
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
   unsigned long start = micros();
   unsigned long duration_us = duration * 1000;
-  float period_us = (1.0E6) / (float)(freq);
+  float period_us = (0.5E6) / (float)(freq);
   bool phase = HIGH;	
   while((micros() - start) < duration_us)  {
     digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
