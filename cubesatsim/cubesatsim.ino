@@ -164,11 +164,12 @@ void loop() {
     get_tlm_fox();
   }
   else if ((mode == AFSK) || (mode == CW)) {
-    get_tlm_a07();	
+    get_tlm_ao7();	
     if (mode == AFSK) {  
       send_packet();
     } else if (mode == CW) {
-      send_cw();	  
+      send_cw();
+    }
   }
   else if (mode == SSTV) {
       Serial.println("\nSending SSTV image!");
