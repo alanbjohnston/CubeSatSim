@@ -111,7 +111,7 @@ void setup() {
 */    	  
   start_ina219();
 	
-  if (i2c_bus3 == false) {
+  if (i2c_bus3 == false) 
     config_simulated_telem();	  
     
   config_telem();	
