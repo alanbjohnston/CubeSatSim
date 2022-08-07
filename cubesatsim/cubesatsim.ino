@@ -2697,7 +2697,12 @@ void start_ina219() {
   ina219_2_0x41.begin(&Wire1);
   ina219_2_0x44.begin(&Wire1);
   ina219_2_0x45.begin(&Wire1);
-  
+	
+  Serial.print("I2C bus 1: ");
+  Serial.print(i2c_bus1);	
+  Serial.print(" I2C bus 3: ");
+  Serial.print(i2c_bus3);
+	
 /*	
   if (i2c_bus1) {	
   ina219_1_0x40.setCalibration_16V_400mA(); 
