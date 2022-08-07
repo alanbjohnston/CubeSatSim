@@ -298,7 +298,7 @@ void send_cw() {
 }
 
 void transmit_on() {
-  if (mode == SSTV) {
+  if ((mode == SSTV) || (mode == AFSK)) {  // this isn't quite right for APRS - should only do when sending APRS packet
     Serial.println("Transmit on!");
     digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
