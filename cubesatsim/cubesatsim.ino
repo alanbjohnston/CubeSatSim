@@ -508,13 +508,13 @@ void get_tlm_ao7() {
     strcpy(tlm_str, header_str);
 	
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+      sprintf(str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-      //        printf("%s",tlm_str);
-        strcat(tlm_str, str);
+      //        printf("%s",str);
+      strcat(tlm_str, str);
     }
 //    print_string(str);
 //    strcat(str, payload_str);	
