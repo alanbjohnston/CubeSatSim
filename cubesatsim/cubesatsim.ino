@@ -3441,6 +3441,7 @@ void transmit_callsign(char *callsign) {
 void transmit_string(char *string) {
   int i = 0;
   Serial.println("Transmit on");
+  digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);	
 	
@@ -3454,6 +3455,7 @@ void transmit_string(char *string) {
   }
   Serial.println("Transmit off");
   digitalWrite(MAIN_LED_BLUE, LOW);	
+  digitalWrite(PD_PIN, HIGH);  // disable SR_FRS 
   digitalWrite(PTT_PIN, HIGH);	
 }
 
