@@ -38,7 +38,7 @@
 #include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
-#include <SSTV-Arduino-Scottie1-Library.h>
+#include "SSTV-Arduino-Scottie1-Library.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -56,7 +56,12 @@ WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
+byte green_led_counter = 0;
+
 void setup() {
+
+  set_sys_clock_khz(133000, true);   
+
   new_mode = mode;
 	
   Serial.begin(9600);
@@ -116,6 +121,9 @@ void setup() {
   }
 */	
   start_button_isr(); 
+  setup_sstv();
+  start_isr();
+  start_pwm();
 	
 /*
   char call[] = "AMSAT";
@@ -278,9 +286,12 @@ void transmit_off() {
   Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
 // ITimer0.stopTimer();	  // stop BPSK ISR timer
-  pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
-  pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
-  sstv_end();
+  if (mode == BPSK) {
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
+  }
+  if (mode == SSTV) 
+    sstv_end();
 }
 
 void config_telem() {
@@ -1891,12 +1902,13 @@ void config_radio()
 //  } else if (mode == FSK)	  {  // moved to below
 //    transmit_on();
   } else if (mode == BPSK)  {
-    start_pwm();
-    start_isr();	  
+//    start_pwm();
+//    start_isr();	  
     transmit_on();	
   }
 	
   if ((mode == FSK) || (mode == SSTV))
+//    start_isr();   
     transmit_on();
 }
 
@@ -2712,7 +2724,7 @@ void start_pwm() {
 //  pwm_value = 128 - pwm_amplitude;
 	
 //  set_sys_clock_khz(125000, true); 
-  set_sys_clock_khz(133000, true); 	
+//  set_sys_clock_khz(133000, true); 	
   gpio_set_function(BPSK_PWM_A_PIN, GPIO_FUNC_PWM);
   gpio_set_function(BPSK_PWM_B_PIN, GPIO_FUNC_PWM);
 	
@@ -3152,6 +3164,8 @@ void config_gpio() {
 
 bool TimerHandler0(struct repeating_timer *t) {
 
+//  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
+
   if (mode == BPSK) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
@@ -3216,7 +3230,7 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(828, TimerHandler0))	
+    if (ITimer0.attachInterruptInterval(827, TimerHandler0))	// was 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
