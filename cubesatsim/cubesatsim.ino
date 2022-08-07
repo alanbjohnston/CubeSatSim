@@ -281,7 +281,7 @@ void send_packet() {
 }
 
 void send_cw() {
-  char de[] = " HI HI DE ";	
+  char de[] = " DE ";	
   char telem[1000];
   char space[] = " ";	
 	
@@ -290,9 +290,7 @@ void send_cw() {
   strcpy(telem, de);
   strcat(telem, callsign);
   strcat(telem, space);
-  strcat(telem, tlm_str);
-  strcat(telem, space);
-  strcat(telem, payload_str);
+  strcat(telem, tlm_str);  // don't send payload since it isn't encoded and has "."
   print_string(telem);
   Serial.println(strlen(telem));
  
