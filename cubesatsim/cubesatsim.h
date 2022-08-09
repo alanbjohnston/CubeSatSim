@@ -302,8 +302,8 @@ int ready = FALSE;
 int pb_state = RELEASED;
 int mode_count = 0;
 unsigned long pb_press_start;
-const char sstv1_filename[] = "sstv_image_1_320_x_240.jpg";
-const char sstv2_filename[] = "sstv_image_2_320_x_240.jpg";
+const char sstv1_filename[] = "/sstv_image_1_320_x_240.jpg";
+const char sstv2_filename[] = "/sstv_image_2_320_x_240.jpg";
 
 bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);
