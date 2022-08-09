@@ -117,6 +117,8 @@ void setup() {
 	
 // setup radio depending on mode 
   config_radio();	
+	
+  load_files();	
 /*	
   if (check_for_wifi()) {
      wifi = true;	
@@ -3539,3 +3541,42 @@ void parse_payload() {
   	  }
 	}		
 }
+void show_dir() {
+  LittleFS.begin();
+  Dir dir = LittleFS.openDir("/");
+// or Dir dir = LittleFS.openDir("/data");
+  Serial.println(">");
+  while (dir.next()) {
+    Serial.print(dir.fileName());
+    if(dir.fileSize()) {
+        File f = dir.openFile("r");
+        Serial.print(" ");
+        Serial.println(f.size());
+    }
+  }
+  Serial.println(">");
+}
+
+void load_files() {
+  LittleFS.begin();
+  File f;
+	
+  f = LittleFS.open("sstv_image_1_320_x_240.jpg", "r");
+  Serial.print("Image sstv_image_1_320_x_240.jpg: ");
+  Serial.println(f);
+  f.close();
+
+  f = LittleFS.open("sstv_image_2_320_x_240.jpg", "r");
+  Serial.print("Image sstv_image_2_320_x_240.jpg: ");
+  Serial.println(f);
+  f.close();	
+	
+  f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
+  f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240));
+  f.close();
+	
+  f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
+  f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240));
+  f.close();	
+	
+  show_dir()}
