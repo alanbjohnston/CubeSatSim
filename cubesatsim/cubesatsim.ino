@@ -89,8 +89,9 @@ void setup() {
 // if Pi is present, run Payload OK software
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
-	
+  Serial.println("\n\nCubeSatSim Pico v0.13 starting...\n\n");
+
+  load_files();			
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -118,14 +119,13 @@ void setup() {
   start_ina219();
 	
   if (i2c_bus3 == false) 
-    config_simulated_telem();	  
+    config_simulated_telem();		
     
   config_telem();	
 	
 // setup radio depending on mode 
   config_radio();	
 	
-  load_files();		
 /*	
   if (check_for_wifi()) {
      wifi = true;	
