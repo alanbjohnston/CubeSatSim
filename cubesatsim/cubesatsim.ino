@@ -3518,7 +3518,7 @@ void show_dir() {
   LittleFS.begin();
   Dir dir = LittleFS.openDir("/");
 // or Dir dir = LittleFS.openDir("/data");
-  Serial.println(">");
+  Serial.println("FS directory:");
   while (dir.next()) {
     Serial.print(dir.fileName());
     if(dir.fileSize()) {
@@ -3539,7 +3539,7 @@ void load_files() {
     Serial.println("Image sstv_image_1_320_x_240.jpg already in FS");
     f.close();
   } else {
-    Serial.print("Loading image sstv_image_1_320_x_240.jpg into FS");
+    Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
     if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240))
        Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
@@ -3554,7 +3554,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
     if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) 
-       Serial.print("Loading image failed. Is Flash Size (FS) set to 1MB?");	
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	
     f.close();
   }
 	
