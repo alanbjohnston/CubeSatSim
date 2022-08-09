@@ -315,7 +315,7 @@ void transmit_off() {
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   }
   if (mode == SSTV) {
-    first_time_sstv = true;	  
+//    first_time_sstv = true;	  
     sstv_end();
   }
 }
@@ -1923,6 +1923,8 @@ void config_radio()
      mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //   sleep(0.5);	  
 //   mySerial.println("AT+DMOSETMIC=6,0\r");  
+     if (mode == SSTV)	  
+      first_time_sstv = true;	  
   }
   	
 //  } else if (mode == FSK)	  {  // moved to below
