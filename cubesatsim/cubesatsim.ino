@@ -3552,4 +3552,5 @@ void load_files() {
   f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240));
   f.close();	
 	
-  show_dir()}
+  show_dir();
+}
