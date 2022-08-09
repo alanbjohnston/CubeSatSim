@@ -270,6 +270,7 @@ float Sensor2 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
+int first_time_sstv = true;
 int first_read = true;
 float T2 = 27; // Temperature data point 1
 float R2 = 170; // Reading data point 1
