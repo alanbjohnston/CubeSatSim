@@ -181,7 +181,12 @@ void loop() {
       if (first_time_sstv) {  
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
-      } else {	
+      } else {
+// get jpeg from camera
+	      
+	      
+	      
+	      
 	strcpy(image_file, sstv2_filename);     
       }      
       Serial.print("\nSending SSTV image ");
