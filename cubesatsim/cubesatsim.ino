@@ -177,7 +177,7 @@ void loop() {
   } 
   else if (mode == SSTV)
   {
-      char image_file;
+      char image_file[128];
       strcpy(image_file, sstv1_filename);
       Serial.print("\nSending SSTV image ");
       print_string(image_file);	  	  
