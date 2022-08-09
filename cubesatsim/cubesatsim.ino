@@ -178,8 +178,12 @@ void loop() {
   else if (mode == SSTV)
   {
       char image_file[128];
-//      strcpy(image_file, sstv1_filename);
-      strcpy(image_file, sstv2_filename);
+      if (first_time_sstv) {  
+        strcpy(image_file, sstv1_filename);
+	first_time_sstv = false;
+      } else {	
+	strcpy(image_file, sstv2_filename);     
+      }      
       Serial.print("\nSending SSTV image ");
       print_string(image_file);	  	  
 //      send_sstv("/cam.raw");
@@ -310,8 +314,10 @@ void transmit_off() {
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   }
-  if (mode == SSTV) 
+  if (mode == SSTV) {
+    first_time_sstv = true;	  
     sstv_end();
+  }
 }
 
 void config_telem() {
