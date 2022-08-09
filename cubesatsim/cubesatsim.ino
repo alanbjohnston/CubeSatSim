@@ -177,8 +177,12 @@ void loop() {
   } 
   else if (mode == SSTV)
   {
-      Serial.println("\nSending SSTV image!");
-      send_sstv("/cam.raw");
+      char image_file;
+      strcpy(image_file, sstv1_filename);
+      Serial.print("\nSending SSTV image ");
+      print_string(image_file);	  	  
+//      send_sstv("/cam.raw");
+      send_sstv(image_file);
       Serial.println("\nImage sent!");
   } 
   else
