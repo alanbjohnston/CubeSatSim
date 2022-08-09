@@ -3541,8 +3541,10 @@ void load_files() {
   } else {
     Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
-    if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240))
+    if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
        Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
+       delay(2000);
+    }
     f.close();
   }
 
@@ -3553,8 +3555,10 @@ void load_files() {
   } else {
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
-    if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) 
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	
+    if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");
+       delay(2000);
+    }
     f.close();
   }
 	
