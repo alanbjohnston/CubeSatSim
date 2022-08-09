@@ -41,7 +41,7 @@
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
 
-// jpg files to be stored in flash storage on Pico (FS 1MB setting)
+// jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
 #include "sstv2.h"
 
@@ -3542,7 +3542,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
     if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");	     
        delay(2000);
     }
     f.close();
@@ -3556,7 +3556,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
     if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");
        delay(2000);
     }
     f.close();
