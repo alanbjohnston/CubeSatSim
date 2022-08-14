@@ -39,17 +39,23 @@
 #include <ctype.h>
 
 // Pico GPIO pin assignments
-#define LPF_PIN 8  // LPF is installed
-#define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero
-#define MAIN_PB_PIN 10 // Main board PB pushbutton pin
-#define TXC_PIN 11 // Transceiver Board is present
-#define SWTX_PIN 16 // was 14 SR_FRS_05W Transmit Pico software serial port 
-//#define SQUELCH 15 // SR_FRS_05W Squelch out
-//#define MAIN_INA219 16 // Power the INA219s on the Main board
-#define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
-#define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
+#define PI_TX 0 // Serial to Pi transmit data
+#define PI_RX 1 // Serial to Pi receive data
+#define SDA 2 // I2C 1 Data
+#define SCL 3 // I2C 1 Clock
+#define SDA2 4 // I2C 2 Data
+#define SCL2 5 // I2C 2 Clock
 #define BPSK_CONTROL_A 6 // was 16   // control for Phase A to switch
 #define BPSK_CONTROL_B 7 // was 15   // control for Phase A to switch
+#define TX2 8 // Serial2 to ESP32-CAM transmit data
+#define RX2 9 // Serial2 to ESP32-CAM receive data
+#define MAIN_PB_PIN 10 // Main board PB pushbutton pin
+#define TXC_PIN 11 // Transceiver Board is present
+#define LPF_PIN 12  // BPF is installed
+#define PI_3V3_PIN 13  // 3.3V supply used to detect Pi Zero
+#define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
+#define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
+#define SWTX_PIN 16 // was 14 SR_FRS_05W Transmit Pico software serial port 
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
 #define STEM_LED_GREEN 18 // STEM board LED1 Green
 #define STEM_LED_BLUE 19 // STEM board LED2 Blue
