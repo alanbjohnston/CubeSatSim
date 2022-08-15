@@ -201,11 +201,13 @@ void loop() {
 	  
       Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-    
+      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+
       scottie1_transmit_file(output_file);
 
       Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
+      digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
       Serial.println("\nImage sent!");
   } 
@@ -1954,7 +1956,7 @@ void config_radio()
     transmit_on();	
   }
 	
-  if ((mode == FSK) || (mode == SSTV))
+  if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
     transmit_on();
 }
