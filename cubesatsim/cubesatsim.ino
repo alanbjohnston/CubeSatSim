@@ -197,7 +197,7 @@ void loop() {
 //      send_sstv(image_file);
 	  
       char output_file[] = "/cam.bin"; 	  
-      jpeg_decode(input_file, output_file);
+      jpeg_decode(image_file, output_file);
 	  
       Serial.println("Start transmit!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
