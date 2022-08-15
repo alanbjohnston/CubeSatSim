@@ -59,7 +59,7 @@ char payload_str[100];
 WiFiServer server(port);
 WiFiClient client;
 
-//#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
