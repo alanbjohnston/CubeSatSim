@@ -199,7 +199,7 @@ void loop() {
       char output_file[] = "/cam.bin"; 	  
       jpeg_decode(image_file, output_file);
 	  
-      Serial.println("Start transmit!");
+      Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
     
       scottie1_transmit_file(output_file);
