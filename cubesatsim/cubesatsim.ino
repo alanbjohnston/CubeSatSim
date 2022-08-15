@@ -182,7 +182,8 @@ void loop() {
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
       } else {
-// get jpeg from camera
+
+      // get jpeg from camera in future
 	      
 	      
 	      
@@ -192,7 +193,20 @@ void loop() {
       Serial.print("\nSending SSTV image ");
       print_string(image_file);	  	  
 //      send_sstv("/cam.raw");
-      send_sstv(image_file);
+	  
+//      send_sstv(image_file);
+	  
+      char output_file[] = "/cam.bin"; 	  
+      jpeg_decode(input_file, output_file);
+	  
+      Serial.println("Start transmit!");
+      digitalWrite(PTT_PIN, LOW);  // start transmit
+    
+      scottie1_transmit_file(output_file);
+
+      Serial.println("Stop transmit!");
+      digitalWrite(PTT_PIN, HIGH);  // stop transmit
+	  
       Serial.println("\nImage sent!");
   } 
   else
