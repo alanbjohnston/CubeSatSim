@@ -126,12 +126,12 @@ void setup() {
 // setup radio depending on mode 
   config_radio();	
 	
-/*	
+/**/	
   if (check_for_wifi()) {
      wifi = true;	
      configure_wifi();	  
   }
-*/	
+/**/	
   start_button_isr(); 
   setup_sstv();
   start_isr();
