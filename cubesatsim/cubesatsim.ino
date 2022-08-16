@@ -81,7 +81,7 @@ void setup() {
   wifi = true;	
   configure_wifi();		
 	
-  delay(10000);	
+  delay(20000);	
 
   config_gpio();	
 	
@@ -112,7 +112,7 @@ void setup() {
 */
 // configure STEM Payload sensors	
   start_payload();  // above code not working, so forcing it
-	
+  delay(20000);		
   read_reset_count();	
 	
 /*	
@@ -129,6 +129,7 @@ void setup() {
     
   config_telem();	
 	
+	
 // setup radio depending on mode 
   config_radio();	
 	
@@ -139,16 +140,16 @@ void setup() {
   }
 */
 	
-  delay(10000);
+  delay(20000);
 	
   start_button_isr(); 
-  delay(10000);
+  delay(20000);
   setup_sstv();
-  delay(10000);
+  delay(20000);
   start_isr();
-  delay(10000);
+  delay(20000);
   start_pwm();
-  delay(10000);
+  delay(20000);
 	
 /**/
   Serial.println("Transmitting callsign");	
