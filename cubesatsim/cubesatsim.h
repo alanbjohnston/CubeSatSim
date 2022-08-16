@@ -191,7 +191,7 @@ long time_start;
 //char cmdbuffer[1000];
 //FILE * file1;//
 #define BUFFER_SIZE  5841 //970 // (970 * 2) //  * 2)
-volatile short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 //short int buffer[(WAV_DATA_LENGTH/8)];
 //FILE *sopen(const char *program);
 
