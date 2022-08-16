@@ -3333,7 +3333,8 @@ bool check_for_wifi() {
 #endif
 	
   return true;	
-	
+
+/*	
 //     stdio_init_all();
 
    adc_init();
@@ -3351,6 +3352,7 @@ bool check_for_wifi() {
      Serial.println("\nPico detected!\n");
      return(false);  
   }
+*/	
 }
 
 
