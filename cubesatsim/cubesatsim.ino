@@ -68,7 +68,7 @@ void poll_browseer(long seconds) {
   long time_stamp = millis();
   while ((millis() - time_stamp) < (seconds * 1000)) {	
     check_for_browser();
-    sleep(200);	  
+    sleep(0.1);	  
   }
 }
 
