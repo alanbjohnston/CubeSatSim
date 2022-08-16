@@ -78,7 +78,7 @@ void setup() {
   sleep(5.0);	
 	
   Serial.println("Starting wifi");	
-	
+  wifi = true;	
   configure_wifi();		
 	
   delay(10000);	
