@@ -76,6 +76,7 @@ void setup() {
 
   set_sys_clock_khz(133000, true);   
 
+  mode = AFSK;	
   new_mode = mode;
 	
   Serial.begin(115200);
