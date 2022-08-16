@@ -137,7 +137,10 @@ void setup() {
      wifi = true;	
      configure_wifi();	  
   }
-*/	
+*/
+	
+  delay(20000);
+	
   start_button_isr(); 
   setup_sstv();
   start_isr();
