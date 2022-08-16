@@ -64,6 +64,14 @@ WiFiClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
+void poll_browser(long seconds) {
+  long time_stamp = millis();
+  while ((millis() - time_stamp) < (seconds * 1000)) {	
+    check_for_browser();
+    sleep(200);	  
+  }
+}
+
 void setup() {
 
   set_sys_clock_khz(133000, true);   
@@ -81,10 +89,10 @@ void setup() {
   wifi = true;	
   configure_wifi();		
 	
-  delay(30000);	
+  poll_browseer(10);
 
   config_gpio();	
-	
+  poll_browseer(10);	
   EEPROM.begin(512);	
 	
 #ifndef ARDUINO_ARCH_RP2040
@@ -112,7 +120,7 @@ void setup() {
 */
 // configure STEM Payload sensors	
   start_payload();  // above code not working, so forcing it
-  delay(20000);		
+  poll_browseer(10);	
   read_reset_count();	
 	
 /*	
@@ -123,7 +131,7 @@ void setup() {
     ; // configure ina219s
 */    	  
   start_ina219();
-	
+  poll_browseer(10);	
   if (i2c_bus3 == false) 
     config_simulated_telem();		
     
@@ -140,16 +148,16 @@ void setup() {
   }
 */
 	
-  delay(20000);
+  poll_browseer(10);
 	
   start_button_isr(); 
-  delay(20000);
+  poll_browseer(10);
   setup_sstv();
-  delay(20000);
+  poll_browseer(10);
   start_isr();
-  delay(20000);
+  poll_browseer(10);
   start_pwm();
-  delay(20000);
+  poll_browseer(10);
 	
 /**/
   Serial.println("Transmitting callsign");	
