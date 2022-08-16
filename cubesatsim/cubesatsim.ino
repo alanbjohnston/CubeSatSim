@@ -3193,7 +3193,7 @@ void config_gpio() {
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
   // set LEDs and blink once	
-//  if (!wifi) 
+  if (!wifi) 
     pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
