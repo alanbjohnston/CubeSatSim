@@ -245,14 +245,14 @@ void loop() {
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-//	  if (!wifi) 
+	  if (!wifi) 
 	    digitalWrite(LED_BUILTIN, LOW);	
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
 	//  delay(3000);	
 	  sleep(0.2); // 2.845); // 3.0);
 
-//	  if (!wifi) 
+	  if (!wifi) 
 	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
@@ -1937,7 +1937,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
-//  if (!wifi) 
+  if (!wifi) 
      pinMode(LED_BUILTIN, OUTPUT);
   	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
@@ -2974,7 +2974,7 @@ void process_pushbutton() {
 //  Serial.println("PB pressed!");  
 	
   int release = FALSE;
-//  if (!wifi) 	   	
+  if (!wifi) 	   	
    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
@@ -3071,7 +3071,7 @@ void process_bootsel() {
 	
   int release = FALSE;
 	
-//  if (!wifi) 
+  if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
@@ -3165,11 +3165,11 @@ void process_bootsel() {
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-//    if (!wifi) 
+    if (!wifi) 
       digitalWrite(LED_BUILTIN, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-//    if (!wifi) 
+    if (!wifi) 
        digitalWrite(LED_BUILTIN, HIGH);
     sleep(0.1);
   }
