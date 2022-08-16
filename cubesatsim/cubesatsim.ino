@@ -155,7 +155,7 @@ void setup() {
   poll_browseer(10);
   setup_sstv();
   poll_browseer(10);
-  start_isr();
+///  start_isr();
   poll_browseer(10);
   start_pwm();
   poll_browseer(10);
