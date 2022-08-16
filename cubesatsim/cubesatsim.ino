@@ -70,12 +70,14 @@ void setup() {
 
   new_mode = mode;
 	
-  Serial.begin(9600);
+  Serial.begin(115200);
 	
-  pinMode(LED_BUILTIN, OUTPUT);	
-  blinkTimes(1);	
+ // pinMode(LED_BUILTIN, OUTPUT);	
+//  blinkTimes(1);	
 
   sleep(5.0);	
+	
+  Serial.println("Starting wifi");	
 	
   configure_wifi();		
 	
