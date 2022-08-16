@@ -191,7 +191,7 @@ long time_start;
 //char cmdbuffer[1000];
 //FILE * file1;//
 #define BUFFER_SIZE  5841 //970 // (970 * 2) //  * 2)
-short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+volatile short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 //short int buffer[(WAV_DATA_LENGTH/8)];
 //FILE *sopen(const char *program);
 
@@ -228,7 +228,7 @@ long int uptime = 1000;
 //char call[5];
 char sim_yes[10];
 
-int mode = BPSK; // SSTV;
+volatile int mode = BPSK; // SSTV;
 volatile int new_mode;
 int bitRate, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
@@ -286,7 +286,7 @@ int sensorValue;
 float Temp;
 float rest;
 
-unsigned int wav_position = 0;
+volatile unsigned int wav_position = 0;
 int pwm_counter = 0;
 int pwm_counter_max = 420;
 int pwm_amplitude = 50; //50 //100;
