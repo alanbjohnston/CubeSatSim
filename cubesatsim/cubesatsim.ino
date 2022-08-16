@@ -3332,6 +3332,8 @@ bool check_for_wifi() {
 	
 #endif
 	
+  return true;	
+	
 //     stdio_init_all();
 
    adc_init();
