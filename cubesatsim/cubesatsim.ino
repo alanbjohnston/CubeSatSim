@@ -75,7 +75,11 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
 
-  sleep(5.0);		
+  sleep(5.0);	
+	
+  configure_wifi();		
+	
+  delay(10000);	
 
   config_gpio();	
 	
@@ -126,12 +130,12 @@ void setup() {
 // setup radio depending on mode 
   config_radio();	
 	
-/**/	
+/*	
   if (check_for_wifi()) {
      wifi = true;	
      configure_wifi();	  
   }
-/**/	
+*/	
   start_button_isr(); 
   setup_sstv();
   start_isr();
