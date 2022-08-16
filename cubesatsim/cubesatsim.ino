@@ -64,7 +64,7 @@ WiFiClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-void poll_browser(long seconds) {
+void poll_browseer(long seconds) {
   long time_stamp = millis();
   while ((millis() - time_stamp) < (seconds * 1000)) {	
     check_for_browser();
