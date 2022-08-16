@@ -139,12 +139,16 @@ void setup() {
   }
 */
 	
-  delay(20000);
+  delay(10000);
 	
   start_button_isr(); 
+  delay(10000);
   setup_sstv();
+  delay(10000);
   start_isr();
+  delay(10000);
   start_pwm();
+  delay(10000);
 	
 /**/
   Serial.println("Transmitting callsign");	
