@@ -3186,9 +3186,13 @@ void blink_pin(int pin, int duration) {
 void config_gpio() {
 	
   // set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
+  for (int i = 6; i < 23; i++) {	  
     pinMode(i, INPUT);	  
   }
+  pinMode(26, INPUT);	 
+  pinMode(27, INPUT);	 
+  pinMode(28, INPUT);	 
+	
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
