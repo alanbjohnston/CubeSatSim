@@ -81,7 +81,7 @@ void setup() {
   wifi = true;	
   configure_wifi();		
 	
-  delay(20000);	
+  delay(30000);	
 
   config_gpio();	
 	
