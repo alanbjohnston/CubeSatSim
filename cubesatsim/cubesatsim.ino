@@ -3250,7 +3250,10 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-	
+
+///
+	  wav_position++;  // remove this when commenting back in code!!
+/*	
   if (buffer[wav_position++] > 0) {	  
     digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
@@ -3260,6 +3263,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_A, LOW);	    
   }
+*/	  
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 		
