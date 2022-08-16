@@ -154,8 +154,8 @@ void setup() {
   poll_browseer(10);
   setup_sstv();
   poll_browseer(10);
-//  start_isr();
-//  poll_browseer(10);
+  start_isr();
+  poll_browseer(10);
   start_pwm();
   poll_browseer(10);
 	
@@ -3305,8 +3305,8 @@ void start_isr() {
 //  if (true) {	                         // always start ISR handler
 	Serial.println("Starting ISR for BPSK");
 	
-	pinMode(BPSK_CONTROL_A, OUTPUT);
-	pinMode(BPSK_CONTROL_B, OUTPUT);	
+///	pinMode(BPSK_CONTROL_A, OUTPUT);
+///	pinMode(BPSK_CONTROL_B, OUTPUT);	
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
