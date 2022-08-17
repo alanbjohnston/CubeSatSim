@@ -3621,7 +3621,7 @@ void serial_input() {
        break;	
 		   
      case 'm':
-     case 'H':
+     case 'M':
        Serial.println("Change to CW mode");	     
        break;	
 		   
@@ -3656,18 +3656,16 @@ void serial_input() {
        break;	
 		   
      case 'r':
-       Serial.println("Change the Resets Count in the configuration file sim.cfg");	     
+     case 'R':
+       Serial.println("Change the Resets Count in the configuration file sim.cfg, or ");	     
+       Serial.println("Reset payload and stored EEPROM values");	
        break;	
 		   
      case 'l':
      case 'L':
       Serial.println("Change the Latitude and Longitude in the configuration file sim.cfg");	     
        break;	
-		   
-     case 'R':
-       Serial.println("Reset payload and stored EEPROM values");	     
-       break;	
-		   
+		   		   
      case '?':
        Serial.println("Query payload sensors");	     
        break;	
