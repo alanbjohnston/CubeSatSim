@@ -104,6 +104,11 @@
 #define OFF - 1
 #define ON 1
 
+#define PROMPT_CALLSIGN 1
+#define PROMPT_SIM 2
+#define PROMPT_LAT 3
+
+volatile int prompt = false;
 //#define WAV_DATA_LENGTH (50000 * 8)
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
