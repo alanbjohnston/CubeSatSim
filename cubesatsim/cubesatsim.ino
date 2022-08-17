@@ -251,7 +251,9 @@ void loop() {
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
-
+	
+  serial_input();
+	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
@@ -260,8 +262,6 @@ bool TimerHandler1(struct repeating_timer *t) {
 
   if (wifi) 
     check_for_browser();
-	
-  serial_input();
 	
   return(true);	
 }
@@ -3306,7 +3306,7 @@ void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
 	
-  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))	
+  if (ITimer1.attachInterruptInterval(100000, TimerHandler1))	// added a 0
   {
     Serial.print(F("Starting ITimer1 OK, micros() = ")); 
     Serial.println(micros());
