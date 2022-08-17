@@ -3724,9 +3724,9 @@ void prompt_for_input() {
       Serial.println("Editing the CALLSIGN in the onfiguration file for CubeSatSim");	
       Serial.println("Return keeps current value.");
       Serial.print("\nCurrent callsign is ");
-      Serial.println(call);
+      Serial.println(callsign);
 		  
-      Serial.println("Enter callsign in all capitals: ");
+      Serial.print("Enter callsign in all capitals: ");
       get_serial_string();
 		  
       print_string(serial_string);		  
