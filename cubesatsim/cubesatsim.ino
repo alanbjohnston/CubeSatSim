@@ -3605,7 +3605,7 @@ void serial_input() {
 
   if (Serial.available() > 0) {  // check for user input on serial port
  
-    blink(50);
+//    blink(50);
     char result = Serial.read();
 
     if ((result != '\n') && (result != '\r')) {
@@ -3623,11 +3623,11 @@ void serial_input() {
        Serial.println("b   Change to BPSK mode");	     
        Serial.println("s   Change to SSTV mode");	     
        Serial.println("i   Restarts CubeSatsim software");	     
-       Serial.println("c   Change the CALLSIGN in the configuration file sim.cfg");	     
-       Serial.println("t   Change the Simulated Telemetry setting in sim.cfg");	     
-       Serial.println("r   Change the Resets Count in the configuration file sim.cfg, or ");	     
+       Serial.println("c   Change the CALLSIGN");	     
+       Serial.println("t   Change to Simulated Telemetry");	     
+       Serial.println("r   Change the Resets Count, or ");	     
        Serial.println("    Reset payload and stored EEPROM values");	
-       Serial.println("l   Change the Latitude and Longitude in the configuration file sim.cfg");	     
+       Serial.println("l   Change the Latitude and Longitude");	     
        Serial.println("?   Query payload sensors");	     
        break;
 		   
