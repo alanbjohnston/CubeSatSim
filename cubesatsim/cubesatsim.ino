@@ -140,7 +140,7 @@ void setup() {
   Serial.println("Transmitting callsign");	
   strcpy(callsign, call);	
   transmit_callsign(callsign);
-  sleep(5.0);		
+//  sleep(5.0);		
 /**/
 	
   sampleTime = (unsigned int) millis();		
