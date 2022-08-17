@@ -3615,8 +3615,8 @@ void serial_input() {
     switch(result) {
      case 'h':
      case 'H':
-       Serial.println("You can change the following settings by typing the letter and hitting Send in the Serial Monitor:");	     
-       Serial.println("h   Show this help info");	  
+       Serial.println("Change settings by typing the letter:");	     
+       Serial.println("h   Help info");	  
        Serial.println("a   Change to AFSK/APRS mode");	     
        Serial.println("c   Change to CW mode");	     
        Serial.println("f   Change to FSK/DUV mode");	     
