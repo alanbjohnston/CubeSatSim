@@ -264,7 +264,7 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (Serial.available() > 0) {  // check for user input on serial port
  
     blink(50);
-    char result = Serial1.read();
+    char result = Serial.read();
     Serial.println(result);
 
     if (result == 'R') {
