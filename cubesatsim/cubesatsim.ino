@@ -260,8 +260,24 @@ bool TimerHandler1(struct repeating_timer *t) {
 
   if (wifi) 
     check_for_browser();
+	
+  if (Serial.available() > 0) {  // check for user input on serial port
  
- return(true);	
+    blink(50);
+    char result = Serial1.read();
+    Serial.println(result);
+
+    if (result == 'R') {
+    // reset payload
+    }
+
+    if (result == '?')
+    {
+    // display payload string	    
+    }
+	  
+  }
+  return(true);	
 }
 
 void read_reset_count() {
