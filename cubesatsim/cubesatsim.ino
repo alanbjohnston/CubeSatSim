@@ -3610,65 +3610,65 @@ void serial_input() {
     Serial.println(result);
 
    switch(result) {
-     case: 'h'
-     case: 'H'
+     case 'h':
+     case 'H':
        Serial.println("This help info");	     
        break;
 		   
-     case: 'a'
-     case: 'A'
+     case 'a':
+     case 'A':
        Serial.println("Change to AFSK/APRS mode");	     
        break;	
 		   
-     case: 'm'
-     case: 'H'
+     case 'm':
+     case 'H':
        Serial.println("Change to CW mode");	     
        break;	
 		   
-     case: 'f'
-     case: 'F'
+     case 'f':
+     case 'F':
       Serial.println("Change to FSK/DUV mode");	     
        break;	
 		   
-     case: 'b'
-     case: 'B'
+     case 'b':
+     case 'B':
        Serial.println("Change to BPSK mode");	     
        break;	
 		   
-     case: 's'
-     case: 'S'
+     case 's':
+     case 'S':
        Serial.println("Change to SSTV mode");	     
        break;	
 		   
-     case: 'i'
-     case: 'I'
+     case 'i':
+     case 'I':
        Serial.println("Restarts CubeSatsim software");	     
        break;	
 		   
-     case: 'c'
-     case: 'C'
+     case 'c':
+     case 'C':
        Serial.println("Change the CALLSIGN in the configuration file sim.cfg");	     
        break;	
 		   
-     case: 't'
-     case: 'T'
+     case 't':
+     case 'T':
       Serial.println("Change the Simulated Telemetry setting in sim.cfg");	     
        break;	
 		   
-     case: 'r'
+     case 'r':
        Serial.println("Change the Resets Count in the configuration file sim.cfg");	     
        break;	
 		   
-     case: 'l'
-     case: 'L'
+     case 'l':
+     case 'L':
       Serial.println("Change the Latitude and Longitude in the configuration file sim.cfg");	     
        break;	
 		   
-     case: 'R'
+     case 'R':
        Serial.println("Reset payload and stored EEPROM values");	     
        break;	
 		   
-     case: '?'
+     case '?':
        Serial.println("Query payload sensors");	     
        break;	
 		   
