@@ -3724,7 +3724,7 @@ void prompt_for_input() {
       Serial.println("Enter callsign in all capitals: ");
       get_serial_string();
 		  
-      strcpy(serial_input, call);
+      strcpy(serial_input, callsign);
       Serial.println("Callsign updated!");	 	  
 /*
 	echo	
