@@ -168,6 +168,7 @@ void transmit_callsign(char *callsign);
 void parse_payload();
 void load_files();
 void show_dir();
+void serial_input();
 
 #ifndef STASSID
 #define STASSID "Pico"
