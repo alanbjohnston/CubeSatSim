@@ -246,7 +246,7 @@ void loop() {
     config_radio();
  }
 	
-  if (prompt != false) {
+  if (prompt) {
     Serial.println("Need to prompt for input!");
     prompt = false;	  
   }
