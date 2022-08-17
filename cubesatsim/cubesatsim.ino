@@ -246,10 +246,11 @@ void loop() {
     config_radio();
  }
 	
-  if (!prompt) {
+  if (prompt != false) {
     Serial.println("Need to prompt for input!");
     prompt = false;	  
   }
+	
   //  Calculate loop time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
