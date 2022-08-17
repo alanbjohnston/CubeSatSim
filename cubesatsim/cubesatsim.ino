@@ -261,22 +261,8 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (wifi) 
     check_for_browser();
 	
-  if (Serial.available() > 0) {  // check for user input on serial port
- 
-    blink(50);
-    char result = Serial.read();
-    Serial.println(result);
-
-    if (result == 'R') {
-    // reset payload
-    }
-
-    if (result == '?')
-    {
-    // display payload string	    
-    }
-	  
-  }
+  serial_input();
+	
   return(true);	
 }
 
@@ -3613,4 +3599,97 @@ void load_files() {
   }
 	
   show_dir();
+}
+
+void serial_input() {
+
+  if (Serial.available() > 0) {  // check for user input on serial port
+ 
+    blink(50);
+    char result = Serial.read();
+    Serial.println(result);
+
+   switch(result) {
+     case: 'h'
+     case: 'H'
+       Serial.println("This help info");	     
+       break;
+		   
+     case: 'a'
+     case: 'A'
+       Serial.println("Change to AFSK/APRS mode");	     
+       break;	
+		   
+     case: 'm'
+     case: 'H'
+       Serial.println("Change to CW mode");	     
+       break;	
+		   
+     case: 'f'
+     case: 'F'
+      Serial.println("Change to FSK/DUV mode");	     
+       break;	
+		   
+     case: 'b'
+     case: 'B'
+       Serial.println("Change to BPSK mode");	     
+       break;	
+		   
+     case: 's'
+     case: 'S'
+       Serial.println("Change to SSTV mode");	     
+       break;	
+		   
+     case: 'i'
+     case: 'I'
+       Serial.println("Restarts CubeSatsim software");	     
+       break;	
+		   
+     case: 'c'
+     case: 'C'
+       Serial.println("Change the CALLSIGN in the configuration file sim.cfg");	     
+       break;	
+		   
+     case: 't'
+     case: 'T'
+      Serial.println("Change the Simulated Telemetry setting in sim.cfg");	     
+       break;	
+		   
+     case: 'r'
+       Serial.println("Change the Resets Count in the configuration file sim.cfg");	     
+       break;	
+		   
+     case: 'l'
+     case: 'L'
+      Serial.println("Change the Latitude and Longitude in the configuration file sim.cfg");	     
+       break;	
+		   
+     case: 'R'
+       Serial.println("Reset payload and stored EEPROM values");	     
+       break;	
+		   
+     case: '?'
+       Serial.println("Query payload sensors");	     
+       break;	
+		   
+     default:
+       Serial.println("Not a command\n");	
+		   
+       break;		   
+   }
+/*
+	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
+	echo 
+	echo "   -h     This help info"
+	echo "   -a     Change to AFSK/APRS mode"
+	echo "   -m     Change to CW mode"
+	echo "   -f     Change to FSK/DUV mode"
+	echo "   -b     Change to BPSK mode"
+	echo "   -s     Change to SSTV mode"
+	echo "   -i     Restarts CubeSatsim software"
+	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
+	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
+	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
+	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
+*/
 }
