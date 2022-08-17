@@ -3609,8 +3609,8 @@ void load_files() {
 
 void serial_input() {
 	
-  if (!prompt) {  // only query if not in the middle of prompting
-	  
+  if (prompt == false) {  // only query if not in the middle of prompting
+ 	  
   if (Serial.available() > 0) {  // check for user input on serial port
  
 //    blink(50);
