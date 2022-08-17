@@ -3714,13 +3714,16 @@ void serial_input() {
 }
 
 void prompt_for_input() {
-
+	
+  while (Serial.available() > 0)  // clear any characters in serial input buffer
+    Serial.read();	  
+	
   switch(prompt) {
-  
+  		  
     case PROMPT_CALLSIGN:
       Serial.println("Editing the CALLSIGN in the onfiguration file for CubeSatSim");	
       Serial.println("Return keeps current value.");
-      Serial.print("\nCurrent callsign is");
+      Serial.print("\nCurrent callsign is ");
       Serial.println(call);
 		  
       Serial.println("Enter callsign in all capitals: ");
@@ -3793,7 +3796,7 @@ void get_serial_string() {
     if (Serial.available() > 0) {
       input = Serial.read();
       serial_string[i++] = input;
-      Serial.print(input);	   
+      Serial.write(input);	   
     }
     sleep(0.1);	  
   }
