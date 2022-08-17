@@ -3803,11 +3803,13 @@ void get_serial_string() {
   while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 10000)) {
     if (Serial.available() > 0) {
       input = Serial.read();
-      serial_string[i++] = input;
-      Serial.write(input);	   
+      if ((input != '\n') && (input!= '\r')) {
+	serial_string[i++] = input;
+        Serial.write(input);
+      }
     }
     sleep(0.1);	  
   }
   serial_string[i] = 0;	
-  Serial.println("End of string");	
+  Serial.println(" ");	
 }
