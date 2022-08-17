@@ -3673,8 +3673,9 @@ void serial_input() {
      default:
        Serial.println("Not a command\n");	
 		   
-       break;		   
+       break;
    }
+ }
 /*
 	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
 	echo 
