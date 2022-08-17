@@ -248,6 +248,7 @@ void loop() {
 	
   if (prompt) {
     Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
     prompt = false;	  
   }
 	
@@ -3708,4 +3709,91 @@ void serial_input() {
     sleep(2.0);		    
    }
  }
+}
+
+void prompt_for_input() {
+
+  switch(prompt) {
+  
+    case PROMPT_CALLSIGN:
+      Serial.println("Editing the CALLSIGN in the onfiguration file for CubeSatSim");	
+      Serial.println("Return keeps current value.");
+      Serial.print("\nCurrent callsign is");
+      Serial.println(call);
+		  
+      Serial.println("Enter callsign in all capitals: ");
+      get_serial_string();
+		  
+      strcpy(serial_input, call);
+      Serial.println("Callsign updated!");	 	  
+/*
+	echo	
+	echo "Editing the CALLSIGN in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of CALLSIGN is"	
+	echo $1
+	echo
+	
+#	echo $1 $2 $3 $4 $5
+
+	echo "Enter callsign in all capitals: "
+	read callsign
+
+	if [ -z $callsign ] ; then
+
+		callsign="$1"
+		echo "Keeping value of" $callsign
+		norestart=1
+	else
+	
+		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+		echo $callsign $2 $3 $4 $5
+		echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+	fi
+	
+
+*/
+      break;		  		  
+		  
+    case PROMPT_SIM:
+		  
+      break;	
+		  
+    case PROMPT_LAT:
+		  
+      break;	
+		  
+    case PROMPT_QUERY:
+		  
+      break;	
+		  
+    case PROMPT_RESET:
+		  
+      break;	
+  }
+	
+}
+
+void get_serial_string() {
+  int input = 0;	
+  int i = 0;	
+  while ((input != '\n') && (input!= '\r') && (i < 128)) {
+    if (Serial.available() > 0) {
+      input = Serial.read();
+      serial_input[i++] = input;
+      Serial.print(input);	   
+    }
+    sleep(0.1);	  
+  }
+  Serial.println("End of string");	
 }
