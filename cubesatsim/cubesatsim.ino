@@ -3622,13 +3622,12 @@ void serial_input() {
        Serial.println("f  FSK/DUV mode");	     
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
-       Serial.println("i  Restarts software");	     
+       Serial.println("i  Restart");	     
        Serial.println("c  CALLSIGN");	     
        Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count, or ");	     
-       Serial.println("   Reset payload & EEPROM");	
-       Serial.println("l  Latitude and Longitude");	     
-       Serial.println("?  Query payload sensors");	     
+       Serial.println("r  Resets Count, or payload & EEPROM");	
+       Serial.println("l  Lat and Long");	     
+       Serial.println("?  Query sensors");	     
        break;
 		   
      case 'a':
