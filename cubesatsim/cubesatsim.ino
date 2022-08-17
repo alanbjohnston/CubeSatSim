@@ -3616,19 +3616,19 @@ void serial_input() {
      case 'h':
      case 'H':
        Serial.println("Change settings by typing the letter:");	     
-       Serial.println("h   Help info");	  
-       Serial.println("a   AFSK/APRS mode");	     
-       Serial.println("c   CW mode");	     
-       Serial.println("f   FSK/DUV mode");	     
-       Serial.println("b   BPSK mode");	     
-       Serial.println("s   SSTV mode");	     
-       Serial.println("i   Restarts software");	     
-       Serial.println("c   CALLSIGN");	     
-       Serial.println("t   Simulated Telemetry");	     
-       Serial.println("r   Resets Count, or ");	     
-       Serial.println("    Reset payload and stored EEPROM values");	
-       Serial.println("l   Latitude and Longitude");	     
-       Serial.println("?   Query payload sensors");	     
+       Serial.println("h  Help info");	  
+       Serial.println("a  AFSK/APRS mode");	     
+       Serial.println("c  CW mode");	     
+       Serial.println("f  FSK/DUV mode");	     
+       Serial.println("b  BPSK mode");	     
+       Serial.println("s  SSTV mode");	     
+       Serial.println("i  Restarts software");	     
+       Serial.println("c  CALLSIGN");	     
+       Serial.println("t  Simulated Telemetry");	     
+       Serial.println("r  Resets Count, or ");	     
+       Serial.println("   Reset payload & EEPROM");	
+       Serial.println("l  Latitude and Longitude");	     
+       Serial.println("?  Query payload sensors");	     
        break;
 		   
      case 'a':
