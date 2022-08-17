@@ -3703,6 +3703,9 @@ void serial_input() {
 		   
        break;
     }
+    if (new_mode != mode)
+      transmit_off();
+    sleep(2.0);		    
    }
  }
 }
