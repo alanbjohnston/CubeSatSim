@@ -107,6 +107,8 @@
 #define PROMPT_CALLSIGN 1
 #define PROMPT_SIM 2
 #define PROMPT_LAT 3
+#define PROMPT_RESET 4
+#define PROMPT_QUERY 5
 
 volatile int prompt = false;
 //#define WAV_DATA_LENGTH (50000 * 8)
