@@ -245,6 +245,11 @@ void loop() {
     config_telem();
     config_radio();
  }
+	
+  if (!prompt) {
+    Serial.println("Need to prompt for input!");
+    prompt = false;	  
+  }
   //  Calculate loop time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
@@ -3615,7 +3620,7 @@ void serial_input() {
     switch(result) {
      case 'h':
      case 'H':
-       Serial.println("Change settings by typing the letter:");	     
+       Serial.println("\nChange settings by typing the letter:");	     
        Serial.println("h  Help info");	  
        Serial.println("a  AFSK/APRS mode");	     
        Serial.println("c  CW mode");	     
@@ -3627,7 +3632,7 @@ void serial_input() {
        Serial.println("t  Simulated Telemetry");	     
        Serial.println("r  Resets Count, or payload & EEPROM");	
        Serial.println("l  Lat and Long");	     
-       Serial.println("?  Query sensors");	     
+       Serial.println("?  Query sensors\n");	     
        break;
 		   
      case 'a':
@@ -3662,7 +3667,8 @@ void serial_input() {
 		   
      case 'c':
      case 'C':
-       Serial.println("Change the CALLSIGN in the configuration file sim.cfg");	     
+       Serial.println("Change the CALLSIGN in the configuration file sim.cfg");	
+       prompt = PROMPT_CALLSIGN;	    
        break;	
 		   
      case 't':
@@ -3674,15 +3680,18 @@ void serial_input() {
      case 'R':
        Serial.println("Change the Resets Count in the configuration file sim.cfg, or ");	     
        Serial.println("Reset payload and stored EEPROM values");	
+       prompt = PROMPT_RESET;
        break;	
 		   
      case 'l':
      case 'L':
       Serial.println("Change the Latitude and Longitude in the configuration file sim.cfg");	     
-       break;	
+      prompt = PROMPT_LAT;
+      break;	
 		   		   
      case '?':
        Serial.println("Query payload sensors");	     
+       prompt = PROMPT_QUERY;
        break;	
 		   
      default:
