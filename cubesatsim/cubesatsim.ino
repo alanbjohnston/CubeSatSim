@@ -3639,6 +3639,7 @@ void serial_input() {
      case 'a':
      case 'A':
        Serial.println("Change to AFSK/APRS mode");	     
+       new_mode = AFSK;
        break;	
 		   
      case 'm':
@@ -3654,11 +3655,13 @@ void serial_input() {
      case 'b':
      case 'B':
        Serial.println("Change to BPSK mode");	     
+       new_mode = BPSK;
        break;	
 		   
      case 's':
      case 'S':
        Serial.println("Change to SSTV mode");	     
+       new_mode = SSTV;
        break;	
 		   
      case 'i':
