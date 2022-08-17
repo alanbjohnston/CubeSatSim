@@ -3731,7 +3731,7 @@ void prompt_for_input() {
 		  
       print_string(serial_string);		  
 		  
-      strcpy(callsign, serial_string;
+      strcpy(callsign, serial_string);
       Serial.println("Callsign updated!");	 	  
 /*
 	echo	
