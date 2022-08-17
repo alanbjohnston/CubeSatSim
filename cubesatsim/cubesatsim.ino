@@ -12,7 +12,6 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -3724,7 +3723,7 @@ void prompt_for_input() {
       Serial.println("Enter callsign in all capitals: ");
       get_serial_string();
 		  
-      strcpy(callsign, serial_input);
+      strcpy(callsign, serial_string);
       Serial.println("Callsign updated!");	 	  
 /*
 	echo	
@@ -3790,11 +3789,11 @@ void get_serial_string() {
   while ((input != '\n') && (input!= '\r') && (i < 128)) {
     if (Serial.available() > 0) {
       input = Serial.read();
-      serial_input[i++] = input;
+      serial_string[i++] = input;
       Serial.print(input);	   
     }
     sleep(0.1);	  
   }
-  serial_input[i] = 0;	
+  serial_string[i] = 0;	
   Serial.println("End of string");	
 }
