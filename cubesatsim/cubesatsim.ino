@@ -3306,7 +3306,7 @@ void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
 	
-  if (ITimer1.attachInterruptInterval(100000, TimerHandler1))	// added a 0
+  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))	
   {
     Serial.print(F("Starting ITimer1 OK, micros() = ")); 
     Serial.println(micros());
@@ -3617,17 +3617,17 @@ void serial_input() {
      case 'H':
        Serial.println("Change settings by typing the letter:");	     
        Serial.println("h   Help info");	  
-       Serial.println("a   Change to AFSK/APRS mode");	     
-       Serial.println("c   Change to CW mode");	     
-       Serial.println("f   Change to FSK/DUV mode");	     
-       Serial.println("b   Change to BPSK mode");	     
-       Serial.println("s   Change to SSTV mode");	     
-       Serial.println("i   Restarts CubeSatsim software");	     
-       Serial.println("c   Change the CALLSIGN");	     
-       Serial.println("t   Change to Simulated Telemetry");	     
-       Serial.println("r   Change the Resets Count, or ");	     
+       Serial.println("a   AFSK/APRS mode");	     
+       Serial.println("c   CW mode");	     
+       Serial.println("f   FSK/DUV mode");	     
+       Serial.println("b   BPSK mode");	     
+       Serial.println("s   SSTV mode");	     
+       Serial.println("i   Restarts software");	     
+       Serial.println("c   CALLSIGN");	     
+       Serial.println("t   Simulated Telemetry");	     
+       Serial.println("r   Resets Count, or ");	     
        Serial.println("    Reset payload and stored EEPROM values");	
-       Serial.println("l   Change the Latitude and Longitude");	     
+       Serial.println("l   Latitude and Longitude");	     
        Serial.println("?   Query payload sensors");	     
        break;
 		   
