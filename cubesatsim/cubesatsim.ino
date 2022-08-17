@@ -3731,7 +3731,7 @@ void prompt_for_input() {
 		  
       print_string(serial_string);
 		  
-      if (strlen(callsign) > 0)	{	  
+      if (strlen(serial_string) > 0)	{	  
         strcpy(callsign, serial_string);
         Serial.println("Callsign updated!");
       } else
@@ -3796,8 +3796,9 @@ void prompt_for_input() {
 
 void get_serial_string() {
   int input = 0;	
-  int i = 0;	
-  while ((input != '\n') && (input!= '\r') && (i < 128)) {
+  int i = 0;
+  unsigned int elapsed_time = (unsigned int) millis();	
+  while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 10000)) {
     if (Serial.available() > 0) {
       input = Serial.read();
       serial_string[i++] = input;
