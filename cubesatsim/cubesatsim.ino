@@ -3607,9 +3607,12 @@ void serial_input() {
  
     blink(50);
     char result = Serial.read();
+
+    if ((result != '\n') && (result != '\r')) {
+	    
     Serial.println(result);
 
-   switch(result) {
+    switch(result) {
      case 'h':
      case 'H':
        Serial.println("This help info");	     
@@ -3674,21 +3677,7 @@ void serial_input() {
        Serial.println("Not a command\n");	
 		   
        break;
+    }
    }
  }
-/*
-	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
-	echo 
-	echo "   -h     This help info"
-	echo "   -a     Change to AFSK/APRS mode"
-	echo "   -m     Change to CW mode"
-	echo "   -f     Change to FSK/DUV mode"
-	echo "   -b     Change to BPSK mode"
-	echo "   -s     Change to SSTV mode"
-	echo "   -i     Restarts CubeSatsim software"
-	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
-	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
-	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
-	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
-*/
 }
