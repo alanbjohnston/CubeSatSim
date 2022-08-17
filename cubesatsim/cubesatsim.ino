@@ -131,7 +131,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-  start_button_isr(); 
+//  start_button_isr(); 
   setup_sstv();
   start_isr();
   start_pwm();
@@ -140,8 +140,10 @@ void setup() {
   Serial.println("Transmitting callsign");	
   strcpy(callsign, call);	
   transmit_callsign(callsign);
-//  sleep(5.0);		
+  sleep(5.0);		
 /**/
+	
+  start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
 	
