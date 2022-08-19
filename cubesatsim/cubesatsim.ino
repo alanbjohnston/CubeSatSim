@@ -2949,10 +2949,10 @@ void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
 }
 */
 
-void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
+void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
   Serial.print("+");	
 
-  unsigned long time_us = (unsigned long)(time * 1000000.0);	
+  unsigned long time_us = (unsigned long)(timer * 1000000.0);	
   unsigned long startSleep = micros();	    
   while ((micros() - startSleep) < time_us)  {	  
 //    busy_wait_us(100);
