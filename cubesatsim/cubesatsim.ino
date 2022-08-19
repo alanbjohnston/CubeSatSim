@@ -3479,7 +3479,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   while((micros() - start) < duration_us)  {
     digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
     phase = !phase;
-    unsigned long time_left = start + duration_us - micros();	  
+    float time_left = (float)(start + duration_us - micros());	  
     Serial.print(min(time_left, period_us));	  
     sleep(min(time_left, period_us) / 1.0E6);  
     Serial.print("@");	  
