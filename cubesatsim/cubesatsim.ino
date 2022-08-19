@@ -3615,6 +3615,7 @@ void load_files() {
 }
 
 void serial_input() {
+  Serial.print("^");	
 	
   if (prompt == false) {  // only query if not in the middle of prompting
  	  
