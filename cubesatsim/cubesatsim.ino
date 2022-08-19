@@ -174,7 +174,7 @@ void loop() {
   }
   else if (mode == AFSK)
   {  
-    send_packet();
+    send_aprs_packet();
   } 
   else if (mode == SSTV)
   {
@@ -309,7 +309,7 @@ void read_reset_count() {
   }	  	
 }
 
-void send_packet() {	
+void send_aprs_packet() {	
 // encode telemetry
   get_tlm_ao7();
 	
@@ -441,7 +441,7 @@ void config_telem() {
 	  
     set_pin(AUDIO_OUT_PIN);
 
-    char callsign[] = "W3ZM";
+//    char callsign[] = "W3ZM";
     set_callsign(callsign);
     char lat_default[] = "0610.55S";
     char lon_default[] = "10649.62E";
