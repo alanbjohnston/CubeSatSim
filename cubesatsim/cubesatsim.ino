@@ -2950,6 +2950,7 @@ void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
 */
 
 void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
+  Serial.println("+");	
 
   unsigned long time_us = (unsigned long)(time * 1000000.0);	
   unsigned long startSleep = micros();	    
@@ -2957,6 +2958,7 @@ void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
 //    busy_wait_us(100);
     delayMicroseconds(100);  
   }
+  Serial.println("-");	
 }
 
 void process_pushbutton() {
