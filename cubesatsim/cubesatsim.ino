@@ -3626,6 +3626,9 @@ void serial_input() {
     switch(result) {
      case 'h':
      case 'H':
+       Serial.println("Help");	     
+        prompt = PROMPT_HELP;
+ /*		    
        Serial.println("\nChange settings by typing the letter:");	     
        Serial.println("h  Help info");	  
        Serial.println("a  AFSK/APRS mode");	     
@@ -3638,7 +3641,8 @@ void serial_input() {
        Serial.println("t  Simulated Telemetry");	     
        Serial.println("r  Resets Count, or payload & EEPROM");	
        Serial.println("l  Lat and Long");	     
-       Serial.println("?  Query sensors\n");	     
+       Serial.println("?  Query sensors\n");	 
+*/		    
        break;
 		   
      case 'a':
@@ -3671,30 +3675,31 @@ void serial_input() {
 		   
      case 'i':
      case 'I':
-       Serial.println("Restarts CubeSatsim software");	     
+       Serial.println("Restart CubeSatsim software");	     
+       prompt = PROMPT_RESTART;
        break;	
 		   
      case 'c':
      case 'C':
-       Serial.println("Change the CALLSIGN in the configuration file sim.cfg");	
+       Serial.println("Change the CALLSIGN");	
        prompt = PROMPT_CALLSIGN;	    
        break;	
 		   
      case 't':
      case 'T':
-      Serial.println("Change the Simulated Telemetry setting in sim.cfg");	     
+       Serial.println("Change the Simulated Telemetry");	     
+       prompt = PROMPT_SIM;
        break;	
 		   
      case 'r':
      case 'R':
-       Serial.println("Change the Resets Count in the configuration file sim.cfg, or ");	     
-       Serial.println("Reset payload and stored EEPROM values");	
+       Serial.println("Change the Resets Count or Reset payload and stored EEPROM values");	
        prompt = PROMPT_RESET;
        break;	
 		   
      case 'l':
      case 'L':
-      Serial.println("Change the Latitude and Longitude in the configuration file sim.cfg");	     
+      Serial.println("Change the Latitude and Longitude");	     
       prompt = PROMPT_LAT;
       break;	
 		   		   
@@ -3722,7 +3727,23 @@ void prompt_for_input() {
     Serial.read();	  
 	
   switch(prompt) {
-  		  
+		  
+    case PROMPT_HELP:		  
+       Serial.println("\nChange settings by typing the letter:");	     
+       Serial.println("h  Help info");	  
+       Serial.println("a  AFSK/APRS mode");	     
+       Serial.println("c  CW mode");	     
+       Serial.println("f  FSK/DUV mode");	     
+       Serial.println("b  BPSK mode");	     
+       Serial.println("s  SSTV mode");	     
+       Serial.println("i  Restart");	     
+       Serial.println("c  CALLSIGN");	     
+       Serial.println("t  Simulated Telemetry");	     
+       Serial.println("r  Resets Count, or payload & EEPROM");	
+       Serial.println("l  Lat and Long");	     
+       Serial.println("?  Query sensors\n");	
+       break;	
+		  
     case PROMPT_CALLSIGN:
       Serial.println("Editing the CALLSIGN in the onfiguration file for CubeSatSim");	
       Serial.println("Return keeps current value.");
@@ -3739,43 +3760,7 @@ void prompt_for_input() {
         Serial.println("Callsign updated!");
       } else
         Serial.println("Callsign not updated!");	      
-/*
-	echo	
-	echo "Editing the CALLSIGN in the"
-	echo  "configuration file for CubeSatSim"	
-	echo
-	echo "Return keeps current value."
-#	echo -e "Current sim.cfg configuration file:"	
-#	echo
-	
-	value=`cat /home/pi/CubeSatSim/sim.cfg`
-	echo "$value" > /dev/null
-	set -- $value
 
-	echo "Current value of CALLSIGN is"	
-	echo $1
-	echo
-	
-#	echo $1 $2 $3 $4 $5
-
-	echo "Enter callsign in all capitals: "
-	read callsign
-
-	if [ -z $callsign ] ; then
-
-		callsign="$1"
-		echo "Keeping value of" $callsign
-		norestart=1
-	else
-	
-		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-
-		echo $callsign $2 $3 $4 $5
-		echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
-	fi
-	
-
-*/
       break;		  		  
 		  
     case PROMPT_SIM:
@@ -3793,7 +3778,10 @@ void prompt_for_input() {
     case PROMPT_RESET:
 		  
       break;	
-  }
+		  
+    case PROMPT_RESTART:
+      Serial.println("Restart not yet implemented");		  
+      break;	  }
 	
 }
 
