@@ -3509,6 +3509,7 @@ void transmit_string(char *string) {
       sleep((6.0 * (float)morse_timing)/1000.0);
       i++;	    
     }
+	  Serial.print("%");
   }
   Serial.println("Transmit off");
   digitalWrite(MAIN_LED_BLUE, LOW);	
@@ -3522,7 +3523,8 @@ void transmit_char(char character) {
 #ifdef DEBUG_MORSE	  
     Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	///  
 #endif
-    transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
+    transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);
+       Serial.print("$");	  	  
     sleep((float)(morse_timing)/1000.0);
   }
   sleep((float)(morse_timing * 3.0)/1000.0);
