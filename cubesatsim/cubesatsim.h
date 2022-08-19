@@ -141,7 +141,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
 static int init_rf();
 void test_radio();
 void config_radio();
-void send_packet();
+void send_aprs_packet();
 void read_ina219();
 void read_sensors();
 void get_tlm_ao7();
