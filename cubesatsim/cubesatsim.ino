@@ -3689,6 +3689,7 @@ void serial_input() {
      case 'm':
      case 'M':
        Serial.println("Change to CW mode");	     
+       new_mode = CW;
        break;	
 		   
      case 'f':
