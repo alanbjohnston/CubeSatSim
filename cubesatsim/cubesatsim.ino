@@ -2947,9 +2947,9 @@ void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
 }
 */
 
-void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
+void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
 
-  unsigned long time_us = (unsigned long)(time * 1000000.0);	
+  unsigned long time_us = (unsigned long)(timer * 1000000.0);	
   unsigned long startSleep = micros();	    
   while ((micros() - startSleep) < time_us)  {	  
 //    busy_wait_us(100);
@@ -3475,7 +3475,8 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   while((micros() - start) < duration_us)  {
     digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
     phase = !phase;	 
-    sleep(min(start + duration_us - micros(), period_us) / 1.0E6);   
+    float time_left = (float)(start + duration_us - micros());	  
+    sleep(min(time_left, period_us) / 1.0E6);  
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
 }
