@@ -39,17 +39,23 @@
 #include <ctype.h>
 
 // Pico GPIO pin assignments
-#define LPF_PIN 8  // LPF is installed
-#define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero
-#define MAIN_PB_PIN 10 // Main board PB pushbutton pin
-#define TXC_PIN 11 // Transceiver Board is present
-#define SWTX_PIN 16 // was 14 SR_FRS_05W Transmit Pico software serial port 
-//#define SQUELCH 15 // SR_FRS_05W Squelch out
-//#define MAIN_INA219 16 // Power the INA219s on the Main board
-#define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
-#define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
+#define PI_TX 0 // Serial to Pi transmit data
+#define PI_RX 1 // Serial to Pi receive data
+#define SDA 2 // I2C 1 Data
+#define SCL 3 // I2C 1 Clock
+#define SDA2 4 // I2C 2 Data
+#define SCL2 5 // I2C 2 Clock
 #define BPSK_CONTROL_A 6 // was 16   // control for Phase A to switch
 #define BPSK_CONTROL_B 7 // was 15   // control for Phase A to switch
+#define TX2 8 // Serial2 to ESP32-CAM transmit data
+#define RX2 9 // Serial2 to ESP32-CAM receive data
+#define MAIN_PB_PIN 10 // Main board PB pushbutton pin
+#define TXC_PIN 11 // Transceiver Board is present
+#define LPF_PIN 12  // BPF is installed
+#define PI_3V3_PIN 13  // 3.3V supply used to detect Pi Zero
+#define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
+#define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
+#define SWTX_PIN 16 // was 14 SR_FRS_05W Transmit Pico software serial port 
 #define PTT_PIN 17 // SR_FRS_05W PTT Push to Talk - transmit
 #define STEM_LED_GREEN 18 // STEM board LED1 Green
 #define STEM_LED_BLUE 19 // STEM board LED2 Blue
@@ -98,6 +104,18 @@
 #define OFF - 1
 #define ON 1
 
+#define PROMPT_CALLSIGN 1
+#define PROMPT_SIM 2
+#define PROMPT_LAT 3
+#define PROMPT_RESET 4
+#define PROMPT_QUERY 5
+#define PROMPT_HELP 6
+#define PROMPT_RESTART 7
+
+
+volatile int prompt = false;
+char serial_string[128];
+
 //#define WAV_DATA_LENGTH (50000 * 8)
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
@@ -123,7 +141,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
 static int init_rf();
 void test_radio();
 void config_radio();
-void send_packet();
+void send_aprs_packet();
 void read_ina219();
 void read_sensors();
 void get_tlm_ao7();
@@ -160,6 +178,10 @@ void transmit_char(char character);
 void transmit_string(char *string);
 void transmit_callsign(char *callsign);
 void parse_payload();
+void load_files();
+void show_dir();
+void serial_input();
+void get_serial_string();
 
 #ifndef STASSID
 #define STASSID "Pico"
@@ -270,6 +292,7 @@ float Sensor2 = 0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
+int first_time_sstv = true;
 int first_read = true;
 float T2 = 27; // Temperature data point 1
 float R2 = 170; // Reading data point 1
@@ -303,6 +326,8 @@ bool cw_stop = false;
 int pb_state = RELEASED;
 int mode_count = 0;
 unsigned long pb_press_start;
+const char sstv1_filename[] = "/sstv_image_1_320_x_240.jpg";
+const char sstv2_filename[] = "/sstv_image_2_320_x_240.jpg";
 
 bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);

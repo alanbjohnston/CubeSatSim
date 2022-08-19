@@ -12,7 +12,6 @@
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
- *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
@@ -39,6 +38,11 @@
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
+#include "LittleFS.h"
+
+// jpg files to be stored in flash storage on Pico (FS 512kB setting)
+#include "sstv1.h"
+#include "sstv2.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -63,7 +67,7 @@ void setup() {
 
   new_mode = mode;
 	
-  Serial.begin(9600);
+  Serial.begin(115200);
 	
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
@@ -82,8 +86,9 @@ void setup() {
 // if Pi is present, run Payload OK software
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
-	
+  Serial.println("\n\nCubeSatSim Pico v0.13 starting...\n\n");
+
+  load_files();			
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -111,19 +116,20 @@ void setup() {
   start_ina219();
 	
   if (i2c_bus3 == false) 
-    config_simulated_telem();	  
+    config_simulated_telem();		
     
   config_telem();	
 	
 // setup radio depending on mode 
   config_radio();	
+	
 /*	
   if (check_for_wifi()) {
      wifi = true;	
      configure_wifi();	  
   }
 */	
-  start_button_isr(); 
+//  start_button_isr(); 
   setup_sstv();
   start_isr();
   start_pwm();
@@ -135,6 +141,8 @@ void setup() {
     transmit_callsign(callsign);
   sleep(5.0);		
 /**/
+	
+  start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
 	
@@ -165,14 +173,45 @@ void loop() {
   else if ((mode == AFSK) || (mode == CW)) {
     get_tlm_ao7();	
     if (mode == AFSK) {  
-      send_packet();
+      send_aprs_packet();
     } else if (mode == CW) {
       send_cw();
     }
   }
-  else if (mode == SSTV) {
-      Serial.println("\nSending SSTV image!");
-      send_sstv("/cam.raw");
+  else if (mode == SSTV)
+  {
+      char image_file[128];
+      if (first_time_sstv) {  
+        strcpy(image_file, sstv1_filename);
+	first_time_sstv = false;
+      } else {
+
+      // get jpeg from camera in future
+	      
+	      
+	      
+	      
+	strcpy(image_file, sstv2_filename);     
+      }      
+      Serial.print("\nSending SSTV image ");
+      print_string(image_file);	  	  
+//      send_sstv("/cam.raw");
+	  
+//      send_sstv(image_file);
+	  
+      char output_file[] = "/cam.bin"; 	  
+      jpeg_decode(image_file, output_file);
+	  
+      Serial.println("Start transmit!!!");
+      digitalWrite(PTT_PIN, LOW);  // start transmit
+      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+
+      scottie1_transmit_file(output_file);
+
+      Serial.println("Stop transmit!");
+      digitalWrite(PTT_PIN, HIGH);  // stop transmit
+      digitalWrite(MAIN_LED_BLUE, LOW);	    
+	  
       Serial.println("\nImage sent!");
   } 
   else
@@ -210,13 +249,22 @@ void loop() {
     config_telem();
     config_radio();
  }
+	
+  if (prompt) {
+    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
+	
   //  Calculate loop time
   Serial.print("\nLoop time: ");	
   Serial.println(millis() - startSleep);	
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
-
+	
+  serial_input();
+	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
@@ -225,8 +273,8 @@ bool TimerHandler1(struct repeating_timer *t) {
 
   if (wifi) 
     check_for_browser();
- 
- return(true);	
+	
+  return(true);	
 }
 
 void read_reset_count() {
@@ -264,7 +312,10 @@ void read_reset_count() {
   }	  	
 }
 
-void send_packet() {		
+void send_aprs_packet() {	
+// encode telemetry
+  get_tlm_ao7();
+
 //  digitalWrite(LED_BUILTIN, LOW);
 
   char str[1000];
@@ -421,7 +472,7 @@ void config_telem() {
 	  
     set_pin(AUDIO_OUT_PIN);
 
-    char callsign[] = "W3ZM";
+//    char callsign[] = "W3ZM";
     set_callsign(callsign);
     char lat_default[] = "0610.55S";
     char lon_default[] = "10649.62E";
@@ -1933,6 +1984,8 @@ void config_radio()
      mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //   sleep(0.5);	  
 //   mySerial.println("AT+DMOSETMIC=6,0\r");  
+     if (mode == SSTV)	  
+      first_time_sstv = true;	  
   }
   	
 //  } else if (mode == FSK)	  {  // moved to below
@@ -1943,7 +1996,7 @@ void config_radio()
     transmit_on();	
   }
 	
-  if ((mode == FSK) || (mode == SSTV))
+  if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
     transmit_on();
 }
@@ -2924,9 +2977,9 @@ void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
 }
 */
 
-void sleep(float time) {  // sleeps for intervals more than 0.01 milli seconds
+void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
 
-  unsigned long time_us = (unsigned long)(time * 1000000.0);	
+  unsigned long time_us = (unsigned long)(timer * 1000000.0);	
   unsigned long startSleep = micros();	    
   while ((micros() - startSleep) < time_us)  {	  
 //    busy_wait_us(100);
@@ -3454,7 +3507,8 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   while((micros() - start) < duration_us)  {
     digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
     phase = !phase;	 
-    sleep(min(start + duration_us - micros(), period_us) / 1.0E6);   
+    float time_left = (float)(start + duration_us - micros());	  
+    sleep(min(time_left, period_us) / 1.0E6);  
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
 }
@@ -3538,4 +3592,248 @@ void parse_payload() {
 	    //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
   	  }
 	}		
+}
+
+void show_dir() {
+  LittleFS.begin();
+  Dir dir = LittleFS.openDir("/");
+// or Dir dir = LittleFS.openDir("/data");
+  Serial.println("FS directory:");
+  while (dir.next()) {
+    Serial.print(dir.fileName());
+    if(dir.fileSize()) {
+        File f = dir.openFile("r");
+        Serial.print(" ");
+        Serial.println(f.size());
+    }
+  }
+  Serial.println(">");
+}
+
+void load_files() {
+  LittleFS.begin();
+  File f;
+	
+  f = LittleFS.open("sstv_image_1_320_x_240.jpg", "r");
+  if (f) {	
+    Serial.println("Image sstv_image_1_320_x_240.jpg already in FS");
+    f.close();
+  } else {
+    Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
+    f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
+    if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");	     
+       delay(2000);
+    }
+    f.close();
+  }
+
+  f = LittleFS.open("sstv_image_2_320_x_240.jpg", "r");
+  if (f) {	
+    Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
+    f.close();
+  } else {
+    Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
+    f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
+    if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");
+       delay(2000);
+    }
+    f.close();
+  }
+	
+  show_dir();
+}
+
+void serial_input() {
+	
+  if (prompt == false) {  // only query if not in the middle of prompting
+ 	  
+  if (Serial.available() > 0) {  // check for user input on serial port
+ 
+//    blink(50);
+    char result = Serial.read();
+
+    if ((result != '\n') && (result != '\r')) {
+	    
+    Serial.println(result);
+
+    switch(result) {
+     case 'h':
+     case 'H':
+       Serial.println("Help");	     
+        prompt = PROMPT_HELP;
+ /*		    
+       Serial.println("\nChange settings by typing the letter:");	     
+       Serial.println("h  Help info");	  
+       Serial.println("a  AFSK/APRS mode");	     
+       Serial.println("c  CW mode");	     
+       Serial.println("f  FSK/DUV mode");	     
+       Serial.println("b  BPSK mode");	     
+       Serial.println("s  SSTV mode");	     
+       Serial.println("i  Restart");	     
+       Serial.println("c  CALLSIGN");	     
+       Serial.println("t  Simulated Telemetry");	     
+       Serial.println("r  Resets Count, or payload & EEPROM");	
+       Serial.println("l  Lat and Long");	     
+       Serial.println("?  Query sensors\n");	 
+*/		    
+       break;
+		   
+     case 'a':
+     case 'A':
+       Serial.println("Change to AFSK/APRS mode");	     
+       new_mode = AFSK;
+       break;	
+		   
+     case 'm':
+     case 'M':
+       Serial.println("Change to CW mode");	     
+       break;	
+		   
+     case 'f':
+     case 'F':
+      Serial.println("Change to FSK/DUV mode");	     
+       break;	
+		   
+     case 'b':
+     case 'B':
+       Serial.println("Change to BPSK mode");	     
+       new_mode = BPSK;
+       break;	
+		   
+     case 's':
+     case 'S':
+       Serial.println("Change to SSTV mode");	     
+       new_mode = SSTV;
+       break;	
+		   
+     case 'i':
+     case 'I':
+       Serial.println("Restart CubeSatsim software");	     
+       prompt = PROMPT_RESTART;
+       break;	
+		   
+     case 'c':
+     case 'C':
+       Serial.println("Change the CALLSIGN");	
+       prompt = PROMPT_CALLSIGN;	    
+       break;	
+		   
+     case 't':
+     case 'T':
+       Serial.println("Change the Simulated Telemetry");	     
+       prompt = PROMPT_SIM;
+       break;	
+		   
+     case 'r':
+     case 'R':
+       Serial.println("Change the Resets Count or Reset payload and stored EEPROM values");	
+       prompt = PROMPT_RESET;
+       break;	
+		   
+     case 'l':
+     case 'L':
+      Serial.println("Change the Latitude and Longitude");	     
+      prompt = PROMPT_LAT;
+      break;	
+		   		   
+     case '?':
+       Serial.println("Query payload sensors");	     
+       prompt = PROMPT_QUERY;
+       break;	
+		   
+     default:
+       Serial.println("Not a command\n");	
+		   
+       break;
+    }
+    if (new_mode != mode)
+      transmit_off();
+    sleep(2.0);		    
+   }
+ }
+ }
+}
+
+void prompt_for_input() {
+	
+  while (Serial.available() > 0)  // clear any characters in serial input buffer
+    Serial.read();	  
+	
+  switch(prompt) {
+		  
+    case PROMPT_HELP:		  
+       Serial.println("\nChange settings by typing the letter:");	     
+       Serial.println("h  Help info");	  
+       Serial.println("a  AFSK/APRS mode");	     
+       Serial.println("c  CW mode");	     
+       Serial.println("f  FSK/DUV mode");	     
+       Serial.println("b  BPSK mode");	     
+       Serial.println("s  SSTV mode");	     
+       Serial.println("i  Restart");	     
+       Serial.println("c  CALLSIGN");	     
+       Serial.println("t  Simulated Telemetry");	     
+       Serial.println("r  Resets Count, or payload & EEPROM");	
+       Serial.println("l  Lat and Long");	     
+       Serial.println("?  Query sensors\n");	
+       break;	
+		  
+    case PROMPT_CALLSIGN:
+      Serial.println("Editing the CALLSIGN in the onfiguration file for CubeSatSim");	
+      Serial.println("Return keeps current value.");
+      Serial.print("\nCurrent callsign is ");
+      Serial.println(callsign);
+		  
+      Serial.print("Enter callsign in all capitals: ");
+      get_serial_string();
+		  
+      print_string(serial_string);
+		  
+      if (strlen(serial_string) > 0)	{	  
+        strcpy(callsign, serial_string);
+        Serial.println("Callsign updated!");
+      } else
+        Serial.println("Callsign not updated!");	      
+
+      break;		  		  
+		  
+    case PROMPT_SIM:
+		  
+      break;	
+		  
+    case PROMPT_LAT:
+		  
+      break;	
+		  
+    case PROMPT_QUERY:
+		  
+      break;	
+		  
+    case PROMPT_RESET:
+		  
+      break;	
+		  
+    case PROMPT_RESTART:
+      Serial.println("Restart not yet implemented");		  
+      break;	  }
+	
+}
+
+void get_serial_string() {
+  int input = 0;	
+  int i = 0;
+  unsigned int elapsed_time = (unsigned int) millis();	
+  while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 20000)) {
+    if (Serial.available() > 0) {
+      input = Serial.read();
+      if ((input != '\n') && (input!= '\r')) {
+	serial_string[i++] = input;
+        Serial.write(input);
+      }
+    }
+    sleep(0.1);	  
+  }
+  serial_string[i] = 0;	
+  Serial.println(" ");	
 }
