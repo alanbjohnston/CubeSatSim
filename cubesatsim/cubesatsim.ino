@@ -53,8 +53,6 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-char payload_str[100];
-
 WiFiServer server(port);
 WiFiClient client;
 
@@ -139,7 +137,8 @@ void setup() {
 /**/
   Serial.println("Transmitting callsign");	
   strcpy(callsign, call);	
-  transmit_callsign(callsign);
+  if (mode != CW)
+    transmit_callsign(callsign);
   sleep(5.0);		
 /**/
 	
@@ -168,14 +167,17 @@ void loop() {
   read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
-  if ((mode == BPSK) || (mode == FSK))  
-  {
+  if ((mode == BPSK) || (mode == FSK))  {
     get_tlm_fox();
   }
-  else if (mode == AFSK)
-  {  
-    send_aprs_packet();
-  } 
+  else if ((mode == AFSK) || (mode == CW)) {
+    get_tlm_ao7();	
+    if (mode == AFSK) {  
+      send_aprs_packet();
+    } else if (mode == CW) {
+      send_cw();
+    }
+  }
   else if (mode == SSTV)
   {
       char image_file[128];
@@ -241,7 +243,8 @@ void loop() {
     Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
 	 
-    transmit_callsign(callsign);
+    if (new_mode != CW)
+      transmit_callsign(callsign);
     sleep(0.5);	 
     config_telem();
     config_radio();
@@ -312,8 +315,15 @@ void read_reset_count() {
 void send_aprs_packet() {	
 // encode telemetry
   get_tlm_ao7();
-	
+
 //  digitalWrite(LED_BUILTIN, LOW);
+
+  char str[1000];
+  char header_str[] = "hi hi ";
+  strcpy(str, header_str);	
+  strcpy(str, tlm_str);	
+  strcat(str, payload_str);	
+  set_status(str);		
 	
   Serial.println("Sending APRS packet!");
   transmit_on();
@@ -321,16 +331,37 @@ void send_aprs_packet() {
   transmit_off();		
 }
 
+void send_cw() {
+  char de[] = " DE ";	
+  char telem[1000];
+  char space[] = " ";	
+	
+  Serial.println("Sending CW packet!");
+	
+  strcpy(telem, de);
+  strcat(telem, callsign);
+  strcat(telem, space);
+  strcat(telem, tlm_str);  // don't send payload since it isn't encoded and has "."
+  print_string(telem);
+  Serial.println(strlen(telem));
+ 
+  transmit_string(telem);	
+}
+
 void transmit_on() {
-  if ((mode == AFSK) || (mode == SSTV)) {
+  if ((mode == SSTV) || (mode == AFSK)) {  // this isn't quite right for APRS - should only do when sending APRS packet
     Serial.println("Transmit on!");
     digitalWrite(MAIN_LED_BLUE, HIGH);	
-    digitalWrite(PTT_PIN, LOW);
-  }
+    digitalWrite(PTT_PIN, LOW);  
+  } 
   else if (mode == BPSK) {	
     Serial.println("Transmit on!");
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
     pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+  }
+  else if (mode == CW) {
+ //   Serial.println("Transmit on!");
+    cw_stop = false;
   }
   else
     Serial.println("No transmit!");
@@ -345,10 +376,10 @@ void transmit_off() {
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   }
-  if (mode == SSTV) {
-//    first_time_sstv = true;	  
+  else if (mode == SSTV) 
     sstv_end();
-  }
+  else if (mode == CW)
+    cw_stop = true;
 }
 
 void config_telem() {
@@ -529,25 +560,24 @@ void get_tlm_ao7() {
     Serial.println(" ");
 */
     char str[1000];
-    char tlm_str[1000];	
     int channel;
     char header_str[] = "hi hi ";
-    strcpy(str, header_str);
+    strcpy(tlm_str, header_str);
 	
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+      sprintf(str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
-      //        printf("%s",tlm_str);
-        strcat(str, tlm_str);
+      //        printf("%s",str);
+      strcat(tlm_str, str);
     }
 //    print_string(str);
-    strcat(str, payload_str);	
+//    strcat(str, payload_str);	
 //    print_string(str);
 //    Serial.println(strlen(str));
-    set_status(str);	
+//    set_status(str);	
 //  }	
 }
 
@@ -3029,6 +3059,7 @@ void process_pushbutton() {
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to CW");
+    new_mode = CW;
     release = TRUE;
   }
 	
@@ -3126,6 +3157,7 @@ void process_bootsel() {
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
     Serial.println("BOOTSEL: Switch to CW");
+    new_mode = CW;
     release = TRUE;
   }
 	
@@ -3488,24 +3520,25 @@ void transmit_callsign(char *callsign) {
   strcat(id, callsign);
   Serial.print("Transmitting id: ");	
   print_string(id);	
-//  transmit_on();
   transmit_string(id);	  
-//  transmit_off();
 }
 
 void transmit_string(char *string) {
-  int i = 0;
+  int j = 0;
   Serial.println("Transmit on");
   digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);	
 	
-  while ((string[i] != '\0') && (i < 256)) {
-    if (string[i] != ' ')	  
-      transmit_char(string[i++]);
+  while ((string[j] != '\0') && (j < 256) && !cw_stop) {
+//    Serial.print("j = ");
+//    Serial.println(j);
+    if (string[j] != ' ')	  
+      transmit_char(string[j++]);
     else {
+//      Serial.println("space between words");
       sleep((6.0 * (float)morse_timing)/1000.0);
-      i++;	    
+      j++;	    
     }
   }
   Serial.println("Transmit off");
@@ -3516,13 +3549,15 @@ void transmit_string(char *string) {
 
 void transmit_char(char character) {	
   int i = 0;
-  while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
+  while (morse_table[(toupper(character) - '0') % 44][i] != 0) {
+//    Serial.print("i = ");
+//    Serial.println(i);
 //    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
     transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
     sleep((float)(morse_timing)/1000.0);
   }
   sleep((float)(morse_timing * 3.0)/1000.0);
-//  Serial.println(" ");
+//  Serial.println("space between characters");
 
 }
 
