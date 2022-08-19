@@ -109,6 +109,9 @@
 #define PROMPT_LAT 3
 #define PROMPT_RESET 4
 #define PROMPT_QUERY 5
+#define PROMPT_HELP 6
+#define PROMPT_RESTART 7
+
 
 volatile int prompt = false;
 char serial_string[128];
