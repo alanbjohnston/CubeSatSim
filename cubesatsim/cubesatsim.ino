@@ -3516,7 +3516,7 @@ void transmit_string(char *string) {
 void transmit_char(char character) {	
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
-//    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	  
+    Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	///  
     transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
     sleep((float)(morse_timing)/1000.0);
   }
