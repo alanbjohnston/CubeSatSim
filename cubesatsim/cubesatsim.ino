@@ -3792,7 +3792,7 @@ void prompt_for_input() {
 		  
       if (strlen(serial_string) > 0)	{	  
         strcpy(callsign, serial_string);
-	if (mode == APRS)
+	if (mode == AFSK)
 	  set_callsign(callsign);	
         Serial.println("Callsign updated!");
       } else
