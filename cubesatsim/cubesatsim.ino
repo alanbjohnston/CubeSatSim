@@ -248,7 +248,7 @@ void loop() {
     config_radio();
  }
 	
-  serial_input();	
+ // serial_input();	
   if (prompt) {
     Serial.println("Need to prompt for input!");
     prompt_for_input();	  
@@ -262,7 +262,7 @@ void loop() {
 
 bool TimerHandler1(struct repeating_timer *t) {
 	
-//  serial_input();
+  serial_input();
 	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
