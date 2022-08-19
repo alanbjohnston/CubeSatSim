@@ -59,6 +59,7 @@ WiFiServer server(port);
 WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+#define DEBUG_MORSE
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
@@ -3517,13 +3518,16 @@ void transmit_string(char *string) {
 void transmit_char(char character) {	
   int i = 0;
   while ((morse_table[(toupper(character) - '0') % 44][i] != 0) && (i < 5)) {
+#ifdef DEBUG_MORSE	  
     Serial.print(morse_table[(toupper(character) - '0') % 44][i]);	///  
+#endif
     transmit_cw(morse_freq, morse_table[(toupper(character) - '0') % 44][i++] * morse_timing);	  
     sleep((float)(morse_timing)/1000.0);
   }
   sleep((float)(morse_timing * 3.0)/1000.0);
-//  Serial.println(" ");
-
+#ifdef DEBUG_MORSE
+  Serial.print(" ");
+#endif
 }
 
 void parse_payload() {
