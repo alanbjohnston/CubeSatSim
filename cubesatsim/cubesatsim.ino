@@ -62,7 +62,7 @@ WiFiClient client;
 #define DEBUG_MORSE
 
 byte green_led_counter = 0;
-char call[] = "AMSAT";   // put your callsign here
+char call[] = "AMSAT0000000000";   // put your callsign here
 
 void setup() {
 
