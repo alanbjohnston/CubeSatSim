@@ -3823,6 +3823,7 @@ void prompt_for_input() {
 
       Serial.println("Changing the  latitude and longitude  - only used for APRS telemetry");
       Serial.println("Hitting return keeps the current value.");
+		  
       Serial.print("Current value of latitude is ");
       Serial.println(latitude);		  
       Serial.println("Enter latitude  (decimal degrees, positive is north): ");	  
@@ -3830,10 +3831,12 @@ void prompt_for_input() {
       float_result = atof(serial_string);
       if (float_result != 0.0)  {
         Serial.print("Latitude updated to ");	    
-        Serial.print(float_result);		  
+        Serial.println(float_result);		  
         latitude = float_result;
       } else
         Serial.print("Latitude not updated");	
+
+      get_serial_clear_buffer();		  
       Serial.print("Current value of longitude is ");
       Serial.println(longitude);		  
       Serial.println("Enter longitude  (decimal degrees, positive is east): ");	  
@@ -3841,7 +3844,7 @@ void prompt_for_input() {
       float_result = atof(serial_string);
       if (float_result != 0.0)  {
         Serial.print("Longitude updated to ");	    
-        Serial.print(float_result);		  
+        Serial.println(float_result);		  
         longitude = float_result;
       } else
         Serial.print("Longitude not updated");		      
@@ -3895,4 +3898,11 @@ void get_serial_char() {
   {
     serial_string[0] = 0;	// timeout - no character	 
   }
+}
+
+void get_serial_clear_buffer() {
+//  Serial.println("Emptying serial input buffer");	
+  while (Serial.available() > 0)
+   Serial.read();
+	
 }
