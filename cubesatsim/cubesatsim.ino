@@ -3808,10 +3808,10 @@ void prompt_for_input() {
 	Serial.println("Simulted Telemetry mode is currently off");  
       Serial.println("Do you want Simulated Telemetry on (y/n)");
       get_serial_char();
-      if ((serial_string == 'y') || (serial_string == 'Y'))	{  
+      if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Setting Simulated telemetry to on");
 	sim_mode = true;      
-      } else if ((serial_string == 'n') || (serial_string == 'N')) {	      
+      } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
 	sim_mode = false;      
       } else      
