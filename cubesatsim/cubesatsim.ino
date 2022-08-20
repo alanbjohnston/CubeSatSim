@@ -330,7 +330,7 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
-  send_packet(_FIXPOS_STATUS);
+  send_packet(_FIXPOS_STATUS, debug);
   transmit_off();		
 }
 
@@ -478,8 +478,10 @@ void config_telem() {
     Serial.println("Configuring for AFSK\n");
 	  
     set_pin(AUDIO_OUT_PIN);
-
-    set_callsign(callsign);
+	  
+    const char destination[] = "APCSS";
+	  
+    set_callsign(callsign, destination);
 	  
     set_lat_lon();
 	  
