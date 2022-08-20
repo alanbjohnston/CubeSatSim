@@ -326,6 +326,7 @@ long micro_timer;
 int ready = FALSE;
 bool cw_stop = false;
 int payload_command = false;
+bool debug_mode = false;
 
 #define PRESSED 0
 #define HELD 0
