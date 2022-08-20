@@ -251,7 +251,7 @@ void loop() {
  }
 	
   if (prompt) {
-    Serial.println("Need to prompt for input!");
+//    Serial.println("Need to prompt for input!");
     prompt_for_input();	  
     prompt = false;	  
   }
@@ -472,14 +472,31 @@ void config_telem() {
 	  
     set_pin(AUDIO_OUT_PIN);
 
-//    char callsign[] = "W3ZM";
     set_callsign(callsign);
-    char lat_default[] = "0610.55S";
-    char lon_default[] = "10649.62E";
+	  
+    char lat_string[64];
+    char lon_string[64];
+	  
     char sym_ovl_default = 'H';
     char sym_tab_default = 'a';
     char icon[] = "Ha";
-    set_lat_lon_icon(lat_default, lon_default, icon);
+	  
+//      latitude = toAprsFormat(latitude);
+//      longitude = toAprsFormat(longitude);   
+         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
+        if (latitude > 0)
+          sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
+        else
+          sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
+        if (longitude > 0)
+          sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude), 'E'); // long
+        else
+          sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude) * (-1.0), 'W'); // long	 
+	  
+    print_string(lat_string);
+    print_string(lon_string);
+	  
+    set_lat_lon_icon(lat_string, lon_string, icon);
 	  
     samplePeriod = 5000;
     frameTime = 5000;	  
@@ -3834,7 +3851,7 @@ void prompt_for_input() {
         Serial.println(float_result);		  
         latitude = float_result;
       } else
-        Serial.print("Latitude not updated");	
+        Serial.println("Latitude not updated");	
 
       get_serial_clear_buffer();		  
       Serial.print("Current value of longitude is ");
@@ -3847,10 +3864,7 @@ void prompt_for_input() {
         Serial.println(float_result);		  
         longitude = float_result;
       } else
-        Serial.print("Longitude not updated");		      
-	      
-      latitude = toAprsFormat(latitude);
-      longitude = toAprsFormat(longitude);      
+        Serial.println("Longitude not updated");		        
 		  
       break;	
 		  
