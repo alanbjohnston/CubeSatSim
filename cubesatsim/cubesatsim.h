@@ -183,6 +183,7 @@ void show_dir();
 void serial_input();
 void get_serial_string();
 void get_serial_char();
+void get_serial_clear_buffer();
 
 #ifndef STASSID
 #define STASSID "Pico"
