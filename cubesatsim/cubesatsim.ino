@@ -2333,7 +2333,8 @@ void read_payload()
     sprintf(str, "XS %.1f 0.0\n", Temp);
     strcat(payload_str, str);
 	  
-    print_string(payload_str);
+    if (debug_mode)	  
+      print_string(payload_str);
 
 /*	  
     if (result == 'R') {
@@ -3869,8 +3870,19 @@ void prompt_for_input() {
       Serial.println("Enter r or p");		  
       get_serial_char();
       if ((serial_string[0] == 'r') || (serial_string[0] == 'R'))	{  
-        Serial.println("Resetting Reset Count");
-//	sim_mode = true;      
+        Serial.println("Reset count is now 0");	
+        Serial.println("Storing initial reset count in EEPROM");	  
+
+//        reset_flag = 0xA07;
+//        EEPROM.put(16, reset_flag);	
+        reset_count = 0;	
+        EEPROM.put(20, reset_count + 1);
+        if (EEPROM.commit()) {
+          Serial.println("EEPROM successfully committed");
+        } else {
+          Serial.println("ERROR! EEPROM commit failed");
+        }	      
+	            
       } else if ((serial_string[0] == 'p') || (serial_string[0] == 'P')) {	      
         Serial.println("Resetting the Payload");
 	payload_command = PAYLOAD_RESET;      
