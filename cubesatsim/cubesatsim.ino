@@ -474,29 +474,7 @@ void config_telem() {
 
     set_callsign(callsign);
 	  
-    char lat_string[64];
-    char lon_string[64];
-	  
-    char sym_ovl_default = 'H';
-    char sym_tab_default = 'a';
-    char icon[] = "Ha";
-	  
-//      latitude = toAprsFormat(latitude);
-//      longitude = toAprsFormat(longitude);   
-         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
-        if (latitude > 0)
-          sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
-        else
-          sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
-        if (longitude > 0)
-          sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude), 'E'); // long
-        else
-          sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude) * (-1.0), 'W'); // long	 
-	  
-    print_string(lat_string);
-    print_string(lon_string);
-	  
-    set_lat_lon_icon(lat_string, lon_string, icon);
+    set_lat_lon();
 	  
     samplePeriod = 5000;
     frameTime = 5000;	  
@@ -3865,6 +3843,8 @@ void prompt_for_input() {
         longitude = float_result;
       } else
         Serial.println("Longitude not updated");		        
+      if (mode == AFSK)
+	set_lat_lon();
 		  
       break;	
 		  
@@ -3919,4 +3899,32 @@ void get_serial_clear_buffer() {
   while (Serial.available() > 0)
    Serial.read();
 	
+}
+
+void set_lat_lon() {
+// Serial.println("Setting lat and lon for APRS");	
+  char lat_string[64];
+  char lon_string[64];
+	  
+  char sym_ovl_default = 'H';
+  char sym_tab_default = 'a';
+  char icon[] = "Ha";
+	  
+//      latitude = toAprsFormat(latitude);
+//      longitude = toAprsFormat(longitude);   
+         //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
+  if (latitude > 0)
+    sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
+  else
+    sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
+  if (longitude > 0)
+    sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude), 'E'); // long
+  else
+    sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude) * (-1.0), 'W'); // long	 
+	  
+// print_string(lat_string);
+// print_string(lon_string);
+	  
+  set_lat_lon_icon(lat_string, lon_string, icon);	
+
 }
