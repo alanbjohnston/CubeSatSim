@@ -202,14 +202,14 @@ void loop() {
 //      send_sstv(image_file);
 	  
       char output_file[] = "/cam.bin"; 	  
-      jpeg_decode(image_file, output_file);
+      jpeg_decode(image_file, output_file, debug_mode);
 
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
-      scottie1_transmit_file(output_file);
+      scottie1_transmit_file(output_file, debug_mode);
 	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
