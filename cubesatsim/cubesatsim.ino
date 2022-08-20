@@ -3856,7 +3856,7 @@ void get_serial_string() {
 
 void get_serial_char() {	
   unsigned int elapsed_time = (unsigned int) millis();	
-  while (((millis() - elapsed_time) < 20000) && (Serial.available() < 1) { }
+  while ((millis() - elapsed_time) < 20000) && (Serial.available() < 1)) { }
   if (Serial.available() > 0) {	 
     serial_string[0] = Serial.read();  // get character
     Serial.write(input);
