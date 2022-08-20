@@ -3805,7 +3805,7 @@ void prompt_for_input() {
       if (sim_mode == TRUE)
 	Serial.println("Simulted Telemetry mode is currently on");      
       else
-	Serial.println("Simulted Telemetry mode is currently off")  
+	Serial.println("Simulted Telemetry mode is currently off");  
       Serial.println("Do you want Simulated Telemetry on (y/n)");
       get_serial_char();
       if ((serial_string == 'y') || (serial_string == 'Y'))	{  
