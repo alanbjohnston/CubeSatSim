@@ -1,5 +1,5 @@
 /*
- *  Transmits CubeSat Telemetry at 434.9MHz in AFSK, FSK, or CW format
+ *  Transmits CubeSat Telemetry at 432.25MHz in AFSK, FSK, BPSK, or CW format
  *
  *  Copyright Alan B. Johnston
  *
@@ -3819,7 +3819,18 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_LAT:
-		  
+
+      Serial.println("Changing the  latitude and longitude  - only used for APRS telemetry");
+      Serial.println("Hitting return keeps the current value.");
+      Serial.print("Current value of latitude is ");
+      Serial.println(latitude);		  
+      Serial.println("Enter latitude  (decimal degrees, positive is north): ");	  
+      get_serial_string();		  
+      float result = atof(serial_string);
+      if (float != 0.0)  {
+        Serial.print("Latitude updated to ");	    
+        Serial.print(result);		  
+        latitude = result;
       break;	
 		  
     case PROMPT_QUERY:
