@@ -3803,7 +3803,7 @@ void prompt_for_input() {
 		  
     case PROMPT_SIM:
       if (sim_mode == TRUE)
-	Serial.println("Simulted Telemetry mode is currently on")      
+	Serial.println("Simulted Telemetry mode is currently on");      
       else
 	Serial.println("Simulted Telemetry mode is currently off")  
       Serial.println("Do you want Simulated Telemetry on (y/n)");
