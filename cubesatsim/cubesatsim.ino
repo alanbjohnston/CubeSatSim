@@ -3906,9 +3906,9 @@ void set_lat_lon() {
   char lat_string[64];
   char lon_string[64];
 	  
-  char sym_ovl_default = 'H';
-  char sym_tab_default = 'a';
-  char icon[] = "Ha";
+  char sym_ovl_default = '\\'; \\'H';
+  char sym_tab_default = 'S'; \\ 'a';
+  char icon[] = "\\S"; \\Ha";
 	  
 //      latitude = toAprsFormat(latitude);
 //      longitude = toAprsFormat(longitude);   
