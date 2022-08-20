@@ -479,8 +479,7 @@ void config_telem() {
 	  
     set_pin(AUDIO_OUT_PIN);
 	  
-    const char destination[] = "APCSS";
-	  
+    char destination[] = "APCSS";	  
     set_callsign(callsign, destination);
 	  
     set_lat_lon();
@@ -3838,8 +3837,10 @@ void prompt_for_input() {
 		  
       if (strlen(serial_string) > 0)	{	  
         strcpy(callsign, serial_string);
-	if (mode == AFSK)
-	  set_callsign(callsign);	
+	if (mode == AFSK) {
+	  char destination[] = "APCSS";	
+	  set_callsign(callsign, destination);	
+	}
         Serial.println("Callsign updated!");
       } else
         Serial.println("Callsign not updated!");	      
