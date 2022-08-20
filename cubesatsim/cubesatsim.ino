@@ -3875,8 +3875,7 @@ void prompt_for_input() {
 		  
     case PROMPT_RESTART:
       Serial.println("Restart not yet implemented");		  
-      break;	  }
-
+      break;	  
 		  
     case PROMPT_DEBUG:
       Serial.print("Changing Debug Mode to ");
@@ -3886,6 +3885,7 @@ void prompt_for_input() {
       else  
         Serial.println("off");
       break;	
+  }
 }
 
 void get_serial_string() {
