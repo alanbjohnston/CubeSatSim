@@ -3914,9 +3914,9 @@ void set_lat_lon() {
 //      longitude = toAprsFormat(longitude);   
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
   if (latitude > 0)
-    sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
+    sprintf(lat_string, "%07.2f%c", toAprsFormat(latitude), 'N'); // lat
   else
-    sprintf(lat_string, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
+    sprintf(lat_string, "%07.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
   if (longitude > 0)
     sprintf(lon_string, "%08.2f%c", toAprsFormat(longitude), 'E'); // long
   else
