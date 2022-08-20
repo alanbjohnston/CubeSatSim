@@ -330,7 +330,7 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
-  send_packet(_FIXPOS_STATUS, debug);
+  send_packet(_FIXPOS_STATUS, debug_mode);
   transmit_off();		
 }
 
