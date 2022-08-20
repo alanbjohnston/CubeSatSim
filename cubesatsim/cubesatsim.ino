@@ -3832,7 +3832,23 @@ void prompt_for_input() {
         Serial.print("Latitude updated to ");	    
         Serial.print(float_result);		  
         latitude = float_result;
-      }
+      } else
+        Serial.print("Latitude not updated");	
+      Serial.print("Current value of longitude is ");
+      Serial.println(longitude);		  
+      Serial.println("Enter longitude  (decimal degrees, positive is east): ");	  
+      get_serial_string();		  
+      float_result = atof(serial_string);
+      if (float_result != 0.0)  {
+        Serial.print("Longitude updated to ");	    
+        Serial.print(float_result);		  
+        longitude = float_result;
+      } else
+        Serial.print("Longitude not updated");		      
+	      
+      latitude = toAprsFormat(latitude);
+      longitude = toAprsFormat(longitude);      
+		  
       break;	
 		  
     case PROMPT_QUERY:
