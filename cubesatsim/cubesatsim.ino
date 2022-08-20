@@ -2353,7 +2353,7 @@ void read_payload()
     sprintf(str, "XS %.1f 0.0\n", Temp);
     strcat(payload_str, str);
 	  
-    if ((debug_mode) || (payload_command == PAYLOAD_QUERY) {
+    if ((debug_mode) || (payload_command == PAYLOAD_QUERY)) {
       payload_command = false;	    
       print_string(payload_str);
     }
