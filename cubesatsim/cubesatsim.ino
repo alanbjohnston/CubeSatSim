@@ -192,27 +192,32 @@ void loop() {
 	      
 	      
 	strcpy(image_file, sstv2_filename);     
-      }      
-      Serial.print("\nSending SSTV image ");
-      print_string(image_file);	  	  
+      }    
+      if (debug_mode)  {	  
+        Serial.print("\nSending SSTV image ");
+        print_string(image_file);
+      }
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
 	  
       char output_file[] = "/cam.bin"; 	  
       jpeg_decode(image_file, output_file);
-	  
-      Serial.println("Start transmit!!!");
+
+      if (debug_mode)	  	  
+        Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
       scottie1_transmit_file(output_file);
-
-      Serial.println("Stop transmit!");
+	  
+      if (debug_mode)	  
+        Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
       digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
-      Serial.println("\nImage sent!");
+      if (debug_mode)	  
+        Serial.println("\nImage sent!");
   } 
   else
       Serial.println("Unknown mode!");
