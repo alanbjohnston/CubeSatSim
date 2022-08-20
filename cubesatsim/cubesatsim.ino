@@ -3826,11 +3826,12 @@ void prompt_for_input() {
       Serial.println(latitude);		  
       Serial.println("Enter latitude  (decimal degrees, positive is north): ");	  
       get_serial_string();		  
-      float result = atof(serial_string);
-      if (result != 0.0)  {
+      float float_result = atof(serial_string);
+      if (float_result != 0.0)  {
         Serial.print("Latitude updated to ");	    
-        Serial.print(result);		  
-        latitude = result;
+        Serial.print(float_result);		  
+        latitude = float_result;
+      }
       break;	
 		  
     case PROMPT_QUERY:
