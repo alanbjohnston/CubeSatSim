@@ -320,6 +320,8 @@ int buffer_size;
 long micro_timer;
 int ready = FALSE;
 bool cw_stop = false;
+float latitude = ;
+float latitude = 39.027702f, longitude = -77.078064f;
 
 #define PRESSED 0
 #define HELD 0
