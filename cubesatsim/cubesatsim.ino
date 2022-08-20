@@ -3802,7 +3802,20 @@ void prompt_for_input() {
       break;		  		  
 		  
     case PROMPT_SIM:
-		  
+      if (sim_mode == TRUE)
+	Serial.println("Simulted Telemetry mode is currently on")      
+      else
+	Serial.println("Simulted Telemetry mode is currently off")  
+      Serial.println("Do you want Simulated Telemetry on (y/n)");
+      get_serial_char();
+      if ((serial_string == 'y') || (serial_string == 'Y'))	{  
+        Serial.println("Setting Simulated telemetry to on");
+	sim_mode = true;      
+      } else if ((serial_string == 'n') || (serial_string == 'N')) {	      
+        Serial.println("Setting Simulated telemetry to off");
+	sim_mode = false;      
+      } else      
+        Serial.println("No change to Simulated Telemetry mode");
       break;	
 		  
     case PROMPT_LAT:
@@ -3834,9 +3847,23 @@ void get_serial_string() {
 	serial_string[i++] = input;
         Serial.write(input);
       }
-    }
+    } 
     sleep(0.1);	  
   }
   serial_string[i] = 0;	
   Serial.println(" ");	
+}
+
+void get_serial_char() {	
+  unsigned int elapsed_time = (unsigned int) millis();	
+  while (((millis() - elapsed_time) < 20000) && (Serial.available() < 1) { }
+  if (Serial.available() > 0) {	 
+    serial_string[0] = Serial.read();  // get character
+    Serial.write(input);
+    serial_string[1] = 0;	
+    Serial.println(" ");
+  } else
+  {
+    serial_string[0] = 0;	// timeout - no character	 
+  }
 }
