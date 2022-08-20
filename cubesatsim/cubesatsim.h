@@ -112,6 +112,9 @@
 #define PROMPT_HELP 6
 #define PROMPT_RESTART 7
 
+#define PAYLOAD_QUERY 1
+#define PAYLOAD_RESET 2
+#define PAYLOAD_CLEAR 3
 
 volatile int prompt = false;
 char serial_string[128];
@@ -322,6 +325,7 @@ int buffer_size;
 long micro_timer;
 int ready = FALSE;
 bool cw_stop = false;
+int payload_command = false;
 
 #define PRESSED 0
 #define HELD 0
