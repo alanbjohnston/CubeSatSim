@@ -3738,7 +3738,12 @@ void serial_input() {
        Serial.println("Query payload sensors");	     
        prompt = PROMPT_QUERY;
        break;	
-		   
+		    
+     case 'd':
+       Serial.println("Change debug mode");	     
+       prompt = PROMPT_DEBUG;
+       break;			   
+
      default:
        Serial.println("Not a command\n");	
 		   
@@ -3849,17 +3854,38 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_QUERY:
-		  
+      Serial.println("Querying payload sensors");		  		  
+      payload_command = PAYLOAD_QUERY;		  
       break;	
 		  
     case PROMPT_RESET:
+      Serial.println("Do you want to Reset the Reset Count (r) or Reset the Payload (p)?");
+      Serial.println("Enter r or p");		  
+      get_serial_char();
+      if ((serial_string[0] == 'r') || (serial_string[0] == 'R'))	{  
+        Serial.println("Resetting Reset Count");
+//	sim_mode = true;      
+      } else if ((serial_string[0] == 'p') || (serial_string[0] == 'P')) {	      
+        Serial.println("Resetting the Payload");
+	payload_command = PAYLOAD_RESET;      
+      } else      
+        Serial.println("No action");
 		  
       break;	
 		  
     case PROMPT_RESTART:
       Serial.println("Restart not yet implemented");		  
       break;	  }
-	
+
+		  
+    case PROMPT_DEBUG:
+      Serial.print("Changing Debug Mode to ");
+      debug_mode = !debug_mode;
+      if (debug_mode)  
+        Serial.println("on");	
+      else  
+        Serial.println("off");
+      break;	
 }
 
 void get_serial_string() {
