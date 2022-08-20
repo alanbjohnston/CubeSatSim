@@ -112,6 +112,7 @@
 #define PROMPT_HELP 6
 #define PROMPT_RESTART 7
 #define PROMPT_DEBUG 8
+#define PROMPT_VOLTAGE 9
 
 #define PAYLOAD_QUERY 1
 #define PAYLOAD_RESET 2
