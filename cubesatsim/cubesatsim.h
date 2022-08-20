@@ -329,6 +329,7 @@ bool cw_stop = false;
 int payload_command = false;
 bool debug_mode = false;
 bool voltage_read = false;
+bool ina219_started = false;
 
 #define PRESSED 0
 #define HELD 0
