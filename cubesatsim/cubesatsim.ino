@@ -257,8 +257,10 @@ void loop() {
   }
 	
   //  Calculate loop time
-  Serial.print("\nLoop time: ");	
-  Serial.println(millis() - startSleep);	
+  if (debug_mode) {	
+    Serial.print("\nLoop time: ");	
+    Serial.println(millis() - startSleep);
+  }
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
@@ -1191,9 +1193,11 @@ void get_tlm_fox() {
     }
 //	Serial.println("CC");     
   }
-  Serial.println(" ");	
-  Serial.print("get_fox_tlm returning with counter: ");
-  Serial.println(ctr);
+  if (debug_mode) {		
+    Serial.println(" ");	
+    Serial.print("get_fox_tlm returning with counter: ");
+    Serial.println(ctr);
+  }
   if (firstTime) {
     Serial.println(" ");
     firstTime = FALSE;	
@@ -3294,11 +3298,13 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-	Serial.print("R Microseconds: ");
-        Serial.println((micros() - micro_timer)/bufLen);
-        micro_timer = micros();
+    if (debug_mode) {		  
+      Serial.print("R Microseconds: ");
+      Serial.println((micros() - micro_timer)/bufLen);
+    }
+    micro_timer = micros();
   }
-  }
+}
 /*	
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
