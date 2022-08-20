@@ -326,8 +326,9 @@ void send_aprs_packet() {
   strcpy(str, tlm_str);	
   strcat(str, payload_str);	
   set_status(str);		
-	
-  Serial.println("Sending APRS packet!");
+  
+  if (debug)	
+    Serial.println("Sending APRS packet!");
   transmit_on();
   send_packet(_FIXPOS_STATUS);
   transmit_off();		
@@ -337,27 +338,30 @@ void send_cw() {
   char de[] = " DE ";	
   char telem[1000];
   char space[] = " ";	
-	
-  Serial.println("Sending CW packet!");
+
+  if (debug_mode)	
+    Serial.println("Sending CW packet!");
 	
   strcpy(telem, de);
   strcat(telem, callsign);
   strcat(telem, space);
   strcat(telem, tlm_str);  // don't send payload since it isn't encoded and has "."
   print_string(telem);
-  Serial.println(strlen(telem));
+//  Serial.println(strlen(telem));
  
   transmit_string(telem);	
 }
 
 void transmit_on() {
   if ((mode == SSTV) || (mode == AFSK)) {  // this isn't quite right for APRS - should only do when sending APRS packet
-    Serial.println("Transmit on!");
+    if (debug_mode)
+      Serial.println("Transmit on!");
     digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
   } 
-  else if (mode == BPSK) {	
-    Serial.println("Transmit on!");
+  else if (mode == BPSK) {
+    if (debug_mode)	  
+      Serial.println("Transmit on!");
     pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
     pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
   }
@@ -365,13 +369,14 @@ void transmit_on() {
  //   Serial.println("Transmit on!");
     cw_stop = false;
   }
-  else
+  else	  
     Serial.println("No transmit!");
 }
 
 void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
-  Serial.println("Transmit off!");
+  if (debug_mode)	
+   Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
 // ITimer0.stopTimer();	  // stop BPSK ISR timer
   if (mode == BPSK) {
@@ -489,7 +494,8 @@ void config_telem() {
     bufLen = 1000;
   } 
 // clearing min and max values
-  Serial.println("Clearing min and max telemetry values");	
+  if (debug_mode)	
+    Serial.println("Clearing min and max telemetry values");	
 	
   for (int i = 0; i < 9; i++) {
     voltage_min[i] = 1000.0;
@@ -585,7 +591,8 @@ void generate_simulated_telem() {
       if ((time_stamp - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
         eclipse_time = time_stamp;
-        Serial.println("\n\nSwitching eclipse mode! \n\n");
+        if (debug_mode)	      
+          Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
 
       double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-2, 2);
@@ -773,7 +780,8 @@ void get_tlm_fox() {
 	  {
 //	      Serial.println("Starting");	  
 	      if (loop_count % 32 == 0) {  // was 8  /// was loop now loop_count
-		Serial.println("Sending MIN frame");
+		if (debug_mode)      
+		  Serial.println("Sending MIN frame");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -787,7 +795,8 @@ void get_tlm_fox() {
 		}
 	      }
 	      if ((loop_count + 16) % 32 == 0) {  // was 8
-		Serial.println("Sending MAX frame");
+		if (debug_mode)      
+		  Serial.println("Sending MAX frame");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < 17; count1++) {
 		  if (count1 < 3)
@@ -1230,9 +1239,11 @@ void write_wave(int i, short int *buffer)
 //		ctr = ctr - BUFFER_SIZE;
 	if (ctr > bufLen) {
 		ctr = ctr - bufLen;
-		Serial.print("\r");
-		Serial.print(" ");
-		Serial.println(millis());
+		if (debug_mode) {
+//		  Serial.print("\r");
+//		  Serial.print(" ");
+		  Serial.println(millis());
+		}
 	}
 }
 
@@ -2024,13 +2035,14 @@ void read_ina219()
   busvoltage = ina219_1_0x40.getBusVoltage_V();
   current_mA = ina219_1_0x40.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
-  Serial.print("1 0x40 Voltage:  "); 
-  Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
-  Serial.print(current_mA); 
-  Serial.println(" mA");
 
+  if ((debug_mode) || (voltage_read))	{    
+    Serial.print("1 0x40 Voltage:  "); 
+    Serial.print(loadvoltage);
+    Serial.print("V  Current:       "); 
+    Serial.print(current_mA); 
+    Serial.println(" mA");
+  }
   voltage[0] = loadvoltage;
   current[0] = current_mA;
 
@@ -2038,13 +2050,14 @@ void read_ina219()
   busvoltage = ina219_1_0x41.getBusVoltage_V();
   current_mA = ina219_1_0x41.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
-  Serial.print("1 0x41 Voltage:  "); 
-  Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
-  Serial.print(current_mA); 
-  Serial.println(" mA");
 
+  if ((debug_mode) || (voltage_read))	{  	  
+    Serial.print("1 0x41 Voltage:  "); 
+    Serial.print(loadvoltage);
+    Serial.print("V  Current:       "); 
+    Serial.print(current_mA); 
+    Serial.println(" mA");
+  }
   voltage[1] = loadvoltage;
   current[1] = current_mA;
 	
@@ -2052,13 +2065,14 @@ void read_ina219()
   busvoltage = ina219_1_0x44.getBusVoltage_V();
   current_mA = ina219_1_0x44.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
+	  
+  if ((debug_mode) || (voltage_read))	{  	
   Serial.print("1 0x44 Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
-
+  }
   voltage[2] = loadvoltage;
   current[2] = current_mA;
 
@@ -2066,13 +2080,14 @@ void read_ina219()
   busvoltage = ina219_1_0x45.getBusVoltage_V();
   current_mA = ina219_1_0x45.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
+	  
+  if ((debug_mode) || (voltage_read))	{  	
   Serial.print("1 0x45 Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
-
+  }
   voltage[3] = loadvoltage;
   current[3] = current_mA;	
   }
@@ -2082,13 +2097,14 @@ void read_ina219()
   busvoltage = ina219_2_0x40.getBusVoltage_V();
   current_mA = ina219_2_0x40.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
+	  
+  if ((debug_mode) || (voltage_read))	{  	
   Serial.print("2 0x40 Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
-
+  }
   voltage[4] = loadvoltage;
   current[4] = current_mA;
 
@@ -2096,13 +2112,14 @@ void read_ina219()
   busvoltage = ina219_2_0x41.getBusVoltage_V();
   current_mA = ina219_2_0x41.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
+	  
+  if ((debug_mode) || (voltage_read))	{  	
   Serial.print("2 0x41 Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
-
+  }
   voltage[5] = loadvoltage;
   current[5] = current_mA;
 	
@@ -2110,13 +2127,14 @@ void read_ina219()
   busvoltage = ina219_2_0x44.getBusVoltage_V();
   current_mA = ina219_2_0x44.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
+
+  if ((debug_mode) || (voltage_read))	{  	  
   Serial.print("2 0x44 Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
-
+  }
   voltage[6] = loadvoltage;
   current[6] = current_mA;
 
@@ -2124,16 +2142,18 @@ void read_ina219()
   busvoltage = ina219_2_0x45.getBusVoltage_V();
   current_mA = ina219_2_0x45.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
-	
+	  
+  if ((debug_mode) || (voltage_read))	{  	
   Serial.print("2 0x45 Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
-
+  }
   voltage[7] = loadvoltage;
   current[7] = current_mA;
-  }	  
+  }	
+  voltage_read = false;	
 }
 
 void read_sensors()
@@ -2761,6 +2781,7 @@ void led_set(int ledPin, bool state)
 }
 
 void start_ina219() {
+  ina219_started = true;
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -2826,15 +2847,16 @@ void start_pwm() {
 	
   bpsk_pin_slice_A = pwm_gpio_to_slice_num(BPSK_PWM_A_PIN);
   bpsk_pin_slice_B = pwm_gpio_to_slice_num(BPSK_PWM_B_PIN);
-	
-  Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_A_PIN));
-  Serial.print(" ");	
-  Serial.print(pwm_gpio_to_channel(BPSK_PWM_A_PIN));
-  Serial.print(" ");		
-  Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_B_PIN));
-  Serial.print(" ");	
-  Serial.print(pwm_gpio_to_channel(BPSK_PWM_B_PIN));
-  Serial.println(" ");		
+  if (debug_mode) {	
+    Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_A_PIN));
+    Serial.print(" ");	
+    Serial.print(pwm_gpio_to_channel(BPSK_PWM_A_PIN));
+    Serial.print(" ");		
+    Serial.print(pwm_gpio_to_slice_num(BPSK_PWM_B_PIN));
+    Serial.print(" ");	
+    Serial.print(pwm_gpio_to_channel(BPSK_PWM_B_PIN));
+    Serial.println(" ");	
+  }
 /*
   // Setup PWM interrupt to fire when PWM cycle is complete
   pwm_clear_irq(bpsk_pin_slice);
@@ -3230,13 +3252,13 @@ void config_gpio() {
   // set input pins and read	
   pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
   pinMode(TXC_PIN, INPUT_PULLUP);  // Read TXC to see if present	
-  pinMode(LPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
+  pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(LPF_PIN) == FALSE)
-    Serial.println("LPF present");
+  if (digitalRead(BPF_PIN) == FALSE)
+    Serial.println("BPF present");
   else
-    Serial.println("LPF not present");	  
+    Serial.println("BPF not present");	  
 	
   if (digitalRead(TXC_PIN) == FALSE)
     Serial.println("TXC present");
@@ -3333,7 +3355,8 @@ void start_isr() {
     if (ITimer0.attachInterruptInterval(827, TimerHandler0))	// was 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
-      Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
+      if (debug_mode) 	    
+        Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
       timer0_on = true;	  
     }
     else
@@ -3352,7 +3375,8 @@ void start_button_isr() {
 	
   if (ITimer1.attachInterruptInterval(10000, TimerHandler1))	
   {
-    Serial.print(F("Starting ITimer1 OK, micros() = ")); 
+    if (debug_mode)	  
+      Serial.print(F("Starting ITimer1 OK, micros() = ")); 
     Serial.println(micros());
   }
   else
@@ -3529,7 +3553,8 @@ void transmit_callsign(char *callsign) {
 
 void transmit_string(char *string) {
   int j = 0;
-  Serial.println("Transmit on");
+  if (debug_mode)	
+    Serial.println("Transmit on");
   digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   digitalWrite(PTT_PIN, LOW);	
@@ -3545,7 +3570,8 @@ void transmit_string(char *string) {
       j++;	    
     }
   }
-  Serial.println("Transmit off");
+  if (debug_mode)	
+    Serial.println("Transmit off");
   digitalWrite(MAIN_LED_BLUE, LOW);	
   digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS 
@@ -3742,7 +3768,13 @@ void serial_input() {
       Serial.println("Change the Latitude and Longitude");	     
       prompt = PROMPT_LAT;
       break;	
-		   		   
+		   
+     case 'v':
+     case 'V':
+      Serial.println("Read INA219 voltage and current");	     
+      prompt = PROMPT_VOLTAGE;
+      break;	
+		    
      case '?':
        Serial.println("Query payload sensors");	     
        prompt = PROMPT_QUERY;
@@ -3787,7 +3819,8 @@ void prompt_for_input() {
        Serial.println("t  Simulated Telemetry");	     
        Serial.println("r  Resets Count, or payload & EEPROM");	
        Serial.println("l  Lat and Long");	     
-       Serial.println("?  Query sensors\n");	
+       Serial.println("?  Query sensors");	
+       Serial.println("v Read INA219 voltage and current\n");		  
        break;	
 		  
     case PROMPT_CALLSIGN:
@@ -3866,7 +3899,14 @@ void prompt_for_input() {
       Serial.println("Querying payload sensors");		  		  
       payload_command = PAYLOAD_QUERY;		  
       break;	
-		  
+		    
+    case PROMPT_VOLTAGE:
+      Serial.println("Querying INA219 voltage and current sensors");
+      if (!ina219_started)
+	start_ina219();
+      read_ina219();		  	  
+      break;	
+	  
     case PROMPT_RESET:
       Serial.println("Do you want to Reset the Reset Count (r) or Reset the Payload (p)?");
       Serial.println("Enter r or p");		  
