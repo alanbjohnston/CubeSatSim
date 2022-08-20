@@ -51,7 +51,7 @@
 #define RX2 9 // Serial2 to ESP32-CAM receive data
 #define MAIN_PB_PIN 10 // Main board PB pushbutton pin
 #define TXC_PIN 11 // Transceiver Board is present
-#define LPF_PIN 12  // BPF is installed
+#define BPF_PIN 12  // BPF is installed
 #define PI_3V3_PIN 13  // 3.3V supply used to detect Pi Zero
 #define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
 #define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
