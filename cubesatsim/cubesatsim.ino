@@ -2787,6 +2787,7 @@ void led_set(int ledPin, bool state)
 }
 
 void start_ina219() {
+#define PI_3V3_PIN 9 // for v0.1 hardware	
   ina219_started = true;
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
