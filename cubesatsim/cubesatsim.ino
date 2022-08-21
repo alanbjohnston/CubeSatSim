@@ -3890,6 +3890,8 @@ void prompt_for_input() {
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
 	sim_mode = false;      
+        if (!ina219_started)
+	  start_ina219(); 
       } else      
         Serial.println("No change to Simulated Telemetry mode");
       break;	
