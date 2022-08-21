@@ -3844,7 +3844,7 @@ void prompt_for_input() {
        Serial.println("r  Resets Count, or payload & EEPROM");	
        Serial.println("l  Lat and Long");	     
        Serial.println("?  Query sensors");	
-       Serial.println("v  Read INA219 voltage and current\n");	
+       Serial.println("v  Read INA219 voltage and current");	
        Serial.println("d  Change debug mode\n");		  
        break;	
 		  
@@ -3973,6 +3973,7 @@ void prompt_for_input() {
         Serial.println("off");
       break;	
   }
+  prompt = false;	
 }
 
 void get_serial_string() {
