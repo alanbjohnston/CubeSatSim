@@ -61,8 +61,8 @@ WiFiClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-extern void get_camera_image();
-extern void start_camera();
+extern bool get_camera_image();
+extern bool start_camera();
 
 void setup() {
 
@@ -133,8 +133,15 @@ void setup() {
   }
 */	
 //  start_button_isr(); 
+	
   setup_sstv();
-  start_camera();	
+  if (start_camera())  {
+    camera_detected = true;
+    Serial.println("Camera detected!");
+  } else
+    camera_detected = false;
+    Serial.println("No camera detected!");
+  }	
   start_isr();
   start_pwm();
 	
@@ -185,18 +192,19 @@ void loop() {
   else if (mode == SSTV)
   {
       char image_file[128];
-//      if (first_time_sstv) {  
-      if (false) {    // turn this off for now
+      if (first_time_sstv) {  
+//      if (false) {    // turn this off for now
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
       } else {
-        Serial.println("Getting image file");
- 	get_camera_image();      
-        Serial.println("Got image file");	      
-	char camera_file[] = "/cam.jpg";      
-	strcpy(image_file, camera_file);      
-	      
-//	strcpy(image_file, sstv2_filename);     // 2nd stored image
+	if (camera_detected) {      
+          Serial.println("Getting image file");
+ 	  get_camera_image();      
+//          Serial.println("Got image file");	      
+	  char camera_file[] = "/cam.jpg";      
+	  strcpy(image_file, camera_file);      
+	} else	      
+	  strcpy(image_file, sstv2_filename);     // 2nd stored image
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
