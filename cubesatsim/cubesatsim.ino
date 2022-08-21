@@ -188,7 +188,7 @@ void loop() {
       } else {
 
       // get jpeg from camera in future
-	      
+	get_image_file();      
 	      
 	      
 	      
