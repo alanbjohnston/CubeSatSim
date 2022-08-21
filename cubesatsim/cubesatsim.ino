@@ -39,7 +39,6 @@
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
-#include "pico-get-jpeg-serial.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
