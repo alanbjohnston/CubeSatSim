@@ -57,6 +57,12 @@ WiFiServer server(port);
 WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+#define PICO_0V1 // define for Pico v0.1 hardware
+
+#ifdef PICO_0v1
+#define BPF_PIN 8  // BPF is installed for v0.1 Pico
+#define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero for v0.1 Pico
+#endif
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
