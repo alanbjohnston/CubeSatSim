@@ -61,7 +61,8 @@ WiFiClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-extern void get_image_file();
+extern void get_camera_image();
+extern void start_camera();
 
 void setup() {
 
@@ -133,6 +134,7 @@ void setup() {
 */	
 //  start_button_isr(); 
   setup_sstv();
+  start_camera();	
   start_isr();
   start_pwm();
 	
@@ -189,7 +191,7 @@ void loop() {
 	first_time_sstv = false;
       } else {
         Serial.println("Getting image file");
- 	get_image_file();      
+ 	get_camera_image();      
         Serial.println("Got image file");	      
 	char camera_file[] = "/cam.jpg";      
 	strcpy(image_file, camera_file);      
