@@ -159,6 +159,9 @@ void setup() {
 	
   ready = TRUE;  // flag for core1 to start looping
 	
+  prompt = PROMPT_HELP;  // display input help menu	
+  prompt_for_input();
+	
   Serial.print("s");
   Serial.print(" ");
   Serial.println(millis());	
@@ -3711,7 +3714,7 @@ void serial_input() {
     switch(result) {
      case 'h':
      case 'H':
-       Serial.println("Help");	     
+ //      Serial.println("Help");	     
         prompt = PROMPT_HELP;
  /*		    
        Serial.println("\nChange settings by typing the letter:");	     
@@ -3761,7 +3764,7 @@ void serial_input() {
 		   
      case 'i':
      case 'I':
-       Serial.println("Restart CubeSatsim software");	     
+//       Serial.println("Restart CubeSatsim software");	     
        prompt = PROMPT_RESTART;
        break;	
 		   
