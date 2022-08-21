@@ -1,3 +1,11 @@
+//  Pico code to get camera image from ESP32-CAM running the esp32-cam-send-jpeg-serial software
+//
+//  run start_camera() once to initialize. Also runs get_camera_image and returns true if got an image
+//
+//  run get_camera_image() to get image.  If returns true, an image was recevied.  If false,
+//  the CAMERA_TIMEOUT milli second timeout was reached - might indicate no camera
+//
+
 #include <LittleFS.h>
 #include <FastCRC.h>
 
@@ -13,6 +21,7 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
+#define CAMERA_TIMEOUT 6000  // Camera timeout in milli seconds
 
 //#define GET_IMAGE_DEBUG
 
@@ -21,10 +30,10 @@ FastCRC8 CRC8;
 //#define PICOW true
 int led_pin = LED_BUILTIN;
 
-void get_camera_image();
-void start_camera();
+bool get_camera_image();
+bool start_camera();
 
-void start_camera() {
+bool start_camera() {
  
   // setup for ESP32-CAM
   
@@ -60,6 +69,8 @@ void start_camera() {
    Serial.println("Started Serial2 to camera");
 #endif
    LittleFS.begin();
+ 
+   return(get_camera_image());
 }
 
 void show_dir2() {
@@ -141,7 +152,7 @@ void loop() {
 }
 */
 
-void get_camera_image()  {
+bool get_camera_image()  {
  
   index1 = 0;
   flag_count = 0;
@@ -154,8 +165,10 @@ void get_camera_image()  {
   Serial.println("Starting get_image_file");
  #endif
   finished = false;
-  while (!finished) {
-  // put your main code here, to run repeatedly:
+ 
+  unsigned long time_start = millis();	    
+  while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
+
    if (Serial2.available()) {      // If anything comes in Serial2
       byte octet = Serial2.read(); 
 
@@ -246,4 +259,5 @@ void get_camera_image()  {
        } 
     }
   }
+  return(finished);
 }
