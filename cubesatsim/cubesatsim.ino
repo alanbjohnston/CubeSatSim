@@ -41,6 +41,8 @@
 #include "LittleFS.h"
 #include "pico-get-jpeg-serial/pico-get-jpeg-serial.h"
 
+extern void get_image_file();
+
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
 #include "sstv2.h"
