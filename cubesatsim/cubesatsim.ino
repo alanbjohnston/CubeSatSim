@@ -189,10 +189,10 @@ void loop() {
 
       // get jpeg from camera in future
 	get_image_file();      
+	char camera_file[] = "/cam.jpg";      
+	strcpy(image_file, camera_file);      
 	      
-	      
-	      
-	strcpy(image_file, sstv2_filename);     
+//	strcpy(image_file, sstv2_filename);     
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
