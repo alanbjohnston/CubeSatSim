@@ -183,17 +183,18 @@ void loop() {
   else if (mode == SSTV)
   {
       char image_file[128];
-      if (first_time_sstv) {  
+//      if (first_time_sstv) {  
+      if (false) {    // turn this off for now
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
       } else {
-
-      // get jpeg from camera in future
-	get_image_file();      
+        Serial.println("Getting image file");
+ 	get_image_file();      
+        Serial.println("Got image file");	      
 	char camera_file[] = "/cam.jpg";      
 	strcpy(image_file, camera_file);      
 	      
-//	strcpy(image_file, sstv2_filename);     
+//	strcpy(image_file, sstv2_filename);     // 2nd stored image
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
