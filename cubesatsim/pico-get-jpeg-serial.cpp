@@ -59,7 +59,7 @@ if (PICOW)
    LittleFS.begin();
 }
 */
-void show_dir() {
+void show_dir2() {
   int count = 0;
   Dir dir = LittleFS.openDir("/");
 // or Dir dir = LittleFS.openDir("/data");
@@ -105,7 +105,7 @@ void write_jpg() {
   } else
     Serial.println("Not a JPEG");
 
-    show_dir();
+    show_dir2();
 /*
     delay(2000);
     
