@@ -6,7 +6,7 @@
 
 bool finished = false;
 
-//char buffer[100001];
+char buffer2[100001];
 int index1 = 0;
 char start_flag[] = "3d99de816e5ad7742b61a37c39141783";
 char end_flag[] = "f681a5c52351befe0e3524eb1a40f14b7803317a";
