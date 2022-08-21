@@ -39,6 +39,7 @@
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
+#include "pico-get-jpeg-serial/pico-get-jpeg-serial.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -2787,7 +2788,7 @@ void led_set(int ledPin, bool state)
 }
 
 void start_ina219() {
-#define PI_3V3_PIN 9 // for v0.1 hardware	
+//#define PI_3V3_PIN 9 // for v0.1 hardware	
   ina219_started = true;
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
