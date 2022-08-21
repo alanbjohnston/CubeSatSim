@@ -37,7 +37,7 @@ if (PICOW)
 
    LittleFS.begin();
 }
-
+*/
 void show_dir() {
   int count = 0;
   Dir dir = LittleFS.openDir("/");
@@ -57,7 +57,7 @@ void show_dir() {
   }
   Serial.println(">");
 }
-*/
+
 
 void write_jpg() {
 /*
