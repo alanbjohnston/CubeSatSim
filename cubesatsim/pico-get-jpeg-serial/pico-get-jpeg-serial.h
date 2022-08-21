@@ -19,3 +19,4 @@ FastCRC8 CRC8;
 //#define PICOW true
 int led_pin = LED_BUILTIN;
 
+void get_image_file();
