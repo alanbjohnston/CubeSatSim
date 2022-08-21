@@ -61,6 +61,8 @@ WiFiClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
+extern void get_image_file();
+
 void setup() {
 
   set_sys_clock_khz(133000, true);   
