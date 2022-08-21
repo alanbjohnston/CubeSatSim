@@ -3937,6 +3937,7 @@ void prompt_for_input() {
       Serial.println("Querying INA219 voltage and current sensors");
       if (!ina219_started)
 	start_ina219();
+      voltage_read = true;		  
       read_ina219();		  	  
       break;	
 	  
