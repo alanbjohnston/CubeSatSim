@@ -21,7 +21,7 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
-#define CAMERA_TIMEOUT 6000  // Camera timeout in milli seconds
+#define CAMERA_TIMEOUT 12000  // Camera timeout in milli seconds
 
 //#define GET_IMAGE_DEBUG
 
@@ -118,8 +118,9 @@ void write_jpg() {
 //    }
   } else
     Serial.println("Not a JPEG");
-
+#ifdef GET_IMAGE_DEBUG  
     show_dir2();
+#endif 
 /*
     delay(2000);
     
