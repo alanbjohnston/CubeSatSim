@@ -62,18 +62,18 @@ void show_dir() {
 void write_jpg() {
 /*
   Serial.println("---------------");
-  Serial.println(buffer[jpeg_start], HEX);
-  Serial.println(buffer[jpeg_start + 1], HEX);
-  Serial.println(buffer[jpeg_start + 2], HEX);
-  Serial.println(buffer[jpeg_start + 3], HEX);
+  Serial.println(buffer2[jpeg_start], HEX);
+  Serial.println(buffer2[jpeg_start + 1], HEX);
+  Serial.println(buffer2[jpeg_start + 2], HEX);
+  Serial.println(buffer2[jpeg_start + 3], HEX);
 */      
-  if ((buffer[jpeg_start] == 0xff) && (buffer[jpeg_start + 1] == 0xd8)
-       && (buffer[index1 - 2] == 0xff) && (buffer[index1 - 1] == 0xd9)) {
+  if ((buffer2[jpeg_start] == 0xff) && (buffer2[jpeg_start + 1] == 0xd8)
+       && (buffer2[index1 - 2] == 0xff) && (buffer2[index1 - 1] == 0xd9)) {
  
     Serial.println("Received a JPEG! Writing to file.");
     File i = LittleFS.open("/cam.jpg", "w+");
     if (i) {
-      i.write(&buffer[jpeg_start], (size_t) (index1 - jpeg_start));       
+      i.write(&buffer2[jpeg_start], (size_t) (index1 - jpeg_start));       
       finished = true;
      } else
         Serial.println("Error opening cam.jpg");
@@ -126,35 +126,35 @@ void get_image_file()  {
 
      if (start_flag_complete) {
 //       Serial.println("Start flag complete detected");
-       buffer[index1++] = octet;
+       buffer2[index1++] = octet;
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
 //            Serial.println("Found part of end flag!");
             if (flag_count >= strlen(end_flag)) {  // complete image           
-///              buffer[index1++] = octet;
+///              buffer2[index1++] = octet;
               Serial.println("\nFound end flag");
 //              Serial.println(octet, HEX);
               while(!Serial2.available()) { }     // Wait for another byte
 //              octet = Serial2.read(); 
-//              buffer[index1++] = octet;
+//              buffer2[index1++] = octet;
 //              Serial.println(octet, HEX);
 //              while(!Serial2.available()) { }     // Wait for another byte
               int received_crc = Serial2.read(); 
-//              buffer[index1++] = octet;
+//              buffer2[index1++] = octet;
                             
               Serial.print("\nFile length: ");
               Serial.println(index1 - (int)strlen(end_flag));
 //              index1 -= 1; // 40;
-//              Serial.println(buffer[index1 - 1], HEX); 
-//              int received_crc = buffer[index1];
+//              Serial.println(buffer2[index1 - 1], HEX); 
+//              int received_crc = buffer2[index1];
 //              index1 -= 1;
 
-              uint8_t * data = (uint8_t *) &buffer[0];
+              uint8_t * data = (uint8_t *) &buffer2[0];
 #ifdef DEBUG
       Serial.println("\nCRC cacluation data:");
-      Serial.println(buffer[0], HEX);
-      Serial.println(buffer[index1 - 1], HEX);
+      Serial.println(buffer2[0], HEX);
+      Serial.println(buffer2[index1 - 1], HEX);
       Serial.println(index1);
       Serial.println(received_crc, HEX);     
  #endif             
@@ -177,7 +177,7 @@ void get_image_file()  {
          } else {
            flag_count = 0;
          }
- ///        buffer[index1++] = octet;
+ ///        buffer2[index1++] = octet;
            
 #ifdef DEBUG    
            char hexValue[5];
