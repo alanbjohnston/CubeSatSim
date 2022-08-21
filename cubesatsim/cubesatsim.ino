@@ -75,8 +75,12 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
 
-  sleep(5.0);		
-
+  sleep(5.0);	
+	
+// otherwise, run CubeSatSim Pico code
+  
+  Serial.println("\n\nCubeSatSim Pico v0.14 starting...\n\n");
+	
   config_gpio();	
 	
   EEPROM.begin(512);	
@@ -87,9 +91,6 @@ void setup() {
 
 // detect Pi Zero using 3.3V
 // if Pi is present, run Payload OK software
-// otherwise, run CubeSatSim Pico code
-  
-  Serial.println("\n\nCubeSatSim Pico v0.13 starting...\n\n");
 
   load_files();			
 /*	
@@ -414,7 +415,7 @@ void config_telem() {
 	
   frameCnt = 1; 
   
-  Serial.println("v1 Present with UHF BPF\n");
+  // Serial.println("v1 Present with UHF BPF\n");
   txLed = 2;
   txLedOn = HIGH;
   txLedOff = LOW;
@@ -440,15 +441,15 @@ void config_telem() {
     sample_rate = 200;	  
 //    samples = S_RATE / bitRate;
     samples = sample_rate / bitRate;
-    Serial.println(samples);	  
+//    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-    Serial.println(bufLen);	  
+//    Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
     sleepTime = 0.1;
-    Serial.println(samplePeriod);
+//    Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-    Serial.println(frameTime);
+//    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     memset(buffer, 0xa5, sizeof(buffer)); 
@@ -469,19 +470,19 @@ void config_telem() {
     sample_rate = 1200;	  
 //    samples = S_RATE / bitRate;
     samples = sample_rate / bitRate;
-    Serial.println(samples);	
+//    Serial.println(samples);	
 //    bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples); // * 2;  // 2 *
     bufLen = 5751; // instead of 5841	  
-    Serial.println(bufLen);	
+//    Serial.println(bufLen);	
 //    samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 500;
     samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000; //  - 500;
     //    samplePeriod = 3000;
     //    sleepTime = 3.0;
     //samplePeriod = 2200; // reduce dut to python and sensor querying delays
     sleepTime = 2.2f;
-    Serial.println(samplePeriod);
+ //   Serial.println(samplePeriod);
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms	  
-    Serial.println(frameTime);
+//    Serial.println(frameTime);
 //    printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
 //      bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
 
@@ -3843,7 +3844,8 @@ void prompt_for_input() {
        Serial.println("r  Resets Count, or payload & EEPROM");	
        Serial.println("l  Lat and Long");	     
        Serial.println("?  Query sensors");	
-       Serial.println("v Read INA219 voltage and current\n");		  
+       Serial.println("v  Read INA219 voltage and current\n");	
+       Serial.println("d  Change debug mode\n");		  
        break;	
 		  
     case PROMPT_CALLSIGN:
