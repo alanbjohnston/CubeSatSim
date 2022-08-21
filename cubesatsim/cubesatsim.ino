@@ -85,7 +85,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("\n\nCubeSatSim Pico v0.14 starting...\n\n");
+  Serial.println("CubeSatSim Pico v0.14 starting...\n");
 	
   config_gpio();	
 	
@@ -2814,14 +2814,14 @@ void start_ina219() {
   ina219_started = true;
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
-  Serial.print("Pi 3.3V: ");
-  Serial.println(digitalRead(PI_3V3_PIN));
+//  Serial.print("Pi 3.3V: ");
+//  Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == LOW)  {
-    Serial.println("Powering INA219s through 3.3V pin");  
+    Serial.println("Pi Zero not present, powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
-    Serial.println("Not powering INA219s since 3.3V is present");	  
+    Serial.println("Not powering INA219s since Pi Zero is present");	  
 //    pinMode(MAIN_INA219, OUTPUT);
 //    digitalWrite(MAIN_INA219, HIGH);
   }
