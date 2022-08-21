@@ -14,6 +14,8 @@ int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
 
+#define GET_IMAGE_DEBUG
+
 //#define DEBUG
 
 //#define PICOW true
@@ -139,6 +141,10 @@ void loop() {
 */
 
 void get_image_file()  {
+ 
+#ifdef GET_IMAGE_DEBUG
+  Serial.println("Starting get_image_file");
+ #endif
   finished = false;
   while (!finished) {
   // put your main code here, to run repeatedly:
@@ -151,7 +157,9 @@ void get_image_file()  {
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
-//            Serial.println("Found part of end flag!");
+#ifdef GET_IMAGE_DEBUG        
+            Serial.println("Found part of end flag!");
+#endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
               Serial.println("\nFound end flag");
@@ -172,7 +180,7 @@ void get_image_file()  {
 //              index1 -= 1;
 
               uint8_t * data = (uint8_t *) &buffer2[0];
-#ifdef DEBUG
+#ifdef GET_IMAGE_DEBUG
       Serial.println("\nCRC cacluation data:");
       Serial.println(buffer2[0], HEX);
       Serial.println(buffer2[index1 - 1], HEX);
@@ -200,7 +208,7 @@ void get_image_file()  {
          }
  ///        buffer2[index1++] = octet;
            
-#ifdef DEBUG    
+#ifdef GET_IMAGE_DEBUG    
            char hexValue[5];
            if (octet != 0x66) {
              sprintf(hexValue, "%02X", octet);
