@@ -14,7 +14,7 @@ int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
 
-#define GET_IMAGE_DEBUG
+//#define GET_IMAGE_DEBUG
 
 //#define DEBUG
 
