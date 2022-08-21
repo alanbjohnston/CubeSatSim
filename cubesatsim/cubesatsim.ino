@@ -243,7 +243,7 @@ void send_packet() {
 	
   Serial.println("Sending APRS packet!");
   transmit_on();
-  send_packet(_FIXPOS_STATUS);
+  send_packet(_FIXPOS_STATUS, false);
   transmit_off();		
 }
 
@@ -360,7 +360,8 @@ void config_telem() {
     set_pin(AUDIO_OUT_PIN);
 
     char callsign[] = "W3ZM";
-    set_callsign(callsign);
+    char destination[] = "APCSS";	  
+    set_callsign(callsign, destination);
     char lat_default[] = "0610.55S";
     char lon_default[] = "10649.62E";
     char sym_ovl_default = 'H';
