@@ -138,7 +138,7 @@ void setup() {
   if (start_camera())  {
     camera_detected = true;
     Serial.println("Camera detected!");
-  } else
+  } else {
     camera_detected = false;
     Serial.println("No camera detected!");
   }	
