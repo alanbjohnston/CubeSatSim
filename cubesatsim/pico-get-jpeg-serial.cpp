@@ -21,20 +21,21 @@ FastCRC8 CRC8;
 //#define PICOW true
 int led_pin = LED_BUILTIN;
 
-void get_image_file();
+void get_camera_image();
+void start_camera();
 
-/*
-void setup() {
+void start_camera() {
  
-  // put your setup code here, to run once:
+  // setup for ESP32-CAM
   
-if (PICOW)
-  led_pin = STEM_LED2_PIN;
+//if (PICOW)
+//  led_pin = STEM_LED2_PIN;
   
    Serial.begin(115200);
 
-   delay(5000);
+//   delay(5000);
 
+/* 
    pinMode(led_pin, OUTPUT);
 
     digitalWrite(led_pin, LOW);
@@ -49,18 +50,18 @@ if (PICOW)
        digitalWrite(led_pin, LOW); 
     
     delay(2000);
-
+*/
    Serial2.setRX(9);
    delay(100);
    Serial2.setTX(8);
    delay(100);
    Serial2.begin(115200);
-
-   Serial.println("Starting");
-
+#ifdef GET_IMAGE_DEBUG  
+   Serial.println("Started Serial2 to camera");
+#endif
    LittleFS.begin();
 }
-*/
+
 void show_dir2() {
   int count = 0;
   Dir dir = LittleFS.openDir("/");
@@ -140,7 +141,7 @@ void loop() {
 }
 */
 
-void get_image_file()  {
+void get_camera_image()  {
  
 #ifdef GET_IMAGE_DEBUG
   Serial.println("Starting get_image_file");
