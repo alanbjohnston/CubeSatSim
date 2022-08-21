@@ -143,6 +143,13 @@ void loop() {
 
 void get_camera_image()  {
  
+  index1 = 0;
+  flag_count = 0;
+  start_flag_detected = false;
+  start_flag_complete = false;
+  end_flag_detected = false;
+  jpeg_start = 0;
+ 
 #ifdef GET_IMAGE_DEBUG
   Serial.println("Starting get_image_file");
  #endif
