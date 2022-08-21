@@ -331,6 +331,7 @@ int payload_command = false;
 bool debug_mode = false;
 bool voltage_read = false;
 bool ina219_started = false;
+bool camera_detected = false;
 
 #define PRESSED 0
 #define HELD 0
