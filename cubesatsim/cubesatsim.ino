@@ -2050,8 +2050,9 @@ void test_radio()
 
 void read_ina219()
 {
-  digitalWrite(9, HIGH);
-	
+#ifdef PICO_0V1	
+  digitalWrite(PI_3V3_PIN, HIGH);
+#endif	
   float shuntvoltage = 0;
   float busvoltage = 0;
   float current_mA = 0;
