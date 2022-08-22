@@ -18,7 +18,7 @@
 // This code is an Arduino sketch for the Raspberry Pi Pico
 // based on the Raspberry Pi Code
 
-#define PICO_0V1 // define for Pico v0.1 hardware
+//#define PICO_0V1 // define for Pico v0.1 hardware
 
 #include "cubesatsim.h"
 #include "DumbTXSWS.h"
@@ -81,7 +81,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.14 starting...\n");
+  Serial.println("CubeSatSim Pico v0.2 starting...\n");
 	
   config_gpio();	
 	
