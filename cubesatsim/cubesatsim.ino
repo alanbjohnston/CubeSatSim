@@ -2056,10 +2056,11 @@ void read_ina219()
 {
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
     Serial.println("Nothing to read");
-	
+/*	
 #ifdef PICO_0V1	
   digitalWrite(PI_3V3_PIN, HIGH);
 #endif	
+*/	
   float shuntvoltage = 0;
   float busvoltage = 0;
   float current_mA = 0;
@@ -2818,8 +2819,10 @@ void led_set(int ledPin, bool state)
 void start_ina219() {
 //#define PI_3V3_PIN 9 // for v0.1 hardware
   Serial.println("Starting INA219");
-  Serial.println(PI_3V3_PIN);	
+//  Serial.println(PI_3V3_PIN);	
   ina219_started = true;
+	
+#ifndef PICO_0V1	
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
 //  Serial.print("Pi 3.3V: ");
@@ -2830,9 +2833,13 @@ void start_ina219() {
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
     Serial.println("Not powering INA219s since Pi Zero is present");	  
-//    pinMode(MAIN_INA219, OUTPUT);
-//    digitalWrite(MAIN_INA219, HIGH);
   }
+#else
+    Serial.println("Powering INA219s through 3.3V pin");  
+    pinMode(PI_3V3_PIN, OUTPUT);
+    digitalWrite(PI_3V3_PIN, HIGH);	
+#endif
+	
   sleep(0.1);
   i2c_bus1 = ina219_1_0x40.begin();  // check i2c bus 1
   ina219_1_0x41.begin();
