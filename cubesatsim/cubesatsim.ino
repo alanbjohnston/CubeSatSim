@@ -2054,6 +2054,9 @@ void test_radio()
 
 void read_ina219()
 {
+  if (voltage_read && !i2c_bus1 && !i2c_bus3)
+    Serial.println("Nothing to read");
+	
 #ifdef PICO_0V1	
   digitalWrite(PI_3V3_PIN, HIGH);
 #endif	
