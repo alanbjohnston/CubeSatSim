@@ -19,7 +19,7 @@
 // based on the Raspberry Pi Code
 
 #define PICO_0V1 // define for Pico v0.1 hardware
-
+3
 #include "cubesatsim.h"
 #include "DumbTXSWS.h"
 #include <Wire.h>
@@ -107,7 +107,11 @@ void setup() {
     }
   }
 */
-// configure STEM Payload sensors	
+// configure STEM Payload sensors
+	
+  pinMode(PI_3V3_PIN, OUTPUT);
+  digitalWrite(PI_3V3_PIN, HIGH);
+	
   start_payload();  // above code not working, so forcing it
 	
   read_reset_count();	
