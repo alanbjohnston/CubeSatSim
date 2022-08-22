@@ -4077,8 +4077,8 @@ void set_lat_lon() {
 
 void program_radio() {
 	
-    DumbTXSWS mySerial(SWTX_PIN); // TX pin
-    mySerial.begin(9600);
+  DumbTXSWS mySerial(SWTX_PIN); // TX pin
+  mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
      sleep(0.5); // delay(500);
@@ -4089,4 +4089,5 @@ void program_radio() {
 //   sleep(0.5);	  
 //   mySerial.println("AT+DMOSETMIC=6,0\r");  	
 	
+  }
 }
