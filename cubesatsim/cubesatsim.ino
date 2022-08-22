@@ -230,6 +230,8 @@ void loop() {
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
+      if (!wifi) 
+        digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
       scottie1_transmit_file(output_file, debug_mode);
@@ -237,6 +239,8 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
+      if (!wifi) 
+        digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
       if (debug_mode)	  
@@ -276,6 +280,7 @@ void loop() {
     sleep(0.5);	 
     config_telem();
     config_radio();
+    sampleTime = (unsigned int) millis();	 	 
  }
 	
   if (prompt) {
