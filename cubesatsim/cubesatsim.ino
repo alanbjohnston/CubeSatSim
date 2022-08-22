@@ -2274,7 +2274,7 @@ void start_payload() {
   float zOffset;		  
   EEPROM.get(0, flag);
 	  
-  if (flag == 0xA07)
+  if ((flag == 0xA07) && (payload_command != PAYLOAD_RESET))
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
 
@@ -2291,6 +2291,8 @@ void start_payload() {
   }
   else
   {
+    payload_command = false;
+	  
     Serial.println("Calculating gyro offsets and storing in EEPROM\n");
 
     mpu6050.calcGyroOffsets(true);
@@ -3978,7 +3980,8 @@ void prompt_for_input() {
 	            
       } else if ((serial_string[0] == 'p') || (serial_string[0] == 'P')) {	      
         Serial.println("Resetting the Payload");
-	payload_command = PAYLOAD_RESET;      
+	payload_command = PAYLOAD_RESET;
+	start_payload();      
       } else      
         Serial.println("No action");
 		  
