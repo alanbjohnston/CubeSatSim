@@ -2050,6 +2050,8 @@ void test_radio()
 
 void read_ina219()
 {
+  digitalWrite(9, HIGH);
+	
   float shuntvoltage = 0;
   float busvoltage = 0;
   float current_mA = 0;
