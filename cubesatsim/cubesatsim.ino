@@ -2806,7 +2806,9 @@ void led_set(int ledPin, bool state)
 }
 
 void start_ina219() {
-//#define PI_3V3_PIN 9 // for v0.1 hardware	
+//#define PI_3V3_PIN 9 // for v0.1 hardware
+  Serial.println("Starting INA219");
+  Serial.println(PI_3V3_PIN);	
   ina219_started = true;
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
@@ -3295,8 +3297,8 @@ void config_gpio() {
 //  Serial.println(digitalRead(SQUELCH));
 	
 
-  Serial.print("Pi 3.3V: ");
-  Serial.println(digitalRead(PI_3V3_PIN));
+//  Serial.print("Pi 3.3V: ");
+//  Serial.println(digitalRead(PI_3V3_PIN));
 
   // set anlog inputs and read	
   Serial.print("Diode voltage (temperature): ");
