@@ -51,13 +51,16 @@
 #ifdef PICO_0V1
 #define BPF_PIN 8  // BPF is installed for v0.1 Pico
 #define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero for v0.1 Pico
+#define TX2 12 // Serial2 to ESP32-CAM transmit data
+#define RX2 13 // Serial2 to ESP32-CAM receive data
 #else
+#define TX2 8 // Serial2 to ESP32-CAM transmit data
+#define RX2 9 // Serial2 to ESP32-CAM receive data
 #define BPF_PIN 12  // BPF is installed
 #define PI_3V3_PIN 13  // 3.3V supply used to detect Pi Zero
 #endif
 
-#define TX2 8 // Serial2 to ESP32-CAM transmit data
-#define RX2 9 // Serial2 to ESP32-CAM receive data
+
 #define MAIN_PB_PIN 10 // Main board PB pushbutton pin
 #define TXC_PIN 11 // Transceiver Board is present
 
