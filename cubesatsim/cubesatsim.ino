@@ -2011,26 +2011,13 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 	
-  if ((mode == AFSK) || (mode == FSK) || (mode == SSTV)) {
+  if ((mode == AFSK) || (mode == FSK) || (mode == SSTV) || (mode == CW)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
 	  
     pinMode(AUDIO_OUT_PIN, OUTPUT);	  
 
-    DumbTXSWS mySerial(SWTX_PIN); // TX pin
-    mySerial.begin(9600);
-    
-  for (int i = 0; i < 5; i++) {
-     sleep(0.5); // delay(500);
-//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
-//    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
-//     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
-//   sleep(0.5);	  
-//   mySerial.println("AT+DMOSETMIC=6,0\r");  
-     if (mode == SSTV)	  
-      first_time_sstv = true;	  
-  }
+    program_radio();
   	
 //  } else if (mode == FSK)	  {  // moved to below
 //    transmit_on();
@@ -3601,12 +3588,18 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 }
 
 void transmit_callsign(char *callsign) {
+		
   char de[] = " HI HI DE ";	
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
   Serial.print("Transmitting id: ");	
   print_string(id);	
+	
+  if (reset_count == 0) {
+    program_radio();	  
+  }
+	
   transmit_string(id);	  
 }
 
@@ -4080,4 +4073,20 @@ void set_lat_lon() {
 	  
   set_lat_lon_icon(lat_string, lon_string, icon);	
 
+}
+
+void program_radio() {
+	
+    DumbTXSWS mySerial(SWTX_PIN); // TX pin
+    mySerial.begin(9600);
+    
+  for (int i = 0; i < 5; i++) {
+     sleep(0.5); // delay(500);
+//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
+//    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
+//     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
+//   sleep(0.5);	  
+//   mySerial.println("AT+DMOSETMIC=6,0\r");  	
+	
 }
