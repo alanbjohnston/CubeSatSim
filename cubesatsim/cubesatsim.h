@@ -201,6 +201,7 @@ void get_serial_string();
 void get_serial_char();
 void get_serial_clear_buffer();
 void set_lat_lon();
+void program_radio();
 
 #ifndef STASSID
 #define STASSID "Pico"
