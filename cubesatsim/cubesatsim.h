@@ -47,12 +47,20 @@
 #define SCL2 5 // I2C 2 Clock
 #define BPSK_CONTROL_A 6 // was 16   // control for Phase A to switch
 #define BPSK_CONTROL_B 7 // was 15   // control for Phase A to switch
+
+#ifdef PICO_0V1
+#define BPF_PIN 8  // BPF is installed for v0.1 Pico
+#define PI_3V3_PIN 9  // 3.3V supply used to detect Pi Zero for v0.1 Pico
+#else
+#define BPF_PIN 12  // BPF is installed
+#define PI_3V3_PIN 13  // 3.3V supply used to detect Pi Zero
+#endif
+
 #define TX2 8 // Serial2 to ESP32-CAM transmit data
 #define RX2 9 // Serial2 to ESP32-CAM receive data
 #define MAIN_PB_PIN 10 // Main board PB pushbutton pin
 #define TXC_PIN 11 // Transceiver Board is present
-#define BPF_PIN 12  // BPF is installed
-#define PI_3V3_PIN 13  // 3.3V supply used to detect Pi Zero
+
 #define BPSK_PWM_A_PIN 14 // was 6 // PWM Output Phase A to switch
 #define BPSK_PWM_B_PIN 15 // was 7 // PWM Output Phase B to switch
 #define SWTX_PIN 16 // was 14 SR_FRS_05W Transmit Pico software serial port 
