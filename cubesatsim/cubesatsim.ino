@@ -109,8 +109,8 @@ void setup() {
 */
 // configure STEM Payload sensors
 	
-  pinMode(PI_3V3_PIN, OUTPUT);
-  digitalWrite(PI_3V3_PIN, HIGH);
+//  pinMode(PI_3V3_PIN, OUTPUT);
+//  digitalWrite(PI_3V3_PIN, HIGH);
 	
   start_payload();  // above code not working, so forcing it
 	
@@ -2821,8 +2821,8 @@ void start_ina219() {
   pinMode(PI_3V3_PIN, INPUT); 	
 //  Serial.print("Pi 3.3V: ");
 //  Serial.println(digitalRead(PI_3V3_PIN));
-///  if (digitalRead(PI_3V3_PIN) == LOW)  {
-  if (true)  {
+/  if (digitalRead(PI_3V3_PIN) == LOW)  {
+//  if (true)  {
     Serial.println("Pi Zero not present, powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
