@@ -2813,7 +2813,7 @@ void led_set(int ledPin, bool state)
 void start_ina219() {
 //#define PI_3V3_PIN 9 // for v0.1 hardware
   Serial.println("Starting INA219");
-//  Serial.println(PI_3V3_PIN);	
+  Serial.println(PI_3V3_PIN);	
   ina219_started = true;
 	
 #ifndef PICO_0V1	
