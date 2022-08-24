@@ -379,7 +379,8 @@ void send_cw() {
   strcat(telem, callsign);
   strcat(telem, space);
   strcat(telem, tlm_str);  // don't send payload since it isn't encoded and has "."
-  print_string(telem);
+  if (debug_mode)	
+    print_string(telem);
 //  Serial.println(strlen(telem));
  
   transmit_string(telem);	
