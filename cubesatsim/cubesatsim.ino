@@ -376,15 +376,15 @@ void read_config_file() {
   config_file.close();
 	
   Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
-/*	
+	
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    printf("Valid latitude and longitude in config file\n");
+    Serial.println("Valid latitude and longitude in config file\n");
 // convert to APRS DDMM.MM format
     latitude = toAprsFormat(lat_file);
     longitude = toAprsFormat(long_file);
-    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+    Serial.print("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
   } else { // set default
     latitude = toAprsFormat(latitude);
     longitude = toAprsFormat(longitude);
@@ -392,7 +392,28 @@ void read_config_file() {
 	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;	
-*/	
+	
+  config_file.close();	
+}
+
+void write_config_file() {
+  Serial.println("Writing /sim.cfg file");	
+  char buff[255];	
+  File config_file = LittleFS.open("/sim.cfg", "w+");		  
+	  
+//  sprintf(buff, "%s %d", callsign, );
+	
+  if (sim_mode)
+	strcpy(sim_yes, "yes");
+  else
+	strcpy(sim_yes, "no");
+	
+  sprintf(buff, "%s %d %f %f %s", call, reset_count, latitude, & longitude, sim_yes)
+  config_file.write(buff, strlen(buff));	  
+	  
+  config_file.close();
+  Serial.println("Write complete");	
+	
 }
 
 
@@ -3956,6 +3977,7 @@ void prompt_for_input() {
 	  set_callsign(callsign, destination);	
 	}
         Serial.println("Callsign updated!");
+	write_config_file();      
       } else
         Serial.println("Callsign not updated!");	      
 
