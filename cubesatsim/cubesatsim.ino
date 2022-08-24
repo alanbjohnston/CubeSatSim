@@ -408,7 +408,7 @@ void write_config_file() {
   else
 	strcpy(sim_yes, "no");
 	
-  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes)
+  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
   config_file.write(buff, strlen(buff));	  
 	  
   config_file.close();
