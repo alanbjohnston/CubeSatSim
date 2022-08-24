@@ -357,7 +357,10 @@ void send_aprs_packet() {
   char header_str[] = "hi hi ";
   strcpy(str, header_str);	
   strcpy(str, tlm_str);	
-  strcat(str, payload_str);	
+  strcat(str, payload_str);
+  print_string(str);
+  Serial.println(strlen(str);	
+	
   set_status(str);		
   
   if (debug_mode)	
@@ -2331,6 +2334,7 @@ void start_payload() {
 void read_payload()
 {
   payload_str[0] = '\0';  // clear the payload string
+//  print_string(payload_str);	
 	
 //  if ((Serial.available() > 0)|| first_time == true) 
   {
@@ -2340,7 +2344,7 @@ void read_payload()
     char str[100];
 	  
     strcpy(payload_str, header);
-//    print_string(str);		  
+//    print_string(payload_str);		  
     if (bmePresent) 
 //    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
@@ -2348,6 +2352,7 @@ void read_payload()
     else
         sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
+//    print_string(payload_str);		  
 
     if (mpuPresent) 	 { 
 //    print_string(payload_str);	
@@ -2376,6 +2381,7 @@ void read_payload()
     }   else
         sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
+//    print_string(payload_str);		  
 	  
     sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
@@ -3393,7 +3399,7 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(827, TimerHandler0))	// was 828
+    if (ITimer0.attachInterruptInterval(828, TimerHandler0))	// was was 827 and 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
