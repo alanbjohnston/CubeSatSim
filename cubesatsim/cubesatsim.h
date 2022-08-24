@@ -362,7 +362,7 @@ bool timer0_on = false;
 
 char callsign[20];
 int morse_timing = 60;  // ms for a dit
-int morse_freq = 1800 Hz
+int morse_freq = 1800 // Hz
 int morse_table[44][6] = {  // 0-9, A-Z only by (ASCII - 48)
   { 3, 3, 3, 3, 3, 0 },	// 0		
   { 1, 3, 3, 3, 3, 0 },	// 1		
