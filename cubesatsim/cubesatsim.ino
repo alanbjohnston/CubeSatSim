@@ -114,7 +114,7 @@ void setup() {
 	
   start_payload();  // above code not working, so forcing it
 	
-  read_reset_count();	
+  read_config_file();	
 	
 /*	
   sim_mode = FALSE;
@@ -346,6 +346,54 @@ void read_reset_count() {
     }		
   }	  	
 }
+
+void read_config_file() {
+  char buff[255];
+  // Open configuration file with callsign and reset count
+	
+  File config_file = LittleFS.open("/sim.cfg", "r");	
+//  FILE * config_file = fopen("/sim.cfg", "r");
+  if (config_file == NULL) {
+    Serial.println("Creating config file.");
+    config_file = fopen("/sim.cfg", "w+");
+	  
+//    fprintf(config_file, "%s %d", " ", 100);
+//	  sprintf(buff, "%d\n", cnt);
+    sprintf(buff, "%s %d", "AMSAT", 0);
+    config_file.write(buff, strlen(buff));	  
+	  
+	  
+    config_file.close();
+	  
+    config_file = fopen("/sim.cfg", "r");
+  }
+
+//  char * cfg_buf[100];
+  config_file.read((uint8_t *)buff, 255);
+//  sscanf(buff, "%d", &cnt);	
+  sscanf(buff, "%s %d %f %f %s", call, & reset_count, & lat_file, & long_file, sim_yes);
+  config_file.close();
+	
+  Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
+/*	
+  reset_count = (reset_count + 1) % 0xffff;
+
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
+    printf("Valid latitude and longitude in config file\n");
+// convert to APRS DDMM.MM format
+    latitude = toAprsFormat(lat_file);
+    longitude = toAprsFormat(long_file);
+    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+  } else { // set default
+    latitude = toAprsFormat(latitude);
+    longitude = toAprsFormat(longitude);
+  }
+	
+  if (strcmp(sim_yes, "yes") == 0)
+	  sim_mode = TRUE;	
+*/	
+}
+
 
 void send_aprs_packet() {	
 // encode telemetry
