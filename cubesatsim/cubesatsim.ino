@@ -372,7 +372,7 @@ void read_config_file() {
 //  char * cfg_buf[100];
   config_file.read((uint8_t *)buff, 255);
 //  sscanf(buff, "%d", &cnt);	
-  sscanf(buff, "%s %d %f %f %s", call, & reset_count, & lat_file, & long_file, sim_yes);
+  sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
   config_file.close();
 	
   Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
@@ -384,7 +384,7 @@ void read_config_file() {
 // convert to APRS DDMM.MM format
     latitude = toAprsFormat(lat_file);
     longitude = toAprsFormat(long_file);
-    Serial.print("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+    Serial.printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
   } else { // set default
     latitude = toAprsFormat(latitude);
     longitude = toAprsFormat(longitude);
@@ -408,7 +408,7 @@ void write_config_file() {
   else
 	strcpy(sim_yes, "no");
 	
-  sprintf(buff, "%s %d %f %f %s", call, reset_count, latitude, & longitude, sim_yes)
+  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes)
   config_file.write(buff, strlen(buff));	  
 	  
   config_file.close();
