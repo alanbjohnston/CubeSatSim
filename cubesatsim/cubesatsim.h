@@ -202,7 +202,8 @@ void get_serial_char();
 void get_serial_clear_buffer();
 void set_lat_lon();
 void program_radio();
-
+void read_config_file(); 
+  
 #ifndef STASSID
 #define STASSID "Pico"
 #define STAPSK "picoPassword"
