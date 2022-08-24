@@ -366,7 +366,7 @@ void read_config_file() {
 	  
     config_file.close();
 	  
-    config_file = fopen("/sim.cfg", "r");
+    config_file = LittleFS.open("/sim.cfg", "r");	  
   }
 
 //  char * cfg_buf[100];
