@@ -353,9 +353,10 @@ void read_config_file() {
 	
   File config_file = LittleFS.open("/sim.cfg", "r");	
 //  FILE * config_file = fopen("/sim.cfg", "r");
-  if (config_file == NULL) {
+  if (!config_file) {
     Serial.println("Creating config file.");
-    config_file = fopen("/sim.cfg", "w+");
+//    config_file = fopen("/sim.cfg", "w+");
+     config_file = LittleFS.open("/sim.cfg", "w+");		  
 	  
 //    fprintf(config_file, "%s %d", " ", 100);
 //	  sprintf(buff, "%d\n", cnt);
