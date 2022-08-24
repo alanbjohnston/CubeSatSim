@@ -382,16 +382,17 @@ void read_config_file() {
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     Serial.println("Valid latitude and longitude in config file\n");
 // convert to APRS DDMM.MM format
-    latitude = toAprsFormat(lat_file);
-    longitude = toAprsFormat(long_file);
-    Serial.printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
-  } else { // set default
-    latitude = toAprsFormat(latitude);
-    longitude = toAprsFormat(longitude);
+    latitude = lat_file; // toAprsFormat(lat_file);
+    longitude = long_file; // toAprsFormat(long_file);
+    Serial.printf("Lat/Lon updated to: %f/%f\n", latitude, longitude);
   }
+//  } else { // set default
+//    latitude = toAprsFormat(latitude);
+//    longitude = toAprsFormat(longitude);
+//  }
 	
   if (strcmp(sim_yes, "yes") == 0)
-	  sim_mode = TRUE;	
+	  sim_mode = true;	
 	
   config_file.close();	
 }
@@ -409,6 +410,8 @@ void write_config_file() {
 	strcpy(sim_yes, "no");
 	
   sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
+  Serial.println("Writing string");	
+  print_string(buff);	
   config_file.write(buff, strlen(buff));	  
 	  
   config_file.close();
@@ -4030,7 +4033,9 @@ void prompt_for_input() {
         Serial.println(float_result);		  
         longitude = float_result;
       } else
-        Serial.println("Longitude not updated");		        
+        Serial.println("Longitude not updated");
+		  
+      write_config_file();     	  
       if (mode == AFSK)
 	set_lat_lon();
 		  
