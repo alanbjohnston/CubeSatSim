@@ -3623,6 +3623,8 @@ void transmit_string(char *string) {
       j++;	    
     }
   }
+  cw_stop = false;
+	
   if (debug_mode)	
     Serial.println("Transmit off");
   digitalWrite(MAIN_LED_BLUE, LOW);	
