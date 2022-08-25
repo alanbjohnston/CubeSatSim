@@ -353,7 +353,7 @@ void read_reset_count() {
 void read_config_file() {
   char buff[255];
   // Open configuration file with callsign and reset count
-	
+  Serial.println("Reading config file");	
   File config_file = LittleFS.open("/sim.cfg", "r");	
 //  FILE * config_file = fopen("/sim.cfg", "r");
   if (!config_file) {
@@ -377,8 +377,8 @@ void read_config_file() {
 //  sscanf(buff, "%d", &cnt);	
   sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
   config_file.close();
-	
-  Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
+  if (debug_mode)	
+    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
 	
   reset_count = (reset_count + 1) % 0xffff;
 
@@ -415,12 +415,13 @@ void write_config_file() {
 	strcpy(sim_yes, "no");
 	
   sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
-  Serial.println("Writing string");	
-  print_string(buff);	
+//  Serial.println("Writing string");	
+  if (debug_mode)	
+    print_string(buff);	
   config_file.write(buff, strlen(buff));	  
 	  
   config_file.close();
-  Serial.println("Write complete");	
+//  Serial.println("Write complete");	
 	
 }
 
@@ -3891,7 +3892,7 @@ void serial_input() {
 		   
      case 'i':
      case 'I':
-//       Serial.println("Restart CubeSatsim software");	     
+       Serial.println("Restart CubeSatsim software");	     
        prompt = PROMPT_RESTART;
        break;	
 		   
@@ -4105,7 +4106,13 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_RESTART:
-      Serial.println("Restart not yet implemented");		  
+//    Serial.println("Restart not yet implemented");
+      if (mode != CW)
+          transmit_callsign(callsign);
+        sleep(0.5);	 
+        config_telem();
+        config_radio();
+        sampleTime = (unsigned int) millis();	 		  
       break;	  
 		  
     case PROMPT_DEBUG:
