@@ -3996,11 +3996,13 @@ void prompt_for_input() {
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Setting Simulated telemetry to on");
 	config_simulated_telem();     
+	write_config_file();    	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
 	sim_mode = false;      
         if (!ina219_started)
 	  start_ina219(); 
+	write_config_file();    	      
       } else      
         Serial.println("No change to Simulated Telemetry mode");
       break;	
@@ -4064,14 +4066,17 @@ void prompt_for_input() {
 
 //        reset_flag = 0xA07;
 //        EEPROM.put(16, reset_flag);	
-        reset_count = 0;	
+        reset_count = 0;
+	write_config_file();    
+ /*	      
         EEPROM.put(20, reset_count + 1);
         if (EEPROM.commit()) {
           Serial.println("EEPROM successfully committed");
         } else {
           Serial.println("ERROR! EEPROM commit failed");
-        }	      
-	            
+        }
+	      
+*/	            
       } else if ((serial_string[0] == 'p') || (serial_string[0] == 'P')) {	      
         Serial.println("Resetting the Payload");
 	payload_command = PAYLOAD_RESET;
