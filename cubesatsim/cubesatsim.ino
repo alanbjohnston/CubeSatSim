@@ -69,6 +69,8 @@ extern bool start_camera();
 void setup() {
 
   set_sys_clock_khz(133000, true);   
+	
+  read_mode();	
 
   new_mode = mode;
 	
@@ -280,6 +282,7 @@ void loop() {
     sleep(0.5);	 
     config_telem();
     config_radio();
+    write_mode();	 
     sampleTime = (unsigned int) millis();	 	 
  }
 	
@@ -4175,4 +4178,37 @@ void program_radio() {
    mySerial.println("AT+DMOSETMIC=3,0\r");  // was 8
 	
   }
+}
+
+read_mode() {
+	
+  File mode_file = LittleFS.open("/.mode", "r");	
+  if (!mode_file) {
+    Serial.println("Creating mode file");
+    mode_file = LittleFS.open("/.mode", "w+");		  
+    mode_file.write(mode);	    
+    mode_file.close();	  
+  } else {
+    if (mode_file.read((uint8_t *)buff, 31)) {
+      Serial.println("Reading mode from .mode file");    
+      sscanf(buff, "%d", &mode);
+      mode_file.close();	    
+    }
+  }		
+}
+
+write_mode() {
+
+  char buff[32];	
+  Serial.println("Writing .mode file");	
+  File mode_file = LittleFS.open("/.mode", "w+");		  
+	
+	
+  sprintf(buff, "%d", mode);
+  Serial.println("Writing string");	
+  print_string(buff);	
+  mode_file.write(buff, strlen(buff));	  
+	  
+  mode_file.close();
+  Serial.println("Write complete");	
 }
