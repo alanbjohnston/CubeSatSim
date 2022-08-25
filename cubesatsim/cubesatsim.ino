@@ -68,13 +68,13 @@ extern bool start_camera();
 
 void setup() {
 
-  set_sys_clock_khz(133000, true);   
+  set_sys_clock_khz(133000, true);  
 	
+  Serial.begin(115200);	
+
   read_mode();	
 
   new_mode = mode;
-	
-  Serial.begin(115200);
 	
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
@@ -4181,7 +4181,7 @@ void program_radio() {
 }
 
 void read_mode() {
-
+  LittleFS.begin();
   Serial.println("Reading mode");	
   char buff[32];		
   File mode_file = LittleFS.open("/.mode", "r");	
