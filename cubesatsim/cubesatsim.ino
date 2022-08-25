@@ -375,7 +375,7 @@ void read_config_file() {
   sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
   config_file.close();
 	
-  Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
+  Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
 	
   reset_count = (reset_count + 1) % 0xffff;
 
