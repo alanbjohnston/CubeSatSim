@@ -276,13 +276,12 @@ void loop() {
  if (mode != new_mode) {
     Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
-	 
+    write_mode();	 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);	 
     config_telem();
     config_radio();
-    write_mode();	 
     sampleTime = (unsigned int) millis();	 	 
  }
 	
@@ -4230,11 +4229,11 @@ void read_mode() {
     write_mode();	  
   } else {
     if (mode_file.read((uint8_t *)buff, 31)) {
-      Serial.println("Reading mode from .mode file");    
+//      Serial.println("Reading mode from .mode file");    
       sscanf(buff, "%d", &mode);
       mode_file.close();
-      Serial.print("Mode is ");
-      Serial.print(mode);
+//      Serial.print("Mode is ");
+//      Serial.print(mode);
 	    
     }
   }		
@@ -4247,10 +4246,12 @@ void write_mode() {
   File mode_file = LittleFS.open("/.mode", "w+");		  	
 	
   sprintf(buff, "%d", mode);
-  Serial.println("Writing string");	
-  print_string(buff);	
+  if (debug_mode) {	
+    Serial.println("Writing string");	
+    print_string(buff);	
+  }
   mode_file.write(buff, strlen(buff));	  
 	  
   mode_file.close();
-  Serial.println("Write complete");	
+//  Serial.println("Write complete");	
 }
