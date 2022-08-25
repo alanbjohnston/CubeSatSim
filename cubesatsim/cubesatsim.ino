@@ -4068,8 +4068,12 @@ void prompt_for_input() {
 		  
     case PROMPT_TEMP:		  
       sensorValue = analogRead(TEMPERATURE_PIN);
-    //Serial.println(sensorValue);  
+      Serial.print("Raw diode voltage: ");		  
+      Serial.println(sensorValue);  
       Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+      Serial.print("Calculated temperature: ");		  
+      Serial.print(Temp);  
+      Serial.println(" C");		  	  
       break;
 		    
     case PROMPT_VOLTAGE:
