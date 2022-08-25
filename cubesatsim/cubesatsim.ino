@@ -3140,9 +3140,11 @@ void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
 
 void process_pushbutton() {
 	
-//  Serial.println("PB pressed!");  
+  Serial.println("PB pressed!");  
 	
   int release = FALSE;
+	
+  Serial.println(digitalRead(MAIN_PB_PIN));
 	
   return;  /// just skip for now
 	
