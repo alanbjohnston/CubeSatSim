@@ -395,6 +395,8 @@ void read_config_file() {
 	  sim_mode = true;	
 	
   config_file.close();	
+	
+  write_config_file();	
 }
 
 void write_config_file() {
@@ -418,7 +420,6 @@ void write_config_file() {
   Serial.println("Write complete");	
 	
 }
-
 
 void send_aprs_packet() {	
 // encode telemetry
