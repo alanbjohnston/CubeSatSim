@@ -4181,7 +4181,8 @@ void program_radio() {
 }
 
 void read_mode() {
-	
+
+  Serial.println("Reading mode");	
   char buff[32];		
   File mode_file = LittleFS.open("/.mode", "r");	
   if (!mode_file) {
@@ -4190,7 +4191,10 @@ void read_mode() {
     if (mode_file.read((uint8_t *)buff, 31)) {
       Serial.println("Reading mode from .mode file");    
       sscanf(buff, "%d", &mode);
-      mode_file.close();	    
+      mode_file.close();
+      Serial.print("Mode is ");
+      Serial.print(mode);
+	    
     }
   }		
 }
