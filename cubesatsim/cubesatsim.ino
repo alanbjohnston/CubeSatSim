@@ -3144,8 +3144,6 @@ void process_pushbutton() {
 	
   int release = FALSE;
 	
-  return;  /// just skip for now
-	
   if (!wifi) 	   	
    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
 	
