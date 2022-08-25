@@ -3911,6 +3911,12 @@ void serial_input() {
        prompt = PROMPT_RESET;
        break;	
 		   
+     case 'o':
+     case 'O':
+       Serial.println("Read diode temperature");	
+       prompt = PROMPT_TEMP;
+       break;	
+		    
      case 'l':
      case 'L':
       Serial.println("Change the Latitude and Longitude");	     
@@ -3970,6 +3976,7 @@ void prompt_for_input() {
        Serial.println("l  Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
+       Serial.println("o  Read diode temperature");	
        Serial.println("d  Change debug mode\n");		  
        break;	
 		  
@@ -4057,7 +4064,13 @@ void prompt_for_input() {
     case PROMPT_QUERY:
       Serial.println("Querying payload sensors");		  		  
       payload_command = PAYLOAD_QUERY;		  
-      break;	
+      break;
+		  
+    case PROMPT_TEMP:		  
+      sensorValue = analogRead(TEMPERATURE_PIN);
+    //Serial.println(sensorValue);  
+      Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+      break;
 		    
     case PROMPT_VOLTAGE:
       Serial.println("Querying INA219 voltage and current sensors");
