@@ -607,7 +607,9 @@ void config_telem() {
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
-  } 
+  } else if (mode == CW) {
+    Serial.println("Configuring for CW\n");	  
+  }
 // clearing min and max values
   if (debug_mode)	
     Serial.println("Clearing min and max telemetry values");	
