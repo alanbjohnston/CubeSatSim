@@ -205,7 +205,9 @@ void set_lat_lon();
 void program_radio();
 void read_config_file(); 
 void write_config_file(); 
-  
+void read_mode(); 
+void write_mode(); 
+
 #ifndef STASSID
 #define STASSID "Pico"
 #define STAPSK "picoPassword"
