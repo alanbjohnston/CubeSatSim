@@ -3709,7 +3709,13 @@ void transmit_string(char *string) {
     else {
 //      Serial.println("space between words");
       sleep((6.0 * (float)morse_timing)/1000.0);
-      j++;	    
+      j++;
+	    
+      if (prompt) {
+//    Serial.println("Need to prompt for input!");
+        prompt_for_input();	  
+        prompt = false;	  
+      }	    
     }
   }
   cw_stop = false;
