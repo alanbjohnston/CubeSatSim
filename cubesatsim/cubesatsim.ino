@@ -83,7 +83,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.2 starting...\n");
+  Serial.println("CubeSatSim Pico v0.21 starting...\n");
 	
   config_gpio();	
 	
