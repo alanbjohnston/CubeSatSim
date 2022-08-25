@@ -4182,6 +4182,7 @@ void program_radio() {
 
 void read_mode() {
 	
+  char buff[32];		
   File mode_file = LittleFS.open("/.mode", "r");	
   if (!mode_file) {
     Serial.println("Creating mode file");
@@ -4201,8 +4202,7 @@ void write_mode() {
 
   char buff[32];	
   Serial.println("Writing .mode file");	
-  File mode_file = LittleFS.open("/.mode", "w+");		  
-	
+  File mode_file = LittleFS.open("/.mode", "w+");		  	
 	
   sprintf(buff, "%d", mode);
   Serial.println("Writing string");	
