@@ -3486,7 +3486,7 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(828, TimerHandler0))	// was was 827 and 828
+    if (ITimer0.attachInterruptInterval(827, TimerHandler0))	// was was 828 and 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
