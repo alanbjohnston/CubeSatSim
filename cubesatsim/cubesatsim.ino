@@ -4180,7 +4180,7 @@ void program_radio() {
   }
 }
 
-read_mode() {
+void read_mode() {
 	
   File mode_file = LittleFS.open("/.mode", "r");	
   if (!mode_file) {
@@ -4197,7 +4197,7 @@ read_mode() {
   }		
 }
 
-write_mode() {
+void write_mode() {
 
   char buff[32];	
   Serial.println("Writing .mode file");	
