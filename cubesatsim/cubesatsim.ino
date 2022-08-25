@@ -2083,6 +2083,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+/*	
   if (!wifi) 
      pinMode(LED_BUILTIN, OUTPUT);
   	
@@ -2094,12 +2095,12 @@ void config_radio()
 
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
-	
+*/	
   if ((mode == AFSK) || (mode == FSK) || (mode == SSTV) || (mode == CW)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
 	  
-    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
+//    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
 
     program_radio();
   	
@@ -3403,14 +3404,20 @@ void config_gpio() {
 //  Serial.println(digitalRead(PI_3V3_PIN));
 
   // set anlog inputs and read	
+  pinMode(TEMPERATURE_PIN, INPUT);
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
-	
-  Serial.print("Audio In: ");
-  Serial.println(analogRead(AUDIO_IN_PIN));	
-	
-}
 
+  pinMode(AUDIO_IN_PIN, INPUT);	
+  Serial.print("Audio In: ");
+  Serial.println(analogRead(AUDIO_IN_PIN));
+  	
+  pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
+  digitalWrite(PTT_PIN, HIGH);
+
+  pinMode(PD_PIN, OUTPUT);  // PD active HIGH
+  digitalWrite(PD_PIN, LOW);  	
+}
 
 bool TimerHandler0(struct repeating_timer *t) {
 
