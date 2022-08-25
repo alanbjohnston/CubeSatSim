@@ -4185,10 +4185,7 @@ void read_mode() {
   char buff[32];		
   File mode_file = LittleFS.open("/.mode", "r");	
   if (!mode_file) {
-    Serial.println("Creating mode file");
-    mode_file = LittleFS.open("/.mode", "w+");		  
-    mode_file.write(mode);	    
-    mode_file.close();	  
+    write_mode();	  
   } else {
     if (mode_file.read((uint8_t *)buff, 31)) {
       Serial.println("Reading mode from .mode file");    
