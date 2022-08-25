@@ -3690,8 +3690,9 @@ void transmit_callsign(char *callsign) {
   if (reset_count == 0) {
     program_radio();	  
   }
-	
-  transmit_string(id);	  
+  transmit_off();	
+  transmit_string(id);	
+  transmit_on();	
 }
 
 void transmit_string(char *string) {
