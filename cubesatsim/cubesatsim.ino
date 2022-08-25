@@ -435,8 +435,8 @@ void send_aprs_packet() {
   strcpy(str, header_str);	
   strcpy(str, tlm_str);	
   strcat(str, payload_str);
-  print_string(str);
-  Serial.println(strlen(str));	
+//  print_string(str);
+//  Serial.println(strlen(str));	
 	
   set_status(str);		
   
