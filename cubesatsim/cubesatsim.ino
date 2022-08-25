@@ -68,11 +68,13 @@ extern bool start_camera();
 
 void setup() {
 
-  set_sys_clock_khz(133000, true);   
+  set_sys_clock_khz(133000, true);  
+	
+  Serial.begin(115200);	
+
+  read_mode();	
 
   new_mode = mode;
-	
-  Serial.begin(115200);
 	
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
@@ -81,7 +83,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.2 starting...\n");
+  Serial.println("CubeSatSim Pico v0.21 starting...\n");
 	
   config_gpio();	
 	
@@ -114,7 +116,7 @@ void setup() {
 	
   start_payload();  // above code not working, so forcing it
 	
-  read_reset_count();	
+  read_config_file();	
 	
 /*	
   sim_mode = FALSE;
@@ -128,11 +130,6 @@ void setup() {
   if (i2c_bus3 == false) 
     config_simulated_telem();		
     
-  config_telem();	
-	
-// setup radio depending on mode 
-  config_radio();	
-	
 /*	
   if (check_for_wifi()) {
      wifi = true;	
@@ -154,12 +151,17 @@ void setup() {
 	
 /**/
   Serial.println("Transmitting callsign");	
-  strcpy(callsign, call);	
+//  strcpy(callsign, call);	
   if (mode != CW)
     transmit_callsign(callsign);
   sleep(5.0);		
 /**/
 	
+  config_telem();	
+	
+// setup radio depending on mode 
+  config_radio();	
+		
   start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
@@ -274,7 +276,7 @@ void loop() {
  if (mode != new_mode) {
     Serial.println("Changing mode");
     mode = new_mode;  // change modes if button pressed
-	 
+    write_mode();	 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);	 
@@ -347,6 +349,81 @@ void read_reset_count() {
   }	  	
 }
 
+void read_config_file() {
+  char buff[255];
+  // Open configuration file with callsign and reset count
+  Serial.println("Reading config file");	
+  File config_file = LittleFS.open("/sim.cfg", "r");	
+//  FILE * config_file = fopen("/sim.cfg", "r");
+  if (!config_file) {
+    Serial.println("Creating config file.");
+//    config_file = fopen("/sim.cfg", "w+");
+     config_file = LittleFS.open("/sim.cfg", "w+");		  
+	  
+//    fprintf(config_file, "%s %d", " ", 100);
+//	  sprintf(buff, "%d\n", cnt);
+    sprintf(buff, "%s %d", "AMSAT", 0);
+    config_file.write(buff, strlen(buff));	  
+	  
+	  
+    config_file.close();
+	  
+    config_file = LittleFS.open("/sim.cfg", "r");	  
+  }
+
+//  char * cfg_buf[100];
+  config_file.read((uint8_t *)buff, 255);
+//  sscanf(buff, "%d", &cnt);	
+  sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
+  config_file.close();
+  if (debug_mode)	
+    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
+	
+  reset_count = (reset_count + 1) % 0xffff;
+
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
+    Serial.println("Valid latitude and longitude in config file\n");
+// convert to APRS DDMM.MM format
+    latitude = lat_file; // toAprsFormat(lat_file);
+    longitude = long_file; // toAprsFormat(long_file);
+    Serial.printf("Lat/Lon updated to: %f/%f\n", latitude, longitude);
+  }
+//  } else { // set default
+//    latitude = toAprsFormat(latitude);
+//    longitude = toAprsFormat(longitude);
+//  }
+	
+  if (strcmp(sim_yes, "yes") == 0)
+	  sim_mode = true;	
+	
+  config_file.close();	
+	
+  write_config_file();	
+}
+
+void write_config_file() {
+  Serial.println("Writing /sim.cfg file");	
+  char buff[255];	
+  File config_file = LittleFS.open("/sim.cfg", "w+");		  
+	  
+//  sprintf(buff, "%s %d", callsign, );
+	
+  if (sim_mode)
+	strcpy(sim_yes, "yes");
+  else
+	strcpy(sim_yes, "no");
+	
+  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
+//  Serial.println("Writing string");	
+  if (debug_mode)	
+    print_string(buff);	
+  config_file.write(buff, strlen(buff));	  
+	  
+  config_file.close();
+//  Serial.println("Write complete");	
+	
+}
+
 void send_aprs_packet() {	
 // encode telemetry
   get_tlm_ao7();
@@ -358,8 +435,8 @@ void send_aprs_packet() {
   strcpy(str, header_str);	
   strcpy(str, tlm_str);	
   strcat(str, payload_str);
-  print_string(str);
-  Serial.println(strlen(str));	
+//  print_string(str);
+//  Serial.println(strlen(str));	
 	
   set_status(str);		
   
@@ -530,7 +607,9 @@ void config_telem() {
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
-  } 
+  } else if (mode == CW) {
+    Serial.println("Configuring for CW\n");	  
+  }
 // clearing min and max values
   if (debug_mode)	
     Serial.println("Clearing min and max telemetry values");	
@@ -2003,6 +2082,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+/*	
   if (!wifi) 
      pinMode(LED_BUILTIN, OUTPUT);
   	
@@ -2014,12 +2094,12 @@ void config_radio()
 
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
-	
+*/	
   if ((mode == AFSK) || (mode == FSK) || (mode == SSTV) || (mode == CW)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
 	  
-    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
+//    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
 
     program_radio();
   	
@@ -3095,7 +3175,7 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
-    Serial.println("PB: Switch to FSK");
+    Serial.println("PB: FSK not supported");
     release = TRUE;
 //    new_mode = FSK;
 //    setup();
@@ -3193,7 +3273,7 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
-    Serial.println("BOOTSEL: Switch to FSK");
+    Serial.println("BOOTSEL: FSK not supported");
     release = TRUE;
 //    new_mode = FSK;
 //    setup();
@@ -3323,14 +3403,20 @@ void config_gpio() {
 //  Serial.println(digitalRead(PI_3V3_PIN));
 
   // set anlog inputs and read	
+  pinMode(TEMPERATURE_PIN, INPUT);
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
-	
-  Serial.print("Audio In: ");
-  Serial.println(analogRead(AUDIO_IN_PIN));	
-	
-}
 
+  pinMode(AUDIO_IN_PIN, INPUT);	
+  Serial.print("Audio In: ");
+  Serial.println(analogRead(AUDIO_IN_PIN));
+  	
+  pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
+  digitalWrite(PTT_PIN, HIGH);
+
+  pinMode(PD_PIN, OUTPUT);  // PD active HIGH
+  digitalWrite(PD_PIN, LOW);  	
+}
 
 bool TimerHandler0(struct repeating_timer *t) {
 
@@ -3610,8 +3696,9 @@ void transmit_callsign(char *callsign) {
   if (reset_count == 0) {
     program_radio();	  
   }
-	
-  transmit_string(id);	  
+  transmit_off();	
+  transmit_string(id);	
+  transmit_on();	
 }
 
 void transmit_string(char *string) {
@@ -3630,7 +3717,13 @@ void transmit_string(char *string) {
     else {
 //      Serial.println("space between words");
       sleep((6.0 * (float)morse_timing)/1000.0);
-      j++;	    
+      j++;
+	    
+      if (prompt) {
+//    Serial.println("Need to prompt for input!");
+        prompt_for_input();	  
+        prompt = false;	  
+      }	    
     }
   }
   cw_stop = false;
@@ -3789,7 +3882,7 @@ void serial_input() {
 		   
      case 'f':
      case 'F':
-      Serial.println("Change to FSK/DUV mode");	     
+      Serial.println("FSK/DUV mode not supported");	     
        break;	
 		   
      case 'b':
@@ -3806,7 +3899,7 @@ void serial_input() {
 		   
      case 'i':
      case 'I':
-//       Serial.println("Restart CubeSatsim software");	     
+       Serial.println("Restart CubeSatsim software");	     
        prompt = PROMPT_RESTART;
        break;	
 		   
@@ -3822,12 +3915,24 @@ void serial_input() {
        prompt = PROMPT_SIM;
        break;	
 		   
+     case 'p':
+     case 'P':
+       Serial.println("Reset payload EEPROM settings");	
+       prompt = PROMPT_PAYLOAD;
+       break;	
+		   
      case 'r':
      case 'R':
-       Serial.println("Change the Resets Count or Reset payload and stored EEPROM values");	
+       Serial.println("Change the Resets Count");	
        prompt = PROMPT_RESET;
        break;	
 		   
+     case 'o':
+     case 'O':
+       Serial.println("Read diode temperature");	
+       prompt = PROMPT_TEMP;
+       break;	
+		    
      case 'l':
      case 'L':
       Serial.println("Change the Latitude and Longitude");	     
@@ -3875,17 +3980,19 @@ void prompt_for_input() {
        Serial.println("\nChange settings by typing the letter:");	     
        Serial.println("h  Help info");	  
        Serial.println("a  AFSK/APRS mode");	     
-       Serial.println("c  CW mode");	     
+       Serial.println("m  CW mode");	     
        Serial.println("f  FSK/DUV mode");	     
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
        Serial.println("i  Restart");	     
        Serial.println("c  CALLSIGN");	     
        Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count, or payload & EEPROM");	
-       Serial.println("l  Lat and Long");	     
+       Serial.println("r  Resets Count");	
+       Serial.println("p  Resets payload and stored EEPROM values");	
+       Serial.println("l  Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
+       Serial.println("o  Read diode temperature");	
        Serial.println("d  Change debug mode\n");		  
        break;	
 		  
@@ -3907,6 +4014,7 @@ void prompt_for_input() {
 	  set_callsign(callsign, destination);	
 	}
         Serial.println("Callsign updated!");
+	write_config_file();      
       } else
         Serial.println("Callsign not updated!");	      
 
@@ -3922,11 +4030,13 @@ void prompt_for_input() {
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Setting Simulated telemetry to on");
 	config_simulated_telem();     
+	write_config_file();    	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
 	sim_mode = false;      
         if (!ina219_started)
 	  start_ina219(); 
+	write_config_file();    	      
       } else      
         Serial.println("No change to Simulated Telemetry mode");
       break;	
@@ -3959,7 +4069,9 @@ void prompt_for_input() {
         Serial.println(float_result);		  
         longitude = float_result;
       } else
-        Serial.println("Longitude not updated");		        
+        Serial.println("Longitude not updated");
+		  
+      write_config_file();     	  
       if (mode == AFSK)
 	set_lat_lon();
 		  
@@ -3968,7 +4080,17 @@ void prompt_for_input() {
     case PROMPT_QUERY:
       Serial.println("Querying payload sensors");		  		  
       payload_command = PAYLOAD_QUERY;		  
-      break;	
+      break;
+		  
+    case PROMPT_TEMP:		  
+      sensorValue = analogRead(TEMPERATURE_PIN);
+      Serial.print("Raw diode voltage: ");		  
+      Serial.println(sensorValue);  
+      Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+      Serial.print("Calculated temperature: ");		  
+      Serial.print(Temp);  
+      Serial.println(" C");		  	  
+      break;
 		    
     case PROMPT_VOLTAGE:
       Serial.println("Querying INA219 voltage and current sensors");
@@ -3977,36 +4099,28 @@ void prompt_for_input() {
       voltage_read = true;		  
       read_ina219();		  	  
       break;	
-	  
-    case PROMPT_RESET:
-      Serial.println("Do you want to Reset the Reset Count (r) or Reset the Payload (p)?");
-      Serial.println("Enter r or p");		  
-      get_serial_char();
-      if ((serial_string[0] == 'r') || (serial_string[0] == 'R'))	{  
-        Serial.println("Reset count is now 0");	
-        Serial.println("Storing initial reset count in EEPROM");	  
 
-//        reset_flag = 0xA07;
-//        EEPROM.put(16, reset_flag);	
-        reset_count = 0;	
-        EEPROM.put(20, reset_count + 1);
-        if (EEPROM.commit()) {
-          Serial.println("EEPROM successfully committed");
-        } else {
-          Serial.println("ERROR! EEPROM commit failed");
-        }	      
-	            
-      } else if ((serial_string[0] == 'p') || (serial_string[0] == 'P')) {	      
-        Serial.println("Resetting the Payload");
-	payload_command = PAYLOAD_RESET;
-	start_payload();      
-      } else      
-        Serial.println("No action");
+    case PROMPT_PAYLOAD:	      
+      Serial.println("Resetting the Payload");
+      payload_command = PAYLOAD_RESET;
+      start_payload();      		  
+      break;			  
 		  
+    case PROMPT_RESET:
+      Serial.println("Reset count is now 0");	
+      reset_count = 0;
+      write_config_file();    	  
       break;	
 		  
     case PROMPT_RESTART:
-      Serial.println("Restart not yet implemented");		  
+      prompt = false;
+//    Serial.println("Restart not yet implemented");
+      if (mode != CW)
+          transmit_callsign(callsign);
+        sleep(0.5);	 
+        config_telem();
+        config_radio();
+        sampleTime = (unsigned int) millis();	 		  
       break;	  
 		  
     case PROMPT_DEBUG:
@@ -4101,7 +4215,43 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
      mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
 //   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=3,0\r");  // was 8
+   mySerial.println("AT+DMOSETMIC=6,0\r");  // was 8
 	
   }
+}
+
+void read_mode() {
+  LittleFS.begin();
+  Serial.println("Reading mode");	
+  char buff[32];		
+  File mode_file = LittleFS.open("/.mode", "r");	
+  if (!mode_file) {
+    write_mode();	  
+  } else {
+    if (mode_file.read((uint8_t *)buff, 31)) {
+//      Serial.println("Reading mode from .mode file");    
+      sscanf(buff, "%d", &mode);
+      mode_file.close();
+//      Serial.print("Mode is ");
+//      Serial.print(mode);
+	    
+    }
+  }		
+}
+
+void write_mode() {
+
+  char buff[32];	
+  Serial.println("Writing .mode file");	
+  File mode_file = LittleFS.open("/.mode", "w+");		  	
+	
+  sprintf(buff, "%d", mode);
+  if (debug_mode) {	
+    Serial.println("Writing string");	
+    print_string(buff);	
+  }
+  mode_file.write(buff, strlen(buff));	  
+	  
+  mode_file.close();
+//  Serial.println("Write complete");	
 }

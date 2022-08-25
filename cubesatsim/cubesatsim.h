@@ -124,6 +124,8 @@
 #define PROMPT_RESTART 7
 #define PROMPT_DEBUG 8
 #define PROMPT_VOLTAGE 9
+#define PROMPT_PAYLOAD 10
+#define PROMPT_TEMP 11
 
 #define PAYLOAD_QUERY 1
 #define PAYLOAD_RESET 2
@@ -202,6 +204,10 @@ void get_serial_char();
 void get_serial_clear_buffer();
 void set_lat_lon();
 void program_radio();
+void read_config_file(); 
+void write_config_file(); 
+void read_mode(); 
+void write_mode(); 
 
 #ifndef STASSID
 #define STASSID "Pico"
