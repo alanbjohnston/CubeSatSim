@@ -130,11 +130,6 @@ void setup() {
   if (i2c_bus3 == false) 
     config_simulated_telem();		
     
-  config_telem();	
-	
-// setup radio depending on mode 
-  config_radio();	
-	
 /*	
   if (check_for_wifi()) {
      wifi = true;	
@@ -162,6 +157,11 @@ void setup() {
   sleep(5.0);		
 /**/
 	
+  config_telem();	
+	
+// setup radio depending on mode 
+  config_radio();	
+		
   start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
