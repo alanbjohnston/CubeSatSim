@@ -3168,7 +3168,7 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
-    Serial.println("PB: Switch to FSK");
+    Serial.println("PB: FSK not supported");
     release = TRUE;
 //    new_mode = FSK;
 //    setup();
@@ -3266,7 +3266,7 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
-    Serial.println("BOOTSEL: Switch to FSK");
+    Serial.println("BOOTSEL: FSK not supported");
     release = TRUE;
 //    new_mode = FSK;
 //    setup();
@@ -3862,7 +3862,7 @@ void serial_input() {
 		   
      case 'f':
      case 'F':
-      Serial.println("Change to FSK/DUV mode");	     
+      Serial.println("FSK/DUV mode not supported");	     
        break;	
 		   
      case 'b':
@@ -3895,9 +3895,15 @@ void serial_input() {
        prompt = PROMPT_SIM;
        break;	
 		   
+     case 'p':
+     case 'P':
+       Serial.println("Reset payload EEPROM settings");	
+       prompt = PROMPT_PAYLOAD;
+       break;	
+		   
      case 'r':
      case 'R':
-       Serial.println("Change the Resets Count or Reset payload and stored EEPROM values");	
+       Serial.println("Change the Resets Count");	
        prompt = PROMPT_RESET;
        break;	
 		   
@@ -3948,15 +3954,16 @@ void prompt_for_input() {
        Serial.println("\nChange settings by typing the letter:");	     
        Serial.println("h  Help info");	  
        Serial.println("a  AFSK/APRS mode");	     
-       Serial.println("c  CW mode");	     
+       Serial.println("m  CW mode");	     
        Serial.println("f  FSK/DUV mode");	     
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
        Serial.println("i  Restart");	     
        Serial.println("c  CALLSIGN");	     
        Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count, or payload & EEPROM");	
-       Serial.println("l  Lat and Long");	     
+       Serial.println("r  Resets Count");	
+       Serial.println("p  Resets payload and stored EEPROM values");	
+       Serial.println("l  Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("d  Change debug mode\n");		  
@@ -4055,35 +4062,17 @@ void prompt_for_input() {
       voltage_read = true;		  
       read_ina219();		  	  
       break;	
-	  
-    case PROMPT_RESET:
-      Serial.println("Do you want to Reset the Reset Count (r) or Reset the Payload (p)?");
-      Serial.println("Enter r or p");		  
-      get_serial_char();
-      if ((serial_string[0] == 'r') || (serial_string[0] == 'R'))	{  
-        Serial.println("Reset count is now 0");	
-        Serial.println("Storing initial reset count in EEPROM");	  
 
-//        reset_flag = 0xA07;
-//        EEPROM.put(16, reset_flag);	
-        reset_count = 0;
-	write_config_file();    
- /*	      
-        EEPROM.put(20, reset_count + 1);
-        if (EEPROM.commit()) {
-          Serial.println("EEPROM successfully committed");
-        } else {
-          Serial.println("ERROR! EEPROM commit failed");
-        }
-	      
-*/	            
-      } else if ((serial_string[0] == 'p') || (serial_string[0] == 'P')) {	      
-        Serial.println("Resetting the Payload");
-	payload_command = PAYLOAD_RESET;
-	start_payload();      
-      } else      
-        Serial.println("No action");
+    case PROMPT_PAYLOAD:	      
+      Serial.println("Resetting the Payload");
+      payload_command = PAYLOAD_RESET;
+      start_payload();      		  
+      break;			  
 		  
+    case PROMPT_RESET:
+      Serial.println("Reset count is now 0");	
+      reset_count = 0;
+      write_config_file();    	  
       break;	
 		  
     case PROMPT_RESTART:
