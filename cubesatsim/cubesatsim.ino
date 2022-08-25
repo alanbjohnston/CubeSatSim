@@ -4200,7 +4200,7 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
      mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
 //   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=3,0\r");  // was 8
+   mySerial.println("AT+DMOSETMIC=6,0\r");  // was 8
 	
   }
 }
