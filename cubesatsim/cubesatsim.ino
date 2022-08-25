@@ -4106,6 +4106,7 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_RESTART:
+      prompt = false;
 //    Serial.println("Restart not yet implemented");
       if (mode != CW)
           transmit_callsign(callsign);
