@@ -36,9 +36,9 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-#include <WiFi.h>
+//#include <WiFi.h>
 #include "hardware/gpio.h"
-#include "hardware/adc.h"
+//#include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
 
@@ -55,8 +55,8 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-WiFiServer server(port);
-WiFiClient client;
+//WiFiServer server(port);
+//WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
@@ -3532,6 +3532,7 @@ void client_print_string(char *string)
   client.println(" ");  
 }
 
+/*
 bool check_for_wifi() {
 	
 #ifndef PICO_W
@@ -3622,6 +3623,7 @@ void check_for_browser() {
   Serial.println(" "); 
   Serial.println(strlen(val));
 */
+/*
   if (!strcmp(var, "call") && (strlen(val) > 0)) {
      Serial.print("Changing callsign to ");
      print_string(val);
@@ -3664,7 +3666,7 @@ void configure_wifi() {
     server.begin();
   }
 }
-
+*/
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
   if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
