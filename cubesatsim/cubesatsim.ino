@@ -308,8 +308,8 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 
-  if (wifi) 
-    check_for_browser();
+//  if (wifi) 
+//    check_for_browser();
 	
   return(true);	
 }
