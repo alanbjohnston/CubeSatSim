@@ -33,9 +33,9 @@
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_TimerInterrupt.h"
-#include <WiFi.h>
+//#include <WiFi.h>
 #include "hardware/gpio.h"
-#include "hardware/adc.h"
+//#include "hardware/adc.h"
 #include <ctype.h>
 
 // Pico GPIO pin assignments
