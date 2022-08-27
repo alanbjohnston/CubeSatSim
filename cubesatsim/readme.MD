@@ -2,12 +2,15 @@ This directory has experimental CubeSatSim code for the Raspberry Pi Pico.  It i
 
 Here's how to use it.
 
-If all you want is a binary file to program your Pico, then go to the Releases t
+If all you want is a binary file to program your Pico, then go to the Releases https://github.com/alanbjohnston/CubeSatSim/releases and find the latest Pico release.  Click on Assets and download the UF2 file.  While holding down the BOOTSEL button on your Pico, plug it into your USB port and it will mount as a flash drive called RPI-RP2.  Drag the UF2 file you downloaded to this drive and the software will be installed and the Pico will reboot and run it.
 
-You will need the Arduino IDE (Integrated Development Environment) application which you can download here: https://www.arduino.cc/en/software for different OSes. 
+To see the log files and run configuration menus,  you will need either the Arduino Serial Monitor or a terminal emulator such as PuTTY on Windows or miniterm on Linux.
+
+To compile the code, you will need the Arduino IDE (Integrated Development Environment) application which you can download here: https://www.arduino.cc/en/software for different OSes. 
+
 I am using version 1.18.19
-
-You will need the cubesatsim code on your computer.  If you have git installed, you can clone the repository by typing:
+ 
+You will need to download the cubesatsim code on your computer.  If you have git installed, you can clone the repository by typing:
 
 git clone https://github.com/alanbjohnston/CubeSatSim.git
 
