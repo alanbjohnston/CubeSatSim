@@ -18,7 +18,7 @@ git checkout pico
 
 git pull
 
-If you don't, you can download a ZIP file with the code https://github.com/alanbjohnston/CubeSatSim/archive/refs/heads/pico.zip
+If you don't, you can download a ZIP file with the code here: https://github.com/alanbjohnston/CubeSatSim/archive/refs/heads/pico.zip (if this link doesn't work, try this one: https://github.com/alanbjohnston/CubeSatSim/archive/refs/heads/master.zip)
 
 Unzip the pico.zip file
 
