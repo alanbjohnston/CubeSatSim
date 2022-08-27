@@ -41,7 +41,13 @@ Next you need to install some libraries.
 
 You need to download the Arduino-APRS library and the SSTV-Arduino-Scottie1 library and add to your Arduino libraries.
 
-Go to the release page for each: https://github.com/alanbjohnston/Arduino-APRS/releases and https://github.com/alanbjohnston/SSTV-Arduino-Scottie1/releases and https://github.com/alanbjohnston/Duino-hacks/releases 
+Go to the release page for each and download the ZIP file: 
+
+https://github.com/alanbjohnston/Arduino-APRS/releases 
+
+https://github.com/alanbjohnston/SSTV-Arduino-Scottie1/releases  
+
+https://github.com/alanbjohnston/Duino-hacks/releases 
 
 Select the latest release then download the zip files Arduino-APRS-Library.zip and SSTV-Arduino-Scottie-Library.zip and Duino-hacks.zip 
 
