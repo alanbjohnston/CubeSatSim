@@ -10,7 +10,9 @@ I am using version 1.18.19
 You will need the cubesatsim code on your computer.  If you have git installed, you can clone the repository by typing:
 
 git clone https://github.com/alanbjohnston/CubeSatSim.git
+
 git checkout pico
+
 git pull
 
 If you don't, you can download a ZIP file with the code https://github.com/alanbjohnston/CubeSatSim/archive/refs/heads/pico.zip
@@ -18,6 +20,7 @@ If you don't, you can download a ZIP file with the code https://github.com/alanb
 Unzip the pico.zip file
 
 Run the Arduino IDE
+
 In the menu, select File Open then move to the CubeSatSim-pico/cubesatsim directory and you will see cubesatsim.ino.  Select this file then click Open.
 
 The "sketch" will open and you should see a view like this.
@@ -49,9 +52,13 @@ Next, install some libraries by going under the menu Tools/ Manage Libraries.  A
 Do the same for the following libraries:
 
 Adafruit INA219
+
 Adafruit BME280
+
 RPI_PICO_TimerInterrupt
+
 JPEGDecoder
+
 FastCRC
 
 Find the ZIP file you downloaded and select it.
