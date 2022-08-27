@@ -51,7 +51,11 @@ Do the same for the following libraries:
 Adafruit INA219
 Adafruit BME280
 RPI_PICO_TimerInterrupt
+JPEGDecoder
+FastCRC
 
+Find the ZIP file you downloaded and select it.
 
+Do a test compile by clicking the check in the Arduino IDE. If you get an error, click on Copy Error Message and paste it into a text editor and see which library is missing.
 
-Find your
+To compile and download to your Pico board, you need to have the Port selected.  If the Pico is mounted as a flash drive (look for a drive called "RPI-RP2" on your desktop), then you don't need to select anything for the Port.  If it is not mounted as a flash drive, look under Port for "Raspberry Pi Pico" and select it.  If it doesn't show, try unplugging and plugging in the Pico board again. If that still doesn't work, unplug the Pico, hold down the BOOTSEL button while plugging it back in and it should mount as a flash drive.  Click on the Arrow to compile and upload.  NOTE: the upload will always fail for the Pico if the Serial Monitor is open, so always close it before uploading.  If you have to plug and unplug the Pico while you develop, don't unplug and plug the micro USB connector on the Pico.  Instead, do it on the other end the cable.  The micro USB connector is weak and may fail with too many cycles.
