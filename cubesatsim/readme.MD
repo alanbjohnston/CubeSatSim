@@ -38,9 +38,9 @@ Next you need to install some libraries.
 
 You need to download the Arduino-APRS library and the SSTV-Arduino-Scottie1 library and add to your Arduino libraries.
 
-Go to the release page for each: https://github.com/alanbjohnston/Arduino-APRS/releases and https://github.com/alanbjohnston/SSTV-Arduino-Scottie1/archive/refs/heads/pico-lib.zip
+Go to the release page for each: https://github.com/alanbjohnston/Arduino-APRS/releases and https://github.com/alanbjohnston/SSTV-Arduino-Scottie1/releases and https://github.com/alanbjohnston/Duino-hacks/releases 
 
-Select the latest release then download the zip files Arduino-APRS-Library.zip and SSTV-Arduino-Scottie-Library.zip
+Select the latest release then download the zip files Arduino-APRS-Library.zip and SSTV-Arduino-Scottie-Library.zip and Duino-hacks.zip 
 
 In the Arduino IDE, under the menu select Sketch / Include Library then select "Add .ZIP library" find the ZIP files you downloaded and add both of them.
 
@@ -50,6 +50,8 @@ Do the same for the following libraries:
 
 Adafruit INA219
 Adafruit BME280
-Pico timer
+RPI_PICO_TimerInterrupt
+
+
 
 Find your
