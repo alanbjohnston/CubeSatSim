@@ -59,6 +59,8 @@ RPI_PICO_TimerInterrupt
 
 JPEGDecoder
 
+TJpg_Decoder
+
 FastCRC
 
 Find the ZIP file you downloaded and select it.
