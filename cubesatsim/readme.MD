@@ -36,5 +36,20 @@ Under the menu Tools / Board select "Raspbery Pi RP2040 Boards(2.1.1)" then sele
 
 Next you need to install some libraries.
 
-You need to download the 
+You need to download the Arduino-APRS library and the SSTV-Arduino-Scottie1 library and add to your Arduino libraries.
 
+Go to the release page for each: https://github.com/alanbjohnston/Arduino-APRS/releases and https://github.com/alanbjohnston/SSTV-Arduino-Scottie1/archive/refs/heads/pico-lib.zip
+
+Select the latest release then download the zip files Arduino-APRS-Library.zip and SSTV-Arduino-Scottie-Library.zip
+
+In the Arduino IDE, under the menu select Sketch / Include Library then select "Add .ZIP library" find the ZIP files you downloaded and add both of them.
+
+Next, install some libraries by going under the menu Tools/ Manage Libraries.  At the search box at the top, type MPU6050_tockn and hit enter.  Mouse over the library desciption and click on the Install button.
+
+Do the same for the following libraries:
+
+Adafruit INA219
+Adafruit BME280
+Pico timer
+
+Find your
