@@ -278,10 +278,10 @@ float Temp;
 float rest;
 
 unsigned int wav_position = 0;
-int pwm_counter = 0;
-int pwm_counter_max = 420;
-int pwm_amplitude = 50; //50 //100;
-int pwm_value;
+//int pwm_counter = 0;
+//int pwm_counter_max = 420;
+//int pwm_amplitude = 50; //50 //100;
+//int pwm_value;
 int tx_bit = 1;
 float delay_time;
 bool  polarity = true;
