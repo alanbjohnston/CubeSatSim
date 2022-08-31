@@ -983,6 +983,9 @@ void get_tlm_fox() {
       nrd = (Encode_8b10b[rd][((int) data8[ctr2])] >> 10) & 1;
       //		printf ("data10[%d] = encoded data8[%d] = %x \n",
       //		 	ctr2, ctr2, data10[ctr2]); 
+      Serial.print(data10[ctr2], HEX);	 
+      Serial.print(" ");	 	    
+      Serial.println(data8[ctr2], HEX);	 
 /*      if (firstTime) {
         Serial.print(data10[ctr2], HEX);
 	Serial.print(" ");
