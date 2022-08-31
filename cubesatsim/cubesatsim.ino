@@ -142,7 +142,7 @@ void loop() {
   // query INA219 sensors and Payload sensors
    read_ina219();	
 	
-  read_payload();	
+//  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  
@@ -700,7 +700,9 @@ void get_tlm_fox() {
     memset(rs_frame, 0, sizeof(rs_frame));
     memset(parities, 0, sizeof(parities));
 //    Serial.println("After memset");   
-   uptime = (int)(millis() / 1000.0);	  
+//   uptime = (int)(millis() / 1000.0);	  
+   uptime = 2000;	
+   reset_count = 0;	  
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
 //    Serial.println("After h[0]");	  
