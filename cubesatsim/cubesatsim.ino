@@ -76,7 +76,7 @@ void setup() {
 // if Pi is present, run Payload OK software
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("\n\nCubeSatSim Pico v0.1 starting...\n\n");
+  Serial.println("\n\nCubeSatSim Pico v0.101 starting...\n\n");
 	
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
