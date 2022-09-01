@@ -3428,8 +3428,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-  while ((micros() - micro_timer2) < 832)	{ } 
-  if ((micros() - micro_timer2) > 833)	  
+  while ((micros() - micro_timer2) < 833)	{ } 
+  if ((micros() - micro_timer2) > 834)	  
     Serial.println(micros() - micro_timer2);	  
   micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
@@ -3464,16 +3464,17 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-/*
-if (bufLen != 0) {		  
+
+  if ((micros() - micro_timer)/bufLen > 835)	  
+    if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
-*/	  
+  }	  
     micro_timer = micros();
-  } else {	  
-///      Serial.print("R' Microseconds: ");
-///      Serial.println(micros() - micro_timer2);
+  } else {  
+//      Serial.print("R' Microseconds: ");
+//      Serial.println(micros() - micro_timer2);
 //      while ((micros() - micro_timer2) < 832)	{ }  
 //      micro_timer2 = micros();	  
   }
