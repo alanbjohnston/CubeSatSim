@@ -3465,7 +3465,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print(" ");
 //	Serial.println(millis());
 
-  if ((micros() - micro_timer)/bufLen > 835)	  
+  if ((micros() - micro_timer)/bufLen > 835)  {	  
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
