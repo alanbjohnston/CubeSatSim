@@ -3428,7 +3428,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-  while ((micros() - micro_timer2) < 832)	{ }  
+  while ((micros() - micro_timer2) < 832)	{ } 
+  Serial.println(micros() - micro_timer2);	  
   micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
     digitalWrite(BPSK_CONTROL_A, HIGH);
