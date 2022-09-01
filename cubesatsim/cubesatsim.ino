@@ -3428,7 +3428,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-  while ((micros() - micro_timer2) < 833)	{ } 
+  while ((micros() - micro_timer2) < 832)	{ } 
+  busy_wait_at_least_cycles(65);	  
   if ((micros() - micro_timer2) > 834)	  
     Serial.println(micros() - micro_timer2);	  
   micro_timer2 = micros();	  	
