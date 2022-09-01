@@ -3461,10 +3461,10 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-    if (debug_mode) {		  
+//    if (debug_mode) {		  
       Serial.print("R Microseconds: ");
-      Serial.println((micros() - micro_timer)/bufLen);
-    }
+      Serial.println((float)(micros() - micro_timer)/(float)bufLen);
+//    }
     micro_timer = micros();
   }
 }
