@@ -3469,7 +3469,8 @@ bool TimerHandler0(struct repeating_timer *t) {
   } else {	  
 ///      Serial.print("R' Microseconds: ");
 ///      Serial.println(micros() - micro_timer2);
-///      micro_timer2 = micros();	  
+      while ((micros() - micro_timer2) < 833)	{ }  
+      micro_timer2 = micros();	  
   }
 }
 /*	
