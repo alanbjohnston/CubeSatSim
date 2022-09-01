@@ -3429,9 +3429,9 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print(wav_position);
 //  Serial.print(" ");
   while ((micros() - micro_timer2) < 832)	{ } 
-  busy_wait_at_least_cycles(65);	  
-  if ((micros() - micro_timer2) > 834)	  
-    Serial.println(micros() - micro_timer2);	  
+  busy_wait_at_least_cycles(51);	// 300 ns  
+//  if ((micros() - micro_timer2) > 834)	  
+//    Serial.println(micros() - micro_timer2);	  
   micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
     digitalWrite(BPSK_CONTROL_A, HIGH);
@@ -3465,7 +3465,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-
+/*
   if ((micros() - micro_timer)/bufLen > 835)  {	  
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
@@ -3473,6 +3473,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     }
   }	  
     micro_timer = micros();
+*/	  
   } else {  
 //      Serial.print("R' Microseconds: ");
 //      Serial.println(micros() - micro_timer2);
