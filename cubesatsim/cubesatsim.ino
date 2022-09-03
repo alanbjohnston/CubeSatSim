@@ -83,7 +83,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.22 starting...\n");
+  Serial.println("CubeSatSim Pico v0.23 starting...\n");
 	
   config_gpio();	
 	
@@ -198,6 +198,7 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
+      Serial.printf("HI HI DE %s ", callsign);	    
       send_cw();
     }
   }
@@ -3975,6 +3976,9 @@ void serial_input() {
 		   
        break;
     }
+    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
+      sstv_end();	    
+	    
     if (new_mode != mode)
       transmit_off();
     sleep(2.0);		    
@@ -4008,7 +4012,10 @@ void prompt_for_input() {
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
-       Serial.println("d  Change debug mode\n");		  
+       Serial.println("d  Change debug mode\n");
+		  
+       Serial.printf("\nConfig file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
+		  
        break;	
 		  
     case PROMPT_CALLSIGN:
