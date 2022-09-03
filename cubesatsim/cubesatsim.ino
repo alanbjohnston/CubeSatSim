@@ -198,7 +198,7 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
-      Serial.printf("HI HI DE %s ", callsign);	    
+      Serial.printf("DE %s \n", callsign);	    
       send_cw();
     }
   }
@@ -4014,7 +4014,7 @@ void prompt_for_input() {
        Serial.println("o  Read diode temperature");	
        Serial.println("d  Change debug mode\n");
 		  
-       Serial.printf("\nConfig file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
 		  
        break;	
 		  
