@@ -345,6 +345,7 @@ int bpsk_pin_slice;
 int sample_rate; 
 int buffer_size;
 long micro_timer;
+long micro_timer2;
 int ready = FALSE;
 bool cw_stop = false;
 int payload_command = false;

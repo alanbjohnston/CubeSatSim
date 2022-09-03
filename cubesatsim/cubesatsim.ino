@@ -162,7 +162,7 @@ void setup() {
 // setup radio depending on mode 
   config_radio();	
 		
-  start_button_isr(); 
+///  start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
 	
@@ -3428,7 +3428,11 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-	
+  while ((micros() - micro_timer2) < 832)	{ } 
+  busy_wait_at_least_cycles(51);	// 300 ns  
+//  if ((micros() - micro_timer2) > 834)	  
+//    Serial.println(micros() - micro_timer2);	  
+  micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
     digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
@@ -3461,11 +3465,20 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-    if (debug_mode) {		  
+/*
+  if ((micros() - micro_timer)/bufLen > 835)  {	  
+    if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
-      Serial.println((micros() - micro_timer)/bufLen);
+      Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
+  }	  
     micro_timer = micros();
+*/	  
+  } else {  
+//      Serial.print("R' Microseconds: ");
+//      Serial.println(micros() - micro_timer2);
+//      while ((micros() - micro_timer2) < 832)	{ }  
+//      micro_timer2 = micros();	  
   }
 }
 /*	
@@ -3490,7 +3503,7 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(828, TimerHandler0))	// was was 827 and 828
+    if (ITimer0.attachInterruptInterval(800, TimerHandler0))	// was was 828 (841) and 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
