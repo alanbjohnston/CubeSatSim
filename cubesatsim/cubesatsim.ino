@@ -3433,13 +3433,13 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    Serial.println(micros() - micro_timer2);	  
   micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
-    digitalWrite(BPSK_CONTROL_A, HIGH);
+    digitalWrite(BPSK_CONTROL_A, LOW);
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_B, LOW);  	  
+    digitalWrite(BPSK_CONTROL_B, HIGH);  	  
   } else {
-    digitalWrite(BPSK_CONTROL_B, HIGH);  
+    digitalWrite(BPSK_CONTROL_B, LOW);  
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_A, LOW);	    
+    digitalWrite(BPSK_CONTROL_A, HIGH);	    
   }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
