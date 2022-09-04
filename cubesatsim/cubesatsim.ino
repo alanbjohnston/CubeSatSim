@@ -489,6 +489,8 @@ void transmit_off() {
   digitalWrite(MAIN_LED_BLUE, LOW);
 // ITimer0.stopTimer();	  // stop BPSK ISR timer
   if (mode == BPSK) {
+    digitalWrite(BPSK_CONTROL_A, LOW); 	  
+    digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   }
@@ -2997,8 +2999,10 @@ void start_pwm() {
     pwm_config_set_output_polarity( &config, true, false);	
     pwm_init(bpsk_pin_slice_A, &config, true);
     pwm_init(bpsk_pin_slice_B, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);  // start with off
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	
 }
 /*
 void pwm_interrupt_handler() {
@@ -3494,7 +3498,9 @@ void start_isr() {
 	Serial.println("Starting ISR for BPSK");
 	
 	pinMode(BPSK_CONTROL_A, OUTPUT);
-	pinMode(BPSK_CONTROL_B, OUTPUT);	
+	pinMode(BPSK_CONTROL_B, OUTPUT);
+        digitalWrite(BPSK_CONTROL_A, LOW); 	 // start with off 
+        digitalWrite(BPSK_CONTROL_B, LOW); 	  
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
