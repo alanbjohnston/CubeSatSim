@@ -3434,11 +3434,11 @@ bool TimerHandler0(struct repeating_timer *t) {
   micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
     digitalWrite(BPSK_CONTROL_A, LOW);
-    delayMicroseconds(1);    	  
+    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_B, HIGH);  	  
   } else {
     digitalWrite(BPSK_CONTROL_B, LOW);  
-    delayMicroseconds(1);    	  
+    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_A, HIGH);	    
   }
 /*	
