@@ -78,7 +78,7 @@ bool start_camera() {
       Serial.println("Camera detected!");
     }	    
   } 
-  if !camera_present {
+  if (!camera_present) {
     Serial.println("No camera detected!");
   }
  
