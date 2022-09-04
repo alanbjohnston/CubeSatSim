@@ -70,7 +70,19 @@ bool start_camera() {
 #endif
    LittleFS.begin();
  
-   return(get_camera_image());
+   bool camera_present = false;	
+   int tries = 0;
+   while ((tries++ < 5) && !camera_present) {
+    if (get_camera_image())  {
+      camera_present = true;
+      Serial.println("Camera detected!");
+    }	    
+  } 
+  if !camera_present {
+    Serial.println("No camera detected!");
+  }
+ 
+   return(camera_present);
 }
 
 void show_dir2() {
