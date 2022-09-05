@@ -686,7 +686,7 @@ void jpeg_decode(char* filename, char* fileout, bool debug){
   
   // Open the file for writing
 //  File imgFile = SD.open(fileout, FILE_WRITE);
-  outFile = LittleFS.open(fileout, "w+");
+  outFile = SPIFFS.open(fileout, "w+");
   
   if (outFile) {
     if (debug)
@@ -751,7 +751,7 @@ void jpeg_decode(char* filename, char* fileout, bool debug){
   
   uint16_t w = 0, h = 0;
   // TJpgDec.getFsJpgSize(&w, &h, "/cam.jpg", LittleFS); // Note name preceded with "/"
-  TJpgDec.getFsJpgSize(&w, &h, filename, LittleFS); // Note name preceded with "/"
+  TJpgDec.getFsJpgSize(&w, &h, filename, SPIFFS); // Note name preceded with "/"
   
   if (debug) {
     Serial.print("Width = "); 
@@ -772,7 +772,7 @@ void jpeg_decode(char* filename, char* fileout, bool debug){
 //  TJpgDec.setCallback(get_block);  
   TJpgDec.setCallback(merged_get_block);  
   //TJpgDec.drawFsJpg(0, 0, "/cam.jpg", LittleFS);
-  TJpgDec.drawFsJpg(0, 0, filename, LittleFS);
+  TJpgDec.drawFsJpg(0, 0, filename, SPIFFS);
   
   if (debug)
     Serial.println("Draw complete");
@@ -973,7 +973,7 @@ void writeFooter(File* dst){
 void raw_decode(char* filename, char* fileout){  // used to decode .raw files in RGB565 format
 
 // Open the input file for reading
-  inFile = LittleFS.open(filename, "r");
+  inFile = SPIFFS.open(filename, "r");
   
   if (inFile)
     Serial.println("Input opened");
@@ -982,7 +982,7 @@ void raw_decode(char* filename, char* fileout){  // used to decode .raw files in
     return;
   }
 // Open the output file for writing
-  outFile = LittleFS.open(fileout, "w+");
+  outFile = SPIFFS.open(fileout, "w+");
   
   if (outFile)
     Serial.println("Output opened");
@@ -1133,7 +1133,7 @@ void writeFooter(File* dst, char *telemetry){
   
 void rotate_image(char *file_input, char *file_output, char *telemetry) {
   
-  File input_file = LittleFS.open(file_input, "r");           
+  File input_file = SPIFFS.open(file_input, "r");           
   
   char pixel[3];
   int side = (320 - 240)/2;
@@ -1149,12 +1149,12 @@ void rotate_image(char *file_input, char *file_output, char *telemetry) {
   }
   input_file.close();
   
-  LittleFS.remove(file_input);
+  SPIFFS.remove(file_input);
   
   Serial.println("Input file read and deleted");
   Serial.println(side);
   
-  input_file = LittleFS.open(file_input, "w+"); 
+  input_file = SPIFFS.open(file_input, "w+"); 
   
   //writeFooter(&input_file, telemetry); 
   
