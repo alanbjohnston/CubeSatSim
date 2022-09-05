@@ -229,7 +229,8 @@ void loop() {
 	  
       char output_file[] = "/cam.bin"; 	  
       jpeg_decode(image_file, output_file, debug_mode);
-      rotate	  
+      char telem_display[] = " Battery:    Status:  ";	  
+      rotate_image(output_file, output_file, telem_display);	  
 
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
