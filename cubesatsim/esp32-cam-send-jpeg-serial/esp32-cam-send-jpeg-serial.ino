@@ -646,7 +646,7 @@ bool get_block(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
   if (x == 304) {
     if (outFile) {
       Serial.println("********************************************* Writing block!");
-      outFile.write(&img_block[0][0][0], sizeof(img_block));  
+      outFile.write((const uint8_t*)&img_block[0][0][0], sizeof(img_block));  
     } else
       Serial.println("Problem writing block");
     counter = 0;
