@@ -23,7 +23,7 @@
 #include <Arduino.h>
 #include "esp_camera.h"
 #include <FastCRC.h>
-#include "FS.h"
+//#include "FS.h"
 #include "SPIFFS.h"
 #include <TJpg_Decoder.h>
 
