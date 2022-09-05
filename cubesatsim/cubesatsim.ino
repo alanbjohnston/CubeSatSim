@@ -312,7 +312,7 @@ bool TimerHandler1(struct repeating_timer *t) {
       process_bootsel();
 
 //  if (wifi) 
-    check_for_browser();
+//    check_for_browser();
 	
   return(true);	
 }
