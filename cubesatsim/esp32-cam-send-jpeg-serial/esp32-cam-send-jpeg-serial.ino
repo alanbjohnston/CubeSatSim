@@ -34,7 +34,7 @@
 //#define JPEG
 #define RGB565
 
-#iddef RGB565
+#ifdef RGB565
 char input_buffer[240][240][2];
 #else
 char input_buffer[240][240][3];
