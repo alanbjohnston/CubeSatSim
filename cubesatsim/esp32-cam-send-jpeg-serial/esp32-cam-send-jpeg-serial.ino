@@ -31,6 +31,7 @@
 
 //#define DEBUG
 #define FORMAT_SPIFFS_IF_FAILED true
+//#define JPEG
 
 //FONTS
 const uint8_t b_fonts[43][11] = {
@@ -182,7 +183,12 @@ void setup() {
 
   initialize_camera();
 
-  Serial.println("ESP32-CAM Camera initialized");
+  Serial.println("ESP32-CAM Camera initialized v0.1");
+#ifdef JPEG
+  Serial.println("JPEG Mode");        
+#else
+  Serial.println("RAW with Rotate Mode");        
+#endif        
 
   pinMode(LED_PIN, OUTPUT); // Set the pin as output
 
@@ -203,11 +209,18 @@ void setup() {
 }
 
 void loop() {
-  
+        
+#ifdef JPEG  
   char filename[] = "/cam.jpg";
-
+#else 
+  char filename[] = "/cam.bin";
+#endif
   save_camera_image(filename);
 
+#ifndef JPEG
+  rotate_image(filename);      
+#endif
+        
   send_image_serial(filename);
 
   delay(500);
@@ -298,8 +311,11 @@ static camera_config_t camera_config = {
   .xclk_freq_hz = 20000000,
   .ledc_timer = LEDC_TIMER_0,
   .ledc_channel = LEDC_CHANNEL_0,
-
-  .pixel_format = PIXFORMAT_JPEG, // Options: YUV422, GRAYSCALE, RGB565, JPEG
+#ifdef JPEG        
+  .pixel_format = PIXFORMAT_JPEG, // // Options: JPEG, YUV422, GRAYSCALE, RGB565, JPEG
+#else
+  .pixel_format = PIXFORMAT_RGB656, // // Options: JPEG, YUV422, GRAYSCALE, RGB565, JPEG
+#endif
   .frame_size = FRAMESIZE_QVGA, // Options: QQVGA-UXGA, QVGA  Do not use sizes above QVGA when not JPEG
 
   .jpeg_quality = 6, // 12, //0-63 lower number means higher quality
@@ -340,7 +356,7 @@ void save_camera_image(char* filename)
 
   pic = esp_camera_fb_get();
 
-  const char path[] = "/cam.jpg";
+//  const char path[] = "/cam.jpg";
 
   Serial.println("Writing image file"); //: %s\r\n", path);
 
@@ -377,7 +393,7 @@ void send_image_serial(char *filename)
   
 // read from file
 
-      const char path[] = "/cam.jpg";
+//      const char path[] = "/cam.jpg";
 
       Serial.println("Reading image file"); //: %s\r\n", path);
 
@@ -1214,7 +1230,7 @@ void writeFooter(File* dst, char *telemetry){
 
 */
   
-void rotate_image(char *file_input, char *file_output, char *telemetry) {
+void rotate_image(char *file_input) {
   
   File input_file = SPIFFS.open(file_input, "r");           
   
