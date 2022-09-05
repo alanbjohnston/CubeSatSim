@@ -1333,7 +1333,8 @@ void get_tlm_fox() {
   }
 }
 
-void write_wave(int i, short int *buffer)
+//void write_wave(int i, short int *buffer)
+void write_wave(int i, byte *buffer)
 {
 	if (mode == FSK)
 	{
@@ -3539,7 +3540,8 @@ void start_button_isr() {
     Serial.println(F("Can't set ITimer1. Select another Timer, freq. or timer"));
 
 }
-  
+
+/*
 void client_print_string(char *string)
 {
   int count = 0;
@@ -3550,7 +3552,6 @@ void client_print_string(char *string)
   client.println(" ");  
 }
 
-/*
 bool check_for_wifi() {
 	
 #ifndef PICO_W
