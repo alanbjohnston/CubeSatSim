@@ -227,10 +227,11 @@ void loop() {
 	  
 //      send_sstv(image_file);
 	  
-      char output_file[] = "/cam.bin"; 	  
-      jpeg_decode(image_file, output_file, debug_mode);
+      char output_file2[] = "/cam2.bin"; 	  
+      jpeg_decode(image_file, output_file2, debug_mode);
       char telem_display[] = " Battery:    Status:  ";	  
-      rotate_image(output_file, output_file, telem_display);	  
+      char output_file[] = "/cam.bin"; 		  
+      rotate_image(output_file2, output_file, telem_display);	  
 
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
