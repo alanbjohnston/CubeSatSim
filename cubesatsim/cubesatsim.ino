@@ -36,7 +36,7 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-#include <WiFi.h>
+//#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
@@ -55,8 +55,8 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-WiFiServer server(port);
-WiFiClient client;
+//WiFiServer server(port);
+//WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
@@ -235,7 +235,7 @@ void loop() {
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-      if (!wifi) 
+//      if (!wifi) 
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
@@ -244,7 +244,7 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
-      if (!wifi) 
+//      if (!wifi) 
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
@@ -263,14 +263,14 @@ void loop() {
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-	  if (!wifi) 
+//	  if (!wifi) 
 	    digitalWrite(LED_BUILTIN, LOW);	
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
 	//  delay(3000);	
 	  sleep(0.2); // 2.845); // 3.0);
 
-	  if (!wifi) 
+//	  if (!wifi) 
 	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
@@ -311,7 +311,7 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 
-  if (wifi) 
+//  if (wifi) 
     check_for_browser();
 	
   return(true);	
@@ -2637,6 +2637,7 @@ void read_payload()
 //  delay(100);
 }
 
+/*
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -2824,7 +2825,8 @@ void payload_OK_only()
 
   delay(100);
 }
-	
+
+*/	
 /*
 void eeprom_word_write(int addr, int val)
 {
@@ -3151,7 +3153,7 @@ void process_pushbutton() {
 	
 //  return;  /// just skip for now
 	
-  if (!wifi) 	   	
+//  if (!wifi) 	   	
    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
@@ -3249,7 +3251,7 @@ void process_bootsel() {
 	
   int release = FALSE;
 	
-  if (!wifi) 
+//  if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
@@ -3344,11 +3346,11 @@ void process_bootsel() {
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-    if (!wifi) 
+//    if (!wifi) 
       digitalWrite(LED_BUILTIN, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    if (!wifi) 
+//    if (!wifi) 
        digitalWrite(LED_BUILTIN, HIGH);
     sleep(0.1);
   }
@@ -3372,7 +3374,7 @@ void config_gpio() {
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
   // set LEDs and blink once	
-  if (!wifi) 
+//  if (!wifi) 
     pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
@@ -3548,6 +3550,7 @@ void client_print_string(char *string)
   client.println(" ");  
 }
 
+/*
 bool check_for_wifi() {
 	
 #ifndef PICO_W
@@ -3631,13 +3634,13 @@ void check_for_browser() {
        }
      }
   }
-/*
+
   Serial.println(" ");
   print_string(var);
   print_string(val);
   Serial.println(" "); 
   Serial.println(strlen(val));
-*/
+
   if (!strcmp(var, "call") && (strlen(val) > 0)) {
      Serial.print("Changing callsign to ");
      print_string(val);
@@ -3680,9 +3683,10 @@ void configure_wifi() {
     server.begin();
   }
 }
-
+*/
+	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
-  if (!wifi) 
+ // if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 	
@@ -3697,7 +3701,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     sleep(min(time_left, period_us) / 1.0E6);  
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
-  if (!wifi) 
+//  if (!wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
