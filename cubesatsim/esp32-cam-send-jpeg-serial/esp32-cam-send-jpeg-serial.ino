@@ -25,7 +25,6 @@
 #include <FastCRC.h>
 #include "FS.h"
 #include "SPIFFS.h"
-#include <LittleFS.h>
 #include <TJpg_Decoder.h>
 
 // some info: https://visualgdb.com/tutorials/esp32/camera/
