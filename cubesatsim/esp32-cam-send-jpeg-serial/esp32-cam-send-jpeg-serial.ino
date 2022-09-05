@@ -774,7 +774,8 @@ void jpeg_decode(char* filename, char* fileout, bool debug){
   }
   else
     Serial.println("Failed to open output");
-  
+
+ /*  
   for(i = 0; i < 15360; i++){ // Cleaning Header Buffer array
     sortBuf[i] = 0xFF;
   }
@@ -818,7 +819,8 @@ void jpeg_decode(char* filename, char* fileout, bool debug){
 //    imgFile.write(sortBuf[k]);
 //  }
   outFile.write(sortBuf, sizeof(sortBuf));
-
+*/
+        
 //  writeFooter(&outFile);  //Writing first 10560 bytes (11*320*3)  // write footer after rotate
   
   // Decoding start
