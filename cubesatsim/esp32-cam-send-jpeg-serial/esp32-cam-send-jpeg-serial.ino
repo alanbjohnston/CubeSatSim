@@ -54,7 +54,7 @@ const char start_flag[] = "3d99de816e5ad7742b61a37c39141783";  // MD5 hash of "E
 const char end_flag[] = "f681a5c52351befe0e3524eb1a40f14b7803317a"; // SHA-1 hash of "ESP32-CAM" as end flag
 FastCRC8 CRC8;
 char hexValue[6];
-char file_buf[50000];
+char file_buf[5]; //50000];
 int file_len;
 bool file_flag = false;
 camera_fb_t *pic;
