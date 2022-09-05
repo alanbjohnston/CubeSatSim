@@ -32,8 +32,13 @@
 //#define DEBUG
 #define FORMAT_SPIFFS_IF_FAILED true
 //#define JPEG
+#define RGB565
 
+#iddef RGB565
+char input_buffer[240][240][2];
+#else
 char input_buffer[240][240][3];
+#endif
 
 void app_main();
 void send_image_serial(char *filename);
@@ -529,12 +534,6 @@ void raw_decode(char* filename, char* fileout){  // used to decode .raw files in
     print_hex(buff[1]);
 #endif
     
-    int pixel_value = (buff[0] << 8) + buff[1];  // endian for raw
- 
-    byte red = (pixel_value & 0b1111100000000000) >> 8;
-    byte green = (pixel_value & 0b0000011111100000) >> 3;
-    byte blue = (pixel_value & 0b0000000000011111) << 3;
-
 #ifdef TEST_PATTERN    
     int size = 5; // 46;
     int y = (int)( i / 320 );
@@ -564,7 +563,36 @@ void raw_decode(char* filename, char* fileout){  // used to decode .raw files in
       blue = 255; //(100 + y) % 256;
     }  
 #endif    
+
+#ifdef RGB565
+//      buffer[0] = red;
+//      buffer[1] = green;
+//      buffer[2] = blue;    
+/*     
+    if (y < 20) { // 20) {
+      buffer[0] = 0;
+      buffer[1] = 255;
+      buffer[2] = 0;
+    } else {
     
+      buffer[0] = redx;
+      buffer[1] = greenx;
+      buffer[2] = bluex;
+    }
+ */
+    
+    int bytes = outFile.write((const uint8_t*)buff, 2);
+//    Serial.println(bytes);
+    if (bytes < 2) 
+      Serial.println("Error writing output file");
+
+#else
+    int pixel_value = (buff[0] << 8) + buff[1];  // endian for raw
+ 
+    byte red = (pixel_value & 0b1111100000000000) >> 8;
+    byte green = (pixel_value & 0b0000011111100000) >> 3;
+    byte blue = (pixel_value & 0b0000000000011111) << 3;
+
       buffer[0] = red;
       buffer[1] = green;
       buffer[2] = blue;    
@@ -585,6 +613,9 @@ void raw_decode(char* filename, char* fileout){  // used to decode .raw files in
 //    Serial.println(bytes);
     if (bytes < 3) 
       Serial.println("Error writing output file");
+    
+#endif
+    
     
   #ifdef DEBUG    
     print_hex(red);
@@ -664,8 +695,10 @@ void rotate_image(char *file_input) {
       input_file.readBytes(pixel, sizeof(pixel));
       if (( x >= side) && (x < (320 - side))) {
         input_buffer[y][x - side][0] = pixel[0];
-        input_buffer[y][x - side][1] = pixel[1];        
-        input_buffer[y][x - side][2] = pixel[2];      
+        input_buffer[y][x - side][1] = pixel[1];    
+#ifndef RGB565        
+        input_buffer[y][x - side][2] = pixel[2];              
+#endif
       }
     }
   }
@@ -690,6 +723,15 @@ void rotate_image(char *file_input) {
 //        Serial.print(" ");
         pixel[0] = input_buffer[x - side][y][0];
         pixel[1] = input_buffer[x - side][y][1];
+#ifdef RGB565 
+        if (input_file.write((const uint8_t*)pixel, sizeof(pixel)) < 2)
+          Serial.println("Error writing to file");
+      } else {
+        Serial.print("-");
+        if (input_file.write((const uint8_t*)side_pixel, sizeof(side_pixel)) < 2)
+          Serial.println("Error writing to file");         
+      }         
+#else        
         pixel[2] = input_buffer[x - side][y][2];       
         if (input_file.write((const uint8_t*)pixel, sizeof(pixel)) < 3)
           Serial.println("Error writing to file");
@@ -698,6 +740,7 @@ void rotate_image(char *file_input) {
         if (input_file.write((const uint8_t*)side_pixel, sizeof(side_pixel)) < 3)
           Serial.println("Error writing to file");         
       } 
+#endif
     }
   }
   
