@@ -314,7 +314,7 @@ static camera_config_t camera_config = {
 #ifdef JPEG        
   .pixel_format = PIXFORMAT_JPEG, // // Options: JPEG, YUV422, GRAYSCALE, RGB565, JPEG
 #else
-  .pixel_format = PIXFORMAT_RGB656, // // Options: JPEG, YUV422, GRAYSCALE, RGB565, JPEG
+  .pixel_format = PIXFORMAT_RGB565, // // Options: JPEG, YUV422, GRAYSCALE, RGB565, JPEG
 #endif
   .frame_size = FRAMESIZE_QVGA, // Options: QQVGA-UXGA, QVGA  Do not use sizes above QVGA when not JPEG
 
