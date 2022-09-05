@@ -50,6 +50,8 @@ char file_buf[50000];
 int file_len;
 bool file_flag = false;
 camera_fb_t *pic;
+File inFile;
+File outFile;
 
 // example code from https://github.com/espressif/arduino-esp32/blob/master/libraries/LittleFS/examples/LITTLEFS_test/LITTLEFS_test.ino
 //
