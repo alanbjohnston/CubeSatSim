@@ -106,6 +106,7 @@ const uint8_t l_fonts[23][5] = {
   { 0x00, 0x00, 0x00, 0x00, 0x00 }  // 22: SPACE
 };
 
+char input_buffer[240][240][3];
 
 void app_main();
 void send_image_serial(char *filename);
@@ -1141,7 +1142,7 @@ void raw_decode(char* filename, char* fileout){  // used to decode .raw files in
     }
  */
     
-    int bytes = outFile.write(buffer, 3);
+    int bytes = outFile.write((const uint8_t*)buffer, 3);
 //    Serial.println(bytes);
     if (bytes < 3) 
       Serial.println("Error writing output file");
@@ -1251,11 +1252,11 @@ void rotate_image(char *file_input, char *file_output, char *telemetry) {
         pixel[0] = input_buffer[x - side][y][0];
         pixel[1] = input_buffer[x - side][y][1];
         pixel[2] = input_buffer[x - side][y][2];       
-        if (input_file.write(pixel, sizeof(pixel)) < 3)
+        if (input_file.write((const uint8_t*)pixel, sizeof(pixel)) < 3)
           Serial.println("Error writing to file");
       } else {
         Serial.print("-");
-        if (input_file.write(side_pixel, sizeof(side_pixel)) < 3)
+        if (input_file.write((const uint8_t*)side_pixel, sizeof(side_pixel)) < 3)
           Serial.println("Error writing to file");         
       } 
     }
