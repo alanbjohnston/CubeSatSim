@@ -44,7 +44,7 @@
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
-#include "sstv2.h"
+//#include "sstv2.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -217,7 +217,7 @@ void loop() {
 	  char camera_file[] = "/cam.jpg";      
 	  strcpy(image_file, camera_file);      
 	} else	      
-	  strcpy(image_file, sstv2_filename);     // 2nd stored image
+	  strcpy(image_file, sstv1_filename);     // 2nd stored image
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
