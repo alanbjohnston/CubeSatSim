@@ -203,6 +203,7 @@ void loop() {
   }
   else if (mode == SSTV)
   {
+      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
@@ -228,6 +229,7 @@ void loop() {
 	  
       char output_file[] = "/cam.bin"; 	  
       jpeg_decode(image_file, output_file, debug_mode);
+      rotate	  
 
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
