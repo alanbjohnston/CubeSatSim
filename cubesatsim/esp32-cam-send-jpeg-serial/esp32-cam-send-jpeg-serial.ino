@@ -25,6 +25,7 @@
 #include <FastCRC.h>
 #include "FS.h"
 #include "SPIFFS.h"
+#include <TJpg_Decoder.h>
 
 // some info: https://visualgdb.com/tutorials/esp32/camera/
 
@@ -460,4 +461,723 @@ void send_image_serial(char *filename)
       esp_camera_fb_return(pic);
     }
   Serial.println("File sent!");
+}
+
+void print_hex(byte octet) {
+      char hexValue[5];
+      sprintf(hexValue, "%02X", octet);
+      Serial.print(hexValue); 
+}
+
+char img_block[320][8][3];   // 320 pixels per row, 8 rows, 3 values (RGB) per.
+  
+bool get_block(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
+{
+#ifdef DEBUG  
+  Serial.println("\nBlock callback");
+  Serial.println(x);
+  Serial.println(y);
+  Serial.println(w);
+  Serial.println(h);
+#endif
+  
+//  return 1;
+
+  uint16_t pixel_value;
+  uint16_t *pixel;
+  bool last_block = ((x == (320 - w)) & (y == (240 - h)));
+//  char buffer[16 * 8 * 3];
+  int counter = 0;
+  //int x_block = (x / w) % w;
+  //int y_block = (y / h) % h;
+  
+/*  
+  if (((y % h) == 0) && ((x % w) == 0)) {
+    Serial.print("\nStart of row! x = ");
+    Serial.print(x);
+    Serial.print(" y = ");
+    Serial.println(y);
+  }
+*/
+  pixel = bitmap;
+  uint32_t total_pixels = w * h;
+
+//  while (total_pixels--) {
+    while (counter < total_pixels) {
+    pixel_value = *pixel;
+    
+    int y_rel = counter / w;
+    int x_rel = counter % w; //  - y_rel * w;
+/*  
+    Serial.print("Relative x + x = ");
+    Serial.print(x_rel + x);
+    Serial.print(" y + y = ");
+    Serial.print(y_rel);
+    Serial.print(" counter = ");
+    Serial.println(counter);
+*/
+  /*
+    if ((x == 0) && (y == 0)) {
+      Serial.print(" ");
+      Serial.print(pixel_value, HEX);
+      Serial.print(" ");
+    }
+*/    
+//    buffer[counter++] = pixel_value >> 8;
+//    buffer[counter++] = pixel_value;
+
+    byte red = (pixel_value & 0b1111100000000000) >> 8;
+    byte green = (pixel_value & 0b0000011111100000) >> 3;
+    byte blue = (pixel_value & 0b0000000000011111) << 3;
+    
+//    buffer[counter++] = red;
+//    buffer[counter++] = green;
+//    buffer[counter++] = blue;
+    
+    img_block[x_rel + x][y_rel][0] = red;
+    img_block[x_rel + x][y_rel][1] = green;
+    img_block[x_rel + x][y_rel][2] = blue;  
+  
+#ifdef DEBUG   
+    Serial.print("\npixel_value: ");  
+    Serial.print(pixel_value);  
+    Serial.print("\nRGB: ");  
+    print_hex(red);
+    print_hex(green);
+    print_hex(blue);
+      
+    Serial.println("\n img_block: ");
+    for (int k = 0; k < 3; k ++)  
+      print_hex(*(&img_block[x_rel + x][y_rel][0] + k));      
+#endif    
+ /*
+    if (counter >= 155000) {
+      Serial.println("Resetting counter****************************************\n");
+      counter = 0;
+    }
+*/
+    counter++;
+    pixel++;
+  }
+  
+//  Serial.println("\nWriting block to file");
+//  Serial.print("Sizeof buffer: ");
+//  Serial.println(sizeof(buffer));
+  if (x == 304) {
+    if (outFile) {
+      Serial.println("********************************************* Writing block!");
+      outFile.write(&img_block[0][0][0], sizeof(img_block));  
+    } else
+      Serial.println("Problem writing block");
+    counter = 0;
+  }
+  if (last_block) {
+    Serial.println("Complete!\n\n");
+  }
+/*
+    for (int i = 0; i < counter; i++) {
+//      Serial.print(buffer[i], HEX);
+      char hexValue[5];
+      sprintf(hexValue, "%02X", buffer[i]);
+      Serial.print(hexValue);
+    }
+ */ 
+    
+//    Serial.print("\n\n Size: ");
+//    Serial.println(counter);
+    
+//    write_complete = true;
+//  }
+
+//  delay(1000);
+
+  blocks++;
+
+  return 1;
+}
+ 
+int JpegDec_i;
+int JpegDec_j;
+int JpegDec_height = 240;
+int JpegDec_width = 320;
+byte  JpegDec_sortBuf[15360]; //320(px)*16(lines)*3(bytes) // Header buffer
+int JpegDec_pxSkip;
+uint8_t *JpegDec_pImg;
+int JpegDec_x, JpegDec_y, JpegDec_bx, JpegDec_by;
+int JpegDec_comps = 3;
+  
+bool merged_get_block(int16_t x, int16_t y, uint16_t w, uint16_t h, uint16_t* bitmap)
+{
+#ifdef DEBUG
+  Serial.println("\nBlock callback");
+  Serial.println(x);
+  Serial.println(y);
+  Serial.println(w);
+  Serial.println(h);
+#endif
+  int JpegDec_MCUx = x;
+  int JpegDec_MCUy = y;
+  int JpegDec_MCUHeight = h;
+  int JpegDec_MCUWidth = w;
+
+//  JpegDec_pImg = bitmap;
+  
+//    JpegDec_pImg = JpegDec_pImage;
+    for(JpegDec_by=0; JpegDec_by<JpegDec_MCUHeight; JpegDec_by++){
+      for(JpegDec_bx=0; JpegDec_bx<JpegDec_MCUWidth; JpegDec_bx++){
+//        JpegDec_x = JpegDec_MCUx * JpegDec_MCUWidth + JpegDec_bx;
+//        JpegDec_y = JpegDec_MCUy * JpegDec_MCUHeight + JpegDec_by;
+        JpegDec_x = JpegDec_MCUx + JpegDec_bx;
+        JpegDec_y = JpegDec_MCUy + JpegDec_by;
+        if(JpegDec_x<JpegDec_width && JpegDec_y<JpegDec_height){
+//          if(JpegDec_comps == 1){ // Grayscale
+//            //sprintf(str,"%u", pImg[0]);
+//            outFile.write(JpegDec_pImg, 1);
+//          }else
+        { // RGB
+            // When saving to the SD, write 16 lines on one time
+            // First we write on the array 16 lines and then we save to SD
+            JpegDec_pxSkip = ((JpegDec_y - (16 * JpegDec_j)) * 320) + JpegDec_x;
+          
+            int pixel_value = *bitmap;
+            
+            byte red = (pixel_value & 0b1111100000000000) >> 8;
+            byte green = (pixel_value & 0b0000011111100000) >> 3;
+            byte blue = (pixel_value & 0b0000000000011111) << 3;            
+            
+            JpegDec_sortBuf[(3 * JpegDec_pxSkip) + 0] = red;  // JpegDec_pImg[0];
+            JpegDec_sortBuf[(3 * JpegDec_pxSkip) + 1] = green; // JpegDec_pImg[1];
+            JpegDec_sortBuf[(3 * JpegDec_pxSkip) + 2] = blue; // JpegDec_pImg[2];
+#ifdef DEBUG          
+            Serial.print("sortBuf index = ");
+            Serial.println((3 * JpegDec_pxSkip));
+#endif
+            JpegDec_i++;
+            if(JpegDec_i == 5120){ //320(px)x16(lines)
+#ifdef DEBUG
+              Serial.println("Writing lines!");
+#endif
+              //              for(k = 0; k < 15360; k++){
+//                imgFile.write(sortBuf[k]);
+//              }
+              outFile.write(JpegDec_sortBuf, sizeof(JpegDec_sortBuf));
+              JpegDec_i = 0;
+              JpegDec_j++; //15(sections)
+            }
+          }
+        }
+//        JpegDec_pImg += JpegDec_comps ;
+        bitmap++;
+      }
+    }
+#ifdef DEBUG  
+  Serial.println("Block processed!");
+#endif
+  return 1;
+}
+
+void jpeg_decode(char* filename, char* fileout, bool debug){
+  uint8_t *pImg;
+//  uint16_t *pImg;
+  int x,y, bx,by;
+  byte sortBuf[15360]; //320(px)*16(lines)*3(bytes) // Header buffer
+  int i,j,k;
+  int pxSkip;
+  
+  // Open the file for writing
+//  File imgFile = SD.open(fileout, FILE_WRITE);
+  outFile = LittleFS.open(fileout, "w+");
+  
+  if (outFile) {
+    if (debug)
+      Serial.println("Output opened");
+  }
+  else
+    Serial.println("Failed to open output");
+  
+  for(i = 0; i < 15360; i++){ // Cleaning Header Buffer array
+    sortBuf[i] = 0xFF;
+  }
+
+  for(i = 0; i < 12; i++){
+    byte fontNumber;
+    char ch;
+    ch = charId[i];
+    for(y = 0; y < 11; y++){
+      for(x = 0; x < 8; x++){
+        pxSkip = 16 + (320 * (y + 3)) + (3 * 8 * i) + (3 * x); //Width: x3
+
+        uint8_t mask;
+        mask = pow(2, 7 - x);
+
+        if(ch >= 65 && ch <= 90){ // A to Z
+                fontNumber = ch - 65;
+        }
+        else if(ch >= 48 && ch <= 57){ //0 to 9
+                fontNumber = ch - 22;
+        }
+        else if(ch == '/'){fontNumber = 36;}
+        else if(ch == '-'){fontNumber = 37;}
+        else if(ch == '.'){fontNumber = 38;}
+        else if(ch == '?'){fontNumber = 39;}
+        else if(ch == '!'){fontNumber = 40;}
+        else if(ch == ':'){fontNumber = 41;}
+        else if(ch == ' '){fontNumber = 42;}
+        else              {fontNumber = 42;}
+
+        if((b_fonts[fontNumber][y] & mask) != 0){
+          for(j = 0; j < 9; j++){
+                  sortBuf[(3 * pxSkip) + j] = 0x00;
+          }
+        }
+      }
+    }
+  }
+
+//  for(k = 0; k < 15360; k++){  // Adding header to the binary file
+//    imgFile.write(sortBuf[k]);
+//  }
+  outFile.write(sortBuf, sizeof(sortBuf));
+
+//  writeFooter(&outFile);  //Writing first 10560 bytes (11*320*3)  // write footer after rotate
+  
+  // Decoding start
+  
+  if (debug)
+    Serial.println("Starting jpeg decode");
+  
+  JpegDec_i = 0;
+  JpegDec_j = 0;
+  
+  uint16_t w = 0, h = 0;
+  // TJpgDec.getFsJpgSize(&w, &h, "/cam.jpg", LittleFS); // Note name preceded with "/"
+  TJpgDec.getFsJpgSize(&w, &h, filename, LittleFS); // Note name preceded with "/"
+  
+  if (debug) {
+    Serial.print("Width = "); 
+    Serial.print(w); 
+    Serial.print(", height = "); 
+    Serial.println(h);
+  }
+  
+  if ((w == 0) && (h == 0)) {
+    Serial.println("Failed to open jpeg input");
+    return;
+  }
+//  counter = 0;
+//  write_complete = false;
+  
+  TJpgDec.setJpgScale(1);
+  TJpgDec.setSwapBytes(false);    // was true
+//  TJpgDec.setCallback(get_block);  
+  TJpgDec.setCallback(merged_get_block);  
+  //TJpgDec.drawFsJpg(0, 0, "/cam.jpg", LittleFS);
+  TJpgDec.drawFsJpg(0, 0, filename, LittleFS);
+  
+  if (debug)
+    Serial.println("Draw complete");
+  
+//  while (!write_complete) { Serial.println("Waiting..."); delay(500);}
+
+/*  
+  JpegDec.decodeFile(filename);
+  // Image Information
+  Serial.print("Width     :");
+  Serial.println(JpegDec.width);
+  Serial.print("Height    :");
+  Serial.println(JpegDec.height);
+  Serial.print("Components:");
+  Serial.println(JpegDec.comps);
+  Serial.print("MCU / row :");
+  Serial.println(JpegDec.MCUSPerRow);
+  Serial.print("MCU / col :");
+  Serial.println(JpegDec.MCUSPerCol);
+  Serial.print("Scan type :");
+  Serial.println(JpegDec.scanType);
+  Serial.print("MCU width :");
+  Serial.println(JpegDec.MCUWidth);
+  Serial.print("MCU height:");
+  Serial.println(JpegDec.MCUHeight);
+  Serial.println("");
+*/
+  if (debug)
+    Serial.println("Writing bin to FS");
+
+//  imgFile.write(JpegDec.pImage, sizeof(JpegDec.pImage));
+  
+/*  
+  i = 0;
+  j = 0;
+  while(JpegDec.read()){
+    pImg = JpegDec.pImage ;
+    for(by=0; by<JpegDec.MCUHeight; by++){
+      for(bx=0; bx<JpegDec.MCUWidth; bx++){
+        x = JpegDec.MCUx * JpegDec.MCUWidth + bx;
+        y = JpegDec.MCUy * JpegDec.MCUHeight + by;
+        if(x<JpegDec.width && y<JpegDec.height){
+          if(JpegDec.comps == 1){ // Grayscale
+            //sprintf(str,"%u", pImg[0]);
+            imgFile.write(pImg, sizeof(pImg));
+          }else{ // RGB
+            // When saving to the SD, write 16 lines on one time
+            // First we write on the array 16 lines and then we save to SD
+            pxSkip = ((y - (16 * j)) * 320) + x;
+            sortBuf[(3 * pxSkip) + 0] = pImg[0];
+            sortBuf[(3 * pxSkip) + 1] = pImg[1];
+            sortBuf[(3 * pxSkip) + 2] = pImg[2];
+            i++;
+            if(i == 5120){ //320(px)x16(lines)
+//              for(k = 0; k < 15360; k++){
+                imgFile.write(sortBuf, sizeof(sortBuf));
+//              }
+              i = 0;
+              j++; //15(sections)
+            }
+          }
+        }
+        pImg += JpegDec.comps ;
+      }
+    }
+  }
+*/
+  if (debug)
+    Serial.println("Bin has been written to FS");
+  outFile.close();
+}
+
+/*  
+//void shot_pic(){
+void get_pic() {
+  int32_t start_time = millis();  
+  
+  
+  time = millis() - start_time;
+  Serial.println("get_pic done!");
+  Serial.print(start_time); 
+  Serial.println(" ms elapsed");
+  
+  return; 
+}
+  
+  // Try to locate the camera
+  if (cam.begin()) {
+    Serial.println("Camera Found:");
+  } else {
+    Serial.println("No camera found?");
+    return;
+  }
+  for (int i = 0; i <= 10; i++){
+    cam.setImageSize(VC0706_320x240);
+  }
+  Serial.println("Snap in 3 secs...");
+  delay(3000);
+  if (! cam.takePicture())
+    Serial.println("Failed to snap!");
+  else
+    Serial.println("Picture taken!");
+  // Create an image with the name IMAGExx.JPG`
+  strcpy(pic_filename, "IMAGE00.JPG");
+  for (int i = 0; i < 100; i++) {
+    pic_filename[5] = '0' + i/10;
+    pic_filename[6] = '0' + i%10;
+    // create if does not exist, do not open existing, write, sync after write
+    if (! SD.exists(pic_filename)) {
+      break;
+    }
+  }
+  // Open the file for writing
+  File imgFile = SD.open(pic_filename, FILE_WRITE);
+  // Get the size of the image (frame) taken
+  uint16_t jpglen = cam.frameLength();
+  Serial.print("Storing ");
+  Serial.print(jpglen, DEC);
+  Serial.print(" byte image.");
+  int32_t time = millis();
+  pinMode(8, OUTPUT);
+  // Read all the data up to # bytes!
+  byte wCount = 0; // For counting # of writes
+  while (jpglen > 0) {
+    // read 32 bytes at a time;
+    uint8_t *buffer;
+    uint8_t bytesToRead = min(32, jpglen); // change 32 to 64 for a speedup but may not work with all setups!
+    buffer = cam.readPicture(bytesToRead);
+    imgFile.write(buffer, bytesToRead);
+    if(++wCount >= 64) { // Every 2K, give a little feedback so it doesn't appear locked up
+      Serial.print('.');
+      wCount = 0;
+    }
+    //Serial.print("Read ");  Serial.print(bytesToRead, DEC); Serial.println(" bytes");
+    jpglen -= bytesToRead;
+  }
+  imgFile.close();
+  time = millis() - time;
+  Serial.println("done!");
+  Serial.print(time); Serial.println(" ms elapsed");
+  
+*/  
+//}
+
+/**     Write on a file with 11 lines the values of the GPS
+ * @param dst Given an opened File stream then write data to dst.
+ * @param latitude Floating point latitude value in degrees/min as received from the GPS (DDMM.MMMM)
+ * @param lat N/S
+ * @param longitude Floating point longitude value in degrees/min as received from the GPS (DDMM.MMMM)
+ * @param lon E/W
+ * @param altitude Altitude in meters above MSL
+ */
+
+/*
+//void writeFooter(File* dst, nmea_float_t latitude, char lat, nmea_float_t longitude, char lon, nmea_float_t altitude){    //Write 16 lines with values
+void writeFooter(File* dst){
+  int x,y;
+  byte sortBuf[10560]; //320(px)*11(lines)*3(bytes) // Header buffer
+  int i,j,k;
+  int pxSkip;
+  char res[51] = "LAT: 1234.1234N     LONG: 1234.1234W     ALT:10000";
+  for(i = 0; i < 10560; i++){ // Cleaning Header Buffer array
+    sortBuf[i] = 0xFF;
+  }
+  for(i = 0; i < sizeof(res); i++){
+    byte fontNumber;
+    char ch;
+    ch = res[i];
+    for(y = 0; y < 5; y++){
+      for(x = 0; x < 4; x++){
+        //pxSkip = HORIZONTALOFFSET + VERSTICALOFFSET + (BITSPERWORD * i);
+        //pxSkip = 16 + (320 * (y + 3)) + (4 * 2 * i) + (2 * x); Width: x2
+        pxSkip = 16 + (320 * (y + 3)) + (4 * i) + x;
+        // If ch is pair mask is: 11110000, if no 00001111
+        uint8_t sl = (ch % 2)? 3 : 7 ;
+        uint8_t mask = pow(2, sl - x);
+        if(ch >= 48 && ch <=91){
+          fontNumber = (ch-48)/2;
+        }
+        else {
+          fontNumber = 22;
+        }
+        if((l_fonts[fontNumber][y] & mask) != 0){
+          for(j = 0; j < 3; j++){
+                  sortBuf[(3 * pxSkip) + j] = 0x00;
+          }
+        }
+      }
+    }
+  }
+//  for(k = 0; k < 10560; k++){  // Adding header to the binary file
+//    dst->write(sortBuf[k]);
+    dst->write(sortBuf, sizeof(sortBuf));
+//  }
+}
+*/
+
+void raw_decode(char* filename, char* fileout){  // used to decode .raw files in RGB565 format
+
+// Open the input file for reading
+  inFile = LittleFS.open(filename, "r");
+  
+  if (inFile)
+    Serial.println("Input opened");
+  else {
+    Serial.println("Failed to open input");
+    return;
+  }
+// Open the output file for writing
+  outFile = LittleFS.open(fileout, "w+");
+  
+  if (outFile)
+    Serial.println("Output opened");
+  else {
+    Serial.println("Failed to open output");
+    return;
+  }
+  char buff[2];
+  char buffer[3];
+  
+  int i = 0;
+//  int redx = 128;
+//  int greenx = 128;
+//  int bluex = 128;
+  
+//  while (i++ < (320 * 240 * 3)) {
+  while (i++ < (320 * 240 * 1.49)) {
+    inFile.readBytes(buff, 2);
+    
+#ifdef DEBUG    
+    print_hex(buff[0]);
+    print_hex(buff[1]);
+#endif
+    
+    int pixel_value = (buff[0] << 8) + buff[1];  // endian for raw
+ 
+    byte red = (pixel_value & 0b1111100000000000) >> 8;
+    byte green = (pixel_value & 0b0000011111100000) >> 3;
+    byte blue = (pixel_value & 0b0000000000011111) << 3;
+
+#ifdef TEST_PATTERN    
+    int size = 5; // 46;
+    int y = (int)( i / 320 );
+    int x = (int)( i - y * 320 );
+    int box = (int)(x/size) + (int)(y/size);  
+ 
+    if (y < 10) { // 20) {
+      red = 0;
+      green = 255;
+      blue = 0;
+    }   
+    else if ( box == ( (int)(box / 2) * 2)) {
+//      Serial.println(x);
+//      Serial.println(y);
+//      Serial.println(box);
+//      Serial.println(" ");
+      red = 255; //(100 + x) % 256;
+      green = 0; // ;
+      blue = 0;    
+    } else  {
+//      Serial.println(x);
+//      Serial.println(y);
+//      Serial.println(box);
+//      Serial.println(" ");
+      red = 0;
+      green = 0;
+      blue = 255; //(100 + y) % 256;
+    }  
+#endif    
+    
+      buffer[0] = red;
+      buffer[1] = green;
+      buffer[2] = blue;    
+/*     
+    if (y < 20) { // 20) {
+      buffer[0] = 0;
+      buffer[1] = 255;
+      buffer[2] = 0;
+    } else {
+    
+      buffer[0] = redx;
+      buffer[1] = greenx;
+      buffer[2] = bluex;
+    }
+ */
+    
+    int bytes = outFile.write(buffer, 3);
+//    Serial.println(bytes);
+    if (bytes < 3) 
+      Serial.println("Error writing output file");
+    
+  #ifdef DEBUG    
+    print_hex(red);
+    print_hex(green);
+    print_hex(blue);
+    
+//    delay(100);
+  #endif    
+  }
+  inFile.close();
+  outFile.close();
+}
+
+/*  
+//void writeFooter(File* dst, nmea_float_t latitude, char lat, nmea_float_t longitude, char lon, nmea_float_t altitude){    //Write 16 lines with values
+void writeFooter(File* dst, char *telemetry){
+  int x,y;
+  byte sortBuf[10560]; //320(px)*11(lines)*3(bytes) // Header buffer
+  int i,j,k;
+  int pxSkip;
+
+  char res[51]; //  = "LAT: 1234.1234N     LONG: 1234.1234W     ALT:10000";
+  
+  if (strlen(telemetry) > 50)
+    telemetry[50] = '\0';
+  strcpy(res, telemetry);
+
+  for(i = 0; i < 10560; i++){ // Cleaning Header Buffer array
+    sortBuf[i] = 0xFF;
+  }
+
+  for(i = 0; i < sizeof(res); i++){
+    byte fontNumber;
+    char ch;
+    ch = res[i];
+    for(y = 0; y < 5; y++){
+      for(x = 0; x < 4; x++){
+        //pxSkip = HORIZONTALOFFSET + VERSTICALOFFSET + (BITSPERWORD * i);
+        //pxSkip = 16 + (320 * (y + 3)) + (4 * 2 * i) + (2 * x); Width: x2
+        pxSkip = 16 + (320 * (y + 3)) + (4 * i) + x;
+
+        // If ch is pair mask is: 11110000, if no 00001111
+        uint8_t sl = (ch % 2)? 3 : 7 ;
+        uint8_t mask = pow(2, sl - x);
+
+        if(ch >= 48 && ch <=91){
+          fontNumber = (ch-48)/2;
+        }
+        else {
+          fontNumber = 22;
+        }
+
+        if((l_fonts[fontNumber][y] & mask) != 0){
+          for(j = 0; j < 3; j++){
+                  sortBuf[(3 * pxSkip) + j] = 0x00;
+          }
+        }
+      }
+    }
+  }
+
+  for(k = 0; k < 10560; k++){  // Adding header to the binary file
+    dst->write(sortBuf[k]);
+  }
+}  
+
+*/
+  
+void rotate_image(char *file_input, char *file_output, char *telemetry) {
+  
+  File input_file = LittleFS.open(file_input, "r");           
+  
+  char pixel[3];
+  int side = (320 - 240)/2;
+  for (int y = 0; y < 240; y++) {
+    for (int x = 0; x < 320; x++) {
+      input_file.readBytes(pixel, sizeof(pixel));
+      if (( x >= side) && (x < (320 - side))) {
+        input_buffer[y][x - side][0] = pixel[0];
+        input_buffer[y][x - side][1] = pixel[1];        
+        input_buffer[y][x - side][2] = pixel[2];      
+      }
+    }
+  }
+  input_file.close();
+  
+  LittleFS.remove(file_input);
+  
+  Serial.println("Input file read and deleted");
+  Serial.println(side);
+  
+  input_file = LittleFS.open(file_input, "w+"); 
+  
+  //writeFooter(&input_file, telemetry); 
+  
+  char side_pixel[] = { 0xff, 0xff, 0xff };
+  for (int y = 0; y < 240; y++) {
+    Serial.println(" ");
+    for (int x = 0; x < 320; x++) {
+      if (( x >= side) && (x < (320 - side))) {
+        Serial.print("+");
+//        Serial.print(x - side);
+//        Serial.print(" ");
+        pixel[0] = input_buffer[x - side][y][0];
+        pixel[1] = input_buffer[x - side][y][1];
+        pixel[2] = input_buffer[x - side][y][2];       
+        if (input_file.write(pixel, sizeof(pixel)) < 3)
+          Serial.println("Error writing to file");
+      } else {
+        Serial.print("-");
+        if (input_file.write(side_pixel, sizeof(side_pixel)) < 3)
+          Serial.println("Error writing to file");         
+      } 
+    }
+  }
+  
+  input_file.close();
 }
