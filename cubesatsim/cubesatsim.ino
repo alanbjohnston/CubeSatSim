@@ -4231,6 +4231,9 @@ void set_lat_lon() {
 
 void program_radio() {
 	
+  digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
+  digitalWrite(PTT_PIN, HIGH);  // stop transmit	
+	
   DumbTXSWS mySerial(SWTX_PIN); // TX pin
   mySerial.begin(9600);
     
