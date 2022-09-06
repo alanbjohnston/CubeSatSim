@@ -139,7 +139,8 @@ void setup() {
   start_button_isr(); 
 	
   setup_sstv();
-  if (start_camera())  {
+//  if (start_camera())  {
+  if (false) {	  
     camera_detected = true;
     Serial.println("Camera detected!");
   } else {
