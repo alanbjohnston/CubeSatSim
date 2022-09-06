@@ -226,7 +226,7 @@ void loop() {
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
-      LittleFS.remove("/cam.bin");	  
+//      LittleFS.remove("/cam.bin");	  
       show_dir();	  
       char output_file2[] = "/cam2.bin"; 	  
       jpeg_decode(image_file, output_file2, true); // debug_mode);
