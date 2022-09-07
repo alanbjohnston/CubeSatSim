@@ -178,11 +178,11 @@ void setup() {
 
   delay(5000);  
 
-  Serial.begin(112500);
+  Serial.begin(115200);
 
   initialize_camera();
         
-  config_camera();      
+//  config_camera();      
 
   Serial.println("ESP32-CAM Camera initialized");
 
