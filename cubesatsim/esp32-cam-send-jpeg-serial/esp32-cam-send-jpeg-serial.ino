@@ -181,6 +181,8 @@ void setup() {
   Serial.begin(112500);
 
   initialize_camera();
+        
+  config_camera();      
 
   Serial.println("ESP32-CAM Camera initialized");
 
@@ -316,7 +318,20 @@ static esp_err_t init_camera()
     //        ESP_LOGE(TAG, "Camera Init Failed");
     return err;
   }
+   
+        
   return ESP_OK;
+}
+
+void config_camera() {
+ 
+  sensor_t * s = esp_camera_sensor_get();
+        
+  s->set_brightness(s, 2);     // -2 to 2
+//  s->set_contrast(s, 0);       // -2 to 2
+  s->set_saturation(s, 1);     // -2 to 2  
+  s->set_hmirror(s, 1);        // 0 = disable , 1 = enable
+  s->set_vflip(s, 1);         
 }
 
 void initialize_camera() {
