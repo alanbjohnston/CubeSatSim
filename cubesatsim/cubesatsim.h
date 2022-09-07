@@ -33,7 +33,7 @@
 #include "hardware/pwm.h"  // pwm 
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_TimerInterrupt.h"
-#include <WiFi.h>
+//#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include <ctype.h>
@@ -137,7 +137,7 @@ char serial_string[128];
 //#define WAV_DATA_LENGTH (50000 * 8)
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
-uint8_t data[1024];
+//uint8_t data[1024];
 uint32_t tx_channel = 0;
 
 //ax5043_conf_t hax5043;
@@ -231,7 +231,8 @@ long time_start;
 //char cmdbuffer[1000];
 //FILE * file1;//
 #define BUFFER_SIZE  5841 //970 // (970 * 2) //  * 2)
-short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+//short int buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
+byte buffer[BUFFER_SIZE]; // 50000]; //BUFFER_SIZE]; // ctr is an int // 100000]; // 50000]; // 25000]; // 10240]; // was 2336400]; // max size for 10 frames count of BPSK
 //short int buffer[(WAV_DATA_LENGTH/8)];
 //FILE *sopen(const char *program);
 char tlm_str[1000];	
@@ -372,7 +373,8 @@ bool timer0_on = false;
 char callsign[20];
 int morse_timing = 60;  // ms for a dit
 int morse_freq = 1800; // Hz
-int morse_table[44][6] = {  // 0-9, A-Z only by (ASCII - 48)
+//int morse_table[44][6] = {  // 0-9, A-Z only by (ASCII - 48)
+byte morse_table[44][6] = {  // 0-9, A-Z only by (ASCII - 48)
   { 3, 3, 3, 3, 3, 0 },	// 0		
   { 1, 3, 3, 3, 3, 0 },	// 1		
   { 1, 1, 3, 3, 3, 0 },	// 2		

@@ -36,7 +36,7 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-#include <WiFi.h>
+//#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
@@ -44,7 +44,7 @@
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
-#include "sstv2.h"
+//#include "sstv2.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -55,8 +55,8 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-WiFiServer server(port);
-WiFiClient client;
+//WiFiServer server(port);
+//WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
@@ -139,7 +139,9 @@ void setup() {
   start_button_isr(); 
 	
   setup_sstv();
+
   camera_detected = start_camera();	
+
   start_isr();
   start_pwm();
 	
@@ -198,6 +200,7 @@ void loop() {
   }
   else if (mode == SSTV)
   {
+      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
@@ -211,7 +214,7 @@ void loop() {
 	  char camera_file[] = "/cam.jpg";      
 	  strcpy(image_file, camera_file);      
 	} else	      
-	  strcpy(image_file, sstv2_filename);     // 2nd stored image
+	  strcpy(image_file, sstv1_filename);     // 2nd stored image
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
@@ -220,14 +223,21 @@ void loop() {
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
+//      LittleFS.remove("/cam.bin");	  
+      show_dir();	  
+      char output_file2[] = "/cam2.bin"; 	  
+      jpeg_decode(image_file, output_file2, true); // debug_mode);
+      show_dir();	  
+      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
+      char output_file[] = "/cam.bin"; 
+      digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
+      rotate_image(output_file2, output_file, telem_display);	  
+      show_dir();
 	  
-      char output_file[] = "/cam.bin"; 	  
-      jpeg_decode(image_file, output_file, debug_mode);
-
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-      if (!wifi) 
+//      if (!wifi) 
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
@@ -236,7 +246,7 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
-      if (!wifi) 
+//      if (!wifi) 
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
@@ -255,14 +265,14 @@ void loop() {
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-	  if (!wifi) 
+//	  if (!wifi) 
 	    digitalWrite(LED_BUILTIN, LOW);	
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
 	//  delay(3000);	
 	  sleep(0.2); // 2.845); // 3.0);
 
-	  if (!wifi) 
+//	  if (!wifi) 
 	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
@@ -303,8 +313,8 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 
-  if (wifi) 
-    check_for_browser();
+//  if (wifi) 
+//    check_for_browser();
 	
   return(true);	
 }
@@ -1327,7 +1337,8 @@ void get_tlm_fox() {
   }
 }
 
-void write_wave(int i, short int *buffer)
+//void write_wave(int i, short int *buffer)
+void write_wave(int i, byte *buffer)
 {
 	if (mode == FSK)
 	{
@@ -2631,6 +2642,7 @@ void read_payload()
 //  delay(100);
 }
 
+/*
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -2818,7 +2830,8 @@ void payload_OK_only()
 
   delay(100);
 }
-	
+
+*/	
 /*
 void eeprom_word_write(int addr, int val)
 {
@@ -3147,7 +3160,7 @@ void process_pushbutton() {
 	
 //  return;  /// just skip for now
 	
-  if (!wifi) 	   	
+//  if (!wifi) 	   	
    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
@@ -3245,7 +3258,7 @@ void process_bootsel() {
 	
   int release = FALSE;
 	
-  if (!wifi) 
+//  if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
@@ -3340,11 +3353,11 @@ void process_bootsel() {
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-    if (!wifi) 
+//    if (!wifi) 
       digitalWrite(LED_BUILTIN, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    if (!wifi) 
+//    if (!wifi) 
        digitalWrite(LED_BUILTIN, HIGH);
     sleep(0.1);
   }
@@ -3368,7 +3381,7 @@ void config_gpio() {
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
   // set LEDs and blink once	
-  if (!wifi) 
+//  if (!wifi) 
     pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
@@ -3535,7 +3548,8 @@ void start_button_isr() {
     Serial.println(F("Can't set ITimer1. Select another Timer, freq. or timer"));
 
 }
-  
+
+/*
 void client_print_string(char *string)
 {
   int count = 0;
@@ -3629,13 +3643,13 @@ void check_for_browser() {
        }
      }
   }
-/*
+
   Serial.println(" ");
   print_string(var);
   print_string(val);
   Serial.println(" "); 
   Serial.println(strlen(val));
-*/
+
   if (!strcmp(var, "call") && (strlen(val) > 0)) {
      Serial.print("Changing callsign to ");
      print_string(val);
@@ -3678,9 +3692,10 @@ void configure_wifi() {
     server.begin();
   }
 }
-
+*/
+	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
-  if (!wifi) 
+ // if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 	
@@ -3695,7 +3710,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     sleep(min(time_left, period_us) / 1.0E6);  
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
-  if (!wifi) 
+//  if (!wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
@@ -3831,7 +3846,7 @@ void load_files() {
     }
     f.close();
   }
-
+/*
   f = LittleFS.open("sstv_image_2_320_x_240.jpg", "r");
   if (f) {	
     Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
@@ -3845,7 +3860,7 @@ void load_files() {
     }
     f.close();
   }
-	
+*/	
   show_dir();
 }
 
@@ -4225,6 +4240,9 @@ void set_lat_lon() {
 }
 
 void program_radio() {
+	
+  digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
+  digitalWrite(PTT_PIN, HIGH);  // stop transmit	
 	
   DumbTXSWS mySerial(SWTX_PIN); // TX pin
   mySerial.begin(9600);
