@@ -182,7 +182,7 @@ void setup() {
 
   initialize_camera();
         
-//  config_camera();      
+  config_camera();      
 
   Serial.println("ESP32-CAM Camera initialized");
 
@@ -327,9 +327,9 @@ void config_camera() {
  
   sensor_t * s = esp_camera_sensor_get();
         
-  s->set_brightness(s, 2);     // -2 to 2
+//  s->set_brightness(s, 2);     // -2 to 2
 //  s->set_contrast(s, 0);       // -2 to 2
-  s->set_saturation(s, 1);     // -2 to 2  
+//  s->set_saturation(s, 1);     // -2 to 2  
   s->set_hmirror(s, 1);        // 0 = disable , 1 = enable
   s->set_vflip(s, 1);         
 }
