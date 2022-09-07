@@ -83,7 +83,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.22 starting...\n");
+  Serial.println("CubeSatSim Pico v0.23 starting...\n");
 	
   config_gpio();	
 	
@@ -139,14 +139,9 @@ void setup() {
   start_button_isr(); 
 	
   setup_sstv();
-  if (start_camera())  {
-//  if (false) {	  
-    camera_detected = true;
-    Serial.println("Camera detected!");
-  } else {
-    camera_detected = false;
-    Serial.println("No camera detected!");
-  }	
+
+  camera_detected = start_camera();	
+
   start_isr();
   start_pwm();
 	
@@ -199,6 +194,7 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
+      Serial.printf("DE %s \n", callsign);	    
       send_cw();
     }
   }
@@ -503,6 +499,8 @@ void transmit_off() {
   digitalWrite(MAIN_LED_BLUE, LOW);
 // ITimer0.stopTimer();	  // stop BPSK ISR timer
   if (mode == BPSK) {
+    digitalWrite(BPSK_CONTROL_A, LOW); 	  
+    digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
     pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
     pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
   }
@@ -3014,8 +3012,10 @@ void start_pwm() {
     pwm_config_set_output_polarity( &config, true, false);	
     pwm_init(bpsk_pin_slice_A, &config, true);
     pwm_init(bpsk_pin_slice_B, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);  // start with off
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	
 }
 /*
 void pwm_interrupt_handler() {
@@ -3511,7 +3511,9 @@ void start_isr() {
 	Serial.println("Starting ISR for BPSK");
 	
 	pinMode(BPSK_CONTROL_A, OUTPUT);
-	pinMode(BPSK_CONTROL_B, OUTPUT);	
+	pinMode(BPSK_CONTROL_B, OUTPUT);
+        digitalWrite(BPSK_CONTROL_A, LOW); 	 // start with off 
+        digitalWrite(BPSK_CONTROL_B, LOW); 	  
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
@@ -3989,6 +3991,9 @@ void serial_input() {
 		   
        break;
     }
+    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
+      sstv_end();	    
+	    
     if (new_mode != mode)
       transmit_off();
     sleep(2.0);		    
@@ -4022,7 +4027,10 @@ void prompt_for_input() {
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
-       Serial.println("d  Change debug mode\n");		  
+       Serial.println("d  Change debug mode\n");
+		  
+       Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+		  
        break;	
 		  
     case PROMPT_CALLSIGN:
