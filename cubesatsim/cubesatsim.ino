@@ -205,7 +205,6 @@ void loop() {
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
         strcpy(image_file, sstv1_filename);
-	first_time_sstv = false;
       } else {
 	if (camera_detected) {      
           Serial.println("Getting image file");
@@ -231,7 +230,9 @@ void loop() {
       char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
       char output_file[] = "/cam.bin"; 
       digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
-      rotate_image(output_file2, output_file, telem_display);	  
+      if (!first_time_sstv)	  
+        rotate_image(output_file2, output_file, telem_display);	
+      first_time_sstv = false;	  
       show_dir();
 	  
       if (debug_mode)	  	  
