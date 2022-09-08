@@ -1352,7 +1352,7 @@ void write_wave(int i, byte *buffer)
 //		if ((ctr - flip_ctr) < smaller)  // No wave shaping
 //			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
 //		else
-			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
+			buffer[ctr++] = (byte)(0.25 * amplitude * phase);
 //		        Serial.print(buffer[ctr - 1]);
 //		        Serial.print(" ");
 	}
@@ -1364,7 +1364,7 @@ void write_wave(int i, byte *buffer)
 //	else
 	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
 //			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
-			buffer[ctr++] = (short int)(phase); 
+			buffer[ctr++] = (byte)(phase); 
 	} 			
 	//		printf("%d %d \n", i, buffer[ctr - 1]);
 //	if (ctr > BUFFER_SIZE) {
