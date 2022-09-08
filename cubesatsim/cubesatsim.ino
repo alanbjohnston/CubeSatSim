@@ -3456,11 +3456,13 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
 //    digitalWrite(BPSK_CONTROL_B, LOW);  
+      Serial.print("-");	    
       clockgen.enableOutputOnly(1);	  
     } else {
 //    digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
 //    digitalWrite(BPSK_CONTROL_A, LOW);	
+      Serial.print("_");	 
       clockgen.enableOutputOnly(0);	  
     }
 /*	
@@ -3526,7 +3528,7 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(800, TimerHandler0))	// was was 828 (841) and 828
+    if (ITimer0.attachInterruptInterval(400, TimerHandler0))	// was 800 // was was 828 (841) and 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
