@@ -1372,8 +1372,8 @@ void write_wave(int i, byte *buffer)
 	if (ctr > bufLen) {
 		ctr = ctr - bufLen;
 		if (debug_mode) {
-//		  Serial.print("\r");
-//		  Serial.print(" ");
+		  Serial.print("\r");
+		  Serial.print(" ");
 		  Serial.println(millis());
 		}
 	}
@@ -3453,15 +3453,15 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    Serial.println(micros() - micro_timer2);	  
     micro_timer2 = micros();	  	
     if (buffer[wav_position++] > 0) {	  
-    digitalWrite(BPSK_CONTROL_A, HIGH);
+      digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_B, LOW);  
+      digitalWrite(BPSK_CONTROL_B, LOW);  
 //      Serial.print("-");	    
 //      clockgen.enableOutputOnly(1);	  
     } else {
-    digitalWrite(BPSK_CONTROL_B, HIGH);  
+      digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_A, LOW);	
+      digitalWrite(BPSK_CONTROL_A, LOW);	
 //      Serial.print("_");	 
 //      clockgen.enableOutputOnly(0);	  
     }
@@ -4316,7 +4316,7 @@ void start_clockgen() {
     return;	  
   }
 
-  Serial.println("Starting clockgen");
+  Serial.println("Starting clockgen frequency 434.896 MHz");
 	
   clockgen.setClockBuilderData();
   clockgen.enableOutputs(false);	
