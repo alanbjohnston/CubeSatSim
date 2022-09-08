@@ -3456,13 +3456,13 @@ bool TimerHandler0(struct repeating_timer *t) {
     digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_B, LOW);  
-      Serial.print("-");	    
+//      Serial.print("-");	    
 //      clockgen.enableOutputOnly(1);	  
     } else {
     digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
     digitalWrite(BPSK_CONTROL_A, LOW);	
-      Serial.print("_");	 
+//      Serial.print("_");	 
 //      clockgen.enableOutputOnly(0);	  
     }
 /*	
