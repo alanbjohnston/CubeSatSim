@@ -208,6 +208,8 @@ void read_config_file();
 void write_config_file(); 
 void read_mode(); 
 void write_mode(); 
+void start_clockgen();
+
 
 #ifndef STASSID
 #define STASSID "Pico"
