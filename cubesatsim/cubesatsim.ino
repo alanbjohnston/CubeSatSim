@@ -484,10 +484,10 @@ void transmit_on() {
   } 
   else if (mode == BPSK) {
     if (debug_mode)	  
-      Serial.println("Transmit on!");
-//    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-//    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
-      clockgen.enableOutputs(true);
+      Serial.println("Transmit on!!!");
+//  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+//  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+    clockgen.enableOutputs(true);
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
