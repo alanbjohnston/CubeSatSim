@@ -41,6 +41,7 @@
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
+#include <Adafruit_SI5351_Library.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -54,6 +55,8 @@ Adafruit_INA219 ina219_2_0x40(0x40);
 Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
+
+Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 //WiFiServer server(port);
 //WiFiClient client;
@@ -143,7 +146,8 @@ void setup() {
   camera_detected = start_camera();	
 
   start_isr();
-  start_pwm();
+//  start_pwm();
+  start_clockgen();	
 	
 /**/
   Serial.println("Transmitting callsign");	
@@ -481,8 +485,9 @@ void transmit_on() {
   else if (mode == BPSK) {
     if (debug_mode)	  
       Serial.println("Transmit on!");
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+      clockgen.enableOutputs(true);
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -501,8 +506,9 @@ void transmit_off() {
   if (mode == BPSK) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
+//    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
+    clockgen.enableOutputs(true);	  
   }
   else if (mode == SSTV) 
     sstv_end();
@@ -3446,13 +3452,15 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    Serial.println(micros() - micro_timer2);	  
   micro_timer2 = micros();	  	
   if (buffer[wav_position++] > 0) {	  
-    digitalWrite(BPSK_CONTROL_A, HIGH);
+//    digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_B, LOW);  	  
+//    digitalWrite(BPSK_CONTROL_B, LOW);  
+    clockgen.enableOutputOnly(1);	  
   } else {
-    digitalWrite(BPSK_CONTROL_B, HIGH);  
+//    digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_A, LOW);	    
+//    digitalWrite(BPSK_CONTROL_A, LOW);	
+    clockgen.enableOutputOnly(0);	  
   }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
@@ -4294,4 +4302,18 @@ void write_mode() {
 	  
   mode_file.close();
 //  Serial.println("Write complete");	
+}
+
+void start_clockgen() {
+
+  if (clockgen.begin() != ERROR_NONE)
+  {
+    /* There was a problem detecting the IC ... check your connections */
+    Serial.print("No Si5351 detected ... Check your wiring or I2C ADDR!");
+    return;	  
+  }
+
+  clockgen.setClockBuilderData();
+  clockgen.enableOutputs(false);	
+	
 }
