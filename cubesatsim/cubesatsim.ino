@@ -90,6 +90,8 @@ void setup() {
 	
   config_gpio();	
 	
+  start_clockgen();		
+	
   EEPROM.begin(512);	
 	
 #ifndef ARDUINO_ARCH_RP2040
@@ -147,7 +149,6 @@ void setup() {
 
   start_isr();
 //  start_pwm();
-  start_clockgen();	
 	
 /**/
   Serial.println("Transmitting callsign");	
@@ -3446,22 +3447,22 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-  while ((micros() - micro_timer2) < 832)	{ } 
-  busy_wait_at_least_cycles(51);	// 300 ns  
+    while ((micros() - micro_timer2) < 832)	{ } 
+    busy_wait_at_least_cycles(51);	// 300 ns  
 //  if ((micros() - micro_timer2) > 834)	  
 //    Serial.println(micros() - micro_timer2);	  
-  micro_timer2 = micros();	  	
-  if (buffer[wav_position++] > 0) {	  
+    micro_timer2 = micros();	  	
+    if (buffer[wav_position++] > 0) {	  
 //    digitalWrite(BPSK_CONTROL_A, HIGH);
 //    delayMicroseconds(2);    	  
 //    digitalWrite(BPSK_CONTROL_B, LOW);  
-    clockgen.enableOutputOnly(1);	  
-  } else {
+      clockgen.enableOutputOnly(1);	  
+    } else {
 //    digitalWrite(BPSK_CONTROL_B, HIGH);  
 //    delayMicroseconds(2);    	  
 //    digitalWrite(BPSK_CONTROL_A, LOW);	
-    clockgen.enableOutputOnly(0);	  
-  }
+      clockgen.enableOutputOnly(0);	  
+    }
 /*	
     tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
 		
@@ -3480,12 +3481,12 @@ bool TimerHandler0(struct repeating_timer *t) {
     pwm_init(bpsk_pin_slice, &config, true);
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
 */	
-  if (wav_position > bufLen) { // 300) {
+    if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position - bufLen;
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-/*
+/**/
   if ((micros() - micro_timer)/bufLen > 835)  {	  
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
@@ -3493,7 +3494,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     }
   }	  
     micro_timer = micros();
-*/	  
+/**/	  
   } else {  
 //      Serial.print("R' Microseconds: ");
 //      Serial.println(micros() - micro_timer2);
