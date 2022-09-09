@@ -1377,6 +1377,8 @@ void write_wave(int i, byte *buffer)
 		  Serial.println(millis());
 		}
 	}
+	Serial.printf(" c: b: %d is %d ", ctr - 1, buffer[ctr - 1]);
+
 }
 
 int encodeA(short int  *b, int index, int val) {
