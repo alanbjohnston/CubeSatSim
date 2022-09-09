@@ -3484,7 +3484,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
 */	
     if (wav_position > bufLen) { // 300) {
-	wav_position = wav_position - bufLen;
+	wav_position = wav_position % bufLen;
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
