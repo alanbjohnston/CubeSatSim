@@ -1377,7 +1377,7 @@ void write_wave(int i, byte *buffer)
 		  Serial.println(millis());
 		}
 	}
-	Serial.printf(" b: %d ", buffer[ctr - 1]);
+//	Serial.printf(" b: %d ", buffer[ctr - 1]);
 
 }
 
@@ -3490,13 +3490,13 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-/**/
+/**/   
   if ((micros() - micro_timer)/bufLen > 835)  {	  
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
-  }	  
+  }
     micro_timer = micros();
 /**/	  
   } else {  
