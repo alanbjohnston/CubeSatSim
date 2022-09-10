@@ -483,7 +483,7 @@ void transmit_on() {
     digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
   } 
-  else if (mode == BPSK) {
+  else if ((mode == BPSK) || (mode == FSK)) {
     if (debug_mode)	  
       Serial.println("Transmit on!!!");
 //  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
@@ -504,7 +504,7 @@ void transmit_off() {
    Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
 // ITimer0.stopTimer();	  // stop BPSK ISR timer
-  if (mode == BPSK) {
+  if ((mode == BPSK) || (mode = FSK)) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
 //    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
@@ -534,7 +534,7 @@ void config_telem() {
   if (mode == FSK) {
     Serial.println("Configuring for FSK\n");
     bitRate = 200;
-    delay_time = (1.0 / 200.0);		  
+    delay_time = 1E6 / bitRate;		  
     rsFrames = 1;
     payloads = 1;
     rsFrameLen = 64;
@@ -563,7 +563,7 @@ void config_telem() {
     Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
 //    delay_time = (1.0 / 1200.0);	
-    delay_time = (1.0 / 200.0);	
+    delay_time = 1E6 / bitRate;	
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
@@ -1282,19 +1282,14 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
         //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
-        if (mode == FSK) {
-          phase = ((data != 0) * 2) - 1;
+ ///       if (mode == FSK) {
+ ///         phase = ((data != 0) * 2) - 1;
           //		printf("Sending a %d\n", phase);
-        } else {
+  ///      } else {
           if (data == 0) {
             phase *= -1;
-//            if ((ctr - smaller) > 0) {
-//              for (int j = 1; j <= smaller; j++)
-//                buffer[ctr - j] = buffer[ctr - j] * 0.4;
- //           }
-//            flip_ctr = ctr;
           }
-        }
+  ///      }
       }
     }
 ///    #ifdef DEBUG_LOGGING
@@ -1314,10 +1309,10 @@ void get_tlm_fox() {
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
 //	Serial.print(data, BIN);   // Debugging print!!!  
 //	Serial.print(" ");      
-        if (mode == FSK) {
-          phase = ((data != 0) * 2) - 1;
+///        if (mode == FSK) {
+///          phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
-        } else {
+///        } else {
           if (data == 0) {
             phase *= -1;
 //            if ((ctr - smaller) > 0) {
@@ -1326,7 +1321,7 @@ void get_tlm_fox() {
 //            }
 //            flip_ctr = ctr;
           }
-        }
+///        }
 //	Serial.println("AA");      
       }
 //	Serial.println("BB");     
@@ -1347,36 +1342,15 @@ void get_tlm_fox() {
 //void write_wave(int i, short int *buffer)
 void write_wave(int i, byte *buffer)
 {
-	if (mode == FSK)
-	{
-//		if ((ctr - flip_ctr) < smaller)  // No wave shaping
-//			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
-//		else
-			buffer[ctr++] = (byte)(0.25 * amplitude * phase);
-//		        Serial.print(buffer[ctr - 1]);
-//		        Serial.print(" ");
+    buffer[ctr++] = (byte)(phase == 1); 			
+    if (ctr > bufLen) {
+	ctr = ctr - bufLen;
+	if (debug_mode) {
+	  Serial.print("\r");
+	  Serial.print(" ");
+	  Serial.println(millis());
 	}
-	else
-	{
-//		if ((ctr - flip_ctr) < smaller)
-	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-//			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
-//	else
-	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-//			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
-			buffer[ctr++] = (byte)(phase == 1); 
-	} 			
-	//		printf("%d %d \n", i, buffer[ctr - 1]);
-//	if (ctr > BUFFER_SIZE) {
-//		ctr = ctr - BUFFER_SIZE;
-	if (ctr > bufLen) {
-		ctr = ctr - bufLen;
-		if (debug_mode) {
-		  Serial.print("\r");
-		  Serial.print(" ");
-		  Serial.println(millis());
-		}
-	}
+    }
 //	Serial.printf(" b: %d ", buffer[ctr - 1]);
 
 }
@@ -3198,10 +3172,9 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
-    Serial.println("PB: FSK not supported");
+    Serial.println("PB: Switch to FSK");
     release = TRUE;
-//    new_mode = FSK;
-//    setup();
+    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3296,10 +3269,9 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
-    Serial.println("BOOTSEL: FSK not supported");
+    Serial.println("BOOTSEL: Switch to FSK");
     release = TRUE;
-//    new_mode = FSK;
-//    setup();
+    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3445,12 +3417,13 @@ bool TimerHandler0(struct repeating_timer *t) {
 
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
 
-  if (mode == BPSK) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
+  if ((mode == BPSK) || (mode == FSK)) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
 //  Serial.print("l1 ");
 //  Serial.print(wav_position);
 //  Serial.print(" ");
-    while ((micros() - micro_timer2) < 832)	{ } 
-    busy_wait_at_least_cycles(51);	// 300 ns  
+    while ((micros() - micro_timer2) < delay_time)	{ } 
+    if (mode == BPSK) 
+      busy_wait_at_least_cycles(51);	// 300 ns  
 //  if ((micros() - micro_timer2) > 834)	  
 //    Serial.println(micros() - micro_timer2);	  
     micro_timer2 = micros();	  	
@@ -3491,7 +3464,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print(" ");
 //	Serial.println(millis());
 /**/
-  if ((micros() - micro_timer)/bufLen > 835)  {	  
+  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
@@ -3530,7 +3503,9 @@ void start_isr() {
 	
 //  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
 //  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(800, TimerHandler0))	// was 800 // was was 828 (841) and 828
+//    if (ITimer0.attachInterruptInterval(800, TimerHandler0))	// was 800 // was was 828 (841) and 828
+
+   if (ITimer0.attachInterruptInterval(delay_time - 32, TimerHandler0))	// was 800 // was was 828 (841) and 828
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
