@@ -339,7 +339,7 @@ int pwm_amplitude = 50; //50 //100;
 int pwm_value;
 int tx_bit = 1;
 */
-unsigned long delay_time;
+volatile unsigned long delay_time;
 bool  polarity = true;
 pwm_config config;
 int bpsk_pin_slice_A;
