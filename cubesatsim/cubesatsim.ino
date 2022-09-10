@@ -86,7 +86,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.23 starting...\n");
+  Serial.println("CubeSatSim Pico v0.24 starting...\n");
 	
   config_gpio();	
 	
@@ -145,7 +145,7 @@ void setup() {
 	
   setup_sstv();
 
-  camera_detected = start_camera();	
+  camera_detected = false; // start_camera();	
 
   start_isr();
 //  start_pwm();
@@ -504,7 +504,7 @@ void transmit_off() {
    Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
 // ITimer0.stopTimer();	  // stop BPSK ISR timer
-  if ((mode == BPSK) || (mode = FSK)) {
+  if ((mode == BPSK) || (mode == FSK)) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
 //    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
