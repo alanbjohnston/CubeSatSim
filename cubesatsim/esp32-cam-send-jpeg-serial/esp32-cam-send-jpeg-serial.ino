@@ -179,12 +179,16 @@ void setup() {
   delay(5000);  
 
   Serial.begin(115200);
+        
+  char file[] = "/cam.jpg";      
+        
+  SPIFFS.remove(file);       
 
   initialize_camera();
         
   config_camera();      
 
-  Serial.println("ESP32-CAM Camera initialized");
+  Serial.println("ESP32-CAM Camera initialized v0.1");
 
   pinMode(LED_PIN, OUTPUT); // Set the pin as output
 
