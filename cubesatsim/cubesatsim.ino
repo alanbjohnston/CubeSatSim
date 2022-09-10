@@ -535,6 +535,7 @@ void config_telem() {
     Serial.println("Configuring for FSK\n");
     bitRate = 200;
     delay_time = 1E6 / bitRate;		  
+    Serial.println(delay_time);	  
     rsFrames = 1;
     payloads = 1;
     rsFrameLen = 64;
@@ -564,6 +565,7 @@ void config_telem() {
     bitRate = 1200;
 //    delay_time = (1.0 / 1200.0);	
     delay_time = 1E6 / bitRate;	
+    Serial.println(delay_time);	  
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
@@ -3466,12 +3468,12 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.print(" ");
 //	Serial.println(millis());
 /**/
-  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
+//  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
-  }	  
+//  }	  
     micro_timer = micros();
 /**/	  
   } else {  
