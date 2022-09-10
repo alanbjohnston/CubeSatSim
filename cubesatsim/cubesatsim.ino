@@ -3905,7 +3905,8 @@ void serial_input() {
 		   
      case 'f':
      case 'F':
-      Serial.println("FSK/DUV mode not supported");	     
+      Serial.println("Change to FSK mode");
+       new_mode = FSK;	    
        break;	
 		   
      case 'b':
