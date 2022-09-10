@@ -3424,9 +3424,9 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
 
   if ((mode == BPSK) || (mode == FSK)) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
-    Serial.print("l1 ");
-    Serial.print(wav_position);
-    Serial.print(" ");
+//    Serial.print("l1 ");
+//    Serial.print(wav_position);
+//    Serial.print(" ");
     while ((micros() - micro_timer2) < delay_time)	{ } 
     if (mode == BPSK) 
       busy_wait_at_least_cycles(51);	// 300 ns  
