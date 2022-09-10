@@ -1313,7 +1313,7 @@ void get_tlm_fox() {
 //	Serial.print(" ");      
 ///        if (mode == FSK) {
 ///          phase = ((data != 0) * 2) - 1;
-          //			printf("Sending a %d\n", phase);
+          			printf("Sending a %d\n", phase);
 ///        } else {
           if (data == 0) {
             phase *= -1;
