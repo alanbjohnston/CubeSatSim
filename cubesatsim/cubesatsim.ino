@@ -147,7 +147,6 @@ void setup() {
 
   camera_detected = false; // start_camera();	
 
-  start_isr();
 //  start_pwm();
 	
 /**/
@@ -159,6 +158,8 @@ void setup() {
 /**/
 	
   config_telem();	
+	
+  start_isr();	
 	
 // setup radio depending on mode 
   config_radio();	
