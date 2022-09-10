@@ -2086,7 +2086,7 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 */	
-  if ((mode == AFSK) || (mode == FSK) || (mode == SSTV) || (mode == CW)) {
+  if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
 	  
@@ -2098,12 +2098,14 @@ void config_radio()
 //    transmit_on();
   } else if (mode == BPSK)  {
 //    start_pwm();
-//    start_isr();	  
+//    start_isr();	
+    clockgen.setClockBPSK(); 	  
     transmit_on();	
   }
 	
   if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
+    clockgen.setClockBPSK(); 	  	  
     transmit_on();
 }
 
@@ -4295,7 +4297,7 @@ void start_clockgen() {
 
   Serial.println("Starting clockgen frequency 434.896 MHz");
 	
-  clockgen.setClockBuilderData();
+  clockgen.setClockFSK();  // default to FSK
   clockgen.enableOutputs(false);	
 	
 }
