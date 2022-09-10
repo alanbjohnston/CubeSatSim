@@ -1377,7 +1377,7 @@ void write_wave(int i, byte *buffer)
 		  Serial.println(millis());
 		}
 	}
-	Serial.printf(" b: %d ", buffer[ctr - 1]);
+//	Serial.printf(" b: %d ", buffer[ctr - 1]);
 
 }
 
