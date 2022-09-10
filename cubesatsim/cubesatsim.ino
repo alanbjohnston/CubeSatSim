@@ -1313,7 +1313,7 @@ void get_tlm_fox() {
 //	Serial.print(" ");      
 ///        if (mode == FSK) {
 ///          phase = ((data != 0) * 2) - 1;
-          Serial.printf("Sending a %d\n", phase);
+//          Serial.printf("Sending a %d\n", phase);
 ///        } else {
           if (data == 0) {
             phase *= -1;
@@ -1345,7 +1345,7 @@ void get_tlm_fox() {
 void write_wave(int i, byte *buffer)
 {
     buffer[ctr++] = (byte)(phase == 1); 
-    Serial.printf("buffer is %d \n", buffer[ctr - 1]);	
+//    Serial.printf("buffer is %d \n", buffer[ctr - 1]);	
     if (ctr > bufLen) {
 	ctr = ctr - bufLen;
 	if (debug_mode) {
@@ -3423,9 +3423,9 @@ bool TimerHandler0(struct repeating_timer *t) {
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
 
   if ((mode == BPSK) || (mode == FSK)) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
-//  Serial.print("l1 ");
-//  Serial.print(wav_position);
-//  Serial.print(" ");
+    Serial.print("l1 ");
+    Serial.print(wav_position);
+    Serial.print(" ");
     while ((micros() - micro_timer2) < delay_time)	{ } 
     if (mode == BPSK) 
       busy_wait_at_least_cycles(51);	// 300 ns  
