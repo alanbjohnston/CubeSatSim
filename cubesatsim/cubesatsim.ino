@@ -4320,7 +4320,7 @@ void start_clockgen() {
 
   Serial.println("Starting clockgen frequency 434.896 MHz");
 	
-  clockgen.setClockBuilderData();
+  clockgen.setClockBPSK();
   clockgen.enableOutputs(false);	
 	
 }
