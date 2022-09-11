@@ -1349,11 +1349,11 @@ void write_wave(int i, byte *buffer)
 //    Serial.printf("buffer is %d \n", buffer[ctr - 1]);	
     if (ctr > bufLen) {
 	ctr = ctr - bufLen;
-	if (debug_mode) {
-	  Serial.print("\r");
-	  Serial.print(" ");
+//	if (debug_mode) {
+	  Serial.print("ctr reset ");
+//	  Serial.print(" ");
 	  Serial.println(millis());
-	}
+//	}
     }
 //	Serial.printf(" b: %d ", buffer[ctr - 1]);
 
