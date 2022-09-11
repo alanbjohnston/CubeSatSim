@@ -551,6 +551,7 @@ void config_telem() {
     samples = sample_rate / bitRate;
 //    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+    bufLen = 2000;	  
     Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
     sleepTime = 0.1;
