@@ -560,7 +560,7 @@ void config_telem() {
 //    Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-//    Serial.println(frameTime);
+    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     memset(buffer, 0xa5, sizeof(buffer)); 
