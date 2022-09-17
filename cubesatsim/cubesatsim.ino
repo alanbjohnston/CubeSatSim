@@ -3426,8 +3426,8 @@ void config_gpio() {
 bool TimerHandler0(struct repeating_timer *t) {
 
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
-  timer_counter = (timer_counter++) % 6;
-  if ((mode == BPSK) || ((mode == FSK) && !timer_counter))  {	  // only do this if BPSK mode or every 6 times in FSK mode
+  timer_counter = (timer_counter++) % 5;
+  if ((mode == BPSK) || ((mode == FSK) && (timer_counter == 0))  {	  // only do this if BPSK mode or every 6 times in FSK mode
 //    Serial.print("l1 ");
 //    Serial.print(wav_position);
 //    Serial.print(" ");
@@ -3460,7 +3460,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 /**/
 //  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
     if (bufLen != 0) {		  
-      Serial.print("R0 Microseconds: ");
+      Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
 //  }	  
@@ -3497,7 +3497,7 @@ void start_isr() {
         digitalWrite(BPSK_CONTROL_A, LOW); 	 // start with off 
         digitalWrite(BPSK_CONTROL_B, LOW); 	  
 
-   if (timer0_number = ITimer0.attachInterruptInterval(833 - 32, TimerHandler0))	
+   if (ITimer0.attachInterruptInterval(833 - 32, TimerHandler0))	
     {
       if (debug_mode) 	    
         Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
@@ -3510,7 +3510,7 @@ void start_isr() {
   } else {
 //     ITimer0.restartTimer();
 //     Serial.println("Restarting ITimer0 for BPSK");	  
-	Serial.println("Don't restart ITimer0 for BPSK and ITimer2 for FSK");	
+	Serial.println("Don't start ITimer0 for BPSK and FSK");	
   }
 }
   
