@@ -2115,28 +2115,12 @@ void config_radio()
 //    start_pwm();
 //    start_isr();	
     clockgen.setClockBPSK(); 
-   if (ITimer0.setInterval(delay_time - 32, TimerHandler0))	
-    {
-      if (debug_mode) 	    
-        Serial.print(F("Reseting ITimer0 OK, micros() = ")); Serial.println(micros());
-     }
-    else
-      Serial.println(F("Can't reset ITimer0. Select another Timer, freq. or timer"));
-	  
     transmit_on();	
   }
 	
   if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
-    clockgen.setClockFSK(); 	 
-   if (ITimer0.setInterval(delay_time - 32, TimerHandler0))	
-    {
-      if (debug_mode) 	    
-        Serial.print(F("Reseting ITimer0 OK, micros() = ")); Serial.println(micros());
-     }
-    else
-      Serial.println(F("Can't reset ITimer0. Select another Timer, freq. or timer"));	
-	
+    clockgen.setClockFSK(); 	 	
     transmit_on();
 }
 
@@ -3450,13 +3434,12 @@ bool TimerHandler0(struct repeating_timer *t) {
 
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
 
-  if ((mode == BPSK) || (mode == FSK)) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
+  if (mode == BPSK)  {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
 //    Serial.print("l1 ");
 //    Serial.print(wav_position);
 //    Serial.print(" ");
     while ((micros() - micro_timer2) < delay_time)	{ } 
-    if (mode == BPSK) 
-      busy_wait_at_least_cycles(51);	// 300 ns  
+    busy_wait_at_least_cycles(51);	// 300 ns  
 //  if ((micros() - micro_timer2) > 834)	  
 //    Serial.println(micros() - micro_timer2);	  
     micro_timer2 = micros();	  	
@@ -3474,25 +3457,7 @@ bool TimerHandler0(struct repeating_timer *t) {
       digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
 //      clockgen.enableOutputOnly(0);	  
-    }
-/*	
-    tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
-		
-   digitalWrite(AUDIO_OUT_PIN, tx_bit);		
-
-    tx_bit = (buffer[wav_position++] > 0) ? true: false;
-*/    
-/*	
-    if (tx_bit)
-      Serial.print("-");
-    else
-      Serial.print("_");
-*/
-/*	
-    pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
-    pwm_init(bpsk_pin_slice, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
-*/	
+    }	
     if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position % bufLen;
 //	Serial.print("\nR");
@@ -3501,7 +3466,65 @@ bool TimerHandler0(struct repeating_timer *t) {
 /**/
 //  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
     if (bufLen != 0) {		  
-      Serial.print("R Microseconds: ");
+      Serial.print("R0 Microseconds: ");
+      Serial.println((float)(micros() - micro_timer)/(float)bufLen);
+    }
+//  }	  
+    micro_timer = micros();
+/**/	  
+  } else {  
+//      Serial.print("R' Microseconds: ");
+//      Serial.println(micros() - micro_timer2);
+//      while ((micros() - micro_timer2) < 832)	{ }  
+//      micro_timer2 = micros();	  
+  }
+}
+/*	
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
+*/
+
+  return true;	
+}
+
+bool TimerHandler2(struct repeating_timer *t) {
+
+//  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
+
+  if (mode == FSK) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
+//    Serial.print("l1 ");
+//    Serial.print(wav_position);
+//    Serial.print(" ");
+    while ((micros() - micro_timer2) < delay_time)	{ } 
+//  if ((micros() - micro_timer2) > 834)	  
+//    Serial.println(micros() - micro_timer2);	  
+    micro_timer2 = micros();	  	
+    if (buffer[wav_position++] > 0) {	  
+//      digitalWrite(BPSK_CONTROL_B, LOW);  
+      digitalWrite(BPSK_CONTROL_B, LOW);
+//      delayMicroseconds(10);    	  
+      digitalWrite(BPSK_CONTROL_A, HIGH);  
+//      Serial.print("-");	    
+//      clockgen.enableOutputOnly(1);	  
+    } else {
+//      digitalWrite(BPSK_CONTROL_A, LOW);  
+      digitalWrite(BPSK_CONTROL_A, LOW);  
+//      delayMicroseconds(10);    	  
+      digitalWrite(BPSK_CONTROL_B, HIGH);	
+//      Serial.print("_");	 
+//      clockgen.enableOutputOnly(0);	  
+    }	
+    if (wav_position > bufLen) { // 300) {
+	wav_position = wav_position % bufLen;
+//	Serial.print("\nR");
+//	Serial.print(" ");
+//	Serial.println(millis());
+/**/
+//  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
+    if (bufLen != 0) {		  
+      Serial.print("R2 Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
 //  }	  
@@ -3535,13 +3558,8 @@ void start_isr() {
 	pinMode(BPSK_CONTROL_B, OUTPUT);
         digitalWrite(BPSK_CONTROL_A, LOW); 	 // start with off 
         digitalWrite(BPSK_CONTROL_B, LOW); 	  
-	
-//  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
-//  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-//    if (ITimer0.attachInterruptInterval(800, TimerHandler0))	// was 800 // was was 828 (841) and 828
 
-   if (ITimer0.attachInterruptInterval(delay_time - 32, TimerHandler0))	// was 800 // was was 828 (841) and 828
-//  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
+   if (ITimer0.attachInterruptInterval(833 - 32, TimerHandler0))	
     {
       if (debug_mode) 	    
         Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
@@ -3550,10 +3568,22 @@ void start_isr() {
     else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
 	  
+    Serial.println("Starting ISR for FSK");	  
+	  
+   if (ITimer2.attachInterruptInterval(5000 - 32, TimerHandler2))	
+//  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
+    {
+      if (debug_mode) 	    
+        Serial.print(F("Starting ITimer2 OK, micros() = ")); Serial.println(micros());
+      timer2_on = true;	  
+    }
+    else
+    Serial.println(F("Can't set ITimer2. Select another Timer, freq. or timer"));
+	  
   } else {
 //     ITimer0.restartTimer();
 //     Serial.println("Restarting ITimer0 for BPSK");	  
-	Serial.println("Don't restart ITimer0 for BPSK");	
+	Serial.println("Don't restart ITimer0 for BPSK and ITimer2 for FSK");	
   }
 }
   
