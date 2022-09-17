@@ -266,7 +266,7 @@ void loop() {
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
-    sleep(0.1); // 25); // 0.5);  // 25);
+    sleep(0.01); // was 0.1 sec
   sampleTime = (unsigned int) millis();	  
 	
 //  delay(2000);
