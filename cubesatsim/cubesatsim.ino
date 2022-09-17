@@ -867,9 +867,11 @@ void get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0;
-  short int buffer_test[bufLen];
+  //short int buffer_test[bufLen];
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
+	
+  ctr = 0;  	
 	
   parse_payload();	
 	
