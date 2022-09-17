@@ -3427,7 +3427,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
   timer_counter = (timer_counter++) % 5;
-  if ((mode == BPSK) || ((mode == FSK) && (timer_counter == 0))  {	  // only do this if BPSK mode or every 6 times in FSK mode
+  if ((mode == BPSK) || ((mode == FSK) && (timer_counter == 0)))  {	  // only do this if BPSK mode or every 6 times in FSK mode
 //    Serial.print("l1 ");
 //    Serial.print(wav_position);
 //    Serial.print(" ");
