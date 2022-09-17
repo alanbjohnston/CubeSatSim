@@ -58,6 +58,8 @@ Adafruit_INA219 ina219_2_0x45(0x45);
 
 Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
+unsigned long micros3;
+
 //WiFiServer server(port);
 //WiFiClient client;
 
@@ -1352,8 +1354,15 @@ void write_wave(int i, byte *buffer)
 	ctr = ctr - bufLen;
 //	if (debug_mode) {
 	  Serial.print("ctr reset ");
+    if (bufLen != 0) {		  
+      Serial.print("RR Microseconds: ");
+      Serial.println((float)(micros() - micros3)/(float)bufLen);
+    }
+//  }	  
+    micros3 = micros();	    
+	    
 //	  Serial.print(" ");
-	  Serial.println(millis());
+//	  Serial.println(millis());
 //	}
     }
 //	Serial.printf(" b: %d ", buffer[ctr - 1]);
