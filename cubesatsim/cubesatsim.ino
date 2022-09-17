@@ -2114,13 +2114,29 @@ void config_radio()
   } else if (mode == BPSK)  {
 //    start_pwm();
 //    start_isr();	
-    clockgen.setClockBPSK(); 	  
+    clockgen.setClockBPSK(); 
+   if (ITimer0.setInterval(delay_time - 32, TimerHandler0))	
+    {
+      if (debug_mode) 	    
+        Serial.print(F("Reseting ITimer0 OK, micros() = ")); Serial.println(micros());
+     }
+    else
+      Serial.println(F("Can't reset ITimer0. Select another Timer, freq. or timer"));
+	  
     transmit_on();	
   }
 	
   if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
-    clockgen.setClockFSK(); 	  	  
+    clockgen.setClockFSK(); 	 
+   if (ITimer0.setInterval(delay_time - 32, TimerHandler0))	
+    {
+      if (debug_mode) 	    
+        Serial.print(F("Reseting ITimer0 OK, micros() = ")); Serial.println(micros());
+     }
+    else
+      Serial.println(F("Can't reset ITimer0. Select another Timer, freq. or timer"));	
+	
     transmit_on();
 }
 
