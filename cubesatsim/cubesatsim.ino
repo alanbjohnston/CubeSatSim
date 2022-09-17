@@ -1288,14 +1288,15 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
         //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
- ///       if (mode == FSK) {
- ///         phase = ((data != 0) * 2) - 1;
-          //		printf("Sending a %d\n", phase);
-  ///      } else {
+        if (mode == FSK) {
+          phase = ((data != 0) * 2) - 1;
+        } else {
           if (data == 0) {
             phase *= -1;
-          }
-  ///      }
+        }
+ //	printf("Sending a %d\n", phase);
+		
+       }
       }
     }
 ///    #ifdef DEBUG_LOGGING
