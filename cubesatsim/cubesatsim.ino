@@ -2114,13 +2114,21 @@ void config_radio()
   } else if (mode == BPSK)  {
 //    start_pwm();
 //    start_isr();	
-    clockgen.setClockBPSK(); 
+    clockgen.setClockBPSK();
+	  
+    disable(timer2_number);	  
+    enable(timer0_number);	  
+	  
     transmit_on();	
   }
 	
   if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
-    clockgen.setClockFSK(); 	 	
+    clockgen.setClockFSK(); 
+	
+    disable(timer0_number);	  
+    enable(timer2_number);	  
+
     transmit_on();
 }
 
@@ -3559,7 +3567,7 @@ void start_isr() {
         digitalWrite(BPSK_CONTROL_A, LOW); 	 // start with off 
         digitalWrite(BPSK_CONTROL_B, LOW); 	  
 
-   if (ITimer0.attachInterruptInterval(833 - 32, TimerHandler0))	
+   if (timer0_number = ITimer0.attachInterruptInterval(833 - 32, TimerHandler0))	
     {
       if (debug_mode) 	    
         Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
@@ -3570,7 +3578,7 @@ void start_isr() {
 	  
     Serial.println("Starting ISR for FSK");	  
 	  
-   if (ITimer2.attachInterruptInterval(5000 - 32, TimerHandler2))	
+   if (timer2_number = ITimer2.attachInterruptInterval(5000 - 32, TimerHandler2))	
 //  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
