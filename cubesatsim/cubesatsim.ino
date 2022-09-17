@@ -1313,8 +1313,8 @@ void get_tlm_fox() {
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-	Serial.print(data, BIN);   // Debugging print!!!  
-	Serial.print(" ");      
+//	Serial.print(data, BIN);   // Debugging print!!!  
+//	Serial.print(" ");      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
 //          Serial.printf("Sending a %d\n", phase);
@@ -1349,7 +1349,10 @@ void get_tlm_fox() {
 void write_wave(int i, byte *buffer)
 {
     buffer[ctr++] = (byte)(phase == 1); 
-//    Serial.printf("buffer is %d \n", buffer[ctr - 1]);	
+//    Serial.printf("buffer is %d \n", buffer[ctr - 1]);
+	Serial.print(ctr);
+	Serial.print(" ");
+	
     if (ctr > bufLen) {
 	ctr = ctr - bufLen;
 //	if (debug_mode) {
