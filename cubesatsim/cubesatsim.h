@@ -375,7 +375,7 @@ bool timer0_on = false;
 bool timer2_on = false;
 int timer0_number = NULL;
 int timer2_number = NULL;
-int timer_counter;
+volatile int timer_counter;
 
 char callsign[20];
 int morse_timing = 60;  // ms for a dit
