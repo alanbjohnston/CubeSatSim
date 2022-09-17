@@ -2116,8 +2116,8 @@ void config_radio()
 //    start_isr();	
     clockgen.setClockBPSK();
 	  
-    RPI_PICO_ISR_Timer::disable(*timer2_number);	  
-    RPI_PICO_ISR_Timer::enable(*timer0_number);	  
+    RPI_PICO_ISR_Timer::disable(&timer2_number);	  
+    RPI_PICO_ISR_Timer::enable(&timer0_number);	  
 	  
     transmit_on();	
   }
@@ -2126,8 +2126,8 @@ void config_radio()
 //    start_isr();   
     clockgen.setClockFSK(); 
 	
-    RPI_PICO_ISR_Timer::disable(*timer0_number);	  
-    RPI_PICO_ISR_Timer::enable(*timer2_number);	  
+    RPI_PICO_ISR_Timer::disable(&timer0_number);	  
+    RPI_PICO_ISR_Timer::enable(&timer2_number);	  
 
     transmit_on();
 }
