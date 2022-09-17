@@ -2119,7 +2119,7 @@ void config_radio()
 	
   if ((mode == FSK)) //  || (mode == SSTV))
 //    start_isr();   
-    clockgen.setClockBPSK(); 	  	  
+    clockgen.setClockFSK(); 	  	  
     transmit_on();
 }
 
