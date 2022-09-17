@@ -2116,8 +2116,8 @@ void config_radio()
 //    start_isr();	
     clockgen.setClockBPSK();
 	  
-    disable(timer2_number);	  
-    enable(timer0_number);	  
+    ITimer2.disable(timer2_number);	  
+    ITimer0.enable(timer0_number);	  
 	  
     transmit_on();	
   }
@@ -2126,8 +2126,8 @@ void config_radio()
 //    start_isr();   
     clockgen.setClockFSK(); 
 	
-    disable(timer0_number);	  
-    enable(timer2_number);	  
+    ITimer0.disable(timer0_number);	  
+    ITimer2.enable(timer2_number);	  
 
     transmit_on();
 }
