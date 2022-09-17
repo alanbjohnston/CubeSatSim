@@ -2116,8 +2116,8 @@ void config_radio()
 //    start_isr();	
     clockgen.setClockBPSK();
 	  
-    RPI_PICO_ISR_Timer.disable(timer2_number);	  
-    RPI_PICO_ISR_Timer.enable(timer0_number);	  
+    ITimer2::disable(timer2_number);	  
+    ITimer0::enable(timer0_number);	  
 	  
     transmit_on();	
   }
@@ -2126,8 +2126,8 @@ void config_radio()
 //    start_isr();   
     clockgen.setClockFSK(); 
 	
-    RPI_PICO_ISR_Timer.disable(timer0_number);	  
-    RPI_PICO_ISR_Timer.enable(timer2_number);	  
+    ITimer0::disable(timer0_number);	  
+    ITimer2::enable(timer2_number);	  
 
     transmit_on();
 }
@@ -3579,7 +3579,7 @@ void start_isr() {
     Serial.println("Starting ISR for FSK");	  
 	  
    if (timer2_number = ITimer2.attachInterruptInterval(5000 - 32, TimerHandler2))	
-//  if (dia.attachInterruptInterval(1667, TimerHandler0))
+//  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
         Serial.print(F("Starting ITimer2 OK, micros() = ")); Serial.println(micros());
