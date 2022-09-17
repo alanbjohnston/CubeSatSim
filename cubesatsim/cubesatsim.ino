@@ -3181,7 +3181,7 @@ void process_pushbutton() {
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
+ //   new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3278,7 +3278,7 @@ void process_bootsel() {
   if ((!BOOTSEL) && (release == FALSE)) {
     Serial.println("BOOTSEL: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
+//    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3911,7 +3911,7 @@ void serial_input() {
      case 'f':
      case 'F':
       Serial.println("Change to FSK mode");
-       new_mode = FSK;	    
+ //      new_mode = FSK;	    
        break;	
 		   
      case 'b':
