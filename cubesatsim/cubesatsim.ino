@@ -3426,13 +3426,14 @@ void config_gpio() {
 bool TimerHandler0(struct repeating_timer *t) {
 
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
-  timer_counter = (timer_counter++) % 6
+  timer_counter = (timer_counter++) % 6;
   if (mode == BPSK) || ((mode == FSK) && !timer_counter)  {	  // only do this if BPSK mode or every 6 times in FSK mode
 //    Serial.print("l1 ");
 //    Serial.print(wav_position);
 //    Serial.print(" ");
     while ((micros() - micro_timer2) < delay_time)	{ } 
-    busy_wait_at_least_cycles(51);	// 300 ns  
+    if (mode == BPSK)	  
+      busy_wait_at_least_cycles(51);	// 300 ns  
 //  if ((micros() - micro_timer2) > 834)	  
 //    Serial.println(micros() - micro_timer2);	  
     micro_timer2 = micros();	  	
