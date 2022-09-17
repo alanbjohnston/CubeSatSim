@@ -868,8 +868,8 @@ void get_tlm_fox() {
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0;
   //short int buffer_test[bufLen];
-  int buffSize;
-  buffSize = (int) sizeof(buffer_test);
+  //int buffSize;
+  //buffSize = (int) sizeof(buffer_test);
 	
   ctr = 0;  	
 	
