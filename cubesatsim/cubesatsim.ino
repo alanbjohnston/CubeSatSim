@@ -1316,16 +1316,16 @@ void get_tlm_fox() {
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
 //	Serial.print(data, BIN);   // Debugging print!!!  
 //	Serial.print(" ");      
-///        if (mode == FSK) {
-///          phase = ((data != 0) * 2) - 1;
+        if (mode == FSK) {
+          phase = ((data != 0) * 2) - 1;
 //          Serial.printf("Sending a %d\n", phase);
-///        } else {
+        } else {
           if (data == 0) {
             phase *= -1;
 //            if ((ctr - smaller) > 0) {
 //              for (int j = 1; j <= smaller; j++)
 //                buffer[ctr - j] = buffer[ctr - j] * 0.4;
-//            }
+          }
 //            flip_ctr = ctr;
           }
 ///        }
