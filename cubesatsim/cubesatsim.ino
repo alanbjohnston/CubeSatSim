@@ -1352,8 +1352,8 @@ void write_wave(int i, byte *buffer)
 {
     buffer[ctr++] = (byte)(phase == 1); 
 //    Serial.printf("buffer is %d \n", buffer[ctr - 1]);
-	Serial.print(ctr);
-	Serial.print(" ");
+//	Serial.print(ctr);
+//	Serial.print(" ");
 	
     if (ctr > bufLen) {
 	ctr = ctr - bufLen;
