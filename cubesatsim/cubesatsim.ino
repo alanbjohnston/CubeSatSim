@@ -3579,7 +3579,7 @@ void start_isr() {
     Serial.println("Starting ISR for FSK");	  
 	  
    if (timer2_number = ITimer2.attachInterruptInterval(5000 - 32, TimerHandler2))	
-//  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
+//  if (dia.attachInterruptInterval(1667, TimerHandler0))
     {
       if (debug_mode) 	    
         Serial.print(F("Starting ITimer2 OK, micros() = ")); Serial.println(micros());
