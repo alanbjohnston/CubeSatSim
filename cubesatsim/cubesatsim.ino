@@ -3446,16 +3446,16 @@ bool TimerHandler0(struct repeating_timer *t) {
     micro_timer2 = micros();	  	
     if (buffer[wav_position++] > 0) {	  
 //      digitalWrite(BPSK_CONTROL_B, LOW);  
-      digitalWrite(BPSK_CONTROL_A, HIGH);
-//    delayMicroseconds(2);    	  
-      digitalWrite(BPSK_CONTROL_B, LOW);  
+      digitalWrite(BPSK_CONTROL_B, LOW);
+      delayMicroseconds(2);    	  
+      digitalWrite(BPSK_CONTROL_A, HIGH);  
 //      Serial.print("-");	    
 //      clockgen.enableOutputOnly(1);	  
     } else {
 //      digitalWrite(BPSK_CONTROL_A, LOW);  
-      digitalWrite(BPSK_CONTROL_B, HIGH);  
-//    delayMicroseconds(2);    	  
-      digitalWrite(BPSK_CONTROL_A, LOW);	
+      digitalWrite(BPSK_CONTROL_A, LOW);  
+      delayMicroseconds(2);    	  
+      digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
 //      clockgen.enableOutputOnly(0);	  
     }
