@@ -369,7 +369,6 @@ const char sstv2_filename[] = "/sstv_image_2_320_x_240.jpg";
 bool TimerHandler0(struct repeating_timer *t);
 RPI_PICO_Timer ITimer0(0);
 RPI_PICO_Timer ITimer1(1);
-RPI_PICO_Timer ITimer2(2);
 
 bool timer0_on = false;
 bool timer2_on = false;
