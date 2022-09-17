@@ -371,9 +371,6 @@ RPI_PICO_Timer ITimer0(0);
 RPI_PICO_Timer ITimer1(1);
 
 bool timer0_on = false;
-bool timer2_on = false;
-int timer0_number = NULL;
-int timer2_number = NULL;
 volatile int timer_counter;
 
 char callsign[20];
