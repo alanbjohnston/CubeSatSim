@@ -1158,7 +1158,7 @@ void get_tlm_fox() {
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
 //	  	      Serial.println("D");	  
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
-      (i2c_bus0 == false) * 16 + (i2c_bus1 == false) * 32 + (i2c_bus3 == false) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
+      (i2c_bus0 == false) * 16 + (i2c_bus1 == false) * 32 + (i2c_bus3 == false) * 64 + (camera_detected == OFF) * 128 + groundCommandCount * 256;
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
 //	  	      Serial.println("E");	  
