@@ -498,8 +498,12 @@ void transmit_on() {
       Serial.println("Enable clock outputs!");
     }	
 */	
-      if (!clockgen.enableOutputs(true)) {	  
+      if (clockgen.enableOutputs(true)) {	  
 	  start_clockgen();
+	  if (mode == BPSK)
+		  clockgen.setClockBPSK();
+	      else
+		      clockgen.setClockFSK();
 	  clockgen.enableOutputs(true);
       }	  
   }
@@ -530,8 +534,8 @@ void transmit_off() {
     }	  
 //      clockgen.enableOutputs(false)	  
 */	
-      if (!clockgen.enableOutputs(false)) {	  
-	  start_clockgen();
+      if (clockgen.enableOutputs(false)) {	  
+	  start_clockgen();    
 	  clockgen.enableOutputs(false);
       }
 	  
@@ -2148,7 +2152,7 @@ void config_radio()
     }	 	  
 */	
 	  
-      if (!clockgen.setClockBPSK()) {	  
+      if (clockgen.setClockBPSK()) {	  
 	 start_clockgen();
 	 clockgen.setClockBPSK();
       }	  
@@ -2163,7 +2167,7 @@ void config_radio()
       Serial.println("Config clock for FSK");
     }	 
 */	 
-      if (!clockgen.setClockFSK()) {	  
+      if (clockgen.setClockFSK()) {	  
 	 start_clockgen();
 	 clockgen.setClockFSK();
       }	  
