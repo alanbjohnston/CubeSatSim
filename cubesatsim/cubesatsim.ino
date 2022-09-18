@@ -511,8 +511,11 @@ void transmit_off() {
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
 //    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
 //    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
-    Serial.println("Disable clock outputs");	  
-    clockgen.enableOutputs(false);	  
+    
+    for (int i = 0; ((i < 5) && (!clockgen.enableOutputs(false))); i++) {
+      Serial.println("Disable clock outputs");
+    }	  
+//      clockgen.enableOutputs(false)	  
   }
   else if (mode == SSTV) 
     sstv_end();
