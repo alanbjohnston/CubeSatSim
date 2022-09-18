@@ -2096,6 +2096,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+  Serial.println("Configuring radio");	
 /*	
   if (!wifi) 
      pinMode(LED_BUILTIN, OUTPUT);
