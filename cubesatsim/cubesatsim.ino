@@ -498,7 +498,7 @@ void transmit_on() {
       Serial.println("Enable clock outputs!");
     }	
 */	
-      if (!clockgen.enableOutputs(trie)) {	  
+      if (!clockgen.enableOutputs(true)) {	  
 	  start_clockgen();
 	  clockgen.enableOutputs(true);
       }	  
