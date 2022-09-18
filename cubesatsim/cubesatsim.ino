@@ -1358,10 +1358,13 @@ void write_wave(int i, byte *buffer)
     if (ctr > bufLen) {
 	ctr = ctr - bufLen;
 //	if (debug_mode) {
-	  Serial.print("ctr reset ");
-    if (bufLen != 0) {		  
-      Serial.print("RR Microseconds: ");
-      Serial.println((float)(micros() - micros3)/(float)bufLen);
+//	  Serial.print("ctr reset ");
+    if (bufLen != 0) {
+      float avg_time = (float)(micros() - micros3)/(float)bufLen;
+      if ((avg_time > (delay_time * 1.15)) || debug_mode) {	    
+        Serial.print("r Microseconds: ");
+        Serial.println(avg_time);
+      }
     }
 //  }	  
     micros3 = micros();	    
@@ -3437,8 +3440,8 @@ bool TimerHandler0(struct repeating_timer *t) {
 //    Serial.print(wav_position);
 //    Serial.print(" ");
     while ((micros() - micro_timer2) < delay_time)	{ } 
-    if (mode == BPSK)	  
-      busy_wait_at_least_cycles(51);	// 300 ns  
+//    if (mode == BPSK)	  
+//      busy_wait_at_least_cycles(51);	// 300 ns  
 //  if ((micros() - micro_timer2) > 834)	  
 //    Serial.println(micros() - micro_timer2);	  
     micro_timer2 = micros();	  	
@@ -3464,11 +3467,20 @@ bool TimerHandler0(struct repeating_timer *t) {
 //	Serial.println(millis());
 /**/
 //  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
+/*	    
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
-//  }	  
+//  }	
+*/	    
+    if (bufLen != 0) {
+      float avg_time = (float)(micros() - micro_timer)/(float)bufLen;
+      if ((avg_time > (delay_time * 1.15)) || debug_mode) {	    
+        Serial.print("R Microseconds: ");
+        Serial.println(avg_time);
+      }
+    }	    
     micro_timer = micros();
 /**/	  
   } else {  
