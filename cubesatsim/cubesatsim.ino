@@ -1361,10 +1361,10 @@ void write_wave(int i, byte *buffer)
 //	  Serial.print("ctr reset ");
     if (bufLen != 0) {
       float avg_time = (float)(micros() - micros3)/(float)bufLen;
-      if ((avg_time > (delay_time * 1.15)) || debug_mode) {	    
+//      if ((avg_time > (delay_time * 1.15)) || debug_mode) {	    
         Serial.print("r Microseconds: ");
         Serial.println(avg_time);
-      }
+//      }
     }
 //  }	  
     micros3 = micros();	    
