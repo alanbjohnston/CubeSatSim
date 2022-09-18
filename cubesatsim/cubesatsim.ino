@@ -516,7 +516,7 @@ void transmit_off() {
 //    for (int i = 0; ((i < 5) && (!clockgen.enableOutputs(false))); i++) {
     while ((i++ < 5) && (ret != 0)) {
       ret = clockgen.enableOutputs(false);	    
-      Serial.println("Disable clock outputs");
+      Serial.println("Disable clock outputs!");
     }	  
 //      clockgen.enableOutputs(false)	  
   }
