@@ -36,15 +36,16 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-#include <WiFi.h>
+//#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
+#include <Adafruit_SI5351_Library.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
-#include "sstv2.h"
+//#include "sstv2.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
@@ -55,8 +56,12 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-WiFiServer server(port);
-WiFiClient client;
+Adafruit_SI5351 clockgen = Adafruit_SI5351();
+
+unsigned long micros3;
+
+//WiFiServer server(port);
+//WiFiClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
@@ -83,9 +88,11 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.22 starting...\n");
+  Serial.println("CubeSatSim Pico v0.25 starting...\n");
 	
   config_gpio();	
+	
+  start_clockgen();		
 	
   EEPROM.begin(512);	
 	
@@ -139,15 +146,10 @@ void setup() {
   start_button_isr(); 
 	
   setup_sstv();
-  if (start_camera())  {
-    camera_detected = true;
-    Serial.println("Camera detected!");
-  } else {
-    camera_detected = false;
-    Serial.println("No camera detected!");
-  }	
-  start_isr();
-  start_pwm();
+
+  camera_detected = start_camera();	
+
+//  start_pwm();
 	
 /**/
   Serial.println("Transmitting callsign");	
@@ -158,6 +160,8 @@ void setup() {
 /**/
 	
   config_telem();	
+	
+  start_isr();	
 	
 // setup radio depending on mode 
   config_radio();	
@@ -198,25 +202,26 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
+      Serial.printf("DE %s \n", callsign);	    
       send_cw();
     }
   }
   else if (mode == SSTV)
   {
+      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
       } else {
-	if (camera_detected) {      
-          Serial.println("Getting image file");
- 	  get_camera_image();      
+	if (camera_detected = get_camera_image()) {      
+          Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
 	  char camera_file[] = "/cam.jpg";      
 	  strcpy(image_file, camera_file);      
 	} else	      
-	  strcpy(image_file, sstv2_filename);     // 2nd stored image
+	  strcpy(image_file, sstv1_filename);     // 2nd stored image
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
@@ -225,14 +230,21 @@ void loop() {
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
+//      LittleFS.remove("/cam.bin");	  
+      show_dir();	  
+      char output_file2[] = "/cam2.bin"; 	  
+      jpeg_decode(image_file, output_file2, true); // debug_mode);
+      show_dir();	  
+      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
+      char output_file[] = "/cam.bin"; 
+      digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
+      rotate_image(output_file2, output_file, telem_display);	  
+      show_dir();
 	  
-      char output_file[] = "/cam.bin"; 	  
-      jpeg_decode(image_file, output_file, debug_mode);
-
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-      if (!wifi) 
+//      if (!wifi) 
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
@@ -241,7 +253,7 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
-      if (!wifi) 
+//      if (!wifi) 
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
@@ -253,21 +265,21 @@ void loop() {
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
-    sleep(0.1); // 25); // 0.5);  // 25);
+    sleep(0.01); // was 0.1 sec
   sampleTime = (unsigned int) millis();	  
 	
 //  delay(2000);
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-	  if (!wifi) 
+//	  if (!wifi) 
 	    digitalWrite(LED_BUILTIN, LOW);	
 	  digitalWrite(MAIN_LED_BLUE, LOW);
 
 	//  delay(3000);	
 	  sleep(0.2); // 2.845); // 3.0);
 
-	  if (!wifi) 
+//	  if (!wifi) 
 	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
@@ -308,8 +320,8 @@ bool TimerHandler1(struct repeating_timer *t) {
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 
-  if (wifi) 
-    check_for_browser();
+//  if (wifi) 
+//    check_for_browser();
 	
   return(true);	
 }
@@ -473,11 +485,13 @@ void transmit_on() {
     digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
   } 
-  else if (mode == BPSK) {
+  else if ((mode == BPSK) || (mode == FSK)) {
     if (debug_mode)	  
-      Serial.println("Transmit on!");
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+      Serial.println("Transmit on!!!");
+//  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+//  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+    Serial.println("Enable clock outputs");	  	  
+    clockgen.enableOutputs(true);
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -492,10 +506,13 @@ void transmit_off() {
   if (debug_mode)	
    Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
-// ITimer0.stopTimer();	  // stop BPSK ISR timer
-  if (mode == BPSK) {
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
+  if ((mode == BPSK) || (mode == FSK)) {
+    digitalWrite(BPSK_CONTROL_A, LOW); 	  
+    digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
+//    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
+    Serial.println("Disable clock outputs");	  
+    clockgen.enableOutputs(false);	  
   }
   else if (mode == SSTV) 
     sstv_end();
@@ -520,7 +537,8 @@ void config_telem() {
   if (mode == FSK) {
     Serial.println("Configuring for FSK\n");
     bitRate = 200;
-    delay_time = (1.0 / 200.0);		  
+    delay_time = 1E6 / bitRate;		  
+    Serial.println(delay_time);	  
     rsFrames = 1;
     payloads = 1;
     rsFrameLen = 64;
@@ -535,13 +553,14 @@ void config_telem() {
     samples = sample_rate / bitRate;
 //    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
-//    Serial.println(bufLen);	  
+    bufLen = 970; // 2000;	  
+    Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
     sleepTime = 0.1;
 //    Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-//    Serial.println(frameTime);
+    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     memset(buffer, 0xa5, sizeof(buffer)); 
@@ -549,7 +568,8 @@ void config_telem() {
     Serial.println("Configuring for BPSK\n");
     bitRate = 1200;
 //    delay_time = (1.0 / 1200.0);	
-    delay_time = (1.0 / 200.0);	
+    delay_time = 1E6 / bitRate;	
+    Serial.println(delay_time);	  
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
@@ -848,9 +868,11 @@ void get_tlm_fox() {
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0;
-  short int buffer_test[bufLen];
-  int buffSize;
-  buffSize = (int) sizeof(buffer_test);
+  //short int buffer_test[bufLen];
+  //int buffSize;
+  //buffSize = (int) sizeof(buffer_test);
+	
+  ctr = 0;  	
 	
   parse_payload();	
 	
@@ -1138,7 +1160,7 @@ void get_tlm_fox() {
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
 //	  	      Serial.println("D");	  
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
-      (i2c_bus0 == false) * 16 + (i2c_bus1 == false) * 32 + (i2c_bus3 == false) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
+      (i2c_bus0 == false) * 16 + (i2c_bus1 == false) * 32 + (i2c_bus3 == false) * 64 + (camera_detected == OFF) * 128 + groundCommandCount * 256;
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
 //	  	      Serial.println("E");	  
@@ -1270,17 +1292,13 @@ void get_tlm_fox() {
         //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
-          //		printf("Sending a %d\n", phase);
         } else {
           if (data == 0) {
             phase *= -1;
-//            if ((ctr - smaller) > 0) {
-//              for (int j = 1; j <= smaller; j++)
-//                buffer[ctr - j] = buffer[ctr - j] * 0.4;
- //           }
-//            flip_ctr = ctr;
-          }
         }
+ //	printf("Sending a %d\n", phase);
+		
+       }
       }
     }
 ///    #ifdef DEBUG_LOGGING
@@ -1302,17 +1320,17 @@ void get_tlm_fox() {
 //	Serial.print(" ");      
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
-          //			printf("Sending a %d\n", phase);
+//          Serial.printf("Sending a %d\n", phase);
         } else {
           if (data == 0) {
             phase *= -1;
 //            if ((ctr - smaller) > 0) {
 //              for (int j = 1; j <= smaller; j++)
 //                buffer[ctr - j] = buffer[ctr - j] * 0.4;
-//            }
+          }
 //            flip_ctr = ctr;
           }
-        }
+///        }
 //	Serial.println("AA");      
       }
 //	Serial.println("BB");     
@@ -1330,38 +1348,34 @@ void get_tlm_fox() {
   }
 }
 
-void write_wave(int i, short int *buffer)
+//void write_wave(int i, short int *buffer)
+void write_wave(int i, byte *buffer)
 {
-	if (mode == FSK)
-	{
-//		if ((ctr - flip_ctr) < smaller)  // No wave shaping
-//			buffer[ctr++] = (short int)(0.1 * phase * (ctr - flip_ctr) / smaller);
-//		else
-			buffer[ctr++] = (short int)(0.25 * amplitude * phase);
-//		        Serial.print(buffer[ctr - 1]);
-//		        Serial.print(" ");
-	}
-	else
-	{
-//		if ((ctr - flip_ctr) < smaller)
-	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-//			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
-//	else
-	//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-//			buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
-			buffer[ctr++] = (short int)(phase); 
-	} 			
-	//		printf("%d %d \n", i, buffer[ctr - 1]);
-//	if (ctr > BUFFER_SIZE) {
-//		ctr = ctr - BUFFER_SIZE;
-	if (ctr > bufLen) {
-		ctr = ctr - bufLen;
-		if (debug_mode) {
-//		  Serial.print("\r");
-//		  Serial.print(" ");
-		  Serial.println(millis());
-		}
-	}
+    buffer[ctr++] = (byte)(phase == 1); 
+//    Serial.printf("buffer is %d \n", buffer[ctr - 1]);
+//	Serial.print(ctr);
+//	Serial.print(" ");
+	
+    if (ctr > bufLen) {
+	ctr = ctr - bufLen;
+//	if (debug_mode) {
+//	  Serial.print("ctr reset ");
+    if (bufLen != 0) {
+      float avg_time = (float)(micros() - micros3)/(float)bufLen;
+//      if ((avg_time > (delay_time * 1.15)) || debug_mode) {	    
+        Serial.print("r Microseconds: ");
+        Serial.println(avg_time);
+//      }
+    }
+//  }	  
+    micros3 = micros();	    
+	    
+//	  Serial.print(" ");
+//	  Serial.println(millis());
+//	}
+    }
+//	Serial.printf(" b: %d ", buffer[ctr - 1]);
+
 }
 
 int encodeA(short int  *b, int index, int val) {
@@ -2082,6 +2096,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+  Serial.println("Configuring radio");	
 /*	
   if (!wifi) 
      pinMode(LED_BUILTIN, OUTPUT);
@@ -2095,25 +2110,24 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 */	
-  if ((mode == AFSK) || (mode == FSK) || (mode == SSTV) || (mode == CW)) {
+  if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 	  
-    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
-	  
+    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
 //    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
-
     program_radio();
-  	
-//  } else if (mode == FSK)	  {  // moved to below
-//    transmit_on();
+
   } else if (mode == BPSK)  {
-//    start_pwm();
-//    start_isr();	  
+	  
+    clockgen.setClockBPSK();
+    Serial.println("Config clock for BPSK");	  	  
     transmit_on();	
-  }
-	
-  if ((mode == FSK)) //  || (mode == SSTV))
-//    start_isr();   
+  }	
+  else if (mode == FSK)  {//  || (mode == SSTV))
+
+    clockgen.setClockFSK(); 
+    Serial.println("Config clock for FSK");	 
     transmit_on();
+  }
 }
 
 void test_radio()
@@ -2634,6 +2648,7 @@ void read_payload()
 //  delay(100);
 }
 
+/*
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -2821,7 +2836,8 @@ void payload_OK_only()
 
   delay(100);
 }
-	
+
+*/	
 /*
 void eeprom_word_write(int addr, int val)
 {
@@ -3002,8 +3018,10 @@ void start_pwm() {
     pwm_config_set_output_polarity( &config, true, false);	
     pwm_init(bpsk_pin_slice_A, &config, true);
     pwm_init(bpsk_pin_slice_B, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//    pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
+//    pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);  // start with off
+    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);	
 }
 /*
 void pwm_interrupt_handler() {
@@ -3148,7 +3166,7 @@ void process_pushbutton() {
 	
 //  return;  /// just skip for now
 	
-  if (!wifi) 	   	
+//  if (!wifi) 	   	
    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
@@ -3177,10 +3195,9 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
-    Serial.println("PB: FSK not supported");
+    Serial.println("PB: Switch to FSK");
     release = TRUE;
-//    new_mode = FSK;
-//    setup();
+    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3246,7 +3263,7 @@ void process_bootsel() {
 	
   int release = FALSE;
 	
-  if (!wifi) 
+//  if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
@@ -3275,10 +3292,9 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
-    Serial.println("BOOTSEL: FSK not supported");
+    Serial.println("BOOTSEL: Switch to FSK");
     release = TRUE;
-//    new_mode = FSK;
-//    setup();
+    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3335,17 +3351,17 @@ void process_bootsel() {
   }
   if (new_mode != mode)
     transmit_off();
-  sleep(2.0);	
+//  sleep(2.0);	
 }
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-    if (!wifi) 
+//    if (!wifi) 
       digitalWrite(LED_BUILTIN, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    if (!wifi) 
+//    if (!wifi) 
        digitalWrite(LED_BUILTIN, HIGH);
     sleep(0.1);
   }
@@ -3369,7 +3385,7 @@ void config_gpio() {
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
   // set LEDs and blink once	
-  if (!wifi) 
+//  if (!wifi) 
     pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
@@ -3423,57 +3439,55 @@ void config_gpio() {
 bool TimerHandler0(struct repeating_timer *t) {
 
 //  digitalWrite(STEM_LED_GREEN, !green_led_counter++);
-
-  if (mode == BPSK) {	  // only do this if BPSK mode.  Should turn off timer interrupt when not BPSK in future
-//  Serial.print("l1 ");
-//  Serial.print(wav_position);
-//  Serial.print(" ");
-  while ((micros() - micro_timer2) < 832)	{ } 
-  busy_wait_at_least_cycles(51);	// 300 ns  
+  timer_counter = (timer_counter++) % 5;
+  if ((mode == BPSK) || ((mode == FSK) && (timer_counter == 0)))  {	  // only do this if BPSK mode or every 6 times in FSK mode
+//    Serial.print("l1 ");
+//    Serial.print(wav_position);
+//    Serial.print(" ");
+    while ((micros() - micro_timer2) < delay_time)	{ } 
+//    if (mode == BPSK)	  
+//      busy_wait_at_least_cycles(51);	// 300 ns  
 //  if ((micros() - micro_timer2) > 834)	  
 //    Serial.println(micros() - micro_timer2);	  
-  micro_timer2 = micros();	  	
-  if (buffer[wav_position++] > 0) {	  
-    digitalWrite(BPSK_CONTROL_A, HIGH);
-//    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_B, LOW);  	  
-  } else {
-    digitalWrite(BPSK_CONTROL_B, HIGH);  
-//    delayMicroseconds(2);    	  
-    digitalWrite(BPSK_CONTROL_A, LOW);	    
-  }
-/*	
-    tx_bit = (buffer[wav_position] > 0) ? HIGH: LOW;
-		
-   digitalWrite(AUDIO_OUT_PIN, tx_bit);		
-
-    tx_bit = (buffer[wav_position++] > 0) ? true: false;
-*/    
-/*	
-    if (tx_bit)
-      Serial.print("-");
-    else
-      Serial.print("_");
-*/
-/*	
-    pwm_config_set_output_polarity( &config, tx_bit, tx_bit);	
-    pwm_init(bpsk_pin_slice, &config, true);
-    pwm_set_gpio_level(BPSK_PWM_PIN, (config.top + 1) * 0.5);	 
-*/	
-  if (wav_position > bufLen) { // 300) {
-	wav_position = wav_position - bufLen;
+    micro_timer2 = micros();	  	
+    if (buffer[wav_position++] > 0) {	  
+//      digitalWrite(BPSK_CONTROL_B, LOW);  
+      digitalWrite(BPSK_CONTROL_B, LOW);
+//      delayMicroseconds(10);    	  
+      digitalWrite(BPSK_CONTROL_A, HIGH);  
+//      Serial.print("-");	    
+//      clockgen.enableOutputOnly(1);	  
+    } else {
+//      digitalWrite(BPSK_CONTROL_A, LOW);  
+      digitalWrite(BPSK_CONTROL_A, LOW);  
+//      delayMicroseconds(10);    	  
+      digitalWrite(BPSK_CONTROL_B, HIGH);	
+//      Serial.print("_");	 
+//      clockgen.enableOutputOnly(0);	  
+    }	
+    if (wav_position > bufLen) { // 300) {
+	wav_position = wav_position % bufLen;
 //	Serial.print("\nR");
 //	Serial.print(" ");
 //	Serial.println(millis());
-/*
-  if ((micros() - micro_timer)/bufLen > 835)  {	  
+/**/
+//  if ((micros() - micro_timer)/bufLen > (delay_time + 10))  {	  
+/*	    
     if (bufLen != 0) {		  
       Serial.print("R Microseconds: ");
       Serial.println((float)(micros() - micro_timer)/(float)bufLen);
     }
-  }	  
+//  }	
+*/	    
+    if (bufLen != 0) {
+      float avg_time = (float)(micros() - micro_timer)/(float)bufLen;
+      if ((avg_time > (delay_time * 1.15)) || debug_mode) {	    
+        Serial.print("R Microseconds: ");
+        Serial.println(avg_time);
+      }
+    }	    
     micro_timer = micros();
-*/	  
+/**/	  
   } else {  
 //      Serial.print("R' Microseconds: ");
 //      Serial.println(micros() - micro_timer2);
@@ -3491,20 +3505,21 @@ bool TimerHandler0(struct repeating_timer *t) {
   return true;	
 }
 
+
 void start_isr() {
 	
 //	return;
   if (!timer0_on) {	
 //  if (true) {	                         // always start ISR handler
-	Serial.println("Starting ISR for BPSK");
-	
+	Serial.println("Starting ISR for BPSK/FSK");
+	  
+	timer_counter = 0;
 	pinMode(BPSK_CONTROL_A, OUTPUT);
-	pinMode(BPSK_CONTROL_B, OUTPUT);	
-	
-//  if (ITimer0.attachInterruptInterval(833, TimerHandler0))	
-//  if (ITimer0.attachInterruptInterval(804, TimerHandler0))	
-    if (ITimer0.attachInterruptInterval(800, TimerHandler0))	// was was 828 (841) and 828
-//  if (ITimer0.attachInterruptInterval(1667, TimerHandler0))
+	pinMode(BPSK_CONTROL_B, OUTPUT);
+        digitalWrite(BPSK_CONTROL_A, LOW); 	 // start with off 
+        digitalWrite(BPSK_CONTROL_B, LOW); 	  
+
+   if (ITimer0.attachInterruptInterval(833 - 32, TimerHandler0))	
     {
       if (debug_mode) 	    
         Serial.print(F("Starting ITimer0 OK, micros() = ")); Serial.println(micros());
@@ -3512,11 +3527,12 @@ void start_isr() {
     }
     else
     Serial.println(F("Can't set ITimer0. Select another Timer, freq. or timer"));
+	    
 	  
   } else {
 //     ITimer0.restartTimer();
 //     Serial.println("Restarting ITimer0 for BPSK");	  
-	Serial.println("Don't restart ITimer0 for BPSK");	
+	Serial.println("Don't start ITimer0 for BPSK and FSK");	
   }
 }
   
@@ -3534,7 +3550,8 @@ void start_button_isr() {
     Serial.println(F("Can't set ITimer1. Select another Timer, freq. or timer"));
 
 }
-  
+
+/*
 void client_print_string(char *string)
 {
   int count = 0;
@@ -3628,13 +3645,13 @@ void check_for_browser() {
        }
      }
   }
-/*
+
   Serial.println(" ");
   print_string(var);
   print_string(val);
   Serial.println(" "); 
   Serial.println(strlen(val));
-*/
+
   if (!strcmp(var, "call") && (strlen(val) > 0)) {
      Serial.print("Changing callsign to ");
      print_string(val);
@@ -3677,9 +3694,10 @@ void configure_wifi() {
     server.begin();
   }
 }
-
+*/
+	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
-  if (!wifi) 
+ // if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 	
@@ -3694,7 +3712,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     sleep(min(time_left, period_us) / 1.0E6);  
   }
   digitalWrite(AUDIO_OUT_PIN, LOW);	
-  if (!wifi) 
+//  if (!wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
@@ -3713,7 +3731,7 @@ void transmit_callsign(char *callsign) {
   }
   transmit_off();	
   transmit_string(id);	
-  transmit_on();	
+//  transmit_on();	
 }
 
 void transmit_string(char *string) {
@@ -3830,7 +3848,7 @@ void load_files() {
     }
     f.close();
   }
-
+/*
   f = LittleFS.open("sstv_image_2_320_x_240.jpg", "r");
   if (f) {	
     Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
@@ -3844,7 +3862,7 @@ void load_files() {
     }
     f.close();
   }
-	
+*/	
   show_dir();
 }
 
@@ -3897,7 +3915,8 @@ void serial_input() {
 		   
      case 'f':
      case 'F':
-      Serial.println("FSK/DUV mode not supported");	     
+      Serial.println("Change to FSK mode");
+       new_mode = FSK;	    
        break;	
 		   
      case 'b':
@@ -3975,9 +3994,12 @@ void serial_input() {
 		   
        break;
     }
+    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
+      sstv_end();	    
+	    
     if (new_mode != mode)
       transmit_off();
-    sleep(2.0);		    
+//    sleep(2.0);		    
    }
  }
  }
@@ -4008,7 +4030,10 @@ void prompt_for_input() {
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
-       Serial.println("d  Change debug mode\n");		  
+       Serial.println("d  Change debug mode\n");
+		  
+       Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+		  
        break;	
 		  
     case PROMPT_CALLSIGN:
@@ -4219,6 +4244,9 @@ void set_lat_lon() {
 
 void program_radio() {
 	
+  digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
+  digitalWrite(PTT_PIN, HIGH);  // stop transmit	
+	
   DumbTXSWS mySerial(SWTX_PIN); // TX pin
   mySerial.begin(9600);
     
@@ -4228,9 +4256,10 @@ void program_radio() {
 //    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
 //     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
-     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
+//     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
+     mySerial.println("AT+DMOSETGROUP=0,434.9100,434.9100,0,8,0,0\r");  
 //   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=6,0\r");  // was 8
+   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
 }
@@ -4269,4 +4298,20 @@ void write_mode() {
 	  
   mode_file.close();
 //  Serial.println("Write complete");	
+}
+
+void start_clockgen() {
+
+  if (clockgen.begin() != ERROR_NONE)
+  {
+    /* There was a problem detecting the IC ... check your connections */
+    Serial.print("No Si5351 detected ... Check your wiring or I2C ADDR!");
+    return;	  
+  }
+
+  Serial.println("Starting clockgen frequency 434.9 MHz");
+	
+//  clockgen.setClockFSK();  // default to FSK
+  clockgen.enableOutputs(false);	
+	
 }
