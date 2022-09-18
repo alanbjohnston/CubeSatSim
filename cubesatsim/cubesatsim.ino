@@ -88,7 +88,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.24 starting...\n");
+  Serial.println("CubeSatSim Pico v0.25 starting...\n");
 	
   config_gpio();	
 	
@@ -121,7 +121,7 @@ void setup() {
 //  pinMode(PI_3V3_PIN, OUTPUT);
 //  digitalWrite(PI_3V3_PIN, HIGH);
 	
-//  start_payload();  // above code not working, so forcing it
+  start_payload();  // above code not working, so forcing it
 	
   read_config_file();	
 	
@@ -191,7 +191,7 @@ void loop() {
   // query INA219 sensors and Payload sensors
    read_ina219();	
 	
-//  read_payload();	
+  read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
