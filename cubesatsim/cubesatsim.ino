@@ -3731,7 +3731,7 @@ void transmit_callsign(char *callsign) {
   }
   transmit_off();	
   transmit_string(id);	
-  transmit_on();	
+//  transmit_on();	
 }
 
 void transmit_string(char *string) {
