@@ -147,7 +147,7 @@ void setup() {
 	
   setup_sstv();
 
-  camera_detected = false; // start_camera();	
+  camera_detected = start_camera();	
 
 //  start_pwm();
 	
@@ -215,9 +215,8 @@ void loop() {
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
       } else {
-	if (camera_detected) {      
-          Serial.println("Getting image file");
- 	  get_camera_image();      
+	if (camera_detected = get_camera_image()) {      
+          Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
 	  char camera_file[] = "/cam.jpg";      
 	  strcpy(image_file, camera_file);      
@@ -3346,7 +3345,7 @@ void process_bootsel() {
   }
   if (new_mode != mode)
     transmit_off();
-  sleep(2.0);	
+//  sleep(2.0);	
 }
 
 void blinkTimes(int blinks) {
@@ -3994,7 +3993,7 @@ void serial_input() {
 	    
     if (new_mode != mode)
       transmit_off();
-    sleep(2.0);		    
+//    sleep(2.0);		    
    }
  }
  }
