@@ -2122,11 +2122,12 @@ void config_radio()
     Serial.println("Config clock for BPSK");	  	  
     transmit_on();	
   }	
-  else if ((mode == FSK)) //  || (mode == SSTV))
+  else if (mode == FSK)  {//  || (mode == SSTV))
 
     clockgen.setClockFSK(); 
     Serial.println("Config clock for FSK");	 
     transmit_on();
+  }
 }
 
 void test_radio()
