@@ -511,8 +511,11 @@ void transmit_off() {
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
 //    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
 //    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
-    
-    for (int i = 0; ((i < 5) && (!clockgen.enableOutputs(false))); i++) {
+    int ret = 1;
+    int i = 0;	  
+//    for (int i = 0; ((i < 5) && (!clockgen.enableOutputs(false))); i++) {
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.enableOutputs(false);	    
       Serial.println("Disable clock outputs");
     }	  
 //      clockgen.enableOutputs(false)	  
