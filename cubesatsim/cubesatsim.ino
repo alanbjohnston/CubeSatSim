@@ -490,8 +490,12 @@ void transmit_on() {
       Serial.println("Transmit on!!!");
 //  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
 //  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
-    Serial.println("Enable clock outputs");	  	  
-    clockgen.enableOutputs(true);
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.enableOutputs(true);	    
+      Serial.println("Enable clock outputs!");
+    }	 
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -513,7 +517,6 @@ void transmit_off() {
 //    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
     int ret = 1;
     int i = 0;	  
-//    for (int i = 0; ((i < 5) && (!clockgen.enableOutputs(false))); i++) {
     while ((i++ < 5) && (ret != 0)) {
       ret = clockgen.enableOutputs(false);	    
       Serial.println("Disable clock outputs!");
@@ -2123,15 +2126,24 @@ void config_radio()
     program_radio();
 
   } else if (mode == BPSK)  {
+    	 
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.setClockBPSK();	    
+      Serial.println("Config clock for BPSK");
+    }	 	  
 	  
-    clockgen.setClockBPSK();
-    Serial.println("Config clock for BPSK");	  	  
     transmit_on();	
   }	
   else if (mode == FSK)  {//  || (mode == SSTV))
 
-    clockgen.setClockFSK(); 
-    Serial.println("Config clock for FSK");	 
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.setClockFSK();	    
+      Serial.println("Config clock for FSK");
+    }	  
     transmit_on();
   }
 }
