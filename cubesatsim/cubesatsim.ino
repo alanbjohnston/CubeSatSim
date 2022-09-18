@@ -490,8 +490,25 @@ void transmit_on() {
       Serial.println("Transmit on!!!");
 //  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
 //  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
-    Serial.println("Enable clock outputs");	  	  
-    clockgen.enableOutputs(true);
+/*	  
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.enableOutputs(true);	    
+      Serial.println("Enable clock outputs!");
+    }	
+*/	
+      if (clockgen.enableOutputs(true)) {	  
+	  start_clockgen();
+	  if (mode == BPSK)
+		  clockgen.setClockBPSK();
+	      else
+		      clockgen.setClockFSK();
+	  clockgen.enableOutputs(true);
+	  Serial.println("Enable clock outputs!"); 
+      } else {
+	 Serial.println("Enable clock outputs!");           
+      }
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -511,8 +528,23 @@ void transmit_off() {
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
 //    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
 //    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
-    Serial.println("Disable clock outputs");	  
-    clockgen.enableOutputs(false);	  
+/*	  
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.enableOutputs(false);	    
+      Serial.println("Disable clock outputs!");
+    }	  
+//      clockgen.enableOutputs(false)	  
+*/	
+      if (clockgen.enableOutputs(false)) {	  
+	  start_clockgen();    
+	  clockgen.enableOutputs(false);
+	  Serial.println("Disable clock outputs!");      
+      } else {
+	 Serial.println("Disable clock outputs!");           
+      }
+	  
   }
   else if (mode == SSTV) 
     sstv_end();
@@ -2117,15 +2149,40 @@ void config_radio()
     program_radio();
 
   } else if (mode == BPSK)  {
+/*    	 
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.setClockBPSK();	    
+      Serial.println("Config clock for BPSK");
+    }	 	  
+*/	
 	  
-    clockgen.setClockBPSK();
-    Serial.println("Config clock for BPSK");	  	  
+      if (clockgen.setClockBPSK()) {	  
+	 start_clockgen();
+	 clockgen.setClockBPSK();
+	 Serial.println("Config clock for BPSK");     
+      } else {
+	 Serial.println("Config clock for BPSK");          
+      }	  
     transmit_on();	
   }	
   else if (mode == FSK)  {//  || (mode == SSTV))
-
-    clockgen.setClockFSK(); 
-    Serial.println("Config clock for FSK");	 
+/*
+    int ret = 1;
+    int i = 0;	  
+    while ((i++ < 5) && (ret != 0)) {
+      ret = clockgen.setClockFSK();	    
+      Serial.println("Config clock for FSK");
+    }	 
+*/	 
+      if (clockgen.setClockFSK()) {	  
+	 start_clockgen();
+	 clockgen.setClockFSK();
+	 Serial.println("Config clock for FSK");       
+      }	else {
+	 Serial.println("Config clock for FSK");          
+      }	  
     transmit_on();
   }
 }
@@ -4257,7 +4314,7 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
-     mySerial.println("AT+DMOSETGROUP=0,434.9100,434.9100,0,8,0,0\r");  
+     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //   sleep(0.5);	  
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
