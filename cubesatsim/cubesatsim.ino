@@ -490,6 +490,7 @@ void transmit_on() {
       Serial.println("Transmit on!!!");
 //  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
 //  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+    Serial.println("Enable clock outputs");	  	  
     clockgen.enableOutputs(true);
   }
   else if (mode == CW) {
@@ -510,6 +511,7 @@ void transmit_off() {
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
 //    pwm_set_gpio_level(BPSK_PWM_A_PIN, 0);	
 //    pwm_set_gpio_level(BPSK_PWM_B_PIN, 0);
+    Serial.println("Disable clock outputs");	  
     clockgen.enableOutputs(false);	  
   }
   else if (mode == SSTV) 
@@ -2115,12 +2117,14 @@ void config_radio()
 
   } else if (mode == BPSK)  {
 	  
-    clockgen.setClockBPSK();	  
+    clockgen.setClockBPSK();
+    Serial.println("Config clock for BPSK");	  	  
     transmit_on();	
   }	
   else if ((mode == FSK)) //  || (mode == SSTV))
 
     clockgen.setClockFSK(); 
+    Serial.println("Config clock for FSK");	 
     transmit_on();
 }
 
