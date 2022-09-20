@@ -150,6 +150,7 @@ void setup() {
   camera_detected = start_camera();	
 
 //  start_pwm();
+  program_radio();	
 	
 /**/
   Serial.println("Transmitting callsign");	
@@ -2146,7 +2147,7 @@ void config_radio()
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
 //    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
-    program_radio();
+///    program_radio();  // remove for now
 
   } else if (mode == BPSK)  {
 /*    	 
@@ -3782,10 +3783,11 @@ void transmit_callsign(char *callsign) {
   strcat(id, callsign);
   Serial.print("Transmitting id: ");	
   print_string(id);	
-	
+/*	
   if (reset_count == 0) {
     program_radio();	  
   }
+*/	
   transmit_off();	
   transmit_string(id);	
 //  transmit_on();	
@@ -4300,7 +4302,7 @@ void set_lat_lon() {
 }
 
 void program_radio() {
-	
+		
   digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
   digitalWrite(PTT_PIN, HIGH);  // stop transmit	
 	
@@ -4319,6 +4321,7 @@ void program_radio() {
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
+  digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
 }
 
 void read_mode() {
