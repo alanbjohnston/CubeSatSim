@@ -4304,6 +4304,8 @@ void set_lat_lon() {
 }
 
 void program_radio() {
+	
+  Serial.println("Programming SR_FRS!");	
 		
   digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
   digitalWrite(PTT_PIN, HIGH);  // stop transmit	
