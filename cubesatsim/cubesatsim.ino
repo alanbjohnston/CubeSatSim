@@ -2401,7 +2401,7 @@ void start_payload() {
   sleep(0.25); // delay(250);
   led_set(blueLED, LOW);
       
-  if (bme.begin(0x76)) {
+  if (bme.begin()) {
     bmePresent = 1;
   } else {
     Serial.println("Could not find a valid BME280 sensor, check wiring!");
