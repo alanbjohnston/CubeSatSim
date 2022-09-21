@@ -2147,7 +2147,7 @@ void config_radio()
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
 //    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
-    program_radio();  // remove for now
+//    program_radio();  // remove for now
 
   } else if (mode == BPSK)  {
 /*    	 
@@ -4321,7 +4321,7 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
      mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-//   sleep(0.5);	  
+   sleep(0.5);	  
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
