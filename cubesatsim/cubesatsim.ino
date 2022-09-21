@@ -50,7 +50,7 @@
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
 Adafruit_INA219 ina219_1_0x44(0x44);
-Adafruit_INA219 ina219_1_0x45(0x45);
+//Adafruit_INA219 ina219_1_0x45(0x45);
 Adafruit_INA219 ina219_2_0x40(0x40);
 Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
@@ -2259,7 +2259,7 @@ void read_ina219()
   }
   voltage[2] = loadvoltage;
   current[2] = current_mA;
-
+/*
   shuntvoltage = ina219_1_0x45.getShuntVoltage_mV();
   busvoltage = ina219_1_0x45.getBusVoltage_V();
   current_mA = ina219_1_0x45.getCurrent_mA();
@@ -2274,6 +2274,8 @@ void read_ina219()
   }
   voltage[3] = loadvoltage;
   current[3] = current_mA;	
+*/	  
+	  
   }
 	
   if (i2c_bus3) {	
@@ -3000,7 +3002,7 @@ void start_ina219() {
   i2c_bus1 = ina219_1_0x40.begin();  // check i2c bus 1
   ina219_1_0x41.begin();
   ina219_1_0x44.begin();
-  ina219_1_0x45.begin();
+//  ina219_1_0x45.begin();
    
   Wire1.setSDA(2); 
   Wire1.setSCL(3);
