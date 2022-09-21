@@ -150,7 +150,7 @@ void setup() {
   camera_detected = start_camera();	
 
 //  start_pwm();
-  program_radio();	
+//  program_radio();	
 	
 /**/
   Serial.println("Transmitting callsign");	
@@ -2147,7 +2147,7 @@ void config_radio()
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
 //    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
-    program_radio();  // remove for now
+//    program_radio();  // remove for now
 
   } else if (mode == BPSK)  {
 /*    	 
