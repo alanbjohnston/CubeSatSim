@@ -41,7 +41,7 @@
 #include "hardware/adc.h"
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
-#include <Adafruit_SI5351_Library.h>
+//#include <Adafruit_SI5351_Library.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -56,7 +56,7 @@ Adafruit_INA219 ina219_2_0x41(0x41);
 Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
-Adafruit_SI5351 clockgen = Adafruit_SI5351();
+//Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 unsigned long micros3;
 
@@ -499,7 +499,7 @@ void transmit_on() {
       Serial.println("Enable clock outputs!");
     }	
 */	
-      if (clockgen.enableOutputs(true)) {	  
+/*      if (clockgen.enableOutputs(true)) {	  
 	  start_clockgen();
 	  if (mode == BPSK)
 		  clockgen.setClockBPSK();
@@ -510,6 +510,7 @@ void transmit_on() {
       } else {
 	 Serial.println("Enable clock outputs!");           
       }
+*/	  
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -538,14 +539,14 @@ void transmit_off() {
     }	  
 //      clockgen.enableOutputs(false)	  
 */	
-      if (clockgen.enableOutputs(false)) {	  
+/*      if (clockgen.enableOutputs(false)) {	  
 	  start_clockgen();    
 	  clockgen.enableOutputs(false);
 	  Serial.println("Disable clock outputs!");      
       } else {
 	 Serial.println("Disable clock outputs!");           
       }
-	  
+*/	  
   }
   else if (mode == SSTV) 
     sstv_end();
@@ -2158,7 +2159,7 @@ void config_radio()
       Serial.println("Config clock for BPSK");
     }	 	  
 */	
-	  
+/*	  
       if (clockgen.setClockBPSK()) {	  
 	 start_clockgen();
 	 clockgen.setClockBPSK();
@@ -2166,6 +2167,7 @@ void config_radio()
       } else {
 	 Serial.println("Config clock for BPSK");          
       }	  
+*/	  
     transmit_on();	
   }	
   else if (mode == FSK)  {//  || (mode == SSTV))
@@ -2177,13 +2179,14 @@ void config_radio()
       Serial.println("Config clock for FSK");
     }	 
 */	 
-      if (clockgen.setClockFSK()) {	  
+/*      if (clockgen.setClockFSK()) {	  
 	 start_clockgen();
 	 clockgen.setClockFSK();
 	 Serial.println("Config clock for FSK");       
       }	else {
 	 Serial.println("Config clock for FSK");          
-      }	  
+      }	
+*/  
     transmit_on();
   }
 }
@@ -4364,7 +4367,7 @@ void write_mode() {
 
 void start_clockgen() {
 
-  if (clockgen.begin() != ERROR_NONE)
+//  if (clockgen.begin() != ERROR_NONE)
   {
     /* There was a problem detecting the IC ... check your connections */
     Serial.print("No Si5351 detected ... Check your wiring or I2C ADDR!");
@@ -4374,6 +4377,6 @@ void start_clockgen() {
   Serial.println("Starting clockgen frequency 434.9 MHz");
 	
 //  clockgen.setClockFSK();  // default to FSK
-  clockgen.enableOutputs(false);	
+//  clockgen.enableOutputs(false);	
 	
 }
