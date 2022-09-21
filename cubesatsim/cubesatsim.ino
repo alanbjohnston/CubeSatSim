@@ -150,7 +150,7 @@ void setup() {
   camera_detected = start_camera();	
 
 //  start_pwm();
-//  program_radio();	
+  program_radio();	
 	
 /**/
   Serial.println("Transmitting callsign");	
