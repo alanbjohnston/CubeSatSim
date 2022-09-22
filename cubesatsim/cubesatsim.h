@@ -356,6 +356,7 @@ bool debug_mode = false;
 bool voltage_read = false;
 bool ina219_started = false;
 bool camera_detected = false;
+bool rotate_flag = true;
 
 #define PRESSED 0
 #define HELD 0
