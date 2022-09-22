@@ -66,18 +66,18 @@ bool start_camera() {
    delay(100);
    Serial2.begin(115200);
 #ifdef GET_IMAGE_DEBUG  
-   Serial.println("Started Serial2 to camera");
+   Serial.println("Started Serial2 to camera v0.1");
 #endif
    LittleFS.begin();
  
    bool camera_present = false;	
-   int tries = 0;
-   while ((tries++ < 5) && !camera_present) {
+//   int tries = 0;
+//   while ((tries++ < 5) && !camera_present) {
     if (get_camera_image())  {
       camera_present = true;
       Serial.println("Camera detected!");
     }	    
-  } 
+//  } 
   if (!camera_present) {
     Serial.println("No camera detected!");
   }
@@ -196,7 +196,7 @@ bool get_camera_image()  {
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
-              Serial.println("\nFound end flag");
+//              Serial.println("\nFound end flag");
 //              Serial.println(octet, HEX);
               while(!Serial2.available()) { }     // Wait for another byte
 //              octet = Serial2.read(); 
@@ -206,7 +206,7 @@ bool get_camera_image()  {
               int received_crc = Serial2.read(); 
 //              buffer2[index1++] = octet;
                             
-              Serial.print("\nFile length: ");
+              Serial.print(nFile length: ");
               Serial.println(index1 - (int)strlen(end_flag));
 //              index1 -= 1; // 40;
 //              Serial.println(buffer2[index1 - 1], HEX); 
@@ -263,7 +263,7 @@ bool get_camera_image()  {
           if (flag_count >= strlen(start_flag)) {
             flag_count = 0;
             start_flag_complete = true;
-            Serial.println("Found start flag!\n");        
+//            Serial.println("Found start flag!\n");        
           }
       } else {  // not the flag, keep looking
           start_flag_detected = false;
