@@ -290,7 +290,7 @@ int frameTime;
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, rotation_speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
-bool i2c1, i2c2, i2c3,i2c4, i2c5, i2c6, i2c7, i2c8;
+bool i2c0, i2c2, i2c3,i2c4, i2c5, i2c6, i2c7, i2c8;
 
 float voltage[9], current[9], sensor[17], other[3];
 char sensor_payload[500];
