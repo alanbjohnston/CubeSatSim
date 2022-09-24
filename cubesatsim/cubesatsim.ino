@@ -2221,7 +2221,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 
   if ((debug_mode) || (voltage_read))	{    
-    Serial.print("1 0x40 Voltage:  "); 
+    Serial.print("+X   (1 0x40) Voltage:  "); 
     Serial.print(loadvoltage);
     Serial.print("V  Current:       "); 
     Serial.print(current_mA); 
@@ -2238,7 +2238,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 
   if ((debug_mode) || (voltage_read))	{  	  
-    Serial.print("1 0x41 Voltage:  "); 
+    Serial.print("+Y   (1 0x41) Voltage:  "); 
     Serial.print(loadvoltage);
     Serial.print("V  Current:       "); 
     Serial.print(current_mA); 
@@ -2255,7 +2255,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("1 0x44 Voltage:  "); 
+  Serial.print("+Bat (1 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
@@ -2289,7 +2289,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("2 0x40 Voltage:  "); 
+  Serial.print("+Z   (2 0x40) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
@@ -2306,7 +2306,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("2 0x41 Voltage:  "); 
+  Serial.print("-X  (2 0x41) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
@@ -2323,7 +2323,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 
   if ((debug_mode) || (voltage_read))	{  	  
-  Serial.print("2 0x44 Voltage:  "); 
+  Serial.print("-Y  (2 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
@@ -2340,7 +2340,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("2 0x45 Voltage:  "); 
+  Serial.print("-Z  (2 0x45) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current:       "); 
   Serial.print(current_mA); 
