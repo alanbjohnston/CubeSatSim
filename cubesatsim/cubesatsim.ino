@@ -2214,7 +2214,7 @@ void read_ina219()
   float current_mA = 0;
   float loadvoltage = 0;
 	
-  if (i2c_bus1) {	
+  if (i2c1) {	
   shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
   busvoltage = ina219_1_0x40.getBusVoltage_V();
   current_mA = ina219_1_0x40.getCurrent_mA();
@@ -2229,7 +2229,9 @@ void read_ina219()
   }
   voltage[0] = loadvoltage;
   current[0] = current_mA;
-
+  }
+	
+  if (i2c2) {		  
   shuntvoltage = ina219_1_0x41.getShuntVoltage_mV();
   busvoltage = ina219_1_0x41.getBusVoltage_V();
   current_mA = ina219_1_0x41.getCurrent_mA();
@@ -2244,7 +2246,9 @@ void read_ina219()
   }
   voltage[1] = loadvoltage;
   current[1] = current_mA;
+  }
 	
+  if (i2c3) {		
   shuntvoltage = ina219_1_0x44.getShuntVoltage_mV();
   busvoltage = ina219_1_0x44.getBusVoltage_V();
   current_mA = ina219_1_0x44.getCurrent_mA();
@@ -2278,7 +2282,7 @@ void read_ina219()
 	  
   }
 	
-  if (i2c_bus3) {	
+  if (i2c5) {
   shuntvoltage = ina219_2_0x40.getShuntVoltage_mV();
   busvoltage = ina219_2_0x40.getBusVoltage_V();
   current_mA = ina219_2_0x40.getCurrent_mA();
@@ -2293,7 +2297,9 @@ void read_ina219()
   }
   voltage[4] = loadvoltage;
   current[4] = current_mA;
-
+  }
+	
+  if (i2c6) {	
   shuntvoltage = ina219_2_0x41.getShuntVoltage_mV();
   busvoltage = ina219_2_0x41.getBusVoltage_V();
   current_mA = ina219_2_0x41.getCurrent_mA();
@@ -2308,7 +2314,9 @@ void read_ina219()
   }
   voltage[5] = loadvoltage;
   current[5] = current_mA;
+  }
 	
+  if (i2c7) {		
   shuntvoltage = ina219_2_0x44.getShuntVoltage_mV();
   busvoltage = ina219_2_0x44.getBusVoltage_V();
   current_mA = ina219_2_0x44.getCurrent_mA();
@@ -2323,7 +2331,9 @@ void read_ina219()
   }
   voltage[6] = loadvoltage;
   current[6] = current_mA;
-
+  }
+	
+  if (i2c8) {	
   shuntvoltage = ina219_2_0x45.getShuntVoltage_mV();
   busvoltage = ina219_2_0x45.getBusVoltage_V();
   current_mA = ina219_2_0x45.getCurrent_mA();
@@ -2979,6 +2989,8 @@ void start_ina219() {
   Serial.println(PI_3V3_PIN);	
   ina219_started = true;
 	
+  i2c1 = i2c2 = i2c3 = i2c4 = i2c5 = i2c6 = i2c7 = i2c8 = false;	
+	
 #ifndef PICO_0V1	
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
@@ -2999,19 +3011,23 @@ void start_ina219() {
 #endif
 	
   sleep(0.1);
-  i2c_bus1 = ina219_1_0x40.begin();  // check i2c bus 1
-  ina219_1_0x41.begin();
-  ina219_1_0x44.begin();
+  i2c1 = ina219_1_0x40.begin();  // check i2c bus 1
+  i2c2 = ina219_1_0x41.begin();
+  i2c3 = ina219_1_0x44.begin();
 //  ina219_1_0x45.begin();
+	
+  i2c_bus1 = i2c1 || i2c2 || i2c3 || i2c4; 	
    
   Wire1.setSDA(2); 
   Wire1.setSCL(3);
   Wire1.begin(); 
 	
-  i2c_bus3 = ina219_2_0x40.begin(&Wire1);  // check i2c bus 2
-  ina219_2_0x41.begin(&Wire1);
-  ina219_2_0x44.begin(&Wire1);
-  ina219_2_0x45.begin(&Wire1);
+  i2c5 = ina219_2_0x40.begin(&Wire1);  // check i2c bus 2
+  i2c6 = ina219_2_0x41.begin(&Wire1);
+  i2c7 = ina219_2_0x44.begin(&Wire1);
+  i2c8 = ina219_2_0x45.begin(&Wire1);
+	
+  i2c_bus1 = i2c5 || i2c6 || i2c7 || i2c8; 		
 	
   Serial.print("I2C bus 1: ");
   Serial.print(i2c_bus1);	
