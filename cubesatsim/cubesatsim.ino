@@ -3011,11 +3011,11 @@ void start_ina219() {
 #endif
 	
   sleep(0.1);
-  if (!i2c_1 = ina219_1_0x40.begin())  // check i2c bus 1
+  if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
     Serial.println("I2C bus 1 0x40 not found");
-  if (!i2c2 = ina219_1_0x41.begin())
+  if (!(i2c2 = ina219_1_0x41.begin()))
     Serial.println("I2C bus 1 0x41 not found");
-  if (!i2c3 = ina219_1_0x44.begin())
+  if (!(i2c3 = ina219_1_0x44.begin()))
     Serial.println("I2C bus 1 0x44 not found");
 //  ina219_1_0x45.begin();
 	
@@ -3025,13 +3025,13 @@ void start_ina219() {
   Wire1.setSCL(3);
   Wire1.begin(); 
 	
-  if (!i2c5 = ina219_2_0x40.begin(&Wire1))  // check i2c bus 2
+  if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
     Serial.println("I2C bus 2 0x40 not found");
-  if (!i2c6 = ina219_2_0x41.begin(&Wire1))
+  if (!(i2c6 = ina219_2_0x41.begin(&Wire1)))
     Serial.println("I2C bus 2 0x41 not found");
-  if (!i2c7 = ina219_2_0x44.begin(&Wire1))
+  if (!(i2c7 = ina219_2_0x44.begin(&Wire1)))
     Serial.println("I2C bus 2 0x44 not found");
-  if (!i2c8 = ina219_2_0x45.begin(&Wire1))
+  if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
     Serial.println("I2C bus 2 0x45 not found");
 	
   i2c_bus3 = i2c5 || i2c6 || i2c7 || i2c8; 		
