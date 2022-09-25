@@ -2516,7 +2516,8 @@ void start_payload() {
   }
   }		
 
-  payload = bmePresent || mpuPresent;
+  if (!(payload = bmePresent || mpuPresent))
+    Serial.println("No payload sensors detected");
 	
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED, OUTPUT);
