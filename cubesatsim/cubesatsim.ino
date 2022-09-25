@@ -3015,11 +3015,12 @@ void led_set(int ledPin, bool state)
 void start_ina219() {
 //#define PI_3V3_PIN 9 // for v0.1 hardware
   Serial.println("Starting INA219");
-  Serial.println(PI_3V3_PIN);	
-  ina219_started = true;
+//  Serial.println(PI_3V3_PIN);	
+
 	
   i2c_1 = i2c2 = i2c3 = i2c4 = i2c5 = i2c6 = i2c7 = i2c8 = false;	
-	
+
+  if (!ina219_started)	{
 #ifndef PICO_0V1	
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
@@ -3038,7 +3039,7 @@ void start_ina219() {
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	
 #endif
-	
+  }	
   sleep(0.1);
   if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
     Serial.println("I2C +X sensor (bus 1 0x40) not found");
@@ -3084,6 +3085,7 @@ void start_ina219() {
   ina219_2_0x45.setCalibration_16V_400mA(); 	
   }
 */  
+  ina219_started = true;	
 }
 
 void start_pwm() {
