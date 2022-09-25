@@ -2450,6 +2450,8 @@ void start_payload() {
     mpuPresent = 1;
     mpu6050.begin();	  
 
+  payload = bmePresent || mpuPresent;
+	  
   long flag;
   float xOffset;
   float yOffset;	  
