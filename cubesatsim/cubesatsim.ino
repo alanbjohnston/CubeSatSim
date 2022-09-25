@@ -568,7 +568,7 @@ void config_telem() {
   transmit = TRUE;  
   
   if (mode == FSK) {
-    Serial.println("Configuring for FSK\n");
+    Serial.println("\nConfiguring for FSK");
     bitRate = 200;
     delay_time = 1E6 / bitRate;		  
 //    Serial.println(delay_time);	  
@@ -598,7 +598,7 @@ void config_telem() {
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     memset(buffer, 0xa5, sizeof(buffer)); 
   } else if (mode == BPSK) {
-    Serial.println("Configuring for BPSK\n");
+    Serial.println("\nConfiguring for BPSK");
     bitRate = 1200;
 //    delay_time = (1.0 / 1200.0);	
     delay_time = 1E6 / bitRate;	
@@ -642,7 +642,7 @@ void config_telem() {
     memset(buffer, 0xa5, sizeof(buffer)); 	  
   } else if (mode == AFSK) {
 
-    Serial.println("Configuring for AFSK\n");
+    Serial.println("\nConfiguring for AFSK");
 	  
     set_pin(AUDIO_OUT_PIN);
 	  
@@ -655,13 +655,13 @@ void config_telem() {
     frameTime = 5000;	  
     bufLen = 1000;
   }   else if (mode == SSTV) {
-    Serial.println("Configuring for SSTV\n");
+    Serial.println("\nConfiguring for SSTV");
     set_sstv_pin(AUDIO_OUT_PIN);    	  
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
   } else if (mode == CW) {
-    Serial.println("Configuring for CW\n");	  
+    Serial.println("\nConfiguring for CW");	  
   }
 // clearing min and max values
   if (debug_mode)	
@@ -826,7 +826,7 @@ void config_simulated_telem()
 {
     sim_mode = TRUE;
 	    
-    Serial.println("Simulated telemetry mode!\n");
+    Serial.println("Simulated telemetry mode!");
 
 //    srand((unsigned int)time(0));
 
