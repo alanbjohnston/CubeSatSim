@@ -2205,6 +2205,8 @@ void test_radio()
 
 void read_ina219()
 {
+  unsigned long read_time = millis();
+	
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
     Serial.println("Nothing to read");
 /*	
@@ -2375,6 +2377,9 @@ void read_ina219()
     current[MINUS_Z] = 0.0;	  
   }
   voltage_read = false;	
+	
+  if ((millis() - read_time) > 1000)
+    Serial.println("There is an I2C sensor problem");
 }
 
 void read_sensors()
