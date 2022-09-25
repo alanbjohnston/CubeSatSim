@@ -3041,7 +3041,7 @@ void start_ina219() {
     Serial.println("I2C Batt sensor (bus 1 0x44) not found");
 //  ina219_1_0x45.begin();
 	
-  i2c_bus1 = i2c1 || i2c2 || i2c3; 	
+  i2c_bus1 = i2c_1 || i2c2 || i2c3; 	
    
   Wire1.setSDA(2); 
   Wire1.setSCL(3);
