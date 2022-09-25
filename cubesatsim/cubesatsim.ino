@@ -2452,8 +2452,6 @@ void start_payload() {
   else {
     mpuPresent = 1;
     mpu6050.begin();	  
-
-  payload = bmePresent || mpuPresent;
 	  
   long flag;
   float xOffset;
@@ -2516,7 +2514,10 @@ void start_payload() {
     EEPROM.get(12, f);  
     Serial.println(f);		  
   }
-  }	  
+  }		
+
+  payload = bmePresent || mpuPresent;
+	
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED, OUTPUT);
 	
