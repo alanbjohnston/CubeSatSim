@@ -2267,8 +2267,8 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[BATT] = loadvoltage;
-  current[BATT] = current_mA;
+  voltage[BAT] = loadvoltage;
+  current[BAT] = current_mA;
 /*
   shuntvoltage = ina219_1_0x45.getShuntVoltage_mV();
   busvoltage = ina219_1_0x45.getBusVoltage_V();
@@ -2288,8 +2288,8 @@ void read_ina219()
 	  
 	  
   } else {
-    voltage[BATT] = 0.0;
-    current[BATT] = 0.0;	  
+    voltage[BAT] = 0.0;
+    current[BAT] = 0.0;	  
   }
 	
   if (i2c5) {
