@@ -4271,7 +4271,7 @@ void prompt_for_input() {
       prompt = false;
 //    Serial.println("Restart not yet implemented");
       start_payload();
-      start_ina219();
+//      start_ina219();
       if (mode != CW)
         transmit_callsign(callsign);
       sleep(0.5);	 
