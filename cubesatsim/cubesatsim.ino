@@ -571,7 +571,7 @@ void config_telem() {
     Serial.println("Configuring for FSK\n");
     bitRate = 200;
     delay_time = 1E6 / bitRate;		  
-    Serial.println(delay_time);	  
+//    Serial.println(delay_time);	  
     rsFrames = 1;
     payloads = 1;
     rsFrameLen = 64;
@@ -587,13 +587,13 @@ void config_telem() {
 //    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
     bufLen = 970; // 2000;	  
-    Serial.println(bufLen);	  
+//    Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
     sleepTime = 0.1;
 //    Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-    Serial.println(frameTime);
+//    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     memset(buffer, 0xa5, sizeof(buffer)); 
@@ -602,7 +602,7 @@ void config_telem() {
     bitRate = 1200;
 //    delay_time = (1.0 / 1200.0);	
     delay_time = 1E6 / bitRate;	
-    Serial.println(delay_time);	  
+//    Serial.println(delay_time);	  
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
@@ -2226,7 +2226,7 @@ void read_ina219()
     if ((debug_mode) || (voltage_read))	{    
       Serial.print("+X   (1 0x40) Voltage:  "); 
       Serial.print(loadvoltage);
-      Serial.print("V  Current:       "); 
+      Serial.print("V  Current: "); 
       Serial.print(current_mA); 
       Serial.println(" mA");
     }
@@ -2246,7 +2246,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	  
     Serial.print("+Y   (1 0x41) Voltage:  "); 
     Serial.print(loadvoltage);
-    Serial.print("V  Current:       "); 
+    Serial.print("V  Current: "); 
     Serial.print(current_mA); 
     Serial.println(" mA");
   }
@@ -2266,7 +2266,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	
   Serial.print("+Bat (1 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
@@ -2281,7 +2281,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	
   Serial.print("1 0x45 Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
@@ -2304,7 +2304,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	
   Serial.print("+Z   (2 0x40) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
@@ -2324,7 +2324,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	
   Serial.print("-X   (2 0x41) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
@@ -2344,7 +2344,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	  
   Serial.print("-Y   (2 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
@@ -2364,7 +2364,7 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	
   Serial.print("-Z   (2 0x45) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
@@ -4421,7 +4421,7 @@ void start_clockgen() {
   if (clockgen.begin() != ERROR_NONE)
   {
     /* There was a problem detecting the IC ... check your connections */
-    Serial.print("No Si5351 detected ... Check your wiring or I2C ADDR!");
+    Serial.println("No Si5351 detected ... Check your wiring or I2C ADDR!");
     return;	  
   }
 
