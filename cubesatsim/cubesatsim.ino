@@ -1037,10 +1037,10 @@ void get_tlm_fox() {
     Serial.print("posXv = ");
     Serial.println(posXv);		  
 */	  
-//    if (payload == ON)
-//      STEMBoardFailure = 0;
-	  
-    STEMBoardFailure = !payload;
+    if (payload == ON)
+      STEMBoardFailure = 0;
+    else	  
+      STEMBoardFailure = 1;
 	  
     // read payload sensor if available
 //    Serial.println("Before encoding");
