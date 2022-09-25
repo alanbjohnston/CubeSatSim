@@ -90,9 +90,9 @@
 #define PLUS_Y 1
 #define BAT 2
 #define BUS 3
-#define MINUS_X 4
-#define MINUS_Y 5
-#define PLUS_Z 6
+#define MINUS_X 5 // 4
+#define MINUS_Y 6 // 5
+#define PLUS_Z 4 // 6
 #define MINUS_Z 7
 #define TEMP 2
 #define PRES 3
