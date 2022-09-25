@@ -2215,20 +2215,23 @@ void read_ina219()
   float loadvoltage = 0;
 	
   if (i2c_1) {	
-  shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
-  busvoltage = ina219_1_0x40.getBusVoltage_V();
-  current_mA = ina219_1_0x40.getCurrent_mA();
-  loadvoltage = busvoltage + (shuntvoltage / 1000);
+    shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
+    busvoltage = ina219_1_0x40.getBusVoltage_V();
+    current_mA = ina219_1_0x40.getCurrent_mA();
+    loadvoltage = busvoltage + (shuntvoltage / 1000);
 
-  if ((debug_mode) || (voltage_read))	{    
-    Serial.print("+X   (1 0x40) Voltage:  "); 
-    Serial.print(loadvoltage);
-    Serial.print("V  Current:       "); 
-    Serial.print(current_mA); 
-    Serial.println(" mA");
-  }
-  voltage[0] = loadvoltage;
-  current[0] = current_mA;
+    if ((debug_mode) || (voltage_read))	{    
+      Serial.print("+X   (1 0x40) Voltage:  "); 
+      Serial.print(loadvoltage);
+      Serial.print("V  Current:       "); 
+      Serial.print(current_mA); 
+      Serial.println(" mA");
+    }
+    voltage[PLUS_X] = loadvoltage;
+    current[PLUS_X] = current_mA;
+  } else {
+    voltage[PLUS_X] = 0.0;
+    current[PLUS_X] = 0.0;	  
   }
 	
   if (i2c2) {		  
@@ -2244,8 +2247,11 @@ void read_ina219()
     Serial.print(current_mA); 
     Serial.println(" mA");
   }
-  voltage[1] = loadvoltage;
-  current[1] = current_mA;
+  voltage[PLUS_Y] = loadvoltage;
+  current[PLUS_Y] = current_mA;
+  } else {
+    voltage[PLUS_Y] = 0.0;
+    current[PLUS_Y] = 0.0;	  
   }
 	
   if (i2c3) {		
@@ -2261,8 +2267,8 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[2] = loadvoltage;
-  current[2] = current_mA;
+  voltage[BATT] = loadvoltage;
+  current[BATT] = current_mA;
 /*
   shuntvoltage = ina219_1_0x45.getShuntVoltage_mV();
   busvoltage = ina219_1_0x45.getBusVoltage_V();
@@ -2276,10 +2282,14 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[3] = loadvoltage;
-  current[3] = current_mA;	
-*/	  
+*/  
+  voltage[BUS] = loadvoltage;  // since battery directly supplies, make BUS same as BAT for FoxTelem
+  current[BUS] = current_mA;	
 	  
+	  
+  } else {
+    voltage[BATT] = 0.0;
+    current[BATT] = 0.0;	  
   }
 	
   if (i2c5) {
@@ -2295,8 +2305,11 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[4] = loadvoltage;
-  current[4] = current_mA;
+  voltage[PLUS_Z] = loadvoltage;
+  current[PLUS_Z] = current_mA;
+  } else {
+    voltage[PLUS_Z] = 0.0;
+    current[PLUS_Z] = 0.0;	  
   }
 	
   if (i2c6) {	
@@ -2312,8 +2325,11 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[5] = loadvoltage;
-  current[5] = current_mA;
+  voltage[MINUS_X] = loadvoltage;
+  current[MINUS_X] = current_mA;
+  } else {
+    voltage[MINUS_X] = 0.0;
+    current[MINUS_X] = 0.0;	  
   }
 	
   if (i2c7) {		
@@ -2329,8 +2345,11 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[6] = loadvoltage;
-  current[6] = current_mA;
+  voltage[MINUS_Y] = loadvoltage;
+  current[MINUS_Y] = current_mA;
+  } else {
+    voltage[MINUS_Y] = 0.0;
+    current[MINUS_Y] = 0.0;	  
   }
 	
   if (i2c8) {	
@@ -2346,9 +2365,12 @@ void read_ina219()
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[7] = loadvoltage;
-  current[7] = current_mA;
-  }	
+  voltage[MINUS_Z] = loadvoltage;
+  current[MINUS_Z] = current_mA;
+  } else {
+    voltage[MINUS_Z] = 0.0;
+    current[MINUS_Z] = 0.0;	  
+  }
   voltage_read = false;	
 }
 
@@ -2998,7 +3020,7 @@ void start_ina219() {
 //  Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == LOW)  {
 //  if (true)  {
-    Serial.println("Pi Zero not present, powering INA219s through 3.3V pin");  
+    Serial.println("Pico powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
