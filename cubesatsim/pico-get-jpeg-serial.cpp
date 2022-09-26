@@ -206,7 +206,7 @@ bool get_camera_image()  {
               int received_crc = Serial2.read(); 
 //              buffer2[index1++] = octet;
                             
-              Serial.print(nFile length: ");
+              Serial.print("File length: ");
               Serial.println(index1 - (int)strlen(end_flag));
 //              index1 -= 1; // 40;
 //              Serial.println(buffer2[index1 - 1], HEX); 

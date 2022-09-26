@@ -90,9 +90,9 @@
 #define PLUS_Y 1
 #define BAT 2
 #define BUS 3
-#define MINUS_X 4
-#define MINUS_Y 5
-#define PLUS_Z 6
+#define MINUS_X 5 // 4
+#define MINUS_Y 6 // 5
+#define PLUS_Z 4 // 6
 #define MINUS_Z 7
 #define TEMP 2
 #define PRES 3
@@ -290,6 +290,7 @@ int frameTime;
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, rotation_speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
+bool i2c_1, i2c2, i2c3,i2c4, i2c5, i2c6, i2c7, i2c8;
 
 float voltage[9], current[9], sensor[17], other[3];
 char sensor_payload[500];

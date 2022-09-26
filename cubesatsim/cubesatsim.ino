@@ -568,10 +568,10 @@ void config_telem() {
   transmit = TRUE;  
   
   if (mode == FSK) {
-    Serial.println("Configuring for FSK\n");
+    Serial.println("\nConfiguring for FSK");
     bitRate = 200;
     delay_time = 1E6 / bitRate;		  
-    Serial.println(delay_time);	  
+//    Serial.println(delay_time);	  
     rsFrames = 1;
     payloads = 1;
     rsFrameLen = 64;
@@ -587,22 +587,22 @@ void config_telem() {
 //    Serial.println(samples);	  
     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
     bufLen = 970; // 2000;	  
-    Serial.println(bufLen);	  
+//    Serial.println(bufLen);	  
     samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
     sleepTime = 0.1;
 //    Serial.println(samplePeriod);
 	  
     frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-    Serial.println(frameTime);
+//    Serial.println(frameTime);
 //    printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
 //      bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     memset(buffer, 0xa5, sizeof(buffer)); 
   } else if (mode == BPSK) {
-    Serial.println("Configuring for BPSK\n");
+    Serial.println("\nConfiguring for BPSK");
     bitRate = 1200;
 //    delay_time = (1.0 / 1200.0);	
     delay_time = 1E6 / bitRate;	
-    Serial.println(delay_time);	  
+//    Serial.println(delay_time);	  
     rsFrames = 3;
     payloads = 6;
     rsFrameLen = 159;
@@ -642,7 +642,7 @@ void config_telem() {
     memset(buffer, 0xa5, sizeof(buffer)); 	  
   } else if (mode == AFSK) {
 
-    Serial.println("Configuring for AFSK\n");
+    Serial.println("\nConfiguring for AFSK");
 	  
     set_pin(AUDIO_OUT_PIN);
 	  
@@ -655,13 +655,13 @@ void config_telem() {
     frameTime = 5000;	  
     bufLen = 1000;
   }   else if (mode == SSTV) {
-    Serial.println("Configuring for SSTV\n");
+    Serial.println("\nConfiguring for SSTV");
     set_sstv_pin(AUDIO_OUT_PIN);    	  
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
   } else if (mode == CW) {
-    Serial.println("Configuring for CW\n");	  
+    Serial.println("\nConfiguring for CW");	  
   }
 // clearing min and max values
   if (debug_mode)	
@@ -826,7 +826,7 @@ void config_simulated_telem()
 {
     sim_mode = TRUE;
 	    
-    Serial.println("Simulated telemetry mode!\n");
+    Serial.println("Simulated telemetry mode!");
 
 //    srand((unsigned int)time(0));
 
@@ -1037,8 +1037,11 @@ void get_tlm_fox() {
     Serial.print("posXv = ");
     Serial.println(posXv);		  
 */	  
-//    if (payload == ON)
+    if (payload == ON)
       STEMBoardFailure = 0;
+    else	  
+      STEMBoardFailure = 1;
+	  
     // read payload sensor if available
 //    Serial.println("Before encoding");
     encodeA(b, 0 + head_offset, batt_a_v);
@@ -2202,6 +2205,8 @@ void test_radio()
 
 void read_ina219()
 {
+  unsigned long read_time = millis();
+	
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
     Serial.println("Nothing to read");
 /*	
@@ -2214,51 +2219,61 @@ void read_ina219()
   float current_mA = 0;
   float loadvoltage = 0;
 	
-  if (i2c_bus1) {	
-  shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
-  busvoltage = ina219_1_0x40.getBusVoltage_V();
-  current_mA = ina219_1_0x40.getCurrent_mA();
-  loadvoltage = busvoltage + (shuntvoltage / 1000);
+  if (i2c_1) {	
+    shuntvoltage = ina219_1_0x40.getShuntVoltage_mV();
+    busvoltage = ina219_1_0x40.getBusVoltage_V();
+    current_mA = ina219_1_0x40.getCurrent_mA();
+    loadvoltage = busvoltage + (shuntvoltage / 1000);
 
-  if ((debug_mode) || (voltage_read))	{    
-    Serial.print("1 0x40 Voltage:  "); 
-    Serial.print(loadvoltage);
-    Serial.print("V  Current:       "); 
-    Serial.print(current_mA); 
-    Serial.println(" mA");
+    if ((debug_mode) || (voltage_read))	{    
+      Serial.print("+X   (1 0x40) Voltage:  "); 
+      Serial.print(loadvoltage);
+      Serial.print("V  Current: "); 
+      Serial.print(current_mA); 
+      Serial.println(" mA");
+    }
+    voltage[PLUS_X] = loadvoltage;
+    current[PLUS_X] = current_mA;
+  } else {
+    voltage[PLUS_X] = 0.0;
+    current[PLUS_X] = 0.0;	  
   }
-  voltage[0] = loadvoltage;
-  current[0] = current_mA;
-
+	
+  if (i2c2) {		  
   shuntvoltage = ina219_1_0x41.getShuntVoltage_mV();
   busvoltage = ina219_1_0x41.getBusVoltage_V();
   current_mA = ina219_1_0x41.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 
   if ((debug_mode) || (voltage_read))	{  	  
-    Serial.print("1 0x41 Voltage:  "); 
+    Serial.print("+Y   (1 0x41) Voltage:  "); 
     Serial.print(loadvoltage);
-    Serial.print("V  Current:       "); 
+    Serial.print("V  Current: "); 
     Serial.print(current_mA); 
     Serial.println(" mA");
   }
-  voltage[1] = loadvoltage;
-  current[1] = current_mA;
+  voltage[PLUS_Y] = loadvoltage;
+  current[PLUS_Y] = current_mA;
+  } else {
+    voltage[PLUS_Y] = 0.0;
+    current[PLUS_Y] = 0.0;	  
+  }
 	
+  if (i2c3) {		
   shuntvoltage = ina219_1_0x44.getShuntVoltage_mV();
   busvoltage = ina219_1_0x44.getBusVoltage_V();
   current_mA = ina219_1_0x44.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("1 0x44 Voltage:  "); 
+  Serial.print("+Bat (1 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[2] = loadvoltage;
-  current[2] = current_mA;
+  voltage[BAT] = loadvoltage;
+  current[BAT] = current_mA;
 /*
   shuntvoltage = ina219_1_0x45.getShuntVoltage_mV();
   busvoltage = ina219_1_0x45.getBusVoltage_V();
@@ -2268,78 +2283,103 @@ void read_ina219()
   if ((debug_mode) || (voltage_read))	{  	
   Serial.print("1 0x45 Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[3] = loadvoltage;
-  current[3] = current_mA;	
-*/	  
+*/  
+  voltage[BUS] = loadvoltage;  // since battery directly supplies, make BUS same as BAT for FoxTelem
+  current[BUS] = current_mA;	
 	  
+	  
+  } else {
+    voltage[BAT] = 0.0;
+    current[BAT] = 0.0;	  
   }
 	
-  if (i2c_bus3) {	
+  if (i2c5) {
   shuntvoltage = ina219_2_0x40.getShuntVoltage_mV();
   busvoltage = ina219_2_0x40.getBusVoltage_V();
   current_mA = ina219_2_0x40.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("2 0x40 Voltage:  "); 
+  Serial.print("+Z   (2 0x40) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[4] = loadvoltage;
-  current[4] = current_mA;
-
+  voltage[PLUS_Z] = loadvoltage;
+  current[PLUS_Z] = current_mA;
+  } else {
+    voltage[PLUS_Z] = 0.0;
+    current[PLUS_Z] = 0.0;	  
+  }
+	
+  if (i2c6) {	
   shuntvoltage = ina219_2_0x41.getShuntVoltage_mV();
   busvoltage = ina219_2_0x41.getBusVoltage_V();
   current_mA = ina219_2_0x41.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("2 0x41 Voltage:  "); 
+  Serial.print("-X   (2 0x41) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[5] = loadvoltage;
-  current[5] = current_mA;
+  voltage[MINUS_X] = loadvoltage;
+  current[MINUS_X] = current_mA;
+  } else {
+    voltage[MINUS_X] = 0.0;
+    current[MINUS_X] = 0.0;	  
+  }
 	
+  if (i2c7) {		
   shuntvoltage = ina219_2_0x44.getShuntVoltage_mV();
   busvoltage = ina219_2_0x44.getBusVoltage_V();
   current_mA = ina219_2_0x44.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 
   if ((debug_mode) || (voltage_read))	{  	  
-  Serial.print("2 0x44 Voltage:  "); 
+  Serial.print("-Y   (2 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[6] = loadvoltage;
-  current[6] = current_mA;
-
+  voltage[MINUS_Y] = loadvoltage;
+  current[MINUS_Y] = current_mA;
+  } else {
+    voltage[MINUS_Y] = 0.0;
+    current[MINUS_Y] = 0.0;	  
+  }
+	
+  if (i2c8) {	
   shuntvoltage = ina219_2_0x45.getShuntVoltage_mV();
   busvoltage = ina219_2_0x45.getBusVoltage_V();
   current_mA = ina219_2_0x45.getCurrent_mA();
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("2 0x45 Voltage:  "); 
+  Serial.print("-Z   (2 0x45) Voltage:  "); 
   Serial.print(loadvoltage);
-  Serial.print("V  Current:       "); 
+  Serial.print("V  Current: "); 
   Serial.print(current_mA); 
   Serial.println(" mA");
   }
-  voltage[7] = loadvoltage;
-  current[7] = current_mA;
-  }	
+  voltage[MINUS_Z] = loadvoltage;
+  current[MINUS_Z] = current_mA;
+  } else {
+    voltage[MINUS_Z] = 0.0;
+    current[MINUS_Z] = 0.0;	  
+  }
   voltage_read = false;	
+	
+  if ((millis() - read_time) > 1000)
+    Serial.println("There is an I2C sensor problem");
 }
 
 void read_sensors()
@@ -2417,7 +2457,7 @@ void start_payload() {
   else {
     mpuPresent = 1;
     mpu6050.begin();	  
-
+	  
   long flag;
   float xOffset;
   float yOffset;	  
@@ -2479,7 +2519,11 @@ void start_payload() {
     EEPROM.get(12, f);  
     Serial.println(f);		  
   }
-  }	  
+  }		
+
+  if (!(payload = bmePresent || mpuPresent))
+    Serial.println("No payload sensors detected");
+	
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED, OUTPUT);
 	
@@ -2976,9 +3020,12 @@ void led_set(int ledPin, bool state)
 void start_ina219() {
 //#define PI_3V3_PIN 9 // for v0.1 hardware
   Serial.println("Starting INA219");
-  Serial.println(PI_3V3_PIN);	
-  ina219_started = true;
+//  Serial.println(PI_3V3_PIN);	
+
 	
+  i2c_1 = i2c2 = i2c3 = i2c4 = i2c5 = i2c6 = i2c7 = i2c8 = false;	
+
+  if (!ina219_started)	{
 #ifndef PICO_0V1	
   // check if Pi is present by 3.3V voltage
   pinMode(PI_3V3_PIN, INPUT); 	
@@ -2986,7 +3033,7 @@ void start_ina219() {
 //  Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == LOW)  {
 //  if (true)  {
-    Serial.println("Pi Zero not present, powering INA219s through 3.3V pin");  
+    Serial.println("Pico powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
   }  else {
@@ -2997,21 +3044,32 @@ void start_ina219() {
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	
 #endif
-	
+  }	
   sleep(0.1);
-  i2c_bus1 = ina219_1_0x40.begin();  // check i2c bus 1
-  ina219_1_0x41.begin();
-  ina219_1_0x44.begin();
+  if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
+    Serial.println("I2C +X sensor (bus 1 0x40) not found");
+  if (!(i2c2 = ina219_1_0x41.begin()))
+    Serial.println("I2C +Y sensor (bus 1 0x41) not found");
+  if (!(i2c3 = ina219_1_0x44.begin()))
+    Serial.println("I2C Batt sensor (bus 1 0x44) not found");
 //  ina219_1_0x45.begin();
+	
+  i2c_bus1 = i2c_1 || i2c2 || i2c3; 	
    
   Wire1.setSDA(2); 
   Wire1.setSCL(3);
   Wire1.begin(); 
 	
-  i2c_bus3 = ina219_2_0x40.begin(&Wire1);  // check i2c bus 2
-  ina219_2_0x41.begin(&Wire1);
-  ina219_2_0x44.begin(&Wire1);
-  ina219_2_0x45.begin(&Wire1);
+  if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
+    Serial.println("I2C +Z sensor (bus 2 0x40) not found");
+  if (!(i2c6 = ina219_2_0x41.begin(&Wire1)))
+    Serial.println("I2C -X sensor (bus 2 0x41) not found");
+  if (!(i2c7 = ina219_2_0x44.begin(&Wire1)))
+    Serial.println("I2C -Y sensor (bus 2 0x44) not found");
+  if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
+    Serial.println("I2C -Z sensor (bus 2 0x45) not found");
+	
+  i2c_bus3 = i2c5 || i2c6 || i2c7 || i2c8; 		
 	
   Serial.print("I2C bus 1: ");
   Serial.print(i2c_bus1);	
@@ -3032,6 +3090,7 @@ void start_ina219() {
   ina219_2_0x45.setCalibration_16V_400mA(); 	
   }
 */  
+  ina219_started = true;	
 }
 
 void start_pwm() {
@@ -4216,12 +4275,14 @@ void prompt_for_input() {
     case PROMPT_RESTART:
       prompt = false;
 //    Serial.println("Restart not yet implemented");
+      start_payload();
+//      start_ina219();
       if (mode != CW)
-          transmit_callsign(callsign);
-        sleep(0.5);	 
-        config_telem();
-        config_radio();
-        sampleTime = (unsigned int) millis();	 		  
+        transmit_callsign(callsign);
+      sleep(0.5);	 
+      config_telem();
+      config_radio();
+      sampleTime = (unsigned int) millis();	 		  
       break;	  
 		  
     case PROMPT_DEBUG:
@@ -4369,7 +4430,7 @@ void start_clockgen() {
   if (clockgen.begin() != ERROR_NONE)
   {
     /* There was a problem detecting the IC ... check your connections */
-    Serial.print("No Si5351 detected ... Check your wiring or I2C ADDR!");
+    Serial.println("No Si5351 detected ... Check your wiring or I2C ADDR!");
     return;	  
   }
 
