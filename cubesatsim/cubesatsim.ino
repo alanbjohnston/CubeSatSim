@@ -209,6 +209,7 @@ void loop() {
   }
   else if (mode == SSTV)
   {
+      bool stored_image = false;	  
       first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
@@ -217,12 +218,15 @@ void loop() {
 	first_time_sstv = false;
       } else {
 	if (camera_detected = get_camera_image()) {      
-          Serial.println("Getting image file");   
-//          Serial.println("Got image file");	      
+//          Serial.println("Getting image file");   
+          Serial.println("Using camera image file");	      
 	  char camera_file[] = "/cam.jpg";      
 	  strcpy(image_file, camera_file);      
-	} else	      
+	} else  {
+	  Serial.println("Using stored image")	
 	  strcpy(image_file, sstv1_filename);     // 2nd stored image
+	  store_image = true;	
+	}
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
@@ -239,7 +243,10 @@ void loop() {
       char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
       char output_file[] = "/cam.bin"; 
       digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
-      rotate_image(output_file2, output_file, telem_display);	  
+      if (!stored_image) {
+	Serial.println("Rotating image (takes 30 seconds)");      
+        rotate_image(output_file2, output_file, telem_display);	  
+      }
       show_dir();
 	  
       if (debug_mode)	  	  
