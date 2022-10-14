@@ -3954,7 +3954,8 @@ void show_dir() {
         File f = dir.openFile("r");
         Serial.print(" ");
         Serial.println(f.size());
-    }
+    } else
+        Serial.println("0");	    
   }
   Serial.println(">");
 }
