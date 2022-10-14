@@ -225,7 +225,7 @@ void loop() {
 	} else  {
 	  Serial.println("Using stored image");	
 	  strcpy(image_file, sstv1_filename);     // 2nd stored image
-	  store_image = true;	
+	  stored_image = true;	
 	}
       }    
       if (debug_mode)  {	  
