@@ -3955,7 +3955,7 @@ void show_dir() {
         Serial.print(" ");
         Serial.println(f.size());
     } else
-        Serial.println("0");	    
+        Serial.println(" 0");	    
   }
   Serial.println(">");
 }
