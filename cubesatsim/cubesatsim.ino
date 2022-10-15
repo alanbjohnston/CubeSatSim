@@ -214,7 +214,7 @@ void loop() {
       LittleFS. remove("/cam.bin");	  
       LittleFS. remove("/cam2.bin");	
       LittleFS. remove("/cam.jpg");
-      LittleFS. remove("/sstv_image_1_320_x_240.jpg);
+      LittleFS. remove("/sstv_image_1_320_x_240.jpg");
 
       char image_file[128];
       if (first_time_sstv) {  
