@@ -209,7 +209,11 @@ void loop() {
   }
   else if (mode == SSTV)
   {
-//      first_time_sstv = false;	  
+      first_time_sstv = false;	
+      Serial.println("Deleting cam.* files");	  
+      LittleFS. remove("/cam.bin");	  
+      LittleFS. remove("/cam2.bin");	
+      LittleFS. remove("/cam.jpg");
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
