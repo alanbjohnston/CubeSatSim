@@ -222,7 +222,8 @@ void loop() {
         strcpy(image_file, sstv1_filename);
 	first_time_sstv = false;
 	stored_image = true;	
-	Serial.println("First time - using stored image");		      
+	Serial.println("First time - using stored image");
+	load_files();      
       } else {
 	if (camera_detected = get_camera_image()) {      
 //          Serial.println("Getting image file");   
