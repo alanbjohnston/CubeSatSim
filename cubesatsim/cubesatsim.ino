@@ -103,7 +103,7 @@ void setup() {
 // detect Pi Zero using 3.3V
 // if Pi is present, run Payload OK software
 
-  load_files();			
+//  load_files();			
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
