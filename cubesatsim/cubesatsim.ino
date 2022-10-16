@@ -248,7 +248,7 @@ void loop() {
       show_dir();
       char output_file[] = "/cam.bin"; 
       char output_file2[] = "/cam2.bin"; 	  
-      if (!stored_image) {	  
+/*      if (!stored_image) {	  
         jpeg_decode(image_file, output_file2, true); // debug_mode);
         show_dir();	  
         char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
@@ -257,7 +257,8 @@ void loop() {
         rotate_image(output_file2, output_file, telem_display);	        
       }
       else
-        jpeg_decode(image_file, output_file, true); // debug_mode);	      
+*/
+	      jpeg_decode(image_file, output_file, true); // debug_mode);	      
       show_dir();		  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
