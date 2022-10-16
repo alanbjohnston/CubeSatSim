@@ -231,7 +231,7 @@ void loop() {
 	  strcpy(image_file, camera_file);      
 	} else  {
 	  Serial.println("Using stored image");	
-	  load_images();
+	  load_files();
 	  strcpy(image_file, sstv1_filename);     // 2nd stored image
 	  stored_image = true;	
 	}
