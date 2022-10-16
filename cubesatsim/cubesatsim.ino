@@ -210,7 +210,12 @@ void loop() {
   else if (mode == SSTV)
   {
       bool stored_image = false;	  
-//      first_time_sstv = false;	  
+//      first_time_sstv = false;
+      LITTLEFS.remove("/cam.jpg");
+      LITTLEFS.remove("/cam.bin");
+      LITTLEFS.remove("/cam2.bin");
+      LITTLEFS.remove(sstv1_filename);
+      Serial.println("SSTV files deleted");	  
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
@@ -226,6 +231,7 @@ void loop() {
 	  strcpy(image_file, camera_file);      
 	} else  {
 	  Serial.println("Using stored image");	
+	  load_images();
 	  strcpy(image_file, sstv1_filename);     // 2nd stored image
 	  stored_image = true;	
 	}
