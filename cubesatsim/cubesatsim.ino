@@ -211,10 +211,10 @@ void loop() {
   {
       bool stored_image = false;	  
 //      first_time_sstv = false;
-      LITTLEFS.remove("/cam.jpg");
-      LITTLEFS.remove("/cam.bin");
-      LITTLEFS.remove("/cam2.bin");
-      LITTLEFS.remove(sstv1_filename);
+      LittleFS.remove("/cam.jpg");
+      LittleFS.remove("/cam.bin");
+      LittleFS.remove("/cam2.bin");
+      LittleFS.remove(sstv1_filename);
       Serial.println("SSTV files deleted");	  
       char image_file[128];
       if (first_time_sstv) {  
