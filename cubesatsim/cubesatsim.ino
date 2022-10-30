@@ -4461,7 +4461,7 @@ void start_clockgen() {
 	
 }
 
-void print_file_hex((char* filename, int bytes) {
+void print_file_hex(char* filename, int bytes) {
   Serial.println(" ");
   int count = 0;
   char buff[3];	
