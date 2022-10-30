@@ -259,7 +259,8 @@ void loop() {
       else
 */
 	      jpeg_decode(image_file, output_file, true); // debug_mode);	      
-      show_dir();		  
+      show_dir();
+      print_file_hex(output_file, 320*3*60);	  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
@@ -4459,3 +4460,24 @@ void start_clockgen() {
   clockgen.enableOutputs(false);	
 	
 }
+
+void print_file_hex((char* filename, int bytes) {
+  Serial.println(" ");
+  int count = 0;
+  char buff[3];	
+  File myFile = LittleFS.open(filename, "r"); 
+  while (count < bytes) {
+    myFile.readBytes(buff, 3);
+    print_hex2(buff[0]);
+    print_hex2(buff[1]);
+    print_hex2(buff[2]);
+    count += 3;	  
+  }
+  Serial.println(" ");	
+}
+
+void print_hex2(byte octet) {
+      char hexValue[5];
+      sprintf(hexValue, "%02X", octet);
+      Serial.print(hexValue); 
+}		    
