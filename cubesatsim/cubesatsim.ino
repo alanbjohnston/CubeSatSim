@@ -4474,6 +4474,7 @@ void print_file_hex(char* filename, int bytes) {
     count += 3;	  
   }
   Serial.println(" ");	
+  myFile.close();	
 }
 
 void print_hex2(byte octet) {
