@@ -209,7 +209,8 @@ void write_config_file();
 void read_mode(); 
 void write_mode(); 
 void start_clockgen();
-
+void print_file_hex((char* filename, int bytes);
+void print_hex2(byte octet);                    
 
 #ifndef STASSID
 #define STASSID "Pico"
