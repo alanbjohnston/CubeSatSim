@@ -144,7 +144,8 @@ void setup() {
   }
 */	
   start_button_isr(); 
-	
+ 
+  set_sstv_pin(AUDIO_OUT_PIN);    
   setup_sstv();
 
   camera_detected = start_camera();	
@@ -674,8 +675,7 @@ void config_telem() {
     frameTime = 5000;	  
     bufLen = 1000;
   }   else if (mode == SSTV) {
-    Serial.println("\nConfiguring for SSTV");
-    set_sstv_pin(AUDIO_OUT_PIN);    	  
+    Serial.println("\nConfiguring for SSTV");	  
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
