@@ -209,7 +209,7 @@ void loop() {
   {
 	  
  
-    set_sstv_pin(26); // AUDIO_OUT_PIN);  // was 26  
+    set_sstv_pin(14); // AUDIO_OUT_PIN);  // was 26  
     setup_sstv();
 	  
       bool stored_image = false;	  
