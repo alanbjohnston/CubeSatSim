@@ -144,9 +144,6 @@ void setup() {
   }
 */	
   start_button_isr(); 
- 
-  set_sstv_pin(26); // AUDIO_OUT_PIN);  // was 26  
-  setup_sstv();
 
   camera_detected = start_camera();	
 
@@ -210,6 +207,11 @@ void loop() {
   }
   else if (mode == SSTV)
   {
+	  
+ 
+    set_sstv_pin(26); // AUDIO_OUT_PIN);  // was 26  
+    setup_sstv();
+	  
       bool stored_image = false;	  
 //      first_time_sstv = false;
       LittleFS.remove("/cam.jpg");
