@@ -3836,6 +3836,8 @@ void configure_wifi() {
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
  // if (!wifi) 
+  return;	
+	
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 	
