@@ -145,7 +145,7 @@ void setup() {
 */	
   start_button_isr(); 
  
-  set_sstv_pin(14); // AUDIO_OUT_PIN);  // was 26  
+  set_sstv_pin(26); // AUDIO_OUT_PIN);  // was 26  
   setup_sstv();
 
   camera_detected = start_camera();	
