@@ -260,7 +260,7 @@ void loop() {
 */
 	      jpeg_decode(image_file, output_file, true); // debug_mode);	      
       show_dir();
-      print_file_hex(output_file, 320*3*60);	  
+      print_file_hex(output_file, 320*3*120);	  // was 60  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
