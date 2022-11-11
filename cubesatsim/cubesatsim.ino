@@ -3836,11 +3836,15 @@ void configure_wifi() {
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
  // if (!wifi) 
-    digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
+  digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 	
   unsigned long start = micros();
   unsigned long duration_us = duration * 1000;
+  dds_setfreq(freq);
+  sleep(duration_us);
+  dds_setfreq(0);
+/*	
   float period_us = (0.5E6) / (float)(freq);
   bool phase = HIGH;	
   while((micros() - start) < duration_us)  {
@@ -3849,9 +3853,10 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     float time_left = (float)(start + duration_us - micros());	  
     sleep(min(time_left, period_us) / 1.0E6);  
   }
+*/
   digitalWrite(AUDIO_OUT_PIN, LOW);	
 //  if (!wifi) 
-    digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
+  digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
