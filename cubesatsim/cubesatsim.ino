@@ -3841,7 +3841,8 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
   dds_setfreq(freq);
-  sleep(duration);
+//  sleep(duration);
+  delayMicroseconds((unsigned int)(duration/1000.0));
 /*	
   unsigned long start = micros();
   unsigned long duration_us = duration * 1000;
