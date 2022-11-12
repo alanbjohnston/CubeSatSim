@@ -238,7 +238,7 @@ void loop() {
 	}
       }    
       if (debug_mode)  {	  
-        Serial.print("\nSending SSTV image ");
+        Serial.print("\nSending 2nd SSTV image ");
         print_string(image_file);
       }
 //      send_sstv("/cam.raw");
