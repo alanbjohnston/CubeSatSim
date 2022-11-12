@@ -3840,7 +3840,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
  // if (!wifi) 
   digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
-  dds_setfre(freq);
+  dds_setfreq(freq);
   sleep(duration);
 /*	
   unsigned long start = micros();
