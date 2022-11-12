@@ -663,7 +663,8 @@ void config_telem() {
 
     Serial.println("\nConfiguring for AFSK");
 	  
-    set_pin(AUDIO_OUT_PIN);
+ //   set_pin(AUDIO_OUT_PIN);
+    set_pin(26);
 	  
     char destination[] = "APCSS";	  
     set_callsign(callsign, destination);
