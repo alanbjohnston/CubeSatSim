@@ -233,7 +233,7 @@ void loop() {
 	} else  {
 	  Serial.println("Using stored image");	
 	  load_files();
-	  strcpy(image_file, sstv1_filename);     // 2nd stored image
+	  strcpy(image_file, sstv2_filename);     // 2nd stored image
 	  stored_image = true;	
 	}
       }    
@@ -3988,7 +3988,7 @@ void load_files() {
     }
     f.close();
   }
-/*
+/**/
   f = LittleFS.open("sstv_image_2_320_x_240.jpg", "r");
   if (f) {	
     Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
@@ -4002,7 +4002,7 @@ void load_files() {
     }
     f.close();
   }
-*/	
+/**/	
   show_dir();
 }
 
