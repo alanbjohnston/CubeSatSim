@@ -45,7 +45,7 @@
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
-//#include "sstv2.h"
+#include "sstv2.h"
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
