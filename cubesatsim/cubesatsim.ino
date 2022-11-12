@@ -42,7 +42,7 @@
 #include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
-#include <pico_dds.h">
+#include <pico_dds.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
