@@ -3840,13 +3840,10 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
  // if (!wifi) 
   digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);
-  Serial.println("Start CW");	
   dds_setfreq(freq);
-  Serial.printf("Set freq, duration %f\n", duration);
 //  sleep(duration);
-  sleep((float)(morse_timing)/1000.0);
+  sleep((float)(duration)/1000.0);
   dds_setfreq(0);	
-  Serial.println("End CW");	
 /*	
   unsigned long start = micros();
   unsigned long duration_us = duration * 1000;
