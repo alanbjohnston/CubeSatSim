@@ -98,6 +98,8 @@ void setup() {
 	
   EEPROM.begin(512);	
 	
+  dds_begin(26);	
+	
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is written for the Raspberry Pi Pico hardware.");
 #endif	
