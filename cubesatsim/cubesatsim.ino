@@ -3839,11 +3839,13 @@ void configure_wifi() {
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
  // if (!wifi) 
   digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(MAIN_LED_BLUE, HIGH);
+  Serial.println("Start CW");	
   dds_setfreq(freq);
-//  sleep(duration/1000.0);
+  Serial.printf("Set freq, duration %f\n", duration);
+//  sleep(duration);
   sleep((float)(morse_timing)/1000.0);
-//  delayMicroseconds((unsigned int)(duration/1000.0));
+  Serial.println("End CW");	
 /*	
   unsigned long start = micros();
   unsigned long duration_us = duration * 1000;
