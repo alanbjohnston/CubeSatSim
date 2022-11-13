@@ -3845,6 +3845,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   Serial.printf("Set freq, duration %f\n", duration);
 //  sleep(duration);
   sleep((float)(morse_timing)/1000.0);
+  dds_setfreq(0);	
   Serial.println("End CW");	
 /*	
   unsigned long start = micros();
