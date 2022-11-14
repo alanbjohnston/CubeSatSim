@@ -4484,7 +4484,7 @@ void print_file_hex(char* filename, int bytes) {
  //   print_hex2(buff[1]);
  //   print_hex2(buff[2]);
 	  
-          if ((buff[0]!=0xff) || (buff[1]!=0xff) || (buff[2]!=0xff))
+          if (((buff[0]!=0xff) || (buff[1]!=0xff) || (buff[2]!=0xff)) &&  ((buff[0]!=0) || (buff[1]!=0) || (buff[2]!=0)))
             Serial.printf("3Non white pixel at %d, %d R: %d G: %d B: %d\n", line, i, buff[0], buff[1],buff[2]);	  
     count += 3;	  
     if (i++ > 319)
