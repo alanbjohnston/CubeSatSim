@@ -79,7 +79,7 @@ void setup() {
   Serial.begin(115200);	
 	
   LittleFS.begin();
-  LittleFS.reformat();	
+  LittleFS.format();	
 
   read_mode();	
 
