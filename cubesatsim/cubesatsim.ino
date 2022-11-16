@@ -238,10 +238,11 @@ void loop() {
 //      LittleFS.remove("/cam.bin");	  
       show_dir();	  
       char output_file2[] = "/cam2.bin"; 	  
-      jpeg_decode(image_file, output_file2, true); // debug_mode);
+      char output_file[] = "/cam.bin"; 
+      jpeg_decode(image_file, output_file, true); // debug_mode);
       show_dir();	  
 //      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
-//      char output_file[] = "/cam.bin"; 
+
       digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
 //      rotate_image(output_file2, output_file, telem_display);	  
 //      show_dir();
