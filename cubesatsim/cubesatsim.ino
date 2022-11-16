@@ -107,7 +107,7 @@ void setup() {
 // detect Pi Zero using 3.3V
 // if Pi is present, run Payload OK software
 
-//  load_files();			
+  load_files();			
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -212,9 +212,7 @@ void loop() {
     }
   }
   else if (mode == SSTV)
-  {
-    picosstvpp();	  
-/*	  
+  {	  
       first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
@@ -242,11 +240,11 @@ void loop() {
       char output_file2[] = "/cam2.bin"; 	  
       jpeg_decode(image_file, output_file2, true); // debug_mode);
       show_dir();	  
-      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
-      char output_file[] = "/cam.bin"; 
+//      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
+//      char output_file[] = "/cam.bin"; 
       digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
-      rotate_image(output_file2, output_file, telem_display);	  
-      show_dir();
+//      rotate_image(output_file2, output_file, telem_display);	  
+//      show_dir();
 	  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
@@ -255,7 +253,8 @@ void loop() {
         digitalWrite(LED_BUILTIN, HIGH);	
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
-      scottie1_transmit_file(output_file, debug_mode);
+//      scottie1_transmit_file(output_file, debug_mode);
+      picosstvpp();	  
 	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
@@ -266,7 +265,7 @@ void loop() {
 	  
       if (debug_mode)	  
         Serial.println("\nImage sent!");
-*/	  
+	  
   } 
   else
       Serial.println("Unknown mode!");
