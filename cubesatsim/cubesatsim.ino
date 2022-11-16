@@ -79,7 +79,7 @@ void setup() {
   Serial.begin(115200);	
 	
   LittleFS.begin();
-  LittleFS.format();	
+//  LittleFS.format();	// only format if files of size 0 keep showing up
 
   read_mode();	
 
