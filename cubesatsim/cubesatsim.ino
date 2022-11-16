@@ -39,9 +39,10 @@
 //#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
-#include "SSTV-Arduino-Scottie1-Library.h"
+//#include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
+#include "picosstvpp.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -145,8 +146,8 @@ void setup() {
 */	
   start_button_isr(); 
 	
-  setup_sstv();
-
+//  setup_sstv();
+  picosstvpp_begin(AUDIO_OUT_PIN);
   camera_detected = start_camera();	
 
 //  start_pwm();
@@ -209,6 +210,8 @@ void loop() {
   }
   else if (mode == SSTV)
   {
+    picosstvpp();	  
+/*	  
       first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
@@ -260,6 +263,7 @@ void loop() {
 	  
       if (debug_mode)	  
         Serial.println("\nImage sent!");
+*/	  
   } 
   else
       Serial.println("Unknown mode!");
@@ -547,8 +551,8 @@ void transmit_off() {
       }
 	  
   }
-  else if (mode == SSTV) 
-    sstv_end();
+//  else if (mode == SSTV) 
+//    sstv_end();
   else if (mode == CW)
     cw_stop = true;
 }
@@ -656,7 +660,7 @@ void config_telem() {
     bufLen = 1000;
   }   else if (mode == SSTV) {
     Serial.println("\nConfiguring for SSTV");
-    set_sstv_pin(AUDIO_OUT_PIN);    	  
+//    set_sstv_pin(AUDIO_OUT_PIN);    	  
     samplePeriod = 5000;
     frameTime = 5000;	  
     bufLen = 1000;
@@ -4114,8 +4118,8 @@ void serial_input() {
 		   
        break;
     }
-    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
-      sstv_end();	    
+//    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
+//      sstv_end();	    
 	    
     if (new_mode != mode)
       transmit_off();
