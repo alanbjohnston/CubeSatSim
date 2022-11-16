@@ -246,6 +246,8 @@ void loop() {
       digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
 //      rotate_image(output_file2, output_file, telem_display);	  
 //      show_dir();
+
+      picosstvpp();	
 	  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
@@ -255,7 +257,8 @@ void loop() {
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
-      picosstvpp();	  
+  
+      play_pwm_file();
 	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
