@@ -3966,7 +3966,8 @@ void load_files() {
   File f;
 	
   f = LittleFS.open("sstv_image_1_320_x_240.jpg", "r");
-  if (f) {	
+//  if (f) {
+  if (false) {	  
     Serial.println("Image sstv_image_1_320_x_240.jpg already in FS");
     f.close();
   } else {
