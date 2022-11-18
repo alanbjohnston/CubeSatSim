@@ -150,7 +150,7 @@ void setup() {
   start_button_isr(); 
 	
 //  setup_sstv();
-  picosstvpp_begin(AUDIO_OUT_PIN);
+  picosstvpp_begin(26);
   camera_detected = start_camera();	
 
 //  start_pwm();
@@ -258,7 +258,7 @@ void loop() {
 
 //      scottie1_transmit_file(output_file, debug_mode);
   
-      play_pwm_file();
+      play_pwm_file(26);
 	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
@@ -557,8 +557,8 @@ void transmit_off() {
       }
 	  
   }
-//  else if (mode == SSTV) 
-//    sstv_end();
+  else if (mode == SSTV) 
+    sstv_end();
   else if (mode == CW)
     cw_stop = true;
 }
@@ -4125,8 +4125,8 @@ void serial_input() {
 		   
        break;
     }
-//    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
-//      sstv_end();	    
+    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
+      sstv_end();	    
 	    
     if (new_mode != mode)
       transmit_off();
