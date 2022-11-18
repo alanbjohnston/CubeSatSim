@@ -166,7 +166,7 @@ void setup() {
 	
   config_telem();	
 	
-//  start_isr();	
+  start_isr();	
 	
 // setup radio depending on mode 
   config_radio();	
