@@ -96,7 +96,7 @@ void setup() {
 	
   config_gpio();	
 	
-///  start_clockgen();		
+  start_clockgen();		
 	
   EEPROM.begin(512);	
 	
