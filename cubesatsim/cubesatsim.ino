@@ -96,7 +96,7 @@ void setup() {
 	
   config_gpio();	
 	
-  start_clockgen();		
+///  start_clockgen();		
 	
   EEPROM.begin(512);	
 	
@@ -147,7 +147,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-  start_button_isr(); 
+///  start_button_isr(); 
 	
 //  setup_sstv();
   picosstvpp_begin(26);
@@ -166,7 +166,7 @@ void setup() {
 	
   config_telem();	
 	
-  start_isr();	
+//  start_isr();	
 	
 // setup radio depending on mode 
   config_radio();	
