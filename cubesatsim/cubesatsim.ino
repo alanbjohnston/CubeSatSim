@@ -3671,7 +3671,8 @@ void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
 	
-  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))	
+//  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))
+  if (ITimer1.attachInterruptInterval(10000, TimerHandler2))	
   {
     if (debug_mode)	  
       Serial.print(F("Starting ITimer1 OK, micros() = ")); 
