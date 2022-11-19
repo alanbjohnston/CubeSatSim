@@ -4051,13 +4051,11 @@ void serial_input() {
        break;	
 		   
      case 'F':
-       Serial.println("Format flash memory");	     
+       Serial.println("Formatting flash memory");	     
        LittleFS.format();
-        mode = FSK;
-        new_mode = mode;
-	write_mode();  
-	read_config_file();	    
-	load_files();
+       Serial.println("Reboot or power cycle to restart the CubeSatSim");
+       while (1) ;	    // infinite loop
+
 	break;
      case 'f':
       Serial.println("Change to FSK mode");
