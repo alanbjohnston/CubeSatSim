@@ -4052,10 +4052,7 @@ void serial_input() {
 		   
      case 'F':
        Serial.println("Formatting flash memory");	     
-       LittleFS.format();
-       Serial.println("Reboot or power cycle to restart the CubeSatSim");
-       while (1) ;	    // infinite loop
-
+       prompt = PROMPT_FORMAT;
 	break;
      case 'f':
       Serial.println("Change to FSK mode");
@@ -4283,6 +4280,12 @@ void prompt_for_input() {
       read_ina219();		  	  
       break;	
 
+    case PROMPT_FORMAT:
+       LittleFS.format();
+       Serial.println("Reboot or power cycle to restart the CubeSatSim");
+       while (1) ;	    // infinite loop
+       break;
+		  
     case PROMPT_PAYLOAD:	      
       Serial.println("Resetting the Payload");
       payload_command = PAYLOAD_RESET;
