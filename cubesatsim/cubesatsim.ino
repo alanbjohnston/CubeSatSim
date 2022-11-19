@@ -74,7 +74,7 @@ extern bool start_camera();
 
 void setup() {
 
-  set_sys_clock_khz(133000, true);  // try it at the start
+//  set_sys_clock_khz(133000, true);  
 	
   Serial.begin(115200);	
 	
