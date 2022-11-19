@@ -4055,7 +4055,7 @@ void serial_input() {
        LittleFS.format();
        read_mode();
         new_mode = mode;
-	read_config_files();	    
+	read_config_file();	    
 	load_files();
 	break;
      case 'f':
