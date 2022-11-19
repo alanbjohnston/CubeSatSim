@@ -92,7 +92,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.30 starting...\n");
+  Serial.println("CubeSatSim Pico v0.32 starting...\n");
 	
   config_gpio();	
 	
@@ -227,8 +227,10 @@ void loop() {
 //          Serial.println("Got image file");	      
 	  char camera_file[] = "/cam.jpg";      
 	  strcpy(image_file, camera_file);      
-	} else	      
+	} else	 {     
 	  strcpy(image_file, sstv1_filename);     // 2nd stored image
+	  Serial.println("Using image file");   
+	}
       }    
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
