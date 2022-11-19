@@ -229,7 +229,7 @@ void loop() {
 	  strcpy(image_file, camera_file);      
 	} else	 {     
 	  strcpy(image_file, sstv1_filename);     // 2nd stored image
-	  Serial.println("Using image file");   
+	  Serial.println("Using stored image file");   
 	}
       }    
       if (debug_mode)  {	  
