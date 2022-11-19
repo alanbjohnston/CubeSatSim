@@ -165,6 +165,8 @@ void setup() {
 /**/
 	
   config_telem();	
+
+  start_button_isr(); 	// try before start_isr
 	
   start_isr();	
 	
