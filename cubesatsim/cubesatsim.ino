@@ -667,7 +667,7 @@ void config_telem() {
     frameTime = 5000;	  
     bufLen = 1000;
   }   else if (mode == SSTV) {
-//    ITimer1.stopTimer();	// turn off pushbutton timer  
+    ITimer1.stopTimer();	// turn off pushbutton timer  
     Serial.println("\nConfiguring for SSTV");
 //    set_sstv_pin(AUDIO_OUT_PIN);    	  
     samplePeriod = 5000;
