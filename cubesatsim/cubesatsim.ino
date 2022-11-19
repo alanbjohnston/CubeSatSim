@@ -4054,7 +4054,7 @@ void serial_input() {
        Serial.println("Format flash memory");	     
        LittleFS.format();
        read_mode();
-        new_mode = mode;
+        new_mode = FSK;
 	read_config_file();	    
 	load_files();
 	break;
