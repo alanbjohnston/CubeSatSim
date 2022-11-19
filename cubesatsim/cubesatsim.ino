@@ -74,7 +74,7 @@ extern bool start_camera();
 
 void setup() {
 
-//  set_sys_clock_khz(133000, true);  
+  set_sys_clock_khz(133000, true);  // try it at the start
 	
   Serial.begin(115200);	
 	
@@ -3671,7 +3671,7 @@ void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
 	
-  if (ITimer1.attachInterruptInterval(100000, TimerHandler1))
+  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))
   {
     if (debug_mode)	  
       Serial.print(F("Starting ITimer1 OK, micros() = ")); 
