@@ -259,9 +259,10 @@ void loop() {
       digitalWrite(MAIN_LED_BLUE, HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
-  
+ 
+      ITimer1.stopTimer();	// turn off pushbutton timer  	  
       play_pwm_file(26);
-	  
+      ITimer1.startTimer();	// turn back on pushbutton timer  	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
@@ -667,7 +668,7 @@ void config_telem() {
     frameTime = 5000;	  
     bufLen = 1000;
   }   else if (mode == SSTV) {
-    ITimer1.stopTimer();	// turn off pushbutton timer  
+//    ITimer1.stopTimer();	// turn off pushbutton timer  
     Serial.println("\nConfiguring for SSTV");
 //    set_sstv_pin(AUDIO_OUT_PIN);    	  
     samplePeriod = 5000;
