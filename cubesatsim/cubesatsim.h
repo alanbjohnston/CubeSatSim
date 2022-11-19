@@ -209,7 +209,7 @@ void write_config_file();
 void read_mode(); 
 void write_mode(); 
 void start_clockgen();
-
+bool TimerHandler1(struct repeating_timer *t);
 
 #ifndef STASSID
 #define STASSID "Pico"
