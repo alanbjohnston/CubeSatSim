@@ -73,7 +73,7 @@
 #define MAIN_LED_GREEN 20 // Main board LED1 
 #define MAIN_LED_BLUE 21 // Main board LED1 
 #define PD_PIN 22 // SR_FRS_05W PD pin - enable
-#define AUDIO_OUT_PIN 27 // 26 // SR_FRS_05W audio out pin
+#define AUDIO_OUT_PIN 14 // 26 // SR_FRS_05W audio out pin
 #define AUDIO_IN_PIN 27 // SR_FRS_05W audio in pin
 #define TEMPERATURE_PIN 28  // Diode temperature analog pin
 
