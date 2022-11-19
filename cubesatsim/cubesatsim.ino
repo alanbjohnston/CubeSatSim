@@ -147,7 +147,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-//  start_button_isr(); 
+  start_button_isr(); 
 	
 //  setup_sstv();
   picosstvpp_begin(26);
