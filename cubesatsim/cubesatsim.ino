@@ -305,8 +305,10 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
-    if (mode == SSTV)
+    if (mode == SSTV) {
+      ITimer1.detachInterrupt();	    
       start_button_isr();  // restart button isr
+    }
     mode = new_mode;  // change modes if button pressed	 
     write_mode();	 	 
     if (new_mode != CW)
