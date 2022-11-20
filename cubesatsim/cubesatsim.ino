@@ -262,9 +262,11 @@ void loop() {
 
 //      scottie1_transmit_file(output_file, debug_mode);
  
-      ITimer1.stopTimer();	// turn off pushbutton timer  	  
+//      ITimer1.stopTimer();	// turn off pushbutton timer  	   
+      ITimer1.disableTimer();	// turn off pushbutton timer  	  
       play_pwm_file(26);
-      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
+//      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
+      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
@@ -303,7 +305,11 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
-    mode = new_mode;  // change modes if button pressed
+    if (mode == SSTV) {
+      ITimer1.detachInterrupt();	    
+      start_button_isr();  // restart button isr
+    }
+    mode = new_mode;  // change modes if button pressed	 
     write_mode();	 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
@@ -4050,8 +4056,11 @@ void serial_input() {
        new_mode = CW;
        break;	
 		   
-     case 'f':
      case 'F':
+       Serial.println("Formatting flash memory");	     
+       prompt = PROMPT_FORMAT;
+	break;
+     case 'f':
       Serial.println("Change to FSK mode");
        new_mode = FSK;	    
        break;	
@@ -4277,6 +4286,12 @@ void prompt_for_input() {
       read_ina219();		  	  
       break;	
 
+    case PROMPT_FORMAT:
+       LittleFS.format();
+       Serial.println("Reboot or power cycle to restart the CubeSatSim");
+       while (1) ;	    // infinite loop
+       break;
+		  
     case PROMPT_PAYLOAD:	      
       Serial.println("Resetting the Payload");
       payload_command = PAYLOAD_RESET;
