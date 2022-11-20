@@ -305,7 +305,9 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
-    mode = new_mode;  // change modes if button pressed
+    if (mode == SSTV)
+      start_button_isr();  // restart button isr
+    mode = new_mode;  // change modes if button pressed	 
     write_mode();	 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
