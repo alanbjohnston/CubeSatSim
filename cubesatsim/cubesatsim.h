@@ -375,6 +375,7 @@ RPI_PICO_Timer ITimer1(1);
 
 bool timer0_on = false;
 volatile int timer_counter;
+volatile unsigned short button_counter;
 
 char callsign[20];
 int morse_timing = 60;  // ms for a dit
