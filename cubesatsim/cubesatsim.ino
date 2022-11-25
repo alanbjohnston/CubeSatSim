@@ -147,7 +147,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-  start_button_isr(); 
+////  start_button_isr(); 
 	
 //  setup_sstv();
   picosstvpp_begin(26);
@@ -263,10 +263,10 @@ void loop() {
 //      scottie1_transmit_file(output_file, debug_mode);
  
 //      ITimer1.stopTimer();	// turn off pushbutton timer  	   
-      ITimer1.disableTimer();	// turn off pushbutton timer  	  
+////      ITimer1.disableTimer();	// turn off pushbutton timer  	  
       play_pwm_file(26);
 //      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
-      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
+////      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
@@ -305,10 +305,10 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
-    if (mode == SSTV) {
-      ITimer1.detachInterrupt();	    
-      start_button_isr();  // restart button isr
-    }
+////    if (mode == SSTV) {
+////      ITimer1.detachInterrupt();	    
+////      start_button_isr();  // restart button isr
+////    }
     mode = new_mode;  // change modes if button pressed	 
     write_mode();	 	 
     if (new_mode != CW)
@@ -3643,6 +3643,17 @@ bool TimerHandler0(struct repeating_timer *t) {
       process_bootsel();
 */
 
+  if (button_counter++ << 10) 	
+  {
+    button_counter = 0;	  
+    serial_input();
+	
+// check for button press 
+    if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+    if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();	
+  }
   return true;	
 }
 
@@ -3652,8 +3663,8 @@ void start_isr() {
 //	return;
   if (!timer0_on) {	
 //  if (true) {	                         // always start ISR handler
-	Serial.println("Starting ISR for BPSK/FSK");
-	  
+	Serial.println("Starting ISR for BPSK/FSK and pushbutton/serial input");
+	button_counter = 0;  
 	timer_counter = 0;
 	pinMode(BPSK_CONTROL_A, OUTPUT);
 	pinMode(BPSK_CONTROL_B, OUTPUT);
