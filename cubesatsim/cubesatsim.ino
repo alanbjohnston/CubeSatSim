@@ -3642,7 +3642,7 @@ bool TimerHandler0(struct repeating_timer *t) {
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 */
-
+/*
   if (button_counter++ << 10) 	
   {
     button_counter = 0;	  
@@ -3654,6 +3654,7 @@ bool TimerHandler0(struct repeating_timer *t) {
     if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();	
   }
+*/	
   return true;	
 }
 
