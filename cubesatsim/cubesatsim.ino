@@ -305,9 +305,9 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
 	
-/*	
+/**/	
   serial_input();  
-	
+/*	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
@@ -3245,7 +3245,7 @@ void setup1() {
 void loop1() {
   Serial.println("l1");
 	
-  serial_input();
+//  serial_input();
 	
   Serial.println("l2");
 	
