@@ -2571,7 +2571,7 @@ void read_payload()
 	
 //  if ((Serial.available() > 0)|| first_time == true) 
   {
-    blink(50);
+//    blink(50);
     char result = Serial.read();
     char header[] = "OK BME280 ";
     char str[100];
@@ -2710,7 +2710,7 @@ void read_payload()
 
   if (Serial1.available() > 0) {
  
-    blink(50);
+//    blink(50);
     char result = Serial1.read();
     //    Serial1.println(result);
 
