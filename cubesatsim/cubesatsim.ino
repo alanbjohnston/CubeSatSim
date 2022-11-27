@@ -3277,7 +3277,8 @@ void loop1() {
     sampleTime = (unsigned int) millis();	 	 
  }		
     Serial.println("l5");	
-  sleep(1.0);	
+//  sleep(1.0);
+  delay(1000);	
   Serial.println("l6");
 /*
 	Serial.print("l1 ");
