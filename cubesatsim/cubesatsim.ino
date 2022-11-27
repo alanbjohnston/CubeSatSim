@@ -319,7 +319,7 @@ void loop() {
     prompt_for_input();	  
     prompt = false;	  
   }
-	
+*/	
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
@@ -336,7 +336,7 @@ void loop() {
     config_radio();
     sampleTime = (unsigned int) millis();	 	 
  }		
-*/	
+/**/	
   //  Calculate loop time
   if (debug_mode) {	
     Serial.print("\nLoop time: ");	
@@ -3259,23 +3259,7 @@ void loop1() {
       process_bootsel();
 	
   Serial.println("l4");
-	
-  // check to see if the mode has changed
- if (mode != new_mode) {
-    Serial.println("Changing mode");
-///    if (mode == SSTV) {
-///      ITimer1.detachInterrupt();	    
-///      start_button_isr();  // restart button isr
-///    }
-    mode = new_mode;  // change modes if button pressed	 
-    write_mode();	 	 
-    if (new_mode != CW)
-      transmit_callsign(callsign);
-    sleep(0.5);	 
-    config_telem();
-    config_radio();
-    sampleTime = (unsigned int) millis();	 	 
- }		
+		
     Serial.println("l5");	
 //  sleep(1.0);
 //  delay(1000);	
