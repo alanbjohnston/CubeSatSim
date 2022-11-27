@@ -3013,7 +3013,7 @@ void blink(int length)
   
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-  digitalWrite(ED_BUILTIN, LOW);   // set the built-in LED off
+  digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED off
 }
 
 void led_set(int ledPin, bool state)
