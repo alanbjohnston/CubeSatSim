@@ -147,7 +147,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-  start_button_isr(); 
+///  start_button_isr(); 
 	
 //  setup_sstv();
   picosstvpp_begin(26);
@@ -305,10 +305,10 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
-    if (mode == SSTV) {
-      ITimer1.detachInterrupt();	    
-      start_button_isr();  // restart button isr
-    }
+///    if (mode == SSTV) {
+///      ITimer1.detachInterrupt();	    
+///      start_button_isr();  // restart button isr
+///    }
     mode = new_mode;  // change modes if button pressed	 
     write_mode();	 	 
     if (new_mode != CW)
@@ -318,6 +318,14 @@ void loop() {
     config_radio();
     sampleTime = (unsigned int) millis();	 	 
  }
+
+  serial_input();  
+	
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
 	
   if (prompt) {
 //    Serial.println("Need to prompt for input!");
