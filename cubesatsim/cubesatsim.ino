@@ -3643,7 +3643,7 @@ bool TimerHandler0(struct repeating_timer *t) {
       process_bootsel();
 */
 
-  if (button_counter++ << 10) 	
+  if (button_counter++ << 13)  // longer 	
   {
     button_counter = 0;	  
     serial_input();
