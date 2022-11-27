@@ -305,7 +305,7 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
 	
-	
+/*	
   serial_input();  
 	
 // check for button press 
@@ -336,7 +336,7 @@ void loop() {
     config_radio();
     sampleTime = (unsigned int) millis();	 	 
  }		
-	
+*/	
   //  Calculate loop time
   if (debug_mode) {	
     Serial.print("\nLoop time: ");	
@@ -3226,7 +3226,7 @@ void pwm_interrupt_handler() {
 }
 */
 
-/*  ///
+/**/
 void setup1() {
   Serial.begin(9600);
   sleep(5.0);
@@ -3243,10 +3243,40 @@ void setup1() {
 }
 
 void loop1() {
-  Serial.print("l1 ");
+	
+  serial_input();
+	
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
+	
+  // check to see if the mode has changed
+ if (mode != new_mode) {
+    Serial.println("Changing mode");
+///    if (mode == SSTV) {
+///      ITimer1.detachInterrupt();	    
+///      start_button_isr();  // restart button isr
+///    }
+    mode = new_mode;  // change modes if button pressed	 
+    write_mode();	 	 
+    if (new_mode != CW)
+      transmit_callsign(callsign);
+    sleep(0.5);	 
+    config_telem();
+    config_radio();
+    sampleTime = (unsigned int) millis();	 	 
+ }		
+	
+  sleep(1.0);	
+	
+/*
+	Serial.print("l1 ");
   Serial.print(wav_position);
   Serial.print(" ");
-
+	
+	
   if (mode == FSK) 
   {
         tx_bit = (buffer[wav_position++] > 0) ? HIGH: LOW;
@@ -3284,9 +3314,10 @@ void loop1() {
 //    if (pb_value == PRESSED) 
     if (digitalRead(MAIN_PB_PIN) == PRESSED) 
       process_pushbutton();
+*/	
 }	    
 
-*///
+/**///
 
 /*
 void sleep(float time) {  // sleeps for intervals more than 0.1 seconds
