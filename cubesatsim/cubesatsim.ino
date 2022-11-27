@@ -3898,7 +3898,8 @@ void transmit_string(char *string) {
   if (debug_mode)	
     Serial.println("Transmit on");
   digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
-  digitalWrite(MAIN_LED_BLUE, HIGH);	
+  digitalWrite(MAIN_LED_BLUE, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);	
   digitalWrite(PTT_PIN, LOW);	
 	
   while ((string[j] != '\0') && (j < 256) && !cw_stop) {
@@ -3922,7 +3923,8 @@ void transmit_string(char *string) {
 	
   if (debug_mode)	
     Serial.println("Transmit off");
-  digitalWrite(MAIN_LED_BLUE, LOW);	
+  digitalWrite(MAIN_LED_BLUE, LOW);
+  digitalWrite(LED_BUILTIN, LOW);	
   digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS 
 }
