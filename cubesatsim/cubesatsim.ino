@@ -3408,6 +3408,8 @@ void process_pushbutton() {
   if (new_mode != mode)
     transmit_off();
   sleep(2.0);	
+
+   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
 }
 
 void process_bootsel() {
@@ -3505,6 +3507,8 @@ void process_bootsel() {
   if (new_mode != mode)
     transmit_off();
 //  sleep(2.0);	
+	
+   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
 }
 
 void blinkTimes(int blinks) {
