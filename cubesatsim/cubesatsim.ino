@@ -3235,7 +3235,7 @@ void setup1() {
 
   while(!ready) { // wait for core0 to start
     sleep(0.1);
-    Serial.println(ready);	  
+//    Serial.println(ready);	  
   }	
   Serial.print("S");
   Serial.print(" ");
@@ -3243,6 +3243,7 @@ void setup1() {
 }
 
 void loop1() {
+  Serial.println("l1");
 	
   serial_input();
 	
