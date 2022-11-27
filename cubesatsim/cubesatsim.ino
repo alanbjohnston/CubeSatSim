@@ -3009,33 +3009,11 @@ void blink_setup()
 
 void blink(int length)
 {
-#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
-  digitalWrite(PC13, LOW);   // turn the LED on (HIGH is the voltage level)
-#endif
-
-#if defined __AVR_ATmega32U4__
-  digitalWrite(RXLED, LOW);   // set the RX LED ON
-  TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
-#endif  
-  
-#if defined ARDUINO_ARCH_RP2040
-  digitalWrite(25, LOW);   // set the built-in LED ON
-#endif 
+  digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
   
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-#if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
-  digitalWrite(PC13, HIGH);    // turn the LED off by making the voltage LOW
-#endif
-
-#if defined __AVR_ATmega32U4__
-  digitalWrite(RXLED, HIGH);    // set the RX LED OFF
-  TXLED0; //TX LED macro to turn LED ON
-#endif  
-  
-#if defined ARDUINO_ARCH_RP2040
-  digitalWrite(25, HIGH);   // set the built-in LED off
-#endif   
+  digitalWrite(ED_BUILTIN, LOW);   // set the built-in LED off
 }
 
 void led_set(int ledPin, bool state)
