@@ -83,7 +83,7 @@ void setup() {
 
   read_mode();
 	
-  mode = BPSK;	// force to BPSK
+  // mode = BPSK;	// force to BPSK
 
   new_mode = mode;
 	
@@ -94,7 +94,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.32 starting...\n");
+  Serial.println("CubeSatSim Pico v0.33 starting...\n");
 	
   config_gpio();	
 	
@@ -273,7 +273,7 @@ void loop() {
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
 //      if (!wifi) 
-        digitalWrite(LED_BUILTIN, HIGH);	
+        digitalWrite(LED_BUILTIN, LOW);	
       digitalWrite(MAIN_LED_BLUE, LOW);	    
 	  
       if (debug_mode)	  
