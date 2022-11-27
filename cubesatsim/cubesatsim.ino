@@ -3894,12 +3894,15 @@ void transmit_string(char *string) {
 //      Serial.println("space between words");
       sleep((6.0 * (float)morse_timing)/1000.0);
       j++;
-	    
+      if (Serial.available() || BOOTSEL || !digitalRead(10))  // check for button press of serial input
+        cw_stop = true;	  
+/*	    
       if (prompt) {
 //    Serial.println("Need to prompt for input!");
         prompt_for_input();	  
         prompt = false;	  
-      }	    
+      }	 
+*/	    
     }
   }
   cw_stop = false;
