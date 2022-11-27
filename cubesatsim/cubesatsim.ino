@@ -3243,24 +3243,24 @@ void setup1() {
 }
 
 void loop1() {
-  Serial.println("l1");
+//  Serial.println("l1");
 	
 //  serial_input();
 	
-  Serial.println("l2");
+//  Serial.println("l2");
 	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
 	
-  Serial.println("l3");
+//  Serial.println("l3");
 	
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 	
-  Serial.println("l4");
+//  Serial.println("l4");
 		
-    Serial.println("l5");	
+//    Serial.println("l5");	
 //  sleep(1.0);
 //  delay(1000);	
 //  Serial.println("l6");
