@@ -3278,8 +3278,8 @@ void loop1() {
  }		
     Serial.println("l5");	
 //  sleep(1.0);
-  delay(1000);	
-  Serial.println("l6");
+//  delay(1000);	
+//  Serial.println("l6");
 /*
 	Serial.print("l1 ");
   Serial.print(wav_position);
