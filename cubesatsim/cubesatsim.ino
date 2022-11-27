@@ -334,6 +334,11 @@ void loop() {
     sleep(0.5);	 
     config_telem();
     config_radio();
+    if ((mode == FSK) || (mode == BPSK)) {    
+      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+    }
+	
     sampleTime = (unsigned int) millis();	 	 
  }		
 	
