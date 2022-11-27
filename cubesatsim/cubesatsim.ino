@@ -282,6 +282,29 @@ void loop() {
   } 
   else
       Serial.println("Unknown mode!");
+
+	
+//  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
+    sleep(0.01); // was 0.1 sec
+  sampleTime = (unsigned int) millis();	  
+	
+//  delay(2000);
+//  test_radio();
+
+  if ((mode == FSK) || (mode == BPSK)) {
+//	  if (!wifi) 
+	    digitalWrite(LED_BUILTIN, LOW);	
+	  digitalWrite(MAIN_LED_BLUE, LOW);
+
+	//  delay(3000);	
+	  sleep(0.2); // 2.845); // 3.0);
+
+//	  if (!wifi) 
+	   	  digitalWrite(LED_BUILTIN, HIGH);
+	  digitalWrite(MAIN_LED_BLUE, HIGH);
+  }
+	
 	
   serial_input();  
 	
@@ -312,28 +335,7 @@ void loop() {
     config_telem();
     config_radio();
     sampleTime = (unsigned int) millis();	 	 
- }	
-	
-//  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
-  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
-    sleep(0.01); // was 0.1 sec
-  sampleTime = (unsigned int) millis();	  
-	
-//  delay(2000);
-//  test_radio();
-
-  if ((mode == FSK) || (mode == BPSK)) {
-//	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, LOW);	
-	  digitalWrite(MAIN_LED_BLUE, LOW);
-
-	//  delay(3000);	
-	  sleep(0.2); // 2.845); // 3.0);
-
-//	  if (!wifi) 
-	   	  digitalWrite(LED_BUILTIN, HIGH);
-	  digitalWrite(MAIN_LED_BLUE, HIGH);
-  }
+ }		
 	
   //  Calculate loop time
   if (debug_mode) {	
