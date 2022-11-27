@@ -283,6 +283,37 @@ void loop() {
   else
       Serial.println("Unknown mode!");
 	
+  serial_input();  
+	
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
+	
+  if (prompt) {
+//    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
+	
+  // check to see if the mode has changed
+ if (mode != new_mode) {
+    Serial.println("Changing mode");
+///    if (mode == SSTV) {
+///      ITimer1.detachInterrupt();	    
+///      start_button_isr();  // restart button isr
+///    }
+    mode = new_mode;  // change modes if button pressed	 
+    write_mode();	 	 
+    if (new_mode != CW)
+      transmit_callsign(callsign);
+    sleep(0.5);	 
+    config_telem();
+    config_radio();
+    sampleTime = (unsigned int) millis();	 	 
+ }	
+	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
     sleep(0.01); // was 0.1 sec
@@ -302,37 +333,6 @@ void loop() {
 //	  if (!wifi) 
 	   	  digitalWrite(LED_BUILTIN, HIGH);
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
-  }
-	
-  // check to see if the mode has changed
- if (mode != new_mode) {
-    Serial.println("Changing mode");
-///    if (mode == SSTV) {
-///      ITimer1.detachInterrupt();	    
-///      start_button_isr();  // restart button isr
-///    }
-    mode = new_mode;  // change modes if button pressed	 
-    write_mode();	 	 
-    if (new_mode != CW)
-      transmit_callsign(callsign);
-    sleep(0.5);	 
-    config_telem();
-    config_radio();
-    sampleTime = (unsigned int) millis();	 	 
- }
-
-  serial_input();  
-	
-// check for button press 
-  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
-      process_pushbutton();
-  if (BOOTSEL)	  // boot selector button is pressed on Pico
-      process_bootsel();
-	
-  if (prompt) {
-//    Serial.println("Need to prompt for input!");
-    prompt_for_input();	  
-    prompt = false;	  
   }
 	
   //  Calculate loop time
