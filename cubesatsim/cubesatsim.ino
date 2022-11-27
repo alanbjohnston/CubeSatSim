@@ -3247,11 +3247,18 @@ void loop1() {
 	
   serial_input();
 	
+  Serial.println("l2");
+	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
       process_pushbutton();
+	
+  Serial.println("l3");
+	
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
+	
+  Serial.println("l4");
 	
   // check to see if the mode has changed
  if (mode != new_mode) {
@@ -3269,9 +3276,9 @@ void loop1() {
     config_radio();
     sampleTime = (unsigned int) millis();	 	 
  }		
-	
+    Serial.println("l5");	
   sleep(1.0);	
-	
+  Serial.println("l6");
 /*
 	Serial.print("l1 ");
   Serial.print(wav_position);
