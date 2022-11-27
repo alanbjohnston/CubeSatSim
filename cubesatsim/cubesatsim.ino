@@ -557,6 +557,7 @@ void transmit_off() {
   if (debug_mode)	
    Serial.println("Transmit off!");
   digitalWrite(MAIN_LED_BLUE, LOW);
+  digitalWrite(LED_BUILTIN, LOW);	
   if ((mode == BPSK) || (mode == FSK)) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
