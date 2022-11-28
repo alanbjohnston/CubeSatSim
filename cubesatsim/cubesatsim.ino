@@ -328,12 +328,18 @@ void loop() {
 ///      start_button_isr();  // restart button isr
 ///    }
     mode = new_mode;  // change modes if button pressed	 
-    write_mode();	
-    config_telem();	 
+    write_mode();
+	 
+    if (mode == BPSK)	 
+      config_telem();
+	 
     if (new_mode != CW)
       transmit_callsign(callsign);
-    sleep(0.5);	 
-///    config_telem();
+    sleep(0.5);
+	 
+    if (mode == FSK)	 
+      config_telem();
+	 
     config_radio();
     if ((mode == FSK) || (mode == BPSK)) {    
       digitalWrite(LED_BUILTIN, HIGH);
