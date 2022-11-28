@@ -333,7 +333,8 @@ void loop() {
     mode = new_mode;  // change modes if button pressed	 
     write_mode();
 	 
-    if ((mode == BPSK) || ((new_mode == FSK) && (old_mode == CW)))	 {
+//    if ((mode == BPSK) || ((new_mode == FSK) && (old_mode == CW)))	 {
+    if (mode == BPSK) 	 {
       config_telem();  // run this before cw only for BPSK mode
       config_done = true;	    
     }
