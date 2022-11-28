@@ -3871,7 +3871,7 @@ void transmit_callsign(char *callsign) {
     program_radio();	  
   }
 */	
-  transmit_off();	
+///  transmit_off();	
   transmit_string(id);	
 //  transmit_on();	
 }
