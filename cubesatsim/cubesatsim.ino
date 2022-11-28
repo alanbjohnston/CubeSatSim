@@ -331,14 +331,14 @@ void loop() {
     write_mode();
 	 
     if (mode == BPSK)	 
-      config_telem();
+      config_telem();  // run this before cw only for BPSK mode
 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);
 	 
-    if (mode == FSK)	 
-      config_telem();
+    if (mode != BPSK)	 
+      config_telem();  // run this here for all other modes
 	 
     config_radio();
     if ((mode == FSK) || (mode == BPSK)) {    
