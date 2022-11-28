@@ -328,17 +328,21 @@ void loop() {
 ///      ITimer1.detachInterrupt();	    
 ///      start_button_isr();  // restart button isr
 ///    }
+    int old_mode = mode;
+    bool config_done = false;
     mode = new_mode;  // change modes if button pressed	 
     write_mode();
 	 
-    if (mode == BPSK)	 
+    if (mode == BPSK) || ((new_mode == FSK) && (old_mode == CW))	 {
       config_telem();  // run this before cw only for BPSK mode
+      config_done = true;	    
+    }
 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);
 	 
-    if (mode != BPSK)	 
+    if (!config_done)	 
       config_telem();  // run this here for all other modes
 	 
     config_radio();
