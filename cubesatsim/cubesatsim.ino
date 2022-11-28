@@ -546,7 +546,7 @@ void transmit_on() {
 	  clockgen.enableOutputs(true);
 	  Serial.println("Enable clock outputs!"); 
       } else {
-	 Serial.println("Enable clock outputs!");           
+	 Serial.println("Enable clock outputs");           
       }
   }
   else if (mode == CW) {
@@ -582,7 +582,7 @@ void transmit_off() {
 	  clockgen.enableOutputs(false);
 	  Serial.println("Disable clock outputs!");      
       } else {
-	 Serial.println("Disable clock outputs!");           
+	 Serial.println("Disable clock outputs");           
       }
 	  
   }
