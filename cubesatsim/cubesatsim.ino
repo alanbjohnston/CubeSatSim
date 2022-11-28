@@ -323,6 +323,7 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
+    cw_stop = false; // enable CW or won't hear CW ID	 
 ///    if (mode == SSTV) {
 ///      ITimer1.detachInterrupt();	    
 ///      start_button_isr();  // restart button isr
