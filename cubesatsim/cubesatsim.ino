@@ -43,6 +43,8 @@
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
 #include "picosstvpp.h"
+//#include "pico/bootrom.h"
+#include "hardware/watchdog.h"	 
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 //#include "sstv1.h"
@@ -305,12 +307,19 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
+/*	 
     if (mode == SSTV) {
       ITimer1.detachInterrupt();	    
       start_button_isr();  // restart button isr
     }
+*/    
     mode = new_mode;  // change modes if button pressed	 
-    write_mode();	 	 
+    write_mode();	
+	 
+    watchdog_reboot (0, SRAM_END, 10);  // reboot
+	 
+   sleep(20.0);	 
+	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);	 
