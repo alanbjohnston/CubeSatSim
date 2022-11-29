@@ -43,6 +43,8 @@
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
 #include "picosstvpp.h"
+#include "pico/bootrom.h"
+#include "hardware/watchdog.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 //#include "sstv1.h"
@@ -90,7 +92,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
 
-  sleep(5.0);	
+///  sleep(5.0);	
 	
 // otherwise, run CubeSatSim Pico code
   
@@ -109,7 +111,7 @@ void setup() {
 // detect Pi Zero using 3.3V
 // if Pi is present, run Payload OK software
 
-  load_files();			
+///  load_files();			
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -163,7 +165,8 @@ void setup() {
 //  strcpy(callsign, call);	
   if (mode != CW)
     transmit_callsign(callsign);
-  sleep(5.0);		
+//  sleep(5.0);		
+  sleep(1.0);		
 /**/
 	
   config_telem();	
@@ -323,16 +326,31 @@ void loop() {
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
+    cw_stop = false; // enable CW or won't hear CW ID	 
 ///    if (mode == SSTV) {
 ///      ITimer1.detachInterrupt();	    
 ///      start_button_isr();  // restart button isr
 ///    }
+    int old_mode = mode;
+    bool config_done = false;
     mode = new_mode;  // change modes if button pressed	 
-    write_mode();	 	 
+    write_mode();
+/*	 
+//    if ((mode == BPSK) || ((new_mode == FSK) && (old_mode == CW)))	 {
+    if (mode == BPSK) 	 {
+      config_telem();  // run this before cw only for BPSK mode
+      config_done = true;	    
+    }
+*/	
+    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+	 
     if (new_mode != CW)
       transmit_callsign(callsign);
-    sleep(0.5);	 
-    config_telem();
+    sleep(0.5);
+	 
+    if (!config_done)	 
+      config_telem();  // run this here for all other modes
+	 
     config_radio();
     if ((mode == FSK) || (mode == BPSK)) {    
       digitalWrite(LED_BUILTIN, HIGH);
@@ -2469,7 +2487,7 @@ void start_payload() {
   Serial.println("Starting payload!");
   
   blink_setup();
-
+/*
   blink(500);
   sleep(0.25); // delay(250);
   blink(500);
@@ -2480,7 +2498,8 @@ void start_payload() {
   led_set(blueLED, HIGH);
   sleep(0.25); // delay(250);
   led_set(blueLED, LOW);
-      
+*/ 
+	
   if (bme.begin()) {
     bmePresent = 1;
   } else {
@@ -3871,7 +3890,7 @@ void transmit_callsign(char *callsign) {
     program_radio();	  
   }
 */	
-  transmit_off();	
+///  transmit_off();	
   transmit_string(id);	
 //  transmit_on();	
 }
