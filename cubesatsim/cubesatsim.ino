@@ -92,7 +92,7 @@ void setup() {
   pinMode(LED_BUILTIN, OUTPUT);	
   blinkTimes(1);	
 
-  sleep(5.0);	
+///  sleep(5.0);	
 	
 // otherwise, run CubeSatSim Pico code
   
@@ -111,7 +111,7 @@ void setup() {
 // detect Pi Zero using 3.3V
 // if Pi is present, run Payload OK software
 
-  load_files();			
+///  load_files();			
 /*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -165,7 +165,8 @@ void setup() {
 //  strcpy(callsign, call);	
   if (mode != CW)
     transmit_callsign(callsign);
-  sleep(5.0);		
+//  sleep(5.0);		
+  sleep(1.0);		
 /**/
 	
   config_telem();	
@@ -2486,7 +2487,7 @@ void start_payload() {
   Serial.println("Starting payload!");
   
   blink_setup();
-
+/*
   blink(500);
   sleep(0.25); // delay(250);
   blink(500);
@@ -2497,7 +2498,8 @@ void start_payload() {
   led_set(blueLED, HIGH);
   sleep(0.25); // delay(250);
   led_set(blueLED, LOW);
-      
+*/ 
+	
   if (bme.begin()) {
     bmePresent = 1;
   } else {
