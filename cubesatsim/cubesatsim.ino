@@ -338,7 +338,9 @@ void loop() {
       config_telem();  // run this before cw only for BPSK mode
       config_done = true;	    
     }
-*/	 
+*/	
+     machine.reset();	 // restart Pico
+	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);
