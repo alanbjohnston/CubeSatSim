@@ -43,6 +43,8 @@
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
 #include "picosstvpp.h"
+#include "pico/bootrom.h"
+#include "hardware/watchdog.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 //#include "sstv1.h"
