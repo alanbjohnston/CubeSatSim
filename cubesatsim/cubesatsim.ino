@@ -339,7 +339,7 @@ void loop() {
       config_done = true;	    
     }
 */	
-     machine.reset();	 // restart Pico
+    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
