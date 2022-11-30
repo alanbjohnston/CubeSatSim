@@ -45,6 +45,7 @@
 #include "picosstvpp.h"
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
+#include "pico/sleep.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 //#include "sstv1.h"
@@ -3414,7 +3415,7 @@ void process_pushbutton() {
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	 
-    sleep_ms(0xffffff);	  
+    sleep_goto_dormant_until_pin(14, true, true);
 	  
   }
   if (new_mode != mode)
@@ -3515,7 +3516,7 @@ void process_bootsel() {
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	  
-    sleep_ms(0xffffff);	  	  
+    sleep_goto_dormant_until_pin(14, true, true);  
   }
   if (new_mode != mode)
     transmit_off();
