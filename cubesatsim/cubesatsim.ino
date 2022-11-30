@@ -234,25 +234,30 @@ void loop() {
 	if (camera_detected = get_camera_image()) {      
           Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
-	  char camera_file[] = "/cam.jpg";      
-	  strcpy(image_file, camera_file);      
+//	  char camera_file[] = "/cam.jpg";      
+//	  strcpy(image_file, camera_file);      
 	} else	 {     
-	  strcpy(image_file, sstv1_filename);     // 2nd stored image
-	  Serial.println("Using stored image file");   
+//	  strcpy(image_file, sstv1_filename);     // 2nd stored image
+	  Serial.println("Using stored image file"); 
+	  load_sstv_image_1_as_cam_dot_jpg(); 
 	}
-      }    
+      }  
+/*	  
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
         print_string(image_file);
       }
+*/	  
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
 //      LittleFS.remove("/cam.bin");	  
-      show_dir();	  
-      char output_file2[] = "/cam2.bin"; 	  
+      show_dir();
+      char input_file[] = "/cam.jpg";	  
+//      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
-      jpeg_decode(image_file, output_file, true); // debug_mode);
+//      jpeg_decode(image_file, output_file, true); // debug_mode);
+      jpeg_decode(input_file, output_file, true); // debug_mode);
       show_dir();	  
 //      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
 
@@ -4005,6 +4010,26 @@ void show_dir() {
   Serial.println(">");
 }
 
+void load_sstv_image_1_as_cam_dot_jpg() {	
+    Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
+    f = LittleFS.open("cam.jpg", "w+");
+    if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
+       delay(2000);
+    }
+    f.close();	
+}
+
+void load_sstv_image_2_as_cam_dot_jpg() {	
+    Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
+    f = LittleFS.open("cam.jpg", "w+");
+    if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
+       delay(2000);
+    }
+    f.close();	
+}
+
 void load_files() {
   LittleFS.begin();
   File f;
@@ -4018,7 +4043,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
     if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");	     
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
        delay(2000);
     }
     f.close();
@@ -4032,7 +4057,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
     if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");
        delay(2000);
     }
     f.close();
