@@ -348,6 +348,8 @@ void loop() {
 */	
     watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
 	 
+    sleep(20.0);	 
+	 
     if (new_mode != CW)
       transmit_callsign(callsign);
     sleep(0.5);
@@ -4317,7 +4319,9 @@ void prompt_for_input() {
     case PROMPT_FORMAT:
        LittleFS.format();
        Serial.println("Reboot or power cycle to restart the CubeSatSim");
-       while (1) ;	    // infinite loop
+ //      while (1) ;	    // infinite loop
+       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico	 
+       sleep(20.0);			  
        break;
 		  
     case PROMPT_PAYLOAD:	      
