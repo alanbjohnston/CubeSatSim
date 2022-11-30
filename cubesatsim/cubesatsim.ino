@@ -98,7 +98,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-//  Serial.println("CubeSatSim Pico v0.33 starting...\n");
+  Serial.println("CubeSatSim Pico v0.33 starting...\n");
 	
   config_gpio();	
 	
@@ -131,7 +131,7 @@ void setup() {
 //  pinMode(PI_3V3_PIN, OUTPUT);
 //  digitalWrite(PI_3V3_PIN, HIGH);
 
-  Serial.println("CubeSatSim Pico v0.33 starting...\n");	
+//  Serial.println("CubeSatSim Pico v0.33 starting...\n");	
 	
   start_payload();  // above code not working, so forcing it
 	
@@ -346,6 +346,7 @@ void loop() {
       config_done = true;	    
     }
 */	
+    Serial.println("Rebooting...");	 
     watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
 	 
     sleep(20.0);	 
@@ -3337,6 +3338,9 @@ void process_pushbutton() {
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
+	  
+    Serial.println("Rebooting...");	 
+    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico	  
   }
 	
   blinkTimes(1);
@@ -3436,6 +3440,9 @@ void process_bootsel() {
   if (!BOOTSEL) {
     Serial.println("BOOTSEL: Reboot!");
     release = TRUE;
+	  
+    Serial.println("Rebooting...");	 
+    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico	  
   }
 	
   blinkTimes(1);
@@ -4318,9 +4325,10 @@ void prompt_for_input() {
 
     case PROMPT_FORMAT:
        LittleFS.format();
-       Serial.println("Reboot or power cycle to restart the CubeSatSim");
+//       Serial.println("Reboot or power cycle to restart the CubeSatSim");
  //      while (1) ;	    // infinite loop
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico	 
+       Serial.println("Rebooting...");	 
+       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
