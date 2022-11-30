@@ -3338,9 +3338,7 @@ void process_pushbutton() {
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
-	  
-    Serial.println("Rebooting...");	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico	  
+    prompt = PROMPT_REBOOT;  
   }
 	
   blinkTimes(1);
@@ -3440,9 +3438,7 @@ void process_bootsel() {
   if (!BOOTSEL) {
     Serial.println("BOOTSEL: Reboot!");
     release = TRUE;
-	  
-    Serial.println("Rebooting...");	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico	  
+    prompt = PROMPT_REBOOT;    
   }
 	
   blinkTimes(1);
@@ -4323,6 +4319,12 @@ void prompt_for_input() {
       read_ina219();		  	  
       break;	
 
+    case PROMPT_REBOOT:
+       Serial.println("Rebooting...");	 
+       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       sleep(20.0);			  
+       break;
+		  
     case PROMPT_FORMAT:
        LittleFS.format();
 //       Serial.println("Reboot or power cycle to restart the CubeSatSim");
