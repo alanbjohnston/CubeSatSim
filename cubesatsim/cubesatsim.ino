@@ -78,7 +78,9 @@ void setup() {
 
 //  set_sys_clock_khz(133000, true);  
 	
-  Serial.begin(115200);	
+  Serial.begin(115200);
+	
+  delay(1000);	
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
@@ -90,13 +92,13 @@ void setup() {
   new_mode = mode;
 	
   pinMode(LED_BUILTIN, OUTPUT);	
-  blinkTimes(1);	
+//  blinkTimes(1);	
 
 ///  sleep(5.0);	
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.33 starting...\n");
+//  Serial.println("CubeSatSim Pico v0.33 starting...\n");
 	
   config_gpio();	
 	
@@ -128,6 +130,8 @@ void setup() {
 	
 //  pinMode(PI_3V3_PIN, OUTPUT);
 //  digitalWrite(PI_3V3_PIN, HIGH);
+
+  Serial.println("CubeSatSim Pico v0.33 starting...\n");	
 	
   start_payload();  // above code not working, so forcing it
 	
