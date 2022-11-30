@@ -224,11 +224,13 @@ void loop() {
   }
   else if (mode == SSTV)
   {	  
-      first_time_sstv = false;	  
+//      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
-        strcpy(image_file, sstv1_filename);
+//        strcpy(image_file, sstv1_filename);
+	  Serial.println("Using stored image file"); 
+	  load_sstv_image_1_as_cam_dot_jpg(); 	      
 	first_time_sstv = false;
       } else {
 	if (camera_detected = get_camera_image()) {      
@@ -239,7 +241,7 @@ void loop() {
 	} else	 {     
 //	  strcpy(image_file, sstv1_filename);     // 2nd stored image
 	  Serial.println("Using stored image file"); 
-	  load_sstv_image_1_as_cam_dot_jpg(); 
+	  load_sstv_image_2_as_cam_dot_jpg(); 
 	}
       }  
 /*	  
