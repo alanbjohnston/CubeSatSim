@@ -127,6 +127,7 @@
 #define PROMPT_PAYLOAD 10
 #define PROMPT_TEMP 11
 #define PROMPT_FORMAT 12
+#define PROMPT_REBOOT 13
 
 #define PAYLOAD_QUERY 1
 #define PAYLOAD_RESET 2
@@ -211,6 +212,8 @@ void read_mode();
 void write_mode(); 
 void start_clockgen();
 bool TimerHandler1(struct repeating_timer *t);
+void load_sstv_image_1_as_cam_dot_jpg(); 
+void load_sstv_image_2_as_cam_dot_jpg();
 
 #ifndef STASSID
 #define STASSID "Pico"

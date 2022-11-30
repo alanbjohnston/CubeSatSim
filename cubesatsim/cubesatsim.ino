@@ -47,7 +47,7 @@
 #include "hardware/watchdog.h"
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
-//#include "sstv1.h"
+#include "sstv1.h"
 #include "sstv2.h"
 
 Adafruit_INA219 ina219_1_0x40;
@@ -78,7 +78,9 @@ void setup() {
 
 //  set_sys_clock_khz(133000, true);  
 	
-  Serial.begin(115200);	
+  Serial.begin(115200);
+	
+  delay(2000);	
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
@@ -90,7 +92,7 @@ void setup() {
   new_mode = mode;
 	
   pinMode(LED_BUILTIN, OUTPUT);	
-  blinkTimes(1);	
+//  blinkTimes(1);	
 
 ///  sleep(5.0);	
 	
@@ -128,6 +130,8 @@ void setup() {
 	
 //  pinMode(PI_3V3_PIN, OUTPUT);
 //  digitalWrite(PI_3V3_PIN, HIGH);
+
+//  Serial.println("CubeSatSim Pico v0.33 starting...\n");	
 	
   start_payload();  // above code not working, so forcing it
 	
@@ -220,35 +224,42 @@ void loop() {
   }
   else if (mode == SSTV)
   {	  
-      first_time_sstv = false;	  
+//      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
-        strcpy(image_file, sstv1_filename);
+//        strcpy(image_file, sstv1_filename);
+	  Serial.println("Using stored image file"); 
+	  load_sstv_image_1_as_cam_dot_jpg(); 	      
 	first_time_sstv = false;
       } else {
 	if (camera_detected = get_camera_image()) {      
           Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
-	  char camera_file[] = "/cam.jpg";      
-	  strcpy(image_file, camera_file);      
+//	  char camera_file[] = "/cam.jpg";      
+//	  strcpy(image_file, camera_file);      
 	} else	 {     
-	  strcpy(image_file, sstv1_filename);     // 2nd stored image
-	  Serial.println("Using stored image file");   
+//	  strcpy(image_file, sstv1_filename);     // 2nd stored image
+	  Serial.println("Using stored image file"); 
+	  load_sstv_image_2_as_cam_dot_jpg(); 
 	}
-      }    
+      }  
+/*	  
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
         print_string(image_file);
       }
+*/	  
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
 //      LittleFS.remove("/cam.bin");	  
-      show_dir();	  
-      char output_file2[] = "/cam2.bin"; 	  
+      show_dir();
+      char input_file[] = "/cam.jpg";	  
+//      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
-      jpeg_decode(image_file, output_file, true); // debug_mode);
+//      jpeg_decode(image_file, output_file, true); // debug_mode);
+      jpeg_decode(input_file, output_file, true); // debug_mode);
       show_dir();	  
 //      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
 
@@ -342,7 +353,10 @@ void loop() {
       config_done = true;	    
     }
 */	
+    Serial.println("Rebooting...");	 
     watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+	 
+    sleep(20.0);	 
 	 
     if (new_mode != CW)
       transmit_callsign(callsign);
@@ -3331,6 +3345,7 @@ void process_pushbutton() {
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
+    prompt = PROMPT_REBOOT;  
   }
 	
   blinkTimes(1);
@@ -3405,8 +3420,8 @@ void process_pushbutton() {
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);	  
-	  
+    sleep(0.5);	 
+ 	  
   }
   if (new_mode != mode)
     transmit_off();
@@ -3430,6 +3445,7 @@ void process_bootsel() {
   if (!BOOTSEL) {
     Serial.println("BOOTSEL: Reboot!");
     release = TRUE;
+    prompt = PROMPT_REBOOT;    
   }
 	
   blinkTimes(1);
@@ -3505,8 +3521,7 @@ void process_bootsel() {
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	  
-	  
-  }
+   }
   if (new_mode != mode)
     transmit_off();
 //  sleep(2.0);	
@@ -3997,6 +4012,30 @@ void show_dir() {
   Serial.println(">");
 }
 
+void load_sstv_image_1_as_cam_dot_jpg() {
+    LittleFS.begin();
+    File f;	
+    Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
+    f = LittleFS.open("cam.jpg", "w+");
+    if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
+       delay(2000);
+    }
+    f.close();	
+}
+
+void load_sstv_image_2_as_cam_dot_jpg() {	
+    LittleFS.begin();
+    File f;
+    Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
+    f = LittleFS.open("cam.jpg", "w+");
+    if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
+       delay(2000);
+    }
+    f.close();	
+}
+
 void load_files() {
   LittleFS.begin();
   File f;
@@ -4010,7 +4049,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_1_320_x_240.jpg", "w+");
     if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");	     
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");	     
        delay(2000);
     }
     f.close();
@@ -4024,7 +4063,7 @@ void load_files() {
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
     f = LittleFS.open("sstv_image_2_320_x_240.jpg", "w+");
     if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 512kB?");
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");
        delay(2000);
     }
     f.close();
@@ -4310,10 +4349,19 @@ void prompt_for_input() {
       read_ina219();		  	  
       break;	
 
+    case PROMPT_REBOOT:
+       Serial.println("Rebooting...");	 
+       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       sleep(20.0);			  
+       break;
+		  
     case PROMPT_FORMAT:
        LittleFS.format();
-       Serial.println("Reboot or power cycle to restart the CubeSatSim");
-       while (1) ;	    // infinite loop
+//       Serial.println("Reboot or power cycle to restart the CubeSatSim");
+ //      while (1) ;	    // infinite loop
+       Serial.println("Rebooting...");	 
+       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       sleep(20.0);			  
        break;
 		  
     case PROMPT_PAYLOAD:	      
