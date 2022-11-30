@@ -80,7 +80,7 @@ void setup() {
 	
   Serial.begin(115200);
 	
-  delay(1000);	
+  delay(2000);	
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
@@ -3413,7 +3413,8 @@ void process_pushbutton() {
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);	  
+    sleep(0.5);	 
+    sleep_ms(0xffffff);	  
 	  
   }
   if (new_mode != mode)
@@ -3514,7 +3515,7 @@ void process_bootsel() {
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
     sleep(0.5);	  
-	  
+    sleep_ms(0xffffff);	  	  
   }
   if (new_mode != mode)
     transmit_off();
