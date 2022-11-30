@@ -4010,7 +4010,9 @@ void show_dir() {
   Serial.println(">");
 }
 
-void load_sstv_image_1_as_cam_dot_jpg() {	
+void load_sstv_image_1_as_cam_dot_jpg() {
+    LittleFS.begin();
+    File f;	
     Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
     f = LittleFS.open("cam.jpg", "w+");
     if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
@@ -4021,6 +4023,8 @@ void load_sstv_image_1_as_cam_dot_jpg() {
 }
 
 void load_sstv_image_2_as_cam_dot_jpg() {	
+    LittleFS.begin();
+    File f;
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
     f = LittleFS.open("cam.jpg", "w+");
     if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
