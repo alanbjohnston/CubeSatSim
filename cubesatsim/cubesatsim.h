@@ -73,7 +73,7 @@
 #define MAIN_LED_GREEN 20 // Main board LED1 
 #define MAIN_LED_BLUE 21 // Main board LED1 
 #define PD_PIN 22 // SR_FRS_05W PD pin - enable
-#define AUDIO_OUT_PIN 26 // SR_FRS_05W audio out pin
+#define AUDIO_OUT_PIN 26 // 26 // SR_FRS_05W audio out pin
 #define AUDIO_IN_PIN 27 // SR_FRS_05W audio in pin
 #define TEMPERATURE_PIN 28  // Diode temperature analog pin
 
@@ -126,6 +126,8 @@
 #define PROMPT_VOLTAGE 9
 #define PROMPT_PAYLOAD 10
 #define PROMPT_TEMP 11
+#define PROMPT_FORMAT 12
+#define PROMPT_REBOOT 13
 
 #define PAYLOAD_QUERY 1
 #define PAYLOAD_RESET 2
@@ -209,7 +211,9 @@ void write_config_file();
 void read_mode(); 
 void write_mode(); 
 void start_clockgen();
-
+bool TimerHandler1(struct repeating_timer *t);
+void load_sstv_image_1_as_cam_dot_jpg(); 
+void load_sstv_image_2_as_cam_dot_jpg();
 
 #ifndef STASSID
 #define STASSID "Pico"
