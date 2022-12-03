@@ -223,7 +223,7 @@ void loop() {
     }
   }
   else if (mode == SSTV)
-  {	  
+{
 //      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
