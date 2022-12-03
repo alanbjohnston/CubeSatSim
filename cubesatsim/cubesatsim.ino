@@ -80,7 +80,7 @@ void setup() {
 	
   Serial.begin(115200);
 	
-  delay(5000);	
+  delay(2000);	
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
@@ -3561,7 +3561,6 @@ void config_gpio() {
 
   // set LEDs and blink once	
 //  if (!wifi) 
-  Serial.println("Blinking pins");	
     pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
