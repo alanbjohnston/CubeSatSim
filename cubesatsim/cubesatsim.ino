@@ -483,6 +483,8 @@ void send_aprs_packet() {
 }
 
 void send_cw() {
+ if (filter_present) { // only transmit CW packet if BPF filter is present
+	
   char de[] = " DE ";	
   char telem[1000];
   char space[] = " ";	
@@ -497,8 +499,8 @@ void send_cw() {
   if (debug_mode)	
     print_string(telem);
 //  Serial.println(strlen(telem));
-  if (filter_present)  // only transmit CW packet if BPF filter is present
     transmit_string(telem);	
+ }	
 }
 
 void transmit_on() {
