@@ -3831,9 +3831,10 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
+  unsigned long duration_us = duration * 1000;
+
   if (sr_frs_present) {	
-	  unsigned long start = micros();
-	  unsigned long duration_us = duration * 1000;
+          unsigned long start = micros();
 	  float period_us = (0.5E6) / (float)(freq);
 	  bool phase = HIGH;	
 	  while((micros() - start) < duration_us)  {
@@ -3845,7 +3846,11 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 	  digitalWrite(AUDIO_OUT_PIN, LOW);		  
   }
   else {
-    Serial.println("No sr_frs present!");	  
+    Serial.println("No sr_frs present!");
+    unsigned long start = micros();
+    digitalWrite(BPSK_CONTROL_A, HIGH);  	  
+    while((micros() - start) < duration_us)  { }
+    digitalWrite(BPSK_CONTROL_A, LOW);  	
   }
 
 //  if (!wifi) 
