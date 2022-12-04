@@ -170,7 +170,7 @@ void setup() {
   prompt_for_input();
 	
 /**/
-  Serial.println("Transmitting callsign");	
+//  Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
   if (mode != CW)
     transmit_callsign(callsign);
@@ -194,10 +194,11 @@ void setup() {
   ready = TRUE;  // flag for core1 to start looping
 
   get_input();	
-	
+/*	
   Serial.print("s");
   Serial.print(" ");
-  Serial.println(millis());	
+  Serial.println(millis());
+*/	
 }
 
 void loop() {
@@ -3537,10 +3538,12 @@ void config_gpio() {
   pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(BPF_PIN) == FALSE)
-    Serial.println("BPF present");
+  if (digitalRead(BPF_PIN) == FALSE) {
+    Serial.println("BPF present - transmit enabled");
+    filter_present = true;  
+  }
   else
-    Serial.println("BPF not present");	  
+    Serial.println("BPF not present - no transmitting after CW ID");	  
 	
   if (digitalRead(TXC_PIN) == FALSE)
     Serial.println("TXC present");
@@ -3857,7 +3860,7 @@ void transmit_callsign(char *callsign) {
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
-  Serial.print("Transmitting id: ");	
+  Serial.print("Transmitting CW id: ");	
   print_string(id);	
 /*	
   if (reset_count == 0) {
