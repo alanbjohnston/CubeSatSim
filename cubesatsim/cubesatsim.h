@@ -215,6 +215,7 @@ bool TimerHandler1(struct repeating_timer *t);
 void load_sstv_image_1_as_cam_dot_jpg(); 
 void load_sstv_image_2_as_cam_dot_jpg();
 void get_input();
+void transmit_led(bool status);
 
 #ifndef STASSID
 #define STASSID "Pico"
@@ -379,6 +380,7 @@ RPI_PICO_Timer ITimer1(1);
 
 bool timer0_on = false;
 volatile int timer_counter;
+bool filter_present = false;  // BPF installation state for transmitter
 
 char callsign[20];
 int morse_timing = 60;  // ms for a dit

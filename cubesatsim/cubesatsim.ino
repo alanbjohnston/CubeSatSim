@@ -166,15 +166,18 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
+  prompt = PROMPT_HELP;  // display input help menu	
+  prompt_for_input();
+	
 /**/
-  Serial.println("Transmitting callsign");	
+//  Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
   if (mode != CW)
     transmit_callsign(callsign);
 //  sleep(5.0);		
   sleep(1.0);		
 /**/
-	
+		
   config_telem();	
 
 //  start_button_isr(); 	// try before start_isr
@@ -191,13 +194,11 @@ void setup() {
   ready = TRUE;  // flag for core1 to start looping
 
   get_input();	
-	
-  prompt = PROMPT_HELP;  // display input help menu	
-  prompt_for_input();
-	
+/*	
   Serial.print("s");
   Serial.print(" ");
-  Serial.println(millis());	
+  Serial.println(millis());
+*/	
 }
 
 void loop() {
@@ -222,7 +223,6 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
-      Serial.printf("DE %s \n", callsign);	    
       send_cw();
     }
   }
@@ -276,9 +276,7 @@ void loop() {
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-//      if (!wifi) 
-        digitalWrite(LED_BUILTIN, HIGH);	
-      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+      transmit_led(HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
  
@@ -290,9 +288,7 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
-//      if (!wifi) 
-        digitalWrite(LED_BUILTIN, LOW);	
-      digitalWrite(MAIN_LED_BLUE, LOW);	    
+      transmit_led(LOW);
 	  
       if (debug_mode)	  
         Serial.println("\nImage sent!");
@@ -312,16 +308,9 @@ void loop() {
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-//	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, LOW);	
-	  digitalWrite(MAIN_LED_BLUE, LOW);
-
-	//  delay(3000);	
-	  sleep(0.2); // 2.845); // 3.0);
-
-//	  if (!wifi) 
-	   	  digitalWrite(LED_BUILTIN, HIGH);
-	  digitalWrite(MAIN_LED_BLUE, HIGH);
+    transmit_led(LOW);	
+    sleep(0.2); 
+    transmit_led(HIGH);
   }
 	
   get_input();	
@@ -478,18 +467,23 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
+  transmit_led(HIGH);	
   send_packet(_FIXPOS_STATUS, debug_mode);
+  transmit_led(LOW);	
   transmit_off();		
 }
 
 void send_cw() {
+ if (filter_present) { // only transmit CW packet if BPF filter is present
+	
   char de[] = " DE ";	
   char telem[1000];
   char space[] = " ";	
 
   if (debug_mode)	
     Serial.println("Sending CW packet!");
-	
+	 
+  Serial.printf("DE %s \n", callsign);	    
   strcpy(telem, de);
   strcat(telem, callsign);
   strcat(telem, space);
@@ -497,15 +491,15 @@ void send_cw() {
   if (debug_mode)	
     print_string(telem);
 //  Serial.println(strlen(telem));
- 
-  transmit_string(telem);	
+    transmit_string(telem);	
+ }	
 }
 
 void transmit_on() {
   if ((mode == SSTV) || (mode == AFSK)) {  // this isn't quite right for APRS - should only do when sending APRS packet
     if (debug_mode)
       Serial.println("Transmit on!");
-    digitalWrite(MAIN_LED_BLUE, HIGH);	
+//    digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
   } 
   else if ((mode == BPSK) || (mode == FSK)) {
@@ -545,8 +539,8 @@ void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   if (debug_mode)	
    Serial.println("Transmit off!");
-  digitalWrite(MAIN_LED_BLUE, LOW);
-  digitalWrite(LED_BUILTIN, LOW);	
+///  digitalWrite(MAIN_LED_BLUE, LOW);
+///  digitalWrite(LED_BUILTIN, LOW);	
   if ((mode == BPSK) || (mode == FSK)) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
@@ -2156,6 +2150,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+  if (filter_present) {	
   Serial.println("Configuring radio");	
 /*	
   if (!wifi) 
@@ -2213,6 +2208,9 @@ void config_radio()
       }	  
     transmit_on();
   }
+  	  
+  } else
+    Serial.println("Radio not configured since no BPF present - no transmitting after CW ID");	  
 }
 
 void test_radio()
@@ -3531,10 +3529,12 @@ void config_gpio() {
   pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(BPF_PIN) == FALSE)
-    Serial.println("BPF present");
+  if (digitalRead(BPF_PIN) == FALSE) {
+    Serial.println("BPF present - transmit enabled");
+    filter_present = true;  
+  }
   else
-    Serial.println("BPF not present");	  
+    Serial.println("BPF not present - no transmitting after CW ID");	  
 	
   if (digitalRead(TXC_PIN) == FALSE)
     Serial.println("TXC present");
@@ -3851,7 +3851,7 @@ void transmit_callsign(char *callsign) {
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
-  Serial.print("Transmitting id: ");	
+  Serial.print("Transmitting CW id: ");	
   print_string(id);	
 /*	
   if (reset_count == 0) {
@@ -4549,4 +4549,12 @@ void get_input() {
 */	 
  }		
 	
+}
+
+void transmit_led(bool status) {
+  if(filter_present) {	
+//	  if (!wifi) 
+	    digitalWrite(LED_BUILTIN, status);	
+	  digitalWrite(MAIN_LED_BLUE, status);	  
+  }	
 }
