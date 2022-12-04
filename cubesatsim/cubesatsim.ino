@@ -2165,12 +2165,31 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 */	
-  if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+  if ((mode == AFSK) || (mode == SSTV)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
 //    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
 //    program_radio();  // remove for now
 
+  } else if (mode == CW) {
+    if (sr_frs_present)
+      digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
+    else {
+      start_clockgen();	  
+      if (clockgen.setClockFSK()) {	  
+	 start_clockgen();
+	 clockgen.setClockFSK();
+	 Serial.println("Config clock for CW without SR_FRS!");       
+      }	else {
+	 Serial.println("Config clock for CW without SR_FRS");          
+      }	
+      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
+      clockgen.enableOutputs(false);
+      digitalWrite(BPSK_CONTROL_B, LOW);	  
+      digitalWrite(BPSK_CONTROL_A, LOW);  		    
+	    
+    }
+ 
   } else if (mode == BPSK)  {
 /*    	 
     int ret = 1;
