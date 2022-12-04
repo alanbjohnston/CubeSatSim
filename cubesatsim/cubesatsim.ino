@@ -98,9 +98,11 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.33 starting...\n");
+  Serial.println("CubeSatSim Pico v0.34 starting...\n");
 	
-  config_gpio();	
+  config_gpio();
+
+  get_input();	
 	
   start_clockgen();		
 	
@@ -164,15 +166,18 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
+  prompt = PROMPT_HELP;  // display input help menu	
+  prompt_for_input();
+	
 /**/
-  Serial.println("Transmitting callsign");	
+//  Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
   if (mode != CW)
     transmit_callsign(callsign);
 //  sleep(5.0);		
   sleep(1.0);		
 /**/
-	
+		
   config_telem();	
 
 //  start_button_isr(); 	// try before start_isr
@@ -187,17 +192,17 @@ void setup() {
   sampleTime = (unsigned int) millis();		
 	
   ready = TRUE;  // flag for core1 to start looping
-	
-  prompt = PROMPT_HELP;  // display input help menu	
-  prompt_for_input();
-	
+
+  get_input();	
+/*	
   Serial.print("s");
   Serial.print(" ");
-  Serial.println(millis());	
+  Serial.println(millis());
+*/	
 }
 
 void loop() {
-		
+	
   int startSleep = millis();	
   loop_count++;
 	
@@ -218,7 +223,6 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
-      Serial.printf("DE %s \n", callsign);	    
       send_cw();
     }
   }
@@ -254,12 +258,12 @@ void loop() {
 	  
 //      send_sstv(image_file);
 //      LittleFS.remove("/cam.bin");	  
-      show_dir();
+//      show_dir();
       char input_file[] = "/cam.jpg";	  
 //      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
 //      jpeg_decode(image_file, output_file, true); // debug_mode);
-      jpeg_decode(input_file, output_file, true); // debug_mode);
+      jpeg_decode(input_file, output_file, false); // debug_mode);
       show_dir();	  
 //      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
 
@@ -272,9 +276,7 @@ void loop() {
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-//      if (!wifi) 
-        digitalWrite(LED_BUILTIN, HIGH);	
-      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+      transmit_led(HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
  
@@ -286,9 +288,7 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
-//      if (!wifi) 
-        digitalWrite(LED_BUILTIN, LOW);	
-      digitalWrite(MAIN_LED_BLUE, LOW);	    
+      transmit_led(LOW);
 	  
       if (debug_mode)	  
         Serial.println("\nImage sent!");
@@ -296,7 +296,8 @@ void loop() {
   } 
   else
       Serial.println("Unknown mode!");
-
+	
+  get_input();	
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
@@ -307,72 +308,12 @@ void loop() {
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-//	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, LOW);	
-	  digitalWrite(MAIN_LED_BLUE, LOW);
-
-	//  delay(3000);	
-	  sleep(0.2); // 2.845); // 3.0);
-
-//	  if (!wifi) 
-	   	  digitalWrite(LED_BUILTIN, HIGH);
-	  digitalWrite(MAIN_LED_BLUE, HIGH);
+    transmit_led(LOW);	
+    sleep(0.2); 
+    transmit_led(HIGH);
   }
 	
-	
-  serial_input();  
-	
-// check for button press 
-  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
-      process_pushbutton();
-  if (BOOTSEL)	  // boot selector button is pressed on Pico
-      process_bootsel();
-	
-  if (prompt) {
-//    Serial.println("Need to prompt for input!");
-    prompt_for_input();	  
-    prompt = false;	  
-  }
-	
-  // check to see if the mode has changed
- if (mode != new_mode) {
-    Serial.println("Changing mode");
-    cw_stop = false; // enable CW or won't hear CW ID	 
-///    if (mode == SSTV) {
-///      ITimer1.detachInterrupt();	    
-///      start_button_isr();  // restart button isr
-///    }
-    int old_mode = mode;
-    bool config_done = false;
-    mode = new_mode;  // change modes if button pressed	 
-    write_mode();
-/*	 
-//    if ((mode == BPSK) || ((new_mode == FSK) && (old_mode == CW)))	 {
-    if (mode == BPSK) 	 {
-      config_telem();  // run this before cw only for BPSK mode
-      config_done = true;	    
-    }
-*/	
-    Serial.println("Rebooting...");	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
-	 
-    sleep(20.0);	 
-	 
-    if (new_mode != CW)
-      transmit_callsign(callsign);
-    sleep(0.5);
-	 
-    if (!config_done)	 
-      config_telem();  // run this here for all other modes
-	 
-    config_radio();
-    if ((mode == FSK) || (mode == BPSK)) {    
-      digitalWrite(LED_BUILTIN, HIGH);
-      digitalWrite(MAIN_LED_BLUE, HIGH);	    
-    }
-	
-    sampleTime = (unsigned int) millis();	 	 
- }		
+  get_input();	
 	
   //  Calculate loop time
   if (debug_mode) {	
@@ -526,18 +467,23 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
+  transmit_led(HIGH);	
   send_packet(_FIXPOS_STATUS, debug_mode);
+  transmit_led(LOW);	
   transmit_off();		
 }
 
 void send_cw() {
+ if (filter_present) { // only transmit CW packet if BPF filter is present
+	
   char de[] = " DE ";	
   char telem[1000];
   char space[] = " ";	
 
   if (debug_mode)	
     Serial.println("Sending CW packet!");
-	
+	 
+  Serial.printf("DE %s \n", callsign);	    
   strcpy(telem, de);
   strcat(telem, callsign);
   strcat(telem, space);
@@ -545,15 +491,15 @@ void send_cw() {
   if (debug_mode)	
     print_string(telem);
 //  Serial.println(strlen(telem));
- 
-  transmit_string(telem);	
+    transmit_string(telem);	
+ }	
 }
 
 void transmit_on() {
   if ((mode == SSTV) || (mode == AFSK)) {  // this isn't quite right for APRS - should only do when sending APRS packet
     if (debug_mode)
       Serial.println("Transmit on!");
-    digitalWrite(MAIN_LED_BLUE, HIGH);	
+//    digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
   } 
   else if ((mode == BPSK) || (mode == FSK)) {
@@ -593,8 +539,8 @@ void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   if (debug_mode)	
    Serial.println("Transmit off!");
-  digitalWrite(MAIN_LED_BLUE, LOW);
-  digitalWrite(LED_BUILTIN, LOW);	
+///  digitalWrite(MAIN_LED_BLUE, LOW);
+///  digitalWrite(LED_BUILTIN, LOW);	
   if ((mode == BPSK) || (mode == FSK)) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
@@ -2204,6 +2150,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+  if (filter_present) {	
   Serial.println("Configuring radio");	
 /*	
   if (!wifi) 
@@ -2261,6 +2208,9 @@ void config_radio()
       }	  
     transmit_on();
   }
+  	  
+  } else
+    Serial.println("Radio not configured since no BPF present - no transmitting after CW ID");	  
 }
 
 void test_radio()
@@ -3579,10 +3529,12 @@ void config_gpio() {
   pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(BPF_PIN) == FALSE)
-    Serial.println("BPF present");
+  if (digitalRead(BPF_PIN) == FALSE) {
+    Serial.println("BPF present - transmit enabled");
+    filter_present = true;  
+  }
   else
-    Serial.println("BPF not present");	  
+    Serial.println("BPF not present - no transmitting after CW ID");	  
 	
   if (digitalRead(TXC_PIN) == FALSE)
     Serial.println("TXC present");
@@ -3899,7 +3851,7 @@ void transmit_callsign(char *callsign) {
   char id[20];
   strcpy(id, de);
   strcat(id, callsign);
-  Serial.print("Transmitting id: ");	
+  Serial.print("Transmitting CW id: ");	
   print_string(id);	
 /*	
   if (reset_count == 0) {
@@ -4544,4 +4496,65 @@ void start_clockgen() {
 //  clockgen.setClockFSK();  // default to FSK
   clockgen.enableOutputs(false);	
 	
+}
+
+void get_input() {
+	
+  serial_input();  
+	
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
+	
+  if (prompt) {
+//    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
+	
+  // check to see if the mode has changed
+ if (mode != new_mode) {
+    Serial.println("Changing mode");
+    cw_stop = false; // enable CW or won't hear CW ID	 
+///    if (mode == SSTV) {
+///      ITimer1.detachInterrupt();	    
+///      start_button_isr();  // restart button isr
+///    }
+    int old_mode = mode;
+    bool config_done = false;
+    mode = new_mode;  // change modes if button pressed	 
+    write_mode();
+	
+    Serial.println("Rebooting...");	 
+    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+	 
+    sleep(20.0);	 
+/*	 
+    if (new_mode != CW)
+      transmit_callsign(callsign);
+    sleep(0.5);
+	 
+    if (!config_done)	 
+      config_telem();  // run this here for all other modes
+	 
+    config_radio();
+    if ((mode == FSK) || (mode == BPSK)) {    
+      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+    }
+	
+    sampleTime = (unsigned int) millis();
+*/	 
+ }		
+	
+}
+
+void transmit_led(bool status) {
+  if(filter_present) {	
+//	  if (!wifi) 
+	    digitalWrite(LED_BUILTIN, status);	
+	  digitalWrite(MAIN_LED_BLUE, status);	  
+  }	
 }
