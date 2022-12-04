@@ -312,16 +312,9 @@ void loop() {
 //  test_radio();
 
   if ((mode == FSK) || (mode == BPSK)) {
-//	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, LOW);	
-	  digitalWrite(MAIN_LED_BLUE, LOW);
-
-	//  delay(3000);	
-	  sleep(0.2); // 2.845); // 3.0);
-
-//	  if (!wifi) 
-	   	  digitalWrite(LED_BUILTIN, HIGH);
-	  digitalWrite(MAIN_LED_BLUE, HIGH);
+    transmit_led(LOW);	
+    sleep(0.2); 
+    transmit_led(HIGH);
   }
 	
   get_input();	
@@ -4558,4 +4551,12 @@ void get_input() {
 */	 
  }		
 	
+}
+
+void transmit_led(bool status) {
+  if(filter_present) {	
+//	  if (!wifi) 
+	    digitalWrite(LED_BUILTIN, status);	
+	  digitalWrite(MAIN_LED_BLUE, status);	  
+  }	
 }
