@@ -3848,7 +3848,8 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   else {
     Serial.println("No sr_frs present!");
     unsigned long start = micros();
-    clockgen.enableOutputs(true);	  
+//    clockgen.enableOutputs(true);	  
+    clockgen.enableOutputOnly(0);
     digitalWrite(BPSK_CONTROL_A, HIGH);  	  
     while((micros() - start) < duration_us)  { }
     digitalWrite(BPSK_CONTROL_A, LOW);  	
