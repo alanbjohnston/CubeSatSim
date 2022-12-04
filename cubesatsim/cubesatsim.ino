@@ -3880,7 +3880,7 @@ void transmit_callsign(char *callsign) {
 	 Serial.println("Config clock for CW without SR_FRS");          
       }	
       digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
-      clockgen.enableOutputs(true);
+      clockgen.enableOutputs(false);
       digitalWrite(BPSK_CONTROL_B, LOW);	  
       digitalWrite(BPSK_CONTROL_A, LOW);  	  
   }
@@ -4455,7 +4455,7 @@ void set_lat_lon() {
 }
 
 void program_radio() {
-	
+ if (sr_frs_present) {	
   Serial.println("Programming SR_FRS!");	
 		
   digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
@@ -4476,6 +4476,7 @@ void program_radio() {
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
+ }	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
 }
 
