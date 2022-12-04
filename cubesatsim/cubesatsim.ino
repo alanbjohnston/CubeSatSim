@@ -166,6 +166,9 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
+  prompt = PROMPT_HELP;  // display input help menu	
+  prompt_for_input();
+	
 /**/
   Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
@@ -174,7 +177,7 @@ void setup() {
 //  sleep(5.0);		
   sleep(1.0);		
 /**/
-	
+		
   config_telem();	
 
 //  start_button_isr(); 	// try before start_isr
@@ -191,9 +194,6 @@ void setup() {
   ready = TRUE;  // flag for core1 to start looping
 
   get_input();	
-	
-  prompt = PROMPT_HELP;  // display input help menu	
-  prompt_for_input();
 	
   Serial.print("s");
   Serial.print(" ");
