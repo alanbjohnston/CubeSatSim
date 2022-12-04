@@ -3861,6 +3861,21 @@ void transmit_callsign(char *callsign) {
   strcat(id, callsign);
   Serial.print("Transmitting CW id: ");	
   print_string(id);	
+	
+  if (!sr_frs_present) {
+      start_clockgen();	  
+      if (clockgen.setClockFSK()) {	  
+	 start_clockgen();
+	 clockgen.setClockFSK();
+	 Serial.println("Config clock for CW without SR_FRS!");       
+      }	else {
+	 Serial.println("Config clock for CW without SR_FRS");          
+      }	
+      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
+      clockgen.enableOutputs(true);
+      digitalWrite(BPSK_CONTROL_B, LOW);	  
+      digitalWrite(BPSK_CONTROL_A, LOW);  	  
+  }
 /*	
   if (reset_count == 0) {
     program_radio();	  
@@ -3875,10 +3890,12 @@ void transmit_string(char *string) {
   int j = 0;
   if (debug_mode)	
     Serial.println("Transmit on");
-  digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
-  digitalWrite(MAIN_LED_BLUE, HIGH);
-  digitalWrite(LED_BUILTIN, HIGH);	
-  digitalWrite(PTT_PIN, LOW);	
+  if (sr_frs_present)	{
+    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
+    digitalWrite(PTT_PIN, LOW);	
+  }
+////  digitalWrite(MAIN_LED_BLUE, HIGH);
+////  digitalWrite(LED_BUILTIN, HIGH);	
 	
   while ((string[j] != '\0') && (j < 256) && !cw_stop) {
 //    Serial.print("j = ");
@@ -3904,8 +3921,8 @@ void transmit_string(char *string) {
 	
   if (debug_mode)	
     Serial.println("Transmit off");
-  digitalWrite(MAIN_LED_BLUE, LOW);
-  digitalWrite(LED_BUILTIN, LOW);	
+////  digitalWrite(MAIN_LED_BLUE, LOW);
+////  digitalWrite(LED_BUILTIN, LOW);	
   digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS 
 }
