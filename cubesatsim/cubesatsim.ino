@@ -506,7 +506,7 @@ void transmit_on() {
     if (debug_mode)	  
       Serial.println("Transmit on!!!");
 //  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-//  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//  pwm_set__level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
 /*	  
     int ret = 1;
     int i = 0;	  
@@ -3536,10 +3536,12 @@ void config_gpio() {
   else
     Serial.println("BPF not present - no transmitting after CW ID");	  
 	
-  if (digitalRead(TXC_PIN) == FALSE)
-    Serial.println("TXC present");
+  if (digitalRead(TXC_PIN) == FALSE) {
+    Serial.println("SR_FRS present");
+    sr_frs_present = true;
+  }
   else
-    Serial.println("TXC not present");	
+    Serial.println("SR_FRS not present");	
 
 //  Serial.print("Squelch: ");
 //  Serial.println(digitalRead(SQUELCH));
@@ -3828,18 +3830,24 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
  // if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
-	
-  unsigned long start = micros();
-  unsigned long duration_us = duration * 1000;
-  float period_us = (0.5E6) / (float)(freq);
-  bool phase = HIGH;	
-  while((micros() - start) < duration_us)  {
-    digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
-    phase = !phase;	 
-    float time_left = (float)(start + duration_us - micros());	  
-    sleep(min(time_left, period_us) / 1.0E6);  
+
+  if (sr_frs_present) {	
+	  unsigned long start = micros();
+	  unsigned long duration_us = duration * 1000;
+	  float period_us = (0.5E6) / (float)(freq);
+	  bool phase = HIGH;	
+	  while((micros() - start) < duration_us)  {
+	    digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
+	    phase = !phase;	 
+	    float time_left = (float)(start + duration_us - micros());	  
+	    sleep(min(time_left, period_us) / 1.0E6);  
+	  }
+	  digitalWrite(AUDIO_OUT_PIN, LOW);		  
   }
-  digitalWrite(AUDIO_OUT_PIN, LOW);	
+  else {
+    Serial.println("No sr_frs present!");	  
+  }
+
 //  if (!wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
