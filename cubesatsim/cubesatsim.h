@@ -214,6 +214,7 @@ void start_clockgen();
 bool TimerHandler1(struct repeating_timer *t);
 void load_sstv_image_1_as_cam_dot_jpg(); 
 void load_sstv_image_2_as_cam_dot_jpg();
+void get_input();
 
 #ifndef STASSID
 #define STASSID "Pico"
