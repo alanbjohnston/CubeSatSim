@@ -276,9 +276,7 @@ void loop() {
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
-//      if (!wifi) 
-        digitalWrite(LED_BUILTIN, HIGH);	
-      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+      transmit_led(HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
  
@@ -290,9 +288,7 @@ void loop() {
       if (debug_mode)	  
         Serial.println("Stop transmit!");
       digitalWrite(PTT_PIN, HIGH);  // stop transmit
-//      if (!wifi) 
-        digitalWrite(LED_BUILTIN, LOW);	
-      digitalWrite(MAIN_LED_BLUE, LOW);	    
+      transmit_led(LOW);
 	  
       if (debug_mode)	  
         Serial.println("\nImage sent!");
@@ -471,7 +467,9 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
+  transmit_led(HIGH);	
   send_packet(_FIXPOS_STATUS, debug_mode);
+  transmit_led(LOW);	
   transmit_off();		
 }
 
@@ -501,7 +499,7 @@ void transmit_on() {
   if ((mode == SSTV) || (mode == AFSK)) {  // this isn't quite right for APRS - should only do when sending APRS packet
     if (debug_mode)
       Serial.println("Transmit on!");
-    digitalWrite(MAIN_LED_BLUE, HIGH);	
+//    digitalWrite(MAIN_LED_BLUE, HIGH);	
     digitalWrite(PTT_PIN, LOW);  
   } 
   else if ((mode == BPSK) || (mode == FSK)) {
