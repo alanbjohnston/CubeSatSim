@@ -497,8 +497,8 @@ void send_cw() {
   if (debug_mode)	
     print_string(telem);
 //  Serial.println(strlen(telem));
- 
-  transmit_string(telem);	
+  if (filter_present)  // only transmit CW packet if BPF filter is present
+    transmit_string(telem);	
 }
 
 void transmit_on() {
