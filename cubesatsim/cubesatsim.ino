@@ -539,8 +539,8 @@ void transmit_off() {
   digitalWrite(PTT_PIN, HIGH);
   if (debug_mode)	
    Serial.println("Transmit off!");
-  digitalWrite(MAIN_LED_BLUE, LOW);
-  digitalWrite(LED_BUILTIN, LOW);	
+///  digitalWrite(MAIN_LED_BLUE, LOW);
+///  digitalWrite(LED_BUILTIN, LOW);	
   if ((mode == BPSK) || (mode == FSK)) {
     digitalWrite(BPSK_CONTROL_A, LOW); 	  
     digitalWrite(BPSK_CONTROL_B, LOW); 	  	  
