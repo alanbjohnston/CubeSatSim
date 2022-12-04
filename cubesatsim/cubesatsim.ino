@@ -222,7 +222,6 @@ void loop() {
     if (mode == AFSK) {  
       send_aprs_packet();
     } else if (mode == CW) {
-      Serial.printf("DE %s \n", callsign);	    
       send_cw();
     }
   }
@@ -491,7 +490,8 @@ void send_cw() {
 
   if (debug_mode)	
     Serial.println("Sending CW packet!");
-	
+	 
+  Serial.printf("DE %s \n", callsign);	    
   strcpy(telem, de);
   strcat(telem, callsign);
   strcat(telem, space);
