@@ -3846,7 +3846,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 	  digitalWrite(AUDIO_OUT_PIN, LOW);		  
   }
   else {
-    Serial.println("No sr_frs present!");
+//    Serial.println("No sr_frs present!");
     unsigned long start = micros();
 //    clockgen.enableOutputs(true);	  
     clockgen.enableOutputOnly(0);
