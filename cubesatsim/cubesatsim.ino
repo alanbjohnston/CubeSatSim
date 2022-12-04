@@ -2214,7 +2214,8 @@ void config_radio()
       }	  
     transmit_on();
   }
-  else
+  	  
+  } else
     Serial.println("Radio not configured since no BPF present - no transmitting after CW ID");	  
 }
 
