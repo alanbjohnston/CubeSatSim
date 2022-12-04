@@ -2156,6 +2156,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file)
 
 void config_radio()
 {
+  if (filter_present) {	
   Serial.println("Configuring radio");	
 /*	
   if (!wifi) 
@@ -2213,6 +2214,8 @@ void config_radio()
       }	  
     transmit_on();
   }
+  else
+    Serial.println("Radio not configured since no BPF present - no transmitting after CW ID");	  
 }
 
 void test_radio()
