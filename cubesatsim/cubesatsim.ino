@@ -98,9 +98,11 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.33 starting...\n");
+  Serial.println("CubeSatSim Pico v0.34 starting...\n");
 	
-  config_gpio();	
+  config_gpio();
+
+  get_input();	
 	
   start_clockgen();		
 	
@@ -187,6 +189,8 @@ void setup() {
   sampleTime = (unsigned int) millis();		
 	
   ready = TRUE;  // flag for core1 to start looping
+
+  get_input();	
 	
   prompt = PROMPT_HELP;  // display input help menu	
   prompt_for_input();
@@ -197,7 +201,7 @@ void setup() {
 }
 
 void loop() {
-		
+	
   int startSleep = millis();	
   loop_count++;
 	
@@ -254,12 +258,12 @@ void loop() {
 	  
 //      send_sstv(image_file);
 //      LittleFS.remove("/cam.bin");	  
-      show_dir();
+//      show_dir();
       char input_file[] = "/cam.jpg";	  
 //      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
 //      jpeg_decode(image_file, output_file, true); // debug_mode);
-      jpeg_decode(input_file, output_file, true); // debug_mode);
+      jpeg_decode(input_file, output_file, false); // debug_mode);
       show_dir();	  
 //      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
 
@@ -296,7 +300,8 @@ void loop() {
   } 
   else
       Serial.println("Unknown mode!");
-
+	
+  get_input();	
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
@@ -319,60 +324,7 @@ void loop() {
 	  digitalWrite(MAIN_LED_BLUE, HIGH);
   }
 	
-	
-  serial_input();  
-	
-// check for button press 
-  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
-      process_pushbutton();
-  if (BOOTSEL)	  // boot selector button is pressed on Pico
-      process_bootsel();
-	
-  if (prompt) {
-//    Serial.println("Need to prompt for input!");
-    prompt_for_input();	  
-    prompt = false;	  
-  }
-	
-  // check to see if the mode has changed
- if (mode != new_mode) {
-    Serial.println("Changing mode");
-    cw_stop = false; // enable CW or won't hear CW ID	 
-///    if (mode == SSTV) {
-///      ITimer1.detachInterrupt();	    
-///      start_button_isr();  // restart button isr
-///    }
-    int old_mode = mode;
-    bool config_done = false;
-    mode = new_mode;  // change modes if button pressed	 
-    write_mode();
-/*	 
-//    if ((mode == BPSK) || ((new_mode == FSK) && (old_mode == CW)))	 {
-    if (mode == BPSK) 	 {
-      config_telem();  // run this before cw only for BPSK mode
-      config_done = true;	    
-    }
-*/	
-    Serial.println("Rebooting...");	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
-	 
-    sleep(20.0);	 
-	 
-    if (new_mode != CW)
-      transmit_callsign(callsign);
-    sleep(0.5);
-	 
-    if (!config_done)	 
-      config_telem();  // run this here for all other modes
-	 
-    config_radio();
-    if ((mode == FSK) || (mode == BPSK)) {    
-      digitalWrite(LED_BUILTIN, HIGH);
-      digitalWrite(MAIN_LED_BLUE, HIGH);	    
-    }
-	
-    sampleTime = (unsigned int) millis();	 	 
- }		
+  get_input();	
 	
   //  Calculate loop time
   if (debug_mode) {	
@@ -4543,5 +4495,58 @@ void start_clockgen() {
 	
 //  clockgen.setClockFSK();  // default to FSK
   clockgen.enableOutputs(false);	
+	
+}
+
+void get_input() {
+	
+  serial_input();  
+	
+// check for button press 
+  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+      process_pushbutton();
+  if (BOOTSEL)	  // boot selector button is pressed on Pico
+      process_bootsel();
+	
+  if (prompt) {
+//    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
+	
+  // check to see if the mode has changed
+ if (mode != new_mode) {
+    Serial.println("Changing mode");
+    cw_stop = false; // enable CW or won't hear CW ID	 
+///    if (mode == SSTV) {
+///      ITimer1.detachInterrupt();	    
+///      start_button_isr();  // restart button isr
+///    }
+    int old_mode = mode;
+    bool config_done = false;
+    mode = new_mode;  // change modes if button pressed	 
+    write_mode();
+	
+    Serial.println("Rebooting...");	 
+    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+	 
+    sleep(20.0);	 
+/*	 
+    if (new_mode != CW)
+      transmit_callsign(callsign);
+    sleep(0.5);
+	 
+    if (!config_done)	 
+      config_telem();  // run this here for all other modes
+	 
+    config_radio();
+    if ((mode == FSK) || (mode == BPSK)) {    
+      digitalWrite(LED_BUILTIN, HIGH);
+      digitalWrite(MAIN_LED_BLUE, HIGH);	    
+    }
+	
+    sampleTime = (unsigned int) millis();
+*/	 
+ }		
 	
 }
