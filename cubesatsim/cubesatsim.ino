@@ -440,8 +440,8 @@ void write_config_file() {
 	strcpy(sim_yes, "no");
 	
   sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
-//  Serial.println("Writing string");	
-  if (debug_mode)	
+  Serial.println("Writing string ");	
+//  if (debug_mode)	
     print_string(buff);	
   config_file.write(buff, strlen(buff));	  
 	  
