@@ -2590,13 +2590,13 @@ void read_payload()
 //    print_string(payload_str);		  
     if (bmePresent) {
 //    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ",   
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading1 = bme.readTemperature();
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading2 = bme.readPressure();
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading3 = bme.readAltitude(SEALEVELPRESSURE_HPA);
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading4 = bme.readHumidity();		
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
 //	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
@@ -2608,20 +2608,20 @@ void read_payload()
 
     if (mpuPresent) 	 { 
 //    print_string(payload_str);
-      while (i2c_busy_now) { }   	    
+	while (i2c_busy_now) { Serial.print(".");}	    
       mpu6050.update();
 	    
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading1 = mpu6050.getGyroX();
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading2 = mpu6050.getGyroY();
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading3 = mpu6050.getGyroZ();
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading4 = mpu6050.getAccX();		    
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading3 = mpu6050.getAccY();
-	while (i2c_busy_now) { }
+	while (i2c_busy_now) { Serial.print(".");}
 	reading4 = mpu6050.getAccZ();	
 	    
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
