@@ -206,13 +206,15 @@ void loop() {
   int startSleep = millis();	
   loop_count++;
 	
-  if (sim_mode == TRUE) 
+//  if (sim_mode == TRUE)
+  if ((sim_mode == TRUE) || (mode == FSK)) // don't read INA219s in FSK mode
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-   read_ina219();	
+    read_ina219();	
 	
-  read_payload();	
+  if (mode != FSK)	// don't read payload in FSK mode
+    read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
