@@ -474,7 +474,8 @@ void send_aprs_packet() {
 }
 
 void send_cw() {
- if (filter_present) { // only transmit CW packet if BPF filter is present
+// if (filter_present) 
+ { // only transmit CW packet if BPF filter is present
 	
   char de[] = " DE ";	
   char telem[1000];
@@ -506,7 +507,7 @@ void transmit_on() {
     if (debug_mode)	  
       Serial.println("Transmit on!!!");
 //  pwm_set_gpio_level(BPSK_PWM_A_PIN, (config.top + 1) * 0.5);
-//  pwm_set_gpio_level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
+//  pwm_set__level(BPSK_PWM_B_PIN, (config.top + 1) * 0.5);	
 /*	  
     int ret = 1;
     int i = 0;	  
@@ -2165,12 +2166,31 @@ void config_radio()
   pinMode(TEMPERATURE_PIN, INPUT);
   pinMode(AUDIO_IN_PIN, INPUT);
 */	
-  if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+  if ((mode == AFSK) || (mode == SSTV)) {
 	  
     digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
 //    pinMode(AUDIO_OUT_PIN, OUTPUT);	  
 //    program_radio();  // remove for now
 
+  } else if (mode == CW) {
+    if (sr_frs_present)
+      digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
+    else {
+      start_clockgen();	  
+      if (clockgen.setClockFSK()) {	  
+	 start_clockgen();
+	 clockgen.setClockFSK();
+	 Serial.println("Config clock for CW without SR_FRS!");       
+      }	else {
+	 Serial.println("Config clock for CW without SR_FRS");          
+      }	
+      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
+      clockgen.enableOutputs(false);
+      digitalWrite(BPSK_CONTROL_B, LOW);	  
+      digitalWrite(BPSK_CONTROL_A, LOW);  		    
+	    
+    }
+ 
   } else if (mode == BPSK)  {
 /*    	 
     int ret = 1;
@@ -3529,17 +3549,21 @@ void config_gpio() {
   pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(BPF_PIN) == FALSE) {
+  if (digitalRead(BPF_PIN) == FALSE) {  
+//  if (digitalRead(BPF_PIN) == FALSE) {  // force BPF present
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
   else
-    Serial.println("BPF not present - no transmitting after CW ID");	  
+    Serial.println("BPF not present - no transmitting after CW ID");	 
 	
-  if (digitalRead(TXC_PIN) == FALSE)
-    Serial.println("TXC present");
+  if (digitalRead(TXC_PIN) == FALSE) {	
+//  if (digitalRead(TXC_PIN) != FALSE) {   // force SR_FRS not present
+    Serial.println("SR_FRS present");
+    sr_frs_present = true;
+  }
   else
-    Serial.println("TXC not present");	
+    Serial.println("SR_FRS not present");	
 
 //  Serial.print("Squelch: ");
 //  Serial.println(digitalRead(SQUELCH));
@@ -3584,14 +3608,14 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_A, HIGH);  
 //      Serial.print("-");	    
-//      clockgen.enableOutputOnly(1);	  
+      if (mode == FSK) clockgen.enableOutputOnly(1);	  
     } else {
 //      digitalWrite(BPSK_CONTROL_A, LOW);  
       digitalWrite(BPSK_CONTROL_A, LOW);  
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
-//      clockgen.enableOutputOnly(0);	  
+      if (mode == FSK) clockgen.enableOutputOnly(0);	  
     }	
     if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position % bufLen;
@@ -3828,18 +3852,32 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
  // if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
-	
-  unsigned long start = micros();
+
   unsigned long duration_us = duration * 1000;
-  float period_us = (0.5E6) / (float)(freq);
-  bool phase = HIGH;	
-  while((micros() - start) < duration_us)  {
-    digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
-    phase = !phase;	 
-    float time_left = (float)(start + duration_us - micros());	  
-    sleep(min(time_left, period_us) / 1.0E6);  
+
+  if (sr_frs_present) {	
+          unsigned long start = micros();
+	  float period_us = (0.5E6) / (float)(freq);
+	  bool phase = HIGH;	
+	  while((micros() - start) < duration_us)  {
+	    digitalWrite(AUDIO_OUT_PIN, phase);    // ToDo: if no TXC, just turn on PWM carrier
+	    phase = !phase;	 
+	    float time_left = (float)(start + duration_us - micros());	  
+	    sleep(min(time_left, period_us) / 1.0E6);  
+	  }
+	  digitalWrite(AUDIO_OUT_PIN, LOW);		  
   }
-  digitalWrite(AUDIO_OUT_PIN, LOW);	
+  else {
+//    Serial.println("No sr_frs present!");
+    unsigned long start = micros();
+//    clockgen.enableOutputs(true);	  
+    clockgen.enableOutputOnly(0);
+    digitalWrite(BPSK_CONTROL_A, HIGH);  	  
+    while((micros() - start) < duration_us)  { }
+    digitalWrite(BPSK_CONTROL_A, LOW);  	
+    clockgen.enableOutputs(false);		  
+  }
+
 //  if (!wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
@@ -3853,6 +3891,21 @@ void transmit_callsign(char *callsign) {
   strcat(id, callsign);
   Serial.print("Transmitting CW id: ");	
   print_string(id);	
+	
+  if (!sr_frs_present) {
+      start_clockgen();	  
+      if (clockgen.setClockFSK()) {	  
+	 start_clockgen();
+	 clockgen.setClockFSK();
+	 Serial.println("Config clock for CW without SR_FRS!");       
+      }	else {
+	 Serial.println("Config clock for CW without SR_FRS");          
+      }	
+      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
+      clockgen.enableOutputs(false);
+      digitalWrite(BPSK_CONTROL_B, LOW);	  
+      digitalWrite(BPSK_CONTROL_A, LOW);  	  
+  }
 /*	
   if (reset_count == 0) {
     program_radio();	  
@@ -3867,10 +3920,12 @@ void transmit_string(char *string) {
   int j = 0;
   if (debug_mode)	
     Serial.println("Transmit on");
-  digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
-  digitalWrite(MAIN_LED_BLUE, HIGH);
-  digitalWrite(LED_BUILTIN, HIGH);	
-  digitalWrite(PTT_PIN, LOW);	
+  if (sr_frs_present)	{
+    digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS 
+    digitalWrite(PTT_PIN, LOW);	
+  }
+////  digitalWrite(MAIN_LED_BLUE, HIGH);
+////  digitalWrite(LED_BUILTIN, HIGH);	
 	
   while ((string[j] != '\0') && (j < 256) && !cw_stop) {
 //    Serial.print("j = ");
@@ -3896,8 +3951,8 @@ void transmit_string(char *string) {
 	
   if (debug_mode)	
     Serial.println("Transmit off");
-  digitalWrite(MAIN_LED_BLUE, LOW);
-  digitalWrite(LED_BUILTIN, LOW);	
+////  digitalWrite(MAIN_LED_BLUE, LOW);
+////  digitalWrite(LED_BUILTIN, LOW);	
   digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS 
 }
@@ -4422,7 +4477,7 @@ void set_lat_lon() {
 }
 
 void program_radio() {
-	
+ if (sr_frs_present) {	
   Serial.println("Programming SR_FRS!");	
 		
   digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
@@ -4443,6 +4498,7 @@ void program_radio() {
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
+ }	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
 }
 
