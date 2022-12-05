@@ -148,7 +148,8 @@ void setup() {
 */    	  
   start_ina219();
 	
-  if (i2c_bus3 == false) 
+//  if (i2c_bus3 == false)	
+  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
 /*	
@@ -206,12 +207,10 @@ void loop() {
   int startSleep = millis();	
   loop_count++;
 	
-//  if (sim_mode == TRUE)
-  if ((sim_mode == TRUE) || (mode == FSK)) // don't read INA219s in FSK mode
+  if (sim_mode == TRUE)
     generate_simulated_telem();
   else
-  // query INA219 sensors and Payload sensors
-    read_ina219();	
+    read_ina219();	  // query INA219 sensors and Payload sensors
 	
   if (mode != FSK)	// don't read payload in FSK mode
     read_payload();	
