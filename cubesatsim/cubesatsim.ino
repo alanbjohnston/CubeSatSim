@@ -406,7 +406,7 @@ void read_config_file() {
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    Serial.println("Valid latitude and longitude in config file\n");
+    Serial.println("Valid latitude and longitude in config file");
 // convert to APRS DDMM.MM format
     latitude = lat_file; // toAprsFormat(lat_file);
     longitude = long_file; // toAprsFormat(long_file);
@@ -417,8 +417,10 @@ void read_config_file() {
 //    longitude = toAprsFormat(longitude);
 //  }
 	
-  if (strcmp(sim_yes, "yes") == 0)
+  if (strcmp(sim_yes, "yes") == 0) {
 	  sim_mode = true;	
+	  Serial.println("Simulated telemetry mode set by config file");
+  }
 	
   config_file.close();	
 	
