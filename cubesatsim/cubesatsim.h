@@ -381,6 +381,7 @@ RPI_PICO_Timer ITimer1(1);
 bool timer0_on = false;
 volatile int timer_counter;
 bool filter_present = false;  // BPF installation state for transmitter
+bool sr_frs_present = false;  // SR_FRS FM transmitter module state
 
 char callsign[20];
 int morse_timing = 60;  // ms for a dit
