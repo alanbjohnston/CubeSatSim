@@ -2585,14 +2585,22 @@ void read_payload()
 ///    char result = Serial.read();
     char header[] = "OK BME280 ";
     char str[100];
-	  
+	float reading1, reading2, reading3, reading4, reading5, reading6;  	  
     strcpy(payload_str, header);
 //    print_string(payload_str);		  
     if (bmePresent) {
-//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ",
-	while (i2c_busy_now) { }    
+//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ",   
+	while (i2c_busy_now) { }
+	reading1 = bme.readTemperature();
+	while (i2c_busy_now) { }
+	reading2 = bme.readPressure();
+	while (i2c_busy_now) { }
+	reading3 = bme.readAltitude(SEALEVELPRESSURE_HPA);
+	while (i2c_busy_now) { }
+	reading4 = bme.readHumidity();		
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
-	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
+//	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
+	  reading1, reading2 / 100.0, reading3, reading4);
     } else
         sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
@@ -2602,13 +2610,27 @@ void read_payload()
 //    print_string(payload_str);
       while (i2c_busy_now) { }   	    
       mpu6050.update();
-
+	    
+	while (i2c_busy_now) { }
+	reading1 = mpu6050.getGyroX();
+	while (i2c_busy_now) { }
+	reading2 = mpu6050.getGyroY();
+	while (i2c_busy_now) { }
+	reading3 = mpu6050.getGyroZ();
+	while (i2c_busy_now) { }
+	reading4 = mpu6050.getAccX();		    
+	while (i2c_busy_now) { }
+	reading3 = mpu6050.getAccY();
+	while (i2c_busy_now) { }
+	reading4 = mpu6050.getAccZ()));	
+	    
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
       sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
-        mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
+//        mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
+        reading1, reading2, reading3, reading4, reading5, reading6 ; 
 
-      float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
-      float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+      float rotation = sqrt(reading1 * reading1 + reading2 * reading2 + reading3 * reading3); 
+      float acceleration = sqrt(eading4 * reading4 + reading5 * reading5 + reading6 * reading6); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
