@@ -418,7 +418,8 @@ void read_config_file() {
 //  }
   Serial.printf("sim_yes: %s\n", sim_yes);
   char yes_string[] = "yes";	
-  if (strcmp(sim_yes, yes_string) == 0) {
+//  if (strcmp(sim_yes, yes_string) == 0) {
+  if (sim_yes[0] == 'y') {
 	  sim_mode = true;	
 	  Serial.println("Simulated telemetry mode set by config file");
   }
