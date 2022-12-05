@@ -63,7 +63,7 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 unsigned long micros3;
 
-volatile i2c_busy_now = false;
+volatile bool i2c_busy_now = false;
 
 //WiFiServer server(port);
 //WiFiClient client;
