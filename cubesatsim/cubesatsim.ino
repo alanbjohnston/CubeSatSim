@@ -167,6 +167,8 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
+  get_input();		
+	
   prompt = PROMPT_HELP;  // display input help menu	
   prompt_for_input();
 	
