@@ -2622,12 +2622,12 @@ void read_payload()
 	while (i2c_busy_now) { }
 	reading3 = mpu6050.getAccY();
 	while (i2c_busy_now) { }
-	reading4 = mpu6050.getAccZ()));	
+	reading4 = mpu6050.getAccZ();	
 	    
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
       sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
 //        mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
-        reading1, reading2, reading3, reading4, reading5, reading6 ; 
+        reading1, reading2, reading3, reading4, reading5, reading6); 
 
       float rotation = sqrt(reading1 * reading1 + reading2 * reading2 + reading3 * reading3); 
       float acceleration = sqrt(eading4 * reading4 + reading5 * reading5 + reading6 * reading6); 
