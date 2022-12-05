@@ -416,7 +416,7 @@ void read_config_file() {
 //    latitude = toAprsFormat(latitude);
 //    longitude = toAprsFormat(longitude);
 //  }
-	
+  Serial.printf("sim_yes: %s", sim_yes);	
   if (strcmp(sim_yes, "yes") == 0) {
 	  sim_mode = true;	
 	  Serial.println("Simulated telemetry mode set by config file");
