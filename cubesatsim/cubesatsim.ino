@@ -182,11 +182,11 @@ void setup() {
 
 //  start_button_isr(); 	// try before start_isr
 	
-  start_isr();	
-	
 // setup radio depending on mode 
   config_radio();	
-		
+	
+  start_isr();	
+	
 ///  start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
