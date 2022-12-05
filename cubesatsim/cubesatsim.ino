@@ -63,6 +63,8 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 unsigned long micros3;
 
+volatile i2c_busy_now = false;
+
 //WiFiServer server(port);
 //WiFiClient client;
 
@@ -210,9 +212,9 @@ void loop() {
     generate_simulated_telem();
   else
   // query INA219 sensors and Payload sensors
-   read_ina219();	
+ ; //  read_ina219();	
 	
-  read_payload();	
+ // read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
