@@ -2630,7 +2630,7 @@ void read_payload()
         reading1, reading2, reading3, reading4, reading5, reading6); 
 
       float rotation = sqrt(reading1 * reading1 + reading2 * reading2 + reading3 * reading3); 
-      float acceleration = sqrt(eading4 * reading4 + reading5 * reading5 + reading6 * reading6); 
+      float acceleration = sqrt(reading4 * reading4 + reading5 * reading5 + reading6 * reading6); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
