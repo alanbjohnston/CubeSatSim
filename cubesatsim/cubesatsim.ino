@@ -2588,19 +2588,19 @@ void read_payload()
 	  
     strcpy(payload_str, header);
 //    print_string(payload_str);		  
-    if (bmePresent) 
+    if (bmePresent) {
 //    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ",
-	while (i2c_busy_now) {}    
+	while (i2c_busy_now) { }    
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
-    else
+    } else
         sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
 //    print_string(payload_str);		  
 
     if (mpuPresent) 	 { 
 //    print_string(payload_str);
-      while (i2c_busy_now) {}   	    
+      while (i2c_busy_now) { }   	    
       mpu6050.update();
 
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
