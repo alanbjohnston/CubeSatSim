@@ -2582,14 +2582,15 @@ void read_payload()
 //  if ((Serial.available() > 0)|| first_time == true) 
   {
 //    blink(50);
-    char result = Serial.read();
+///    char result = Serial.read();
     char header[] = "OK BME280 ";
     char str[100];
 	  
     strcpy(payload_str, header);
 //    print_string(payload_str);		  
     if (bmePresent) 
-//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
+//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ",
+	while (i2c_busy_now) {}    
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
     else
@@ -2598,7 +2599,8 @@ void read_payload()
 //    print_string(payload_str);		  
 
     if (mpuPresent) 	 { 
-//    print_string(payload_str);	
+//    print_string(payload_str);
+      while (i2c_busy_now) {}   	    
       mpu6050.update();
 
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
@@ -3610,14 +3612,22 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_A, HIGH);  
 //      Serial.print("-");	    
-      if (mode == FSK) clockgen.enableOutputOnly(1);	  
+      if (mode == FSK) {
+	      i2c_busy_now = true;
+	      clockgen.enableOutputOnly(1);	  
+   	      i2c_busy_now = false;	      
+      }
     } else {
 //      digitalWrite(BPSK_CONTROL_A, LOW);  
       digitalWrite(BPSK_CONTROL_A, LOW);  
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
-      if (mode == FSK) clockgen.enableOutputOnly(0);	  
+      if (mode == FSK) {
+	      i2c_busy_now = true;
+	      clockgen.enableOutputOnly(0);	
+	      i2c_busy_now = false;	      
+      }
     }	
     if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position % bufLen;
