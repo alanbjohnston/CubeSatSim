@@ -3608,14 +3608,14 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_A, HIGH);  
 //      Serial.print("-");	    
-//      clockgen.enableOutputOnly(1);	  
+      if (mode == FSK) clockgen.enableOutputOnly(1);	  
     } else {
 //      digitalWrite(BPSK_CONTROL_A, LOW);  
       digitalWrite(BPSK_CONTROL_A, LOW);  
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
-//      clockgen.enableOutputOnly(0);	  
+      if (mode == FSK) clockgen.enableOutputOnly(0);	  
     }	
     if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position % bufLen;
