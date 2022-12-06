@@ -3662,7 +3662,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 	      clockgen.enableOutputOnly(1);	  
    	      i2c_busy_now = false;	
         } else
-		Serial.print("-");
+;//		Serial.print("-");
       }
     } else {
 //      digitalWrite(BPSK_CONTROL_A, LOW);  
@@ -3676,7 +3676,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 	      clockgen.enableOutputOnly(0);	
 	      i2c_busy_now = false;	      
          } else
-		Serial.print("-");
+;//		Serial.print("-");
        }
     }	
     if (wav_position > bufLen) { // 300) {
