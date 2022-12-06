@@ -215,7 +215,7 @@ void loop() {
   // query INA219 sensors and Payload sensors
  ; //  read_ina219();	
 	
-  read_payload();	
+  //read_payload();	
   
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
