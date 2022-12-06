@@ -3659,7 +3659,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      Serial.print("-");	    
       if (mode == FSK) {
 //        if (!i2c_busy_now2) {
-         while (i2c_busy_now2) { }
+///         while (i2c_busy_now2) { }
 	      i2c_busy_now = true;
 	      clockgen.enableOutputOnly(1);	  
    	      i2c_busy_now = false;	
@@ -3674,7 +3674,7 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      Serial.print("_");	 
        if (mode == FSK) {
 //         if (!i2c_busy_now2) {
-         while (i2c_busy_now2) { }
+///         while (i2c_busy_now2) { }
 	      i2c_busy_now = true;
 	      clockgen.enableOutputOnly(0);	
 	      i2c_busy_now = false;	      
