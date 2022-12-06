@@ -4395,7 +4395,7 @@ void prompt_for_input() {
 //    Serial.println("Restart not yet implemented");
       start_payload();
 //      start_ina219();
-      if (mode != CW)
+      if ((mode != CW)  || (!filter_present))
         transmit_callsign(callsign);
       sleep(0.5);	 
       config_telem();
