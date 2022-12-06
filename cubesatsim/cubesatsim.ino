@@ -64,6 +64,7 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 unsigned long micros3;
 
 volatile bool i2c_busy_now = false;
+volatile bool i2c_busy_now2 = false;
 
 //WiFiServer server(port);
 //WiFiClient client;
@@ -2591,21 +2592,21 @@ void read_payload()
     if (bmePresent) {
 //    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ",   
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading1 = bme.readTemperature();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading2 = bme.readPressure();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading3 = bme.readAltitude(SEALEVELPRESSURE_HPA);
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading4 = bme.readHumidity();		
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
 //	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
 	  reading1, reading2 / 100.0, reading3, reading4);
@@ -2617,34 +2618,34 @@ void read_payload()
     if (mpuPresent) 	 { 
 //    print_string(payload_str);
 	while (i2c_busy_now) { Serial.print(".");}	    
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
       mpu6050.update();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading1 = mpu6050.getGyroX();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading2 = mpu6050.getGyroY();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading3 = mpu6050.getGyroZ();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading4 = mpu6050.getAccX();		    
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading3 = mpu6050.getAccY();
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	while (i2c_busy_now) { Serial.print(".");}
-	i2c_busy_now = true;    
+	i2c_busy_now2 = true;    
 	reading4 = mpu6050.getAccZ();	
-	i2c_busy_now = false;    	    
+	i2c_busy_now2 = false;    	    
 	    
 //    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
       sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
@@ -3657,7 +3658,7 @@ bool TimerHandler0(struct repeating_timer *t) {
       digitalWrite(BPSK_CONTROL_A, HIGH);  
 //      Serial.print("-");	    
       if (mode == FSK) {
-        if (!i2c_busy_now) {
+        if (!i2c_busy_now2) {
 	      i2c_busy_now = true;
 	      clockgen.enableOutputOnly(1);	  
    	      i2c_busy_now = false;	
@@ -3671,7 +3672,7 @@ bool TimerHandler0(struct repeating_timer *t) {
       digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
        if (mode == FSK) {
-         if (!i2c_busy_now) {
+         if (!i2c_busy_now2) {
 	      i2c_busy_now = true;
 	      clockgen.enableOutputOnly(0);	
 	      i2c_busy_now = false;	      
