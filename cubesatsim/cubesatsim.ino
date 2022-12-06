@@ -3555,8 +3555,8 @@ void config_gpio() {
   pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-//  if (digitalRead(BPF_PIN) == FALSE) {  
-  if (digitalRead(BPF_PIN) != FALSE) {  // force BPF present
+  if (digitalRead(BPF_PIN) == FALSE) {  
+//  if (digitalRead(BPF_PIN) != FALSE) {  // force BPF present
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
