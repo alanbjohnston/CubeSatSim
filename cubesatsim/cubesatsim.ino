@@ -3659,7 +3659,7 @@ bool TimerHandler0(struct repeating_timer *t) {
       if (mode == FSK) {
         if (!i2c_busy_now) {
 	      i2c_busy_now = true;
-/	      clockgen.enableOutputOnly(1);	  
+	      clockgen.enableOutputOnly(1);	  
    	      i2c_busy_now = false;	
         } else
 		Serial.print("-");
