@@ -175,7 +175,7 @@ void setup() {
 /**/
 //  Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
-  if (mode != CW)
+  if ((mode != CW)  || (!filter_present))
     transmit_callsign(callsign);
 //  sleep(5.0);		
   sleep(1.0);		
