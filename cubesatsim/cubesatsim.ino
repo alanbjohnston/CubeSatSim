@@ -480,7 +480,7 @@ void send_aprs_packet() {
 }
 
 void send_cw() {
-// if (filter_present) 
+ if (filter_present) 
  { // only transmit CW packet if BPF filter is present
 	
   char de[] = " DE ";	
