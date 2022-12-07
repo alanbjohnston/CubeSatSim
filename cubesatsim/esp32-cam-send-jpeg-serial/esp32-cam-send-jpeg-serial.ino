@@ -210,7 +210,11 @@ void setup() {
 }
 
 void loop() {
-  
+        
+  deleteFile4(SPIFFS, "/cam.jpg");      
+  deleteFile4(SPIFFS, "/cam.bin");      
+  deleteFile4(SPIFFS, "/cam.pwm");      
+        
   char filename[] = "/cam.jpg";
       char input_file[] = "/cam.jpg";	  
 //      char output_file2[] = "/cam2.bin"; 	  
