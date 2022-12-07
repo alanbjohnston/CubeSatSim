@@ -1,4 +1,5 @@
 //  ESP32-CAM JPEG over Serial
+//  with SSTV and PWM
 //
 //  by Jim McLaughlin and Alan Johnston
 //
@@ -25,6 +26,7 @@
 #include <FastCRC.h>
 //#include "FS.h"
 #include "SPIFFS.h"
+#include "picosstvpp.h"
 
 // some info: https://visualgdb.com/tutorials/esp32/camera/
 
