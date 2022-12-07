@@ -148,7 +148,8 @@ void setup() {
 */    	  
   start_ina219();
 	
-  if (i2c_bus3 == false) 
+  if (i2c_bus3 == false)	
+//  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
 /*	
@@ -166,13 +167,15 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
+  get_input();		
+	
   prompt = PROMPT_HELP;  // display input help menu	
   prompt_for_input();
 	
 /**/
 //  Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
-  if (mode != CW)
+  if ((mode != CW)  || (!filter_present))
     transmit_callsign(callsign);
 //  sleep(5.0);		
   sleep(1.0);		
@@ -182,11 +185,11 @@ void setup() {
 
 //  start_button_isr(); 	// try before start_isr
 	
-  start_isr();	
-	
 // setup radio depending on mode 
   config_radio();	
-		
+	
+  start_isr();	
+	
 ///  start_button_isr(); 
 	
   sampleTime = (unsigned int) millis();		
@@ -206,14 +209,13 @@ void loop() {
   int startSleep = millis();	
   loop_count++;
 	
-  if (sim_mode == TRUE) 
+  if (sim_mode == TRUE)
     generate_simulated_telem();
-  else
-  // query INA219 sensors and Payload sensors
-   read_ina219();	
+  else {
+    read_ina219();	  // query INA219 sensors and Payload sensors
+    read_payload();	  // only read payload if not simulated telemetry
+  }
 	
-  read_payload();	
-  
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
     get_tlm_fox();
@@ -406,7 +408,7 @@ void read_config_file() {
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    Serial.println("Valid latitude and longitude in config file\n");
+    Serial.println("Valid latitude and longitude in config file");
 // convert to APRS DDMM.MM format
     latitude = lat_file; // toAprsFormat(lat_file);
     longitude = long_file; // toAprsFormat(long_file);
@@ -416,9 +418,13 @@ void read_config_file() {
 //    latitude = toAprsFormat(latitude);
 //    longitude = toAprsFormat(longitude);
 //  }
-	
-  if (strcmp(sim_yes, "yes") == 0)
+  Serial.printf("sim_yes: %s\n", sim_yes);
+  char yes_string[] = "yes";	
+//  if (strcmp(sim_yes, yes_string) == 0) {
+  if (sim_yes[0] == 'y') {
 	  sim_mode = true;	
+	  Serial.println("Simulated telemetry mode set by config file");
+  }
 	
   config_file.close();	
 	
@@ -438,8 +444,8 @@ void write_config_file() {
 	strcpy(sim_yes, "no");
 	
   sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
-//  Serial.println("Writing string");	
-  if (debug_mode)	
+  Serial.println("Writing string ");	
+//  if (debug_mode)	
     print_string(buff);	
   config_file.write(buff, strlen(buff));	  
 	  
@@ -474,7 +480,7 @@ void send_aprs_packet() {
 }
 
 void send_cw() {
-// if (filter_present) 
+ if (filter_present) 
  { // only transmit CW packet if BPF filter is present
 	
   char de[] = " DE ";	
@@ -3550,7 +3556,7 @@ void config_gpio() {
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
   if (digitalRead(BPF_PIN) == FALSE) {  
-//  if (digitalRead(BPF_PIN) == FALSE) {  // force BPF present
+//  if (digitalRead(BPF_PIN) != FALSE) {  // force BPF present
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
@@ -4389,7 +4395,7 @@ void prompt_for_input() {
 //    Serial.println("Restart not yet implemented");
       start_payload();
 //      start_ina219();
-      if (mode != CW)
+      if ((mode != CW)  || (!filter_present))
         transmit_callsign(callsign);
       sleep(0.5);	 
       config_telem();
