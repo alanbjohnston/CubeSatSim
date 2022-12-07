@@ -212,14 +212,14 @@ void setup() {
 void loop() {
   
   char filename[] = "/cam.jpg";
-
-  save_camera_image(filename);
-        
       char input_file[] = "/cam.jpg";	  
 //      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
-//      jpeg_decode(image_file, output_file, true); // debug_mode);
-      jpeg_decode(input_file, output_file, false); // debug_mode);    
+        
+//  save_camera_image(filename);
+  save_camera_image(output_file);
+        
+//      jpeg_decode(input_file, output_file, false); // debug_mode);    
         
 listDir(SPIFFS, "/", 0);
         
@@ -317,8 +317,8 @@ static camera_config_t camera_config = {
   .xclk_freq_hz = 20000000,
   .ledc_timer = LEDC_TIMER_0,
   .ledc_channel = LEDC_CHANNEL_0,
-
-  .pixel_format = PIXFORMAT_JPEG, // Options: YUV422, GRAYSCALE, RGB565, JPEG
+// .pixel_format = PIXFORMAT_JPEG, // Options: YUV422, GRAYSCALE, RGB565, JPEG
+  .pixel_format = PIXFORMAT_ RGB565, // Options: YUV422, GRAYSCALE, RGB565, JPEG
   .frame_size = FRAMESIZE_QVGA, // Options: QQVGA-UXGA, QVGA  Do not use sizes above QVGA when not JPEG
 
   .jpeg_quality = 6, // 12, //0-63 lower number means higher quality
