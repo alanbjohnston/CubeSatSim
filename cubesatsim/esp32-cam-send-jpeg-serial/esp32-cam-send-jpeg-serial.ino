@@ -223,6 +223,10 @@ void loop() {
         
 listDir(SPIFFS, "/", 0);
         
+      picosstvpp();	
+        
+listDir(SPIFFS, "/", 0);
+        
 //  send_image_serial(filename);
 
   delay(500);
