@@ -214,8 +214,16 @@ void loop() {
   char filename[] = "/cam.jpg";
 
   save_camera_image(filename);
-
-  send_image_serial(filename);
+        
+      char input_file[] = "/cam.jpg";	  
+//      char output_file2[] = "/cam2.bin"; 	  
+      char output_file[] = "/cam.bin"; 
+//      jpeg_decode(image_file, output_file, true); // debug_mode);
+      jpeg_decode(input_file, output_file, false); // debug_mode);    
+        
+listDir(SPIFFS, "/", 0);
+        
+//  send_image_serial(filename);
 
   delay(500);
 }
