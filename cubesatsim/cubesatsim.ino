@@ -42,7 +42,9 @@
 //#include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
+#ifdef OLD
 #include "picosstvpp.h"
+#endif
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
 
@@ -163,7 +165,9 @@ void setup() {
 ///  start_button_isr(); 
 	
 //  setup_sstv();
+#ifdef OLD
   picosstvpp_begin(26);
+#endif	
   camera_detected = start_camera();	
 
 //  start_pwm();
