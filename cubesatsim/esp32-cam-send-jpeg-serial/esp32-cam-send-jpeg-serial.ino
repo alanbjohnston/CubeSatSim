@@ -227,7 +227,37 @@ void loop() {
         
 listDir(SPIFFS, "/", 0);
         
-      picosstvpp();	
+// Sending image file
+    Serial.println("Start of binary data:");
+
+    //      Serial.println("\nResetting CRC");
+    //      crc.restart();
+
+    int j = 0;
+    // flag at start
+    for (int i = 0; i < strlen(start_flag); i++) {
+//      sprintf(hexValue, "%02X", start_flag[i]);
+      //        Serial.print(hexValue);
+      Serial.write(start_flag[i]);
+      //        Serial.print(start_flag[i], HEX);
+    }
+                
+    picosstvpp();	
+        
+    // flag at end
+    for (int i = 0; i < strlen(end_flag); i++) {
+//      sprintf(hexValue, "%02X", end_flag[i]);
+      //          Serial.print(hexValue);
+//      file_buf[j++] = end_flag[i];
+      Serial.write(end_flag[i]);
+      //         Serial.print(end_flag[i], HEX);
+      //          if (file_flag) {
+      //            file_buf[j++] = end_flag[i];
+      //          } else {
+      //            pic->buf[i++] = end_flag[j];
+      //          }
+    }
+        
         
 listDir(SPIFFS, "/", 0);
         
