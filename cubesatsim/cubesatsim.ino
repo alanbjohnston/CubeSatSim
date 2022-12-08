@@ -74,6 +74,7 @@ char call[] = "AMSAT";   // put your callsign here
 extern bool get_camera_image();
 extern bool start_camera();
 extern bool get_pwm_file();
+extern void play_pwm_from_file(int dds_pwm_pin); 
 
 void setup() {
 
@@ -291,8 +292,8 @@ void loop() {
 	      
        show_dir();
 
-       play_pwm_file(26);
-	      
+//       play_pwm_file(26);
+       play_pwm_from_file(26) 	      
 //      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
 ///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
       if (debug_mode)	  
