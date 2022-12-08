@@ -318,12 +318,13 @@ void play_pwm_from_file(int dds_pwm_pin) {
 
 */
 bool get_pwm_file()  {
-  
+ /* 
    Serial2.setRX(9);
    delay(100);
    Serial2.setTX(8);
    delay(100);
    Serial2.begin(115200);
+*/	
 #ifdef GET_DEBUG  
    Serial.println("Started Serial2 to PWM File v0.1");
 #endif
