@@ -73,6 +73,7 @@ char call[] = "AMSAT";   // put your callsign here
 
 extern bool get_camera_image();
 extern bool start_camera();
+extern bool get_pwm_file();
 
 void setup() {
 
@@ -284,8 +285,14 @@ void loop() {
 //      scottie1_transmit_file(output_file, debug_mode);
  
 //      ITimer1.stopTimer();	// turn off pushbutton timer  	   
-///      ITimer1.disableTimer();	// turn off pushbutton timer  	  
-      play_pwm_file(26);
+///      ITimer1.disableTimer();	// turn off pushbutton timer  	
+	  
+      get_pwm_file()
+	      
+	show_dir();
+
+	play_pwm_file(26);
+	      
 //      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
 ///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
       if (debug_mode)	  
