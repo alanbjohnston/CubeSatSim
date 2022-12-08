@@ -258,12 +258,13 @@ listDir(SPIFFS, "/", 0);
       //          }
     }
         
+ Serial.println("\nEnd of binary data");
         
 listDir(SPIFFS, "/", 0);
         
 //  send_image_serial(filename);
 
-  delay(500);
+//  delay(500);
 }
 
 /**
