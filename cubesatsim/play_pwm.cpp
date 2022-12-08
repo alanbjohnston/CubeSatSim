@@ -343,7 +343,7 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 //FastCRC8 CRC8;
-#define CAMERA_TIMEOUT 12000  // Camera timeout in milli seconds
+#define SERIAL2_TIMEOUT 120000  // Camera timeout in milli seconds
 
 //#define GET_DEBUG
 
@@ -374,7 +374,7 @@ int led_pin = LED_BUILTIN;
         Serial.println("Error opening cam.pwm");
  
   unsigned long time_start = millis();	    
-  while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
+  while ((!finished) && ((millis() - time_start) < SERIAL2_TIMEOUT)) {
 
    if (Serial2.available()) {      // If anything comes in Serial2
       byte octet = Serial2.read(); 
@@ -430,12 +430,13 @@ int led_pin = LED_BUILTIN;
 */
               index1 -= 40;                         
            
-              
+/*              
               index1 = 0;           
               start_flag_complete = false;
               start_flag_detected = false; // get ready for next image 
               end_flag_detected = false;
               flag_count = 0; 
+*/		    
 //              delay(6000);
             }
          } else {
@@ -474,6 +475,7 @@ int led_pin = LED_BUILTIN;
     }
   }
   i.close();
+  Serial.printf("\nResult: %d count: %d", finished, index1	
 
   return(finished);
 }
