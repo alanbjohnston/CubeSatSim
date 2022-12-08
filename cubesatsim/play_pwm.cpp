@@ -392,7 +392,7 @@ int led_pin = LED_BUILTIN;
 //         if (end_flag_detected) {
             flag_count++;
 #ifdef GET_DEBUG        
-            Serial.println("Found part of end flag!");
+//            Serial.println("Found part of end flag!");
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
