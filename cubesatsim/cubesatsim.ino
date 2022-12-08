@@ -287,11 +287,11 @@ void loop() {
 //      ITimer1.stopTimer();	// turn off pushbutton timer  	   
 ///      ITimer1.disableTimer();	// turn off pushbutton timer  	
 	  
-      get_pwm_file()
+       get_pwm_file();
 	      
-	show_dir();
+       show_dir();
 
-	play_pwm_file(26);
+       play_pwm_file(26);
 	      
 //      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
 ///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
