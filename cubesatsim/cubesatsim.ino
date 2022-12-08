@@ -231,7 +231,8 @@ void loop() {
   else if (mode == SSTV)
 {
 //      first_time_sstv = false;	  
-      char image_file[128];
+//      char image_file[128];
+#ifdef OLD	  
       if (first_time_sstv) {  
 //      if (false) {    // turn this off for now
 //        strcpy(image_file, sstv1_filename);
@@ -274,7 +275,7 @@ void loop() {
 //      show_dir();
 
       picosstvpp();	
-	  
+#endif	  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
       digitalWrite(PTT_PIN, LOW);  // start transmit
