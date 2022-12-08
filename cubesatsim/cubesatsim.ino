@@ -78,6 +78,10 @@ extern bool start_camera();
 extern bool get_pwm_file();
 extern void play_pwm_from_file(int dds_pwm_pin); 
 
+#ifndef OLD
+bool sstv_end = false;
+#endif
+
 void setup() {
 
   set_sys_clock_khz(133000, true);  
