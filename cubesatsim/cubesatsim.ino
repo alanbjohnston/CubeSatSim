@@ -293,7 +293,8 @@ void loop() {
        show_dir();
 
 //       play_pwm_file(26);
-       play_pwm_from_file(26) 	      
+       play_pwm_from_file(26);
+	  
 //      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
 ///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
       if (debug_mode)	  
