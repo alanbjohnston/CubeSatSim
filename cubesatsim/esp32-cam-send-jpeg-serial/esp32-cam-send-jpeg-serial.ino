@@ -253,7 +253,7 @@ listDir(SPIFFS, "/", 0);
       //        Serial.print(start_flag[i], HEX);
     }
                 
-    picosstvpp();	
+    long octet_count = picosstvpp();	
         
     // flag at end
     for (int i = 0; i < strlen(end_flag); i++) {
@@ -268,8 +268,9 @@ listDir(SPIFFS, "/", 0);
       //            pic->buf[i++] = end_flag[j];
       //          }
     }
+  Serial.printf("\n%7d\n", octet_count);        
         
- Serial.println("\nEnd of binary data\n");
+ Serial.println("End of binary data\n");
         
 listDir(SPIFFS, "/", 0);
         
