@@ -79,7 +79,7 @@ extern bool get_pwm_file();
 extern void play_pwm_from_file(int dds_pwm_pin); 
 
 #ifndef OLD
-bool sstv_end = false;
+void sstv_end() {}
 #endif
 
 void setup() {
