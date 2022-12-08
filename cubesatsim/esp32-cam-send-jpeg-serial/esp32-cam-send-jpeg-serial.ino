@@ -227,6 +227,17 @@ void loop() {
         
 listDir(SPIFFS, "/", 0);
         
+  Serial.println("Sending image over serial");
+ 
+    Serial.println("\nBlink twice\n");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off
+    delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off        
+        
 // Sending image file
     Serial.println("Start of binary data:");
 
