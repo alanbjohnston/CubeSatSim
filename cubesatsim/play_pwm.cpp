@@ -1,4 +1,5 @@
 #include <LittleFS.h>
+#include "hardware/pwm.h" 
 
 #define GET_DEBUG
 
@@ -228,20 +229,21 @@ int led_pin = LED_BUILTIN;
 //  delay(5000);	 	 
 // }	 
 }
-
+*/
 
 void play_pwm_from_file(int dds_pwm_pin) {
 	
-#ifdef ESP32
-  Serial.println("Playing PWM file");		
-#else
+	
+#define PWM_WRAP 5
+	
 //  set_sys_clock_khz(133000, true);
 	
 //  #define DDS_PWM_PIN 26
 //   = DDS_PWM_PIN;	
 //  int clock = RATE; // 11.025E3; // was 22E3 50E3;
+  uint16_t g_rate = PWM_WRAP * 4400; //RATE;	
   float multiplier;
-  int wrap = WRAP;  // was 10; // 5;
+  int wrap = PWM_WRAP;  // was 10; // 5;
   int dds_pin_slice;
   pwm_config dds_pwm_config;
   int period = 1E6 / g_rate;  // clock;
@@ -310,13 +312,12 @@ void play_pwm_from_file(int dds_pwm_pin) {
 	
   Serial.println("End");
   output_file.close();	
-#endif
 	
 //  delay(5000);	 	 
 // }	 
 }
 
-*/
+
 bool get_pwm_file()  {
  /* 
    Serial2.setRX(9);
