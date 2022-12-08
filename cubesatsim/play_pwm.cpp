@@ -232,7 +232,9 @@ int led_pin = LED_BUILTIN;
 */
 
 void play_pwm_from_file(int dds_pwm_pin) {
-	
+ bool sstv_stop = false;	
+ File input_file;
+ File output_file;
 	
 #define PWM_WRAP 5
 	
