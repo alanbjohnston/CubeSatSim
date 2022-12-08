@@ -269,7 +269,7 @@ listDir(SPIFFS, "/", 0);
       //          }
     }
         
- Serial.println("\nEnd of binary data");
+ Serial.println("\nEnd of binary data\n");
         
 listDir(SPIFFS, "/", 0);
         
