@@ -343,7 +343,7 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 //FastCRC8 CRC8;
-#define SERIAL2_TIMEOUT 120000  // Camera timeout in milli seconds
+#define SERIAL2_TIMEOUT 240000  // Camera timeout in milli seconds
 
 //#define GET_DEBUG
 
@@ -443,7 +443,7 @@ int led_pin = LED_BUILTIN;
            flag_count = 0;
          }
  ///        buffer2[index1++] = octet;
-           
+/*           
 #ifdef GET_DEBUG    
            char hexValue[5];
            if (octet != 0x66) {
@@ -453,10 +453,11 @@ int led_pin = LED_BUILTIN;
 //             Serial.println("\n********************************************* Got a 66!");
              Serial.print("66");
            } 
-//             Serial.write(octet);
-#endif             
+//             Serial.write(octet);	     
+#endif   
            if (index1 > 100000)
              index1 = 0; 
+*/	     
 //         }
     } else if (octet == start_flag[flag_count]) {  // looking for start flag
           start_flag_detected = true;
