@@ -279,9 +279,6 @@ void loop() {
       picosstvpp();	
 #endif	  
 //      if (debug_mode)	  	  
-        Serial.println("Start transmit!!!");
-///      digitalWrite(PTT_PIN, LOW);  // start transmit
-      transmit_led(HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
  
@@ -291,6 +288,9 @@ void loop() {
        get_pwm_file();
 	      
        show_dir();
+       Serial.println("Start transmit!!!");
+       digitalWrite(PTT_PIN, LOW);  // start transmit
+       transmit_led(HIGH);	    
 
 //       play_pwm_file(26);
        play_pwm_from_file(26);
