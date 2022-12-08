@@ -277,9 +277,9 @@ void loop() {
 
       picosstvpp();	
 #endif	  
-      if (debug_mode)	  	  
+//      if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
-      digitalWrite(PTT_PIN, LOW);  // start transmit
+///      digitalWrite(PTT_PIN, LOW);  // start transmit
       transmit_led(HIGH);	    
 
 //      scottie1_transmit_file(output_file, debug_mode);
