@@ -387,7 +387,7 @@ int led_pin = LED_BUILTIN;
 //       buffer2[index1++] = octet;
          i.write(&octet, 1);
          index1++;
-         Serial.write(octet);	// print octet from Serial2
+///         Serial.write(octet);	// print octet from Serial2
 	     
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
