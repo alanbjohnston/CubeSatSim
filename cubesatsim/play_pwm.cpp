@@ -475,7 +475,7 @@ int led_pin = LED_BUILTIN;
     }
   }
   i.close();
-  Serial.printf("\nResult: %d count: %d", finished, index1	
+  Serial.printf("\nResult: %d count: %d", finished, index1);	
 
   return(finished);
 }
