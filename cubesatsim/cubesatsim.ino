@@ -43,7 +43,7 @@
 #include "LittleFS.h"
 #include <Adafruit_SI5351_Library.h>
 #ifdef OLD
-#include "picosstvpp.h"
+//#include "picosstvpp.h"
 #endif
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
