@@ -1,6 +1,6 @@
 #include <LittleFS.h>
 
-
+/*
 void play_pwm_from_serial(int dds_pwm_pin) {
   
 bool finished = false;
@@ -226,7 +226,7 @@ int led_pin = LED_BUILTIN;
 //  delay(5000);	 	 
 // }	 
 }
-
+*/
 
 void play_pwm_from_file(int dds_pwm_pin) {
 	
