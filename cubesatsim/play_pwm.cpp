@@ -1,5 +1,7 @@
 #include <LittleFS.h>
 
+#define GET_DEBUG
+
 /*
 void play_pwm_from_serial(int dds_pwm_pin) {
   
@@ -17,7 +19,7 @@ int jpeg_start = 0;
 FastCRC8 CRC8;
 #define CAMERA_TIMEOUT 12000  // Camera timeout in milli seconds
 
-//#define GET_IMAGE_DEBUG
+//#define GET_DEBUG
 
 //#define DEBUG
 
@@ -342,7 +344,7 @@ int jpeg_start = 0;
 //FastCRC8 CRC8;
 #define CAMERA_TIMEOUT 12000  // Camera timeout in milli seconds
 
-//#define GET_IMAGE_DEBUG
+//#define GET_DEBUG
 
 //#define DEBUG
 
@@ -385,7 +387,7 @@ int led_pin = LED_BUILTIN;
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
-#ifdef GET_IMAGE_DEBUG        
+#ifdef GET_DEBUG        
             Serial.println("Found part of end flag!");
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
