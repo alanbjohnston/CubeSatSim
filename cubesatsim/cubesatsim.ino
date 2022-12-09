@@ -86,7 +86,7 @@ void setup() {
 
   set_sys_clock_khz(133000, true);  
 	
-  Serial.begin(115200);
+  Serial.begin(57600);
 	
   delay(5000);	
 	
@@ -2490,7 +2490,8 @@ void print_string(char *string)
 
 void start_payload() {
 	
-  Serial1.begin(115200);  // Pi UART faster speed
+//  Serial1.begin(115200);  // Pi UART faster speed
+  Serial1.begin(57600);  // Pi UART faster speed
 
   Serial.println("Starting payload!");
   
