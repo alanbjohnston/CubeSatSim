@@ -184,7 +184,8 @@ void setup() {
 //  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);  // testing sleep
        
 //  Serial.begin(115200);
-  Serial.begin(57600);
+//  Serial.begin(57600);
+  Serial.begin(38400);
         
   initialize_camera();
         
