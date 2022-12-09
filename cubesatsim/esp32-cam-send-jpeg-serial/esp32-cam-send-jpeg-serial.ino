@@ -185,7 +185,7 @@ void setup() {
        
 //  Serial.begin(115200);
 //  Serial.begin(57600);
-  Serial.begin(38400);
+  Serial.begin(19200);
         
   initialize_camera();
         
