@@ -65,7 +65,8 @@ bool start_camera() {
    Serial2.setTX(8);
    delay(100);
 //   Serial2.begin(115200);
-   Serial2.begin(57600);
+//   Serial2.begin(57600);
+   Serial2.begin(38400);
 #ifdef GET_IMAGE_DEBUG  
    Serial.println("Started Serial2 to camera v0.1");
 #endif
