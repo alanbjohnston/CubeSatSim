@@ -183,8 +183,9 @@ void setup() {
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
 //  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);  // testing sleep
        
-  Serial.begin(115200);
-
+//  Serial.begin(115200);
+  Serial.begin(57600);
+        
   initialize_camera();
         
   config_camera();      
