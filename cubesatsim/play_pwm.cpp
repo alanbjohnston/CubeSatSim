@@ -385,7 +385,7 @@ int led_pin = LED_BUILTIN;
 	 Serial.println("Start flag detected");     
 
      if (start_flag_complete) {
-         Serial.println("Start flag complete detected");
+ //        Serial.println("Start flag complete detected");
 //       buffer2[index1++] = octet;
          i.write(&octet, 1);
          index1++;
