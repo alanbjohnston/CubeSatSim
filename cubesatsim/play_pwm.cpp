@@ -380,10 +380,12 @@ int led_pin = LED_BUILTIN;
   while ((!finished) && ((millis() - time_start) < SERIAL2_TIMEOUT)) {
 
    if (Serial2.available()) {      // If anything comes in Serial2
-      byte octet = Serial2.read(); 
+      byte octet = Serial2.read();
+      if (index1 == 2)
+	 Serial.println("Start flag detected");     
 
      if (start_flag_complete) {
-//       Serial.println("Start flag complete detected");
+         Serial.println("Start flag complete detected");
 //       buffer2[index1++] = octet;
          i.write(&octet, 1);
          index1++;
