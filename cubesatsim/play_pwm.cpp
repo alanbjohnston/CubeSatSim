@@ -346,7 +346,7 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 //FastCRC8 CRC8;
-#define SERIAL2_TIMEOUT 240000  // Camera timeout in milli seconds
+#define SERIAL2_TIMEOUT 600000  // Camera timeout in milli seconds
 
 //#define GET_DEBUG
 
