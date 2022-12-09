@@ -177,7 +177,7 @@ void deleteFile(fs::FS &fs, const char * path) {
 
 void setup() {
 
-  delay(5000);  
+  delay(35000);  
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
