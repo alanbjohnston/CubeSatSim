@@ -3,7 +3,6 @@
 
 #define GET_DEBUG
 
-
 void play_pwm_from_serial(int dds_pwm_pin) {
 	
    Serial.println("Playing PWM file from serial input");	
@@ -107,7 +106,18 @@ int led_pin = LED_BUILTIN;
 	     
 	     
 //// play pwm value
-	     
+	    lower = octet & 0x0f;
+	    upper = (octet & 0xf0) >> 4;
+	//    Serial.printf("%d\n%d\n", lower, upper);	
+
+	    while ((micros() - sstv_micro_timer) < period)	{ }   	  
+	    pwm_set_gpio_level(dds_pwm_pin, lower);
+	    sstv_micro_timer = micros();	
+
+	    while ((micros() - sstv_micro_timer) < period)    { }   	
+	    pwm_set_gpio_level(dds_pwm_pin, upper);
+	    sstv_micro_timer = micros();
+
 	     
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
@@ -203,6 +213,8 @@ int led_pin = LED_BUILTIN;
     pwm_config_set_wrap(&dds_pwm_config, wrap); // 3 
     pwm_init(dds_pin_slice, &dds_pwm_config, true);
     pwm_set_gpio_level(dds_pwm_pin, 0); // (dds_pwm_config.top + 1) * 0.5);
+		  
+    sstv_micro_timer = micros();		  
   
 //    Serial.printf("PWM config.top: %d\n", dds_pwm_config.top);
 	
