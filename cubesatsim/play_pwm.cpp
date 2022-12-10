@@ -202,7 +202,7 @@ int led_pin = LED_BUILTIN;
 //            Serial.println("Found start flag!\n"); 
 		  
 
-    Serial.printf("Pico PWM Playback v0.3 begin\nClock: %d Wrap: %d Multiplier: %4.1f Period: %d\n", g_rate, wrap, multiplier, period);
+    Serial.printf("Pico PWM Playback begin\nClock: %d Wrap: %d Multiplier: %4.1f Period: %d\n", g_rate, wrap, multiplier, period);
 
     gpio_set_function(dds_pwm_pin, GPIO_FUNC_PWM);
     dds_pin_slice = pwm_gpio_to_slice_num(dds_pwm_pin);
