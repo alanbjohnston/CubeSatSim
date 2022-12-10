@@ -213,7 +213,7 @@ int led_pin = LED_BUILTIN;
 		  
     sstv_micro_timer = micros();		  
   
-    digitalWrite(PTT_PIN, LOW);  // start transmit
+    digitalWrite(17, LOW);  // start transmit
 	     
 		  
 //    Serial.printf("PWM config.top: %d\n", dds_pwm_config.top);
@@ -237,7 +237,7 @@ int led_pin = LED_BUILTIN;
 //  i.close();
   Serial.printf("\nResult: %d count: %d", finished, index1);	
 
-    digitalWrite(PTT_PIN, HIGH);  // stop transmit
+    digitalWrite(17, HIGH);  // stop transmit
 	
 //  return(finished);
   return;	
