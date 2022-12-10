@@ -8,7 +8,7 @@ void play_pwm_from_serial(int dds_pwm_pin) {
    Serial.println("Playing PWM file from serial input");	
 	
 #ifdef GET_DEBUG  
-   Serial.println("Started Serial2 to PWM File v0.1");
+   Serial.println("Started Serial2 to PWM Direct v0.1");
 #endif
    LittleFS.begin();  
    
@@ -77,18 +77,16 @@ int led_pin = LED_BUILTIN;
   end_flag_detected = false;
   jpeg_start = 0;
  
-#ifdef GET_DEBUG
-  Serial.println("Starting get_pwm_file");
- #endif
   finished = false;
-  
+	
+/*  
   File i = LittleFS.open("/cam.pwm", "w+");
   if (i) {
 ; //      i.write(&buffer2[jpeg_start], (size_t) (index1 - jpeg_start));       
   //    finished = true;
  } else
         Serial.println("Error opening cam.pwm");
- 
+*/ 
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < SERIAL2_TIMEOUT)) {
 
