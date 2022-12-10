@@ -108,12 +108,14 @@ int led_pin = LED_BUILTIN;
 	    upper = (octet & 0xf0) >> 4;
 	//    Serial.printf("%d\n%d\n", lower, upper);	
 
-	    while ((micros() - sstv_micro_timer) < period)	{ }   	  
+	    while ((micros() - sstv_micro_timer) < period)	{ }   
+	     Serial.println(micros() - sstv_micro_timer);
 	    pwm_set_gpio_level(dds_pwm_pin, lower);
 	    sstv_micro_timer = micros();	
 
 	    while ((micros() - sstv_micro_timer) < period)    { }   	
-	    pwm_set_gpio_level(dds_pwm_pin, upper);
+	     Serial.println(micros() - sstv_micro_timer);
+	     pwm_set_gpio_level(dds_pwm_pin, upper);
 	    sstv_micro_timer = micros();
 
        if (octet == end_flag[flag_count]) {  // looking for end flag
