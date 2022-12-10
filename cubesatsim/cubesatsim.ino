@@ -77,6 +77,7 @@ extern bool get_camera_image();
 extern bool start_camera();
 extern bool get_pwm_file();
 extern void play_pwm_from_file(int dds_pwm_pin); 
+extern void play_pwm_from_serial(int dds_pwm_pin); 
 
 #ifndef OLD
 void sstv_end() {}
