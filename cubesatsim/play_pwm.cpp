@@ -225,7 +225,8 @@ int led_pin = LED_BUILTIN;
   i.close();
   Serial.printf("\nResult: %d count: %d", finished, index1);	
 
-  return(finished);
+//  return(finished);
+  return;	
 }
 /*  
 bool finished = false;
