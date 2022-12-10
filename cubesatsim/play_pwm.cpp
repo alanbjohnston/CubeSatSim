@@ -116,7 +116,6 @@ int led_pin = LED_BUILTIN;
 	    pwm_set_gpio_level(dds_pwm_pin, upper);
 	    sstv_micro_timer = micros();
 
-	     
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
@@ -214,6 +213,9 @@ int led_pin = LED_BUILTIN;
 		  
     sstv_micro_timer = micros();		  
   
+    digitalWrite(PTT_PIN, LOW);  // start transmit
+	     
+		  
 //    Serial.printf("PWM config.top: %d\n", dds_pwm_config.top);
 	
 //  delay(1000);	 
@@ -235,6 +237,8 @@ int led_pin = LED_BUILTIN;
 //  i.close();
   Serial.printf("\nResult: %d count: %d", finished, index1);	
 
+    digitalWrite(PTT_PIN, HIGH);  // stop transmit
+	
 //  return(finished);
   return;	
 }
