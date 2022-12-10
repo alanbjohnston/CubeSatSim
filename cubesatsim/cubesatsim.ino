@@ -275,6 +275,7 @@ void loop() {
 	  
       if (debug_mode)	  	  
         Serial.println("Start transmit!!!");
+      digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS	  
       digitalWrite(PTT_PIN, LOW);  // start transmit
       transmit_led(HIGH);	    
 
