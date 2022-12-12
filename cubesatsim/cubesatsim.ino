@@ -3556,15 +3556,15 @@ void config_gpio() {
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
 //  if (digitalRead(BPF_PIN) == FALSE) {  
-  if (digitalRead(BPF_PIN) != FALSE) {  // force BPF present
+  if (true) {  // force BPF present
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
   else
     Serial.println("BPF not present - no transmitting after CW ID");	 
 	
-  if (digitalRead(TXC_PIN) == FALSE) {	
-//  if (digitalRead(TXC_PIN) != FALSE) {   // force SR_FRS not present
+//  if (digitalRead(TXC_PIN) == FALSE) {	
+  if (true) {   // force SR_FRS not present
     Serial.println("SR_FRS present");
     sr_frs_present = true;
   }
