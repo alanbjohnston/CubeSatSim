@@ -4420,7 +4420,7 @@ void prompt_for_input() {
     case PROMPT_I2CSCAN:
       Serial.print("I2C scan");
 
-/ --------------------------------------
+// --------------------------------------
 // i2c_scanner
 //
 // Version 1
