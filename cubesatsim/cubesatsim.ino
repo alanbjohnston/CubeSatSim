@@ -2288,7 +2288,7 @@ void read_ina219()
     i2c_1 = false;
     Serial.println("There is a problem with bus 1 0x40");
   }
-  millis() - read_time;	
+  read_time = millis();	
 	  
   } else {
     voltage[PLUS_X] = 0.0;
@@ -2315,7 +2315,7 @@ void read_ina219()
     i2c2 = false;
     Serial.println("There is a problem with bus 1 0x41");
   }
-  millis() - read_time;	
+  read_time = millis();	
 	  
   } else {
     voltage[PLUS_Y] = 0.0;
@@ -2358,7 +2358,7 @@ void read_ina219()
     i2c3 = false;
     Serial.println("There is a problem with bus 1 0x44");
   }
-  millis() - read_time;	
+  read_time = millis();	
 	  	  
   } else {
     voltage[BAT] = 0.0;
@@ -2385,7 +2385,7 @@ void read_ina219()
     i2c5 = false;
     Serial.println("There is a problem with bus 2 0x40");
   }
-  millis() - read_time;	  
+  read_time = millis();	
   } else {
     voltage[PLUS_Z] = 0.0;
     current[PLUS_Z] = 0.0;	  
@@ -2411,7 +2411,7 @@ void read_ina219()
     i2c6 = false;
     Serial.println("There is a problem with bus 2 0x41");
   }
-  millis() - read_time;	
+  read_time = millis();	
 	  
   } else {
     voltage[MINUS_X] = 0.0;
@@ -2438,7 +2438,7 @@ void read_ina219()
     i2c7 = false;
     Serial.println("There is a problem with bus 2 0x44");
   }
-  millis() - read_time;	
+  read_time = millis();	
 	  
   } else {
     voltage[MINUS_Y] = 0.0;
@@ -2465,7 +2465,7 @@ void read_ina219()
     i2c8 = false;
     Serial.println("There is a problem with bus 2 0x45");
   }
-  millis() - read_time;	
+  read_time = millis();	
 	  
   } else {
     voltage[MINUS_Z] = 0.0;
