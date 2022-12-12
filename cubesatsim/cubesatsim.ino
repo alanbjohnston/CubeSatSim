@@ -2489,9 +2489,9 @@ void read_ina219()
   if (!(i2c7 = ina219_2_0x44.begin(&Wire1)))
     Serial.println("I2C -Y sensor (bus 2 0x44) not found");
   if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
-    Serial.println("I2C -Z sensor (bus 2 0x45) not found");
-*/	  
+    Serial.println("I2C -Z sensor (bus 2 0x45) not found");	  
   }
+  */
 }
 
 void read_sensors()
