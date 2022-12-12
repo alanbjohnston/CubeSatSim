@@ -2429,6 +2429,7 @@ void read_ina219()
 	
   if ((millis() - read_time) > 1000) {
     Serial.println("There is an I2C sensor problem");
+    ina219_started = false;	  
     start_ina219();	  
 	  
   }
