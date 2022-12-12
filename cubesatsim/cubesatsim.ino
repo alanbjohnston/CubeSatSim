@@ -463,8 +463,8 @@ void send_aprs_packet() {
   char str[1000];
   char header_str[] = "hi hi ";
   strcpy(str, header_str);	
-  strcpy(str, tlm_str);	
-  strcat(str, payload_str);
+//  strcpy(str, tlm_str);	// transmit short APRS packet with just lat lon
+//  strcat(str, payload_str);
 //  print_string(str);
 //  Serial.println(strlen(str));	
 	
@@ -1020,6 +1020,7 @@ void get_tlm_fox() {
     memset(parities, 0, sizeof(parities));
 //    Serial.println("After memset");   
    uptime = (int)(millis() / 1000.0);	  
+//   Serial.printf("Uptime: %d \n", uptime);	  
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
 //    Serial.println("After h[0]");	  
@@ -2254,7 +2255,7 @@ void test_radio()
 void read_ina219()
 {
   unsigned long read_time = millis();
-	
+  unsigned long read_time_total = millis();	
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
     Serial.println("Nothing to read");
 /*	
@@ -2282,6 +2283,13 @@ void read_ina219()
     }
     voltage[PLUS_X] = loadvoltage;
     current[PLUS_X] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c_1 = false;
+    Serial.println("There is a problem with bus 1 0x40");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[PLUS_X] = 0.0;
     current[PLUS_X] = 0.0;	  
@@ -2302,6 +2310,13 @@ void read_ina219()
   }
   voltage[PLUS_Y] = loadvoltage;
   current[PLUS_Y] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c2 = false;
+    Serial.println("There is a problem with bus 1 0x41");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[PLUS_Y] = 0.0;
     current[PLUS_Y] = 0.0;	  
@@ -2339,7 +2354,12 @@ void read_ina219()
   voltage[BUS] = loadvoltage;  // since battery directly supplies, make BUS same as BAT for FoxTelem
   current[BUS] = current_mA;	
 	  
-	  
+  if ((millis() - read_time) > 100) { 
+    i2c3 = false;
+    Serial.println("There is a problem with bus 1 0x44");
+  }
+  read_time = millis();	
+	  	  
   } else {
     voltage[BAT] = 0.0;
     current[BAT] = 0.0;	  
@@ -2360,6 +2380,12 @@ void read_ina219()
   }
   voltage[PLUS_Z] = loadvoltage;
   current[PLUS_Z] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c5 = false;
+    Serial.println("There is a problem with bus 2 0x40");
+  }
+  read_time = millis();	
   } else {
     voltage[PLUS_Z] = 0.0;
     current[PLUS_Z] = 0.0;	  
@@ -2380,6 +2406,13 @@ void read_ina219()
   }
   voltage[MINUS_X] = loadvoltage;
   current[MINUS_X] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c6 = false;
+    Serial.println("There is a problem with bus 2 0x41");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[MINUS_X] = 0.0;
     current[MINUS_X] = 0.0;	  
@@ -2400,6 +2433,13 @@ void read_ina219()
   }
   voltage[MINUS_Y] = loadvoltage;
   current[MINUS_Y] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c7 = false;
+    Serial.println("There is a problem with bus 2 0x44");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[MINUS_Y] = 0.0;
     current[MINUS_Y] = 0.0;	  
@@ -2420,14 +2460,39 @@ void read_ina219()
   }
   voltage[MINUS_Z] = loadvoltage;
   current[MINUS_Z] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c8 = false;
+    Serial.println("There is a problem with bus 2 0x45");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[MINUS_Z] = 0.0;
     current[MINUS_Z] = 0.0;	  
   }
   voltage_read = false;	
 	
-  if ((millis() - read_time) > 1000)
+  if ((millis() - read_time_total) > 1000) {
     Serial.println("There is an I2C sensor problem");
+  }	  
+/*	  
+  if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
+    Serial.println("I2C +X sensor (bus 1 0x40) not found");
+  if (!(i2c2 = ina219_1_0x41.begin()))
+    Serial.println("I2C +Y sensor (bus 1 0x41) not found");
+  if (!(i2c3 = ina219_1_0x44.begin()))
+    Serial.println("I2C Batt sensor (bus 1 0x44) not found");
+  if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
+    Serial.println("I2C +Z sensor (bus 2 0x40) not found");
+  if (!(i2c6 = ina219_2_0x41.begin(&Wire1)))
+    Serial.println("I2C -X sensor (bus 2 0x41) not found");
+  if (!(i2c7 = ina219_2_0x44.begin(&Wire1)))
+    Serial.println("I2C -Y sensor (bus 2 0x44) not found");
+  if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
+    Serial.println("I2C -Z sensor (bus 2 0x45) not found");	  
+  }
+  */
 }
 
 void read_sensors()
@@ -2580,6 +2645,7 @@ void start_payload() {
 
 void read_payload()
 {
+  unsigned long read_time = millis();	
   payload_str[0] = '\0';  // clear the payload string
 //  print_string(payload_str);	
 	
@@ -2599,8 +2665,13 @@ void read_payload()
     else
         sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
-//    print_string(payload_str);		  
-
+//    print_string(payload_str);
+      if ((millis() - read_time) > 500) {
+        Serial.println("There is a bme280 sensor problem");	 
+	bmePresent = false;
+      }
+      read_time = millis();
+	  
     if (mpuPresent) 	 { 
 //    print_string(payload_str);	
       mpu6050.update();
@@ -2623,8 +2694,12 @@ void read_payload()
       if (rotation > 5)
         led_set(STEM_LED_BLUE, HIGH);
       else
-        led_set(STEM_LED_BLUE, LOW);  	    
+        led_set(STEM_LED_BLUE, LOW);  	 
 	    
+      if ((millis() - read_time) > 500) {
+        Serial.println("There is an mpu6050 sensor problem");	 
+	mpuPresent = false;
+      }	    
     }   else
         sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
@@ -4149,11 +4224,15 @@ void serial_input() {
        break;	
 		   
      case 's':
-     case 'S':
        Serial.println("Change to SSTV mode");	     
        new_mode = SSTV;
        break;	
-		   
+
+     case 'S':
+       Serial.println("I2C scan");	     
+       prompt = PROMPT_I2CSCAN;		
+       break;	
+   
      case 'i':
      case 'I':
        Serial.println("Restart CubeSatsim software");	     
@@ -4244,6 +4323,7 @@ void prompt_for_input() {
        Serial.println("f  FSK/DUV mode");	     
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
+       Serial.println("S  I2C scan");	   
        Serial.println("i  Restart");	     
        Serial.println("c  CALLSIGN");	     
        Serial.println("t  Simulated Telemetry");	     
@@ -4411,6 +4491,119 @@ void prompt_for_input() {
       else  
         Serial.println("off");
       break;	
+
+    case PROMPT_I2CSCAN:
+      Serial.print("I2C scan");
+
+// --------------------------------------
+// i2c_scanner
+//
+// Version 1
+//    This program (or code that looks like it)
+//    can be found in many places.
+//    For example on the Arduino.cc forum.
+//    The original author is not know.
+// Version 2, Juni 2012, Using Arduino 1.0.1
+//     Adapted to be as simple as possible by Arduino.cc user Krodal
+// Version 3, Feb 26  2013
+//    V3 by louarnold
+// Version 4, March 3, 2013, Using Arduino 1.0.3
+//    by Arduino.cc user Krodal.
+//    Changes by louarnold removed.
+//    Scanning addresses changed from 0...127 to 1...119,
+//    according to the i2c scanner by Nick Gammon
+//    https://www.gammon.com.au/forum/?id=10896
+// Version 5, March 28, 2013
+//    As version 4, but address scans now to 127.
+//    A sensor seems to use address 120.
+// Version 6, November 27, 2015.
+//    Added waiting for the Leonardo serial communication.
+// 
+//
+// This sketch tests the standard 7-bit addresses
+// Devices with higher bit address might not be seen properly.
+//
+
+
+{
+  byte error, address;
+  int nDevices;
+
+  Serial.println("Scanning I2C Bus 1");
+
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) 
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+
+    if (error == 0)
+    {
+      Serial.print("I2C device found at bus 1 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    }
+    else if (error==4) 
+    {
+      Serial.print("Unknown error at bus 1 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found on bus 1\n");
+  else
+    Serial.println("done\n");
+
+  delay(5000);           // wait 5 seconds for next scan
+	
+  Serial.println("Scanning I2C Bus 2");
+
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) 
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+	  
+    Wire1.beginTransmission(address);
+    error = Wire1.endTransmission();
+
+    if (error == 0)
+    {
+      Serial.print("I2C device found at bus 2 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    }
+    else if (error==4) 
+    {
+      Serial.print("Unknown error at bus 2 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found on bus 2\n");
+  else
+    Serial.println("done\n");
+
+}		  	  
+        Serial.println("complete");
+      break;	
+		  
   }
   prompt = false;	
 }
