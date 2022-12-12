@@ -2283,6 +2283,13 @@ void read_ina219()
     }
     voltage[PLUS_X] = loadvoltage;
     current[PLUS_X] = current_mA;
+	  
+  if ((millis() - read_time) > 1000) { 
+    i2c_1 = false;
+    Serial.println("There is a problem with bus 1 0x40");
+  }
+  millis() - read_time;	
+	  
   } else {
     voltage[PLUS_X] = 0.0;
     current[PLUS_X] = 0.0;	  
@@ -2303,6 +2310,13 @@ void read_ina219()
   }
   voltage[PLUS_Y] = loadvoltage;
   current[PLUS_Y] = current_mA;
+	  
+  if ((millis() - read_time) > 1000) { 
+    i2c2 = false;
+    Serial.println("There is a problem with bus 1 0x41");
+  }
+  millis() - read_time;	
+	  
   } else {
     voltage[PLUS_Y] = 0.0;
     current[PLUS_Y] = 0.0;	  
@@ -2340,7 +2354,12 @@ void read_ina219()
   voltage[BUS] = loadvoltage;  // since battery directly supplies, make BUS same as BAT for FoxTelem
   current[BUS] = current_mA;	
 	  
-	  
+  if ((millis() - read_time) > 1000) { 
+    i2c3 = false;
+    Serial.println("There is a problem with bus 1 0x44");
+  }
+  millis() - read_time;	
+	  	  
   } else {
     voltage[BAT] = 0.0;
     current[BAT] = 0.0;	  
@@ -2361,6 +2380,12 @@ void read_ina219()
   }
   voltage[PLUS_Z] = loadvoltage;
   current[PLUS_Z] = current_mA;
+	  
+  if ((millis() - read_time) > 1000) { 
+    i2c5 = false;
+    Serial.println("There is a problem with bus 2 0x40");
+  }
+  millis() - read_time;	  
   } else {
     voltage[PLUS_Z] = 0.0;
     current[PLUS_Z] = 0.0;	  
@@ -2381,6 +2406,13 @@ void read_ina219()
   }
   voltage[MINUS_X] = loadvoltage;
   current[MINUS_X] = current_mA;
+	  
+  if ((millis() - read_time) > 1000) { 
+    i2c6 = false;
+    Serial.println("There is a problem with bus 2 0x41");
+  }
+  millis() - read_time;	
+	  
   } else {
     voltage[MINUS_X] = 0.0;
     current[MINUS_X] = 0.0;	  
@@ -2401,6 +2433,13 @@ void read_ina219()
   }
   voltage[MINUS_Y] = loadvoltage;
   current[MINUS_Y] = current_mA;
+	  
+  if ((millis() - read_time) > 1000) { 
+    i2c7 = false;
+    Serial.println("There is a problem with bus 2 0x44");
+  }
+  millis() - read_time;	
+	  
   } else {
     voltage[MINUS_Y] = 0.0;
     current[MINUS_Y] = 0.0;	  
@@ -2421,12 +2460,19 @@ void read_ina219()
   }
   voltage[MINUS_Z] = loadvoltage;
   current[MINUS_Z] = current_mA;
+	  
+  if ((millis() - read_time) > 1000) { 
+    i2c8 = false;
+    Serial.println("There is a problem with bus 2 0x45");
+  }
+  millis() - read_time;	
+	  
   } else {
     voltage[MINUS_Z] = 0.0;
     current[MINUS_Z] = 0.0;	  
   }
   voltage_read = false;	
-	
+/*	
   if ((millis() - read_time) > 1000) {
     Serial.println("There is an I2C sensor problem");
 	  
@@ -2444,7 +2490,7 @@ void read_ina219()
     Serial.println("I2C -Y sensor (bus 2 0x44) not found");
   if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
     Serial.println("I2C -Z sensor (bus 2 0x45) not found");
-	  
+*/	  
   }
 }
 
