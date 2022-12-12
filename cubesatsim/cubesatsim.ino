@@ -2284,7 +2284,7 @@ void read_ina219()
     voltage[PLUS_X] = loadvoltage;
     current[PLUS_X] = current_mA;
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c_1 = false;
     Serial.println("There is a problem with bus 1 0x40");
   }
@@ -2311,7 +2311,7 @@ void read_ina219()
   voltage[PLUS_Y] = loadvoltage;
   current[PLUS_Y] = current_mA;
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c2 = false;
     Serial.println("There is a problem with bus 1 0x41");
   }
@@ -2354,7 +2354,7 @@ void read_ina219()
   voltage[BUS] = loadvoltage;  // since battery directly supplies, make BUS same as BAT for FoxTelem
   current[BUS] = current_mA;	
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c3 = false;
     Serial.println("There is a problem with bus 1 0x44");
   }
@@ -2381,7 +2381,7 @@ void read_ina219()
   voltage[PLUS_Z] = loadvoltage;
   current[PLUS_Z] = current_mA;
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c5 = false;
     Serial.println("There is a problem with bus 2 0x40");
   }
@@ -2407,7 +2407,7 @@ void read_ina219()
   voltage[MINUS_X] = loadvoltage;
   current[MINUS_X] = current_mA;
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c6 = false;
     Serial.println("There is a problem with bus 2 0x41");
   }
@@ -2434,7 +2434,7 @@ void read_ina219()
   voltage[MINUS_Y] = loadvoltage;
   current[MINUS_Y] = current_mA;
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c7 = false;
     Serial.println("There is a problem with bus 2 0x44");
   }
@@ -2461,7 +2461,7 @@ void read_ina219()
   voltage[MINUS_Z] = loadvoltage;
   current[MINUS_Z] = current_mA;
 	  
-  if ((millis() - read_time) > 1000) { 
+  if ((millis() - read_time) > 100) { 
     i2c8 = false;
     Serial.println("There is a problem with bus 2 0x45");
   }
