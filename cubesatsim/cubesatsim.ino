@@ -1020,7 +1020,7 @@ void get_tlm_fox() {
     memset(parities, 0, sizeof(parities));
 //    Serial.println("After memset");   
    uptime = (int)(millis() / 1000.0);	  
-   Serial.printf("Uptime: %d \n", uptime);	  
+//   Serial.printf("Uptime: %d \n", uptime);	  
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
 //    Serial.println("After h[0]");	  
