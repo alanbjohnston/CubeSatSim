@@ -2645,6 +2645,7 @@ void start_payload() {
 
 void read_payload()
 {
+  unsigned long read_time = millis();	
   payload_str[0] = '\0';  // clear the payload string
 //  print_string(payload_str);	
 	
@@ -2664,8 +2665,13 @@ void read_payload()
     else
         sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
-//    print_string(payload_str);		  
-
+//    print_string(payload_str);
+      if ((millis() - read_time) > 500) {
+        Serial.println("There is a bme280 sensor problem");	 
+	bnePresent = false;
+      }
+      read_time = millis();
+	  
     if (mpuPresent) 	 { 
 //    print_string(payload_str);	
       mpu6050.update();
@@ -2688,8 +2694,12 @@ void read_payload()
       if (rotation > 5)
         led_set(STEM_LED_BLUE, HIGH);
       else
-        led_set(STEM_LED_BLUE, LOW);  	    
+        led_set(STEM_LED_BLUE, LOW);  	 
 	    
+      if ((millis() - read_time) > 500) {
+        Serial.println("There is an mpu6050 sensor problem");	 
+	mpuPresent = false;
+      }	    
     }   else
         sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
