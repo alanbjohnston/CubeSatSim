@@ -2668,7 +2668,7 @@ void read_payload()
 //    print_string(payload_str);
       if ((millis() - read_time) > 500) {
         Serial.println("There is a bme280 sensor problem");	 
-	bnePresent = false;
+	bmePresent = false;
       }
       read_time = millis();
 	  
