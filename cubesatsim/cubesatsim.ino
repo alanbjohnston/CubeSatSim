@@ -2429,8 +2429,21 @@ void read_ina219()
 	
   if ((millis() - read_time) > 1000) {
     Serial.println("There is an I2C sensor problem");
-    ina219_started = false;	  
-    start_ina219();	  
+	  
+  if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
+    Serial.println("I2C +X sensor (bus 1 0x40) not found");
+  if (!(i2c2 = ina219_1_0x41.begin()))
+    Serial.println("I2C +Y sensor (bus 1 0x41) not found");
+  if (!(i2c3 = ina219_1_0x44.begin()))
+    Serial.println("I2C Batt sensor (bus 1 0x44) not found");
+  if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
+    Serial.println("I2C +Z sensor (bus 2 0x40) not found");
+  if (!(i2c6 = ina219_2_0x41.begin(&Wire1)))
+    Serial.println("I2C -X sensor (bus 2 0x41) not found");
+  if (!(i2c7 = ina219_2_0x44.begin(&Wire1)))
+    Serial.println("I2C -Y sensor (bus 2 0x44) not found");
+  if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
+    Serial.println("I2C -Z sensor (bus 2 0x45) not found");
 	  
   }
 }
