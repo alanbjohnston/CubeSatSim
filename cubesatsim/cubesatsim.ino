@@ -2475,6 +2475,7 @@ void read_ina219()
 	
   if ((millis() - read_time_total) > 1000) {
     Serial.println("There is an I2C sensor problem");
+  }	  
 /*	  
   if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
     Serial.println("I2C +X sensor (bus 1 0x40) not found");
