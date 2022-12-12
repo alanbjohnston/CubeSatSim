@@ -4454,7 +4454,7 @@ void prompt_for_input() {
   byte error, address;
   int nDevices;
 
-  Serial.println("Scanning...");
+  Serial.println("Scanning I2C Bus 1");
 
   nDevices = 0;
   for(address = 1; address < 127; address++ ) 
@@ -4467,7 +4467,7 @@ void prompt_for_input() {
 
     if (error == 0)
     {
-      Serial.print("I2C device found at address 0x");
+      Serial.print("I2C device found at bus 1 address 0x");
       if (address<16) 
         Serial.print("0");
       Serial.print(address,HEX);
@@ -4477,21 +4477,55 @@ void prompt_for_input() {
     }
     else if (error==4) 
     {
-      Serial.print("Unknown error at address 0x");
+      Serial.print("Unknown error at bus 1 address 0x");
       if (address<16) 
         Serial.print("0");
       Serial.println(address,HEX);
     }    
   }
   if (nDevices == 0)
-    Serial.println("No I2C devices found\n");
+    Serial.println("No I2C devices found on bus 1\n");
   else
     Serial.println("done\n");
 
   delay(5000);           // wait 5 seconds for next scan
-}		  
-		  
-		  
+	
+  Serial.println("Scanning I2C Bus 2");
+
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) 
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+	  
+    Wire1.beginTransmission(address);
+    error = Wire1.endTransmission();
+
+    if (error == 0)
+    {
+      Serial.print("I2C device found at bus 2 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    }
+    else if (error==4) 
+    {
+      Serial.print("Unknown error at bus 2 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found on bus 2\n");
+  else
+    Serial.println("done\n");
+
+}		  	  
         Serial.println("complete");
       break;	
 		  
