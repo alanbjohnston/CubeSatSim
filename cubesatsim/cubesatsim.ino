@@ -418,7 +418,7 @@ void read_config_file() {
 //    latitude = toAprsFormat(latitude);
 //    longitude = toAprsFormat(longitude);
 //  }
-  Serial.printf("sim_yes: %s\n", sim_yes);
+//  Serial.printf("sim_yes: %s\n", sim_yes);
   char yes_string[] = "yes";	
 //  if (strcmp(sim_yes, yes_string) == 0) {
   if (sim_yes[0] == 'y') {
