@@ -265,36 +265,36 @@ void loop() {
 //      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
 //      jpeg_decode(image_file, output_file, true); // debug_mode);
-      jpeg_decode(input_file, output_file, false); // debug_mode);
-      show_dir();	  
-//      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
+      if (jpeg_decode(input_file, output_file, false)) {  // only transmit if jpeg decode successful
+	      show_dir();	  
+	//      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
 
-      digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
-//      rotate_image(output_file2, output_file, telem_display);	  
-//      show_dir();
-	  
-      if (debug_mode)	  	  
-        Serial.println("Start transmit!!!");
-      digitalWrite(PTT_PIN, LOW);  // start transmit
-      transmit_led(HIGH);	    
+	      digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
+	//      rotate_image(output_file2, output_file, telem_display);	  
+	//      show_dir();
 
-      picosstvpp();	
-	  	  
-//      scottie1_transmit_file(output_file, debug_mode);
- 
-//      ITimer1.stopTimer();	// turn off pushbutton timer  	   
-///      ITimer1.disableTimer();	// turn off pushbutton timer  	  
-//      play_pwm_file(26);
-//      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
-///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
-      if (debug_mode)	  
-        Serial.println("Stop transmit!");
-      digitalWrite(PTT_PIN, HIGH);  // stop transmit
-      transmit_led(LOW);
-	  
-      if (debug_mode)	  
-        Serial.println("\nImage sent!");
-	  
+	      if (debug_mode)	  	  
+		Serial.println("Start transmit!!!");
+	      digitalWrite(PTT_PIN, LOW);  // start transmit
+	      transmit_led(HIGH);	    
+
+	      picosstvpp();	
+
+	//      scottie1_transmit_file(output_file, debug_mode);
+
+	//      ITimer1.stopTimer();	// turn off pushbutton timer  	   
+	///      ITimer1.disableTimer();	// turn off pushbutton timer  	  
+	//      play_pwm_file(26);
+	//      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
+	///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
+	      if (debug_mode)	  
+		Serial.println("Stop transmit!");
+	      digitalWrite(PTT_PIN, HIGH);  // stop transmit
+	      transmit_led(LOW);
+
+	      if (debug_mode)	  
+		Serial.println("\nImage sent!");
+      }  
   } 
   else
       Serial.println("Unknown mode!");
