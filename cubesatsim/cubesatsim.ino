@@ -158,7 +158,7 @@ void setup() {
      configure_wifi();	  
   }
 */	
-///  start_button_isr(); 
+  start_button_isr(); 
 	
 //  setup_sstv();
   picosstvpp_begin(26);
@@ -418,7 +418,7 @@ void read_config_file() {
 //    latitude = toAprsFormat(latitude);
 //    longitude = toAprsFormat(longitude);
 //  }
-  Serial.printf("sim_yes: %s\n", sim_yes);
+//  Serial.printf("sim_yes: %s\n", sim_yes);
   char yes_string[] = "yes";	
 //  if (strcmp(sim_yes, yes_string) == 0) {
   if (sim_yes[0] == 'y') {
@@ -3773,7 +3773,7 @@ void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
 	
-  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))
+  if (ITimer1.attachInterruptInterval(2000000, TimerHandler1))
   {
     if (debug_mode)	  
       Serial.print(F("Starting ITimer1 OK, micros() = ")); 
