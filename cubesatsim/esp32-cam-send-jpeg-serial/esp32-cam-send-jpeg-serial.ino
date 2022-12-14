@@ -212,17 +212,17 @@ void setup() {
 void loop() {
         
   bool timeout = false; 
-  bool continue = false;      
+  bool take_photo = false;      
   unsigned long timer_ms = millis();      
   while ((Serial.available() < 0) || !timeout) { 
-    if ((millis() - timer_ms) > 10000) timeout = true;
+    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
   }
   if (Serial.available() > 0)  {
     char result = Serial.read();
     if ((result == 'f') || (result == 'F')) PIFFS.format(); 
-    continue = true;
+    take_photo = true;
   }
-  if (!continue) {
+  if (!take_photo) {
           
     esp_sleep_enable_timer_wakeup(5 * 1000000);  // sleep for 10 seconds
  
