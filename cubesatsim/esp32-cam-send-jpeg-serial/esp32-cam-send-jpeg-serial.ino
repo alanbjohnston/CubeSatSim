@@ -210,6 +210,27 @@ void setup() {
 }
 
 void loop() {
+        
+  bool timeout = false; 
+  bool continue = false;      
+  unsigned long timer_ms = millis();      
+  while ((Serial.available() < 0) || !timeout) { 
+    if ((millis() - timer_ms) > 10000) timeout = true;
+  }
+  if (Serial.available() > 0)  {
+    char result = Serial.read();
+    if ((result == 'f') || (result == 'F')) PIFFS.format(); 
+    continue = true;
+  }
+  if (!continue) {
+          
+    esp_sleep_enable_timer_wakeup(5 * 1000000);  // sleep for 10 seconds
+ 
+    Serial.println("Going to sleep now for 5 seconds");
+    Serial.flush(); 
+    esp_deep_sleep_start();           
+  }
+          
   
   char filename[] = "/cam.jpg";
 
@@ -217,11 +238,11 @@ void loop() {
 
   send_image_serial(filename);
 
-  delay(500);
+//  delay(500);
         
   esp_sleep_enable_timer_wakeup(10 * 1000000);  // sleep for 10 seconds
  
-  Serial.println("Going to sleep now");
+  Serial.println("Going to sleep now for 10 seconds");
   Serial.flush(); 
   esp_deep_sleep_start();       
 }
