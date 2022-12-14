@@ -215,7 +215,7 @@ void loop() {
   bool take_photo = false;      
   Serial.println("Checking for serial input before sleeping");      
   unsigned long timer_ms = millis();      
-  while ((Serial.available() =< 0) && !timeout) { 
+  while ((Serial.available() <= 0) && !timeout) { 
     if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
   }
   if (Serial.available() > 0)  {
