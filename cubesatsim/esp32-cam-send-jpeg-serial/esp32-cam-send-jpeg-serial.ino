@@ -198,7 +198,7 @@ void setup() {
 
   //  crc.setPolynome(0x1021);
         
-  SPIFFS.format();       // force a format of flash storage
+  // SPIFFS.format();       // force a format of flash storage, if file names show up twice in directory, uncomment this line once
         
   if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
     Serial.println("SPIFFS Mount Failed");
