@@ -178,7 +178,7 @@ bool get_camera_image()  {
   Serial.println("Starting get_image_file");
  #endif
   finished = false;
-  Serial2.write(1);
+  Serial2.println(1);
   Serial.println("writing to Serial2");
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
@@ -272,7 +272,7 @@ bool get_camera_image()  {
      //   Serial.println("Resetting. Not start flag.");        
        } 
     }
-    Serial2.write(1);
+    Serial2.println(1);
     Serial.println("writing to Serial2");
   }
   return(finished);
