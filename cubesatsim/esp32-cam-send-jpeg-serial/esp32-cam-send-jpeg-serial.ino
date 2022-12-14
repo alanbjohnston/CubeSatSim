@@ -219,7 +219,7 @@ void loop() {
   }
   if (Serial.available() > 0)  {
     char result = Serial.read();
-    if ((result == 'f') || (result == 'F')) PIFFS.format(); 
+    if ((result == 'f') || (result == 'F')) SPIFFS.format(); 
     take_photo = true;
   }
   if (!take_photo) {
