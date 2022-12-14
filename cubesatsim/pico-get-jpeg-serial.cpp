@@ -21,7 +21,7 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
-#define CAMERA_TIMEOUT 12000  // Camera timeout in milli seconds
+#define CAMERA_TIMEOUT 20000  // Camera timeout in milli seconds
 
 //#define GET_IMAGE_DEBUG
 
@@ -66,10 +66,10 @@ bool start_camera() {
    delay(100);
    Serial2.begin(115200);
 #ifdef GET_IMAGE_DEBUG  
-   Serial.println("Started Serial2 to camera v0.1");
+   Serial.println("Started Serial2 to camera v0.2");
 #endif
    LittleFS.begin();
- 
+
    bool camera_present = false;	
 //   int tries = 0;
 //   while ((tries++ < 5) && !camera_present) {
@@ -178,7 +178,8 @@ bool get_camera_image()  {
   Serial.println("Starting get_image_file");
  #endif
   finished = false;
- 
+  Serial2.write(1);
+  Serial.println("writing to Serial2");
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 
@@ -271,6 +272,8 @@ bool get_camera_image()  {
      //   Serial.println("Resetting. Not start flag.");        
        } 
     }
+    Serial2.write(1);
+    Serial.println("writing to Serial2");
   }
   return(finished);
 }
