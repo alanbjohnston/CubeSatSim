@@ -198,8 +198,9 @@ void setup() {
 
   //  crc.setPolynome(0x1021);
         
-//  if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
-  if (!SPIFFS.begin(FORMAT_SPIFFS)) {
+  SPIFFS.format();       // force a format of flash storage
+        
+  if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
     Serial.println("SPIFFS Mount Failed");
     return;
   }
