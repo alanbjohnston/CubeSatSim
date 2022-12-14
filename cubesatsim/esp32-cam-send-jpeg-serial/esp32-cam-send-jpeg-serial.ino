@@ -184,7 +184,22 @@ void setup() {
   Serial.begin(115200);
         
   bool timeout = false; 
-  bool take_photo = false;      
+  bool take_photo = false;
+        
+        
+    Serial.println("\nBlink three times");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off
+    delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off       
+     delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off  
+        
   Serial.println("Checking for serial input before sleeping");      
   unsigned long timer_ms = millis();      
   while ((Serial.available() <= 0) && !timeout) { 
