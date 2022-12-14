@@ -218,6 +218,12 @@ void loop() {
   send_image_serial(filename);
 
   delay(500);
+        
+  esp_sleep_enable_timer_wakeup(10 * 1000000);  // sleep for 10 seconds
+ 
+  Serial.println("Going to sleep now");
+  Serial.flush(); 
+  esp_deep_sleep_start();       
 }
 
 /**
