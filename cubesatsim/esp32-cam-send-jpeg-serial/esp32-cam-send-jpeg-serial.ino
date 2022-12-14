@@ -185,8 +185,9 @@ void setup() {
         
   bool timeout = false; 
   bool take_photo = false;
-        
-        
+  
+  pinMode(LED_PIN, OUTPUT); // Set the pin as output
+
     Serial.println("\nBlink three times");
     digitalWrite(LED_PIN, LOW); // Turn on
     delay (100); // Wait 0.1 sec
@@ -226,9 +227,7 @@ void setup() {
 
   Serial.println("ESP32-CAM Camera initialized v0.3");
 
-  pinMode(LED_PIN, OUTPUT); // Set the pin as output
-
-  // On the ESP32 you can also define another hardware serial interface using pins of your choice like this
+   // On the ESP32 you can also define another hardware serial interface using pins of your choice like this
   // Serial2.begin(115200,SERIAL_8N1,14,15);
 
   //  Serial.println("Initializing CRC");
