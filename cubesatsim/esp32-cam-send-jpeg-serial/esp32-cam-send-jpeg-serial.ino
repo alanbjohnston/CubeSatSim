@@ -175,13 +175,35 @@ void deleteFile(fs::FS &fs, const char * path) {
 
 void setup() {
 
-  delay(5000);  
+//  delay(5000);  
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
 //  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);  // testing sleep
        
   Serial.begin(115200);
+        
+  bool timeout = false; 
+  bool take_photo = false;      
+  Serial.println("Checking for serial input before sleeping");      
+  unsigned long timer_ms = millis();      
+  while ((Serial.available() <= 0) && !timeout) { 
+    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
+  }
+  if (Serial.available() > 0)  {
+    char result = Serial.read();
+    if ((result == 'f') || (result == 'F')) SPIFFS.format(); 
+    take_photo = true;
+    Serial.println("Serial input received!");      
+  }
+  if (!take_photo) {
+    Serial.println("No serial input received!");               
+    esp_sleep_enable_timer_wakeup(5 * 1000000);  // sleep for 10 seconds
+    Serial.println("Going to sleep now for 5 seconds");
+    Serial.flush(); 
+    esp_deep_sleep_start();           
+  }
+               
 
   initialize_camera();
         
@@ -206,33 +228,7 @@ void setup() {
   }
 
   listDir(SPIFFS, "/", 0);
-
-}
-
-void loop() {
         
-  bool timeout = false; 
-  bool take_photo = false;      
-  Serial.println("Checking for serial input before sleeping");      
-  unsigned long timer_ms = millis();      
-  while ((Serial.available() <= 0) && !timeout) { 
-    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
-  }
-  if (Serial.available() > 0)  {
-    char result = Serial.read();
-    if ((result == 'f') || (result == 'F')) SPIFFS.format(); 
-    take_photo = true;
-    Serial.println("Serial input received!");      
-  }
-  if (!take_photo) {
-    Serial.println("No serial input received!");               
-    esp_sleep_enable_timer_wakeup(5 * 1000000);  // sleep for 10 seconds
-    Serial.println("Going to sleep now for 5 seconds");
-    Serial.flush(); 
-    esp_deep_sleep_start();           
-  }
-          
-  
   char filename[] = "/cam.jpg";
 
   save_camera_image(filename);
@@ -245,7 +241,13 @@ void loop() {
  
   Serial.println("Going to sleep now for 10 seconds");
   Serial.flush(); 
-  esp_deep_sleep_start();       
+  esp_deep_sleep_start();      
+
+}
+
+void loop() {
+        
+          
 }
 
 /**
