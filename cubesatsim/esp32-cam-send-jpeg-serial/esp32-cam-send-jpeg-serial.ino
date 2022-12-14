@@ -187,7 +187,7 @@ void setup() {
         
   config_camera();      
 
-  Serial.println("ESP32-CAM Camera initialized v0.2");
+  Serial.println("ESP32-CAM Camera initialized v0.3");
 
   pinMode(LED_PIN, OUTPUT); // Set the pin as output
 
@@ -197,8 +197,9 @@ void setup() {
   //  Serial.println("Initializing CRC");
 
   //  crc.setPolynome(0x1021);
-
-  if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
+        
+//  if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
+  if (!SPIFFS.begin(FORMAT_SPIFFS)) {
     Serial.println("SPIFFS Mount Failed");
     return;
   }
