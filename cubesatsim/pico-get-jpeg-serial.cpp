@@ -182,7 +182,7 @@ bool get_camera_image()  {
 
   Serial.println("Enabling ESP32-CAM");
   pinMode(ESP32_CAM_ENABLE_PIN, OUTPUT);
-  digitalWrite(ESP32_CAM_ENABLE_PIN, LOW);
+  digitalWrite(ESP32_CAM_ENABLE_PIN, HIGH);
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 
