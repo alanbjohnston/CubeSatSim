@@ -183,11 +183,43 @@ void setup() {
        
   Serial.begin(115200);
         
-  pinMode(16, OUTPUT);
+  pinMode(13, INPUT);
         
-          digitalWrite(16, LOW);    
+ //         digitalWrite(16, LOW);    
         
-        while (true) { }
+        while (true) { 
+        
+          if (digitalRead(13) == HIGH) {
+                  
+       Serial.println("\nBlink three times");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off
+    delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off       
+     delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off  
+               
+                  
+          }  else {
+                  
+         Serial.println("\nBlink one time");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off                
+                  
+          }
+                
+          delay(5000);      
+                
+        
+        
+        
+        }
         
 
 }
