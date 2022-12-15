@@ -190,9 +190,9 @@ void setup() {
 
 void loop() {
         
-  digitalWrite(16, LOW);    
+//  digitalWrite(16, LOW);    
   
-  delay(2000);      
+//  delay(2000);      
         
    digitalWrite(16, HIGH);           
 
