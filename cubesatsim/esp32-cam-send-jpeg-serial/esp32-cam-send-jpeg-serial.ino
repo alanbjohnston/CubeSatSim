@@ -183,10 +183,18 @@ void setup() {
        
   Serial.begin(115200);
         
+  pinMode(16, OUTPUT);
+        
 
 }
 
 void loop() {
+        
+  digitalWrite(16, LOW);    
+  
+  delay(2000);      
+        
+   digitalWrite(16, HIGH);           
 
   bool timeout = false; 
   bool take_photo = false;
@@ -209,6 +217,7 @@ void loop() {
   Serial.println("Checking for serial input before sleeping");      
   unsigned long timer_ms = millis();      
   while ((Serial.available() <= 0) && !timeout) { 
+     timeout = true;  // immediately timeout     
 //    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
   }
   if (Serial.available() > 0)  {
