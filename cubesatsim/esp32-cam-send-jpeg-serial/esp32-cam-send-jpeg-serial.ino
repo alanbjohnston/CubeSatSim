@@ -185,6 +185,8 @@ void setup() {
         
   pinMode(13, INPUT);
         
+  pinMode(LED_PIN, OUTPUT);      
+        
  //         digitalWrite(16, LOW);    
         
         while (true) { 
