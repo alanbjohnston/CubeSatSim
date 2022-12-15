@@ -182,7 +182,8 @@ void setup() {
 //  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);  // testing sleep
        
   Serial.begin(115200);
-        
+
+/*        
   pinMode(13, INPUT);
         
   pinMode(LED_PIN, OUTPUT);      
@@ -222,13 +223,13 @@ void setup() {
         
         
         }
-        
+ */       
 
 }
 
 void loop() {
         
-  digitalWrite(16, LOW);    
+//  digitalWrite(16, LOW);    
   
 //  delay(2000);      
         
@@ -251,7 +252,9 @@ void loop() {
     digitalWrite(LED_PIN, LOW); // Turn on
     delay (100); // Wait 0.1 sec
     digitalWrite(LED_PIN, HIGH); // Turn off  
+
         
+/*        
   Serial.println("Checking for serial input before sleeping");      
   unsigned long timer_ms = millis();      
   while ((Serial.available() <= 0) && !timeout) { 
@@ -273,7 +276,7 @@ void loop() {
     esp_deep_sleep_start();           
 */    
   }
-               
+*/               
 
   initialize_camera();
         
@@ -305,14 +308,18 @@ void loop() {
 
 //  delay(500);
 
-/*        
-  esp_sleep_enable_timer_wakeup(2 * 1000000);  // sleep for 10 seconds
+        
+//  esp_sleep_enable_timer_wakeup(2 * 1000000);  // sleep for 10 seconds
+
+  esp_sleep_enable_ext0_wakeup(13, 1)
  
-  Serial.println("Going to sleep now for 2 seconds");
+  Serial.println("Going to sleep now until wake by GPIO13 going HIGH");
   Serial.flush(); 
   esp_deep_sleep_start();   
         
-*/        
+  Serial.println("This will never display");
+  Serial.flush();
+  delay(10000);
           
 }
 
