@@ -190,11 +190,11 @@ void setup() {
 
 void loop() {
         
-//  digitalWrite(16, LOW);    
+  digitalWrite(16, LOW);    
   
 //  delay(2000);      
         
-   digitalWrite(16, HIGH);           
+//   digitalWrite(16, HIGH);           
 
   bool timeout = false; 
   bool take_photo = false;
