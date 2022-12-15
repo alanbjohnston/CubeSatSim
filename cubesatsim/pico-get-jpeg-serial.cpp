@@ -178,9 +178,10 @@ bool get_camera_image()  {
   Serial.println("Starting get_image_file");
  #endif
   finished = false;
-  Serial2.println("\r\n");
-  Serial2.flush();
-  Serial.println("writing to Serial2");
+
+  Serial.println("Enabling ESP32-CAM");
+  pinMode(ESP32_CAM_ENABLE_PIN, OUTPUT);
+  digitalWrite(ESP32_CAM_ENABLE_PIN, LOW);
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 
@@ -273,9 +274,8 @@ bool get_camera_image()  {
      //   Serial.println("Resetting. Not start flag.");        
        } 
     }
-    Serial2.println("\r\n");
-    Serial2.flush();
 //    Serial.println("writing to Serial2");
   }
+  digitalWrite(ESP32_CAM_ENABLE_PIN, LOW);
   return(finished);
 }
