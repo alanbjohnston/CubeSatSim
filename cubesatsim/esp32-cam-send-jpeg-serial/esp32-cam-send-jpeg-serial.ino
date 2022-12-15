@@ -185,6 +185,10 @@ void setup() {
         
   pinMode(16, OUTPUT);
         
+          digitalWrite(16, LOW);    
+        
+        while (true) { }
+        
 
 }
 
