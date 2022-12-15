@@ -237,8 +237,10 @@ void loop() {
         
 //   digitalWrite(16, HIGH);   
         
-  if (digitalRead(13) == HIGH)
+  if (digitalRead(13) == HIGH) {
     sleep_cam = true;  // only sleep if GPIO13 is High on boot      
+    Serial.println("GPIO13 is LOW, so don't sleep");
+  }
 
   bool timeout = false; 
   bool take_photo = false;
