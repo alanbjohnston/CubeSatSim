@@ -183,6 +183,11 @@ void setup() {
        
   Serial.begin(115200);
         
+
+}
+
+void loop() {
+
   bool timeout = false; 
   bool take_photo = false;
   
@@ -204,7 +209,7 @@ void setup() {
   Serial.println("Checking for serial input before sleeping");      
   unsigned long timer_ms = millis();      
   while ((Serial.available() <= 0) && !timeout) { 
-    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
+//    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
   }
   if (Serial.available() > 0)  {
     char result = Serial.read();
@@ -213,11 +218,13 @@ void setup() {
     Serial.println("Serial input received!");      
   }
   if (!take_photo) {
-    Serial.println("No serial input received!");               
+    Serial.println("No serial input received!");     
+/*          
     esp_sleep_enable_timer_wakeup(5 * 1000000);  // sleep for 10 seconds
     Serial.println("Going to sleep now for 5 seconds");
     Serial.flush(); 
     esp_deep_sleep_start();           
+*/    
   }
                
 
@@ -250,18 +257,15 @@ void setup() {
   send_image_serial(filename);
 
 //  delay(500);
-        
+
+/*        
   esp_sleep_enable_timer_wakeup(2 * 1000000);  // sleep for 10 seconds
  
   Serial.println("Going to sleep now for 2 seconds");
   Serial.flush(); 
   esp_deep_sleep_start();   
         
-
-}
-
-void loop() {
-        
+*/        
           
 }
 
