@@ -22,6 +22,7 @@ int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
 #define CAMERA_TIMEOUT 20000  // Camera timeout in milli seconds
+#define ESP32_CAM_ENABLE_PIN 15
 
 //#define GET_IMAGE_DEBUG
 
