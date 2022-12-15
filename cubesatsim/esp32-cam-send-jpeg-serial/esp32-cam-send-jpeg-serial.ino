@@ -227,25 +227,7 @@ void setup() {
         }
  */       
 
-}
-
-void loop() {
-        
-//  digitalWrite(16, LOW);    
-  
-//  delay(2000);      
-        
-//   digitalWrite(16, HIGH);   
-        
-  if (digitalRead(13) == HIGH) {
-    sleep_cam = true;  // only sleep if GPIO13 is High on boot      
-    Serial.println("GPIO13 is LOW, so don't sleep");
-  }
-
-  bool timeout = false; 
-  bool take_photo = false;
-  
-  pinMode(LED_PIN, OUTPUT); // Set the pin as output
+   pinMode(LED_PIN, OUTPUT); // Set the pin as output
 
     Serial.println("\nBlink three times");
     digitalWrite(LED_PIN, LOW); // Turn on
@@ -258,7 +240,25 @@ void loop() {
      delay(100);  // Wait 0.1 sec
     digitalWrite(LED_PIN, LOW); // Turn on
     delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off  
+    digitalWrite(LED_PIN, HIGH); // Turn off         
+        
+}
+
+void loop() {
+        
+//  digitalWrite(16, LOW);    
+  
+//  delay(2000);      
+        
+//   digitalWrite(16, HIGH);   
+        
+  if (digitalRead(13) == HIGH) {
+    sleep_cam = true;  // only sleep if GPIO13 is High on boot      
+    Serial.println("\nGPIO13 is LOW, so don't sleep");
+  }
+
+  bool timeout = false; 
+  bool take_photo = false;
 
         
 /*        
