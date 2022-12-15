@@ -273,7 +273,7 @@ bool get_camera_image()  {
        } 
     }
     Serial2.println(1);
-    Serial.println("writing to Serial2");
+//    Serial.println("writing to Serial2");
   }
   return(finished);
 }
