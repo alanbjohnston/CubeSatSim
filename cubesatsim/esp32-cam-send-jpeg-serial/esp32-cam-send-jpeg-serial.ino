@@ -275,8 +275,8 @@ void loop() {
     Serial.flush(); 
     esp_deep_sleep_start();           
 */    
-  }
-*/               
+//  }
+               
 
   initialize_camera();
         
