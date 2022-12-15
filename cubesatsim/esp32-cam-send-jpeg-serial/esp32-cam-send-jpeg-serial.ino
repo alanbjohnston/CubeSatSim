@@ -130,6 +130,7 @@ File outFile;
 int blocks = 0;
 //int counter = 0;
 bool write_complete = false;
+bool sleep_cam = false;
 
 // example code from https://github.com/espressif/arduino-esp32/blob/master/libraries/LittleFS/examples/LITTLEFS_test/LITTLEFS_test.ino
 //
@@ -183,9 +184,10 @@ void setup() {
        
   Serial.begin(115200);
 
-/*        
+        
   pinMode(13, INPUT);
         
+/*        
   pinMode(LED_PIN, OUTPUT);      
         
  //         digitalWrite(16, LOW);    
@@ -233,7 +235,10 @@ void loop() {
   
 //  delay(2000);      
         
-//   digitalWrite(16, HIGH);           
+//   digitalWrite(16, HIGH);   
+        
+  if (digitalRead(13) == HIGH)
+    sleep_cam = true;  // only sleep if GPIO13 is High on boot      
 
   bool timeout = false; 
   bool take_photo = false;
@@ -308,6 +313,7 @@ void loop() {
 
 //  delay(500);
 
+ if (sleep_cam) {       
         
 //  esp_sleep_enable_timer_wakeup(2 * 1000000);  // sleep for 10 seconds
 
@@ -320,7 +326,10 @@ void loop() {
   Serial.println("This will never display");
   Serial.flush();
   delay(10000);
-          
+ }  else
+    delay(500);        
+        
+ // only loop if not sleeping 
 }
 
 /**
@@ -438,7 +447,7 @@ void config_camera() {
   s->set_brightness(s, 2);     // -2 to 2
   s->set_contrast(s, 0);       // -2 to 2
   s->set_saturation(s, 1);     // -2 to 2  
-//  s->set_hmirror(s, 1);        // 0 = disable , 1 = enable
+  s->set_hmirror(s, 0);        // 0 = disable , 1 = enable
 //  s->set_vflip(s, 1);         
 }
 
