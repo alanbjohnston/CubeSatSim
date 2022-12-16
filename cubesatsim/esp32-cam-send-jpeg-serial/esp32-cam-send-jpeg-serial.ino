@@ -244,7 +244,9 @@ void setup() {
  */       
 
    pinMode(LED_PIN, OUTPUT); // Set the pin as output
-
+        
+    if (print_wakeup_reason() == ESP_SLEEP_WAKEUP_EXT1) {
+            
     Serial.println("\nBlink three times");
     digitalWrite(LED_PIN, LOW); // Turn on
     delay (100); // Wait 0.1 sec
@@ -256,9 +258,15 @@ void setup() {
      delay(100);  // Wait 0.1 sec
     digitalWrite(LED_PIN, LOW); // Turn on
     delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off         
-        
-    print_wakeup_reason();    
+    digitalWrite(LED_PIN, HIGH); // Turn off                 
+    } else {
+            
+    Serial.println("\nBlink once slow");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (300); // Wait 0.3 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off
+           
+    }
 }
 
 void loop() {
