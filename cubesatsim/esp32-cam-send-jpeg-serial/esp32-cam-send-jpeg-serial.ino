@@ -338,8 +338,9 @@ void loop() {
         
 //  esp_sleep_enable_timer_wakeup(2 * 1000000);  // sleep for 10 seconds
 
-  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
- 
+//  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
+  esp_sleep_enable_ext1_wakeup(2^13, ESP_EXT1_WAKEUP_ANY_HIGH);
+         
   Serial.println("Going to sleep now until wake by GPIO13 going HIGH");
   Serial.flush(); 
   esp_deep_sleep_start();   
