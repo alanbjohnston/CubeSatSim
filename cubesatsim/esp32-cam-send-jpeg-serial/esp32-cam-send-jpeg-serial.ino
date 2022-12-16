@@ -185,7 +185,7 @@ void setup() {
   Serial.begin(115200);
 
         
-  pinMode(13, INPUT);
+  pinMode(13, INPUT_PULLDOWN);
         
 /*        
   pinMode(LED_PIN, OUTPUT);      
