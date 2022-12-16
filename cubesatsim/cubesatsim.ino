@@ -213,8 +213,9 @@ void loop() {
     generate_simulated_telem();
   else {
     read_ina219();	  // query INA219 sensors and Payload sensors
-    read_payload();	  // only read payload if not simulated telemetry
+//    read_payload();	  // only read payload if not simulated telemetry
   }
+    read_payload();	 
 	
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
