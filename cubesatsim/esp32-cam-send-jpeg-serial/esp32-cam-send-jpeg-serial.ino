@@ -174,7 +174,7 @@ void deleteFile(fs::FS &fs, const char * path) {
   }
 }
 
-void print_wakeup_reason(){  // from https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/ 
+esp_sleep_wakeup_cause_t print_wakeup_reason(){  // from https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/ 
   esp_sleep_wakeup_cause_t wakeup_reason;
 
   wakeup_reason = esp_sleep_get_wakeup_cause();
@@ -187,6 +187,7 @@ void print_wakeup_reason(){  // from https://randomnerdtutorials.com/esp32-deep-
     case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
     default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
   }
+  return wakeup_reason;      
 }
 
 void setup() {
