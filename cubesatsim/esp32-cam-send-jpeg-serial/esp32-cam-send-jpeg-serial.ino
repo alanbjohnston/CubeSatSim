@@ -302,8 +302,9 @@ void loop() {
 */    
 //  }
                
-
-  initialize_camera();
+ if (init_camera() == ESP_OK)
+ {
+//  initialize_camera();
         
   config_camera();      
 
@@ -330,7 +331,7 @@ void loop() {
   save_camera_image(filename);
 
   send_image_serial(filename);
-
+ }
 //  delay(500);
 
  if (sleep_cam) {       
