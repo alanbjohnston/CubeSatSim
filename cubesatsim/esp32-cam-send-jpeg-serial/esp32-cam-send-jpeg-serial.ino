@@ -174,8 +174,10 @@ void deleteFile(fs::FS &fs, const char * path) {
 }
 
 void setup() {
+        
+ esp_log_level_set("*", ESP_LOG_VERBOSE);       
 
-  delay(5000);  
+   delay(5000);  
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
