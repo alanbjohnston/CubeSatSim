@@ -1414,7 +1414,11 @@ void get_tlm_fox() {
 //void write_wave(int i, short int *buffer)
 void write_wave(int i, byte *buffer)
 {
+  if ((loop_count % 2) == 0)  	
     buffer[ctr++] = (byte)(phase == 1); 
+  else
+    buffer[ctr++] = 1;
+	
 //    Serial.printf("buffer is %d \n", buffer[ctr - 1]);
 //	Serial.print(ctr);
 //	Serial.print(" ");
