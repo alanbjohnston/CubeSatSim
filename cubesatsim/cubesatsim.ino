@@ -52,7 +52,7 @@
 
 Adafruit_INA219 ina219_1_0x40;
 Adafruit_INA219 ina219_1_0x41(0x41);
-Adafruit_INA219 ina219_1_0x44(0x44);
+Adafruit_INA219 ina219_1_0x44(0x45);  // was 44
 //Adafruit_INA219 ina219_1_0x45(0x45);
 Adafruit_INA219 ina219_2_0x40(0x40);
 Adafruit_INA219 ina219_2_0x41(0x41);
