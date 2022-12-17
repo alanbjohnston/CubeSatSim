@@ -191,6 +191,8 @@ esp_sleep_wakeup_cause_t print_wakeup_reason(){  // from https://randomnerdtutor
 }
 
 void setup() {
+        
+  esp_log_level_set("*", ESP_LOG_VERBOSE);        
 
 //  delay(5000);  
         
