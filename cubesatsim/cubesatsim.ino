@@ -2878,7 +2878,7 @@ void read_payload()
 //  delay(100);
 }
 
-/*
+/**/
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -3067,7 +3067,7 @@ void payload_OK_only()
   delay(100);
 }
 
-*/	
+/**/	
 /*
 void eeprom_word_write(int addr, int val)
 {
