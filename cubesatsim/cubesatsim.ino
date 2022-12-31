@@ -116,19 +116,19 @@ void setup() {
 // if Pi is present, run Payload OK software
 
 ///  load_files();			
-/**/	
+/*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
-//  if (digitalRead(PI_3V3_PIN) == HIGH)  {
- {
+  if (digitalRead(PI_3V3_PIN) == HIGH)  {
+// {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
 //      payload_OK_only();    
     }
   }
-/**/
+*/
 // configure STEM Payload sensors
 	
 //  pinMode(PI_3V3_PIN, OUTPUT);
@@ -3609,6 +3609,19 @@ void config_gpio() {
   for (int i = 6; i < 29; i++) {
     pinMode(i, INPUT);	  
   }
+	
+  pinMode(PI_3V3_PIN, INPUT); 	
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN));
+//  if (digitalRead(PI_3V3_PIN) == HIGH)  {
+ {
+    Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
+    start_payload();	
+    while(true)	 { 
+//      payload_OK_only();    
+    }
+  }	
+	
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 
