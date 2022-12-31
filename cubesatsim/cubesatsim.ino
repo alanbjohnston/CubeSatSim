@@ -116,7 +116,7 @@ void setup() {
 // if Pi is present, run Payload OK software
 
 ///  load_files();			
-/*	
+/**/	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
@@ -124,10 +124,10 @@ void setup() {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
-      payload_OK_only();    
+//      payload_OK_only();    
     }
   }
-*/
+/**/
 // configure STEM Payload sensors
 	
 //  pinMode(PI_3V3_PIN, OUTPUT);
