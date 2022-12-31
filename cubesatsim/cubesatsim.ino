@@ -3618,6 +3618,8 @@ void config_gpio() {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
+	Serial.println("waiting");
+	sleep(3.0);    
 //      payload_OK_only();    
     }
   }	
