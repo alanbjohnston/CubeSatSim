@@ -203,6 +203,13 @@ void setup() {
   Serial.print(" ");
   Serial.println(millis());
 */	
+	
+//SSID of your network
+char ssid[] = "CubeSatSim";
+//password of your WPA Network
+char pass[] = "amsatao7";
+ WiFi.begin(ssid, pass);	
+	
 }
 
 void loop() {
