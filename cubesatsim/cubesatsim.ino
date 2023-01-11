@@ -36,7 +36,7 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-//#include <WiFi.h>
+#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 //#include "SSTV-Arduino-Scottie1-Library.h"
