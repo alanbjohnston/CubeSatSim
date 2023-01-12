@@ -82,7 +82,7 @@
 #define TRUE 1
 #define FALSE 0
 
-#define A 1
+#define A_ 1
 #define B 2
 #define C 3
 #define D 4
