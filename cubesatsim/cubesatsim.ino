@@ -731,14 +731,14 @@ void get_tlm_ao7() {
     memset(tlm, 0, sizeof tlm);
 	  
     tlm[1][A_] = (int)(voltage[mapping[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
-    tlm[1][B] = (int)(99.5 - current[mapping[PLUS_X]] / 10.0) % 100; // +X current [4]
-    tlm[1][C] = (int)(99.5 - current[mapping[MINUS_X]] / 10.0) % 100; // X- current [10] 
-    tlm[1][D] = (int)(99.5 - current[mapping[PLUS_Y]] / 10.0) % 100; // +Y current [7]
+    tlm[1][B_] = (int)(99.5 - current[mapping[PLUS_X]] / 10.0) % 100; // +X current [4]
+    tlm[1][C_] = (int)(99.5 - current[mapping[MINUS_X]] / 10.0) % 100; // X- current [10] 
+    tlm[1][D_] = (int)(99.5 - current[mapping[PLUS_Y]] / 10.0) % 100; // +Y current [7]
 
     tlm[2][A_] = (int)(99.5 - current[mapping[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
-    tlm[2][B] = (int)(99.5 - current[mapping[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-    tlm[2][C] = (int)(99.5 - current[mapping[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
-    tlm[2][D] = (int)(50.5 + current[mapping[BAT]] / 10.0) % 100; // NiMH Battery current
+    tlm[2][B_] = (int)(99.5 - current[mapping[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+    tlm[2][C_] = (int)(99.5 - current[mapping[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
+    tlm[2][D_] = (int)(50.5 + current[mapping[BAT]] / 10.0) % 100; // NiMH Battery current
 
 //    tlm[3][A] = abs((int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100);
     if (voltage[mapping[BAT]] > 4.6)	 
@@ -746,13 +746,13 @@ void get_tlm_ao7() {
     else
     	tlm[3][A_] = (int)((voltage[mapping[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
 	    
-    tlm[3][B] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
+    tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
 //    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
     tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
-    tlm[6][B] = 0;
-    tlm[6][D] = 49 + rand() % 3;
+    tlm[6][B_] = 0;
+    tlm[6][D_] = 49 + rand() % 3;
 
 /*	  
     // Display tlm
