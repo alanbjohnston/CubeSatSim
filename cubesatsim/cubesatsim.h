@@ -83,9 +83,9 @@
 #define FALSE 0
 
 #define A_ 1
-#define B 2
-#define C 3
-#define D 4
+#define B_ 2
+#define C_ 3
+#define D_ 4
 #define PLUS_X 0
 #define PLUS_Y 1
 #define BAT 2
