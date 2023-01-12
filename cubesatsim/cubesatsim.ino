@@ -67,6 +67,8 @@ unsigned long micros3;
 
 //WiFiServer server(port);
 //WiFiClient client;
+WiFiClient net;
+MQTTClient client;
 
 //#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
