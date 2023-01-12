@@ -203,13 +203,14 @@ void setup() {
   Serial.print(" ");
   Serial.println(millis());
 */	
-	
+
+/*	
 //SSID of your network
 char ssid[] = "CubeSatSim";
 //password of your WPA Network
 char pass[] = "amsatao7";
  WiFi.begin(ssid, pass);	
-	
+*/	
 }
 
 void loop() {
@@ -4315,6 +4316,11 @@ void serial_input() {
        prompt = PROMPT_DEBUG;
        break;			   
 
+     case 'w':
+       Serial.println("Connect to WiFi");	     
+       prompt = PROMPT_WIFI;
+       break;	
+		    
      default:
        Serial.println("Not a command\n");	
 		   
@@ -4515,7 +4521,31 @@ void prompt_for_input() {
       else  
         Serial.println("off");
       break;	
+		  
+    case PROMPT_WIFI:
+      char ssid[30], pass[30];		  
+      Serial.println("Enter the credentials for your WiFi network");	
+  		  
+      Serial.print("Enter WiFi SSID: ");
+      get_serial_string();
+		  
+      print_string(serial_string);
+		  
+      if (strlen(serial_string) > 0)	{
+	strcpy(serial_string, ssid);      
+        Serial.print("Enter WiFi password: ");
+        get_serial_string();
+	if ( strlen(serial_string) > 0) {
+	    strcpy(serial_string, pass);
+	    Serial.println("Connecting to Wifi");	
+	    WiFi.begin(ssid, pass);	
+	} else 
+	    Serial.println("No password entered.");	
+      } else
+        Serial.println("No SSID entered.");	      
 
+      break;		  		  
+		  
     case PROMPT_I2CSCAN:
       Serial.print("I2C scan");
 
