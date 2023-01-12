@@ -108,7 +108,7 @@
 #define XS2 15
 #define XS3 16
 
-#define RSSI 0
+#define RSSI_ 0
 #define IHU_TEMP 2
 #define SPIN 1
 
