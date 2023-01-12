@@ -1135,7 +1135,7 @@ void get_tlm_fox() {
       encodeA(b_max, 30 + head_offset, (int)(voltage_max[mapping[BUS]] * 100));
       encodeB(b_max, 46 + head_offset, (int)(current_max[mapping[BUS]] + 0.5) + 2048);
 	    
-      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
+      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI_] + 0.5) + 2048);	    
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 	    
@@ -1184,7 +1184,7 @@ void get_tlm_fox() {
       encodeB(b_min, 46 + head_offset, (int)(current_min[mapping[BUS]] + 0.5) + 2048);
 	    
       encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
-      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
+      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI_] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
 	    
       if (sensor_min[0] != 1000.0) // make sure values are valid
@@ -1220,7 +1220,7 @@ void get_tlm_fox() {
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
     encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
     encodeA(b, 36 + head_offset, Resets);
-    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
+    encodeB(b, 37 + head_offset, (int)(other[RSSI_] + 0.5) + 2048);
     encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
     encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
     encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
