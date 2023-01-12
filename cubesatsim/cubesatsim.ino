@@ -45,6 +45,8 @@
 #include "picosstvpp.h"
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
+#include <MQTT.h>
+
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
