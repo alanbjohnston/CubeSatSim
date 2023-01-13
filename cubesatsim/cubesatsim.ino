@@ -3690,6 +3690,10 @@ void config_gpio() {
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));
+	
+  pinMode(29);
+  Serial.print("ADC3: ");
+  Serial.println(analogRead(29));		
   	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
