@@ -3691,7 +3691,7 @@ void config_gpio() {
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));
 	
-  pinMode(29);
+  pinMode(29, INPUT);
   Serial.print("ADC3: ");
   Serial.println(analogRead(29));		
   	
