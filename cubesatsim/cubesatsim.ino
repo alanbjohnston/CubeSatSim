@@ -4330,7 +4330,7 @@ void serial_input() {
 
      case 'w':
        Serial.println("Connect to WiFi");	     
-       prompt = PROMPT_WIFI;
+//       prompt = PROMPT_WIFI;
        break;	
 		    
      default:
