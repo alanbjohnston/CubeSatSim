@@ -70,7 +70,7 @@ unsigned long micros3;
 WiFiClient net;
 MQTTClient client;
 
-//#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
