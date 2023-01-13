@@ -3638,6 +3638,11 @@ void config_gpio() {
 	
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
+	
+	
+  pinMode(29, INPUT);
+  Serial.print("ADC3: ");
+  Serial.println(analogRead(29));		
 
   // set LEDs and blink once	
 //  if (!wifi) 
@@ -3691,9 +3696,6 @@ void config_gpio() {
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));
 	
-  pinMode(29, INPUT);
-  Serial.print("ADC3: ");
-  Serial.println(analogRead(29));		
   	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
