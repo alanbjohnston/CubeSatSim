@@ -4329,7 +4329,8 @@ void serial_input() {
        break;			   
 
      case 'w':
-       Serial.println("Connect to WiFi");	     
+       Serial.println(wifi);	
+       Serial.println("Connect to WiFi");    
 //       prompt = PROMPT_WIFI;
        break;	
 		    
