@@ -157,12 +157,12 @@ void setup() {
 //  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
-/*	
+/**/	
   if (check_for_wifi()) {
      wifi = true;	
-     configure_wifi();	  
+//     configure_wifi();	  
   }
-*/	
+/**/	
   start_button_isr(); 
 	
 //  setup_sstv();
@@ -3639,11 +3639,6 @@ void config_gpio() {
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 	
-	
-  pinMode(29, INPUT);
-  Serial.print("ADC3: ");
-  Serial.println(analogRead(29));		
-
   // set LEDs and blink once	
 //  if (!wifi) 
   Serial.println("Blinking pins");	
@@ -3695,8 +3690,11 @@ void config_gpio() {
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));
+	 	
+  pinMode(29, INPUT);
+  Serial.print("ADC3: ");
+  Serial.println(analogRead(29));		
 	
-  	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
 
@@ -3829,7 +3827,7 @@ void client_print_string(char *string)
   }
   client.println(" ");  
 }
-
+*/
 bool check_for_wifi() {
 	
 #ifndef PICO_W
@@ -3840,14 +3838,17 @@ bool check_for_wifi() {
 	
 //     stdio_init_all();
 
-   adc_init();
-   adc_gpio_init(29);
-   adc_select_input(3);
+//   adc_init();
+//   adc_gpio_init(29);
+  pinMode(29, INPUT);	
+//   adc_select_input(3);
    const float conversion_factor = 3.3f / (1 << 12);
-   uint16_t result = adc_read();
+//   uint16_t result = adc_read();
+   uint16_t result = analogRead(29);
 //   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
 
-  if (result < 0x100) {
+//  if (result < 0x100) {	
+  if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
   }
@@ -3857,7 +3858,7 @@ bool check_for_wifi() {
   }
 }
 
-
+/*
 void check_for_browser() {
   if (!wifi)
     return;
@@ -4533,6 +4534,7 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_WIFI:
+      if (wifi) {		  
       char ssid[30], pass[30];		  
       Serial.println("Enter the credentials for your WiFi network");	
   		  
@@ -4553,7 +4555,9 @@ void prompt_for_input() {
 	    Serial.println("No password entered.");	
       } else
         Serial.println("No SSID entered.");	      
-
+      } else
+	Serial.println("WiFi not available");
+		  
       break;		  		  
 		  
     case PROMPT_I2CSCAN:
