@@ -4535,6 +4535,7 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_WIFI:
+      Serial.println(wifi);		  
       if (wifi) {		  
       char ssid[30], pass[30];		  
       Serial.println("Enter the credentials for your WiFi network");	
