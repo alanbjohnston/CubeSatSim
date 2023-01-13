@@ -3831,7 +3831,8 @@ void client_print_string(char *string)
 bool check_for_wifi() {
 	
 #ifndef PICO_W
-
+	
+  Serial.println("WiFi disabled in software");
   return(false);  // skip check if not Pico W board or compilation will fail
 	
 #endif
