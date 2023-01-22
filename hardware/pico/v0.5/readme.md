@@ -1,5 +1,17 @@
 Here is information about the Beta version of the CubeSatSim Pico PCB
 
+Changes since the v0.4 board:
+
+- 68 Ohm resistor SMD is now 0805
+- Added cutable trace JP1 so Pico 5V is supplied through the RBF
+- Moved AUDIO_OUT on GPIO to a Pi Zero PWM pin
+- Moved SWTX on GPIO to Pi Zero TX pin
+- Added back GPIO clock pin to RF
+- Added a Pico GPIO connection to a pin to test wake for Camera
+- Made solering Pico pins easier
+- Moved diode D3 away from GPIO header
+
+
 The files here are for a single board, the CubeSatSim Pico which replaces the STEM Payload Board and the Raspberry Pi Zero.
 
 cubesatsim-pico-0.5_gerbers.zip -- All gerber files used to fabricate PCBs along with .TXT drill file
