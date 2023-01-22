@@ -1,8 +1,8 @@
-Here is information about the 4th Beta version of CubeSatSim Pico PCB
+Here is information about the Beta version of the CubeSatSim Pico PCB
 
 The files here are for a single board, the CubeSatSim Pico which replaces the STEM Payload Board and the Raspberry Pi Zero.
 
-cubesatsim-pico-0.5.G* -- All gerber files used to fabricate PCBs along with .TXT drill file
+cubesatsim-pico-0.5_gerbers.zip -- All gerber files used to fabricate PCBs along with .TXT drill file
 
 cubesatsim-pico-0.5_schematic.pdf -- Schematic
 
