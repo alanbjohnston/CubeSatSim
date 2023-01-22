@@ -1,6 +1,6 @@
 Here is information about the 4th Beta version of CubeSatSim Pico PCB
 
- Changesfrom v0.3
+ Changes from v0.3
  
 - Fix soldermask on USB-C board
 - Move Si5351 board up
