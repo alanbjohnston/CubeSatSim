@@ -4553,8 +4553,11 @@ void prompt_for_input() {
         get_serial_string();
 	if ( strlen(serial_string) > 0) {
 	    strcpy(serial_string, pass);
-	    Serial.println("Connecting to Wifi");	
-	    WiFi.begin(ssid, pass);	
+	    Serial.println("Connecting to Wifi");
+const char ssid2[] = "CubeSatSim";
+const char pass2[] = "amsatao7";		
+	    WiFi.begin(ssid2, pass2);	
+//	    WiFi.begin(ssid, pass);	
 		
 	    while (WiFi.status() != WL_CONNECTED) {
     		Serial.print(".");
