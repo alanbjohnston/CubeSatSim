@@ -4555,6 +4555,12 @@ void prompt_for_input() {
 	    strcpy(serial_string, pass);
 	    Serial.println("Connecting to Wifi");	
 	    WiFi.begin(ssid, pass);	
+		
+	    while (WiFi.status() != WL_CONNECTED) {
+    		Serial.print(".");
+    		delay(500);
+  	    }	
+		
 	} else 
 	    Serial.println("No password entered.");	
       } else
