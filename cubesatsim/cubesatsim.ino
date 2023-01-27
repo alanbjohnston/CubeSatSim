@@ -4560,7 +4560,7 @@ void prompt_for_input() {
 //	    WiFi.begin(ssid2, pass2);	
 	    WiFi.begin(ssid, pass);	
 		
-	    while ((WiFi.status() != WL_CONNECTED) || ((millis() - elapsed_timer) > 10000)) {
+	    while ((WiFi.status() != WL_CONNECTED) && ((millis() - elapsed_timer) < 10000)) {
     		Serial.print(".");
     		delay(500);
   	    }
