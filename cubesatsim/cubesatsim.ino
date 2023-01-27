@@ -4376,7 +4376,7 @@ void prompt_for_input() {
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
-       Serial.println("d  Change debug mode\n");
+       Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
        Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
@@ -4556,9 +4556,10 @@ void prompt_for_input() {
 	    Serial.println("Connecting to Wifi");
 //const char ssid2[] = "CubeSatSim";
 //const char pass2[] = "amsatao7";
-	   unsigned int elapsed_timer = (unsigned int) millis();	
 //	    WiFi.begin(ssid2, pass2);	
-	    WiFi.begin(ssid, pass);	
+	    WiFi.begin(ssid, pass);
+		
+	    unsigned int elapsed_timer = (unsigned int) millis();	
 		
 	    while ((WiFi.status() != WL_CONNECTED) && ((millis() - elapsed_timer) < 10000)) {
     		Serial.print(".");
