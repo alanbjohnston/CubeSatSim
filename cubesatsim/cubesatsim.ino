@@ -4548,11 +4548,11 @@ void prompt_for_input() {
       print_string(serial_string);
 		  
       if (strlen(serial_string) > 0)	{
-	strcpy(serial_string, ssid);      
+	strcpy(ssid, serial_string);      
         Serial.print("Enter WiFi password: ");
         get_serial_string();
-	if ( strlen(serial_string) > 0) {
-	    strcpy(serial_string, pass);
+	if (strlen(serial_string) > 0) {
+	    strcpy(pass, serial_string);
 	    Serial.println("Connecting to Wifi");
 const char ssid2[] = "CubeSatSim";
 const char pass2[] = "amsatao7";
