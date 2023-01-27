@@ -4555,15 +4555,19 @@ void prompt_for_input() {
 	    strcpy(serial_string, pass);
 	    Serial.println("Connecting to Wifi");
 const char ssid2[] = "CubeSatSim";
-const char pass2[] = "amsatao7";		
+const char pass2[] = "amsatao7";
+	   unsigned int elapsed_timer = (unsigned int) millis();	
 	    WiFi.begin(ssid2, pass2);	
 //	    WiFi.begin(ssid, pass);	
 		
-	    while (WiFi.status() != WL_CONNECTED) {
+	    while ((WiFi.status() != WL_CONNECTED) || ((millis() - elapsed_timer) > 10000)) {
     		Serial.print(".");
     		delay(500);
-  	    }	
-		
+  	    }
+	    if (((millis() - elapsed_timer) > 10000))	
+	      Serial.println("Failed to connect!");
+	    else
+	      Serial.println("Connected to WiFi!");		    
 	} else 
 	    Serial.println("No password entered.");	
       } else
