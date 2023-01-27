@@ -4331,7 +4331,7 @@ void serial_input() {
      case 'w':
        Serial.println(wifi);	
        Serial.println("Connect to WiFi");    
-//       prompt = PROMPT_WIFI;
+       prompt = PROMPT_WIFI;
        break;	
 		    
      default:
@@ -4377,6 +4377,7 @@ void prompt_for_input() {
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
        Serial.println("d  Change debug mode\n");
+       Serial.println("w  Connect to WiFi\n");
 		  
        Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
 		  
