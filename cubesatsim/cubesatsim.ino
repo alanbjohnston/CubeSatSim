@@ -4554,9 +4554,13 @@ void prompt_for_input() {
 	if ( strlen(serial_string) > 0) {
 	    strcpy(serial_string, pass);
 	    Serial.println("Connecting to Wifi");
-//const char ssid2[] = "CubeSatSim";
-//const char pass2[] = "amsatao7";
+const char ssid2[] = "CubeSatSim";
+const char pass2[] = "amsatao7";
 //	    WiFi.begin(ssid2, pass2);	
+		
+	    Serial.printf("%s%s\n",ssid, pass);
+	    Serial.printf("%s%s\n",ssid2, pass2);
+		
 	    WiFi.begin(ssid, pass);
 		
 	    unsigned int elapsed_timer = (unsigned int) millis();	
