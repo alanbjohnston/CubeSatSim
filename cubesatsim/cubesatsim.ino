@@ -160,10 +160,13 @@ void setup() {
 /**/	
   if (check_for_wifi()) {
      wifi = true;
-     pinMode(LED_BUILTIN, OUTPUT);		  
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+//     pinMode(LED_BUILTIN, OUTPUT);		  
 //     configure_wifi();	  
   }  else
-     pinMode(25, OUTPUT);	
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+  pinMode(led_builtin_pin, OUTPUT);	
 /**/	
   start_button_isr(); 
 	
@@ -3969,11 +3972,14 @@ void configure_wifi() {
 */
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
-//  if (!wifi) 
+//  if (!wifi)
+/*	
   if (wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   else
     digitalWrite(25, HIGH);	// Transmit LED on	
+*/	
+  digitalWrite(led_builtin_pin, HIGH);
 	
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
@@ -4003,10 +4009,13 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   }
 	
 //  if (!wifi) 
+/*	
   if (wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   else
     digitalWrite(25, LOW);	// Transmit LED on	
+*/	
+  digitalWrite(led_builtin_pin, LOW);	
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
