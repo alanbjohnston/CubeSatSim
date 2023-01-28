@@ -196,10 +196,10 @@ bool get_camera_image(bool debug_camera)  {
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
-//#ifdef GET_IMAGE_DEBUG  
-       if (debug_camera)  
+#ifdef GET_IMAGE_DEBUG  
+//       if (debug_camera)  
             Serial.println("Found part of end flag!");
-//#endif
+#endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
 //              Serial.println("\nFound end flag");
@@ -220,13 +220,15 @@ bool get_camera_image(bool debug_camera)  {
 //              index1 -= 1;
 
               uint8_t * data = (uint8_t *) &buffer2[0];
-#ifdef GET_IMAGE_DEBUG
+//#ifdef GET_IMAGE_DEBUG
+    if (debug_camera) {                
       Serial.println("\nCRC cacluation data:");
       Serial.println(buffer2[0], HEX);
       Serial.println(buffer2[index1 - 1], HEX);
       Serial.println(index1);
-      Serial.println(received_crc, HEX);     
- #endif             
+      Serial.println(received_crc, HEX);   
+    }
+ //#endif             
               int calculated_crc = CRC8.smbus(data, index1);
  //             Serial.println(calculated_crc, HEX);
               if (received_crc == calculated_crc)
