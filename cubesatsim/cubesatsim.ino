@@ -4503,7 +4503,9 @@ void prompt_for_input() {
       break;
 		  
    case PROMPT_CAMERA:
-      get_camera_image(debug_camera);	  
+      show_dir();		  
+      get_camera_image(debug_camera);	 
+      show_dir();		  
       break;
 				    
     case PROMPT_TEMP:		  
