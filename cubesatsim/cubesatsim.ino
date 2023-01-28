@@ -3967,7 +3967,7 @@ void configure_wifi() {
 */
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
- // if (!wifi) 
+  if (!wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
@@ -3996,7 +3996,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     clockgen.enableOutputs(false);		  
   }
 
-//  if (!wifi) 
+  if (!wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
