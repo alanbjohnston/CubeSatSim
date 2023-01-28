@@ -3117,11 +3117,11 @@ void blink_setup()
 
 void blink(int length)
 {
-  digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
   
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-  digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED off
+  digitalWrite(led_builtin_pin, LOW);   // set the built-in LED off
 }
 
 void led_set(int ledPin, bool state)
@@ -3407,7 +3407,7 @@ void process_pushbutton() {
 //  return;  /// just skip for now
 	
 //  if (!wifi) 	   	
-   digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
+   digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
 	
@@ -3497,7 +3497,7 @@ void process_pushbutton() {
     transmit_off();
   sleep(2.0);	
 
-   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
+   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
 }
 
 void process_bootsel() {
@@ -3507,7 +3507,7 @@ void process_bootsel() {
   int release = FALSE;
 	
 //  if (!wifi) 
-    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
+    digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
 	
@@ -3596,18 +3596,18 @@ void process_bootsel() {
     transmit_off();
 //  sleep(2.0);	
 	
-   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
+   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
 }
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
 //    if (!wifi) 
-      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(led_builtin_pin, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
 //    if (!wifi) 
-       digitalWrite(LED_BUILTIN, HIGH);
+       digitalWrite(led_builtin_pin, HIGH);
     sleep(0.1);
   }
 }
@@ -3647,7 +3647,7 @@ void config_gpio() {
   // set LEDs and blink once	
 //  if (!wifi) 
   Serial.println("Blinking pins");	
-    pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+    pinMode(led_builtin_pin, OUTPUT);  // Set LED pin to output
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
   digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
@@ -4915,7 +4915,7 @@ void get_input() {
 void transmit_led(bool status) {
   if(filter_present) {	
 //	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, status);	
+	    digitalWrite(led_builtin_pin, status);	
 	  digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
