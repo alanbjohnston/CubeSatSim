@@ -95,7 +95,7 @@ void setup() {
 
   new_mode = mode;
 	
-  pinMode(LED_BUILTIN, OUTPUT);	
+//  pinMode(LED_BUILTIN, OUTPUT);	
 //  blinkTimes(1);	
 
 ///  sleep(5.0);	
@@ -159,9 +159,11 @@ void setup() {
     
 /**/	
   if (check_for_wifi()) {
-     wifi = true;	
+     wifi = true;
+     pinMode(LED_BUILTIN, OUTPUT);		  
 //     configure_wifi();	  
-  }
+  }  else
+     pinMode(25, OUTPUT);	
 /**/	
   start_button_isr(); 
 	
@@ -3970,6 +3972,9 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 //  if (!wifi) 
   if (wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
+  else
+    digitalWrite(25, HIGH);	// Transmit LED on	
+	
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
   unsigned long duration_us = duration * 1000;
@@ -4000,6 +4005,8 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 //  if (!wifi) 
   if (wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
+  else
+    digitalWrite(25, LOW);	// Transmit LED on	
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
