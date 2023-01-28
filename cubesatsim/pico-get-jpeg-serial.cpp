@@ -196,9 +196,10 @@ bool get_camera_image(bool debug_camera)  {
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
-#ifdef GET_IMAGE_DEBUG        
+//#ifdef GET_IMAGE_DEBUG  
+       if (debug_camera)  
             Serial.println("Found part of end flag!");
-#endif
+//#endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
 //              Serial.println("\nFound end flag");
@@ -247,7 +248,8 @@ bool get_camera_image(bool debug_camera)  {
          }
  ///        buffer2[index1++] = octet;
            
-#ifdef GET_IMAGE_DEBUG    
+//#ifdef GET_IMAGE_DEBUG 
+    if (debug_camera) {   
            char hexValue[5];
            if (octet != 0x66) {
              sprintf(hexValue, "%02X", octet);
@@ -257,7 +259,8 @@ bool get_camera_image(bool debug_camera)  {
              Serial.print("66");
            } 
 //             Serial.write(octet);
-#endif             
+    }
+//#endif             
            if (index1 > 100000)
              index1 = 0; 
 //         }
