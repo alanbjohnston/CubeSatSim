@@ -286,7 +286,7 @@ bool get_camera_image(bool debug_camera)  {
 //    Serial.println("writing to Serial2");
   }
   if (debug_camera)                 
-      Serial.print("\nCamera complete");
+      Serial.print("\nCamera complete\n");
   digitalWrite(ESP32_CAM_ENABLE_PIN, LOW);
   return(finished);
 }
