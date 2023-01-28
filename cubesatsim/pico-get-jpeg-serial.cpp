@@ -175,15 +175,16 @@ bool get_camera_image(bool debug_camera)  {
   end_flag_detected = false;
   jpeg_start = 0;
  
-// #ifdef GET_IMAGE_DEBUG
- if (debug_camera)
-  Serial.println("Starting get_image_file");
- // #endif
-  finished = false;
-
   Serial.println("Enabling ESP32-CAM");
   pinMode(ESP32_CAM_ENABLE_PIN, OUTPUT);
   digitalWrite(ESP32_CAM_ENABLE_PIN, HIGH);
+ 
+// #ifdef GET_IMAGE_DEBUG
+ if (debug_camera)
+  Serial.println("Received from ESP32-CAM hex encoded:\n");
+ // #endif
+  finished = false;
+
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 
@@ -212,7 +213,7 @@ bool get_camera_image(bool debug_camera)  {
               int received_crc = Serial2.read(); 
 //              buffer2[index1++] = octet;
                             
-              Serial.print("File length: ");
+              Serial.print("\nFile length: ");
               Serial.println(index1 - (int)strlen(end_flag));
 //              index1 -= 1; // 40;
 //              Serial.println(buffer2[index1 - 1], HEX); 
@@ -220,15 +221,16 @@ bool get_camera_image(bool debug_camera)  {
 //              index1 -= 1;
 
               uint8_t * data = (uint8_t *) &buffer2[0];
-//#ifdef GET_IMAGE_DEBUG
-    if (debug_camera) {                
-      Serial.println("\nCRC cacluation data:");
-      Serial.println(buffer2[0], HEX);
+#ifdef GET_IMAGE_DEBUG
+       Serial.println(buffer2[0], HEX);
       Serial.println(buffer2[index1 - 1], HEX);
-      Serial.println(index1);
+      Serial.println(index1);            
+ #endif  
+     if (debug_camera) {                
+      Serial.print("\nCRC received:");
       Serial.println(received_crc, HEX);   
     }
- //#endif             
+           
               int calculated_crc = CRC8.smbus(data, index1);
  //             Serial.println(calculated_crc, HEX);
               if (received_crc == calculated_crc)
