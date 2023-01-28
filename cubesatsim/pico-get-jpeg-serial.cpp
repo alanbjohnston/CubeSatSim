@@ -31,7 +31,7 @@ FastCRC8 CRC8;
 //#define PICOW true
 int led_pin = LED_BUILTIN;
 
-bool get_camera_image();
+bool get_camera_image(bool debug_camera);
 bool start_camera();
 
 bool start_camera() {
@@ -67,14 +67,14 @@ bool start_camera() {
    delay(100);
    Serial2.begin(115200);
 #ifdef GET_IMAGE_DEBUG  
-   Serial.println("Started Serial2 to camera v0.2");
+   Serial.println("Started Serial2 to camera v0.3");
 #endif
    LittleFS.begin();
 
    bool camera_present = false;	
 //   int tries = 0;
 //   while ((tries++ < 5) && !camera_present) {
-    if (get_camera_image())  {
+    if (get_camera_image(false))  {
       camera_present = true;
       Serial.println("Camera detected!");
     }	    
@@ -166,7 +166,7 @@ void loop() {
 }
 */
 
-bool get_camera_image()  {
+bool get_camera_image(bool debug_camera)  {
  
   index1 = 0;
   flag_count = 0;
@@ -175,9 +175,10 @@ bool get_camera_image()  {
   end_flag_detected = false;
   jpeg_start = 0;
  
-#ifdef GET_IMAGE_DEBUG
+// #ifdef GET_IMAGE_DEBUG
+ if (debug_camera)
   Serial.println("Starting get_image_file");
- #endif
+ // #endif
   finished = false;
 
   Serial.println("Enabling ESP32-CAM");
