@@ -4301,7 +4301,8 @@ void serial_input() {
 		    
      case 'C':
        Serial.println("Debug camera");	
-       debug_camera = true;	    
+       debug_camera = true;
+       prompt = PROMPT_CAMERA;	    
        break;			    
 		   
      case 't':
@@ -4491,6 +4492,10 @@ void prompt_for_input() {
       payload_command = PAYLOAD_QUERY;		  
       break;
 		  
+   case PROMPT_CAMERA:
+      get_camera_image(debug_camera);	  
+      break;
+				    
     case PROMPT_TEMP:		  
       sensorValue = analogRead(TEMPERATURE_PIN);
       Serial.print("Raw diode voltage: ");		  
