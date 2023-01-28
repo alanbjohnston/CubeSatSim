@@ -4233,22 +4233,7 @@ void serial_input() {
      case 'h':
      case 'H':
  //      Serial.println("Help");	     
-        prompt = PROMPT_HELP;
- /*		    
-       Serial.println("\nChange settings by typing the letter:");	     
-       Serial.println("h  Help info");	  
-       Serial.println("a  AFSK/APRS mode");	     
-       Serial.println("c  CW mode");	     
-       Serial.println("f  FSK/DUV mode");	     
-       Serial.println("b  BPSK mode");	     
-       Serial.println("s  SSTV mode");	     
-       Serial.println("i  Restart");	     
-       Serial.println("c  CALLSIGN");	     
-       Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count, or payload & EEPROM");	
-       Serial.println("l  Lat and Long");	     
-       Serial.println("?  Query sensors\n");	 
-*/		    
+        prompt = PROMPT_HELP;		    
        break;
 		   
      case 'a':
@@ -4387,15 +4372,17 @@ void prompt_for_input() {
        Serial.println("a  AFSK/APRS mode");	     
        Serial.println("m  CW mode");	     
        Serial.println("f  FSK/DUV mode");	     
+       Serial.println("F  Format flash memory");
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
        Serial.println("S  I2C scan");	   
        Serial.println("i  Restart");	     
-       Serial.println("c  CALLSIGN");	     
+       Serial.println("c  Change CALLSIGN");	
+       Serial.println("C  Debug Camera");		  
        Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count");	
-       Serial.println("p  Resets payload and stored EEPROM values");	
-       Serial.println("l  Lat and Lon");	     
+       Serial.println("r  Reset Count");	
+       Serial.println("p  Reset payload and stored EEPROM values");	
+       Serial.println("l  Change Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
@@ -4403,6 +4390,29 @@ void prompt_for_input() {
        Serial.println("w  Connect to WiFi\n");
 		  
        Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+		  
+       switch(mode) {
+		       
+	case(AFSK):
+	  Serial.println("AFSK mode");
+	  break;
+		       
+	case(FSK):
+	  Serial.println("FSK mode");
+	  break;	
+		       
+	case(BPSK):
+	  Serial.println("BPSK mode");
+	  break;
+		       
+	case(SSTV):
+	  Serial.println("SSTV mode");
+	  break;	
+		       
+	case(CW):
+	  Serial.println("CW mode");
+	  break;			       
+       }
 		  
        break;	
 		  
