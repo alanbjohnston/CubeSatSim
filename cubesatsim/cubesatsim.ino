@@ -75,7 +75,7 @@ MQTTClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-extern bool get_camera_image();
+extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
 void setup() {
@@ -253,7 +253,7 @@ void loop() {
 	  load_sstv_image_1_as_cam_dot_jpg(); 	      
 	first_time_sstv = false;
       } else {
-	if (camera_detected = get_camera_image()) {      
+	if (camera_detected = get_camera_image(debug_camera)) {      
           Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
 //	  char camera_file[] = "/cam.jpg";      
@@ -4277,10 +4277,14 @@ void serial_input() {
        break;	
 		   
      case 'c':
-     case 'C':
        Serial.println("Change the CALLSIGN");	
        prompt = PROMPT_CALLSIGN;	    
        break;	
+		    
+     case 'C':
+       Serial.println("Debug camera");	
+       debug_camera = true;	    
+       break;			    
 		   
      case 't':
      case 'T':
