@@ -369,6 +369,8 @@ bool ina219_started = false;
 bool camera_detected = false;
 bool rotate_flag = true;
 
+int led_builtin_pin;
+
 #define PRESSED 0
 #define HELD 0
 #define RELEASED 1
