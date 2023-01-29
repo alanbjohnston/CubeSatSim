@@ -114,6 +114,15 @@ void setup() {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
      pinMode(led_builtin_pin, OUTPUT);	
+	  
+      digitalWrite(led_builtin_pin, HIGH);
+      delay(500);
+      digitalWrite(led_builtin_pin, LOW);
+      delay(500);
+      digitalWrite(led_builtin_pin, HIGH);
+      delay(500);           
+      digitalWrite(led_builtin_pin, LOW);
+      delay(500);  	  
   }
 /**/		
 	
