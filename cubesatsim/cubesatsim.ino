@@ -108,12 +108,13 @@ void setup() {
   if (check_for_wifi()) {
      wifi = true;
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
-//     pinMode(LED_BUILTIN, OUTPUT);		  
+     pinMode(LED_BUILTIN, OUTPUT);		  
 //     configure_wifi();	  
-  }  else
+  }  else  {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-  pinMode(led_builtin_pin, OUTPUT);	
+     pinMode(led_builtin_pin, OUTPUT);	
+  }
 /**/		
 	
   config_gpio();
@@ -3110,11 +3111,17 @@ void blink_setup()
 
 void blink(int length)
 {
-  digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
-  
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
+	  
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-  digitalWrite(led_builtin_pin, LOW);   // set the built-in LED off
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
 }
 
 void led_set(int ledPin, bool state)
@@ -3399,9 +3406,11 @@ void process_pushbutton() {
 	
 //  return;  /// just skip for now
 	
-//  if (!wifi) 	   	
-   digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before starting to blink
-	
+// make sure built in LED is on before starting to blink
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
   sleep(1.0);
 	
   int pb_value = digitalRead(MAIN_PB_PIN);
@@ -3490,7 +3499,11 @@ void process_pushbutton() {
     transmit_off();
   sleep(2.0);	
 
-   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
+  // make sure built-in LED is off
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
 
 void process_bootsel() {
@@ -3589,18 +3602,30 @@ void process_bootsel() {
     transmit_off();
 //  sleep(2.0);	
 	
-   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
+  // make sure built-in LED is off
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-//    if (!wifi) 
-      digitalWrite(led_builtin_pin, LOW);
+	  
+    if (wifi)	
+      digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+    else
+      digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	  
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-//    if (!wifi) 
-       digitalWrite(led_builtin_pin, HIGH);
+	  
+    if (wifi)	
+      digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+    else
+      digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
+	  
     sleep(0.1);
   }
 }
@@ -3973,8 +3998,11 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   else
     digitalWrite(25, HIGH);	// Transmit LED on	
-*/	
-  digitalWrite(led_builtin_pin, HIGH);
+*/		
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
 	
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
@@ -4010,7 +4038,12 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   else
     digitalWrite(25, LOW);	// Transmit LED on	
 */	
-  digitalWrite(led_builtin_pin, LOW);	
+	
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
@@ -4926,8 +4959,12 @@ void get_input() {
 
 void transmit_led(bool status) {
   if(filter_present) {	
-//	  if (!wifi) 
-	    digitalWrite(led_builtin_pin, status);	
-	  digitalWrite(MAIN_LED_BLUE, status);	  
+	  
+  if (wifi)	
+    digitalWrite(BUILTIN_LED, status);   // set the built-in LED
+  else
+    digitalWrite(led_builtin_pin, status);   // set the built-in LED 
+	  
+  digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
