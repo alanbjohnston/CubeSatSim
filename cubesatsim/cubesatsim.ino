@@ -36,7 +36,7 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-//#include <WiFi.h>
+#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 //#include "SSTV-Arduino-Scottie1-Library.h"
@@ -45,6 +45,8 @@
 #include "picosstvpp.h"
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
+#include <MQTT.h>
+
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -65,13 +67,15 @@ unsigned long micros3;
 
 //WiFiServer server(port);
 //WiFiClient client;
+WiFiClient net;
+MQTTClient client;
 
-//#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-extern bool get_camera_image();
+extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
 void setup() {
@@ -91,14 +95,26 @@ void setup() {
 
   new_mode = mode;
 	
-  pinMode(LED_BUILTIN, OUTPUT);	
+//  pinMode(LED_BUILTIN, OUTPUT);	
 //  blinkTimes(1);	
 
 ///  sleep(5.0);	
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.35 starting...\n");
+  Serial.println("CubeSatSim Pico v0.36 starting...\n");
+	
+/**/	
+  if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+//     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+  pinMode(led_builtin_pin, OUTPUT);	
+/**/		
 	
   config_gpio();
 
@@ -121,10 +137,11 @@ void setup() {
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == HIGH)  {
+// {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
-      payload_OK_only();    
+//      payload_OK_only();    
     }
   }
 */
@@ -152,12 +169,6 @@ void setup() {
 //  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
-/*	
-  if (check_for_wifi()) {
-     wifi = true;	
-     configure_wifi();	  
-  }
-*/	
   start_button_isr(); 
 	
 //  setup_sstv();
@@ -202,6 +213,14 @@ void setup() {
   Serial.print(" ");
   Serial.println(millis());
 */	
+
+/*	
+//SSID of your network
+char ssid[] = "CubeSatSim";
+//password of your WPA Network
+char pass[] = "amsatao7";
+ WiFi.begin(ssid, pass);	
+*/	
 }
 
 void loop() {
@@ -240,7 +259,7 @@ void loop() {
 	  load_sstv_image_1_as_cam_dot_jpg(); 	      
 	first_time_sstv = false;
       } else {
-	if (camera_detected = get_camera_image()) {      
+	if (camera_detected = get_camera_image(debug_camera)) {      
           Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
 //	  char camera_file[] = "/cam.jpg";      
@@ -722,29 +741,29 @@ void get_tlm_ao7() {
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 	  
-    tlm[1][A] = (int)(voltage[mapping[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
-    tlm[1][B] = (int)(99.5 - current[mapping[PLUS_X]] / 10.0) % 100; // +X current [4]
-    tlm[1][C] = (int)(99.5 - current[mapping[MINUS_X]] / 10.0) % 100; // X- current [10] 
-    tlm[1][D] = (int)(99.5 - current[mapping[PLUS_Y]] / 10.0) % 100; // +Y current [7]
+    tlm[1][A_] = (int)(voltage[mapping[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
+    tlm[1][B_] = (int)(99.5 - current[mapping[PLUS_X]] / 10.0) % 100; // +X current [4]
+    tlm[1][C_] = (int)(99.5 - current[mapping[MINUS_X]] / 10.0) % 100; // X- current [10] 
+    tlm[1][D_] = (int)(99.5 - current[mapping[PLUS_Y]] / 10.0) % 100; // +Y current [7]
 
-    tlm[2][A] = (int)(99.5 - current[mapping[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
-    tlm[2][B] = (int)(99.5 - current[mapping[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-    tlm[2][C] = (int)(99.5 - current[mapping[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
-    tlm[2][D] = (int)(50.5 + current[mapping[BAT]] / 10.0) % 100; // NiMH Battery current
+    tlm[2][A_] = (int)(99.5 - current[mapping[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
+    tlm[2][B_] = (int)(99.5 - current[mapping[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+    tlm[2][C_] = (int)(99.5 - current[mapping[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
+    tlm[2][D_] = (int)(50.5 + current[mapping[BAT]] / 10.0) % 100; // NiMH Battery current
 
 //    tlm[3][A] = abs((int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100);
     if (voltage[mapping[BAT]] > 4.6)	 
-    	tlm[3][A] = (int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
+    	tlm[3][A_] = (int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
     else
-    	tlm[3][A] = (int)((voltage[mapping[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
+    	tlm[3][A_] = (int)((voltage[mapping[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
 	    
-    tlm[3][B] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
+    tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
 //    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
-    tlm[4][A] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
-    tlm[6][B] = 0;
-    tlm[6][D] = 49 + rand() % 3;
+    tlm[6][B_] = 0;
+    tlm[6][D_] = 49 + rand() % 3;
 
 /*	  
     // Display tlm
@@ -1127,7 +1146,7 @@ void get_tlm_fox() {
       encodeA(b_max, 30 + head_offset, (int)(voltage_max[mapping[BUS]] * 100));
       encodeB(b_max, 46 + head_offset, (int)(current_max[mapping[BUS]] + 0.5) + 2048);
 	    
-      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
+      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI_] + 0.5) + 2048);	    
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 	    
@@ -1176,7 +1195,7 @@ void get_tlm_fox() {
       encodeB(b_min, 46 + head_offset, (int)(current_min[mapping[BUS]] + 0.5) + 2048);
 	    
       encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
-      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
+      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI_] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
 	    
       if (sensor_min[0] != 1000.0) // make sure values are valid
@@ -1212,7 +1231,7 @@ void get_tlm_fox() {
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
     encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
     encodeA(b, 36 + head_offset, Resets);
-    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
+    encodeB(b, 37 + head_offset, (int)(other[RSSI_] + 0.5) + 2048);
     encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
     encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
     encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
@@ -2877,7 +2896,7 @@ void read_payload()
 //  delay(100);
 }
 
-/*
+/**/
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -3066,7 +3085,7 @@ void payload_OK_only()
   delay(100);
 }
 
-*/	
+/**/	
 /*
 void eeprom_word_write(int addr, int val)
 {
@@ -3099,11 +3118,11 @@ void blink_setup()
 
 void blink(int length)
 {
-  digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
   
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-  digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED off
+  digitalWrite(led_builtin_pin, LOW);   // set the built-in LED off
 }
 
 void led_set(int ledPin, bool state)
@@ -3389,7 +3408,7 @@ void process_pushbutton() {
 //  return;  /// just skip for now
 	
 //  if (!wifi) 	   	
-   digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
+   digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before starting to blink
 	
   sleep(1.0);
 	
@@ -3479,7 +3498,7 @@ void process_pushbutton() {
     transmit_off();
   sleep(2.0);	
 
-   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
+   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
 }
 
 void process_bootsel() {
@@ -3489,7 +3508,7 @@ void process_bootsel() {
   int release = FALSE;
 	
 //  if (!wifi) 
-    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
+    digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before blinking	
 	
   sleep(1.0);
 	
@@ -3578,18 +3597,18 @@ void process_bootsel() {
     transmit_off();
 //  sleep(2.0);	
 	
-   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
+   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
 }
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
 //    if (!wifi) 
-      digitalWrite(LED_BUILTIN, LOW);
+      digitalWrite(led_builtin_pin, LOW);
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
 //    if (!wifi) 
-       digitalWrite(LED_BUILTIN, HIGH);
+       digitalWrite(led_builtin_pin, HIGH);
     sleep(0.1);
   }
 }
@@ -3608,13 +3627,30 @@ void config_gpio() {
   for (int i = 6; i < 29; i++) {
     pinMode(i, INPUT);	  
   }
+	
+  pinMode(PI_3V3_PIN, INPUT); 	
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN));
+  if (digitalRead(PI_3V3_PIN) == HIGH)  {
+// {
+    Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
+    start_payload();	
+    while(true)	 { 
+//	Serial.println("waiting");
+//	sleep(3.0);    
+      payload_OK_only();    
+    }
+  }	
+	
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
-
+	
   // set LEDs and blink once	
 //  if (!wifi) 
   Serial.println("Blinking pins");	
-    pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+  pinMode(led_builtin_pin, OUTPUT);  // Set LED pin to output
+  blink_pin(led_builtin_pin, 150);	
+//  digitalWrite(led_builtin_pin, HIGH); // Leave Pico LED on
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
   digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
@@ -3662,7 +3698,11 @@ void config_gpio() {
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));
-  	
+	 	
+  pinMode(29, INPUT);
+  Serial.print("ADC3: ");
+  Serial.println(analogRead(29));		
+	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
 
@@ -3795,25 +3835,29 @@ void client_print_string(char *string)
   }
   client.println(" ");  
 }
-
+*/
 bool check_for_wifi() {
 	
 #ifndef PICO_W
-
+	
+  Serial.println("WiFi disabled in software");
   return(false);  // skip check if not Pico W board or compilation will fail
 	
 #endif
 	
 //     stdio_init_all();
 
-   adc_init();
-   adc_gpio_init(29);
-   adc_select_input(3);
+//   adc_init();
+//   adc_gpio_init(29);
+  pinMode(29, INPUT);	
+//   adc_select_input(3);
    const float conversion_factor = 3.3f / (1 << 12);
-   uint16_t result = adc_read();
+//   uint16_t result = adc_read();
+   uint16_t result = analogRead(29);
 //   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
 
-  if (result < 0x100) {
+//  if (result < 0x100) {	
+  if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
   }
@@ -3823,7 +3867,7 @@ bool check_for_wifi() {
   }
 }
 
-
+/*
 void check_for_browser() {
   if (!wifi)
     return;
@@ -3931,8 +3975,15 @@ void configure_wifi() {
 */
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
- // if (!wifi) 
+//  if (!wifi)
+/*	
+  if (wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
+  else
+    digitalWrite(25, HIGH);	// Transmit LED on	
+*/	
+  digitalWrite(led_builtin_pin, HIGH);
+	
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
   unsigned long duration_us = duration * 1000;
@@ -3959,9 +4010,15 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     digitalWrite(BPSK_CONTROL_A, LOW);  	
     clockgen.enableOutputs(false);		  
   }
-
+	
 //  if (!wifi) 
+/*	
+  if (wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
+  else
+    digitalWrite(25, LOW);	// Transmit LED on	
+*/	
+  digitalWrite(led_builtin_pin, LOW);	
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
@@ -4179,22 +4236,7 @@ void serial_input() {
      case 'h':
      case 'H':
  //      Serial.println("Help");	     
-        prompt = PROMPT_HELP;
- /*		    
-       Serial.println("\nChange settings by typing the letter:");	     
-       Serial.println("h  Help info");	  
-       Serial.println("a  AFSK/APRS mode");	     
-       Serial.println("c  CW mode");	     
-       Serial.println("f  FSK/DUV mode");	     
-       Serial.println("b  BPSK mode");	     
-       Serial.println("s  SSTV mode");	     
-       Serial.println("i  Restart");	     
-       Serial.println("c  CALLSIGN");	     
-       Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count, or payload & EEPROM");	
-       Serial.println("l  Lat and Long");	     
-       Serial.println("?  Query sensors\n");	 
-*/		    
+        prompt = PROMPT_HELP;		    
        break;
 		   
      case 'a':
@@ -4241,10 +4283,15 @@ void serial_input() {
        break;	
 		   
      case 'c':
-     case 'C':
        Serial.println("Change the CALLSIGN");	
        prompt = PROMPT_CALLSIGN;	    
        break;	
+		    
+     case 'C':
+       Serial.println("Debug camera");	
+       debug_camera = true;
+       prompt = PROMPT_CAMERA;	    
+       break;			    
 		   
      case 't':
      case 'T':
@@ -4292,6 +4339,12 @@ void serial_input() {
        prompt = PROMPT_DEBUG;
        break;			   
 
+     case 'w':
+       Serial.println(wifi);	
+       Serial.println("Connect to WiFi");    
+       prompt = PROMPT_WIFI;
+       break;	
+		    
      default:
        Serial.println("Not a command\n");	
 		   
@@ -4322,21 +4375,47 @@ void prompt_for_input() {
        Serial.println("a  AFSK/APRS mode");	     
        Serial.println("m  CW mode");	     
        Serial.println("f  FSK/DUV mode");	     
+       Serial.println("F  Format flash memory");
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
        Serial.println("S  I2C scan");	   
        Serial.println("i  Restart");	     
-       Serial.println("c  CALLSIGN");	     
+       Serial.println("c  Change CALLSIGN");	
+       Serial.println("C  Debug Camera");		  
        Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count");	
-       Serial.println("p  Resets payload and stored EEPROM values");	
-       Serial.println("l  Lat and Lon");	     
+       Serial.println("r  Reset Count");	
+       Serial.println("p  Reset payload and stored EEPROM values");	
+       Serial.println("l  Change Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
-       Serial.println("d  Change debug mode\n");
+       Serial.println("d  Change debug mode");
+       Serial.println("w  Connect to WiFi\n");
 		  
        Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+		  
+       switch(mode) {
+		       
+	case(AFSK):
+	  Serial.println("AFSK mode");
+	  break;
+		       
+	case(FSK):
+	  Serial.println("FSK mode");
+	  break;	
+		       
+	case(BPSK):
+	  Serial.println("BPSK mode");
+	  break;
+		       
+	case(SSTV):
+	  Serial.println("SSTV mode");
+	  break;	
+		       
+	case(CW):
+	  Serial.println("CW mode");
+	  break;			       
+       }
 		  
        break;	
 		  
@@ -4426,6 +4505,12 @@ void prompt_for_input() {
       payload_command = PAYLOAD_QUERY;		  
       break;
 		  
+   case PROMPT_CAMERA:
+      show_dir();		  
+      get_camera_image(debug_camera);	 
+      show_dir();		  
+      break;
+				    
     case PROMPT_TEMP:		  
       sensorValue = analogRead(TEMPERATURE_PIN);
       Serial.print("Raw diode voltage: ");		  
@@ -4492,7 +4577,47 @@ void prompt_for_input() {
       else  
         Serial.println("off");
       break;	
-
+		  
+    case PROMPT_WIFI:
+      Serial.println(wifi);		  
+      if (wifi) {		  
+      char ssid[30], pass[30];		  
+      Serial.println("Enter the credentials for your WiFi network");	
+  		  
+      Serial.print("Enter WiFi SSID: ");
+      get_serial_string();
+		  
+      print_string(serial_string);
+		  
+      if (strlen(serial_string) > 0)	{
+	strcpy(ssid, serial_string);      
+        Serial.print("Enter WiFi password: ");
+        get_serial_string();
+	if (strlen(serial_string) > 0) {
+	    strcpy(pass, serial_string);
+	    Serial.println("Connecting to Wifi");
+//	    Serial.printf("%s%s\n",ssid, pass);
+		
+	    WiFi.begin(ssid, pass);
+		
+	    unsigned int elapsed_timer = (unsigned int) millis();			
+	    while ((WiFi.status() != WL_CONNECTED) && ((millis() - elapsed_timer) < 10000)) {
+    		Serial.print(".");
+    		delay(500);
+  	    }
+	    if (((millis() - elapsed_timer) > 10000))	
+	      Serial.println("Failed to connect!");
+	    else
+	      Serial.println("Connected to WiFi!");		    
+	} else 
+	    Serial.println("No password entered.");	
+      } else
+        Serial.println("No SSID entered.");	      
+      } else
+	Serial.println("WiFi not available");
+		  
+      break;		  		  
+		  
     case PROMPT_I2CSCAN:
       Serial.print("I2C scan");
 
@@ -4810,7 +4935,7 @@ void get_input() {
 void transmit_led(bool status) {
   if(filter_present) {	
 //	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, status);	
+	    digitalWrite(led_builtin_pin, status);	
 	  digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
