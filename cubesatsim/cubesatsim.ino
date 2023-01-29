@@ -3641,7 +3641,7 @@ void config_gpio() {
 //  if (!wifi) 
   Serial.println("Blinking pins");	
 //  pinMode(led_builtin_pin, OUTPUT);  // Set LED pin to output
-  blink_pin(led_builtin_pin, 150);	
+//  blink_pin(led_builtin_pin, 150);	
 //  digitalWrite(led_builtin_pin, HIGH); // Leave Pico LED on
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
