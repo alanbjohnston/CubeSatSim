@@ -67,7 +67,7 @@ bool start_camera() {
    delay(100);
    Serial2.begin(115200);
 #ifdef GET_IMAGE_DEBUG  
-   Serial.println("Started Serial2 to camera v0.3");
+   Serial.println("Started Serial2 to camera v0.2");
 #endif
    LittleFS.begin();
 
