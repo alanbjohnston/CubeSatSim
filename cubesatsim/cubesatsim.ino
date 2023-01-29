@@ -3511,10 +3511,11 @@ void process_bootsel() {
 //  Serial.println("BOOTSEL pressed!");  
 	
   int release = FALSE;
-	
-//  if (!wifi) 
-    digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before blinking	
-	
+		
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON		
   sleep(1.0);
 	
 //  int pb_value = digitalRead(MAIN_PB_PIN);
