@@ -3643,6 +3643,10 @@ void config_gpio() {
 //  pinMode(led_builtin_pin, OUTPUT);  // Set LED pin to output
 //  blink_pin(led_builtin_pin, 150);	
 //  digitalWrite(led_builtin_pin, HIGH); // Leave Pico LED on
+	
+  digitalWrite(led_builtin_pin, HIGH);
+  digitalWrite(led_builtin_pin, LOW);	
+	
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
   digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
