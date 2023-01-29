@@ -3652,7 +3652,8 @@ void config_gpio() {
 	
   // set all Pico GPIO pins to input	
   for (int i = 6; i < 29; i++) {
-    pinMode(i, INPUT);	  
+    if (i != led_builtin_pin)	  
+      pinMode(i, INPUT);	  
   }
 	
   pinMode(PI_3V3_PIN, INPUT); 	
