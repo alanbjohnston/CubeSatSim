@@ -113,16 +113,7 @@ void setup() {
   }  else  {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-     pinMode(led_builtin_pin, OUTPUT);	
-	  
-      digitalWrite(led_builtin_pin, HIGH);
-      delay(500);
-      digitalWrite(led_builtin_pin, LOW);
-      delay(500);
-      digitalWrite(led_builtin_pin, HIGH);
-      delay(500);           
-      digitalWrite(led_builtin_pin, LOW);
-      delay(500);  	  
+     pinMode(led_builtin_pin, OUTPUT);		  
   }
 /**/		
 	
@@ -3650,11 +3641,13 @@ void blink_pin(int pin, int duration) {
 
 void config_gpio() {
 	
-  // set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
-    if (i != led_builtin_pin)	  
+  // set all Pico GPIO connected pins to input	
+  for (int i = 6; i < 22; i++) { 
       pinMode(i, INPUT);	  
   }
+  pinMode(26, INPUT);	
+  pinMode(27, INPUT);	
+  pinMode(28, INPUT);		
 	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
