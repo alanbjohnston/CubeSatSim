@@ -104,6 +104,18 @@ void setup() {
   
   Serial.println("CubeSatSim Pico v0.36 starting...\n");
 	
+/**/	
+  if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+//     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+  pinMode(led_builtin_pin, OUTPUT);	
+/**/		
+	
   config_gpio();
 
   get_input();	
@@ -157,17 +169,6 @@ void setup() {
 //  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
-/**/	
-  if (check_for_wifi()) {
-     wifi = true;
-     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
-//     pinMode(LED_BUILTIN, OUTPUT);		  
-//     configure_wifi();	  
-  }  else
-     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
-//     pinMode(25, OUTPUT);
-  pinMode(led_builtin_pin, OUTPUT);	
-/**/	
   start_button_isr(); 
 	
 //  setup_sstv();
