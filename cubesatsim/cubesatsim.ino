@@ -3112,14 +3112,14 @@ void blink_setup()
 void blink(int length)
 {
   if (wifi)	
-    digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
   else
     digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
 	  
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
   if (wifi)	
-    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
   else
     digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
 }
@@ -3408,7 +3408,7 @@ void process_pushbutton() {
 	
 // make sure built in LED is on before starting to blink
   if (wifi)	
-    digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
   else
     digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
   sleep(1.0);
@@ -3501,7 +3501,7 @@ void process_pushbutton() {
 
   // make sure built-in LED is off
   if (wifi)	
-    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
   else
     digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
@@ -3604,7 +3604,7 @@ void process_bootsel() {
 	
   // make sure built-in LED is off
   if (wifi)	
-    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
   else
     digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
@@ -3614,7 +3614,7 @@ void blinkTimes(int blinks) {
     digitalWrite(MAIN_LED_GREEN, LOW);
 	  
     if (wifi)	
-      digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+      digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
     else
       digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
 	  
@@ -3622,7 +3622,7 @@ void blinkTimes(int blinks) {
     digitalWrite(MAIN_LED_GREEN, HIGH);
 	  
     if (wifi)	
-      digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+      digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
     else
       digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
 	  
@@ -4000,7 +4000,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     digitalWrite(25, HIGH);	// Transmit LED on	
 */		
   if (wifi)	
-    digitalWrite(BUILTIN_LED, HIGH);   // set the built-in LED ON
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
   else
     digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
 	
@@ -4040,7 +4040,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 */	
 	
   if (wifi)	
-    digitalWrite(BUILTIN_LED, LOW);   // set the built-in LED OFF
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
   else
     digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
 	
@@ -4961,7 +4961,7 @@ void transmit_led(bool status) {
   if(filter_present) {	
 	  
   if (wifi)	
-    digitalWrite(BUILTIN_LED, status);   // set the built-in LED
+    digitalWrite(LED_BUILTIN, status);   // set the built-in LED
   else
     digitalWrite(led_builtin_pin, status);   // set the built-in LED 
 	  
