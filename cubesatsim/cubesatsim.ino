@@ -3975,7 +3975,8 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   else
     digitalWrite(25, HIGH);	// Transmit LED on	
 */	
-///  digitalWrite(led_builtin_pin, HIGH);
+  pinMode(led_builtin_pin, OUTPUT);	
+  digitalWrite(led_builtin_pin, HIGH);
 	
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
@@ -4011,7 +4012,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   else
     digitalWrite(25, LOW);	// Transmit LED on	
 */	
-///  digitalWrite(led_builtin_pin, LOW);	
+  digitalWrite(led_builtin_pin, LOW);	// back on again
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
