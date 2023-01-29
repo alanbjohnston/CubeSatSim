@@ -3672,17 +3672,6 @@ void config_gpio() {
 ///  pinMode(led_builtin_pin, OUTPUT);  // Set LED pin to output
 ///  blink_pin(led_builtin_pin, 150);	
 //  digitalWrite(led_builtin_pin, HIGH); // Leave Pico LED on
-	
-    if (wifi)	
-      digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-    else
-      digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
-    sleep(0.15);		
-    if (wifi)	
-      digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
-    else
-      digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
-	  
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
   digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
@@ -4016,10 +4005,11 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 */		
   if (wifi)	
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-  else 
+  else {
     digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
-	
-   digitalWrite(MAIN_LED_BLUE, HIGH);	
+    Serial.printf("Turning on LED at pin: %d\n", led_builtin_pin);	  
+  }
+  digitalWrite(MAIN_LED_BLUE, HIGH);	
 
   unsigned long duration_us = duration * 1000;
 
