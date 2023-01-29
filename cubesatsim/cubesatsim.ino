@@ -107,13 +107,14 @@ void setup() {
 /**/	
   if (check_for_wifi()) {
      wifi = true;
-     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	
 //     pinMode(LED_BUILTIN, OUTPUT);		  
 //     configure_wifi();	  
   }  else
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-  pinMode(led_builtin_pin, OUTPUT);	
+   Serial.printf("led pin %d \n", led_builtin_pin);	  	
+   pinMode(led_builtin_pin, OUTPUT);	
 /**/		
 	
   config_gpio();
@@ -4332,7 +4333,7 @@ void serial_input() {
        break;			   
 
      case 'w':
-       Serial.println(wifi);	
+//       Serial.println(wifi);	
        Serial.println("Connect to WiFi");    
        prompt = PROMPT_WIFI;
        break;	
@@ -4571,7 +4572,7 @@ void prompt_for_input() {
       break;	
 		  
     case PROMPT_WIFI:
-      Serial.println(wifi);		  
+//      Serial.println(wifi);		  
       if (wifi) {		  
       char ssid[30], pass[30];		  
       Serial.println("Enter the credentials for your WiFi network");	
