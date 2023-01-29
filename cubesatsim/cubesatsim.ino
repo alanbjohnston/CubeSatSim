@@ -4005,10 +4005,9 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 */		
   if (wifi)	
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-  else {
+  else 
     digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
-    Serial.printf("Turning on LED at pin: %d\n", led_builtin_pin);	  
-  }
+
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
   unsigned long duration_us = duration * 1000;
