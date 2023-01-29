@@ -3969,14 +3969,13 @@ void configure_wifi() {
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
 //  if (!wifi)
-/*	
+	
   if (wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   else
-    digitalWrite(25, HIGH);	// Transmit LED on	
-*/	
-  pinMode(led_builtin_pin, OUTPUT);	
-  digitalWrite(led_builtin_pin, HIGH);
+    digitalWrite(led_builtin_pin, HIGH);	// Transmit LED on	
+	
+//  digitalWrite(led_builtin_pin, HIGH);
 	
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
@@ -4006,13 +4005,13 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   }
 	
 //  if (!wifi) 
-/*	
+	
   if (wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
   else
-    digitalWrite(25, LOW);	// Transmit LED on	
-*/	
-  digitalWrite(led_builtin_pin, LOW);	// back on again
+    digitalWrite(led_builtin_pin, LOW);	// Transmit LED on	
+	
+//  digitalWrite(led_builtin_pin, LOW);	// back on again
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
