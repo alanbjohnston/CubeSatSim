@@ -108,12 +108,13 @@ void setup() {
   if (check_for_wifi()) {
      wifi = true;
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
-//     pinMode(LED_BUILTIN, OUTPUT);		  
+     pinMode(LED_BUILTIN, OUTPUT);		  
 //     configure_wifi();	  
-  }  else
+  }  else  {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-  pinMode(led_builtin_pin, OUTPUT);	
+     pinMode(led_builtin_pin, OUTPUT);		  
+  }
 /**/		
 	
   config_gpio();
@@ -3110,11 +3111,17 @@ void blink_setup()
 
 void blink(int length)
 {
-  digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
-  
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
+	  
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-  digitalWrite(led_builtin_pin, LOW);   // set the built-in LED off
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
 }
 
 void led_set(int ledPin, bool state)
@@ -3399,9 +3406,11 @@ void process_pushbutton() {
 	
 //  return;  /// just skip for now
 	
-//  if (!wifi) 	   	
-   digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before starting to blink
-	
+// make sure built in LED is on before starting to blink
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
   sleep(1.0);
 	
   int pb_value = digitalRead(MAIN_PB_PIN);
@@ -3490,7 +3499,11 @@ void process_pushbutton() {
     transmit_off();
   sleep(2.0);	
 
-   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
+  // make sure built-in LED is off
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
 
 void process_bootsel() {
@@ -3498,10 +3511,11 @@ void process_bootsel() {
 //  Serial.println("BOOTSEL pressed!");  
 	
   int release = FALSE;
-	
-//  if (!wifi) 
-    digitalWrite(led_builtin_pin, HIGH);  // make sure built in LED is on before blinking	
-	
+		
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON		
   sleep(1.0);
 	
 //  int pb_value = digitalRead(MAIN_PB_PIN);
@@ -3589,18 +3603,30 @@ void process_bootsel() {
     transmit_off();
 //  sleep(2.0);	
 	
-   digitalWrite(led_builtin_pin, LOW);	// make sure built-in LED is off	
+  // make sure built-in LED is off
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-//    if (!wifi) 
-      digitalWrite(led_builtin_pin, LOW);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+    else
+      digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	  
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-//    if (!wifi) 
-       digitalWrite(led_builtin_pin, HIGH);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+    else
+      digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
+	  
     sleep(0.1);
   }
 }
@@ -3615,10 +3641,13 @@ void blink_pin(int pin, int duration) {
 
 void config_gpio() {
 	
-  // set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
-    pinMode(i, INPUT);	  
+  // set all Pico GPIO connected pins to input	
+  for (int i = 6; i < 22; i++) { 
+      pinMode(i, INPUT);	  
   }
+  pinMode(26, INPUT);	
+  pinMode(27, INPUT);	
+  pinMode(28, INPUT);		
 	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
@@ -3973,9 +4002,12 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
   else
     digitalWrite(25, HIGH);	// Transmit LED on	
-*/	
-  digitalWrite(led_builtin_pin, HIGH);
-	
+*/		
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else 
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
+
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
   unsigned long duration_us = duration * 1000;
@@ -4010,7 +4042,12 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
   else
     digitalWrite(25, LOW);	// Transmit LED on	
 */	
-  digitalWrite(led_builtin_pin, LOW);	
+	
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
@@ -4926,8 +4963,12 @@ void get_input() {
 
 void transmit_led(bool status) {
   if(filter_present) {	
-//	  if (!wifi) 
-	    digitalWrite(led_builtin_pin, status);	
-	  digitalWrite(MAIN_LED_BLUE, status);	  
+	  
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, status);   // set the built-in LED
+  else
+    digitalWrite(led_builtin_pin, status);   // set the built-in LED 
+	  
+  digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
