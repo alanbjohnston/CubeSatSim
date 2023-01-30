@@ -30,6 +30,8 @@ The "sketch" will open and you should see a view like this.
 
 Next, you need to install the Raspberry Pi Pico Arduino core, called 'Arduino-Pico'. From their documentation: "Arduino-Pico is a community port of the RP2040 (Raspberry Pi Pico processor) to the Arduino ecosystem, intended to make it easier and more fun to use and program the Raspberry Pi Pico / RP2040 based boards."
 
+IMPORTANT NOTE: You must select the version of Arduino-Pico of 2.3.2.  If you use the latest version, SSTV mode will not work.
+
 Here is the documentation for Arduino-Pico: https://arduino-pico.readthedocs.io/en/latest/
 
 Follow the installation instructions listed here: https://arduino-pico.readthedocs.io/en/latest/install.html
