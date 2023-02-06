@@ -33,6 +33,7 @@ cubesatsim-solar-0.4s_bom.csv.txt -- Bill of Materials in CSV format
 
 I use PCBWay to fabricate PCBs https://pcbway.com
 
-Here is a very draft bill of materials https://octopart.com/bom-tool/qqEuO6mB
+Here is a very draft bill of materials https://octopart.com/bom-tool/g1Fkrhew
 
-Draft wiki instructions: [https://github.com/alanbjohnston/CubeSatSim/wiki/Pico-v0.4-Board](https://github.com/alanbjohnston/CubeSatSim/wiki/Pico-and-Solar-SMD)
+Draft wiki instructions: https://github.com/alanbjohnston/CubeSatSim/wiki/Pico-and-Solar-SMD
+
