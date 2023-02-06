@@ -2,8 +2,13 @@ Here is information about the Beta version of the CubeSatSim Pico PCB
 
 Changes since the v0.5 board:
 
-- 
-
+- No solder paste on Pico pads
+- Added wiring between SMD and through hole LED resistors, so the resistors can be SMD and the LEDs through hole
+- Moved AUDIO_OUT to GPIO pin 12
+- Added a cut pad on 3.3V to ESP32-CAM and a pin for 5V to try powering from 5V
+- Added an open pad on GPIO pin 7 to RF
+- Added U1a and U1b labels to the two parts of the Pico female sockets
+- Added SQUELCH to GPIO pin 15
 
 The files here are for a single board, the CubeSatSim Pico which replaces the STEM Payload Board and the Raspberry Pi Zero.
 
