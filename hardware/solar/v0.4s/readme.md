@@ -2,7 +2,10 @@ Here is information about the Beta version of the CubeSatSim Solar PCB
 
 Changes since the v0.3 board:
 
-- 
+- Moved U4 so that it isn't covered up by U6
+- Moved bridging labels so they can be better seen
+- Flipped U2 and U12 so they are the same direction as all the other ICs
+- J4 test pins are now 6 pins and used on the top
 
 The files here are for a single board, the CubeSatSim Pico which replaces the STEM Payload Board and the Raspberry Pi Zero.
 
