@@ -246,8 +246,9 @@ void loop() {
           Serial.println("Sending SSTV using ESP32-CAM");
 	  digitalWrite(PTT_PIN, LOW);  // start transmit
 	  transmit_led(HIGH);
-	  while(true) {}
-	  
+	  while(mode == SSTV) {}
+	  Serial.println("Finished SSTV");
+/*	  
 //      first_time_sstv = false;	  
       char image_file[128];
       if (first_time_sstv) {  
@@ -268,12 +269,12 @@ void loop() {
 	  load_sstv_image_2_as_cam_dot_jpg(); 
 	}
       }  
-/*	  
-      if (debug_mode)  {	  
-        Serial.print("\nSending SSTV image ");
-        print_string(image_file);
-      }
-*/	  
+	  
+//      if (debug_mode)  {	  
+//        Serial.print("\nSending SSTV image ");
+//        print_string(image_file);
+//      }
+	  
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
@@ -313,6 +314,7 @@ void loop() {
 	      if (debug_mode)	  
 		Serial.println("\nImage sent!");
       }  
+*/	  
   } 
   else
       Serial.println("Unknown mode!");
