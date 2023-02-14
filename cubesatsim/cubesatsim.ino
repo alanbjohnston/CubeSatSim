@@ -246,7 +246,8 @@ void loop() {
           Serial.println("Sending SSTV using ESP32-CAM");
 	  digitalWrite(PTT_PIN, LOW);  // start transmit
 	  transmit_led(HIGH);
-	  while(mode == SSTV) {}
+//	  while(mode == SSTV) {}
+	  while(true) {}
 	  Serial.println("Finished SSTV");
 /*	  
 //      first_time_sstv = false;	  
