@@ -13,8 +13,8 @@ static esp_err_t init_camera();
 #define FORMAT_SPIFFS_IF_FAILED true
 
 camera_fb_t *pic;
-//File inFile;
-//File outFile;
+SSTV_config_t* currentSSTV;
+uint8_t* bitmap;
 
 void setup() {
   // put your setup code here, to run once:
@@ -28,6 +28,8 @@ void setup() {
 
   if (init_camera() == ESP_OK)
  {
+    
+    bitmap = (uint8_t*) malloc (320 * 256 * 3 + 200);  
         
   config_camera();      
        
@@ -66,9 +68,19 @@ void loop() {
 */
 // listDir(SPIFFS, "/", 0);
         
-  char filename[] = "/cam.bin";
+///  char filename[] = "/cam.bin";
 
-  save_camera_image(filename);
+///  save_camera_image(filename);
+  
+  pic = esp_camera_fb_get();
+  
+  if (!pic)
+  {
+    Serial.println("Failed to get camera image!");
+    delay(10000);
+    return;
+  }
+  bitmap = pic->buf;
 
   picosstvpp();
 
