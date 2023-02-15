@@ -24,7 +24,7 @@ void setup() {
   Serial.begin(115200);
   delay(5000);
   Serial.println("Running");
- // picosstvpp_begin(3);
+  picosstvpp_begin(3);
 
   if (init_camera() == ESP_OK)
  {
