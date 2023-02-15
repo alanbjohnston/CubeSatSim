@@ -112,6 +112,8 @@ void loop() {
 // listDir(SPIFFS, "/", 0);
         
   char filename[] = "/cam.bin";
+ 
+  deleteFile(SPIFFS, filename); 
 
   save_camera_image(filename);
   
