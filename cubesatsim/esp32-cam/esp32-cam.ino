@@ -82,7 +82,7 @@ void loop() {
   }
   bitmap = pic->buf;
 
-  picosstvpp();
+  picosstvpp(&bitmap);
 
   delay(2000);
 }
