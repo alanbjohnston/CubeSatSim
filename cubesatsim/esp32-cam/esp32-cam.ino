@@ -78,6 +78,9 @@ void setup() {
     return;
   }
  }
+  
+ deleteFile(SPIFFS, "/cam.jpg"); 
+ deleteFile(SPIFFS, "/cam.bin");   
  listDir(SPIFFS, "/", 0); 
 }
 
