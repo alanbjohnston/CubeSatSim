@@ -13,7 +13,6 @@ static esp_err_t init_camera();
 #define FORMAT_SPIFFS_IF_FAILED true
 
 camera_fb_t *pic;
-SSTV_config_t* currentSSTV;
 uint8_t* bitmap;
 
 void setup() {
