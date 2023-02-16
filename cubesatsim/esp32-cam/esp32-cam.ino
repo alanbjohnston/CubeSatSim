@@ -304,7 +304,7 @@ void load_files() {
   SPIFFS.begin();
   File f;
 	
-  f = SPIFFS.open("sstv_image_1_320_x_240.jpg", "r");
+  f = SPIFFS.open("/sstv_image_1_320_x_240.jpg", "r");
 //  if (f) {
   if (false) {	  
     Serial.println("Image sstv_image_1_320_x_240.jpg already in FS");
@@ -320,7 +320,7 @@ void load_files() {
     f.close();
   }
 
-  f = SPIFFS.open("sstv_image_2_320_x_240.jpg", "r");
+  f = SPIFFS.open("/sstv_image_2_320_x_240.jpg", "r");
   if (f) {	
     Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
     f.close();
