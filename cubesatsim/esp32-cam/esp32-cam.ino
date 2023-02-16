@@ -118,10 +118,16 @@ void loop() {
 // listDir(SPIFFS, "/", 0);
         
   char filename[] = "/cam.bin";
- 
+//  char filename2[] = "/cam.jpg";
+  char sstv_image1[] = "/sstv_image_1_320_x_240.jpg";
+  char sstv_image2[] = "/sstv_image_2_320_x_240.jpg";	
+	
   deleteFile(SPIFFS, filename); 
-
-  save_camera_image(filename);
+//  deleteFile(SPIFFS, filename2); 
+	
+  jpeg_decode(sstv_image1, filename, true);
+	
+//  save_camera_image(filename);	
   
   listDir(SPIFFS, "/", 0);
 
