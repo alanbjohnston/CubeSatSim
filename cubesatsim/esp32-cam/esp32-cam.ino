@@ -9,6 +9,7 @@ static esp_err_t init_camera();
 void config_camera();
 void save_camera_image(char* filename);
 static esp_err_t init_camera();
+void load_files();
 
 #define RX2_pin         IO16 // AMBE3000 RX to ESP32 TXD
 #define TX2_pin         IO17 // AMBE3000 TX to ESP32 RXD
@@ -85,6 +86,8 @@ void setup() {
  deleteFile(SPIFFS, "/cam.jpg"); 
  deleteFile(SPIFFS, "/cam.bin");   
  listDir(SPIFFS, "/", 0); 
+  
+ load_files(); 
 }
 
 void loop() {
@@ -289,4 +292,40 @@ void print_hex(byte octet) {
       char hexValue[5];
       sprintf(hexValue, "%02X", octet);
       Serial.print(hexValue); 
+}
+
+void load_files() {
+  SPIFFS.begin();
+  File f;
+	
+  f = SPIFFS.open("sstv_image_1_320_x_240.jpg", "r");
+//  if (f) {
+  if (false) {	  
+    Serial.println("Image sstv_image_1_320_x_240.jpg already in FS");
+    f.close();
+  } else {
+    Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
+    f = SPIFFS.open("sstv_image_1_320_x_240.jpg", "w+");
+    if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
+       Serial.println("Loading image failed.");	     
+       delay(2000);
+    }
+    f.close();
+  }
+
+  f = SPIFFS.open("sstv_image_2_320_x_240.jpg", "r");
+  if (f) {	
+    Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
+    f.close();
+  } else {
+    Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
+    f = SPIFFS.open("sstv_image_2_320_x_240.jpg", "w+");
+    if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
+       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");
+       delay(2000);
+    }
+    f.close();
+  }
+	
+  listDir();
 }
