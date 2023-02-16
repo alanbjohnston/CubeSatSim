@@ -1,6 +1,9 @@
 #include "esp32sstvpp.h"
 #include "SPIFFS.h"
 #include "esp_camera.h"
+// jpg files to be stored in flash storage on Pico (FS 512kB setting)
+#include "../sstv1.h"
+#include "../sstv2.h"
 
 static esp_err_t init_camera();
 void config_camera();
