@@ -305,7 +305,7 @@ void load_files() {
     f.close();
   } else {
     Serial.println("Loading image sstv_image_1_320_x_240.jpg into FS");
-    f = SPIFFS.open("sstv_image_1_320_x_240.jpg", "w");
+    f = SPIFFS.open("/sstv_image_1_320_x_240.jpg", FILE_WRITE);
     if (f.write(sstv_image_1_320_x_240, sizeof(sstv_image_1_320_x_240)) < sizeof(sstv_image_1_320_x_240)) {
        Serial.println("Loading image failed.");	     
        delay(2000);
@@ -319,9 +319,9 @@ void load_files() {
     f.close();
   } else {
     Serial.println("Loading image sstv_image_2_320_x_240.jpg into FS");
-    f = SPIFFS.open("sstv_image_2_320_x_240.jpg", "w");
+    f = SPIFFS.open("/sstv_image_2_320_x_240.jpg", FILE_WRITE);
     if (f.write(sstv_image_2_320_x_240, sizeof(sstv_image_2_320_x_240)) < sizeof(sstv_image_2_320_x_240)) {
-       Serial.println("Loading image failed. Is Flash Size (FS) set to 1MB?");
+       Serial.println("Loading image failed");
        delay(2000);
     }
     f.close();
