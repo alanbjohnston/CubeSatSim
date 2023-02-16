@@ -327,5 +327,5 @@ void load_files() {
     f.close();
   }
 	
-  listDir();
+  listDir(SPIFFS, "/", 0); 
 }
