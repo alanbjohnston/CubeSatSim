@@ -125,9 +125,9 @@ void loop() {
   deleteFile(SPIFFS, filename); 
 //  deleteFile(SPIFFS, filename2); 
 	
-  jpeg_decode(sstv_image1, filename, true);
+//  jpeg_decode(sstv_image1, filename, true);
 	
-//  save_camera_image(filename);	
+  save_camera_image(filename);	
   
   listDir(SPIFFS, "/", 0);
 
@@ -218,7 +218,7 @@ static camera_config_t camera_config = {
   .ledc_timer = LEDC_TIMER_0,
   .ledc_channel = LEDC_CHANNEL_0,
 
-  .pixel_format = PIXFORMAT_RGB888, //PIXFORMAT_JPEG, // Options: YUV422, GRAYSCALE, RGB565, JPEG
+  .pixel_format = PIXFORMAT_RGB565. //888, //PIXFORMAT_JPEG, // Options: YUV422, GRAYSCALE, RGB565, JPEG
   .frame_size = FRAMESIZE_QVGA, // Options: QQVGA-UXGA, QVGA  Do not use sizes above QVGA when not JPEG
 
   .jpeg_quality = 6, // 12, //0-63 lower number means higher quality
