@@ -304,6 +304,9 @@ void load_files() {
   SPIFFS.begin();
   File f;
 	
+ deleteFile(SPIFFS, "/sstv_image_1_320_x_240.jpg");	
+ deleteFile(SPIFFS, "/sstv_image_2_320_x_240.jpg");	
+	
   f = SPIFFS.open("/sstv_image_1_320_x_240.jpg", "r");
 //  if (f) {
   if (false) {	  
