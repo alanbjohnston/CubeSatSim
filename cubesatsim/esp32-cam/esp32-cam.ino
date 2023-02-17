@@ -307,8 +307,7 @@ void load_files() {
  deleteFile(SPIFFS, "/sstv_image_1_320_x_240.jpg");	
  deleteFile(SPIFFS, "/sstv_image_2_320_x_240.jpg");	
 	
-  f = SPIFFS.open("/sstv_image_1_320_x_240.jpg", "r");
-  f = false;		
+  f = SPIFFS.open("/sstv_image_1_320_x_240.jpg", "r");	
 //  if (f) {
   if (false) {	  
     Serial.println("Image sstv_image_1_320_x_240.jpg already in FS");
@@ -325,8 +324,8 @@ void load_files() {
   }
 
   f = SPIFFS.open("/sstv_image_2_320_x_240.jpg", "r");
-  f = false;	
-  if (f) {	
+//  if (f) {
+  if (false) {	  
     Serial.println("Image sstv_image_2_320_x_240.jpg already in FS");
     f.close();
   } else {
