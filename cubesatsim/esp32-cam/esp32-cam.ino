@@ -75,13 +75,16 @@ void setup() {
   if (init_camera() == ESP_OK)
  {
         
-  config_camera();      
+  config_camera();       
        
   if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
     Serial.println("SPIFFS Mount Failed");
     return;
   }
  }
+	
+	  
+  SPIFFS.format();		
   
  deleteFile(SPIFFS, "/cam.jpg"); 
  deleteFile(SPIFFS, "/cam.bin");   
