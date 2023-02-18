@@ -84,7 +84,7 @@ void setup() {
  }
 	
 	  
-  SPIFFS.format();		
+//  SPIFFS.format();		
   
  deleteFile(SPIFFS, "/cam.jpg"); 
  deleteFile(SPIFFS, "/cam.bin");   
