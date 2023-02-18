@@ -17,7 +17,7 @@ void load_files();
 #define FORMAT_SPIFFS_IF_FAILED true
 
 camera_fb_t *pic;
-
+int count = 0;
 
 // example code from https://github.com/espressif/arduino-esp32/blob/master/libraries/LittleFS/examples/LITTLEFS_test/LITTLEFS_test.ino
 //
@@ -127,11 +127,15 @@ void loop() {
 	
   deleteFile(SPIFFS, filename); 
 //  deleteFile(SPIFFS, filename2); 
+
+  if (count == 0) 	
+    jpeg_decode(sstv_image1, filename, true);
+  else if (count == 1)
+    jpeg_decode(sstv_image2, filename, true);
+  else	
+    save_camera_image(filename);	
+  count++;
 	
-  jpeg_decode(sstv_image1, filename, true);
-	
-//  save_camera_image(filename);	
-  
   listDir(SPIFFS, "/", 0);
 
   picosstvpp();
