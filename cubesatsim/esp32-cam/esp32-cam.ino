@@ -125,9 +125,9 @@ void loop() {
   deleteFile(SPIFFS, filename); 
 //  deleteFile(SPIFFS, filename2); 
 	
-//  jpeg_decode(sstv_image1, filename, true);
+  jpeg_decode(sstv_image2, filename, true);
 	
-  save_camera_image(filename);	
+//  save_camera_image(filename);	
   
   listDir(SPIFFS, "/", 0);
 
