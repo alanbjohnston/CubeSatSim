@@ -130,7 +130,6 @@ File outFile;
 int blocks = 0;
 //int counter = 0;
 bool write_complete = false;
-bool sleep_cam = false;
 
 // example code from https://github.com/espressif/arduino-esp32/blob/master/libraries/LittleFS/examples/LITTLEFS_test/LITTLEFS_test.ino
 //
@@ -174,27 +173,9 @@ void deleteFile(fs::FS &fs, const char * path) {
   }
 }
 
-esp_sleep_wakeup_cause_t print_wakeup_reason(){  // from https://randomnerdtutorials.com/esp32-deep-sleep-arduino-ide-wake-up-sources/ 
-  esp_sleep_wakeup_cause_t wakeup_reason;
-
-  wakeup_reason = esp_sleep_get_wakeup_cause();
-
-  switch(wakeup_reason){
-    case ESP_SLEEP_WAKEUP_EXT0 : Serial.println("Wakeup caused by external signal using RTC_IO"); break;
-    case ESP_SLEEP_WAKEUP_EXT1 : Serial.println("Wakeup caused by external signal using RTC_CNTL"); break;
-    case ESP_SLEEP_WAKEUP_TIMER : Serial.println("Wakeup caused by timer"); break;
-    case ESP_SLEEP_WAKEUP_TOUCHPAD : Serial.println("Wakeup caused by touchpad"); break;
-    case ESP_SLEEP_WAKEUP_ULP : Serial.println("Wakeup caused by ULP program"); break;
-    default : Serial.printf("Wakeup was not caused by deep sleep: %d\n",wakeup_reason); break;
-  }
-  return wakeup_reason;      
-}
-
 void setup() {
-        
-  esp_log_level_set("*", ESP_LOG_VERBOSE);        
 
-//  delay(5000);  
+  delay(5000);  
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
@@ -202,167 +183,39 @@ void setup() {
        
   Serial.begin(115200);
 
-        
-  pinMode(13, INPUT_PULLDOWN);
-        
-/*        
-  pinMode(LED_PIN, OUTPUT);      
-        
- //         digitalWrite(16, LOW);    
-        
-        while (true) { 
-        
-          if (digitalRead(13) == HIGH) {
-                  
-       Serial.println("\nBlink three times");
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off
-    delay(100);  // Wait 0.1 sec
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off       
-     delay(100);  // Wait 0.1 sec
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off  
-               
-                  
-          }  else {
-                  
-         Serial.println("\nBlink one time");
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off                
-                  
-          }
-                
-          delay(5000);      
-                
-        
-        
-        
-        }
- */       
-
-   pinMode(LED_PIN, OUTPUT); // Set the pin as output
-        
-    if (print_wakeup_reason() == ESP_SLEEP_WAKEUP_EXT1) {
-            
-    Serial.println("\nBlink three times");
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off
-    delay(100);  // Wait 0.1 sec
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off       
-     delay(100);  // Wait 0.1 sec
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off                 
-    } else {
-            
-    Serial.println("\nBlink once slow");
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (300); // Wait 0.3 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off
-           
-    }
-}
-
-void loop() {
-        
-//  digitalWrite(16, LOW);    
-  
-//  delay(2000);      
-        
-//   digitalWrite(16, HIGH);   
-        
-  if (digitalRead(13) == HIGH) {
-    sleep_cam = true;  // only sleep if GPIO13 is High on boot      
-    Serial.println("\nGPIO13 is HIGH, so will sleep");
-  } else {
-    Serial.println("\nGPIO13 is LOW, so dont' sleep");          
-  }
-
-  bool timeout = false; 
-  bool take_photo = false;
-
-        
-/*        
-  Serial.println("Checking for serial input before sleeping");      
-  unsigned long timer_ms = millis();      
-  while ((Serial.available() <= 0) && !timeout) { 
-     timeout = true;  // immediately timeout     
-//    if ((millis() - timer_ms) > 10000) timeout = true;  // poll serial for 10 seconds
-  }
-  if (Serial.available() > 0)  {
-    char result = Serial.read();
-    if ((result == 'f') || (result == 'F')) SPIFFS.format(); 
-    take_photo = true;
-    Serial.println("Serial input received!");      
-  }
-  if (!take_photo) {
-    Serial.println("No serial input received!");     
-/*          
-    esp_sleep_enable_timer_wakeup(5 * 1000000);  // sleep for 10 seconds
-    Serial.println("Going to sleep now for 5 seconds");
-    Serial.flush(); 
-    esp_deep_sleep_start();           
-*/    
-//  }
-               
- if (init_camera() == ESP_OK)
- {
-//  initialize_camera();
+  initialize_camera();
         
   config_camera();      
 
-  Serial.println("ESP32-CAM Camera initialized v0.3");
+  Serial.println("ESP32-CAM Camera initialized v0.2");
 
-   // On the ESP32 you can also define another hardware serial interface using pins of your choice like this
+  pinMode(LED_PIN, OUTPUT); // Set the pin as output
+
+  // On the ESP32 you can also define another hardware serial interface using pins of your choice like this
   // Serial2.begin(115200,SERIAL_8N1,14,15);
 
   //  Serial.println("Initializing CRC");
 
   //  crc.setPolynome(0x1021);
-        
-  // SPIFFS.format();       // force a format of flash storage, if file names show up twice in directory, uncomment this line once
-        
+
   if (!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
     Serial.println("SPIFFS Mount Failed");
     return;
   }
 
   listDir(SPIFFS, "/", 0);
-        
+
+}
+
+void loop() {
+  
   char filename[] = "/cam.jpg";
 
   save_camera_image(filename);
 
   send_image_serial(filename);
- }
-//  delay(500);
 
- if (sleep_cam) {       
-        
-//  esp_sleep_enable_timer_wakeup(2 * 1000000);  // sleep for 10 seconds
-
-//  esp_sleep_enable_ext0_wakeup(GPIO_NUM_13, 1);
-  esp_sleep_enable_ext1_wakeup(2^13, ESP_EXT1_WAKEUP_ANY_HIGH);
-         
-  Serial.println("Going to sleep now until wake by GPIO13 going HIGH");
-  Serial.flush(); 
-  esp_deep_sleep_start();   
-        
-  Serial.println("This will never display");
-  Serial.flush();
-  delay(10000);
- }  else
-    delay(500);        
-        
- // only loop if not sleeping 
+  delay(500);
 }
 
 /**
@@ -477,10 +330,10 @@ void config_camera() {
  
   sensor_t * s = esp_camera_sensor_get();
         
-  s->set_brightness(s, 2);     // -2 to 2
-  s->set_contrast(s, 0);       // -2 to 2
-  s->set_saturation(s, 1);     // -2 to 2  
-  s->set_hmirror(s, 0);        // 0 = disable , 1 = enable
+//  s->set_brightness(s, 2);     // -2 to 2
+//  s->set_contrast(s, 0);       // -2 to 2
+//  s->set_saturation(s, 1);     // -2 to 2  
+  s->set_hmirror(s, 1);        // 0 = disable , 1 = enable
 //  s->set_vflip(s, 1);         
 }
 
