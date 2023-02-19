@@ -476,8 +476,8 @@ void send_aprs_packet() {
   char str[1000];
   char header_str[] = "hi hi ";
   strcpy(str, header_str);	
-//  strcpy(str, tlm_str);	// transmit short APRS packet with just lat lon
-//  strcat(str, payload_str);
+  strcpy(str, tlm_str);	// transmit full APRS packet
+  strcat(str, payload_str);
 //  print_string(str);
 //  Serial.println(strlen(str));	
 	
