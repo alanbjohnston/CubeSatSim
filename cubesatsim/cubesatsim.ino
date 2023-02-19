@@ -102,7 +102,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.36 starting...\n");
+  Serial.println("CubeSatSim Pico v0.38 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -421,7 +421,7 @@ void read_config_file() {
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    Serial.println("Valid latitude and longitude in config file");
+    Serial.println("Valid latitude and longitude in config file\n");
 // convert to APRS DDMM.MM format
     latitude = lat_file; // toAprsFormat(lat_file);
     longitude = long_file; // toAprsFormat(long_file);
