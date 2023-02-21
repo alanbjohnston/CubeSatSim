@@ -3513,6 +3513,12 @@ void process_pushbutton() {
 }
 
 void process_bootsel() {
+	
+  if ((new_mode != mode) || (prompt != false)) {
+    Serial.println("******* BOOTSEL bounce error!! *******\n\n");
+    return;
+  }
+		
 
 //  Serial.println("BOOTSEL pressed!");  
 	
