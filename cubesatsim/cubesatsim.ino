@@ -3631,6 +3631,27 @@ void blinkTimes(int blinks) {
   }
 }
 
+void blinkFastTimes(int blinks) {
+  for (int i = 0; i < blinks; i++) {
+    digitalWrite(MAIN_LED_GREEN, LOW);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+    else
+      digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	  
+    sleep(0.05);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+    else
+      digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
+	  
+    sleep(0.05);
+  }
+}
+
 void blink_pin(int pin, int duration) {
 	
   digitalWrite(pin, HIGH);
@@ -4879,14 +4900,16 @@ void write_mode() {
 
   char buff[32];	
   Serial.println("Writing .mode file");	
-  File mode_file = LittleFS.open("/.mode", "w+");		  	
+  File mode_file = LittleFS.open("/.mode", "w+");	
 	
   sprintf(buff, "%d", mode);
   if (debug_mode) {	
     Serial.println("Writing string");	
     print_string(buff);	
   }
-  mode_file.write(buff, strlen(buff));	  
+	
+  if (mode_file.write(buff, strlen(buff))) == strlen(buff))
+    blinkFastTimes(3);  
 	  
   mode_file.close();
 //  Serial.println("Write complete");	
