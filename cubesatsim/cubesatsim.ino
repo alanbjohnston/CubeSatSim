@@ -477,7 +477,7 @@ void send_aprs_packet() {
   char header_str[] = "hi hi ";
   strcpy(str, header_str);	
   strcpy(str, tlm_str);	// transmit full APRS packet
-  strcat(str, payload_str);
+//  strcat(str, payload_str);
 //  print_string(str);
 //  Serial.println(strlen(str));	
 	
