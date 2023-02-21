@@ -4908,7 +4908,8 @@ void write_mode() {
     print_string(buff);	
   }
 	
-  if (mode_file.write(buff, strlen(buff))) == strlen(buff))
+//  if (mode_file.write(buff, strlen(buff))) == strlen(buff))
+  Serial.println(mode_file.write(buff, strlen(buff))) == strlen(buff));
     blinkFastTimes(3);  
 	  
   mode_file.close();
