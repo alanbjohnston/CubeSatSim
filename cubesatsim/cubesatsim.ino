@@ -3417,14 +3417,14 @@ void process_pushbutton() {
   else
     digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
   sleep(1.0);
-	
+/*	
   int pb_value = digitalRead(MAIN_PB_PIN);
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
     prompt = PROMPT_REBOOT;  
   }
-	
+*/	
   blinkTimes(1);
   sleep(1.5);
 	
@@ -3485,7 +3485,7 @@ void process_pushbutton() {
   }
 	
   if (release == FALSE) {
-    Serial.println("PB: Shutdown!");
+    Serial.println("PB: Reboot!");
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
@@ -3497,7 +3497,11 @@ void process_pushbutton() {
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);	 
+    sleep(0.5);	
+
+   Serial.println("Watchdog reboot now!");	  
+
+   watchdog_reboot(0);	  
  	  
   }
   if (new_mode != mode)
