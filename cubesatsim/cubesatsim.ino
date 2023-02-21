@@ -3428,7 +3428,7 @@ void process_pushbutton() {
   blinkTimes(1);
   sleep(1.5);
 	
-  pb_value = digitalRead(MAIN_PB_PIN);
+  int pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
