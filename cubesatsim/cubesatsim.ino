@@ -3525,12 +3525,13 @@ void process_bootsel() {
   sleep(1.0);
 	
 //  int pb_value = digitalRead(MAIN_PB_PIN);
+/*	
   if (!BOOTSEL) {
     Serial.println("BOOTSEL: Reboot!");
     release = TRUE;
     prompt = PROMPT_REBOOT;    
   }
-	
+*/	
   blinkTimes(1);
   sleep(1.5);
 	
@@ -3591,7 +3592,8 @@ void process_bootsel() {
   }
 	
   if (release == FALSE) {
-    Serial.println("BOOTSEL: Shutdown!");
+    Serial.println("BOOTSEL: Reboot!");
+    prompt = PROMPT_REBOOT;	  
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
