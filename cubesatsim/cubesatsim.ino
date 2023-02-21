@@ -3398,7 +3398,7 @@ void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
 
 void process_pushbutton() {
 	
-  if (new_mode != mode) {
+  if ((new_mode != mode) || (prompt != false)) {
     Serial.println("******* PB bounce error!! *******\n\n");
     return;
   }
