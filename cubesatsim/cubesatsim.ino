@@ -4909,7 +4909,7 @@ void write_mode() {
   }
 	
 //  if (mode_file.write(buff, strlen(buff))) == strlen(buff))
-  Serial.println(mode_file.write(buff, strlen(buff))) == strlen(buff));
+  Serial.println(mode_file.write(buff, strlen(buff)));
     blinkFastTimes(3);  
 	  
   mode_file.close();
