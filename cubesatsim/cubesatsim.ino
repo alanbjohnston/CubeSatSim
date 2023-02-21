@@ -3486,6 +3486,7 @@ void process_pushbutton() {
 	
   if (release == FALSE) {
     Serial.println("PB: Reboot!");
+    prompt = PROMPT_REBOOT;	  
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
@@ -3497,11 +3498,7 @@ void process_pushbutton() {
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);	
-
-   Serial.println("Watchdog reboot now!");	  
-
-   watchdog_reboot(0);	  
+    sleep(0.5);	 
  	  
   }
   if (new_mode != mode)
