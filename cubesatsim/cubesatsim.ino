@@ -3398,6 +3398,11 @@ void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
 
 void process_pushbutton() {
 	
+  if (new_mode != mode) {
+    Serial.println("******* PB bounce error!! *******\n\n");
+    return;
+  }
+	
 //  Serial.println("PB pressed!");  
 	
   int release = FALSE;
@@ -4908,9 +4913,11 @@ void write_mode() {
     print_string(buff);	
   }
 	
-//  if (mode_file.write(buff, strlen(buff))) == strlen(buff))
-  Serial.println(mode_file.write(buff, strlen(buff)));
+  if (mode_file.write(buff, strlen(buff))) != strlen(buff)) {	  
+//    Serial.println(mode_file.write(buff, strlen(buff)));
+    Serial.println("*** mode file write error! ***\n\n");	  
     blinkFastTimes(3);  
+  }	  
 	  
   mode_file.close();
 //  Serial.println("Write complete");	
