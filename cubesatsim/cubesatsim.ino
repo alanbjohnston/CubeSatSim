@@ -4913,7 +4913,7 @@ void write_mode() {
     print_string(buff);	
   }
 	
-  if (mode_file.write(buff, strlen(buff))) != strlen(buff)) {	  
+  if (mode_file.write(buff, strlen(buff)) != strlen(buff)) {	  
 //    Serial.println(mode_file.write(buff, strlen(buff)));
     Serial.println("*** mode file write error! ***\n\n");	  
     blinkFastTimes(3);  
