@@ -181,7 +181,7 @@ bool get_camera_image(bool debug_camera)  {
  
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
-  Serial.println("Received from ESP32-CAM hex encoded:\n");
+  Serial.println("Received from ESP32-CAM (hex encoded part is JPG image):\n");
  // #endif
   finished = false;
 
@@ -189,7 +189,9 @@ bool get_camera_image(bool debug_camera)  {
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 
    if (Serial2.available()) {      // If anything comes in Serial2
-      byte octet = Serial2.read(); 
+      byte octet = Serial2.read();
+      if ((!start_flag_detected) && (debug_camera))
+        Serial.write(octet);
 
      if (start_flag_complete) {
 //       Serial.println("Start flag complete detected");
