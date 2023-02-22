@@ -199,8 +199,9 @@ void setup() {
 	
 // setup radio depending on mode 
   config_radio();	
-	
-  start_isr();	
+  
+  if ((mode == BPSK) || (mode = FSK))	// only start ISR if FSK or BPSK mode
+    start_isr();	
 	
 ///  start_button_isr(); 
 	
