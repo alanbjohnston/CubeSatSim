@@ -102,7 +102,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.38 starting...\n");
+  Serial.println("CubeSatSim Pico v0.39 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -200,7 +200,7 @@ void setup() {
 // setup radio depending on mode 
   config_radio();	
   
-  if ((mode == BPSK) || (mode = FSK))	// only start ISR if FSK or BPSK mode
+  if ((mode == BPSK) || (mode == FSK))	// only start ISR if FSK or BPSK mode
     start_isr();	
 	
 ///  start_button_isr(); 
