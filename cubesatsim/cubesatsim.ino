@@ -65,6 +65,8 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 unsigned long micros3;
 
+int skip = 0;
+
 //WiFiServer server(port);
 //WiFiClient client;
 WiFiClient net;
@@ -340,7 +342,8 @@ void loop() {
 
 bool TimerHandler1(struct repeating_timer *t) {
 	
-  serial_input();
+  if (((skip++)%10) == 0)	
+    serial_input();
 	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
