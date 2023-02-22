@@ -4456,7 +4456,7 @@ void prompt_for_input() {
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Software version v0.38 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
 		  
        switch(mode) {
 		       
