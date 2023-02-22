@@ -208,6 +208,8 @@ void setup() {
 }
 
 void loop() {
+        
+  Serial.println("ESP32-CAM Send JPG over Serial v0.2");      
   
   char filename[] = "/cam.jpg";
 
