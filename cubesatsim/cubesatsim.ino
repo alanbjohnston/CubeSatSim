@@ -341,7 +341,7 @@ void loop() {
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
-	
+/*	
   if (((skip++)%10) == 0)	
     serial_input();
 	
@@ -353,6 +353,8 @@ bool TimerHandler1(struct repeating_timer *t) {
 
 //  if (wifi) 
 //    check_for_browser();
+*/	
+  get_input();
 	
   return(true);	
 }
@@ -4954,8 +4956,9 @@ void start_clockgen() {
 }
 
 void get_input() {
-	
-  serial_input();  
+
+  if (((skip++)%10) == 0)	
+    serial_input();  
 	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
