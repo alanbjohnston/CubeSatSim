@@ -175,14 +175,27 @@ void deleteFile(fs::FS &fs, const char * path) {
 
 void setup() {
 
-  delay(5000);  
+//  delay(5000);  
+        
+   Serial.begin(115200);
+
+    Serial.println("\nBlink three times");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off
+    delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off       
+    delay(100);  // Wait 0.1 sec
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (100); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off   
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
 //  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);  // testing sleep
        
-  Serial.begin(115200);
-
   initialize_camera();
         
   config_camera();      
@@ -370,6 +383,8 @@ void save_camera_image(char* filename)
     Serial.println("- failed to open file for writing");
     return;
   }
+        
+  Serial.printf("\nImage length: %d \n", pic->len);      
 
   for (int k = 0; k < pic->len; k++) {
     file.write(pic->buf[k]);
