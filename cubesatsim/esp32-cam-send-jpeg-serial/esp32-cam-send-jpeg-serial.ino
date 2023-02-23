@@ -388,9 +388,9 @@ void save_camera_image(char* filename)
   Serial.printf("\nImage length: %d \n", pic->len);  
         
   if (pic->len == 15360) {
-       Serial.println("Invalid JPEG - rebooting!");
+       Serial.println("Invalid JPEG - restarting!");
        delay(1000);
-       esp_reboot();
+       esp_restart();
   }
 
   for (int k = 0; k < pic->len; k++) {
