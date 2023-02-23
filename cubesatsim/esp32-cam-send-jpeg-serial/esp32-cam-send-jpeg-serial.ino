@@ -182,18 +182,18 @@ void setup() {
         
      pinMode(LED_PIN, OUTPUT); // Set the pin as output     
 
-    Serial.println("\nBlink three times");
+    Serial.println("\nBlink twice slowly");
     digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
+    delay (250); // Wait 0.1 sec
     digitalWrite(LED_PIN, HIGH); // Turn off
-    delay(100);  // Wait 0.1 sec
+    delay(250);  // Wait 0.1 sec
     digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
+    delay (250); // Wait 0.1 sec
     digitalWrite(LED_PIN, HIGH); // Turn off       
-    delay(100);  // Wait 0.1 sec
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (100); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off   
+//    delay(250);  // Wait 0.1 sec
+//    digitalWrite(LED_PIN, LOW); // Turn on
+//    delay (100); // Wait 0.1 sec
+//    digitalWrite(LED_PIN, HIGH); // Turn off   
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
