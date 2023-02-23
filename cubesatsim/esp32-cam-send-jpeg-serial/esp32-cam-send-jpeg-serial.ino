@@ -201,7 +201,7 @@ void setup() {
         
   config_camera();      
 
-  Serial.println("ESP32-CAM Camera initialized v0.2");
+  Serial.println("ESP32-CAM Camera initialized v0.3");
 
   pinMode(LED_PIN, OUTPUT); // Set the pin as output
 
@@ -223,7 +223,7 @@ void setup() {
 
 void loop() {
         
-  Serial.println("ESP32-CAM Send JPG over Serial v0.2");      
+  Serial.println("ESP32-CAM Send JPG over Serial v0.3");      
   
   char filename[] = "/cam.jpg";
 
