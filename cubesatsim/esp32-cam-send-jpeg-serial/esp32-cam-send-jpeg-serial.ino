@@ -182,14 +182,14 @@ void setup() {
         
      pinMode(LED_PIN, OUTPUT); // Set the pin as output     
 
-    Serial.println("\nBlink twice slowly");
+    Serial.println("\nBlink once slowly");
     digitalWrite(LED_PIN, LOW); // Turn on
-    delay (250); // Wait 0.1 sec
+    delay (500); // Wait 0.1 sec
     digitalWrite(LED_PIN, HIGH); // Turn off
-    delay(250);  // Wait 0.1 sec
-    digitalWrite(LED_PIN, LOW); // Turn on
-    delay (250); // Wait 0.1 sec
-    digitalWrite(LED_PIN, HIGH); // Turn off       
+    delay(500);  // Wait 0.1 sec
+//    digitalWrite(LED_PIN, LOW); // Turn on
+//    delay (250); // Wait 0.1 sec
+//    digitalWrite(LED_PIN, HIGH); // Turn off       
 //    delay(250);  // Wait 0.1 sec
 //    digitalWrite(LED_PIN, LOW); // Turn on
 //    delay (100); // Wait 0.1 sec
