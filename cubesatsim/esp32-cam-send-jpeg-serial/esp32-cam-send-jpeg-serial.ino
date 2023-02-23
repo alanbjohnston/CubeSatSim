@@ -176,6 +176,7 @@ void deleteFile(fs::FS &fs, const char * path) {
 void setup() {
 
 //  delay(5000);  
+   delay(1000);
         
    Serial.begin(115200);
 
@@ -384,7 +385,13 @@ void save_camera_image(char* filename)
     return;
   }
         
-  Serial.printf("\nImage length: %d \n", pic->len);      
+  Serial.printf("\nImage length: %d \n", pic->len);  
+        
+  if (pic->len == 15360) {
+       Serial.println("Invalid JPEG - rebooting!");
+       delay(1000);
+       esp_reboot();
+  }
 
   for (int k = 0; k < pic->len; k++) {
     file.write(pic->buf[k]);
