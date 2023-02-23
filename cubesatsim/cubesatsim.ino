@@ -4461,7 +4461,7 @@ void prompt_for_input() {
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Software version v0.38 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
 		  
        switch(mode) {
 		       
@@ -4902,7 +4902,7 @@ void read_mode() {
   char buff[32];		
   File mode_file = LittleFS.open("/.mode", "r");	
   if (!mode_file) {
-    write_mode();	  
+    write_mode(mode);	  
   } else {
     if (mode_file.read((uint8_t *)buff, 31)) {
 //      Serial.println("Reading mode from .mode file");    
@@ -4915,13 +4915,13 @@ void read_mode() {
   }		
 }
 
-void write_mode() {
+void write_mode(int save_mode) {
 
   char buff[32];	
   Serial.println("Writing .mode file");	
   File mode_file = LittleFS.open("/.mode", "w+");	
 	
-  sprintf(buff, "%d", mode);
+  sprintf(buff, "%d", save_mode);
   if (debug_mode) {	
     Serial.println("Writing string");	
     print_string(buff);	
@@ -4979,8 +4979,8 @@ void get_input() {
 ///    }
     int old_mode = mode;
     bool config_done = false;
-    mode = new_mode;  // change modes if button pressed	 
-    write_mode();
+//    mode = new_mode;  // change modes if button pressed	 
+    write_mode(new_mode);
 	
     Serial.println("Rebooting...");	 
     watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
