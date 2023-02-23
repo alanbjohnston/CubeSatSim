@@ -86,7 +86,7 @@ void setup() {
 	
   Serial.begin(115200);
 	
-  delay(5000);	
+  delay(10000);	
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
