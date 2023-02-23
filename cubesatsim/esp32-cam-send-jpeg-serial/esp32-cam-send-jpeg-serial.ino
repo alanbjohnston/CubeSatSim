@@ -176,7 +176,7 @@ void deleteFile(fs::FS &fs, const char * path) {
 void setup() {
 
 //  delay(5000);  
-   delay(1000);
+   delay(10000);  // was 1000
         
    Serial.begin(115200);
         
