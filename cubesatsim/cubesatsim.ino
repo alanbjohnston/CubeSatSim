@@ -65,7 +65,7 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 unsigned long micros3;
 
-int skip = 0;
+volatile int skip = 0;
 
 //WiFiServer server(port);
 //WiFiClient client;
@@ -181,7 +181,7 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
-  get_input();		
+//  get_input();		
 	
   prompt = PROMPT_HELP;  // display input help menu	
   prompt_for_input();
@@ -211,7 +211,7 @@ void setup() {
 	
   ready = TRUE;  // flag for core1 to start looping
 
-  get_input();	
+  // get_input();	
 /*	
   Serial.print("s");
   Serial.print(" ");
@@ -315,7 +315,7 @@ void loop() {
   else
       Serial.println("Unknown mode!");
 	
-  get_input();	
+  // get_input();	
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
@@ -331,7 +331,7 @@ void loop() {
     transmit_led(HIGH);
   }
 	
-  get_input();	
+  // get_input();	
 	
   //  Calculate loop time
   if (debug_mode) {	
