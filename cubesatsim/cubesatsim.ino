@@ -3434,9 +3434,9 @@ void process_pushbutton() {
 	
   int pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = AFSK;
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
-    new_mode = AFSK;
 //    setup();	  
   }
 	
@@ -3447,9 +3447,9 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = FSK;	  
     Serial.println("PB: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3459,9 +3459,9 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = BPSK;	  	  
     Serial.println("PB: Switch to BPSK");
     release = TRUE;
-    new_mode = BPSK;	  
   }
 	
   if (release == FALSE) {
@@ -3471,8 +3471,8 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = SSTV;	  
     Serial.println("PB: Switch to SSTV");
-    new_mode = SSTV;
     release = TRUE;
   }
 	
@@ -3483,8 +3483,8 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = CW;	  
     Serial.println("PB: Switch to CW");
-    new_mode = CW;
     release = TRUE;
   }
 	
@@ -3547,9 +3547,9 @@ void process_bootsel() {
 	
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = AFSK;	  
     Serial.println("BOOTSEL: Switch to AFSK");
     release = TRUE;
-    new_mode = AFSK;
 //    setup();	  
   }
 	
@@ -3560,9 +3560,9 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = FSK;	  
     Serial.println("BOOTSEL: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3572,9 +3572,9 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = BPSK;	  	  
     Serial.println("BOOTSEL: Switch to BPSK");
     release = TRUE;
-    new_mode = BPSK;	  
   }
 	
   if (release == FALSE) {
@@ -3584,8 +3584,8 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = SSTV;	  
     Serial.println("BOOTSEL: Switch to SSTV");
-    new_mode = SSTV;
     release = TRUE;
   }
 	
@@ -3596,8 +3596,8 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = CW;	  
     Serial.println("BOOTSEL: Switch to CW");
-    new_mode = CW;
     release = TRUE;
   }
 	
