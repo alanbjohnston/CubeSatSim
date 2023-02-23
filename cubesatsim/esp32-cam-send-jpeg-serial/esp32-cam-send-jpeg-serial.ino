@@ -179,6 +179,8 @@ void setup() {
    delay(1000);
         
    Serial.begin(115200);
+        
+     pinMode(LED_PIN, OUTPUT); // Set the pin as output     
 
     Serial.println("\nBlink three times");
     digitalWrite(LED_PIN, LOW); // Turn on
