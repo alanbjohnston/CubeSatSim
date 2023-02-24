@@ -4957,7 +4957,7 @@ void start_clockgen() {
 
 void get_input() {
 
-  if (((skip++)%5) == 0)	
+  if (((skip++)%2) == 0)	
     serial_input();  
 	
 // check for button press 
