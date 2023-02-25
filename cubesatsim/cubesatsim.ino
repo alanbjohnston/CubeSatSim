@@ -4958,6 +4958,7 @@ void start_clockgen() {
 }
 
 void get_input() {
+  Serial.print("+");	
 
  // if (((skip++)%2) == 0)	
     serial_input();  
@@ -4987,7 +4988,8 @@ void get_input() {
 //    mode = new_mode;  // change modes if button pressed	 
     write_mode(new_mode);
 	
-    Serial.println("Rebooting...");	 
+    Serial.println("Rebooting...");
+    Serial.flush();	 
     watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
 	 
     sleep(20.0);	 
