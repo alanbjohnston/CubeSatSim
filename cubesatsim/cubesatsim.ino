@@ -4961,9 +4961,9 @@ void start_clockgen() {
 }
 
 void get_input() {
-  Serial.print("+");	
-
- // if (((skip++)%2) == 0)	
+  if (mode != SSTV)	
+    Serial.print("+");	
+  if ((mode == CW) || (mode == SSTV))
     serial_input();  
 	
 // check for button press 
