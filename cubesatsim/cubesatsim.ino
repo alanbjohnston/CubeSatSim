@@ -4604,8 +4604,9 @@ void prompt_for_input() {
       break;	
 
     case PROMPT_REBOOT:
-       Serial.println("Rebooting...");	 
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       Serial.println("Rebooting...");
+       Serial.flush();	  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
@@ -4614,7 +4615,8 @@ void prompt_for_input() {
 //       Serial.println("Reboot or power cycle to restart the CubeSatSim");
  //      while (1) ;	    // infinite loop
        Serial.println("Rebooting...");	 
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       Serial.flush();			  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
