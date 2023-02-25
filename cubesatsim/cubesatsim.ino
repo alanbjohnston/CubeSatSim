@@ -332,6 +332,7 @@ void loop() {
   }
 	
   // get_input();	
+  serial_input();
 	
   //  Calculate loop time
   if (debug_mode) {	
