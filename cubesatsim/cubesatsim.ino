@@ -4990,7 +4990,7 @@ void get_input() {
 	
     Serial.println("Rebooting...");
     Serial.flush();	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+    watchdog_reboot (0, SRAM_END, 500); //10);	 // restart Pico
 	 
     sleep(20.0);	 
 /*	 
