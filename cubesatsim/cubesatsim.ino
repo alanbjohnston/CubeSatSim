@@ -3767,7 +3767,7 @@ void config_gpio() {
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
 	
-  randomSeed(analogRead(TEMPERATURE_PIN);	
+  randomSeed(analogRead(TEMPERATURE_PIN));	
 
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
