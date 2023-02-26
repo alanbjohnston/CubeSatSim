@@ -911,6 +911,12 @@ void config_simulated_telem()
     tempS = rand_float(20, 55);
     temp_max = rand_float(50, 70);
     temp_min = rand_float(10, 20);
+	
+    time_start = (long int) millis();
+
+    eclipse_time = (long int)(millis() / 1000.0);
+    if (eclipse == 0.0)
+      eclipse_time -= period / 2; // if starting in eclipse, shorten interval		
 
 //    #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
@@ -918,11 +924,7 @@ void config_simulated_telem()
     Serial.printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, rotation_speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
 //    #endif
 
-    time_start = (long int) millis();
 
-    eclipse_time = (long int)(millis() / 1000.0);
-    if (eclipse == 0.0)
-      eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
 //  }
 
 //  tx_freq_hz -= tx_channel * 50000;
