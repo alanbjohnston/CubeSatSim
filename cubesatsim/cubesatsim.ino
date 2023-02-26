@@ -333,6 +333,11 @@ void loop() {
 	
   // get_input();	
   serial_input();
+  if (prompt) {
+//    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
 	
   //  Calculate loop time
   if (debug_mode) {	
