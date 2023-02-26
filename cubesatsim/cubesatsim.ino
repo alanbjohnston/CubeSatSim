@@ -818,6 +818,7 @@ void generate_simulated_telem() {
         if (debug_mode)	      
           Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
+      Serial.println((eclipse == 1.0));	
 
       double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-2, 2);
       double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-2, 2);
@@ -827,7 +828,7 @@ void generate_simulated_telem() {
       double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-0.2, 0.2);
 
-      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+      Serial.printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[mapping[PLUS_X]] = (Xi >= 0) ? Xi : 0;
       current[mapping[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
