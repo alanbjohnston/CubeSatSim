@@ -80,7 +80,7 @@ char call[] = "AMSAT";   // put your callsign here
 extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
-float rnd_float(float upper, float lower) {
+float rand_float(float upper, float lower) {
   return (float)(random(upper*100, lower*100)/100.0);	
 }
 
@@ -819,13 +819,13 @@ void generate_simulated_telem() {
           Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
 
-      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-2, 2);
 
-      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-0.2, 0.2);
 
       // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
@@ -836,25 +836,25 @@ void generate_simulated_telem() {
       current[mapping[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
       current[mapping[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
-      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rand_float(0.9, 1.1);
+      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rand_float(0.9, 1.1);
+      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rand_float(0.9, 1.1);
 
       // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
-      tempS += +rnd_float(-1.0, 1.0);
-      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      tempS += +rand_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rand_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-      voltage[mapping[BUS]] = rnd_float(5.0, 5.005);
-      current[mapping[BUS]] = rnd_float(158, 171);
+      voltage[mapping[BUS]] = rand_float(5.0, 5.005);
+      current[mapping[BUS]] = rand_float(158, 171);
 
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rand_float(-4.0, 4.0));
 
       current[mapping[BAT]] = ((current[mapping[BUS]] * voltage[mapping[BUS]]) / batt) - charging;
 
@@ -871,7 +871,7 @@ void generate_simulated_telem() {
       if (batt > 4.5)
         batt = 4.5;
 
-      voltage[mapping[BAT]] = batt + rnd_float(-0.01, 0.01);
+      voltage[mapping[BAT]] = batt + rand_float(-0.01, 0.01);
 
       // end of simulated telemetry
 }
@@ -884,33 +884,33 @@ void config_simulated_telem()
 
 //    srand((unsigned int)time(0));
 
-    axis[0] = rnd_float(-0.2, 0.2);
+    axis[0] = rand_float(-0.2, 0.2);
     if (axis[0] == 0)
-      axis[0] = rnd_float(-0.2, 0.2);
-    axis[1] = rnd_float(-0.2, 0.2);
-    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+      axis[0] = rand_float(-0.2, 0.2);
+    axis[1] = rand_float(-0.2, 0.2);
+    axis[2] = (rand_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
 
     angle[0] = (float) atan(axis[1] / axis[2]);
     angle[1] = (float) atan(axis[2] / axis[0]);
     angle[2] = (float) atan(axis[1] / axis[0]);
 
-    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
-    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
-    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+    volts_max[0] = rand_float(4.5, 5.5) * (float) sin(angle[1]);
+    volts_max[1] = rand_float(4.5, 5.5) * (float) cos(angle[0]);
+    volts_max[2] = rand_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 
-    float amps_avg = rnd_float(150, 300);
+    float amps_avg = rand_float(150, 300);
 
-    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
-    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
-    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+    amps_max[0] = (amps_avg + rand_float(-25.0, 25.0)) * (float) sin(angle[1]);
+    amps_max[1] = (amps_avg + rand_float(-25.0, 25.0)) * (float) cos(angle[0]);
+    amps_max[2] = (amps_avg + rand_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
 
-    batt = rnd_float(3.8, 4.3);
-    rotation_speed = rnd_float(1.0, 2.5);
-    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
-    period = rnd_float(150, 300);
-    tempS = rnd_float(20, 55);
-    temp_max = rnd_float(50, 70);
-    temp_min = rnd_float(10, 20);
+    batt = rand_float(3.8, 4.3);
+    rotation_speed = rand_float(1.0, 2.5);
+    eclipse = (rand_float(-1, +4) > 0) ? 1.0 : 0.0;
+    period = rand_float(150, 300);
+    tempS = rand_float(20, 55);
+    temp_max = rand_float(50, 70);
+    temp_min = rand_float(10, 20);
 
 //    #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
@@ -1491,7 +1491,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 
       return(val);
 }
-
+/*
 float rnd_float(double min,double max) {   // returns 2 decimal point random number
 	
 	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
@@ -1499,7 +1499,7 @@ float rnd_float(double min,double max) {   // returns 2 decimal point random num
 	
       return(ret);
 }
-
+*/
 float toAprsFormat(float input) {
 // converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
     int dd = (int) input;
@@ -3766,6 +3766,8 @@ void config_gpio() {
   pinMode(TEMPERATURE_PIN, INPUT);
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
+	
+  randomSeed(analogRead(TEMPERATURE_PIN);	
 
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
