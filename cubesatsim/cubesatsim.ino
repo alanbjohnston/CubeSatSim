@@ -80,7 +80,7 @@ char call[] = "AMSAT";   // put your callsign here
 extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
-float rand_float(float upper, float lower) {
+float rand_float(float lower, float upper) {
   return (float)(random(upper*100, lower*100)/100.0);	
 }
 
