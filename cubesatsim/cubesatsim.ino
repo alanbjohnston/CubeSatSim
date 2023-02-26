@@ -844,7 +844,7 @@ void generate_simulated_telem() {
       voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rand_float(0.9, 1.1);
       voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rand_float(0.9, 1.1);
 
-      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+      Serial.printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
       tempS += +rand_float(-1.0, 1.0);
@@ -859,7 +859,7 @@ void generate_simulated_telem() {
 
       current[mapping[BAT]] = ((current[mapping[BUS]] * voltage[mapping[BUS]]) / batt) - charging;
 
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+      Serial.printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
 
       batt -= (batt > 3.5) ? current[mapping[BAT]] / 30000 : current[mapping[BAT]] / 3000;
       if (batt < 3.0) {
@@ -873,6 +873,7 @@ void generate_simulated_telem() {
         batt = 4.5;
 
       voltage[mapping[BAT]] = batt + rand_float(-0.01, 0.01);
+      Serial.printf("Batt voltage: %f \n", voltage[mapping[BAT]]);	
 
       // end of simulated telemetry
 }
