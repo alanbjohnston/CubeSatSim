@@ -80,6 +80,10 @@ char call[] = "AMSAT";   // put your callsign here
 extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
+float rnd_float(float upper, float lower) {
+  return (float)(random(upper*100, lower*100)/100.0);	
+}
+
 void setup() {
 
   set_sys_clock_khz(133000, true);  
