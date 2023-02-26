@@ -168,7 +168,7 @@ void setup() {
 */    	  
   start_ina219();
 	
-  if (i2c_bus3 == false)	
+  if ((i2c_bus3 == false) || (sim_mode))	
 //  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
