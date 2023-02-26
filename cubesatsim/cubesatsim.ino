@@ -876,7 +876,7 @@ void config_simulated_telem()
 {
     sim_mode = TRUE;
 	    
-    Serial.println("Simulated telemetry mode!");
+    Serial.println("Simulated telemetry mode!!");
 
 //    srand((unsigned int)time(0));
 
@@ -909,9 +909,9 @@ void config_simulated_telem()
     temp_min = rnd_float(10, 20);
 
 //    #ifdef DEBUG_LOGGING
-//    for (int i = 0; i < 3; i++)
-//      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-//    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+    for (int i = 0; i < 3; i++)
+      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
 //    #endif
 
     time_start = (long int) millis();
