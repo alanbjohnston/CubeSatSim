@@ -82,7 +82,7 @@ extern bool start_camera();
 
 float rand_float(float lower, float upper) {
 
-  return (float)(random(lower*100, upperf*100)/100.0);	
+  return (float)(random(lower*100, upper*100)/100.0);	
 }
 
 void setup() {
@@ -95,8 +95,7 @@ void setup() {
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
-
-  read_mode();
+  read_mode()
 	
   // mode = BPSK;	// force to BPSK
 
