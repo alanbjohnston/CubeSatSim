@@ -95,7 +95,7 @@ void setup() {
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
-  read_mode()
+  read_mode();
 	
   // mode = BPSK;	// force to BPSK
 
