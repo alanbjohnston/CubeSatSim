@@ -768,8 +768,9 @@ void get_tlm_ao7() {
 	    
     tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
-//    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
-    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+    other[IHU_TEMP] = get_cpu_temp();	
+    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+//    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
     tlm[6][B_] = 0;
     tlm[6][D_] = 49 + rand() % 3;
@@ -1242,6 +1243,7 @@ void get_tlm_fox() {
 	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
     }
+    other[IHU_TEMP] = get_cpu_temp();	  
 //	  	      Serial.println("C");
     encodeA(b, 30 + head_offset, PSUVoltage);
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
@@ -3778,9 +3780,6 @@ void config_gpio() {
   adc_gpio_init(29);  // setup internal temperature sensor	
   Serial.printf("CPU Temperature: %4.1f \n", get_cpu_temp());	
   randomSeed(get_cpu_temp());	
-	
-  for (int j=0; j<20; j++)
-	  Serial.println(rand_float(-.2, .2));
 
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
