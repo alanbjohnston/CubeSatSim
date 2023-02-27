@@ -768,7 +768,6 @@ void get_tlm_ao7() {
 	    
     tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
-    other[IHU_TEMP] = get_cpu_temp();	
     tlm[4][A_] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 //    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
@@ -1243,7 +1242,6 @@ void get_tlm_fox() {
 	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
     }
-    other[IHU_TEMP] = get_cpu_temp();	  
 //	  	      Serial.println("C");
     encodeA(b, 30 + head_offset, PSUVoltage);
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
@@ -2293,6 +2291,9 @@ void test_radio()
 
 void read_ina219()
 {
+	
+  other[IHU_TEMP] = get_cpu_temp();
+	
   unsigned long read_time = millis();
   unsigned long read_time_total = millis();	
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
