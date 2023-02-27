@@ -81,7 +81,8 @@ extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
 float rand_float(float lower, float upper) {
-  return (float)(random(upper*100, lower*100)/100.0);	
+
+  return (float)(random(lower*100, upperf*100)/100.0);	
 }
 
 void setup() {
