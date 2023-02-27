@@ -721,6 +721,8 @@ void config_telem() {
   if (debug_mode)	
     Serial.println("Clearing min and max telemetry values");	
 	
+ reset_max_min();	
+/*	
   for (int i = 0; i < 9; i++) {
     voltage_min[i] = 1000.0;
     current_min[i] = 1000.0;
@@ -735,7 +737,8 @@ void config_telem() {
   for (int i = 0; i < 3; i++) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
-  }		
+  }
+*/	
 	
   firstTime = TRUE;	
 }
@@ -4550,10 +4553,12 @@ void prompt_for_input() {
       get_serial_char();
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Setting Simulated telemetry to on");
+	reset_min_max();      
 	config_simulated_telem();     
 	write_config_file();    	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
+	reset_min_max();   	      
 	sim_mode = false;      
         if (!ina219_started)
 	  start_ina219(); 
@@ -5063,6 +5068,27 @@ float get_cpu_temp() {
   // Serial.printf(" temp = %f C", temp);
 	
   return(temp);	
+	
+}
+
+void reset_min_max() {
+
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
+  }
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+ //   printf("Sensor min and max initialized!");
+  }
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
+  }		
+
 	
 }
 	
