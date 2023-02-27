@@ -3771,7 +3771,15 @@ void config_gpio() {
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
 	
-  randomSeed(analogRead(TEMPERATURE_PIN));	
+  adc_gpio_init(29);
+  adc_select_input(4);
+  const float conversion_factor = 3.27f / (1 << 12);
+  uint16_t raw = adc_read();
+  float result = raw * conversion_factor;	
+  float temp = 27 - (result - 0.706)/0.001721;
+  Serial.printf(" temp = %f C", temp);
+	
+  randomSeed(raw);	
 
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
