@@ -3775,6 +3775,7 @@ void config_gpio() {
   adc_select_input(4);
   const float conversion_factor = 3.27f / (1 << 12);
   uint16_t raw = adc_read();
+  Serial.printf("Raw: %d\n",raw);	
   float result = raw * conversion_factor;	
   float temp = 27 - (result - 0.706)/0.001721;
   Serial.printf(" temp = %f C", temp);
