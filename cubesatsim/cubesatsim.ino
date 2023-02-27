@@ -851,8 +851,8 @@ void generate_simulated_telem() {
       //  IHUcpuTemp = (int)((tempS + rand_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-//      voltage[mapping[BUS]] = rand_float(5.0, 5.005);
-//      current[mapping[BUS]] = rand_float(158, 171);
+      voltage[mapping[BUS]] = rand_float(5.0, 5.005);
+      current[mapping[BUS]] = rand_float(158, 171);
 
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rand_float(-4.0, 4.0));
