@@ -139,6 +139,8 @@
 volatile int prompt = false;
 char serial_string[128];
 
+float get_cpu_temp();
+
 //#define WAV_DATA_LENGTH (50000 * 8)
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
