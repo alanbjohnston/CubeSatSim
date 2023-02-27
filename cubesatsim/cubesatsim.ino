@@ -3775,16 +3775,9 @@ void config_gpio() {
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
 	
-  adc_gpio_init(29);
-  adc_select_input(4);
-  const float conversion_factor = 3.27f / (1 << 12);
-  uint16_t raw = adc_read();
-  Serial.printf("Raw: %d\n",raw);	
-  float result = raw * conversion_factor;	
-  float temp = 27 - (result - 0.706)/0.001721;
-  Serial.printf(" temp = %f C", temp);
-	
-  randomSeed(raw);	
+  adc_gpio_init(29);  // setup internal temperature sensor	
+  Serial.printf("CPU Temperature: %4.1f \n", get_cpu_temp());	
+  randomSeed(get_cpu_temp());	
 	
   for (int j=0; j<20; j++)
 	  Serial.println(rand_float(-.2, .2));
@@ -5058,3 +5051,18 @@ void transmit_led(bool status) {
   digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
+
+float get_cpu_temp() {
+
+  adc_select_input(4);
+  const float conversion_factor = 3.27f / (1 << 12);
+  uint16_t raw = adc_read();
+  // Serial.printf("Raw: %d\n",raw);	
+  float result = raw * conversion_factor;	
+  float temp = 27 - (result - 0.706)/0.001721;
+  // Serial.printf(" temp = %f C", temp);
+	
+  return(temp);	
+	
+}
+	
