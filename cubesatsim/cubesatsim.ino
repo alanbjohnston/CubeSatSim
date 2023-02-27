@@ -769,7 +769,7 @@ void get_tlm_ao7() {
     tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
     other[IHU_TEMP] = get_cpu_temp();	
-    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+    tlm[4][A_] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 //    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
     tlm[6][B_] = 0;
