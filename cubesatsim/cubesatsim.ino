@@ -3782,7 +3782,7 @@ void config_gpio() {
 	
   randomSeed(raw);	
 	
-  for (int j=0; j<20; j <++)
+  for (int j=0; j<20; j++)
 	  Serial.println(rand_float(-.2, .2);
 
   pinMode(AUDIO_IN_PIN, INPUT);	
