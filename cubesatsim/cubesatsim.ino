@@ -2406,6 +2406,8 @@ void read_ina219()
   } else {
     voltage[BAT] = 0.0;
     current[BAT] = 0.0;	  
+    voltage[BUS] = 0.0;
+    current[BUS] = 0.0;	  	  
   }
 	
   if (i2c5) {
