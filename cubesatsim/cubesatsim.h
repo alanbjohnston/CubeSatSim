@@ -137,6 +137,8 @@
 #define PAYLOAD_CLEAR 3
 
 volatile int prompt = false;
+volatile int prompting = false;
+
 char serial_string[128];
 
 float get_cpu_temp();
