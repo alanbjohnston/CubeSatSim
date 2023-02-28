@@ -137,7 +137,11 @@
 #define PAYLOAD_CLEAR 3
 
 volatile int prompt = false;
+volatile int prompting = false;
+
 char serial_string[128];
+
+float get_cpu_temp();
 
 //#define WAV_DATA_LENGTH (50000 * 8)
 
@@ -219,6 +223,7 @@ void load_sstv_image_1_as_cam_dot_jpg();
 void load_sstv_image_2_as_cam_dot_jpg();
 void get_input();
 void transmit_led(bool status);
+void reset_min_max();
 
 #ifndef STASSID
 #define STASSID "Pico"

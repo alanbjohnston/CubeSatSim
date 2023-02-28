@@ -80,6 +80,11 @@ char call[] = "AMSAT";   // put your callsign here
 extern bool get_camera_image(bool debug);
 extern bool start_camera();
 
+float rand_float(float lower, float upper) {
+
+  return (float)(random(lower*100, upper*100)/100.0);	
+}
+
 void setup() {
 
   set_sys_clock_khz(133000, true);  
@@ -90,7 +95,6 @@ void setup() {
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
-
   read_mode();
 	
   // mode = BPSK;	// force to BPSK
@@ -168,7 +172,7 @@ void setup() {
 */    	  
   start_ina219();
 	
-  if (i2c_bus3 == false)	
+  if ((i2c_bus3 == false) || (sim_mode))	
 //  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
@@ -332,6 +336,12 @@ void loop() {
   }
 	
   // get_input();	
+  serial_input();
+  if (prompt) {
+//    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
 	
   //  Calculate loop time
   if (debug_mode) {	
@@ -711,6 +721,8 @@ void config_telem() {
   if (debug_mode)	
     Serial.println("Clearing min and max telemetry values");	
 	
+ reset_min_max();	
+/*	
   for (int i = 0; i < 9; i++) {
     voltage_min[i] = 1000.0;
     current_min[i] = 1000.0;
@@ -725,7 +737,8 @@ void config_telem() {
   for (int i = 0; i < 3; i++) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
-  }		
+  }
+*/	
 	
   firstTime = TRUE;	
 }
@@ -758,8 +771,8 @@ void get_tlm_ao7() {
 	    
     tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
-//    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
-    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+    tlm[4][A_] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+//    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
     tlm[6][B_] = 0;
     tlm[6][D_] = 49 + rand() % 3;
@@ -808,16 +821,17 @@ void generate_simulated_telem() {
         if (debug_mode)	      
           Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
+//      Serial.println((eclipse == 1.0));	
 
-      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-2, 2);
 
-      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-0.2, 0.2);
 
-      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+//      Serial.printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[mapping[PLUS_X]] = (Xi >= 0) ? Xi : 0;
       current[mapping[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
@@ -826,29 +840,29 @@ void generate_simulated_telem() {
       current[mapping[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
       current[mapping[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
-      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rand_float(0.9, 1.1);
+      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rand_float(0.9, 1.1);
+      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rand_float(0.9, 1.1);
 
-      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+//      Serial.printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[mapping[PLUS_X]], voltage[mapping[MINUS_X]], voltage[mapping[PLUS_Y]], voltage[mapping[MINUS_Y]], current[mapping[PLUS_Z]], current[mapping[MINUS_Z]]);
 
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
-      tempS += +rnd_float(-1.0, 1.0);
-      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      tempS += +rand_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rand_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-      voltage[mapping[BUS]] = rnd_float(5.0, 5.005);
-      current[mapping[BUS]] = rnd_float(158, 171);
+      voltage[mapping[BUS]] = rand_float(5.0, 5.005);
+      current[mapping[BUS]] = rand_float(158, 171);
 
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rand_float(-4.0, 4.0));
 
       current[mapping[BAT]] = ((current[mapping[BUS]] * voltage[mapping[BUS]]) / batt) - charging;
 
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+  //    Serial.printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[mapping[BAT]], current[mapping[BUS]], batt, voltage[mapping[BUS]]);
 
       batt -= (batt > 3.5) ? current[mapping[BAT]] / 30000 : current[mapping[BAT]] / 3000;
       if (batt < 3.0) {
@@ -861,7 +875,12 @@ void generate_simulated_telem() {
       if (batt > 4.5)
         batt = 4.5;
 
-      voltage[mapping[BAT]] = batt + rnd_float(-0.01, 0.01);
+      voltage[mapping[BAT]] = batt + rand_float(-0.01, 0.01);
+	
+      voltage[mapping[BUS]] = voltage[mapping[BAT]];
+      current[mapping[BUS]] = current[mapping[BAT]]; 
+
+//     Serial.printf("Batt voltage: %f \n", voltage[mapping[BAT]]);	
 
       // end of simulated telemetry
 }
@@ -870,49 +889,51 @@ void config_simulated_telem()
 {
     sim_mode = TRUE;
 	    
-    Serial.println("Simulated telemetry mode!");
+    Serial.println("Simulated telemetry mode!!");
 
 //    srand((unsigned int)time(0));
 
-    axis[0] = rnd_float(-0.2, 0.2);
+    axis[0] = rand_float(-0.2, 0.2);
     if (axis[0] == 0)
-      axis[0] = rnd_float(-0.2, 0.2);
-    axis[1] = rnd_float(-0.2, 0.2);
-    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+      axis[0] = rand_float(-0.2, 0.2);
+    axis[1] = rand_float(-0.2, 0.2);
+    axis[2] = (rand_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
 
     angle[0] = (float) atan(axis[1] / axis[2]);
     angle[1] = (float) atan(axis[2] / axis[0]);
     angle[2] = (float) atan(axis[1] / axis[0]);
 
-    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
-    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
-    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+    volts_max[0] = rand_float(4.5, 5.5) * (float) sin(angle[1]);
+    volts_max[1] = rand_float(4.5, 5.5) * (float) cos(angle[0]);
+    volts_max[2] = rand_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 
-    float amps_avg = rnd_float(150, 300);
+    float amps_avg = rand_float(150, 300);
 
-    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
-    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
-    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+    amps_max[0] = (amps_avg + rand_float(-25.0, 25.0)) * (float) sin(angle[1]);
+    amps_max[1] = (amps_avg + rand_float(-25.0, 25.0)) * (float) cos(angle[0]);
+    amps_max[2] = (amps_avg + rand_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
 
-    batt = rnd_float(3.8, 4.3);
-    rotation_speed = rnd_float(1.0, 2.5);
-    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
-    period = rnd_float(150, 300);
-    tempS = rnd_float(20, 55);
-    temp_max = rnd_float(50, 70);
-    temp_min = rnd_float(10, 20);
-
-//    #ifdef DEBUG_LOGGING
-//    for (int i = 0; i < 3; i++)
-//      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-//    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
-//    #endif
-
+    batt = rand_float(3.8, 4.3);
+    rotation_speed = rand_float(1.0, 2.5);
+    eclipse = (rand_float(-1, +4) > 0) ? 1.0 : 0.0;
+    period = rand_float(150, 300);
+    tempS = rand_float(20, 55);
+    temp_max = rand_float(50, 70);
+    temp_min = rand_float(10, 20);
+	
     time_start = (long int) millis();
 
     eclipse_time = (long int)(millis() / 1000.0);
     if (eclipse == 0.0)
-      eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
+      eclipse_time -= period / 2; // if starting in eclipse, shorten interval		
+
+//    #ifdef DEBUG_LOGGING
+    for (int i = 0; i < 3; i++)
+      Serial.printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+    Serial.printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, rotation_speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+//    #endif
+
+
 //  }
 
 //  tx_freq_hz -= tx_channel * 50000;
@@ -1481,7 +1502,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 
       return(val);
 }
-
+/*
 float rnd_float(double min,double max) {   // returns 2 decimal point random number
 	
 	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
@@ -1489,7 +1510,7 @@ float rnd_float(double min,double max) {   // returns 2 decimal point random num
 	
       return(ret);
 }
-
+*/
 float toAprsFormat(float input) {
 // converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
     int dd = (int) input;
@@ -2273,6 +2294,9 @@ void test_radio()
 
 void read_ina219()
 {
+	
+  other[IHU_TEMP] = get_cpu_temp();
+	
   unsigned long read_time = millis();
   unsigned long read_time_total = millis();	
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
@@ -2382,6 +2406,8 @@ void read_ina219()
   } else {
     voltage[BAT] = 0.0;
     current[BAT] = 0.0;	  
+    voltage[BUS] = 0.0;
+    current[BUS] = 0.0;	  	  
   }
 	
   if (i2c5) {
@@ -3756,6 +3782,10 @@ void config_gpio() {
   pinMode(TEMPERATURE_PIN, INPUT);
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
+	
+  adc_gpio_init(29);  // setup internal temperature sensor	
+  Serial.printf("CPU Temperature: %4.1f \n", get_cpu_temp());	
+  randomSeed(get_cpu_temp());	
 
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
@@ -4434,8 +4464,11 @@ void serial_input() {
  }
 }
 
-void prompt_for_input() {
+void prompt_for_input() {	
  float float_result;
+
+ if (!prompting) {	
+  prompting = true;	 
 	
   while (Serial.available() > 0)  // clear any characters in serial input buffer
     Serial.read();	  
@@ -4525,10 +4558,12 @@ void prompt_for_input() {
       get_serial_char();
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Setting Simulated telemetry to on");
+	reset_min_max();      
 	config_simulated_telem();     
 	write_config_file();    	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
+	reset_min_max();   	      
 	sim_mode = false;      
         if (!ina219_started)
 	  start_ina219(); 
@@ -4603,8 +4638,9 @@ void prompt_for_input() {
       break;	
 
     case PROMPT_REBOOT:
-       Serial.println("Rebooting...");	 
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       Serial.println("Rebooting...");
+       Serial.flush();	  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
@@ -4613,7 +4649,8 @@ void prompt_for_input() {
 //       Serial.println("Reboot or power cycle to restart the CubeSatSim");
  //      while (1) ;	    // infinite loop
        Serial.println("Rebooting...");	 
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       Serial.flush();			  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
@@ -4804,7 +4841,11 @@ void prompt_for_input() {
       break;	
 		  
   }
-  prompt = false;	
+  prompt = false;
+  prompting = false;
+ } 
+//	else
+//	 Serial.println("Already prompting!");
 }
 
 void get_serial_string() {
@@ -4958,8 +4999,9 @@ void start_clockgen() {
 }
 
 void get_input() {
-
- // if (((skip++)%2) == 0)	
+  if (mode != SSTV)	
+    Serial.print("+");	
+  if ((mode == CW) || (mode == SSTV))
     serial_input();  
 	
 // check for button press 
@@ -4987,8 +5029,9 @@ void get_input() {
 //    mode = new_mode;  // change modes if button pressed	 
     write_mode(new_mode);
 	
-    Serial.println("Rebooting...");	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+    Serial.println("Rebooting...");
+    Serial.flush();	 
+    watchdog_reboot (0, SRAM_END, 500); //10);	 // restart Pico
 	 
     sleep(20.0);	 
 /*	 
@@ -5022,3 +5065,39 @@ void transmit_led(bool status) {
   digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
+
+float get_cpu_temp() {
+
+  adc_select_input(4);
+  const float conversion_factor = 3.27f / (1 << 12);
+  uint16_t raw = adc_read();
+  // Serial.printf("Raw: %d\n",raw);	
+  float result = raw * conversion_factor;	
+  float temp = 27 - (result - 0.706)/0.001721;
+  // Serial.printf(" temp = %f C", temp);
+	
+  return(temp);	
+	
+}
+
+void reset_min_max() {
+
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
+  }
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+ //   printf("Sensor min and max initialized!");
+  }
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
+  }		
+
+	
+}
+	
