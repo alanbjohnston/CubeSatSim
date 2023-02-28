@@ -721,7 +721,7 @@ void config_telem() {
   if (debug_mode)	
     Serial.println("Clearing min and max telemetry values");	
 	
- reset_max_min();	
+ reset_min_max();	
 /*	
   for (int i = 0; i < 9; i++) {
     voltage_min[i] = 1000.0;
