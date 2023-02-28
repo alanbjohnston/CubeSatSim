@@ -4843,8 +4843,9 @@ void prompt_for_input() {
   }
   prompt = false;
   prompting = false;
- } else
-	 Serial.println("Already prompting!");
+ } 
+//	else
+//	 Serial.println("Already prompting!");
 }
 
 void get_serial_string() {
