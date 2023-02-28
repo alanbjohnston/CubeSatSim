@@ -4464,8 +4464,11 @@ void serial_input() {
  }
 }
 
-void prompt_for_input() {
+void prompt_for_input() {	
  float float_result;
+
+ if (!prompting) {	
+  prompting = true;	 
 	
   while (Serial.available() > 0)  // clear any characters in serial input buffer
     Serial.read();	  
@@ -4838,7 +4841,9 @@ void prompt_for_input() {
       break;	
 		  
   }
-  prompt = false;	
+  prompt = false;
+  prompting = false;
+ }
 }
 
 void get_serial_string() {
