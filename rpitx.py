@@ -243,7 +243,7 @@ if __name__ == "__main__":
 					while 1:
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-				        	system("cat aplay /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")										
+						system("cat aplay /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")										
 #						if (debug_mode == 1):
 #							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") 
 #						else:
