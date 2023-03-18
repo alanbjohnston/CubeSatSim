@@ -505,9 +505,12 @@ void send_aprs_packet() {
 
   char str[1000];
   char header_str[] = "hi hi ";
-  strcpy(str, header_str);	
+  strcpy(str, header_str);
+#ifndef APRS_VHG	
   strcpy(str, tlm_str);	// transmit full APRS packet
-//  strcat(str, payload_str);
+#else	
+  strcat(str, payload_str);  // transmit sensor payload
+#endif	
 //  print_string(str);
 //  Serial.println(strlen(str));	
 	
