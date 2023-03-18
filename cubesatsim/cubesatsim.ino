@@ -353,7 +353,7 @@ void loop() {
     Serial.println(millis() - startSleep);
   }
 #ifdef APRS_VHF	  
-  sleep(25.0);	
+//  sleep(25.0);	
 // update latitude and longitude
   latitude = latitude + 0.01;	
   longitude = longitude + 0.01;		
@@ -4944,7 +4944,7 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
 #ifdef APRS_VHF	  
-     mySerial.println("AT+DMOSETGROUP=0,144.4900,144.4900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
+     mySerial.println("AT+DMOSETGROUP=0,144.5900,144.5900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
 #else
      mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 #endif	  
