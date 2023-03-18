@@ -196,7 +196,7 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
-					system("cat aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+					system("aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
 			#		if (debug_mode == 1):
 			#			system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 			#		else:
@@ -212,7 +212,7 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
-					system("cat aplay -D hw:0,0 /home/pi/CubeSatSim/camera_out.jpg.wav")						
+					system("aplay -D hw:0,0 /home/pi/CubeSatSim/camera_out.jpg.wav")						
 #					if (debug_mode == 1):
 #						system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 #					else:
@@ -227,7 +227,7 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
-					system("cat aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")					
+					system("aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")					
 #					if (debug_mode == 1):
 #						system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 #					else:
@@ -243,7 +243,7 @@ if __name__ == "__main__":
 					while 1:
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						system("cat aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")										
+						system("aplay -D hw:0,0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")										
 #						if (debug_mode == 1):
 #							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") 
 #						else:
@@ -252,7 +252,7 @@ if __name__ == "__main__":
 						sleep(5)
 				except:	
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
-					system("cat aplay -D hw:0,0 /home/pi/CubeSatSim/sstv.wav")										
+					system("aplay -D hw:0,0 /home/pi/CubeSatSim/sstv.wav")										
 #					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 					while 1:
 						output(txLed, txLedOn)
