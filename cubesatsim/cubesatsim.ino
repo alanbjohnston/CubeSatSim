@@ -506,10 +506,10 @@ void send_aprs_packet() {
   char str[1000];
   char header_str[] = "hi hi ";
   strcpy(str, header_str);
-#ifndef APRS_VHG	
-  strcpy(str, tlm_str);	// transmit full APRS packet
+#ifdef APRS_VHG	
+  strcat(str, payload_str);  // transmit sensor payload	
 #else	
-  strcat(str, payload_str);  // transmit sensor payload
+  strcpy(str, tlm_str);	// transmit full APRS packet
 #endif	
 //  print_string(str);
 //  Serial.println(strlen(str));	
@@ -519,8 +519,10 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
-  transmit_led(HIGH);	
+  transmit_led(HIGH);
+  sleep(0.1);	
   send_packet(_FIXPOS_STATUS, debug_mode);
+  sleep(0.1);		
   transmit_led(LOW);	
   transmit_off();		
 }
