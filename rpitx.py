@@ -252,7 +252,7 @@ if __name__ == "__main__":
 						sleep(5)
 				except:	
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
-				        system("cat aplay /home/pi/CubeSatSim/sstv.wav")										
+					system("cat aplay /home/pi/CubeSatSim/sstv.wav")										
 #					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 					while 1:
 						output(txLed, txLedOn)
