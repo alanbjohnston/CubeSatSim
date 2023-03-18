@@ -212,8 +212,7 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
-					system("cat aplay /home/pi/CubeSatSim/camera_out.jpg.wav")
-						
+					system("cat aplay /home/pi/CubeSatSim/camera_out.jpg.wav")						
 #					if (debug_mode == 1):
 #						system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 #					else:
