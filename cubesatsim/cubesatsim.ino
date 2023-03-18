@@ -4909,10 +4909,16 @@ void set_lat_lon() {
 // Serial.println("Setting lat and lon for APRS");	
   char lat_string[64];
   char lon_string[64];
-	  
+	
+#ifdef APRS_VHF	 
+  char sym_ovl_default = '/'; // Balloon
+  char sym_tab_default = 'O';  
+  char icon[] = "/O"; 	
+#else	
   char sym_ovl_default = '\\'; //'H';
   char sym_tab_default = 'S'; // 'a';
   char icon[] = "\\S"; //Ha";
+#endif	
 	  
 //      latitude = toAprsFormat(latitude);
 //      longitude = toAprsFormat(longitude);   
