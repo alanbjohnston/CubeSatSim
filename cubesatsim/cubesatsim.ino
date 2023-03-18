@@ -355,9 +355,9 @@ void loop() {
 #ifdef APRS_VHF	  
 //  sleep(25.0);	
 // update latitude and longitude
-  latitude = latitude + 0.01;	
-  longitude = longitude + 0.01;		
-  set_lat_lon();	
+//  latitude = latitude + 0.01;	
+//  longitude = longitude + 0.01;		
+//  set_lat_lon();	
 #endif	
 }	
 
