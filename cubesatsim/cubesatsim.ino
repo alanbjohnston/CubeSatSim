@@ -184,8 +184,11 @@ void setup() {
 	
 //  setup_sstv();
   picosstvpp_begin(26);
+#ifdef APRS_VHF
+  camera_detected = false;
+#else	
   camera_detected = start_camera();	
-
+#endif
 //  start_pwm();
   program_radio();	
 	
@@ -4137,6 +4140,10 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 }
 
 void transmit_callsign(char *callsign) {
+	
+#ifdef APRS_VHF
+  return;  // don't transmit CW if on APRS frequency
+#endif
 		
   char de[] = " HI HI DE ";	
   char id[20];
