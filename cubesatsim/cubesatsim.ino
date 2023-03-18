@@ -74,6 +74,8 @@ MQTTClient client;
 
 #define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
+#define APRS_VHF
+
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
@@ -95,10 +97,12 @@ void setup() {
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
+#ifdef APRS_VHF	  
+   mode = AFSK;	// force to APRS	
+#else	
   read_mode();
+#endif
 	
-  // mode = BPSK;	// force to BPSK
-
   new_mode = mode;
 	
 //  pinMode(LED_BUILTIN, OUTPUT);	
@@ -348,6 +352,13 @@ void loop() {
     Serial.print("\nLoop time: ");	
     Serial.println(millis() - startSleep);
   }
+#ifdef APRS_VHF	  
+  sleep(25.0);	
+// update latitude and longitude
+  latitude = latitude + 0.01;	
+  longitude = longitude + 0.01;		
+  set_lat_lon();	
+#endif	
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
@@ -4932,7 +4943,12 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
+#ifdef APRS_VHF	  
+     mySerial.println("AT+DMOSETGROUP=0,144.4900,144.4900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
+#else
      mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+#endif	  
+
    sleep(0.5);	  
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
