@@ -507,7 +507,8 @@ void send_aprs_packet() {
   char header_str[] = "hi hi ";
   strcpy(str, header_str);
 #ifdef APRS_VHF	
-  strcat(str, payload_str);  // transmit sensor payload	
+  strcat(str, payload_str);  // transmit sensor payload
+  str[strlen(str) - 3] = 0;  // get rid of last 3 characters	
 #else	
   strcpy(str, tlm_str);	// transmit full APRS packet
 #endif	
