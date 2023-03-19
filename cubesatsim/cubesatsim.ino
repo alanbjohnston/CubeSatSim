@@ -521,9 +521,9 @@ void send_aprs_packet() {
     Serial.println("Sending APRS packet!");
   transmit_on();
   transmit_led(HIGH);
-  sleep(0.1);	
+  sleep(0.2);	
   send_packet(_FIXPOS_STATUS, debug_mode);
-  sleep(0.1);		
+  sleep(0.2);		
   transmit_led(LOW);	
   transmit_off();		
 }
