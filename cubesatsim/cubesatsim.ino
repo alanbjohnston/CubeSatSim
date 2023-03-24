@@ -355,8 +355,12 @@ void loop() {
     Serial.print("\nLoop time: ");	
     Serial.println(millis() - startSleep);
   }
-#ifdef APRS_VHF	  
-  sleep(25.0);	
+#ifdef APRS_VHF	 
+  for (int i = 0; i < 5; i++) {	
+    sleep(4.0);	
+    get_input();
+  }
+	
 // update latitude and longitude
 //  latitude = latitude + 0.01;	
 //  longitude = longitude + 0.01;		
