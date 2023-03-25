@@ -116,7 +116,7 @@ sudo raspi-config nonint do_legacy 0
 #if [ "$1" = "u" ]; then
 #fi
 
-  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
+##  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
   
 
   
