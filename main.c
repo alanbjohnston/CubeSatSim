@@ -779,8 +779,7 @@ int main(int argc, char * argv[]) {
     #endif
 
     if ((mode == AFSK) || (mode == CW)) {
-      sleep(25);	    
-      get_tlm();	    
+      get_tlm();
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	    
@@ -909,10 +908,8 @@ void get_tlm(void) {
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi ";
-//    char footer_str1[] = "\' > t.txt && echo \'";
-    char footer_str1[] = "\' > t.txt";
- //   char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str[] = " && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
+    char footer_str1[] = "\' > t.txt && echo \'";
+    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
 
     if (ax5043) {
       strcpy(str, header_str);
@@ -1054,7 +1051,7 @@ void get_tlm(void) {
     } else {  // APRS using rpitx
 	    
       strcat(str, footer_str1);
-//      strcat(str, call);
+      strcat(str, call);
       strcat(str, footer_str);
 //      fprintf(stderr, "String to execute: %s\n", str);
 	    
