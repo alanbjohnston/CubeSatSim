@@ -67,7 +67,7 @@ print(txLed)
 # GPIO.setup(27, GPIO.OUT)
 # GPIO.output(27, 0)
 
-debug_mode = 0
+debug_mode = 1
 
 if __name__ == "__main__":
 
@@ -125,7 +125,7 @@ if __name__ == "__main__":
 #        		print("There are arguments!")
 		if (mode == 'a'):
 			print("AFSK")
-			sleep(5)
+#			sleep(5)
 			try:
 				file = open("/home/pi/CubeSatSim/t.txt")
 				file.close()
@@ -134,6 +134,8 @@ if __name__ == "__main__":
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
+					if (debug_mode == 1):
+						print("Packet ready!")
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")					
 					output(txLed, txLedOn)
 					output (ptt, 0)
@@ -148,6 +150,8 @@ if __name__ == "__main__":
 					output(txLed, txLedOff)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/ready")
+					if (debug_mode == 1):
+						print("Ready for next packet!")
 					sleep(0.5)
 				except:		  
 					sleep(0.5)
