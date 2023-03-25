@@ -293,27 +293,11 @@ if __name__ == "__main__":
 						sleep(1)
 
 		elif (mode == 'b'):
-			print("BPSK")
-			system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
-			print("Turning LED on/off")
-			while 1:
-				output(txLed, txLedOff)
-				sleep(0.5)
-				output(txLed, txLedOn)
-				sleep(4.0)
+			print("BPSK not supported in SR_FRS mode")
+			mode = a
 		else:
-			print("FSK") 
-			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
-			print("Turning LED on/off")
-			while 1:
-				output(txLed, txLedOff)
-				sleep(0.5)
-				output(txLed, txLedOn)
-				sleep(4.0)
-#		else:
-#			print("FSK") 
-#			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
-
+			print("FSK not supported in SR_FRS mode") 
+			mode = a
 	else:
 		print("No Band Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
 		while 1:
