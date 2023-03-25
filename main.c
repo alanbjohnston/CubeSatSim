@@ -265,14 +265,14 @@ int main(int argc, char * argv[]) {
   #ifdef DEBUG_LOGGING
   printf("Power LED On\n");
   #endif
-
+/*
   if (mode == SSTV) {	
     pinMode(29, OUTPUT);  // make SR_FRS transmit
     digitalWrite(29, HIGH);
     pinMode(28, OUTPUT);
     digitalWrite(28, LOW);
   }	
-
+*/
   config_file = fopen("sim.cfg", "w");
   fprintf(config_file, "%s %d %8.4f %8.4f %s", call, reset_count, lat_file, long_file, sim_yes);
   //    fprintf(config_file, "%s %d", call, reset_count);
