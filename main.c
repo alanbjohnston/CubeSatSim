@@ -779,7 +779,8 @@ int main(int argc, char * argv[]) {
     #endif
 
     if ((mode == AFSK) || (mode == CW)) {
-      get_tlm();
+      sleep(25);	    
+      get_tlm();	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	    
