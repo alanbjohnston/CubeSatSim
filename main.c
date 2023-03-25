@@ -780,8 +780,8 @@ int main(int argc, char * argv[]) {
 
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
-      sleep(5);
-      fprintf(stderr, "INFO: Sleeping for 5 sec\n");	    
+      sleep(25);
+      fprintf(stderr, "INFO: Sleeping for 25 sec\n");	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	    
