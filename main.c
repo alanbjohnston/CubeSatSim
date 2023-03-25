@@ -956,7 +956,9 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
-      strcat(str, tlm_str);
+
+       if (mode != AFSK) 
+         strcat(str, tlm_str);
     }
 
     // read payload sensor if available
