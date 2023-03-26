@@ -2606,6 +2606,11 @@ void print_string(char *string)
 
 void start_payload() {
 	
+   Serial1.setRX(1);
+   delay(100);
+   Serial1.setTX(0);
+   delay(100);	
+	
   Serial1.begin(115200);  // Pi UART faster speed
 
   Serial.println("Starting payload!");
