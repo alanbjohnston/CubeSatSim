@@ -1,5 +1,19 @@
 Here is information about the 4th Beta version of CubeSatSim Pico PCB
 
+ Changes from v0.3
+ 
+- Fix soldermask on USB-C board
+- Move Si5351 board up
+- Make chip antenna longer
+- Add SMD RBF
+- Change analog switch SMD footprints to SOT-23-5 
+- Fixed crystal pin 1 label
+- Replace JP5 with a normally open pad on top with solder paste on it
+- Solder resist on top of SMA for ground pins 
+- VBUS on Pico to USB-C through Diode - red charging light will illuminate, RBF work except for when micro USB connected to Pico
+- Camera connector mounted on PCB bottom
+
+
 The files here are for a single board, the CubeSatSim Pico which replaces the STEM Payload Board and the Raspberry Pi Zero.
 
 cubesatsim-pico-0.4.G* -- All gerber files used to fabricate PCBs along with .TXT drill file
