@@ -2876,7 +2876,7 @@ void read_payload()
       Serial1.println("OK");
       delay(100);
       first_read = true;
-      setup();
+//      setup();
     }
 
     if (result == '?')
