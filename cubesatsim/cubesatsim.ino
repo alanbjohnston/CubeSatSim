@@ -3065,7 +3065,7 @@ void payload_OK_only()
       Serial1.println("OK");
       delay(100);
       first_read = true;
-      setup();
+//      setup();
     }
 
     if (result == '?')
