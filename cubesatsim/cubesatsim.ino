@@ -2876,6 +2876,7 @@ void read_payload()
       Serial1.println("OK");
       delay(100);
       first_read = true;
+      start_payload();     
 //      setup();
     }
 
@@ -2982,13 +2983,14 @@ void payload_OK_only()
       Serial.println("OK");
       delay(100);
       first_time = true;
-      setup();
+//      setup();
     }
     else if (result == 'C') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       EEPROM.put(0, (float)0.0);
       first_time = true;
-      setup();
+      start_payload(); 	    
+//      setup();
     }
     if ((result == '?') || first_time == true)  // commented back in
     if (true)
@@ -3065,6 +3067,7 @@ void payload_OK_only()
       Serial1.println("OK");
       delay(100);
       first_read = true;
+      start_payload(); 	    
 //      setup();
     }
 
