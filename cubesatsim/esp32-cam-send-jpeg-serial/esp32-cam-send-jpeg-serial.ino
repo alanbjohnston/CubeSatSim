@@ -175,19 +175,35 @@ void deleteFile(fs::FS &fs, const char * path) {
 
 void setup() {
 
-  delay(5000);  
+//  delay(5000);  
+   delay(10000);  // was 1000
+        
+   Serial.begin(115200);
+        
+     pinMode(LED_PIN, OUTPUT); // Set the pin as output     
+
+    Serial.println("\nBlink once slowly");
+    digitalWrite(LED_PIN, LOW); // Turn on
+    delay (500); // Wait 0.1 sec
+    digitalWrite(LED_PIN, HIGH); // Turn off
+    delay(500);  // Wait 0.1 sec
+//    digitalWrite(LED_PIN, LOW); // Turn on
+//    delay (250); // Wait 0.1 sec
+//    digitalWrite(LED_PIN, HIGH); // Turn off       
+//    delay(250);  // Wait 0.1 sec
+//    digitalWrite(LED_PIN, LOW); // Turn on
+//    delay (100); // Wait 0.1 sec
+//    digitalWrite(LED_PIN, HIGH); // Turn off   
         
 //  #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 //  #define TIME_TO_SLEEP  10        /* Time ESP32 will go to sleep (in seconds) */
 //  esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);  // testing sleep
        
-  Serial.begin(115200);
-
   initialize_camera();
         
   config_camera();      
 
-  Serial.println("ESP32-CAM Camera initialized v0.2");
+  Serial.println("ESP32-CAM Camera initialized v0.3");
 
   pinMode(LED_PIN, OUTPUT); // Set the pin as output
 
@@ -208,6 +224,8 @@ void setup() {
 }
 
 void loop() {
+        
+  Serial.println("ESP32-CAM Send JPG over Serial v0.3");      
   
   char filename[] = "/cam.jpg";
 
@@ -330,10 +348,10 @@ void config_camera() {
  
   sensor_t * s = esp_camera_sensor_get();
         
-//  s->set_brightness(s, 2);     // -2 to 2
-//  s->set_contrast(s, 0);       // -2 to 2
-//  s->set_saturation(s, 1);     // -2 to 2  
-  s->set_hmirror(s, 1);        // 0 = disable , 1 = enable
+  s->set_brightness(s, 2);     // -2 to 2
+  s->set_contrast(s, 0);       // -2 to 2
+  s->set_saturation(s, 1);     // -2 to 2  
+  s->set_hmirror(s, 0);        // 0 = disable , 1 = enable
 //  s->set_vflip(s, 1);         
 }
 
@@ -367,6 +385,14 @@ void save_camera_image(char* filename)
   if (!file) {
     Serial.println("- failed to open file for writing");
     return;
+  }
+        
+  Serial.printf("\nImage length: %d \n", pic->len);  
+        
+  if (pic->len == 15360) {
+       Serial.println("Invalid JPEG - restarting!");
+       delay(1000);
+       esp_restart();
   }
 
   for (int k = 0; k < pic->len; k++) {

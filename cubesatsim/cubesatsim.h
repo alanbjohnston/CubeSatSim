@@ -82,10 +82,10 @@
 #define TRUE 1
 #define FALSE 0
 
-#define A 1
-#define B 2
-#define C 3
-#define D 4
+#define A_ 1
+#define B_ 2
+#define C_ 3
+#define D_ 4
 #define PLUS_X 0
 #define PLUS_Y 1
 #define BAT 2
@@ -108,7 +108,7 @@
 #define XS2 15
 #define XS3 16
 
-#define RSSI 0
+#define RSSI_ 0
 #define IHU_TEMP 2
 #define SPIN 1
 
@@ -128,13 +128,20 @@
 #define PROMPT_TEMP 11
 #define PROMPT_FORMAT 12
 #define PROMPT_REBOOT 13
+#define PROMPT_I2CSCAN 14
+#define PROMPT_WIFI 15
+#define PROMPT_CAMERA 16
 
 #define PAYLOAD_QUERY 1
 #define PAYLOAD_RESET 2
 #define PAYLOAD_CLEAR 3
 
 volatile int prompt = false;
+volatile int prompting = false;
+
 char serial_string[128];
+
+float get_cpu_temp();
 
 //#define WAV_DATA_LENGTH (50000 * 8)
 
@@ -216,6 +223,7 @@ void load_sstv_image_1_as_cam_dot_jpg();
 void load_sstv_image_2_as_cam_dot_jpg();
 void get_input();
 void transmit_led(bool status);
+void reset_min_max();
 
 #ifndef STASSID
 #define STASSID "Pico"
@@ -293,6 +301,8 @@ float lat_file, long_file;
 double cpuTemp;
 int frameTime;
 
+bool debug_camera = false;
+
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, rotation_speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
@@ -364,6 +374,8 @@ bool voltage_read = false;
 bool ina219_started = false;
 bool camera_detected = false;
 bool rotate_flag = true;
+
+int led_builtin_pin;
 
 #define PRESSED 0
 #define HELD 0

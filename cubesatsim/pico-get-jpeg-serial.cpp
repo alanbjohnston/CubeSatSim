@@ -21,7 +21,8 @@ int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
 FastCRC8 CRC8;
-#define CAMERA_TIMEOUT 12000  // Camera timeout in milli seconds
+#define CAMERA_TIMEOUT 10000 // 20000  // Camera timeout in milli seconds
+#define ESP32_CAM_ENABLE_PIN 15
 
 //#define GET_IMAGE_DEBUG
 
@@ -30,7 +31,7 @@ FastCRC8 CRC8;
 //#define PICOW true
 int led_pin = LED_BUILTIN;
 
-bool get_camera_image();
+bool get_camera_image(bool debug_camera);
 bool start_camera();
 
 bool start_camera() {
@@ -66,14 +67,14 @@ bool start_camera() {
    delay(100);
    Serial2.begin(115200);
 #ifdef GET_IMAGE_DEBUG  
-   Serial.println("Started Serial2 to camera v0.1");
+   Serial.println("Started Serial2 to camera v0.2");
 #endif
    LittleFS.begin();
- 
+
    bool camera_present = false;	
 //   int tries = 0;
 //   while ((tries++ < 5) && !camera_present) {
-    if (get_camera_image())  {
+    if (get_camera_image(false))  {
       camera_present = true;
       Serial.println("Camera detected!");
     }	    
@@ -165,7 +166,7 @@ void loop() {
 }
 */
 
-bool get_camera_image()  {
+bool get_camera_image(bool debug_camera)  {
  
   index1 = 0;
   flag_count = 0;
@@ -174,16 +175,23 @@ bool get_camera_image()  {
   end_flag_detected = false;
   jpeg_start = 0;
  
-#ifdef GET_IMAGE_DEBUG
-  Serial.println("Starting get_image_file");
- #endif
-  finished = false;
+  Serial.println("Enabling ESP32-CAM");
+  pinMode(ESP32_CAM_ENABLE_PIN, OUTPUT);
+  digitalWrite(ESP32_CAM_ENABLE_PIN, HIGH);
  
+// #ifdef GET_IMAGE_DEBUG
+ if (debug_camera)
+  Serial.println("Received from ESP32-CAM (hex encoded part is JPG image):\n");
+ // #endif
+  finished = false;
+
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 
    if (Serial2.available()) {      // If anything comes in Serial2
-      byte octet = Serial2.read(); 
+      byte octet = Serial2.read();
+      if ((!start_flag_detected) && (debug_camera))
+        Serial.write(octet);
 
      if (start_flag_complete) {
 //       Serial.println("Start flag complete detected");
@@ -191,7 +199,8 @@ bool get_camera_image()  {
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
             flag_count++;
-#ifdef GET_IMAGE_DEBUG        
+#ifdef GET_IMAGE_DEBUG  
+//       if (debug_camera)  
             Serial.println("Found part of end flag!");
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
@@ -206,7 +215,7 @@ bool get_camera_image()  {
               int received_crc = Serial2.read(); 
 //              buffer2[index1++] = octet;
                             
-              Serial.print("File length: ");
+              Serial.print("\nFile length: ");
               Serial.println(index1 - (int)strlen(end_flag));
 //              index1 -= 1; // 40;
 //              Serial.println(buffer2[index1 - 1], HEX); 
@@ -215,12 +224,15 @@ bool get_camera_image()  {
 
               uint8_t * data = (uint8_t *) &buffer2[0];
 #ifdef GET_IMAGE_DEBUG
-      Serial.println("\nCRC cacluation data:");
-      Serial.println(buffer2[0], HEX);
+       Serial.println(buffer2[0], HEX);
       Serial.println(buffer2[index1 - 1], HEX);
-      Serial.println(index1);
-      Serial.println(received_crc, HEX);     
- #endif             
+      Serial.println(index1);            
+ #endif  
+     if (debug_camera) {                
+      Serial.print("\nCRC received:");
+      Serial.println(received_crc, HEX);   
+    }
+           
               int calculated_crc = CRC8.smbus(data, index1);
  //             Serial.println(calculated_crc, HEX);
               if (received_crc == calculated_crc)
@@ -242,7 +254,8 @@ bool get_camera_image()  {
          }
  ///        buffer2[index1++] = octet;
            
-#ifdef GET_IMAGE_DEBUG    
+//#ifdef GET_IMAGE_DEBUG 
+    if (debug_camera) {   
            char hexValue[5];
            if (octet != 0x66) {
              sprintf(hexValue, "%02X", octet);
@@ -252,7 +265,8 @@ bool get_camera_image()  {
              Serial.print("66");
            } 
 //             Serial.write(octet);
-#endif             
+    }
+//#endif             
            if (index1 > 100000)
              index1 = 0; 
 //         }
@@ -271,6 +285,10 @@ bool get_camera_image()  {
      //   Serial.println("Resetting. Not start flag.");        
        } 
     }
+//    Serial.println("writing to Serial2");
   }
+  if (debug_camera)                 
+      Serial.print("\nCamera complete\n");
+  digitalWrite(ESP32_CAM_ENABLE_PIN, LOW);
   return(finished);
 }

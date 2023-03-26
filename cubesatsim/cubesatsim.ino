@@ -36,7 +36,7 @@
 #include "hardware/sync.h" // wait for interrupt 
 #include "RPi_Pico_ISR_Timer.h"
 #include "RPi_Pico_TimerInterrupt.h"
-//#include <WiFi.h>
+#include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 //#include "SSTV-Arduino-Scottie1-Library.h"
@@ -45,6 +45,8 @@
 #include "picosstvpp.h"
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
+#include <MQTT.h>
+
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -63,16 +65,25 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 
 unsigned long micros3;
 
+volatile int skip = 0;
+
 //WiFiServer server(port);
 //WiFiClient client;
+WiFiClient net;
+MQTTClient client;
 
-//#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-extern bool get_camera_image();
+extern bool get_camera_image(bool debug);
 extern bool start_camera();
+
+float rand_float(float lower, float upper) {
+
+  return (float)(random(lower*100, upper*100)/100.0);	
+}
 
 void setup() {
 
@@ -80,25 +91,37 @@ void setup() {
 	
   Serial.begin(115200);
 	
-  delay(5000);	
+  delay(10000);	
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
-
   read_mode();
 	
   // mode = BPSK;	// force to BPSK
 
   new_mode = mode;
 	
-  pinMode(LED_BUILTIN, OUTPUT);	
+//  pinMode(LED_BUILTIN, OUTPUT);	
 //  blinkTimes(1);	
 
 ///  sleep(5.0);	
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.34 starting...\n");
+  Serial.println("CubeSatSim Pico v0.39 starting...\n");
+	
+/**/	
+  if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else  {
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+     pinMode(led_builtin_pin, OUTPUT);		  
+  }
+/**/		
 	
   config_gpio();
 
@@ -121,10 +144,11 @@ void setup() {
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == HIGH)  {
+// {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
-      payload_OK_only();    
+//      payload_OK_only();    
     }
   }
 */
@@ -148,17 +172,11 @@ void setup() {
 */    	  
   start_ina219();
 	
-  if (i2c_bus3 == false)	
+  if ((i2c_bus3 == false) || (sim_mode))	
 //  if ((i2c_bus3 == false) || (mode == FSK))  // force simulated telemetry mode for FSK
     config_simulated_telem();		
     
-/*	
-  if (check_for_wifi()) {
-     wifi = true;	
-     configure_wifi();	  
-  }
-*/	
-///  start_button_isr(); 
+  start_button_isr(); 
 	
 //  setup_sstv();
   picosstvpp_begin(26);
@@ -167,7 +185,7 @@ void setup() {
 //  start_pwm();
   program_radio();	
 	
-  get_input();		
+//  get_input();		
 	
   prompt = PROMPT_HELP;  // display input help menu	
   prompt_for_input();
@@ -187,8 +205,9 @@ void setup() {
 	
 // setup radio depending on mode 
   config_radio();	
-	
-  start_isr();	
+  
+  if ((mode == BPSK) || (mode == FSK))	// only start ISR if FSK or BPSK mode
+    start_isr();	
 	
 ///  start_button_isr(); 
 	
@@ -196,7 +215,7 @@ void setup() {
 	
   ready = TRUE;  // flag for core1 to start looping
 
-  get_input();	
+  // get_input();	
 /*	
   Serial.print("s");
   Serial.print(" ");
@@ -213,8 +232,9 @@ void loop() {
     generate_simulated_telem();
   else {
     read_ina219();	  // query INA219 sensors and Payload sensors
-    read_payload();	  // only read payload if not simulated telemetry
+//    read_payload();	  // only read payload if not simulated telemetry
   }
+    read_payload();	 
 	
   // encode as digits (APRS or CW mode) or binary (DUV FSK)	
   if ((mode == BPSK) || (mode == FSK))  {
@@ -239,7 +259,7 @@ void loop() {
 	  load_sstv_image_1_as_cam_dot_jpg(); 	      
 	first_time_sstv = false;
       } else {
-	if (camera_detected = get_camera_image()) {      
+	if (camera_detected = get_camera_image(debug_camera)) {      
           Serial.println("Getting image file");   
 //          Serial.println("Got image file");	      
 //	  char camera_file[] = "/cam.jpg";      
@@ -265,41 +285,41 @@ void loop() {
 //      char output_file2[] = "/cam2.bin"; 	  
       char output_file[] = "/cam.bin"; 
 //      jpeg_decode(image_file, output_file, true); // debug_mode);
-      jpeg_decode(input_file, output_file, false); // debug_mode);
-      show_dir();	  
-//      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
+      if (jpeg_decode(input_file, output_file, false)) {  // only transmit if jpeg decode successful
+	      show_dir();	  
+	//      char telem_display[] = " BATT:    STATUS:   TEMP:  ";	  
 
-      digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
-//      rotate_image(output_file2, output_file, telem_display);	  
-//      show_dir();
+	      digitalWrite(PTT_PIN, HIGH);  // shouldn't need this but
+	//      rotate_image(output_file2, output_file, telem_display);	  
+	//      show_dir();
 
-      picosstvpp();	
-	  
-      if (debug_mode)	  	  
-        Serial.println("Start transmit!!!");
-      digitalWrite(PTT_PIN, LOW);  // start transmit
-      transmit_led(HIGH);	    
+	      if (debug_mode)	  	  
+		Serial.println("Start transmit!!!");
+	      digitalWrite(PTT_PIN, LOW);  // start transmit
+	      transmit_led(HIGH);	    
 
-//      scottie1_transmit_file(output_file, debug_mode);
- 
-//      ITimer1.stopTimer();	// turn off pushbutton timer  	   
-///      ITimer1.disableTimer();	// turn off pushbutton timer  	  
-      play_pwm_file(26);
-//      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
-///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
-      if (debug_mode)	  
-        Serial.println("Stop transmit!");
-      digitalWrite(PTT_PIN, HIGH);  // stop transmit
-      transmit_led(LOW);
-	  
-      if (debug_mode)	  
-        Serial.println("\nImage sent!");
-	  
+	      picosstvpp();	
+
+	//      scottie1_transmit_file(output_file, debug_mode);
+
+	//      ITimer1.stopTimer();	// turn off pushbutton timer  	   
+	///      ITimer1.disableTimer();	// turn off pushbutton timer  	  
+	//      play_pwm_file(26);
+	//      ITimer1.restartTimer();	// turn back on pushbutton timer  	  
+	///      ITimer1.enableTimer();	// turn back on pushbutton timer  	  
+	      if (debug_mode)	  
+		Serial.println("Stop transmit!");
+	      digitalWrite(PTT_PIN, HIGH);  // stop transmit
+	      transmit_led(LOW);
+
+	      if (debug_mode)	  
+		Serial.println("\nImage sent!");
+      }  
   } 
   else
       Serial.println("Unknown mode!");
 	
-  get_input();	
+  // get_input();	
 	
 //  while ((millis() - sampleTime) < ((unsigned int)samplePeriod)) // - 250))  // was 250 100
   while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 250))  // was 250 100
@@ -315,7 +335,13 @@ void loop() {
     transmit_led(HIGH);
   }
 	
-  get_input();	
+  // get_input();	
+  serial_input();
+  if (prompt) {
+//    Serial.println("Need to prompt for input!");
+    prompt_for_input();	  
+    prompt = false;	  
+  }
 	
   //  Calculate loop time
   if (debug_mode) {	
@@ -325,8 +351,9 @@ void loop() {
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
-	
-  serial_input();
+/*	
+  if (((skip++)%10) == 0)	
+    serial_input();
 	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
@@ -336,6 +363,8 @@ bool TimerHandler1(struct repeating_timer *t) {
 
 //  if (wifi) 
 //    check_for_browser();
+*/	
+  get_input();
 	
   return(true);	
 }
@@ -408,7 +437,7 @@ void read_config_file() {
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    Serial.println("Valid latitude and longitude in config file");
+    Serial.println("Valid latitude and longitude in config file\n");
 // convert to APRS DDMM.MM format
     latitude = lat_file; // toAprsFormat(lat_file);
     longitude = long_file; // toAprsFormat(long_file);
@@ -418,7 +447,7 @@ void read_config_file() {
 //    latitude = toAprsFormat(latitude);
 //    longitude = toAprsFormat(longitude);
 //  }
-  Serial.printf("sim_yes: %s\n", sim_yes);
+//  Serial.printf("sim_yes: %s\n", sim_yes);
   char yes_string[] = "yes";	
 //  if (strcmp(sim_yes, yes_string) == 0) {
   if (sim_yes[0] == 'y') {
@@ -463,8 +492,8 @@ void send_aprs_packet() {
   char str[1000];
   char header_str[] = "hi hi ";
   strcpy(str, header_str);	
-  strcpy(str, tlm_str);	
-  strcat(str, payload_str);
+  strcpy(str, tlm_str);	// transmit full APRS packet
+//  strcat(str, payload_str);
 //  print_string(str);
 //  Serial.println(strlen(str));	
 	
@@ -692,6 +721,8 @@ void config_telem() {
   if (debug_mode)	
     Serial.println("Clearing min and max telemetry values");	
 	
+ reset_min_max();	
+/*	
   for (int i = 0; i < 9; i++) {
     voltage_min[i] = 1000.0;
     current_min[i] = 1000.0;
@@ -706,7 +737,8 @@ void config_telem() {
   for (int i = 0; i < 3; i++) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
-  }		
+  }
+*/	
 	
   firstTime = TRUE;	
 }
@@ -721,29 +753,29 @@ void get_tlm_ao7() {
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 	  
-    tlm[1][A] = (int)(voltage[mapping[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
-    tlm[1][B] = (int)(99.5 - current[mapping[PLUS_X]] / 10.0) % 100; // +X current [4]
-    tlm[1][C] = (int)(99.5 - current[mapping[MINUS_X]] / 10.0) % 100; // X- current [10] 
-    tlm[1][D] = (int)(99.5 - current[mapping[PLUS_Y]] / 10.0) % 100; // +Y current [7]
+    tlm[1][A_] = (int)(voltage[mapping[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
+    tlm[1][B_] = (int)(99.5 - current[mapping[PLUS_X]] / 10.0) % 100; // +X current [4]
+    tlm[1][C_] = (int)(99.5 - current[mapping[MINUS_X]] / 10.0) % 100; // X- current [10] 
+    tlm[1][D_] = (int)(99.5 - current[mapping[PLUS_Y]] / 10.0) % 100; // +Y current [7]
 
-    tlm[2][A] = (int)(99.5 - current[mapping[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
-    tlm[2][B] = (int)(99.5 - current[mapping[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
-    tlm[2][C] = (int)(99.5 - current[mapping[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
-    tlm[2][D] = (int)(50.5 + current[mapping[BAT]] / 10.0) % 100; // NiMH Battery current
+    tlm[2][A_] = (int)(99.5 - current[mapping[MINUS_Y]] / 10.0) % 100; // -Y current [10] 
+    tlm[2][B_] = (int)(99.5 - current[mapping[PLUS_Z]] / 10.0) % 100; // +Z current [10] // was 70/2m transponder power, AO-7 didn't have a Z panel
+    tlm[2][C_] = (int)(99.5 - current[mapping[MINUS_Z]] / 10.0) % 100; // -Z current (was timestamp)
+    tlm[2][D_] = (int)(50.5 + current[mapping[BAT]] / 10.0) % 100; // NiMH Battery current
 
 //    tlm[3][A] = abs((int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100);
     if (voltage[mapping[BAT]] > 4.6)	 
-    	tlm[3][A] = (int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
+    	tlm[3][A_] = (int)((voltage[mapping[BAT]] * 10.0) - 65.5) % 100;  // 7.0 - 10.0 V for old 9V battery
     else
-    	tlm[3][A] = (int)((voltage[mapping[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
+    	tlm[3][A_] = (int)((voltage[mapping[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
 	    
-    tlm[3][B] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
+    tlm[3][B_] = (int)(voltage[mapping[BUS]] * 10.0) % 100; // 5V supply to Pi
 
-//    tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
-    tlm[4][A] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+    tlm[4][A_] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
+//    tlm[4][A_] = (int)((95.8 - analogReadTemp()) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
-    tlm[6][B] = 0;
-    tlm[6][D] = 49 + rand() % 3;
+    tlm[6][B_] = 0;
+    tlm[6][D_] = 49 + rand() % 3;
 
 /*	  
     // Display tlm
@@ -789,16 +821,17 @@ void generate_simulated_telem() {
         if (debug_mode)	      
           Serial.println("\n\nSwitching eclipse mode! \n\n");
       }
+//      Serial.println((eclipse == 1.0));	
 
-      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-2, 2);
 
-      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + rand_float(-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + (3.14 / 2.0)) + rand_float(-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time_stamp / (46.0 * rotation_speed)) + 3.14 + angle[2]) + rand_float(-0.2, 0.2);
 
-      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+//      Serial.printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[mapping[PLUS_X]] = (Xi >= 0) ? Xi : 0;
       current[mapping[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
@@ -807,29 +840,29 @@ void generate_simulated_telem() {
       current[mapping[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
       current[mapping[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
-      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
+      voltage[mapping[PLUS_X]] = (Xv >= 1) ? Xv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rand_float(0.9, 1.1);
+      voltage[mapping[PLUS_Y]] = (Yv >= 1) ? Yv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rand_float(0.9, 1.1);
+      voltage[mapping[PLUS_Z]] = (Zv >= 1) ? Zv : rand_float(0.9, 1.1);
+      voltage[mapping[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rand_float(0.9, 1.1);
 
-      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+//      Serial.printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[mapping[PLUS_X]], voltage[mapping[MINUS_X]], voltage[mapping[PLUS_Y]], voltage[mapping[MINUS_Y]], current[mapping[PLUS_Z]], current[mapping[MINUS_Z]]);
 
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
-      tempS += +rnd_float(-1.0, 1.0);
-      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      tempS += +rand_float(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + rand_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-      voltage[mapping[BUS]] = rnd_float(5.0, 5.005);
-      current[mapping[BUS]] = rnd_float(158, 171);
+      voltage[mapping[BUS]] = rand_float(5.0, 5.005);
+      current[mapping[BUS]] = rand_float(158, 171);
 
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rand_float(-4.0, 4.0));
 
       current[mapping[BAT]] = ((current[mapping[BUS]] * voltage[mapping[BUS]]) / batt) - charging;
 
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+  //    Serial.printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[mapping[BAT]], current[mapping[BUS]], batt, voltage[mapping[BUS]]);
 
       batt -= (batt > 3.5) ? current[mapping[BAT]] / 30000 : current[mapping[BAT]] / 3000;
       if (batt < 3.0) {
@@ -842,7 +875,12 @@ void generate_simulated_telem() {
       if (batt > 4.5)
         batt = 4.5;
 
-      voltage[mapping[BAT]] = batt + rnd_float(-0.01, 0.01);
+      voltage[mapping[BAT]] = batt + rand_float(-0.01, 0.01);
+	
+      voltage[mapping[BUS]] = voltage[mapping[BAT]];
+      current[mapping[BUS]] = current[mapping[BAT]]; 
+
+//     Serial.printf("Batt voltage: %f \n", voltage[mapping[BAT]]);	
 
       // end of simulated telemetry
 }
@@ -851,49 +889,51 @@ void config_simulated_telem()
 {
     sim_mode = TRUE;
 	    
-    Serial.println("Simulated telemetry mode!");
+    Serial.println("Simulated telemetry mode!!");
 
 //    srand((unsigned int)time(0));
 
-    axis[0] = rnd_float(-0.2, 0.2);
+    axis[0] = rand_float(-0.2, 0.2);
     if (axis[0] == 0)
-      axis[0] = rnd_float(-0.2, 0.2);
-    axis[1] = rnd_float(-0.2, 0.2);
-    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+      axis[0] = rand_float(-0.2, 0.2);
+    axis[1] = rand_float(-0.2, 0.2);
+    axis[2] = (rand_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
 
     angle[0] = (float) atan(axis[1] / axis[2]);
     angle[1] = (float) atan(axis[2] / axis[0]);
     angle[2] = (float) atan(axis[1] / axis[0]);
 
-    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
-    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
-    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+    volts_max[0] = rand_float(4.5, 5.5) * (float) sin(angle[1]);
+    volts_max[1] = rand_float(4.5, 5.5) * (float) cos(angle[0]);
+    volts_max[2] = rand_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
 
-    float amps_avg = rnd_float(150, 300);
+    float amps_avg = rand_float(150, 300);
 
-    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
-    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
-    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+    amps_max[0] = (amps_avg + rand_float(-25.0, 25.0)) * (float) sin(angle[1]);
+    amps_max[1] = (amps_avg + rand_float(-25.0, 25.0)) * (float) cos(angle[0]);
+    amps_max[2] = (amps_avg + rand_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
 
-    batt = rnd_float(3.8, 4.3);
-    rotation_speed = rnd_float(1.0, 2.5);
-    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
-    period = rnd_float(150, 300);
-    tempS = rnd_float(20, 55);
-    temp_max = rnd_float(50, 70);
-    temp_min = rnd_float(10, 20);
-
-//    #ifdef DEBUG_LOGGING
-//    for (int i = 0; i < 3; i++)
-//      printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-//    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
-//    #endif
-
+    batt = rand_float(3.8, 4.3);
+    rotation_speed = rand_float(1.0, 2.5);
+    eclipse = (rand_float(-1, +4) > 0) ? 1.0 : 0.0;
+    period = rand_float(150, 300);
+    tempS = rand_float(20, 55);
+    temp_max = rand_float(50, 70);
+    temp_min = rand_float(10, 20);
+	
     time_start = (long int) millis();
 
     eclipse_time = (long int)(millis() / 1000.0);
     if (eclipse == 0.0)
-      eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
+      eclipse_time -= period / 2; // if starting in eclipse, shorten interval		
+
+//    #ifdef DEBUG_LOGGING
+    for (int i = 0; i < 3; i++)
+      Serial.printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
+    Serial.printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, rotation_speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+//    #endif
+
+
 //  }
 
 //  tx_freq_hz -= tx_channel * 50000;
@@ -1020,6 +1060,7 @@ void get_tlm_fox() {
     memset(parities, 0, sizeof(parities));
 //    Serial.println("After memset");   
    uptime = (int)(millis() / 1000.0);	  
+//   Serial.printf("Uptime: %d \n", uptime);	  
 
     h[0] = (short int) ((h[0] & 0xf8) | (id & 0x07)); // 3 bits
 //    Serial.println("After h[0]");	  
@@ -1125,7 +1166,7 @@ void get_tlm_fox() {
       encodeA(b_max, 30 + head_offset, (int)(voltage_max[mapping[BUS]] * 100));
       encodeB(b_max, 46 + head_offset, (int)(current_max[mapping[BUS]] + 0.5) + 2048);
 	    
-      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
+      encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI_] + 0.5) + 2048);	    
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 	    
@@ -1174,7 +1215,7 @@ void get_tlm_fox() {
       encodeB(b_min, 46 + head_offset, (int)(current_min[mapping[BUS]] + 0.5) + 2048);
 	    
       encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
-      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
+      encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI_] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
 	    
       if (sensor_min[0] != 1000.0) // make sure values are valid
@@ -1210,7 +1251,7 @@ void get_tlm_fox() {
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
     encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
     encodeA(b, 36 + head_offset, Resets);
-    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
+    encodeB(b, 37 + head_offset, (int)(other[RSSI_] + 0.5) + 2048);
     encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
     encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
     encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
@@ -1461,7 +1502,7 @@ int twosToInt(int val,int len) {   // Convert twos compliment to integer
 
       return(val);
 }
-
+/*
 float rnd_float(double min,double max) {   // returns 2 decimal point random number
 	
 	int val = (rand() % ((int)(max*100) - (int)(min*100) + 1)) + (int)(min*100);
@@ -1469,7 +1510,7 @@ float rnd_float(double min,double max) {   // returns 2 decimal point random num
 	
       return(ret);
 }
-
+*/
 float toAprsFormat(float input) {
 // converts decimal coordinate (latitude or longitude) to APRS DDMM.MM format	
     int dd = (int) input;
@@ -2253,8 +2294,11 @@ void test_radio()
 
 void read_ina219()
 {
-  unsigned long read_time = millis();
 	
+  other[IHU_TEMP] = get_cpu_temp();
+	
+  unsigned long read_time = millis();
+  unsigned long read_time_total = millis();	
   if (voltage_read && !i2c_bus1 && !i2c_bus3)
     Serial.println("Nothing to read");
 /*	
@@ -2282,6 +2326,13 @@ void read_ina219()
     }
     voltage[PLUS_X] = loadvoltage;
     current[PLUS_X] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c_1 = false;
+    Serial.println("There is a problem with bus 1 0x40");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[PLUS_X] = 0.0;
     current[PLUS_X] = 0.0;	  
@@ -2302,6 +2353,13 @@ void read_ina219()
   }
   voltage[PLUS_Y] = loadvoltage;
   current[PLUS_Y] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c2 = false;
+    Serial.println("There is a problem with bus 1 0x41");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[PLUS_Y] = 0.0;
     current[PLUS_Y] = 0.0;	  
@@ -2339,10 +2397,17 @@ void read_ina219()
   voltage[BUS] = loadvoltage;  // since battery directly supplies, make BUS same as BAT for FoxTelem
   current[BUS] = current_mA;	
 	  
-	  
+  if ((millis() - read_time) > 100) { 
+    i2c3 = false;
+    Serial.println("There is a problem with bus 1 0x44");
+  }
+  read_time = millis();	
+	  	  
   } else {
     voltage[BAT] = 0.0;
     current[BAT] = 0.0;	  
+    voltage[BUS] = 0.0;
+    current[BUS] = 0.0;	  	  
   }
 	
   if (i2c5) {
@@ -2360,6 +2425,12 @@ void read_ina219()
   }
   voltage[PLUS_Z] = loadvoltage;
   current[PLUS_Z] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c5 = false;
+    Serial.println("There is a problem with bus 2 0x40");
+  }
+  read_time = millis();	
   } else {
     voltage[PLUS_Z] = 0.0;
     current[PLUS_Z] = 0.0;	  
@@ -2380,6 +2451,13 @@ void read_ina219()
   }
   voltage[MINUS_X] = loadvoltage;
   current[MINUS_X] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c6 = false;
+    Serial.println("There is a problem with bus 2 0x41");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[MINUS_X] = 0.0;
     current[MINUS_X] = 0.0;	  
@@ -2400,6 +2478,13 @@ void read_ina219()
   }
   voltage[MINUS_Y] = loadvoltage;
   current[MINUS_Y] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c7 = false;
+    Serial.println("There is a problem with bus 2 0x44");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[MINUS_Y] = 0.0;
     current[MINUS_Y] = 0.0;	  
@@ -2420,14 +2505,39 @@ void read_ina219()
   }
   voltage[MINUS_Z] = loadvoltage;
   current[MINUS_Z] = current_mA;
+	  
+  if ((millis() - read_time) > 100) { 
+    i2c8 = false;
+    Serial.println("There is a problem with bus 2 0x45");
+  }
+  read_time = millis();	
+	  
   } else {
     voltage[MINUS_Z] = 0.0;
     current[MINUS_Z] = 0.0;	  
   }
   voltage_read = false;	
 	
-  if ((millis() - read_time) > 1000)
+  if ((millis() - read_time_total) > 1000) {
     Serial.println("There is an I2C sensor problem");
+  }	  
+/*	  
+  if (!(i2c_1 = ina219_1_0x40.begin()))  // check i2c bus 1
+    Serial.println("I2C +X sensor (bus 1 0x40) not found");
+  if (!(i2c2 = ina219_1_0x41.begin()))
+    Serial.println("I2C +Y sensor (bus 1 0x41) not found");
+  if (!(i2c3 = ina219_1_0x44.begin()))
+    Serial.println("I2C Batt sensor (bus 1 0x44) not found");
+  if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
+    Serial.println("I2C +Z sensor (bus 2 0x40) not found");
+  if (!(i2c6 = ina219_2_0x41.begin(&Wire1)))
+    Serial.println("I2C -X sensor (bus 2 0x41) not found");
+  if (!(i2c7 = ina219_2_0x44.begin(&Wire1)))
+    Serial.println("I2C -Y sensor (bus 2 0x44) not found");
+  if (!(i2c8 = ina219_2_0x45.begin(&Wire1)))
+    Serial.println("I2C -Z sensor (bus 2 0x45) not found");	  
+  }
+  */
 }
 
 void read_sensors()
@@ -2580,6 +2690,7 @@ void start_payload() {
 
 void read_payload()
 {
+  unsigned long read_time = millis();	
   payload_str[0] = '\0';  // clear the payload string
 //  print_string(payload_str);	
 	
@@ -2599,8 +2710,13 @@ void read_payload()
     else
         sprintf(str, "0.0 0.0 0.0 0.0 "); 
     strcat(payload_str, str);
-//    print_string(payload_str);		  
-
+//    print_string(payload_str);
+      if ((millis() - read_time) > 500) {
+        Serial.println("There is a bme280 sensor problem");	 
+	bmePresent = false;
+      }
+      read_time = millis();
+	  
     if (mpuPresent) 	 { 
 //    print_string(payload_str);	
       mpu6050.update();
@@ -2623,8 +2739,12 @@ void read_payload()
       if (rotation > 5)
         led_set(STEM_LED_BLUE, HIGH);
       else
-        led_set(STEM_LED_BLUE, LOW);  	    
+        led_set(STEM_LED_BLUE, LOW);  	 
 	    
+      if ((millis() - read_time) > 500) {
+        Serial.println("There is an mpu6050 sensor problem");	 
+	mpuPresent = false;
+      }	    
     }   else
         sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
     strcat(payload_str, str);
@@ -2801,7 +2921,7 @@ void read_payload()
 //  delay(100);
 }
 
-/*
+/**/
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -2990,7 +3110,7 @@ void payload_OK_only()
   delay(100);
 }
 
-*/	
+/**/	
 /*
 void eeprom_word_write(int addr, int val)
 {
@@ -3023,11 +3143,17 @@ void blink_setup()
 
 void blink(int length)
 {
-  digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-  
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
+	  
   sleep(length/1000.0); // delay(length);              // wait for a lenth of time
 
-  digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED off
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
 }
 
 void led_set(int ledPin, bool state)
@@ -3304,6 +3430,11 @@ void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
 
 void process_pushbutton() {
 	
+  if ((new_mode != mode) || (prompt != false)) {
+    Serial.println("******* PB bounce error!! *******\n\n");
+    return;
+  }
+	
 //  Serial.println("PB pressed!");  
 	
   int release = FALSE;
@@ -3312,26 +3443,28 @@ void process_pushbutton() {
 	
 //  return;  /// just skip for now
 	
-//  if (!wifi) 	   	
-   digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before starting to blink
-	
+// make sure built in LED is on before starting to blink
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
   sleep(1.0);
-	
+/*	
   int pb_value = digitalRead(MAIN_PB_PIN);
   if (pb_value == RELEASED) {
     Serial.println("PB: Reboot!");
     release = TRUE;
     prompt = PROMPT_REBOOT;  
   }
-	
+*/	
   blinkTimes(1);
   sleep(1.5);
 	
-  pb_value = digitalRead(MAIN_PB_PIN);
+  int pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = AFSK;
     Serial.println("PB: Switch to AFSK");
     release = TRUE;
-    new_mode = AFSK;
 //    setup();	  
   }
 	
@@ -3342,9 +3475,9 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = FSK;	  
     Serial.println("PB: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3354,9 +3487,9 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = BPSK;	  	  
     Serial.println("PB: Switch to BPSK");
     release = TRUE;
-    new_mode = BPSK;	  
   }
 	
   if (release == FALSE) {
@@ -3366,8 +3499,8 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = SSTV;	  
     Serial.println("PB: Switch to SSTV");
-    new_mode = SSTV;
     release = TRUE;
   }
 	
@@ -3378,13 +3511,14 @@ void process_pushbutton() {
 	  
   pb_value = digitalRead(MAIN_PB_PIN);
   if ((pb_value == RELEASED) && (release == FALSE)) {
+    new_mode = CW;	  
     Serial.println("PB: Switch to CW");
-    new_mode = CW;
     release = TRUE;
   }
 	
   if (release == FALSE) {
-    Serial.println("PB: Shutdown!");
+    Serial.println("PB: Reboot!");
+    prompt = PROMPT_REBOOT;	  
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
@@ -3403,35 +3537,47 @@ void process_pushbutton() {
     transmit_off();
   sleep(2.0);	
 
-   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
+  // make sure built-in LED is off
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
 
 void process_bootsel() {
+	
+  if ((new_mode != mode) || (prompt != false)) {
+    Serial.println("******* BOOTSEL bounce error!! *******\n\n");
+    return;
+  }
+		
 
 //  Serial.println("BOOTSEL pressed!");  
 	
   int release = FALSE;
-	
-//  if (!wifi) 
-    digitalWrite(LED_BUILTIN, HIGH);  // make sure built in LED is on before blinking	
-	
+		
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON		
   sleep(1.0);
 	
 //  int pb_value = digitalRead(MAIN_PB_PIN);
+/*	
   if (!BOOTSEL) {
     Serial.println("BOOTSEL: Reboot!");
     release = TRUE;
     prompt = PROMPT_REBOOT;    
   }
-	
+*/	
   blinkTimes(1);
   sleep(1.5);
 	
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = AFSK;	  
     Serial.println("BOOTSEL: Switch to AFSK");
     release = TRUE;
-    new_mode = AFSK;
 //    setup();	  
   }
 	
@@ -3442,9 +3588,9 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = FSK;	  
     Serial.println("BOOTSEL: Switch to FSK");
     release = TRUE;
-    new_mode = FSK;
   }
 	
   if (release == FALSE) {
@@ -3454,9 +3600,9 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = BPSK;	  	  
     Serial.println("BOOTSEL: Switch to BPSK");
     release = TRUE;
-    new_mode = BPSK;	  
   }
 	
   if (release == FALSE) {
@@ -3466,8 +3612,8 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = SSTV;	  
     Serial.println("BOOTSEL: Switch to SSTV");
-    new_mode = SSTV;
     release = TRUE;
   }
 	
@@ -3478,13 +3624,14 @@ void process_bootsel() {
 	  
 //  pb_value = digitalRead(MAIN_PB_PIN);
   if ((!BOOTSEL) && (release == FALSE)) {
+    new_mode = CW;	  
     Serial.println("BOOTSEL: Switch to CW");
-    new_mode = CW;
     release = TRUE;
   }
 	
   if (release == FALSE) {
-    Serial.println("BOOTSEL: Shutdown!");
+    Serial.println("BOOTSEL: Reboot!");
+    prompt = PROMPT_REBOOT;	  
     digitalWrite(MAIN_LED_GREEN, LOW);
     sleep(0.5);
     digitalWrite(MAIN_LED_GREEN, HIGH);
@@ -3502,19 +3649,52 @@ void process_bootsel() {
     transmit_off();
 //  sleep(2.0);	
 	
-   digitalWrite(LED_BUILTIN, LOW);	// make sure built-in LED is off	
+  // make sure built-in LED is off
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
 }
 
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
-//    if (!wifi) 
-      digitalWrite(LED_BUILTIN, LOW);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+    else
+      digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	  
     sleep(0.1);
     digitalWrite(MAIN_LED_GREEN, HIGH);
-//    if (!wifi) 
-       digitalWrite(LED_BUILTIN, HIGH);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+    else
+      digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
+	  
     sleep(0.1);
+  }
+}
+
+void blinkFastTimes(int blinks) {
+  for (int i = 0; i < blinks; i++) {
+    digitalWrite(MAIN_LED_GREEN, LOW);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+    else
+      digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	  
+    sleep(0.05);
+    digitalWrite(MAIN_LED_GREEN, HIGH);
+	  
+    if (wifi)	
+      digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+    else
+      digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	  
+	  
+    sleep(0.05);
   }
 }
 
@@ -3528,17 +3708,37 @@ void blink_pin(int pin, int duration) {
 
 void config_gpio() {
 	
-  // set all Pico GPIO pins to input	
-  for (int i = 6; i < 29; i++) {
-    pinMode(i, INPUT);	  
+  // set all Pico GPIO connected pins to input	
+  for (int i = 6; i < 22; i++) { 
+      pinMode(i, INPUT);	  
   }
+  pinMode(26, INPUT);	
+  pinMode(27, INPUT);	
+  pinMode(28, INPUT);		
+	
+  pinMode(PI_3V3_PIN, INPUT); 	
+  Serial.print("Pi 3.3V: ");
+  Serial.println(digitalRead(PI_3V3_PIN));
+  if (digitalRead(PI_3V3_PIN) == HIGH)  {
+// {
+    Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
+    start_payload();	
+    while(true)	 { 
+//	Serial.println("waiting");
+//	sleep(3.0);    
+      payload_OK_only();    
+    }
+  }	
+	
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
-
+	
   // set LEDs and blink once	
 //  if (!wifi) 
   Serial.println("Blinking pins");	
-    pinMode(LED_BUILTIN, OUTPUT);  // Set LED pin to output
+///  pinMode(led_builtin_pin, OUTPUT);  // Set LED pin to output
+///  blink_pin(led_builtin_pin, 150);	
+//  digitalWrite(led_builtin_pin, HIGH); // Leave Pico LED on
   pinMode(MAIN_LED_GREEN, OUTPUT);  // Set Main Green LED pin to output
   blink_pin(MAIN_LED_GREEN, 150);
   digitalWrite(MAIN_LED_GREEN, HIGH); // Leave Green LED on	
@@ -3556,7 +3756,7 @@ void config_gpio() {
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
   if (digitalRead(BPF_PIN) == FALSE) {  
-//  if (digitalRead(BPF_PIN) != FALSE) {  // force BPF present
+//  if (true) {  // force BPF present
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
@@ -3564,7 +3764,7 @@ void config_gpio() {
     Serial.println("BPF not present - no transmitting after CW ID");	 
 	
   if (digitalRead(TXC_PIN) == FALSE) {	
-//  if (digitalRead(TXC_PIN) != FALSE) {   // force SR_FRS not present
+//  if (true) {   // force SR_FRS not present
     Serial.println("SR_FRS present");
     sr_frs_present = true;
   }
@@ -3582,11 +3782,19 @@ void config_gpio() {
   pinMode(TEMPERATURE_PIN, INPUT);
   Serial.print("Diode voltage (temperature): ");
   Serial.println(analogRead(TEMPERATURE_PIN));	
+	
+  adc_gpio_init(29);  // setup internal temperature sensor	
+  Serial.printf("CPU Temperature: %4.1f \n", get_cpu_temp());	
+  randomSeed(get_cpu_temp());	
 
   pinMode(AUDIO_IN_PIN, INPUT);	
   Serial.print("Audio In: ");
   Serial.println(analogRead(AUDIO_IN_PIN));
-  	
+	 	
+  pinMode(29, INPUT);
+  Serial.print("ADC3: ");
+  Serial.println(analogRead(29));		
+	
   pinMode(PTT_PIN, OUTPUT);  // PTT active LOW
   digitalWrite(PTT_PIN, HIGH);
 
@@ -3614,14 +3822,14 @@ bool TimerHandler0(struct repeating_timer *t) {
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_A, HIGH);  
 //      Serial.print("-");	    
-      if (mode == FSK) clockgen.enableOutputOnly(1);	  
+///      if (mode == FSK) clockgen.enableOutputOnly(1);	  
     } else {
 //      digitalWrite(BPSK_CONTROL_A, LOW);  
       digitalWrite(BPSK_CONTROL_A, LOW);  
 //      delayMicroseconds(10);    	  
       digitalWrite(BPSK_CONTROL_B, HIGH);	
 //      Serial.print("_");	 
-      if (mode == FSK) clockgen.enableOutputOnly(0);	  
+///      if (mode == FSK) clockgen.enableOutputOnly(0);	  
     }	
     if (wav_position > bufLen) { // 300) {
 	wav_position = wav_position % bufLen;
@@ -3697,8 +3905,11 @@ void start_isr() {
 void start_button_isr() {
 
   Serial.println("Starting pushbutton ISR");
-	
-  if (ITimer1.attachInterruptInterval(10000, TimerHandler1))
+
+//  if (ITimer1.attachInterruptInterval(2000000, TimerHandler1))	
+//  if (ITimer1.attachInterruptInterval(4000000, TimerHandler1))
+  if (ITimer1.attachInterruptInterval(8000000, TimerHandler1))
+
   {
     if (debug_mode)	  
       Serial.print(F("Starting ITimer1 OK, micros() = ")); 
@@ -3719,25 +3930,29 @@ void client_print_string(char *string)
   }
   client.println(" ");  
 }
-
+*/
 bool check_for_wifi() {
 	
 #ifndef PICO_W
-
+	
+  Serial.println("WiFi disabled in software");
   return(false);  // skip check if not Pico W board or compilation will fail
 	
 #endif
 	
 //     stdio_init_all();
 
-   adc_init();
-   adc_gpio_init(29);
-   adc_select_input(3);
+//   adc_init();
+//   adc_gpio_init(29);
+  pinMode(29, INPUT);	
+//   adc_select_input(3);
    const float conversion_factor = 3.3f / (1 << 12);
-   uint16_t result = adc_read();
+//   uint16_t result = adc_read();
+   uint16_t result = analogRead(29);
 //   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
 
-  if (result < 0x100) {
+//  if (result < 0x100) {	
+  if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
   }
@@ -3747,7 +3962,7 @@ bool check_for_wifi() {
   }
 }
 
-
+/*
 void check_for_browser() {
   if (!wifi)
     return;
@@ -3855,8 +4070,18 @@ void configure_wifi() {
 */
 	
 void transmit_cw(int freq, float duration) {  // freq in Hz, duration in milliseconds
- // if (!wifi) 
+//  if (!wifi)
+/*	
+  if (wifi) 
     digitalWrite(LED_BUILTIN, HIGH);	// Transmit LED on
+  else
+    digitalWrite(25, HIGH);	// Transmit LED on	
+*/		
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else 
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON	
+
   digitalWrite(MAIN_LED_BLUE, HIGH);	
 
   unsigned long duration_us = duration * 1000;
@@ -3883,9 +4108,20 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     digitalWrite(BPSK_CONTROL_A, LOW);  	
     clockgen.enableOutputs(false);		  
   }
-
+	
 //  if (!wifi) 
+/*	
+  if (wifi) 
     digitalWrite(LED_BUILTIN, LOW);	// Transmit LED off
+  else
+    digitalWrite(25, LOW);	// Transmit LED on	
+*/	
+	
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+	
   digitalWrite(MAIN_LED_BLUE, LOW);	
 }
 
@@ -4103,22 +4339,7 @@ void serial_input() {
      case 'h':
      case 'H':
  //      Serial.println("Help");	     
-        prompt = PROMPT_HELP;
- /*		    
-       Serial.println("\nChange settings by typing the letter:");	     
-       Serial.println("h  Help info");	  
-       Serial.println("a  AFSK/APRS mode");	     
-       Serial.println("c  CW mode");	     
-       Serial.println("f  FSK/DUV mode");	     
-       Serial.println("b  BPSK mode");	     
-       Serial.println("s  SSTV mode");	     
-       Serial.println("i  Restart");	     
-       Serial.println("c  CALLSIGN");	     
-       Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count, or payload & EEPROM");	
-       Serial.println("l  Lat and Long");	     
-       Serial.println("?  Query sensors\n");	 
-*/		    
+        prompt = PROMPT_HELP;		    
        break;
 		   
      case 'a':
@@ -4149,11 +4370,15 @@ void serial_input() {
        break;	
 		   
      case 's':
-     case 'S':
        Serial.println("Change to SSTV mode");	     
        new_mode = SSTV;
        break;	
-		   
+
+     case 'S':
+       Serial.println("I2C scan");	     
+       prompt = PROMPT_I2CSCAN;		
+       break;	
+   
      case 'i':
      case 'I':
        Serial.println("Restart CubeSatsim software");	     
@@ -4161,10 +4386,15 @@ void serial_input() {
        break;	
 		   
      case 'c':
-     case 'C':
        Serial.println("Change the CALLSIGN");	
        prompt = PROMPT_CALLSIGN;	    
        break;	
+		    
+     case 'C':
+       Serial.println("Debug camera");	
+       debug_camera = true;
+       prompt = PROMPT_CAMERA;	    
+       break;			    
 		   
      case 't':
      case 'T':
@@ -4212,6 +4442,12 @@ void serial_input() {
        prompt = PROMPT_DEBUG;
        break;			   
 
+     case 'w':
+       Serial.println(wifi);	
+       Serial.println("Connect to WiFi");    
+       prompt = PROMPT_WIFI;
+       break;	
+		    
      default:
        Serial.println("Not a command\n");	
 		   
@@ -4228,8 +4464,11 @@ void serial_input() {
  }
 }
 
-void prompt_for_input() {
+void prompt_for_input() {	
  float float_result;
+
+ if (!prompting) {	
+  prompting = true;	 
 	
   while (Serial.available() > 0)  // clear any characters in serial input buffer
     Serial.read();	  
@@ -4242,20 +4481,47 @@ void prompt_for_input() {
        Serial.println("a  AFSK/APRS mode");	     
        Serial.println("m  CW mode");	     
        Serial.println("f  FSK/DUV mode");	     
+       Serial.println("F  Format flash memory");
        Serial.println("b  BPSK mode");	     
        Serial.println("s  SSTV mode");	     
+       Serial.println("S  I2C scan");	   
        Serial.println("i  Restart");	     
-       Serial.println("c  CALLSIGN");	     
+       Serial.println("c  Change CALLSIGN");	
+       Serial.println("C  Debug Camera");		  
        Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Resets Count");	
-       Serial.println("p  Resets payload and stored EEPROM values");	
-       Serial.println("l  Lat and Lon");	     
+       Serial.println("r  Reset Count");	
+       Serial.println("p  Reset payload and stored EEPROM values");	
+       Serial.println("l  Change Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
-       Serial.println("d  Change debug mode\n");
+       Serial.println("d  Change debug mode");
+       Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+		  
+       switch(mode) {
+		       
+	case(AFSK):
+	  Serial.println("AFSK mode");
+	  break;
+		       
+	case(FSK):
+	  Serial.println("FSK mode");
+	  break;	
+		       
+	case(BPSK):
+	  Serial.println("BPSK mode");
+	  break;
+		       
+	case(SSTV):
+	  Serial.println("SSTV mode");
+	  break;	
+		       
+	case(CW):
+	  Serial.println("CW mode");
+	  break;			       
+       }
 		  
        break;	
 		  
@@ -4292,10 +4558,12 @@ void prompt_for_input() {
       get_serial_char();
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Setting Simulated telemetry to on");
+	reset_min_max();      
 	config_simulated_telem();     
 	write_config_file();    	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Setting Simulated telemetry to off");
+	reset_min_max();   	      
 	sim_mode = false;      
         if (!ina219_started)
 	  start_ina219(); 
@@ -4345,6 +4613,12 @@ void prompt_for_input() {
       payload_command = PAYLOAD_QUERY;		  
       break;
 		  
+   case PROMPT_CAMERA:
+      show_dir();		  
+      get_camera_image(debug_camera);	 
+      show_dir();		  
+      break;
+				    
     case PROMPT_TEMP:		  
       sensorValue = analogRead(TEMPERATURE_PIN);
       Serial.print("Raw diode voltage: ");		  
@@ -4364,8 +4638,9 @@ void prompt_for_input() {
       break;	
 
     case PROMPT_REBOOT:
-       Serial.println("Rebooting...");	 
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       Serial.println("Rebooting...");
+       Serial.flush();	  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
@@ -4374,7 +4649,8 @@ void prompt_for_input() {
 //       Serial.println("Reboot or power cycle to restart the CubeSatSim");
  //      while (1) ;	    // infinite loop
        Serial.println("Rebooting...");	 
-       watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+       Serial.flush();			  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
        sleep(20.0);			  
        break;
 		  
@@ -4411,8 +4687,165 @@ void prompt_for_input() {
       else  
         Serial.println("off");
       break;	
+		  
+    case PROMPT_WIFI:
+      Serial.println(wifi);		  
+      if (wifi) {		  
+      char ssid[30], pass[30];		  
+      Serial.println("Enter the credentials for your WiFi network");	
+  		  
+      Serial.print("Enter WiFi SSID: ");
+      get_serial_string();
+		  
+      print_string(serial_string);
+		  
+      if (strlen(serial_string) > 0)	{
+	strcpy(ssid, serial_string);      
+        Serial.print("Enter WiFi password: ");
+        get_serial_string();
+	if (strlen(serial_string) > 0) {
+	    strcpy(pass, serial_string);
+	    Serial.println("Connecting to Wifi");
+//	    Serial.printf("%s%s\n",ssid, pass);
+		
+	    WiFi.begin(ssid, pass);
+		
+	    unsigned int elapsed_timer = (unsigned int) millis();			
+	    while ((WiFi.status() != WL_CONNECTED) && ((millis() - elapsed_timer) < 10000)) {
+    		Serial.print(".");
+    		delay(500);
+  	    }
+	    if (((millis() - elapsed_timer) > 10000))	
+	      Serial.println("Failed to connect!");
+	    else
+	      Serial.println("Connected to WiFi!");		    
+	} else 
+	    Serial.println("No password entered.");	
+      } else
+        Serial.println("No SSID entered.");	      
+      } else
+	Serial.println("WiFi not available");
+		  
+      break;		  		  
+		  
+    case PROMPT_I2CSCAN:
+      Serial.print("I2C scan");
+
+// --------------------------------------
+// i2c_scanner
+//
+// Version 1
+//    This program (or code that looks like it)
+//    can be found in many places.
+//    For example on the Arduino.cc forum.
+//    The original author is not know.
+// Version 2, Juni 2012, Using Arduino 1.0.1
+//     Adapted to be as simple as possible by Arduino.cc user Krodal
+// Version 3, Feb 26  2013
+//    V3 by louarnold
+// Version 4, March 3, 2013, Using Arduino 1.0.3
+//    by Arduino.cc user Krodal.
+//    Changes by louarnold removed.
+//    Scanning addresses changed from 0...127 to 1...119,
+//    according to the i2c scanner by Nick Gammon
+//    https://www.gammon.com.au/forum/?id=10896
+// Version 5, March 28, 2013
+//    As version 4, but address scans now to 127.
+//    A sensor seems to use address 120.
+// Version 6, November 27, 2015.
+//    Added waiting for the Leonardo serial communication.
+// 
+//
+// This sketch tests the standard 7-bit addresses
+// Devices with higher bit address might not be seen properly.
+//
+
+
+{
+  byte error, address;
+  int nDevices;
+
+  Serial.println("Scanning I2C Bus 1");
+
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) 
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
+
+    if (error == 0)
+    {
+      Serial.print("I2C device found at bus 1 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    }
+    else if (error==4) 
+    {
+      Serial.print("Unknown error at bus 1 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
   }
-  prompt = false;	
+  if (nDevices == 0)
+    Serial.println("No I2C devices found on bus 1\n");
+  else
+    Serial.println("done\n");
+
+  delay(5000);           // wait 5 seconds for next scan
+	
+  Serial.println("Scanning I2C Bus 2");
+
+  nDevices = 0;
+  for(address = 1; address < 127; address++ ) 
+  {
+    // The i2c_scanner uses the return value of
+    // the Write.endTransmisstion to see if
+    // a device did acknowledge to the address.
+	  
+    Wire1.beginTransmission(address);
+    error = Wire1.endTransmission();
+
+    if (error == 0)
+    {
+      Serial.print("I2C device found at bus 2 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.print(address,HEX);
+      Serial.println("  !");
+
+      nDevices++;
+    }
+    else if (error==4) 
+    {
+      Serial.print("Unknown error at bus 2 address 0x");
+      if (address<16) 
+        Serial.print("0");
+      Serial.println(address,HEX);
+    }    
+  }
+  if (nDevices == 0)
+    Serial.println("No I2C devices found on bus 2\n");
+  else
+    Serial.println("done\n");
+
+}		  	  
+        Serial.println("complete");
+      break;	
+		  
+  }
+  prompt = false;
+  prompting = false;
+ } 
+//	else
+//	 Serial.println("Already prompting!");
 }
 
 void get_serial_string() {
@@ -4514,7 +4947,7 @@ void read_mode() {
   char buff[32];		
   File mode_file = LittleFS.open("/.mode", "r");	
   if (!mode_file) {
-    write_mode();	  
+    write_mode(mode);	  
   } else {
     if (mode_file.read((uint8_t *)buff, 31)) {
 //      Serial.println("Reading mode from .mode file");    
@@ -4527,18 +4960,23 @@ void read_mode() {
   }		
 }
 
-void write_mode() {
+void write_mode(int save_mode) {
 
   char buff[32];	
   Serial.println("Writing .mode file");	
-  File mode_file = LittleFS.open("/.mode", "w+");		  	
+  File mode_file = LittleFS.open("/.mode", "w+");	
 	
-  sprintf(buff, "%d", mode);
+  sprintf(buff, "%d", save_mode);
   if (debug_mode) {	
     Serial.println("Writing string");	
     print_string(buff);	
   }
-  mode_file.write(buff, strlen(buff));	  
+	
+  if (mode_file.write(buff, strlen(buff)) != strlen(buff)) {	  
+//    Serial.println(mode_file.write(buff, strlen(buff)));
+    Serial.println("*** mode file write error! ***\n\n");	  
+    blinkFastTimes(3);  
+  }	  
 	  
   mode_file.close();
 //  Serial.println("Write complete");	
@@ -4561,8 +4999,10 @@ void start_clockgen() {
 }
 
 void get_input() {
-	
-  serial_input();  
+  if (mode != SSTV)	
+    Serial.print("+");	
+  if ((mode == CW) || (mode == SSTV))
+    serial_input();  
 	
 // check for button press 
   if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
@@ -4586,11 +5026,12 @@ void get_input() {
 ///    }
     int old_mode = mode;
     bool config_done = false;
-    mode = new_mode;  // change modes if button pressed	 
-    write_mode();
+//    mode = new_mode;  // change modes if button pressed	 
+    write_mode(new_mode);
 	
-    Serial.println("Rebooting...");	 
-    watchdog_reboot (0, SRAM_END, 10);	 // restart Pico
+    Serial.println("Rebooting...");
+    Serial.flush();	 
+    watchdog_reboot (0, SRAM_END, 500); //10);	 // restart Pico
 	 
     sleep(20.0);	 
 /*	 
@@ -4615,8 +5056,48 @@ void get_input() {
 
 void transmit_led(bool status) {
   if(filter_present) {	
-//	  if (!wifi) 
-	    digitalWrite(LED_BUILTIN, status);	
-	  digitalWrite(MAIN_LED_BLUE, status);	  
+	  
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, status);   // set the built-in LED
+  else
+    digitalWrite(led_builtin_pin, status);   // set the built-in LED 
+	  
+  digitalWrite(MAIN_LED_BLUE, status);	  
   }	
 }
+
+float get_cpu_temp() {
+
+  adc_select_input(4);
+  const float conversion_factor = 3.27f / (1 << 12);
+  uint16_t raw = adc_read();
+  // Serial.printf("Raw: %d\n",raw);	
+  float result = raw * conversion_factor;	
+  float temp = 27 - (result - 0.706)/0.001721;
+  // Serial.printf(" temp = %f C", temp);
+	
+  return(temp);	
+	
+}
+
+void reset_min_max() {
+
+  for (int i = 0; i < 9; i++) {
+    voltage_min[i] = 1000.0;
+    current_min[i] = 1000.0;
+    voltage_max[i] = -1000.0;
+    current_max[i] = -1000.0;
+  }
+  for (int i = 0; i < 17; i++) {
+    sensor_min[i] = 1000.0;
+    sensor_max[i] = -1000.0;
+ //   printf("Sensor min and max initialized!");
+  }
+  for (int i = 0; i < 3; i++) {
+    other_min[i] = 1000.0;
+    other_max[i] = -1000.0;
+  }		
+
+	
+}
+	
