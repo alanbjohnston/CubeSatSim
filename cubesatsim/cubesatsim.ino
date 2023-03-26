@@ -2983,6 +2983,7 @@ void payload_OK_only()
       Serial.println("OK");
       delay(100);
       first_time = true;
+      start_payload();	    
 //      setup();
     }
     else if (result == 'C') {
