@@ -3231,11 +3231,12 @@ void start_ina219() {
   if (!ina219_started)	{
 #ifndef PICO_0V1	
   // check if Pi is present by 3.3V voltage
-  pinMode(PI_3V3_PIN, INPUT); 	
+///  pinMode(PI_3V3_PIN, INPUT); 	
 //  Serial.print("Pi 3.3V: ");
 //  Serial.println(digitalRead(PI_3V3_PIN));
-  if (digitalRead(PI_3V3_PIN) == LOW)  {
+///  if (digitalRead(PI_3V3_PIN) == LOW)  {
 //  if (true)  {
+ if (false) {	  
     Serial.println("Pico powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
@@ -3766,11 +3767,12 @@ void config_gpio() {
   pinMode(27, INPUT);	
   pinMode(28, INPUT);		
 	
-  pinMode(PI_3V3_PIN, INPUT); 	
-  Serial.print("Pi 3.3V: ");
-  Serial.println(digitalRead(PI_3V3_PIN));
-  if (digitalRead(PI_3V3_PIN) == HIGH)  {
-// {
+///  pinMode(PI_3V3_PIN, INPUT); 	
+///  Serial.print("Pi 3.3V: ");
+///  Serial.println(digitalRead(PI_3V3_PIN));
+///  if (digitalRead(PI_3V3_PIN) == HIGH)  {
+ 	
+ {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
@@ -3802,11 +3804,11 @@ void config_gpio() {
   // set input pins and read	
   pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
   pinMode(TXC_PIN, INPUT_PULLUP);  // Read TXC to see if present	
-  pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
+///  pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(BPF_PIN) == FALSE) {  
-//  if (true) {  // force BPF present
+///  if (digitalRead(BPF_PIN) == FALSE) {  
+  if (true) {  // force BPF present ///
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
