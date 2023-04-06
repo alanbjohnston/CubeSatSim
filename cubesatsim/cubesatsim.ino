@@ -46,7 +46,7 @@
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
 #include <MQTT.h>
-
+#include <TinyGPS.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -62,6 +62,7 @@ Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
 Adafruit_SI5351 clockgen = Adafruit_SI5351();
+TinyGPS gps;
 
 unsigned long micros3;
 
@@ -3056,9 +3057,11 @@ void payload_OK_only()
 
     
     Serial.print(" XS ");
-    Serial.print(Temp);   
+    Serial.print(Sensor1,4);   
     Serial.print(" ");
-    Serial.println(Sensor1);               
+    Serial.print(Sensor2,4);              
+    Serial.print(" ");
+    Serial.println(Sensor3,2);             
   
   if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
@@ -3085,9 +3088,34 @@ void payload_OK_only()
 
 //  if (Serial2.available() > 0) {
   if (true) {
-	  
+/*	  
     while (Serial2.available() > 0) // read GPS
       Serial.write(Serial2.read());
+*/	  
+// For one second we parse GPS data and report some key values
+  newData = false;
+	  
+  for (unsigned long start = millis(); millis() - start < 1000;) // 1000;)
+  {  
+    while (Serial2.available())
+    {
+      char c = Serial2.read();
+//      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+      if (gps.encode(c)) // Did a new valid sentence come in?
+        newData = true;
+    }
+  } 
+    if (newData)
+  {
+    float flon, flat;
+    unsigned long age;
+    gps.f_get_position(&flat, &flon, &age);
+    Sensor1 = flat;
+    Sensor2 = flon;
+    Sensor3 = (float) gps.altitude()/100.0;
+    Serial.printf("New GPS data: %f %f %f \n", Sensor1, Sensor2, Sensor3);	    
+  }     
+	  
   
     blink(50);
     char result = Serial1.read();
@@ -3138,9 +3166,11 @@ void payload_OK_only()
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
     Serial1.print(" XS ");
-    Serial1.print(Temp);   
+    Serial1.print(Sensor1,4);   
     Serial1.print(" ");
-    Serial1.println(Sensor2);              
+    Serial1.print(Sensor2,4);              
+    Serial1.print(" ");
+    Serial1.println(Sensor3,2);          
      
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
