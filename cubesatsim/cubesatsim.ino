@@ -2605,13 +2605,22 @@ void print_string(char *string)
 }
 
 void start_payload() {
+
+#ifdef APRS_VHF	  
+   Serial2.setRX(9);
+   delay(100);
+   Serial2.setTX(8);
+   delay(100);
+   Serial2.begin(115200);	
 	
+   Serial.println("Starting Serial2 for payload");	
+#else	
    Serial1.setRX(1);
    delay(100);
    Serial1.setTX(0);
-   delay(100);	
-	
+   delay(100);		
   Serial1.begin(115200);  // Pi UART faster speed
+#endif	
 
   Serial.println("Starting payload!");
   
@@ -3063,14 +3072,14 @@ void payload_OK_only()
    }    
   }
 
-  if (Serial1.available() > 0) {
+  if (Serial2.available() > 0) {
  
     blink(50);
-    char result = Serial1.read();
-    Serial1.println(result);
+    char result = Serial2.read();
+    Serial2.println(result);
 
     if (result == 'R') {
-      Serial1.println("OK");
+      Serial2.println("OK");
       delay(100);
       first_read = true;
       start_payload(); 	    
@@ -3080,42 +3089,42 @@ void payload_OK_only()
     if (result == '?')
     {
       if (bmePresent) {
-        Serial1.print("OK BME280 ");
-        Serial1.print(bme.readTemperature());
-        Serial1.print(" ");
-        Serial1.print(bme.readPressure() / 100.0F);
-        Serial1.print(" ");
-        Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-        Serial1.print(" ");
-        Serial1.print(bme.readHumidity());
+        Serial2.print("OK BME280 ");
+        Serial2.print(bme.readTemperature());
+        Serial2.print(" ");
+        Serial2.print(bme.readPressure() / 100.0F);
+        Serial2.print(" ");
+        Serial2.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial2.print(" ");
+        Serial2.print(bme.readHumidity());
       } else
       {
-        Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
+        Serial2.print("OK BME280 0.0 0.0 0.0 0.0");
       }
       mpu6050.update();
 
-      Serial1.print(" MPU6050 ");
-      Serial1.print(mpu6050.getGyroX());
-      Serial1.print(" ");
-      Serial1.print(mpu6050.getGyroY());
-      Serial1.print(" ");
-      Serial1.print(mpu6050.getGyroZ());
+      Serial2.print(" MPU6050 ");
+      Serial2.print(mpu6050.getGyroX());
+      Serial2.print(" ");
+      Serial2.print(mpu6050.getGyroY());
+      Serial2.print(" ");
+      Serial2.print(mpu6050.getGyroZ());
 
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccX());   
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccY());   
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccZ());   
+    Serial2.print(" ");
+    Serial2.print(mpu6050.getAccX());   
+    Serial2.print(" ");
+    Serial2.print(mpu6050.getAccY());   
+    Serial2.print(" ");
+    Serial2.print(mpu6050.getAccZ());   
 
     sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
-    Serial1.print(" XS ");
-    Serial1.print(Temp);   
-    Serial1.print(" ");
-    Serial1.println(Sensor2);              
+    Serial2.print(" XS ");
+    Serial2.print(Temp);   
+    Serial2.print(" ");
+    Serial2.println(Sensor2);              
      
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
