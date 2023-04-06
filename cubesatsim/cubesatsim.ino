@@ -3071,6 +3071,8 @@ void payload_OK_only()
     } 
    }    
   }
+	
+  Serial2.print("b");	
 
   if (Serial2.available() > 0) {
  
