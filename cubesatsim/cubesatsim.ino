@@ -3081,8 +3081,8 @@ void payload_OK_only()
  
     blink(50);
     char result = Serial2.read();
-    Serial2.println(result);
-
+//    Serial2.println(result);
+    Serial1.println(result);
     if (result == 'R') {
       Serial2.println("OK");
       delay(100);
