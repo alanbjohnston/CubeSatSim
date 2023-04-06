@@ -3075,10 +3075,12 @@ void payload_OK_only()
    }    
   }
 	
-  Serial2.print("b");	
+//  Serial2.print("b");	
+  delay(250);	
 
-  if (Serial2.available() > 0) {
- 
+//  if (Serial2.available() > 0) {
+  if (true) {
+  
     blink(50);
     char result = Serial2.read();
 //    Serial2.println(result);
@@ -3090,8 +3092,9 @@ void payload_OK_only()
       start_payload(); 	    
 //      setup();
     }
-
-    if (result == '?')
+	  
+//    if (result == '?')
+    if (true)
     {
       if (bmePresent) {
         Serial2.print("OK BME280 ");
