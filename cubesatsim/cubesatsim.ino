@@ -3086,7 +3086,7 @@ void payload_OK_only()
 //  if (Serial2.available() > 0) {
   if (true) {
 	  
-    while (Serial.available() > 0) // read GPS
+    while (Serial2.available() > 0) // read GPS
       Serial.write(Serial2.read());
   
     blink(50);
