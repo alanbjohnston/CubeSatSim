@@ -362,9 +362,11 @@ int main(int argc, char * argv[]) {
       if (payload == ON)  {	    
         printf("\nSTEM Payload is present!\n");
 	sleep(2);  // delay to give payload time to get ready
-      }
+      } 
       else {
         printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
+	printf("Turning on Payload anyway\n");
+	payload = ON;      
 	      
       }
     } else {
@@ -721,13 +723,21 @@ int main(int argc, char * argv[]) {
           for (count1 = 0; count1 < 17; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
-              #ifdef DEBUG_LOGGING
-              //  printf("sensor: %f ", sensor[count1]);
-              #endif
+//              #ifdef DEBUG_LOGGING
+                printf("sensor: %f ", sensor[count1]);  // print sensor data
+//              #endif
               token = strtok(NULL, space);
             }
           }
           printf("\n");
+	  if (sensor[XS1] != 0) {     
+		latitude = toAprsFormat(sensor[XS1]);
+		printf("Latitude updated to %f \n", latitude); 
+	  }
+	  if (sensor[XS2] != 0)  {
+		longitude = toAprsFormat(sensor[XS2]);	
+		printf("Longitude updated to %f \n", longitude); 		  
+	  }
         }
 	else
 		payload = OFF;  // turn off since STEM Payload is not responding
