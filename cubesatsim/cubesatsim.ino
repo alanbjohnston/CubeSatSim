@@ -2607,11 +2607,11 @@ void print_string(char *string)
 void start_payload() {
 
 #ifdef APRS_VHF	  
-// Serial2.setRX(9);	
-   Serial2.setRX(1);
+ Serial2.setRX(9);	
+//   Serial2.setRX(1);
    delay(100);
-// Serial2.setTX(8);
-   Serial2.setRX(0);
+ Serial2.setTX(8);
+//   Serial2.setRX(0);
   	
    delay(100);
    Serial2.begin(115200);	
