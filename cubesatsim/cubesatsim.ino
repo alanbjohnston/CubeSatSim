@@ -2616,7 +2616,9 @@ void start_payload() {
 //   Serial2.setRX(0);
   	
    delay(100);
-   Serial1.begin(115200);	
+   Serial1.begin(115200); // serial to Pi
+	
+   Serial2.begin(9600);  // serial from GPS	
 	
    Serial.println("Starting Serial2 for payload");	
 #else	
@@ -3015,6 +3017,7 @@ void payload_OK_only()
     if ((result == '?') || first_time == true)  // commented back in
     if (true)
     {
+	    	       
       first_time = false;
       if (bmePresent) {
         Serial.print("OK BME280 ");
@@ -3082,6 +3085,9 @@ void payload_OK_only()
 
 //  if (Serial2.available() > 0) {
   if (true) {
+	  
+    while (Serial.available() > 0) // read GPS
+      Serial.write(Serial2.read());
   
     blink(50);
     char result = Serial1.read();
