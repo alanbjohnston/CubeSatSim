@@ -4135,9 +4135,9 @@ void transmit_callsign(char *callsign) {
 	
   if (!sr_frs_present) {
       start_clockgen();	  
-      if (clockgen.setClockFSK()) {	  
+      if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockFSK();
+	 clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for CW without SR_FRS!");       
       }	else {
 	 Serial.println("Config clock for CW without SR_FRS");          
