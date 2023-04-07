@@ -4502,7 +4502,7 @@ void prompt_for_input() {
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Software version v0.40 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Software version v0.40 \nConfig file /sim.cfg contains %s %d %f %f %s %d\n\n", callsign, reset_count, lat_file, long_file, sim_yes, frequency_offset);
 		  
        switch(mode) {
 		       
@@ -4692,7 +4692,7 @@ void prompt_for_input() {
       get_serial_char();
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Turning Frequency offset on");
-	frequency_offset = -15000; // set frequency offset	      
+	frequency_offset = -7500; // set frequency offset	      
 	write_config_file(); 
 	program_radio();      
 //	config_radio();
@@ -4965,7 +4965,7 @@ void program_radio() {
     if (frequency_offset == 0)	  
       mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
     else	
-      mySerial.println("AT+DMOSETGROUP=0,434.8500,434.8500,0,8,0,0\r");  
+      mySerial.println("AT+DMOSETGROUP=0,434.8750,434.8750,0,8,0,0\r");  
 	    
     sleep(0.5);	  
     mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
