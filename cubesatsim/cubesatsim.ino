@@ -4670,19 +4670,6 @@ void prompt_for_input() {
       write_config_file();    	  
       break;	
 		  
-    case PROMPT_RESTART:
-      prompt = false;
-//    Serial.println("Restart not yet implemented");
-      start_payload();
-//      start_ina219();
-      if ((mode != CW)  || (!filter_present))
-        transmit_callsign(callsign);
-      sleep(0.5);	 
-      config_telem();
-      config_radio();
-      sampleTime = (unsigned int) millis();	 		  
-      break;	  
-		  
     case PROMPT_OFFSET:
       if (frequency_offset != 0)
 	Serial.println("Frequency offset is currently on");      
@@ -4706,9 +4693,21 @@ void prompt_for_input() {
 	      
       } else      
         Serial.println("No change to frequency offset.");
-      break;	
-		 	  
+ //     break;		// continue and restart	  
 		  
+    case PROMPT_RESTART:
+      prompt = false;
+//    Serial.println("Restart not yet implemented");
+      start_payload();
+//      start_ina219();
+      if ((mode != CW)  || (!filter_present))
+        transmit_callsign(callsign);
+      sleep(0.5);	 
+      config_telem();
+      config_radio();
+      sampleTime = (unsigned int) millis();	 		  
+      break;	  
+		 	  	  
     case PROMPT_DEBUG:
       Serial.print("Changing Debug Mode to ");
       debug_mode = !debug_mode;
