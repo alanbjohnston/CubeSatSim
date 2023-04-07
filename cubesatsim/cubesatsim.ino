@@ -4672,7 +4672,7 @@ void prompt_for_input() {
       get_serial_char();
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Turning Frequency offset on");
-	frequency_offset = -7500; // set frequency offset	      
+	frequency_offset = -15000; // set frequency offset	      
 	write_config_file(); 
 	program_radio();      
         Serial.println("Rebooting...");
