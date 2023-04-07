@@ -3128,17 +3128,17 @@ void payload_OK_only()
       char result = Serial1.read();
 //    Serial1.println(result);
       Serial.println(result);
-    }	    
-    if (result == 'R') {
-      Serial1.println("OK");
-      delay(100);
-      first_read = true;
-      start_payload(); 	    
+    
+      if (result == 'R') {
+        Serial1.println("OK");
+        delay(100);
+        first_read = true;
+        start_payload(); 	    
 //      setup();
-    }
-	  
+      }
+    }	  
 //    if (result == '?')
-    if (true)
+    if (true)  // always send payload data over serial
     {
       if (bmePresent) {
         Serial1.print("OK BME280 ");
