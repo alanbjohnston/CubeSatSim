@@ -3820,7 +3820,8 @@ void config_gpio() {
     while(true)	 { 
 //	Serial.println("waiting");
 //	sleep(3.0);    
-      payload_OK_only();    
+      payload_OK_only();
+      sleep(1.0);	    
     }
   }	
 	
