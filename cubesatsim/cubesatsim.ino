@@ -8,7 +8,7 @@
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty ofF
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
@@ -4692,13 +4692,15 @@ void prompt_for_input() {
       get_serial_char();
       if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
         Serial.println("Turning Frequency offset on");
-	frequency_offset = -25000; // set frequency offset	      
-	write_config_file();   
+	frequency_offset = -15000; // set frequency offset	      
+	write_config_file(); 
+	program_radio();      
 //	config_radio();
 	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Turning Frequency offset off");
-	frequency_offset = 0; // turn off frequency offset	      
+	frequency_offset = 0; // turn off frequency offset	
+	program_radio();      	      
 	write_config_file();  
 //	config_radio();
 	      
@@ -4954,15 +4956,19 @@ void program_radio() {
   mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
-     sleep(0.5); // delay(500);
+    sleep(0.5); // delay(500);
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
 //    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
 //     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
-     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+    if (frequency_offset == 0)	  
+      mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+    else	
+      mySerial.println("AT+DMOSETGROUP=0,434.8500,434.8500,0,8,0,0\r");  
+	    
+    sleep(0.5);	  
+    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
  }	
