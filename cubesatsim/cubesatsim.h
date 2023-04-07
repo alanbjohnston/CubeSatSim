@@ -333,8 +333,9 @@ int bmePresent, mpuPresent;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
 int greenLED = 19;
 int blueLED = 18;
-int Sensor1 = 0;
-float Sensor2 = 0;
+float Sensor1 = 0.0;
+float Sensor2 = 0.0;
+float Sensor3 = 0.0;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
