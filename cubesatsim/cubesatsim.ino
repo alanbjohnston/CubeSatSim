@@ -4414,9 +4414,13 @@ void serial_input() {
        break;	
 		   
      case 'o':
-     case 'O':
        Serial.println("Read diode temperature");	
        prompt = PROMPT_TEMP;
+       break;	
+		    
+     case 'O':
+       Serial.println("Set frequency offset");	
+       prompt = PROMPT_OFFSET;
        break;	
 		    
      case 'l':
