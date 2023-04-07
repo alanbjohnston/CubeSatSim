@@ -65,7 +65,7 @@ Adafruit_SI5351 clockgen = Adafruit_SI5351();
 TinyGPS gps;
 
 unsigned long micros3;
-
+bool show_gps = false;
 volatile int skip = 0;
 
 //WiFiServer server(port);
@@ -2973,7 +2973,7 @@ void read_payload()
 /**/
 void payload_OK_only()
 {
-  payload_str[0] = '\0';  // clear the payload string
+  payload_str[0] = '\0';  // clear the payload string	
 	
   if ((Serial.available() > 0)|| first_time == true)   // commented back in
   {
@@ -3009,6 +3009,9 @@ void payload_OK_only()
       first_time = true;
       start_payload();	    
 //      setup();
+    }
+    else if (result == 'g') {
+	show_gps = !show_gps;    
     }
     else if (result == 'C') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
@@ -3101,7 +3104,8 @@ void payload_OK_only()
     while (Serial2.available())
     {
       char c = Serial2.read();
-//      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+      if (show_gps)	    
+        Serial.write(c); // uncomment this line if you want to see the GPS data flowing
       if (gps.encode(c)) // Did a new valid sentence come in?
         newData = true;
     }
