@@ -3088,8 +3088,7 @@ void payload_OK_only()
 //  Serial2.print("b");	
   delay(250);	
 
-//  if (Serial2.available() > 0) {
-  if (true) {
+//  if (true) {
 /*	  
     while (Serial2.available() > 0) // read GPS
       Serial.write(Serial2.read());
@@ -3102,7 +3101,7 @@ void payload_OK_only()
     while (Serial2.available())
     {
       char c = Serial2.read();
-      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+//      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
       if (gps.encode(c)) // Did a new valid sentence come in?
         newData = true;
     }
@@ -3118,11 +3117,12 @@ void payload_OK_only()
     Serial.printf("New GPS data: %f %f %f \n", Sensor1, Sensor2, Sensor3);	    
   }     
 	  
-  
+  if (Serial1.available() > 0) {
+ 
     blink(50);
     char result = Serial1.read();
 //    Serial1.println(result);
- //   Serial.println(result);
+    Serial.println(result);
     if (result == 'R') {
       Serial1.println("OK");
       delay(100);
@@ -3131,8 +3131,8 @@ void payload_OK_only()
 //      setup();
     }
 	  
-//    if (result == '?')
-    if (true)
+    if (result == '?')
+//    if (true)
     {
       if (bmePresent) {
         Serial1.print("OK BME280 ");
