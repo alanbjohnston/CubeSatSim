@@ -2619,9 +2619,11 @@ void start_payload() {
    delay(100);
    Serial1.begin(115200); // serial to Pi
 	
+   Serial.println("Starting Serial1 for payload");
+	
    Serial2.begin(9600);  // serial from GPS	
 	
-   Serial.println("Starting Serial2 for payload");	
+   Serial.println("Starting Serial2 for GPS");	
 #else	
    Serial1.setRX(1);
    delay(100);
@@ -3812,6 +3814,7 @@ void config_gpio() {
  	
  {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
+    sr_frs_present = true;	 
     program_radio();  
     start_payload();	
     while(true)	 { 
