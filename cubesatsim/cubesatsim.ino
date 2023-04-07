@@ -108,7 +108,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.39 starting...\n");
+  Serial.println("CubeSatSim Pico v0.40 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -419,8 +419,7 @@ void read_config_file() {
 //	  sprintf(buff, "%d\n", cnt);
     sprintf(buff, "%s %d", "AMSAT", 0);
     config_file.write(buff, strlen(buff));	  
-	  
-	  
+	  	  
     config_file.close();
 	  
     config_file = LittleFS.open("/sim.cfg", "r");	  
@@ -429,10 +428,10 @@ void read_config_file() {
 //  char * cfg_buf[100];
   config_file.read((uint8_t *)buff, 255);
 //  sscanf(buff, "%d", &cnt);	
-  sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
+  sscanf(buff, "%s %d %f %f %s %d", callsign, & reset_count, & lat_file, & long_file, sim_yes, & frequency_offset);	
   config_file.close();
-  if (debug_mode)	
-    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
+//  if (debug_mode)	
+    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s %d\n", callsign, reset_count, lat_file, long_file, sim_yes, frequency_offset);
 	
   reset_count = (reset_count + 1) % 0xffff;
 
@@ -472,7 +471,7 @@ void write_config_file() {
   else
 	strcpy(sim_yes, "no");
 	
-  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
+  sprintf(buff, "%s %d %f %f %s %d", callsign, reset_count, latitude, longitude, sim_yes, frequency_offset);
   Serial.println("Writing string ");	
 //  if (debug_mode)	
     print_string(buff);	
@@ -4494,11 +4493,12 @@ void prompt_for_input() {
        Serial.println("l  Change Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
-       Serial.println("o  Read diode temperature");	
+       Serial.println("o  Read diode temperature");
+       Serial.println("O  Set frequency offset");		  
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Software version v0.40 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
 		  
        switch(mode) {
 		       
@@ -4678,6 +4678,30 @@ void prompt_for_input() {
       config_radio();
       sampleTime = (unsigned int) millis();	 		  
       break;	  
+		  
+    case PROMPT_OFFSET:
+      if (frequency_offset != 0)
+	Serial.println("Frequency offset is currently on");      
+      else
+	Serial.println("Frequency offset is currently off");  
+      Serial.println("Do you want Frequency offset on (y/n)");
+      get_serial_char();
+      if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
+        Serial.println("Turning Frequency offset on");
+	frequency_offset = -25000; // set frequency offset	      
+	write_config_file();   
+//	config_radio();
+	      
+      } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
+        Serial.println("Turning Frequency offset off");
+	frequency_offset = 0; // turn off frequency offset	      
+	write_config_file();  
+//	config_radio();
+	      
+      } else      
+        Serial.println("No change to frequency offset.");
+      break;	
+		 	  
 		  
     case PROMPT_DEBUG:
       Serial.print("Changing Debug Mode to ");
