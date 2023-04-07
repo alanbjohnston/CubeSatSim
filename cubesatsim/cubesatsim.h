@@ -146,7 +146,7 @@ float get_cpu_temp();
 
 //#define WAV_DATA_LENGTH (50000 * 8)
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+uint32_t tx_freq_hz = 434900000; // + FREQUENCY_OFFSET;
 //uint8_t data[1024];
 uint32_t tx_channel = 0;
 
