@@ -685,9 +685,9 @@ int main(int argc, char * argv[]) {
 	sensor_payload[1] = 0;
 	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
           i = 0;
-	  serialPutchar(uart_fd, '?');
-	  sleep(0.05);  // added delay after ?
-          printf("%d Querying payload with ?\n", trys);
+//	  serialPutchar(uart_fd, '?');
+//	  sleep(0.05);  // added delay after ?
+//          printf("%d Querying payload with ?\n", trys);
           waitTime = millis() + 500;
           end = FALSE;
           //  int retry = FALSE;
