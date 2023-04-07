@@ -3102,7 +3102,7 @@ void payload_OK_only()
     while (Serial2.available())
     {
       char c = Serial2.read();
-//      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+      Serial.write(c); // uncomment this line if you want to see the GPS data flowing
       if (gps.encode(c)) // Did a new valid sentence come in?
         newData = true;
     }
@@ -3122,7 +3122,7 @@ void payload_OK_only()
     blink(50);
     char result = Serial1.read();
 //    Serial1.println(result);
-    Serial.println(result);
+ //   Serial.println(result);
     if (result == 'R') {
       Serial1.println("OK");
       delay(100);
