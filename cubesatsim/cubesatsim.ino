@@ -4640,13 +4640,6 @@ void prompt_for_input() {
       voltage_read = true;		  
       read_ina219();		  	  
       break;	
-
-    case PROMPT_REBOOT:
-       Serial.println("Rebooting...");
-       Serial.flush();	  
-       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
-       sleep(20.0);			  
-       break;
 		  
     case PROMPT_FORMAT:
        LittleFS.format();
@@ -4682,18 +4675,29 @@ void prompt_for_input() {
 	frequency_offset = -7500; // set frequency offset	      
 	write_config_file(); 
 	program_radio();      
-//	config_radio();
-	      
+        Serial.println("Rebooting...");
+        Serial.flush();	  
+        watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
+        sleep(20.0);	      
       } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
         Serial.println("Turning Frequency offset off");
 	frequency_offset = 0; // turn off frequency offset	
 	program_radio();      	      
 	write_config_file();  
-//	config_radio();
-	      
+        Serial.println("Rebooting...");
+        Serial.flush();	  
+        watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
+        sleep(20.0);	      
       } else      
         Serial.println("No change to frequency offset.");
- //     break;		// continue and restart	  
+      break;		  
+
+    case PROMPT_REBOOT:
+       Serial.println("Rebooting...");
+       Serial.flush();	  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
+       sleep(20.0);			  
+       break;
 		  
     case PROMPT_RESTART:
       prompt = false;
