@@ -731,12 +731,12 @@ int main(int argc, char * argv[]) {
           }
           printf("\n");
 //	  if (sensor[XS1] != 0) {     		
-	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0))  {     
+	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  {     
 		latitude = toAprsFormat(sensor[XS1]);
 		printf("Latitude updated to %f \n", latitude); 
 	  }
 //	  if (sensor[XS2] != 0)  {
-	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0))  {     		  
+	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {     		  
 		longitude = toAprsFormat(sensor[XS2]);	
 		printf("Longitude updated to %f \n", longitude); 		  
 	  }
