@@ -553,9 +553,9 @@ void transmit_on() {
       if (clockgen.enableOutputs(true)) {	  
 	  start_clockgen();
 	  if (mode == BPSK)
-		  clockgen.setClockBPSK();
+		  clockgen.setClockBPSK(frequency_offset);
 	      else
-		      clockgen.setClockFSK();
+		      clockgen.setClockFSK(frequency_offset);
 	  clockgen.enableOutputs(true);
 	  Serial.println("Enable clock outputs!"); 
       } else {
@@ -2223,9 +2223,9 @@ void config_radio()
       digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
     else {
       start_clockgen();	  
-      if (clockgen.setClockFSK()) {	  
+      if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockFSK();
+	 clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for CW without SR_FRS!");       
       }	else {
 	 Serial.println("Config clock for CW without SR_FRS");          
@@ -2247,9 +2247,9 @@ void config_radio()
     }	 	  
 */	
 	  
-      if (clockgen.setClockBPSK()) {	  
+      if (clockgen.setClockBPSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockBPSK();
+	 clockgen.setClockBPSK(frequency_offset);
 	 Serial.println("Config clock for BPSK");     
       } else {
 	 Serial.println("Config clock for BPSK");          
@@ -2265,9 +2265,9 @@ void config_radio()
       Serial.println("Config clock for FSK");
     }	 
 */	 
-      if (clockgen.setClockFSK()) {	  
+      if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockFSK();
+	 clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for FSK");       
       }	else {
 	 Serial.println("Config clock for FSK");          
