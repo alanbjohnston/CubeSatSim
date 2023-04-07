@@ -336,6 +336,7 @@ int blueLED = 18;
 float Sensor1 = 0.0;
 float Sensor2 = 0.0;
 float Sensor3 = 0.0;
+bool newData = false;
 void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
