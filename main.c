@@ -674,6 +674,7 @@ int main(int argc, char * argv[]) {
       }
       fclose(cpuTempSensor);
     } 
+      bool newGPS = false;	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
 
@@ -734,16 +735,24 @@ int main(int argc, char * argv[]) {
 	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  {     
 		latitude = toAprsFormat(sensor[XS1]);
 		printf("Latitude updated to %f \n", latitude); 
+		newGPS = true;  
 	  }
 //	  if (sensor[XS2] != 0)  {
 	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {     		  
 		longitude = toAprsFormat(sensor[XS2]);	
-		printf("Longitude updated to %f \n", longitude); 		  
+		printf("Longitude updated to %f \n", longitude); 
+		newGPS = true;  		  
 	  }
         }
 	else
-		payload = OFF;  // turn off since STEM Payload is not responding
+		; //payload = OFF;  // turn off since STEM Payload is not responding
       }
+      if (!newGPS) {
+		longitude += rnd_float(-0.05, 0.05);
+     		latitude += rnd_float(-0.05, 0.05);	      
+       		printf("GPS Data with Rnd: %f, %f \n", latitude, longitude);             
+      }
+	  
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
         for (int count1 = 0; count1 < 17; count1++) {
           if (sensor[count1] < sensor_min[count1])
