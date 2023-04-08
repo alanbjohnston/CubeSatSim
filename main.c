@@ -19,11 +19,13 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-FILE *telem_file;
+
 
 #include "main.h"
 
 int main(int argc, char * argv[]) {
+	
+FILE *telem_file;	
 
   char resbuffer[1000];
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
