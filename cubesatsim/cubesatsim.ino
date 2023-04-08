@@ -3055,6 +3055,8 @@ void payload_OK_only()
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());  
     }
+   else
+        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 "); 	
 	    
     sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
