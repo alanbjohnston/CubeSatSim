@@ -3100,6 +3100,7 @@ void payload_OK_only()
 // For one second we parse GPS data and report some key values
   newData = false;
 	  
+  unsigned long starting = millis()	  
   for (unsigned long start = millis(); millis() - start < 1000;) // 1000;)
   {  
     while (Serial2.available())
@@ -3110,17 +3111,20 @@ void payload_OK_only()
       if (gps.encode(c)) // Did a new valid sentence come in?
         newData = true;
     }
-  } 
+  }	  
     if (newData)
   {
+    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
     float flon, flat;
     unsigned long age;
+    starting = millis();	    
     gps.f_get_position(&flat, &flon, &age);
     Sensor1 = flat;
     Sensor2 = flon;
     Sensor3 = (float) gps.altitude()/100.0;
-    Serial.printf("New GPS data: %f %f %f \n", Sensor1, Sensor2, Sensor3);	    
-  }     
+    Serial.printf("New GPS data: %f %f %f ms: \n", Sensor1, Sensor2, Sensor3, millis() - starting);	    
+  }    else
+	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
 	  
   
     blink(50);
