@@ -3100,7 +3100,7 @@ void payload_OK_only()
 // For one second we parse GPS data and report some key values
   newData = false;
 	  
-  unsigned long starting = millis()	  
+  unsigned long starting = millis();	  
   for (unsigned long start = millis(); millis() - start < 1000;) // 1000;)
   {  
     while (Serial2.available())
