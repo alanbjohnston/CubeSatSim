@@ -5020,6 +5020,10 @@ void write_mode(int save_mode) {
 }
 
 void start_clockgen() {
+	
+//  Wire1.setSDA(8);
+//  Wire1.setSCL(9);
+  Wire1.begin();	
 
   if (clockgen.begin(&Wire1) != ERROR_NONE)
   {
