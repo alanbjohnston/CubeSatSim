@@ -3208,9 +3208,9 @@ void start_ina219() {
 	
   i2c_bus1 = i2c_1 || i2c2 || i2c3; 	
    
-  Wire1.setSDA(2); 
-  Wire1.setSCL(3);
-  Wire1.begin(); 
+//  Wire1.setSDA(2); 
+//  Wire1.setSCL(3);
+//  Wire1.begin(); 
 	
   if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
     Serial.println("I2C +Z sensor (bus 2 0x40) not found");
