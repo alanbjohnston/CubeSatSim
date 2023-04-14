@@ -5025,11 +5025,17 @@ void start_clockgen() {
   Wire1.setSCL(3);
   Wire1.begin();	
 
-  if (clockgen.begin(&Wire1) != ERROR_NONE)
+  if (clockgen.begin(&Wire) != ERROR_NONE)
   {
     /* There was a problem detecting the IC ... check your connections */
-    Serial.println("No Si5351 detected ... Check your wiring or I2C ADDR!");
-    return;	  
+    Serial.println("No Si5351 detected on bus 1");
+	  
+    if (clockgen.begin(&Wire1) != ERROR_NONE)
+    {
+      /* There was a problem detecting the IC ... check your connections */
+      Serial.println("No Si5351 detected on bus 2 ... Check your wiring or I2C ADDR!");	  
+      return;
+    }
   }
 
   Serial.println("Starting clockgen frequency 434.9 MHz");
