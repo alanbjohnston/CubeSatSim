@@ -549,7 +549,7 @@ void transmit_on() {
       ret = clockgen.enableOutputs(true);	    
       Serial.println("Enable clock outputs!");
     }	
-*/	
+*/  if (clockgen_present) {	
       if (clockgen.enableOutputs(true)) {	  
 	  start_clockgen();
 	  if (mode == BPSK)
@@ -561,6 +561,7 @@ void transmit_on() {
       } else {
 	 Serial.println("Enable clock outputs");           
       }
+    }
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -589,7 +590,7 @@ void transmit_off() {
       Serial.println("Disable clock outputs!");
     }	  
 //      clockgen.enableOutputs(false)	  
-*/	
+*/  if (clockgen_present) {	
       if (clockgen.enableOutputs(false)) {	  
 	  start_clockgen();    
 	  clockgen.enableOutputs(false);
@@ -597,6 +598,7 @@ void transmit_off() {
       } else {
 	 Serial.println("Disable clock outputs");           
       }
+    }
 	  
   }
   else if (mode == SSTV) 
@@ -2222,7 +2224,8 @@ void config_radio()
     if (sr_frs_present)
       digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
     else {
-      start_clockgen();	  
+     start_clockgen();
+     if (clockgen_present) {	    
       if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
 	 clockgen.setClockFSK(frequency_offset);
@@ -2233,7 +2236,8 @@ void config_radio()
       digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
       clockgen.enableOutputs(false);
       digitalWrite(BPSK_CONTROL_B, LOW);	  
-      digitalWrite(BPSK_CONTROL_A, LOW);  		    
+      digitalWrite(BPSK_CONTROL_A, LOW);  
+     }	      
 	    
     }
  
@@ -2246,7 +2250,7 @@ void config_radio()
       Serial.println("Config clock for BPSK");
     }	 	  
 */	
-	  
+     if (clockgen_present) {	  
       if (clockgen.setClockBPSK(frequency_offset)) {	  
 	 start_clockgen();
 	 clockgen.setClockBPSK(frequency_offset);
@@ -2254,6 +2258,7 @@ void config_radio()
       } else {
 	 Serial.println("Config clock for BPSK");          
       }	  
+  }	  
     transmit_on();	
   }	
   else if (mode == FSK)  {//  || (mode == SSTV))
@@ -2264,14 +2269,15 @@ void config_radio()
       ret = clockgen.setClockFSK();	    
       Serial.println("Config clock for FSK");
     }	 
-*/	 
+*/   if (clockgen_present) {	 
       if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
 	 clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for FSK");       
       }	else {
 	 Serial.println("Config clock for FSK");          
-      }	  
+      }	
+    }	
     transmit_on();
   }
   	  
@@ -4098,14 +4104,19 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 	  digitalWrite(AUDIO_OUT_PIN, LOW);		  
   }
   else {
+   	  
 //    Serial.println("No sr_frs present!");
     unsigned long start = micros();
-//    clockgen.enableOutputs(true);	  
-    clockgen.enableOutputOnly(0);
-    digitalWrite(BPSK_CONTROL_A, HIGH);  	  
+//    clockgen.enableOutputs(true);
+    if (clockgen_present) {	  
+      clockgen.enableOutputOnly(0);
+      digitalWrite(BPSK_CONTROL_A, HIGH); 
+    }
     while((micros() - start) < duration_us)  { }
-    digitalWrite(BPSK_CONTROL_A, LOW);  	
-    clockgen.enableOutputs(false);		  
+    if (clockgen_present) 	  
+      digitalWrite(BPSK_CONTROL_A, LOW);  	
+      clockgen.enableOutputs(false);	
+  }	   
   }
 	
 //  if (!wifi) 
@@ -4134,18 +4145,22 @@ void transmit_callsign(char *callsign) {
   print_string(id);	
 	
   if (!sr_frs_present) {
-      start_clockgen();	  
+      start_clockgen();	
+	  
       if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockFSK(frequency_offset);
+	 if (clockgen_present)      
+	   clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for CW without SR_FRS!");       
       }	else {
 	 Serial.println("Config clock for CW without SR_FRS");          
       }	
-      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
-      clockgen.enableOutputs(false);
-      digitalWrite(BPSK_CONTROL_B, LOW);	  
-      digitalWrite(BPSK_CONTROL_A, LOW);  	  
+      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	
+      if (clockgen_present) 	{  
+        clockgen.enableOutputs(false);
+        digitalWrite(BPSK_CONTROL_B, LOW);	  
+        digitalWrite(BPSK_CONTROL_A, LOW);  
+      }
   }
 /*	
   if (reset_count == 0) {
@@ -5020,6 +5035,7 @@ void write_mode(int save_mode) {
 }
 
 void start_clockgen() {
+  clockgen_present = false;	
 	
   Wire1.setSDA(2);
   Wire1.setSCL(3);
@@ -5036,18 +5052,22 @@ void start_clockgen() {
       Serial.println("No Si5351 detected on bus 2 ... Check your wiring or I2C ADDR!");
       clockgen.begin(&Wire);  // go back to Wire so that it doesn't lock up with no clockgen	    
       return;
-    }  else 
+    }  else {
       Serial.println("Si5351 detected on bus 2");
+      clockgen_present = true;    
+    }
 	  
-  }  else 
+  }  else {
     Serial.println("Si5351 detected on bus 1");
+    clockgen_present = true;	  
+  }
     	
-
-  Serial.println("Starting clockgen frequency 434.9 MHz");
+  if (clockgen_present) {
+    Serial.println("Starting clockgen frequency 434.9 MHz");
 	
 //  clockgen.setClockFSK();  // default to FSK
-  clockgen.enableOutputs(false);	
-	
+    clockgen.enableOutputs(false);	
+  }	
 }
 
 void get_input() {
