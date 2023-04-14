@@ -5035,8 +5035,12 @@ void start_clockgen() {
       /* There was a problem detecting the IC ... check your connections */
       Serial.println("No Si5351 detected on bus 2 ... Check your wiring or I2C ADDR!");	  
       return;
-    }
-  }
+    }  else 
+      Serial.println("Si5351 detected on bus 2");
+	  
+  }  else 
+    Serial.println("Si5351 detected on bus 1");
+    	
 
   Serial.println("Starting clockgen frequency 434.9 MHz");
 	
