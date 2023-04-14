@@ -91,6 +91,21 @@ void setup() {
 	
   Serial.begin(115200);
 	
+/**/	
+  if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else  {
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+     pinMode(led_builtin_pin, OUTPUT);		  
+  }
+/**/	
+	
+  blink(50);		
+	
   delay(10000);	
 	
   LittleFS.begin();
@@ -108,24 +123,9 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.41 starting...\n");
-	
-/**/	
-  if (check_for_wifi()) {
-     wifi = true;
-     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
-     pinMode(LED_BUILTIN, OUTPUT);		  
-//     configure_wifi();	  
-  }  else  {
-     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
-//     pinMode(25, OUTPUT);
-     pinMode(led_builtin_pin, OUTPUT);		  
-  }
-/**/		
+  Serial.println("CubeSatSim Pico v0.41 starting...\n");	
 	
   config_gpio();
-
-  blink(50);	
 
   get_input();	
 	
