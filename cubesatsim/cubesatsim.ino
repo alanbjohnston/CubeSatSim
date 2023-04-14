@@ -90,7 +90,8 @@ void setup() {
   set_sys_clock_khz(133000, true);  
 	
   Serial.begin(115200);
-	
+
+  config_gpio();	
 /**/	
   if (check_for_wifi()) {
      wifi = true;
@@ -125,7 +126,7 @@ void setup() {
   
   Serial.println("CubeSatSim Pico v0.41 starting...\n");	
 	
-  config_gpio();
+////  config_gpio();
 
   get_input();	
 	
@@ -3734,6 +3735,7 @@ void config_gpio() {
   Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == HIGH)  {
 // {
+    delay(10000);	  
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
