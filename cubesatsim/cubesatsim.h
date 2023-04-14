@@ -376,6 +376,7 @@ bool voltage_read = false;
 bool ina219_started = false;
 bool camera_detected = false;
 bool rotate_flag = true;
+bool clockgen_present = false;
 
 int led_builtin_pin;
 
