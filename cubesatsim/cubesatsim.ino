@@ -108,7 +108,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.40 starting...\n");
+  Serial.println("CubeSatSim Pico v0.41 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -4502,7 +4502,7 @@ void prompt_for_input() {
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Software version v0.40 \nConfig file /sim.cfg contains %s %d %f %f %s %d\n\n", callsign, reset_count, lat_file, long_file, sim_yes, frequency_offset);
+       Serial.printf("Software version v0.41 \nConfig file /sim.cfg contains %s %d %f %f %s %d\n\n", callsign, reset_count, lat_file, long_file, sim_yes, frequency_offset);
 		  
        switch(mode) {
 		       
