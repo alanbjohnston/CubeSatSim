@@ -125,6 +125,8 @@ void setup() {
 	
   config_gpio();
 
+  blink(50)	
+
   get_input();	
 	
   start_clockgen();		
