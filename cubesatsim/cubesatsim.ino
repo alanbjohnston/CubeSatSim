@@ -5021,8 +5021,8 @@ void write_mode(int save_mode) {
 
 void start_clockgen() {
 	
-  Wire1.setSDA(SDA2);
-  Wire1.setSCL(SCL2);
+  Wire1.setSDA(2);
+  Wire1.setSCL(3);
   Wire1.begin();	
 
   if (clockgen.begin(&Wire1) != ERROR_NONE)
