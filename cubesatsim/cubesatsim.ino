@@ -129,6 +129,12 @@ void setup() {
 
   get_input();	
 	
+  if (wifi)
+	      Serial.println("\nPico W detected!\n");
+  else
+	      Serial.println("\nPico detected!\n");
+
+	
   start_clockgen();		
 	
   EEPROM.begin(512);	
@@ -3960,11 +3966,11 @@ bool check_for_wifi() {
 
 //  if (result < 0x100) {	
   if (result < 0x10) {
-    Serial.println("\nPico W detected!\n");
+//    Serial.println("\nPico W detected!\n");
     return(true);
   }
   else {
-     Serial.println("\nPico detected!\n");
+//     Serial.println("\nPico detected!\n");
      return(false);  
   }
 }
