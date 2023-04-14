@@ -5033,7 +5033,8 @@ void start_clockgen() {
     if (clockgen.begin(&Wire1) != ERROR_NONE)
     {
       /* There was a problem detecting the IC ... check your connections */
-      Serial.println("No Si5351 detected on bus 2 ... Check your wiring or I2C ADDR!");	  
+      Serial.println("No Si5351 detected on bus 2 ... Check your wiring or I2C ADDR!");
+      clockgen.begin(&Wire);  // go back to Wire so that it doesn't lock up with no clockgen	    
       return;
     }  else 
       Serial.println("Si5351 detected on bus 2");
