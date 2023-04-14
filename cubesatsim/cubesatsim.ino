@@ -4147,14 +4147,16 @@ void transmit_callsign(char *callsign) {
   if (!sr_frs_present) {
       start_clockgen();	
 	  
-      if (clockgen.setClockFSK(frequency_offset)) {	  
-	 start_clockgen();
-	 if (clockgen_present)      
-	   clockgen.setClockFSK(frequency_offset);
-	 Serial.println("Config clock for CW without SR_FRS!");       
-      }	else {
-	 Serial.println("Config clock for CW without SR_FRS");          
-      }	
+      if (clockgen_present) 	{ 	  
+        if (clockgen.setClockFSK(frequency_offset)) {	  
+	   start_clockgen();
+	   if (clockgen_present)      
+	     clockgen.setClockFSK(frequency_offset);
+	   Serial.println("Config clock for CW without SR_FRS!");       
+          }  else {
+	    Serial.println("Config clock for CW without SR_FRS");          
+          }	
+      }	      
       digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	
       if (clockgen_present) 	{  
         clockgen.enableOutputs(false);
