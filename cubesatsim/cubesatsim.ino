@@ -4145,8 +4145,9 @@ void transmit_callsign(char *callsign) {
   print_string(id);	
 	
   if (!sr_frs_present) {
+	Serial.println("before start");  
       start_clockgen();	
-	  
+	Serial.println("after start");  	  
       if (clockgen_present) 	{ 	  
         if (clockgen.setClockFSK(frequency_offset)) {	  
 	   start_clockgen();
