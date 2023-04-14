@@ -5021,7 +5021,7 @@ void write_mode(int save_mode) {
 
 void start_clockgen() {
 
-  if (clockgen.begin() != ERROR_NONE)
+  if (clockgen.begin(&Wire1) != ERROR_NONE)
   {
     /* There was a problem detecting the IC ... check your connections */
     Serial.println("No Si5351 detected ... Check your wiring or I2C ADDR!");
