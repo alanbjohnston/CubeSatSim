@@ -766,7 +766,8 @@ int main(int argc, char * argv[]) {
       if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.005, 0.005);  // was .05
      		latitude += rnd_float(-0.005, 0.005);	      
-       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);        
+       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
+	        printf("GPS Location with Rnd: APRS %7.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
 	  
@@ -969,7 +970,7 @@ void get_tlm(void) {
         if (latitude > 0)
           sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
         else
-          sprintf(header_lat, "%7.2f%c", latitude * (-1.0), 'S'); // lat
+          sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
         if (longitude > 0)
           sprintf(header_long, "%08.2f%c", toAprsFormat(longitude) , 'E'); // long
         else
