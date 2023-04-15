@@ -3780,8 +3780,8 @@ void config_gpio() {
   else
     Serial.println("BPF not present - no transmitting after CW ID");	 
 	
-  if (digitalRead(TXC_PIN) == FALSE) {	
-//  if (false) {   // force SR_FRS not present
+//  if (digitalRead(TXC_PIN) == FALSE) {	
+  if (false) {   // force SR_FRS not present
     Serial.println("SR_FRS present");
     sr_frs_present = true;
   }
@@ -4122,11 +4122,11 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 //    clockgen.enableOutputs(true);
     if (clockgen_present) {	  
       clockgen.enableOutputOnly(0);
-      digitalWrite(BPSK_CONTROL_A, HIGH); 
+      digitalWrite(BPSK_CONTROL_B, HIGH); 
     }
     while((micros() - start) < duration_us)  { }
     if (clockgen_present) {	  
-      digitalWrite(BPSK_CONTROL_A, LOW);  	
+      digitalWrite(BPSK_CONTROL_B, LOW);  	
       clockgen.enableOutputs(false);	
   }	   
   }
