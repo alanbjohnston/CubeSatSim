@@ -824,6 +824,7 @@ int main(int argc, char * argv[]) {
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
       sleep(25);
+      sleep((int)rnd_float(0.0, 5.0));	    
       fprintf(stderr, "INFO: Sleeping for 25 sec\n");	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
