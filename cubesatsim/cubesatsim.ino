@@ -2386,7 +2386,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("Bat (1 0x44) Voltage:  "); 
+  Serial.print("Bat  (1 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current: "); 
   Serial.print(current_mA); 
