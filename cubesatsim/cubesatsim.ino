@@ -3779,7 +3779,7 @@ void config_gpio() {
     Serial.println("BPF not present - no transmitting after CW ID");	 
 	
 //  if (digitalRead(TXC_PIN) == FALSE) {	
-  if (true) {   // force SR_FRS not present
+  if (false) {   // force SR_FRS not present
     Serial.println("SR_FRS present");
     sr_frs_present = true;
   }
