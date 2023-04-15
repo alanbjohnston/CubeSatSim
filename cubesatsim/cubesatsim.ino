@@ -4915,7 +4915,7 @@ void get_serial_string() {
   int input = 0;	
   int i = 0;
   unsigned int elapsed_time = (unsigned int) millis();	
-  while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 20000)) {
+  while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 40000)) {  // was 20
     if (Serial.available() > 0) {
       input = Serial.read();
       if ((input != '\n') && (input!= '\r')) {
