@@ -134,7 +134,7 @@ float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
 int frameTime;
-long int newGpsTme;
+long int newGpsTime;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
