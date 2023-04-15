@@ -4127,7 +4127,7 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
     while((micros() - start) < duration_us)  { }
     if (clockgen_present) {	  
       digitalWrite(BPSK_CONTROL_A, LOW);  	
-//////      clockgen.enableOutputs(false);	
+      clockgen.enableOutputs(false);	
   }	   
   }
 	
