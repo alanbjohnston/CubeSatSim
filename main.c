@@ -150,12 +150,18 @@ int main(int argc, char * argv[]) {
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     printf("Valid latitude and longitude in config file\n");
 // convert to APRS DDMM.MM format
-    latitude = toAprsFormat(lat_file);
-    longitude = toAprsFormat(long_file);
-    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", latitude, longitude);	  
+//    latitude = toAprsFormat(lat_file);
+//    longitude = toAprsFormat(long_file);
+    latitude = lat_file;
+    longitude = long_file;	  
+    printf("Lat/Long %f %f\n", latitude, longitude);		  
+    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", toAprsFormat(latitude), toAprsFormat(longitude));
+    newGpsTime = millis();	  
+   	  
   } else { // set default
-    latitude = toAprsFormat(latitude);
-    longitude = toAprsFormat(longitude);
+//    latitude = toAprsFormat(latitude);
+//    longitude = toAprsFormat(longitude);
+      newGpsTime = millis();  
   }
 	
   if (strcmp(sim_yes, "yes") == 0)
