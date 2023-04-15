@@ -684,7 +684,7 @@ int main(int argc, char * argv[]) {
       }
       fclose(cpuTempSensor);
     } 
-      int newGPS = FALSE;	  
+	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
 
@@ -743,24 +743,25 @@ int main(int argc, char * argv[]) {
           printf("\n");
 //	  if (sensor[XS1] != 0) {     		
 	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  {     
-		latitude = toAprsFormat(sensor[XS1]);
+		latitude = sensor[XS1];  
 		printf("Latitude updated to %f \n", latitude); 
-		newGPS = TRUE;  
+		newGpsTime = millis();  
 	  }
 //	  if (sensor[XS2] != 0)  {
 	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {     		  
-		longitude = toAprsFormat(sensor[XS2]);	
+		longitude = sensor[XS2];  
 		printf("Longitude updated to %f \n", longitude); 
-		newGPS = TRUE;  		  
+		newGpsTime = millis();  		  
 	  }
         }
 	else
 		; //payload = OFF;  // turn off since STEM Payload is not responding
       }
-      if (newGPS == FALSE) {
+      if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.05, 0.05);
      		latitude += rnd_float(-0.05, 0.05);	      
-       		printf("GPS Data with Rnd: %f, %f \n", latitude, longitude);             
+       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);        
+	      	newGpsTime = millis();  
       }
 	  
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
@@ -960,13 +961,13 @@ void get_tlm(void) {
       if (mode != CW) {
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
-          sprintf(header_lat, "%7.2f%c", latitude, 'N'); // lat
+          sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
         else
           sprintf(header_lat, "%7.2f%c", latitude * (-1.0), 'S'); // lat
         if (longitude > 0)
-          sprintf(header_long, "%08.2f%c", longitude , 'E'); // long
+          sprintf(header_long, "%08.2f%c", toAprsFormat(longitude) , 'E'); // long
         else
-          sprintf(header_long, "%08.2f%c", longitude * (-1.0), 'W'); // long
+          sprintf(header_long, "%08.2f%c",toAprsFormat( longitude) * (-1.0), 'W'); // long
 	      
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
