@@ -2233,7 +2233,8 @@ void config_radio()
     if (sr_frs_present)
       digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
     else {
-     if (!clockgen_present)	    
+//     if (!clockgen_present)	  
+      if (mode != CW)	    
        start_clockgen();
      if (clockgen_present) {	    
       if (clockgen.setClockFSK(frequency_offset)) {	  
