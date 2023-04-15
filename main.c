@@ -748,16 +748,20 @@ int main(int argc, char * argv[]) {
           }
           printf("\n");
 //	  if (sensor[XS1] != 0) {     		
-	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  {     
-		latitude = sensor[XS1];  
-		printf("Latitude updated to %f \n", latitude); 
-		newGpsTime = millis();  
+	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  { 
+		if (sensor[XS1] != latitude) {  
+			latitude = sensor[XS1];  
+			printf("Latitude updated to %f \n", latitude); 
+			newGpsTime = millis();  
+	 	}
 	  }
 //	  if (sensor[XS2] != 0)  {
-	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {     		  
-		longitude = sensor[XS2];  
-		printf("Longitude updated to %f \n", longitude); 
-		newGpsTime = millis();  		  
+	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {   
+		if (sensor[XS2] != longitude) {  		  
+			longitude = sensor[XS2];  
+			printf("Longitude updated to %f \n", longitude); 
+			newGpsTime = millis();  
+		}
 	  }
         }
 	else
