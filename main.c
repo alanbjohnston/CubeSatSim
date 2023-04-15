@@ -764,8 +764,8 @@ int main(int argc, char * argv[]) {
 		; //payload = OFF;  // turn off since STEM Payload is not responding
       }
       if ((millis() - newGpsTime) > 60000) {
-		longitude += rnd_float(-0.005, 0.005);  // was .05
-     		latitude += rnd_float(-0.005, 0.005);	      
+		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
+     		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
        		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
 	        printf("GPS Location with Rnd: APRS %7.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
