@@ -8,7 +8,7 @@
  *  (at your option) any later version.
  *
  *  This program is distributed in the hope that it will be useful,
- *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty ofF
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
@@ -90,6 +90,22 @@ void setup() {
   set_sys_clock_khz(133000, true);  
 	
   Serial.begin(115200);
+
+  config_gpio();	
+/**/	
+  if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else  {
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+     pinMode(led_builtin_pin, OUTPUT);		  
+  }
+/**/	
+	
+  blink(50);		
 	
   delay(10000);	
 	
@@ -108,24 +124,17 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.39 starting...\n");
+  Serial.println("CubeSatSim Pico v0.41 starting...\n");	
 	
-/**/	
-  if (check_for_wifi()) {
-     wifi = true;
-     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
-     pinMode(LED_BUILTIN, OUTPUT);		  
-//     configure_wifi();	  
-  }  else  {
-     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
-//     pinMode(25, OUTPUT);
-     pinMode(led_builtin_pin, OUTPUT);		  
-  }
-/**/		
-	
-  config_gpio();
+////  config_gpio();
 
   get_input();	
+	
+  if (wifi)
+	      Serial.println("\nPico W detected!\n");
+  else
+	      Serial.println("\nPico detected!\n");
+
 	
   start_clockgen();		
 	
@@ -419,8 +428,7 @@ void read_config_file() {
 //	  sprintf(buff, "%d\n", cnt);
     sprintf(buff, "%s %d", "AMSAT", 0);
     config_file.write(buff, strlen(buff));	  
-	  
-	  
+	  	  
     config_file.close();
 	  
     config_file = LittleFS.open("/sim.cfg", "r");	  
@@ -429,10 +437,10 @@ void read_config_file() {
 //  char * cfg_buf[100];
   config_file.read((uint8_t *)buff, 255);
 //  sscanf(buff, "%d", &cnt);	
-  sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
+  sscanf(buff, "%s %d %f %f %s %d", callsign, & reset_count, & lat_file, & long_file, sim_yes, & frequency_offset);	
   config_file.close();
-  if (debug_mode)	
-    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
+//  if (debug_mode)	
+    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s %d\n", callsign, reset_count, lat_file, long_file, sim_yes, frequency_offset);
 	
   reset_count = (reset_count + 1) % 0xffff;
 
@@ -472,7 +480,7 @@ void write_config_file() {
   else
 	strcpy(sim_yes, "no");
 	
-  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
+  sprintf(buff, "%s %d %f %f %s %d", callsign, reset_count, latitude, longitude, sim_yes, frequency_offset);
   Serial.println("Writing string ");	
 //  if (debug_mode)	
     print_string(buff);	
@@ -550,18 +558,19 @@ void transmit_on() {
       ret = clockgen.enableOutputs(true);	    
       Serial.println("Enable clock outputs!");
     }	
-*/	
+*/  if (clockgen_present) {	
       if (clockgen.enableOutputs(true)) {	  
 	  start_clockgen();
 	  if (mode == BPSK)
-		  clockgen.setClockBPSK();
+		  clockgen.setClockBPSK(frequency_offset);
 	      else
-		      clockgen.setClockFSK();
+		      clockgen.setClockFSK(frequency_offset);
 	  clockgen.enableOutputs(true);
 	  Serial.println("Enable clock outputs!"); 
       } else {
 	 Serial.println("Enable clock outputs");           
       }
+    }
   }
   else if (mode == CW) {
  //   Serial.println("Transmit on!");
@@ -590,7 +599,7 @@ void transmit_off() {
       Serial.println("Disable clock outputs!");
     }	  
 //      clockgen.enableOutputs(false)	  
-*/	
+*/  if (clockgen_present) {	
       if (clockgen.enableOutputs(false)) {	  
 	  start_clockgen();    
 	  clockgen.enableOutputs(false);
@@ -598,6 +607,7 @@ void transmit_off() {
       } else {
 	 Serial.println("Disable clock outputs");           
       }
+    }
 	  
   }
   else if (mode == SSTV) 
@@ -2223,10 +2233,13 @@ void config_radio()
     if (sr_frs_present)
       digitalWrite(PD_PIN, HIGH);  // Enable SR_FRS
     else {
-      start_clockgen();	  
-      if (clockgen.setClockFSK()) {	  
+//     if (!clockgen_present)	  
+      if (mode != CW)	    
+       start_clockgen();
+     if (clockgen_present) {	    
+      if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockFSK();
+	 clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for CW without SR_FRS!");       
       }	else {
 	 Serial.println("Config clock for CW without SR_FRS");          
@@ -2234,7 +2247,8 @@ void config_radio()
       digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
       clockgen.enableOutputs(false);
       digitalWrite(BPSK_CONTROL_B, LOW);	  
-      digitalWrite(BPSK_CONTROL_A, LOW);  		    
+      digitalWrite(BPSK_CONTROL_A, LOW);  
+     }	      
 	    
     }
  
@@ -2247,14 +2261,15 @@ void config_radio()
       Serial.println("Config clock for BPSK");
     }	 	  
 */	
-	  
-      if (clockgen.setClockBPSK()) {	  
+     if (clockgen_present) {	  
+      if (clockgen.setClockBPSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockBPSK();
+	 clockgen.setClockBPSK(frequency_offset);
 	 Serial.println("Config clock for BPSK");     
       } else {
 	 Serial.println("Config clock for BPSK");          
       }	  
+  }	  
     transmit_on();	
   }	
   else if (mode == FSK)  {//  || (mode == SSTV))
@@ -2265,14 +2280,15 @@ void config_radio()
       ret = clockgen.setClockFSK();	    
       Serial.println("Config clock for FSK");
     }	 
-*/	 
-      if (clockgen.setClockFSK()) {	  
+*/   if (clockgen_present) {	 
+      if (clockgen.setClockFSK(frequency_offset)) {	  
 	 start_clockgen();
-	 clockgen.setClockFSK();
+	 clockgen.setClockFSK(frequency_offset);
 	 Serial.println("Config clock for FSK");       
       }	else {
 	 Serial.println("Config clock for FSK");          
-      }	  
+      }	
+    }	
     transmit_on();
   }
   	  
@@ -2372,7 +2388,7 @@ void read_ina219()
   loadvoltage = busvoltage + (shuntvoltage / 1000);
 	  
   if ((debug_mode) || (voltage_read))	{  	
-  Serial.print("+Bat (1 0x44) Voltage:  "); 
+  Serial.print("Bat  (1 0x44) Voltage:  "); 
   Serial.print(loadvoltage);
   Serial.print("V  Current: "); 
   Serial.print(current_mA); 
@@ -3209,9 +3225,9 @@ void start_ina219() {
 	
   i2c_bus1 = i2c_1 || i2c2 || i2c3; 	
    
-  Wire1.setSDA(2); 
-  Wire1.setSCL(3);
-  Wire1.begin(); 
+//  Wire1.setSDA(2); 
+//  Wire1.setSCL(3);
+//  Wire1.begin(); 
 	
   if (!(i2c5 = ina219_2_0x40.begin(&Wire1)))  // check i2c bus 2
     Serial.println("I2C +Z sensor (bus 2 0x40) not found");
@@ -3721,6 +3737,7 @@ void config_gpio() {
   Serial.println(digitalRead(PI_3V3_PIN));
   if (digitalRead(PI_3V3_PIN) == HIGH)  {
 // {
+    delay(10000);	  
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
@@ -3764,7 +3781,7 @@ void config_gpio() {
     Serial.println("BPF not present - no transmitting after CW ID");	 
 	
   if (digitalRead(TXC_PIN) == FALSE) {	
-//  if (true) {   // force SR_FRS not present
+//  if (false) {   // force SR_FRS not present
     Serial.println("SR_FRS present");
     sr_frs_present = true;
   }
@@ -3953,11 +3970,11 @@ bool check_for_wifi() {
 
 //  if (result < 0x100) {	
   if (result < 0x10) {
-    Serial.println("\nPico W detected!\n");
+//    Serial.println("\nPico W detected!\n");
     return(true);
   }
   else {
-     Serial.println("\nPico detected!\n");
+//     Serial.println("\nPico detected!\n");
      return(false);  
   }
 }
@@ -4099,14 +4116,19 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 	  digitalWrite(AUDIO_OUT_PIN, LOW);		  
   }
   else {
+   	  
 //    Serial.println("No sr_frs present!");
     unsigned long start = micros();
-//    clockgen.enableOutputs(true);	  
-    clockgen.enableOutputOnly(0);
-    digitalWrite(BPSK_CONTROL_A, HIGH);  	  
+//    clockgen.enableOutputs(true);
+    if (clockgen_present) {	  
+      clockgen.enableOutputOnly(0);
+      digitalWrite(BPSK_CONTROL_A, HIGH); 
+    }
     while((micros() - start) < duration_us)  { }
-    digitalWrite(BPSK_CONTROL_A, LOW);  	
-    clockgen.enableOutputs(false);		  
+    if (clockgen_present) {	  
+      digitalWrite(BPSK_CONTROL_A, LOW);  	
+      clockgen.enableOutputs(false);	
+  }	   
   }
 	
 //  if (!wifi) 
@@ -4135,18 +4157,25 @@ void transmit_callsign(char *callsign) {
   print_string(id);	
 	
   if (!sr_frs_present) {
-      start_clockgen();	  
-      if (clockgen.setClockFSK()) {	  
-	 start_clockgen();
-	 clockgen.setClockFSK();
-	 Serial.println("Config clock for CW without SR_FRS!");       
-      }	else {
-	 Serial.println("Config clock for CW without SR_FRS");          
-      }	
-      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	  
-      clockgen.enableOutputs(false);
-      digitalWrite(BPSK_CONTROL_B, LOW);	  
-      digitalWrite(BPSK_CONTROL_A, LOW);  	  
+//	Serial.println("before start");  
+//      start_clockgen();	
+//	Serial.println("after start");  	  
+      if (clockgen_present) 	{ 	  
+        if (clockgen.setClockFSK(frequency_offset)) {	  
+	   start_clockgen();
+	   if (clockgen_present)      
+	     clockgen.setClockFSK(frequency_offset);
+	   Serial.println("Config clock for CW without SR_FRS!");       
+          }  else {
+	    Serial.println("Config clock for CW without SR_FRS");          
+          }	
+      }	      
+      digitalWrite(PD_PIN, LOW);  // disable SR_FRS 	
+      if (clockgen_present) 	{  
+        clockgen.enableOutputs(false);
+        digitalWrite(BPSK_CONTROL_B, LOW);	  
+        digitalWrite(BPSK_CONTROL_A, LOW);  
+      }
   }
 /*	
   if (reset_count == 0) {
@@ -4415,9 +4444,13 @@ void serial_input() {
        break;	
 		   
      case 'o':
-     case 'O':
        Serial.println("Read diode temperature");	
        prompt = PROMPT_TEMP;
+       break;	
+		    
+     case 'O':
+       Serial.println("Set frequency offset");	
+       prompt = PROMPT_OFFSET;
        break;	
 		    
      case 'l':
@@ -4494,11 +4527,12 @@ void prompt_for_input() {
        Serial.println("l  Change Lat and Lon");	     
        Serial.println("?  Query sensors");	
        Serial.println("v  Read INA219 voltage and current");	
-       Serial.println("o  Read diode temperature");	
+       Serial.println("o  Read diode temperature");
+       Serial.println("O  Set frequency offset");		  
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+       Serial.printf("Software version v0.41 \nConfig file /sim.cfg contains %s %d %f %f %s %d\n\n", callsign, reset_count, lat_file, long_file, sim_yes, frequency_offset);
 		  
        switch(mode) {
 		       
@@ -4636,13 +4670,6 @@ void prompt_for_input() {
       voltage_read = true;		  
       read_ina219();		  	  
       break;	
-
-    case PROMPT_REBOOT:
-       Serial.println("Rebooting...");
-       Serial.flush();	  
-       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
-       sleep(20.0);			  
-       break;
 		  
     case PROMPT_FORMAT:
        LittleFS.format();
@@ -4666,6 +4693,42 @@ void prompt_for_input() {
       write_config_file();    	  
       break;	
 		  
+    case PROMPT_OFFSET:
+      if (frequency_offset != 0)
+	Serial.println("Frequency offset is currently on");      
+      else
+	Serial.println("Frequency offset is currently off");  
+      Serial.println("Do you want Frequency offset on (y/n)");
+      get_serial_char();
+      if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
+        Serial.println("Turning Frequency offset on");
+	frequency_offset = -15000; // set frequency offset	      
+	write_config_file(); 
+	program_radio();      
+        Serial.println("Rebooting...");
+        Serial.flush();	  
+        watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
+        sleep(20.0);	      
+      } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
+        Serial.println("Turning Frequency offset off");
+	frequency_offset = 0; // turn off frequency offset	
+	program_radio();      	      
+	write_config_file();  
+        Serial.println("Rebooting...");
+        Serial.flush();	  
+        watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
+        sleep(20.0);	      
+      } else      
+        Serial.println("No change to frequency offset.");
+      break;		  
+
+    case PROMPT_REBOOT:
+       Serial.println("Rebooting...");
+       Serial.flush();	  
+       watchdog_reboot (0, SRAM_END, 500);	 // restart Pico
+       sleep(20.0);			  
+       break;
+		  
     case PROMPT_RESTART:
       prompt = false;
 //    Serial.println("Restart not yet implemented");
@@ -4678,7 +4741,7 @@ void prompt_for_input() {
       config_radio();
       sampleTime = (unsigned int) millis();	 		  
       break;	  
-		  
+		 	  	  
     case PROMPT_DEBUG:
       Serial.print("Changing Debug Mode to ");
       debug_mode = !debug_mode;
@@ -4852,7 +4915,7 @@ void get_serial_string() {
   int input = 0;	
   int i = 0;
   unsigned int elapsed_time = (unsigned int) millis();	
-  while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 20000)) {
+  while ((input != '\n') && (input!= '\r') && (i < 128) && ((millis() - elapsed_time) < 40000)) {  // was 20
     if (Serial.available() > 0) {
       input = Serial.read();
       if ((input != '\n') && (input!= '\r')) {
@@ -4926,15 +4989,19 @@ void program_radio() {
   mySerial.begin(9600);
     
   for (int i = 0; i < 5; i++) {
-     sleep(0.5); // delay(500);
+    sleep(0.5); // delay(500);
 //  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
 //    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
 //     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
-     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+    if (frequency_offset == 0)	  
+      mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+    else	
+      mySerial.println("AT+DMOSETGROUP=0,434.8750,434.8750,0,8,0,0\r");  
+	    
+    sleep(0.5);	  
+    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
  }	
@@ -4983,19 +5050,39 @@ void write_mode(int save_mode) {
 }
 
 void start_clockgen() {
+  clockgen_present = false;	
+	
+  Wire1.setSDA(2);
+  Wire1.setSCL(3);
+  Wire1.begin();	
 
-  if (clockgen.begin() != ERROR_NONE)
+  if (clockgen.begin(&Wire) != ERROR_NONE)
   {
     /* There was a problem detecting the IC ... check your connections */
-    Serial.println("No Si5351 detected ... Check your wiring or I2C ADDR!");
-    return;	  
+    Serial.println("No Si5351 detected on bus 1");
+	  
+    if (clockgen.begin(&Wire1) != ERROR_NONE)
+    {
+      /* There was a problem detecting the IC ... check your connections */
+      Serial.println("No Si5351 detected on bus 2 ... Check your wiring or I2C ADDR!");
+      clockgen.begin(&Wire);  // go back to Wire so that it doesn't lock up with no clockgen	    
+      return;
+    }  else {
+      Serial.println("Si5351 detected on bus 2");
+      clockgen_present = true;    
+    }
+	  
+  }  else {
+    Serial.println("Si5351 detected on bus 1");
+    clockgen_present = true;	  
   }
-
-  Serial.println("Starting clockgen frequency 434.9 MHz");
+    	
+  if (clockgen_present) {
+    Serial.println("Starting clockgen frequency 434.9 MHz");
 	
 //  clockgen.setClockFSK();  // default to FSK
-  clockgen.enableOutputs(false);	
-	
+    clockgen.enableOutputs(false);	
+  }	
 }
 
 void get_input() {
