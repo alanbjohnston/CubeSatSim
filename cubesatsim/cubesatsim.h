@@ -78,7 +78,7 @@
 #define TEMPERATURE_PIN 28  // Diode temperature analog pin
 
 #define PORT 8080
-#define FREQUENCY_OFFSET 0
+//#define FREQUENCY_OFFSET 0
 #define TRUE 1
 #define FALSE 0
 
@@ -131,6 +131,7 @@
 #define PROMPT_I2CSCAN 14
 #define PROMPT_WIFI 15
 #define PROMPT_CAMERA 16
+#define PROMPT_OFFSET 17
 
 #define PAYLOAD_QUERY 1
 #define PAYLOAD_RESET 2
@@ -145,7 +146,7 @@ float get_cpu_temp();
 
 //#define WAV_DATA_LENGTH (50000 * 8)
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+uint32_t tx_freq_hz = 434900000; // + FREQUENCY_OFFSET;
 //uint8_t data[1024];
 uint32_t tx_channel = 0;
 
@@ -224,6 +225,7 @@ void load_sstv_image_2_as_cam_dot_jpg();
 void get_input();
 void transmit_led(bool status);
 void reset_min_max();
+int frequency_offset = 0;
 
 #ifndef STASSID
 #define STASSID "Pico"
@@ -374,6 +376,7 @@ bool voltage_read = false;
 bool ina219_started = false;
 bool camera_detected = false;
 bool rotate_flag = true;
+bool clockgen_present = false;
 
 int led_builtin_pin;
 

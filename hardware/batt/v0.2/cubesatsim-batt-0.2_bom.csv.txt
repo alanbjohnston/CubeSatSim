@@ -1,0 +1,7 @@
+"Part";"Value";"Device";"Package";"Description";"";
+"BT1";"2477";"2477";"2477PCB_62P99X57P99_KEY";"";"";
+"J1";"CONN_20X2";"CONN_20X2";"2X20";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"JP1";"Micro JST";"M02JST-PTH-VERT";"JST-2-PTH-VERT";"Standard 2-pin 0.1" header. Use with";"";
+"JP2";"";"CONN_01PTH_NO_SILK_KIT";"1X01NS_KIT";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"JP3";"";"CONN_01PTH_NO_SILK_KIT";"1X01NS_KIT";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"JP4";"JUMPER-SMT_2_NC_TRACE_SILK";"JUMPER-SMT_2_NC_TRACE_SILK";"SMT-JUMPER_2_NC_TRACE_SILK";"Normally closed trace jumper";"";

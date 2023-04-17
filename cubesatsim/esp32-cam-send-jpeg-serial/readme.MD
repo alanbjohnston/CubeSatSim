@@ -1,12 +1,8 @@
 This code runs on the ESP32-CAM camera module
 
-The board is ESP32 Arduino/AI Thinker ESP32-CAM such as from here:
+You need the ESP32 library on Arduino.  here's how to install it: https://randomnerdtutorials.com/installing-the-esp32-board-in-arduino-ide-windows-instructions/
 
-I follow the instructions here https://all3dp.com/2/esp32-cam-arduino-tutorial/ 
-
-I use the ESP32-CAM MB USB programmer as described in the section "Esp32-Cam MB Micro-USB Programmer"
-
-The Arduino IDE 1.x instructions are in the section "Installing the Esp32 Library"
+The board is ESP32 Arduino/AI Thinker ESP32-CAM
 
 Select the USB Serial port
 
