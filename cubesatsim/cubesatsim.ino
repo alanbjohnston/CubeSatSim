@@ -2618,7 +2618,7 @@ void start_payload() {
    delay(100);
    Serial1.begin(115200); // serial to Pi
 	
-   Serial2.begin(9600);  // serial from GPS	
+   Serial2.begin(115200);  // serial from GPS	
 	
    Serial.println("Starting Serial2 for payload");	
 #else	
