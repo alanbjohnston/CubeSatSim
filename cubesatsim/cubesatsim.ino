@@ -74,6 +74,8 @@ MQTTClient client;
 
 #define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
+#define APRS_VHF
+
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
@@ -111,10 +113,12 @@ void setup() {
 	
   LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
+#ifdef APRS_VHF	  
+   mode = AFSK;	// force to APRS	
+#else	
   read_mode();
+#endif
 	
-  // mode = BPSK;	// force to BPSK
-
   new_mode = mode;
 	
 //  pinMode(LED_BUILTIN, OUTPUT);	
@@ -189,8 +193,11 @@ void setup() {
 	
 //  setup_sstv();
   picosstvpp_begin(26);
+#ifdef APRS_VHF
+  camera_detected = false;
+#else	
   camera_detected = start_camera();	
-
+#endif
 //  start_pwm();
   program_radio();	
 	
@@ -357,6 +364,17 @@ void loop() {
     Serial.print("\nLoop time: ");	
     Serial.println(millis() - startSleep);
   }
+#ifdef APRS_VHF	 
+  for (int i = 0; i < 5; i++) {	
+    sleep(4.0);	
+    get_input();
+  }
+	
+// update latitude and longitude
+//  latitude = latitude + 0.01;	
+//  longitude = longitude + 0.01;		
+//  set_lat_lon();	
+#endif	
 }	
 
 bool TimerHandler1(struct repeating_timer *t) {
@@ -499,9 +517,13 @@ void send_aprs_packet() {
 
   char str[1000];
   char header_str[] = "hi hi ";
-  strcpy(str, header_str);	
+  strcpy(str, header_str);
+#ifdef APRS_VHF	
+  strcat(str, payload_str);  // transmit sensor payload
+  str[strlen(str) - 3] = 0;  // get rid of last 3 characters	
+#else	
   strcpy(str, tlm_str);	// transmit full APRS packet
-//  strcat(str, payload_str);
+#endif	
 //  print_string(str);
 //  Serial.println(strlen(str));	
 	
@@ -510,8 +532,10 @@ void send_aprs_packet() {
   if (debug_mode)	
     Serial.println("Sending APRS packet!");
   transmit_on();
-  transmit_led(HIGH);	
+  transmit_led(HIGH);
+  sleep(0.2);	
   send_packet(_FIXPOS_STATUS, debug_mode);
+  sleep(0.2);		
   transmit_led(LOW);	
   transmit_off();		
 }
@@ -2597,8 +2621,29 @@ void print_string(char *string)
 }
 
 void start_payload() {
+
+#ifdef APRS_VHF	  
+// Serial2.setRX(9);	
+// Serial2.setRX(9);		
+//   Serial2.setRX(1);
+   delay(100);
+// Serial2.setTX(8);
+// Serial2.setTX(8);	
+//   Serial2.setRX(0);
+  	
+   delay(100);
+   Serial1.begin(115200); // serial to Pi
 	
+   Serial2.begin(115200);  // serial from GPS	
+	
+   Serial.println("Starting Serial2 for payload");	
+#else	
+   Serial1.setRX(1);
+   delay(100);
+   Serial1.setTX(0);
+   delay(100);		
   Serial1.begin(115200);  // Pi UART faster speed
+#endif	
 
   Serial.println("Starting payload!");
   
@@ -2868,7 +2913,8 @@ void read_payload()
       Serial1.println("OK");
       delay(100);
       first_read = true;
-      setup();
+      start_payload();     
+//      setup();
     }
 
     if (result == '?')
@@ -2974,17 +3020,20 @@ void payload_OK_only()
       Serial.println("OK");
       delay(100);
       first_time = true;
-      setup();
+      start_payload();	    
+//      setup();
     }
     else if (result == 'C') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       EEPROM.put(0, (float)0.0);
       first_time = true;
-      setup();
+      start_payload(); 	    
+//      setup();
     }
     if ((result == '?') || first_time == true)  // commented back in
     if (true)
     {
+	    	       
       first_time = false;
       if (bmePresent) {
         Serial.print("OK BME280 ");
@@ -3046,21 +3095,30 @@ void payload_OK_only()
     } 
    }    
   }
+	
+//  Serial2.print("b");	
+  delay(250);	
 
-  if (Serial1.available() > 0) {
- 
+//  if (Serial2.available() > 0) {
+  if (true) {
+	  
+    while (Serial2.available() > 0) // read GPS
+      Serial.write(Serial2.read());
+  
     blink(50);
     char result = Serial1.read();
-    //    Serial1.println(result);
-
+//    Serial1.println(result);
+    Serial.println(result);
     if (result == 'R') {
       Serial1.println("OK");
       delay(100);
       first_read = true;
-      setup();
+      start_payload(); 	    
+//      setup();
     }
-
-    if (result == '?')
+	  
+//    if (result == '?')
+    if (true)
     {
       if (bmePresent) {
         Serial1.print("OK BME280 ");
@@ -3197,11 +3255,12 @@ void start_ina219() {
   if (!ina219_started)	{
 #ifndef PICO_0V1	
   // check if Pi is present by 3.3V voltage
-  pinMode(PI_3V3_PIN, INPUT); 	
+///  pinMode(PI_3V3_PIN, INPUT); 	
 //  Serial.print("Pi 3.3V: ");
 //  Serial.println(digitalRead(PI_3V3_PIN));
-  if (digitalRead(PI_3V3_PIN) == LOW)  {
+///  if (digitalRead(PI_3V3_PIN) == LOW)  {
 //  if (true)  {
+ if (false) {	  
     Serial.println("Pico powering INA219s through 3.3V pin");  
     pinMode(PI_3V3_PIN, OUTPUT);
     digitalWrite(PI_3V3_PIN, HIGH);	  
@@ -3732,12 +3791,7 @@ void config_gpio() {
   pinMode(27, INPUT);	
   pinMode(28, INPUT);		
 	
-  pinMode(PI_3V3_PIN, INPUT); 	
-  Serial.print("Pi 3.3V: ");
-  Serial.println(digitalRead(PI_3V3_PIN));
-  if (digitalRead(PI_3V3_PIN) == HIGH)  {
-// {
-    delay(10000);	  
+ {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     start_payload();	
     while(true)	 { 
@@ -3769,11 +3823,11 @@ void config_gpio() {
   // set input pins and read	
   pinMode(MAIN_PB_PIN, INPUT_PULLUP);  // Read Main Board push button	
   pinMode(TXC_PIN, INPUT_PULLUP);  // Read TXC to see if present	
-  pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
+///  pinMode(BPF_PIN, INPUT_PULLUP);  // Read LPF to see if present
 //  pinMode(SQUELCH, INPUT);	// Squelch from TXC
 
-  if (digitalRead(BPF_PIN) == FALSE) {  
-//  if (true) {  // force BPF present
+///  if (digitalRead(BPF_PIN) == FALSE) {  
+  if (true) {  // force BPF present ///
     Serial.println("BPF present - transmit enabled");
     filter_present = true;  
   }
@@ -4148,6 +4202,10 @@ void transmit_cw(int freq, float duration) {  // freq in Hz, duration in millise
 }
 
 void transmit_callsign(char *callsign) {
+	
+#ifdef APRS_VHF
+  return;  // don't transmit CW if on APRS frequency
+#endif
 		
   char de[] = " HI HI DE ";	
   char id[20];
@@ -4954,10 +5012,16 @@ void set_lat_lon() {
 // Serial.println("Setting lat and lon for APRS");	
   char lat_string[64];
   char lon_string[64];
-	  
+	
+#ifdef APRS_VHF	 
+  char sym_ovl_default = '/'; // Balloon
+  char sym_tab_default = 'O';  
+  char icon[] = "/O"; 	
+#else	
   char sym_ovl_default = '\\'; //'H';
   char sym_tab_default = 'S'; // 'a';
   char icon[] = "\\S"; //Ha";
+#endif	
 	  
 //      latitude = toAprsFormat(latitude);
 //      longitude = toAprsFormat(longitude);   
@@ -4995,13 +5059,15 @@ void program_radio() {
 //     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
 //     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
-    if (frequency_offset == 0)	  
-      mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-    else	
-      mySerial.println("AT+DMOSETGROUP=0,434.8750,434.8750,0,8,0,0\r");  
-	    
-    sleep(0.5);	  
-    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+#ifdef APRS_VHF	  
+     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
+#else
+     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+#endif	  
+
+   sleep(0.5);	  
+   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+
 	
   }
  }	
