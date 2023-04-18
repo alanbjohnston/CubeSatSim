@@ -3101,7 +3101,7 @@ void payload_OK_only()
   newData = false;
 	  
   unsigned long starting = millis();	  
-  for (unsigned long start = millis(); millis() - start < 1000;) // 1000;)
+  for (unsigned long start = millis(); millis() - start < 5000;) // 1000;)
   {  
     while (Serial2.available())
     {
