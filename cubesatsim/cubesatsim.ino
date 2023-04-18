@@ -3054,7 +3054,10 @@ void payload_OK_only()
     Serial.print(mpu6050.getAccY());   
     Serial.print(" ");
     Serial.print(mpu6050.getAccZ());  
-    }
+    } else
+      {
+        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");
+      }
 	    
     sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
@@ -3101,7 +3104,7 @@ void payload_OK_only()
   newData = false;
 	  
   unsigned long starting = millis();	  
-  for (unsigned long start = millis(); millis() - start < 5000;) // 1000;)
+  for (unsigned long start = millis(); millis() - start < 1000;) // 5000;)
   {  
     while (Serial2.available())
     {
@@ -3175,6 +3178,7 @@ void payload_OK_only()
       {
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
       }
+      if (mpuPresent) 	 {     
       mpu6050.update();
 
       Serial1.print(" MPU6050 ");
@@ -3191,6 +3195,11 @@ void payload_OK_only()
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
 
+      }	 else
+      {
+        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");
+      }    
+
     sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
@@ -3200,8 +3209,9 @@ void payload_OK_only()
     Serial1.print(" ");
     Serial1.print(Sensor2,4);              
     Serial1.print(" ");
-    Serial1.println(Sensor3,2);          
-     
+    Serial1.println(Sensor3,2);    
+	    
+    if (mpuPresent) 	 {     
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
 //    Serial.print(rotation);
@@ -3222,6 +3232,7 @@ void payload_OK_only()
         led_set(blueLED, HIGH);
     else
         led_set(blueLED, LOW);
+    }
     }
   }
 
