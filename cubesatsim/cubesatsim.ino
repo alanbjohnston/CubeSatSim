@@ -3064,7 +3064,7 @@ void payload_OK_only()
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
     
-    Serial.print(" XS ");
+    Serial.print(" XS2 ");
     Serial.print(Sensor1,4);   
     Serial.print(" ");
     Serial.print(Sensor2,4);              
