@@ -46,7 +46,7 @@
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
 #include <MQTT.h>
-#include <TinyGPS.h>
+#include <TinyGPS++.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
 #include "sstv1.h"
@@ -62,7 +62,7 @@ Adafruit_INA219 ina219_2_0x44(0x44);
 Adafruit_INA219 ina219_2_0x45(0x45);
 
 Adafruit_SI5351 clockgen = Adafruit_SI5351();
-TinyGPS gps;
+TinyGPSPlus gps;
 
 unsigned long micros3;
 bool show_gps = false;
@@ -3118,7 +3118,22 @@ void payload_OK_only()
     float flon, flat;
     unsigned long age;
     starting = millis();	    
-    gps.f_get_position(&flat, &flon, &age);
+//    gps.f_get_position(&flat, &flon, &age);
+	    
+  Serial.print(F("Location: ")); 
+  if (gps.location.isValid())
+  {
+    Serial.print(gps.location.lat(), 6);
+    Serial.print(F(","));
+    Serial.print(gps.location.lng(), 6);
+	  
+    flat = gps.location.lat();	  
+    flon = gps.location.lng();	  	  
+  }
+  else
+  {
+    Serial.print(F("INVALID"));
+  }	    
     Sensor1 = flat;
     Sensor2 = flon;
     Sensor3 = (float) gps.altitude()/100.0;
