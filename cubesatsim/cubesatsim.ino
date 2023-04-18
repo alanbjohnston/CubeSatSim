@@ -3143,7 +3143,7 @@ void payload_OK_only()
     Sensor1 = flat;
     Sensor2 = flon;
     Sensor3 = flalt; // (float) gps.altitude.meters();
-    Serial.printf("New GPS data: %f %f %f  ms: %d\n", Sensor1, Sensor2, Sensor3, millis() - starting);	    
+    Serial.printf("New GPS data: %f %f %f  ms: %d\n", Sensor1, Sensor2, Sensor3, millis() - start);	    
   }    else
 	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
 	  
@@ -3204,7 +3204,7 @@ void payload_OK_only()
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
-    Serial1.print(" XS ");
+    Serial1.print(" XS2 ");
     Serial1.print(Sensor1,4);   
     Serial1.print(" ");
     Serial1.print(Sensor2,4);              
