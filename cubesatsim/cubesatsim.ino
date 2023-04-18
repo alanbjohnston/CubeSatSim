@@ -3197,7 +3197,7 @@ void payload_OK_only()
 
       }	 else
       {
-        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");
+        Serial1.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");
       }    
 
     sensorValue = analogRead(TEMPERATURE_PIN);
