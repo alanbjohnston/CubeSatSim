@@ -3131,7 +3131,7 @@ void payload_OK_only()
     if (Serial1.available()) {	  
       char result = Serial1.read();
 //    Serial1.println(result);
-      Serial.println(result);
+//      Serial.println(result);  // don't print read result
     
       if (result == 'R') {
         Serial1.println("OK");
