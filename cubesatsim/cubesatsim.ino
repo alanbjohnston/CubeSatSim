@@ -3115,7 +3115,7 @@ void payload_OK_only()
     if (newData)
   {
     Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
-    float flon, flat;
+    float flon, flat, flalt;
     unsigned long age;
     starting = millis();	    
 //    gps.f_get_position(&flat, &flon, &age);
@@ -3128,16 +3128,19 @@ void payload_OK_only()
     Serial.print(gps.location.lng(), 6);
 	  
     flat = gps.location.lat();	  
-    flon = gps.location.lng();	  	  
+    flon = gps.location.lng();	  
+    flalt = gps.altitude.meters();	  
   }
   else
   {
-    Serial.print(F("INVALID"));
-  }	    
+    Serial.print(F("INVALID"));	  
+  }
+  Serial.print("\r\n");   
+	    
     Sensor1 = flat;
     Sensor2 = flon;
-    Sensor3 = (float) gps.altitude.meters()/100.0;
-    Serial.printf("New GPS data: %f %f %f ms: \n", Sensor1, Sensor2, Sensor3, millis() - starting);	    
+    Sensor3 = flalt; // (float) gps.altitude.meters();
+    Serial.printf("New GPS data: %f %f %f  ms: %d\n", Sensor1, Sensor2, Sensor3, millis() - starting);	    
   }    else
 	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
 	  
