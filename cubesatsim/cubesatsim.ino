@@ -2621,7 +2621,7 @@ void start_payload() {
 	
    Serial.println("Starting Serial1 for payload");
 	
-   Serial2.begin(9600);  // serial from GPS	
+   Serial2.begin(115200);  // serial from GPS	
 	
    Serial.println("Starting Serial2 for GPS");	
 #else	
