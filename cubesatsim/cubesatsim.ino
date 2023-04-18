@@ -3136,7 +3136,7 @@ void payload_OK_only()
   }	    
     Sensor1 = flat;
     Sensor2 = flon;
-    Sensor3 = (float) gps.altitude()/100.0;
+    Sensor3 = (float) gps.altitude.meters()/100.0;
     Serial.printf("New GPS data: %f %f %f ms: \n", Sensor1, Sensor2, Sensor3, millis() - starting);	    
   }    else
 	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
