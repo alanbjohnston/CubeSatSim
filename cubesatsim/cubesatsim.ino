@@ -3006,7 +3006,7 @@ void payload_OK_only()
     if (result == 'R') {
       Serial.println("OK");
       delay(100);
-      first_time = true;
+//      first_time = true;
       start_payload();	    
 //      setup();
     }
@@ -3016,16 +3016,15 @@ void payload_OK_only()
     else if (result == 'C') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       EEPROM.put(0, (float)0.0);
-      first_time = true;
+//      first_time = true;
       start_payload(); 	    
 //      setup();
     }
-//    if ((result == '?') || first_time == true)  // commented back in
-    if (true) 	    
+    if ((result == '?') || first_time == true)  // commented back in
     if (true)
     {
 	    	       
-      first_time = false;
+//      first_time = false;
       if (bmePresent) {
         Serial.print("OK BME280 ");
         Serial.print(bme.readTemperature());
