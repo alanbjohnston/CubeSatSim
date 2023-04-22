@@ -3020,7 +3020,8 @@ void payload_OK_only()
       start_payload(); 	    
 //      setup();
     }
-    if ((result == '?') || first_time == true)  // commented back in
+//    if ((result == '?') || first_time == true)  // commented back in
+    if (true) 	    
     if (true)
     {
 	    	       
