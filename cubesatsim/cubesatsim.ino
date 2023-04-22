@@ -3069,7 +3069,9 @@ void payload_OK_only()
     Serial.print(" ");
     Serial.print(Sensor2,4);              
     Serial.print(" ");
-    Serial.println(Sensor3,2);             
+    Serial.print(Sensor3,2);         
+    Serial.print(" MQ ");
+    Serial.println(SensorValue,0);  	    
   
   if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
@@ -3209,7 +3211,9 @@ void payload_OK_only()
     Serial1.print(" ");
     Serial1.print(Sensor2,4);              
     Serial1.print(" ");
-    Serial1.println(Sensor3,2);    
+    Serial1.print(Sensor3,2);    
+    Serial1.print(" MQ ");
+    Serial1.println(SensorValue,0);  		    
 	    
     if (mpuPresent) 	 {     
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
