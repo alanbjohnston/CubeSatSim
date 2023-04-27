@@ -238,7 +238,7 @@ if __name__ == "__main__":
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 #					current_time = time.strftime("%H;%M;%S", time.localtime())
 					current_time = time.strftime("%m-%d-%H%M%S", time.localtime())
-					system("cp /home/pi/CubeSatSim/camera_out.jpg " + "/home/pi/payload/img"+current_time+".jpg")
+					system("raspistill -o " + "/home/pi/payload/img"+current_time+".jpg")
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
