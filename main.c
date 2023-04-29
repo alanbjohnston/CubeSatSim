@@ -2056,7 +2056,7 @@ int get_payload_serial(int debug_camera)  {
 
 */		    
 //              index1 -= 40;                         
-              index1 -= strlen(end_flag);
+//              index1 -= strlen(end_flag);
 	      buffer2[index1++] = 0;
 	      printf("Payload length: %d \n",index1); 	    
 
@@ -2070,8 +2070,10 @@ int get_payload_serial(int debug_camera)  {
 //              delay(6000);
             }
          } else {
+	   if (flag_count > 1)    
+             printf("Resetting. Not end flag.\n");    	       
            flag_count = 0;
-           printf("Resetting. Not end flag.\n");    	       
+	       
          }
  ///        buffer2[index1++] = octet;
            
