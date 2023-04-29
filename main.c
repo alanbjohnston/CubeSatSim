@@ -1950,3 +1950,152 @@ float toAprsFormat(float input) {
     float output = dd * 100 + mm1 + (float)mm2 * 0.01;
     return(output);	
 }
+
+
+#define GET_IMAGE_DEBUG
+
+//#define DEBUG
+
+//#define PICOW true
+//int led_pin = LED_BUILTIN;
+
+/*
+void loop() {
+
+  char input_file[] = "/cam.jpg"; 
+  char output_file[] = "/cam.bin"; 
+  
+  get_image_file();
+
+  Serial.println("Got image from ESP-32-CAM!");
+
+  delay(1000);
+
+}
+*/
+
+bool get_payload_serial(bool debug_camera)  {
+ 
+  index1 = 0;
+  flag_count = 0;
+  start_flag_detected = false;
+  start_flag_complete = false;
+  end_flag_detected = false;
+  jpeg_start = 0;
+ 
+// #ifdef GET_IMAGE_DEBUG
+ if (debug_camera)
+  Serial.println("Received from Payload:\n");
+ // #endif
+  finished = false;
+
+  unsigned long time_start = millis();	    
+  while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
+	  
+    if (serialDataAvail(uart_fd)) {
+              printf("%c", byte octet = (char) serialGetchar(uart_fd));
+              fflush(stdout);	  
+
+//   if (Serial2.available()) {      // If anything comes in Serial2
+//      byte octet = Serial2.read();
+///      if ((!start_flag_detected) && (debug_camera))
+///        Serial.write(octet);
+
+     if (start_flag_complete) {
+//       Serial.println("Start flag complete detected");
+       buffer2[index1++] = octet;
+       if (octet == end_flag[flag_count]) {  // looking for end flag
+//         if (end_flag_detected) {
+            flag_count++;
+#ifdef GET_IMAGE_DEBUG  
+//       if (debug_camera)  
+            Serial.println("Found part of end flag!");
+#endif
+            if (flag_count >= strlen(end_flag)) {  // complete image           
+///              buffer2[index1++] = octet;
+//              Serial.println("\nFound end flag");
+//              Serial.println(octet, HEX);
+              while(!Serial2.available()) { }     // Wait for another byte
+//              octet = Serial2.read(); 
+//              buffer2[index1++] = octet;
+//              Serial.println(octet, HEX);
+//              while(!Serial2.available()) { }     // Wait for another byte
+              int received_crc = Serial2.read(); 
+//              buffer2[index1++] = octet;
+                            
+              Serial.print("\nFile length: ");
+              Serial.println(index1 - (int)strlen(end_flag));
+//              index1 -= 1; // 40;
+//              Serial.println(buffer2[index1 - 1], HEX); 
+//              int received_crc = buffer2[index1];
+//              index1 -= 1;
+
+              uint8_t * data = (uint8_t *) &buffer2[0];
+#ifdef GET_IMAGE_DEBUG
+       Serial.println(buffer2[0], HEX);
+      Serial.println(buffer2[index1 - 1], HEX);
+      Serial.println(index1);            
+ #endif  
+     if (debug_camera) {                
+      Serial.print("\nCRC received:");
+      Serial.println(received_crc, HEX);   
+    }
+           
+              int calculated_crc = CRC8.smbus(data, index1);
+ //             Serial.println(calculated_crc, HEX);
+              if (received_crc == calculated_crc)
+                Serial.println("CRC check succeeded!");
+              else  
+               Serial.println("CRC check failed!"); 
+
+              index1 -= 40;                         
+              write_jpg();
+              index1 = 0;           
+              start_flag_complete = false;
+              start_flag_detected = false; // get ready for next image 
+              end_flag_detected = false;
+              flag_count = 0; 
+//              delay(6000);
+            }
+         } else {
+           flag_count = 0;
+         }
+ ///        buffer2[index1++] = octet;
+           
+//#ifdef GET_IMAGE_DEBUG 
+    if (debug_camera) {   
+           char hexValue[5];
+           if (octet != 0x66) {
+             sprintf(hexValue, "%02X", octet);
+             Serial.print(hexValue);
+           } else {
+//             Serial.println("\n********************************************* Got a 66!");
+             Serial.print("66");
+           } 
+//             Serial.write(octet);
+    }
+//#endif             
+           if (index1 > 200)
+             index1 = 0; 
+//         }
+    } else if (octet == start_flag[flag_count]) {  // looking for start flag
+          start_flag_detected = true;
+          flag_count++;
+//          Serial.println("Found part of start flag! ");
+          if (flag_count >= strlen(start_flag)) {
+            flag_count = 0;
+            start_flag_complete = true;
+//            Serial.println("Found start flag!\n");        
+          }
+      } else {  // not the flag, keep looking
+          start_flag_detected = false;
+          flag_count = 0;
+     //   Serial.println("Resetting. Not start flag.");        
+       } 
+    }
+//    Serial.println("writing to Serial2");
+  }
+  if (debug_camera)                 
+      Serial.print("\nComplete\n");
+  return(finished);
+}
