@@ -2008,7 +2008,7 @@ int get_payload_serial(int debug_camera)  {
 ///        Serial.write(octet);
 
      if (start_flag_complete) {
-//       Serial.println("Start flag complete detected");
+//       printf("Start flag complete detected\n");
        buffer2[index1++] = octet;
        if (octet == end_flag[flag_count]) {  // looking for end flag
 //         if (end_flag_detected) {
@@ -2057,9 +2057,11 @@ int get_payload_serial(int debug_camera)  {
 */		    
 //              index1 -= 40;                         
               index1 -= strlen(end_flag);
-	      buffer2[index1++] = NULL;	    
+	      buffer2[index1++] = 0;
+	      printf("Payload length: %d \n",index1); 	    
 
 //              write_jpg();
+	      finished = TRUE;	    
               index1 = 0;           
               start_flag_complete = FALSE;
               start_flag_detected = FALSE; // get ready for next image 
@@ -2091,16 +2093,16 @@ int get_payload_serial(int debug_camera)  {
     } else if (octet == start_flag[flag_count]) {  // looking for start flag
           start_flag_detected = TRUE;
           flag_count++;
-//          Serial.println("Found part of start flag! ");
+          printf("Found part of start flag! \n");
           if (flag_count >= strlen(start_flag)) {
             flag_count = 0;
             start_flag_complete = TRUE;
-//            Serial.println("Found start flag!\n");        
+            printf("Found all of start flag!\n");        
           }
       } else {  // not the flag, keep looking
           start_flag_detected = FALSE;
           flag_count = 0;
-     //   Serial.println("Resetting. Not start flag.");        
+          fprintf("Resetting. Not start flag.\n");        
        } 
     }
 //    Serial.println("writing to Serial2");
