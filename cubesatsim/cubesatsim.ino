@@ -2617,6 +2617,10 @@ void start_payload() {
 //   Serial2.setRX(0);
   	
    delay(100);
+	   Serial1.setRX(1);
+   delay(100);
+   Serial1.setTX(0);
+   delay(10);
    Serial1.begin(115200); // serial to Pi
 	
    Serial.println("Starting Serial1 for payload");
