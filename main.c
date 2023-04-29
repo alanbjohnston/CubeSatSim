@@ -693,8 +693,10 @@ int main(int argc, char * argv[]) {
 	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
-
-  
+        printf("get_payload_status: %d \n", get_payload_serial(TRUE);
+	printf("String: %s\n", *buffer2);       
+	      
+/*  
         char c;
         unsigned int waitTime;
 	int i, end, trys = 0;
@@ -728,6 +730,8 @@ int main(int argc, char * argv[]) {
           //  sensor_payload[i++] = '\n';
           sensor_payload[i] = '\0';
           printf(" Response from STEM Payload board: %s\n", sensor_payload);
+		
+*/		
 	  sleep(0.1);  // added sleep between loops
 	}
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
