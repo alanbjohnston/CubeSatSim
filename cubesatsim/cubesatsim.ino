@@ -3075,8 +3075,8 @@ void payload_OK_only()
     Serial.print(" ");
     Serial.print(Sensor3,2);         
     Serial.print(" MQ ");
-    Serial.println(sensorValue); // ,0);  	    
-  
+    Serial.print(sensorValue); // ,0);  	    
+    Serial.println(" END_FLAG");  
   if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
