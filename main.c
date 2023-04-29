@@ -2052,7 +2052,7 @@ int get_payload_serial(int debug_camera)  {
 */		    
 //              index1 -= 40;                         
               index1 -= strlen(end_flag);
-	      buffer2[index++] = NULL;	    
+	      buffer2[index1++] = NULL;	    
 
 //              write_jpg();
               index1 = 0;           
