@@ -1985,7 +1985,7 @@ int get_payload_serial(int debug_camera)  {
  
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
-  Serial.println("Received from Payload:\n");
+  printf("Received from Payload:\n");
  // #endif
   finished = FALSE;
 
@@ -1993,7 +1993,7 @@ int get_payload_serial(int debug_camera)  {
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 	  
     if (serialDataAvail(uart_fd)) {
-              printf("%c", byte octet = (char) serialGetchar(uart_fd));
+              printf("%c", short int octet = (char) serialGetchar(uart_fd));
               fflush(stdout);	  
 
 //   if (Serial2.available()) {      // If anything comes in Serial2
