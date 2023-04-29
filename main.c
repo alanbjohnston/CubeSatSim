@@ -731,9 +731,10 @@ int main(int argc, char * argv[]) {
           sensor_payload[i] = '\0';
           printf(" Response from STEM Payload board: %s\n", sensor_payload);
 		
-*/		
+		
 	  sleep(0.1);  // added sleep between loops
 	}
+*/	  
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
           int count1;
