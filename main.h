@@ -19,7 +19,6 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include <FastCRC.h>
 
 #define PORT 8080
 
@@ -171,6 +170,5 @@ int start_flag_detected = false;
 int start_flag_complete = false;
 int end_flag_detected = false;
 int jpeg_start = 0;
-FastCRC8 CRC8;
 #define CAMERA_TIMEOUT 10000 // 20000  // Camera timeout in milli seconds
 
