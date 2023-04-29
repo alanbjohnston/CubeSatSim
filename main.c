@@ -2015,7 +2015,7 @@ int get_payload_serial(int debug_camera)  {
             flag_count++;
 #ifdef GET_IMAGE_DEBUG  
 //       if (debug_camera)  
-            printf("Found part of end flag!");
+            printf("Found part of end flag!\n");
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
@@ -2071,6 +2071,7 @@ int get_payload_serial(int debug_camera)  {
             }
          } else {
            flag_count = 0;
+           printf("Resetting. Not end flag.\n");    	       
          }
  ///        buffer2[index1++] = octet;
            
@@ -2079,7 +2080,7 @@ int get_payload_serial(int debug_camera)  {
            char hexValue[5];
            if (octet != 0x66) {
              sprintf(hexValue, "%02X", octet);
-             printf(hexValue);
+//             printf(hexValue);
            } else {
 //             Serial.println("\n********************************************* Got a 66!");
              printf("66");
@@ -2087,8 +2088,10 @@ int get_payload_serial(int debug_camera)  {
 //             Serial.write(octet);
     }
 //#endif             
-           if (index1 > 200)
+           if (index1 > 1000) {
              index1 = 0; 
+	     printf("Resetting index!\n");	   
+	   }
 //         }
     } else if (octet == start_flag[flag_count]) {  // looking for start flag
           start_flag_detected = TRUE;
