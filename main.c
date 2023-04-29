@@ -694,8 +694,9 @@ int main(int argc, char * argv[]) {
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
         printf("get_payload_status: %d \n", get_payload_serial(TRUE));
-	printf("String: %s\n", *buffer2);       
-	      
+	fflush(stdout); 
+	printf("String: %s\n", buffer2);       
+	fflush(stdout);      
 /*  
         char c;
         unsigned int waitTime;
@@ -2114,5 +2115,6 @@ int get_payload_serial(int debug_camera)  {
   }
   if (debug_camera)                 
       printf("\nComplete\n");
+  fflush(stdout);	
   return(finished);
 }
