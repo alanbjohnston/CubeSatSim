@@ -3155,6 +3155,7 @@ void payload_OK_only()
 	  
   
     blink(50);
+/*	  
     if (Serial1.available()) {	  
       char result = Serial1.read();
 //    Serial1.println(result);
@@ -3167,7 +3168,8 @@ void payload_OK_only()
         start_payload(); 	    
 //      setup();
       }
-    }	  
+    }	
+*/	  
 //    if (result == '?')
     if (true)  // always send payload data over serial
     {
