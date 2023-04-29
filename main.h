@@ -157,7 +157,7 @@ int get_payload_serial(int debug_camera);
 int finished = FALSE;
 
 //char buffer2[100001];
-char buffer2[200];
+char buffer2[2000];
 int index1 = 0;
 //char start_flag[] = "3d99de816e5ad7742b61a37c39141783";
 char start_flag[] = "START_FLAG";
