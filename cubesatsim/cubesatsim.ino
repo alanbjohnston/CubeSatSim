@@ -3182,7 +3182,7 @@ void payload_OK_only()
         Serial1.print(bme.readHumidity());
       } else
       {
-        Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
+        Serial1.print("START_FLAGOK BME280 0.0 0.0 0.0 0.0");
       }
       if (mpuPresent) 	 {     
       mpu6050.update();
