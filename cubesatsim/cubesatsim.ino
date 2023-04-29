@@ -3030,7 +3030,7 @@ void payload_OK_only()
 	    	       
 //      first_time = false;
       if (bmePresent) {
-        Serial.print("OK BME280 ");
+        Serial.print("START_FLAGOK BME280 ");
         Serial.print(bme.readTemperature());
         Serial.print(" ");
         Serial.print(bme.readPressure() / 100.0F);
