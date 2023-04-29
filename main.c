@@ -693,7 +693,7 @@ int main(int argc, char * argv[]) {
 	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
-        printf("get_payload_status: %d \n", get_payload_serial(TRUE);
+        printf("get_payload_status: %d \n", get_payload_serial(TRUE));
 	printf("String: %s\n", *buffer2);       
 	      
 /*  
