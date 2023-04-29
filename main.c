@@ -2015,14 +2015,14 @@ int get_payload_serial(int debug_camera)  {
 ///              buffer2[index1++] = octet;
 //              Serial.println("\nFound end flag");
 //              Serial.println(octet, HEX);
-              while(!Serial2.available()) { }     // Wait for another byte
+///              while(!Serial2.available()) { }     // Wait for another byte
 //              octet = Serial2.read(); 
 //              buffer2[index1++] = octet;
 //              Serial.println(octet, HEX);
 //              while(!Serial2.available()) { }     // Wait for another byte
-              int received_crc = Serial2.read(); 
+///              int received_crc = Serial2.read(); 
 //              buffer2[index1++] = octet;
-                            
+/*                            
               Serial.print("\nFile length: ");
               Serial.println(index1 - (int)strlen(end_flag));
 //              index1 -= 1; // 40;
@@ -2048,8 +2048,12 @@ int get_payload_serial(int debug_camera)  {
               else  
                Serial.println("CRC check failed!"); 
 
-              index1 -= 40;                         
-              write_jpg();
+*/		    
+//              index1 -= 40;                         
+              index1 -= strlen(end_flag);
+	      buffer2[index++] = NULL;	    
+
+//              write_jpg();
               index1 = 0;           
               start_flag_complete = FALSE;
               start_flag_detected = FALSE; // get ready for next image 
