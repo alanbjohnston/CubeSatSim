@@ -19,6 +19,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <FastCRC.h>
 
 #define PORT 8080
 
@@ -152,4 +153,24 @@ int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "APCSS";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
+
+bool get_payload_serial(bool debug_camera);
+bool finished = false;
+
+//char buffer2[100001];
+char buffer2[200];
+int index1 = 0;
+//char start_flag[] = "3d99de816e5ad7742b61a37c39141783";
+char start_flag[] = "START_FLAG";
+
+//char end_flag[] = "f681a5c52351befe0e3524eb1a40f14b7803317a";
+char end_flag[] = "END_FLAG";
+
+int flag_count = 0;
+int start_flag_detected = false;
+int start_flag_complete = false;
+int end_flag_detected = false;
+int jpeg_start = 0;
+FastCRC8 CRC8;
+#define CAMERA_TIMEOUT 10000 // 20000  // Camera timeout in milli seconds
 
