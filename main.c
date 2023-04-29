@@ -696,7 +696,9 @@ int main(int argc, char * argv[]) {
         printf("get_payload_status: %d \n", get_payload_serial(TRUE));
 	fflush(stdout); 
 	printf("String: %s\n", buffer2);       
-	fflush(stdout);      
+	fflush(stdout);   
+	      
+	strcpy(sensor_payload, buffer2);      
 /*  
         char c;
         unsigned int waitTime;
@@ -2057,7 +2059,7 @@ int get_payload_serial(int debug_camera)  {
 
 */		    
 //              index1 -= 40;                         
-//              index1 -= strlen(end_flag);
+              index1 -= strlen(end_flag);
 	      buffer2[index1++] = 0;
 	      printf("Payload length: %d \n",index1); 	    
 
