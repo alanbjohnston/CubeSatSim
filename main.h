@@ -153,7 +153,7 @@ char src_addr[5] = "";
 char dest_addr[5] = "APCSS";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
 
-int get_payload_serial(bool debug_camera);
+int get_payload_serial(int debug_camera);
 int finished = FALSE;
 
 //char buffer2[100001];
