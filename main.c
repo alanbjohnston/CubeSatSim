@@ -1993,7 +1993,8 @@ int get_payload_serial(int debug_camera)  {
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
 	  
     if (serialDataAvail(uart_fd)) {
-              printf("%c", short int octet = (char) serialGetchar(uart_fd));
+	      char octet = (char) serialGetchar(uart_fd);
+              printf("%c", octet);
               fflush(stdout);	  
 
 //   if (Serial2.available()) {      // If anything comes in Serial2
@@ -2009,7 +2010,7 @@ int get_payload_serial(int debug_camera)  {
             flag_count++;
 #ifdef GET_IMAGE_DEBUG  
 //       if (debug_camera)  
-            Serial.println("Found part of end flag!");
+            printf("Found part of end flag!");
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
 ///              buffer2[index1++] = octet;
@@ -2071,10 +2072,10 @@ int get_payload_serial(int debug_camera)  {
            char hexValue[5];
            if (octet != 0x66) {
              sprintf(hexValue, "%02X", octet);
-             Serial.print(hexValue);
+             printf(hexValue);
            } else {
 //             Serial.println("\n********************************************* Got a 66!");
-             Serial.print("66");
+             printf("66");
            } 
 //             Serial.write(octet);
     }
@@ -2100,6 +2101,6 @@ int get_payload_serial(int debug_camera)  {
 //    Serial.println("writing to Serial2");
   }
   if (debug_camera)                 
-      Serial.print("\nComplete\n");
+      printf("\nComplete\n");
   return(finished);
 }
