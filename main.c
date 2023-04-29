@@ -1974,20 +1974,20 @@ void loop() {
 }
 */
 
-bool get_payload_serial(bool debug_camera)  {
+int get_payload_serial(int debug_camera)  {
  
   index1 = 0;
   flag_count = 0;
-  start_flag_detected = false;
-  start_flag_complete = false;
-  end_flag_detected = false;
+  start_flag_detected = FALSE;
+  start_flag_complete = FALSE;
+  end_flag_detected = FALSE;
   jpeg_start = 0;
  
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
   Serial.println("Received from Payload:\n");
  // #endif
-  finished = false;
+  finished = FALSE;
 
   unsigned long time_start = millis();	    
   while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
@@ -2051,9 +2051,9 @@ bool get_payload_serial(bool debug_camera)  {
               index1 -= 40;                         
               write_jpg();
               index1 = 0;           
-              start_flag_complete = false;
-              start_flag_detected = false; // get ready for next image 
-              end_flag_detected = false;
+              start_flag_complete = FALSE;
+              start_flag_detected = FALSE; // get ready for next image 
+              end_flag_detected = FALSE;
               flag_count = 0; 
 //              delay(6000);
             }
@@ -2079,16 +2079,16 @@ bool get_payload_serial(bool debug_camera)  {
              index1 = 0; 
 //         }
     } else if (octet == start_flag[flag_count]) {  // looking for start flag
-          start_flag_detected = true;
+          start_flag_detected = TRUE;
           flag_count++;
 //          Serial.println("Found part of start flag! ");
           if (flag_count >= strlen(start_flag)) {
             flag_count = 0;
-            start_flag_complete = true;
+            start_flag_complete = TRUE;
 //            Serial.println("Found start flag!\n");        
           }
       } else {  // not the flag, keep looking
-          start_flag_detected = false;
+          start_flag_detected = FALSE;
           flag_count = 0;
      //   Serial.println("Resetting. Not start flag.");        
        } 
