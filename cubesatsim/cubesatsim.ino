@@ -3030,7 +3030,7 @@ void payload_OK_only()
 	    	       
 //      first_time = false;
       if (bmePresent) {
-        Serial.print("START_FLAGOK BME280 ");
+        Serial.print("OK BME280 ");
         Serial.print(bme.readTemperature());
         Serial.print(" ");
         Serial.print(bme.readPressure() / 100.0F);
@@ -3075,8 +3075,8 @@ void payload_OK_only()
     Serial.print(" ");
     Serial.print(Sensor3,2);         
     Serial.print(" MQ ");
-    Serial.print(sensorValue); // ,0);  	    
-    Serial.println(" END_FLAG");  
+    Serial.println(sensorValue); // ,0);  	    
+
   if (mpuPresent) 	 { 	    
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -3172,7 +3172,7 @@ void payload_OK_only()
     if (true)  // always send payload data over serial
     {
       if (bmePresent) {
-        Serial1.print("OK BME280 ");
+        Serial1.print("START_FLAGOK BME280 ");
         Serial1.print(bme.readTemperature());
         Serial1.print(" ");
         Serial1.print(bme.readPressure() / 100.0F);
@@ -3217,8 +3217,8 @@ void payload_OK_only()
     Serial1.print(" ");
     Serial1.print(Sensor3,2);    
     Serial1.print(" MQ ");
-    Serial1.println(sensorValue); //,0);  
-	    
+    Serial1.print(sensorValue); //,0);  
+    Serial1.println("END_FLAG");  	    
 	    
     blink(50);
     delay(50);
