@@ -2102,7 +2102,7 @@ int get_payload_serial(int debug_camera)  {
       } else {  // not the flag, keep looking
           start_flag_detected = FALSE;
           flag_count = 0;
-          fprintf("Resetting. Not start flag.\n");        
+          printf("Resetting. Not start flag.\n");        
        } 
     }
 //    Serial.println("writing to Serial2");
