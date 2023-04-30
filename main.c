@@ -1070,11 +1070,11 @@ void get_tlm(void) {
 */
     strcpy(sensor_payload, buffer2);      	  
     printf(" Response from STEM Payload board:: %s\n", sensor_payload);
-    printf(" Str so far: %s\n", str);   
+//    printf(" Str so far: %s\n", str);   
 	  
     if (mode != CW) {
         strcat(str, sensor_payload); // append to telemetry string for transmission
-	printf(" Str so far: %s\n", str);    
+//	printf(" Str so far: %s\n", str);    
     }
     if (mode == CW) {
 
@@ -2073,7 +2073,7 @@ int get_payload_serial(int debug_camera)  {
 //              index1 -= 40;                         
               index1 -= strlen(end_flag);
 	      buffer2[index1++] = 0;
-	      printf("Payload length: %d \n",index1); 	    
+	      printf(" Payload length: %d \n",index1); 	    
 
 //              write_jpg();
 	      finished = TRUE;	    
