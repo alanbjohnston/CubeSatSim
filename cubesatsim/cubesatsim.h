@@ -477,5 +477,5 @@ void update_rs(
 
 #endif /* TELEMENCODING_H_ */
 
-char end_flag[] = "_END_FLAG_";
-char start_flag[] = "_START_FLAG_";
+char sensor_end_flag[] = "_END_FLAG_";
+char sensor_start_flag[] = "_START_FLAG_";
