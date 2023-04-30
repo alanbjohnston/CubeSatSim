@@ -1967,7 +1967,7 @@ float toAprsFormat(float input) {
 }
 
 
-#define GET_IMAGE_DEBUG
+//#define GET_IMAGE_DEBUG
 
 //#define DEBUG
 
