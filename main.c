@@ -1059,7 +1059,7 @@ void get_tlm(void) {
         sensor_payload[i++] = ' ';
         //  sensor_payload[i++] = '\n';
         sensor_payload[i] = '\0';
-*/	
+	
         printf(" Response from STEM Payload board: %s\n", sensor_payload);
 	sleep(0.1);  // added sleep between loops
       }	    
@@ -1067,6 +1067,9 @@ void get_tlm(void) {
       if (mode != CW)
         strcat(str, sensor_payload); // append to telemetry string for transmission
     }
+*/
+    if (mode != CW)
+        strcat(str, sensor_payload); // append to telemetry string for transmission
 
     if (mode == CW) {
 
