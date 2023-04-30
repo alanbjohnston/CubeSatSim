@@ -339,7 +339,8 @@ int main(int argc, char * argv[]) {
 	
   // try connecting to STEM Payload board using UART
   // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
-
+	
+/*
   if (!ax5043 && !vB3 && !(mode == CW) && !(mode == SSTV)) // don't test for payload if AX5043 is present or CW or SSTV modes
   {
     payload = OFF;
@@ -380,15 +381,15 @@ int main(int argc, char * argv[]) {
 	sleep(2);  // delay to give payload time to get ready
       } 
       else {
-        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
-	printf("Turning on Payload anyway\n");
-	payload = ON;      
-	      
+        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");	      
       }
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
+*/	
+  printf("Turning on Payload\n");
+  payload = ON;      
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
@@ -697,47 +698,8 @@ int main(int argc, char * argv[]) {
 	fflush(stdout); 
 	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
-	      
-	strcpy(sensor_payload, buffer2);      
-/*  
-        char c;
-        unsigned int waitTime;
-	int i, end, trys = 0;
-	sensor_payload[0] = 0;
-	sensor_payload[1] = 0;
-	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
-          i = 0;
-//	  serialPutchar(uart_fd, '?');
-//	  sleep(0.05);  // added delay after ?
-//          printf("%d Querying payload with ?\n", trys);
-          waitTime = millis() + 500;
-          end = FALSE;
-          //  int retry = FALSE;
-          while ((millis() < waitTime) && !end) {
-            int chars = (char) serialDataAvail(uart_fd);
-            while ((chars > 0) && !end) {
-//	      printf("Chars: %d\ ", chars);
-	      chars--;
-	      c = (char) serialGetchar(uart_fd);
-              //	printf ("%c", c);
-              //	fflush(stdout);
-              if (c != '\n') {
-                sensor_payload[i++] = c;
-              } else {
-                end = TRUE;
-              }
-            }
-          }
-	
-          sensor_payload[i++] = ' ';
-          //  sensor_payload[i++] = '\n';
-          sensor_payload[i] = '\0';
-          printf(" Response from STEM Payload board: %s\n", sensor_payload);
-		
-		
-	  sleep(0.1);  // added sleep between loops
-	}
-*/	  
+
+	strcpy(sensor_payload, buffer2);      	      
 	printf(" Response from STEM Payload board: %s\n", sensor_payload);
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
@@ -1022,58 +984,13 @@ void get_tlm(void) {
          strcat(str, tlm_str);
     }
 
-    // read payload sensor if available
-/*
-    char sensor_payload[500];
-
-    if (payload == ON) {
-      char c;
-      unsigned int waitTime;
-      int i, end, trys = 0;
-      sensor_payload[0] = 0;
-      sensor_payload[1] = 0;
-      while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
-        i = 0;
-	serialPutchar(uart_fd, '?');
-	sleep(0.05);  // added delay after ?
-        printf("%d Querying payload with ?\n", trys);
-        waitTime = millis() + 500;
-        end = FALSE;
-        //  int retry = FALSE;
-        while ((millis() < waitTime) && !end) {
-          int chars = (char) serialDataAvail(uart_fd);
-          while ((chars > 0) && !end) {
-//	    printf("Chars: %d\ ", chars);
-	    chars--;
-	    c = (char) serialGetchar(uart_fd);
-            //	printf ("%c", c);
-            //	fflush(stdout);
-            if (c != '\n') {
-              sensor_payload[i++] = c;
-            } else {
-              end = TRUE;
-            }
-          }
-        }
-	
-        sensor_payload[i++] = ' ';
-        //  sensor_payload[i++] = '\n';
-        sensor_payload[i] = '\0';
-	
-        printf(" Response from STEM Payload board: %s\n", sensor_payload);
-	sleep(0.1);  // added sleep between loops
-      }	    
-
-      if (mode != CW)
-        strcat(str, sensor_payload); // append to telemetry string for transmission
-    }
-*/
+    strcpy(sensor_payload, buffer2);      	      	  
     printf(" Response from STEM Payload board:: %s\n", sensor_payload);
-    printf(" Str so far: %s\n", str);   
+ //   printf(" Str so far: %s\n", str);   
 	  
     if (mode != CW) {
         strcat(str, sensor_payload); // append to telemetry string for transmission
-	printf(" Str so far: %s\n", str);    
+//	printf(" Str so far: %s\n", str);    
     }
     if (mode == CW) {
 
