@@ -3174,8 +3174,10 @@ void payload_OK_only()
     if (true)  // always send payload data over serial
     {
       if (bmePresent) {
-        Serial1.print("START_FLAGOK BME280 ");
-        Serial1.print(bme.readTemperature());
+//        Serial1.print("START_FLAGOK BME280 ");
+        Serial1.print(start_flag);
+        Serial1.print("OK BME280 ");
+	Serial1.print(bme.readTemperature());
         Serial1.print(" ");
         Serial1.print(bme.readPressure() / 100.0F);
         Serial1.print(" ");
@@ -3184,7 +3186,9 @@ void payload_OK_only()
         Serial1.print(bme.readHumidity());
       } else
       {
-        Serial1.print("START_FLAGOK BME280 0.0 0.0 0.0 0.0");
+//        Serial1.print("START_FLAGOK BME280 0.0 0.0 0.0 0.0");
+        Serial1.print(start_flag);
+        Serial1.print("OK BME280 0.0 0.0 0.0 0.0"");	      
       }
       if (mpuPresent) 	 {     
       mpu6050.update();
@@ -3220,7 +3224,8 @@ void payload_OK_only()
     Serial1.print(Sensor3,2);    
     Serial1.print(" MQ ");
     Serial1.print(sensorValue); //,0);  
-    Serial1.println("END_FLAG");  	    
+//    Serial1.println("END_FLAG");  	    
+    Serial1.println(end_flag);  	    
 	    
     blink(50);
     delay(50);
