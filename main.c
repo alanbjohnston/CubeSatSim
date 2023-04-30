@@ -1068,9 +1068,13 @@ void get_tlm(void) {
         strcat(str, sensor_payload); // append to telemetry string for transmission
     }
 */
-    if (mode != CW)
+    printf(" Response from STEM Payload board:: %s\n", sensor_payload);
+    printf(" Str so far: %s\n", str);   
+	  
+    if (mode != CW) {
         strcat(str, sensor_payload); // append to telemetry string for transmission
-
+	printf(" Str so far: %s\n", str);    
+    }
     if (mode == CW) {
 
       char cw_str2[1000];
@@ -2108,16 +2112,22 @@ int get_payload_serial(int debug_camera)  {
     } else if (octet == start_flag[flag_count]) {  // looking for start flag
           start_flag_detected = TRUE;
           flag_count++;
+#ifdef GET_IMAGE_DEBUG  
           printf("Found part of start flag! \n");
+#endif  
           if (flag_count >= strlen(start_flag)) {
             flag_count = 0;
             start_flag_complete = TRUE;
+#ifdef GET_IMAGE_DEBUG  
             printf("Found all of start flag!\n");        
+#endif  
           }
       } else {  // not the flag, keep looking
           start_flag_detected = FALSE;
           flag_count = 0;
+#ifdef GET_IMAGE_DEBUG  
           printf("Resetting. Not start flag.\n");        
+#endif  
        } 
     }
 //    Serial.println("writing to Serial2");
