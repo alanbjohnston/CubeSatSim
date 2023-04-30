@@ -1068,6 +1068,7 @@ void get_tlm(void) {
         strcat(str, sensor_payload); // append to telemetry string for transmission
     }
 */
+    strcpy(sensor_payload, buffer2);      	  
     printf(" Response from STEM Payload board:: %s\n", sensor_payload);
     printf(" Str so far: %s\n", str);   
 	  
