@@ -476,3 +476,6 @@ void update_rs(
 #define DATA_BYTES_PER_CODE_WORD 223
 
 #endif /* TELEMENCODING_H_ */
+
+char end_flag[] = "_END_FLAG_";
+char start_flag[] = "_START_FLAG_";
