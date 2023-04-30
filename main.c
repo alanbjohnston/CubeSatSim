@@ -693,7 +693,7 @@ int main(int argc, char * argv[]) {
 	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
-        printf("get_payload_status: %d \n", get_payload_serial(TRUE));
+        printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
 	fflush(stdout); 
 	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
@@ -738,6 +738,8 @@ int main(int argc, char * argv[]) {
 	  sleep(0.1);  // added sleep between loops
 	}
 */	  
+	printf(" Response from STEM Payload board: %s\n", sensor_payload);
+      
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
           int count1;
@@ -745,6 +747,7 @@ int main(int argc, char * argv[]) {
  
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
+//	  printf("token: %s\n", token);	
           for (count1 = 0; count1 < 17; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
@@ -1020,7 +1023,7 @@ void get_tlm(void) {
     }
 
     // read payload sensor if available
-
+/*
     char sensor_payload[500];
 
     if (payload == ON) {
@@ -1058,7 +1061,8 @@ void get_tlm(void) {
         sensor_payload[i] = '\0';
         printf(" Response from STEM Payload board: %s\n", sensor_payload);
 	sleep(0.1);  // added sleep between loops
-      }	    
+      }	   
+	  */  
 
       if (mode != CW)
         strcat(str, sensor_payload); // append to telemetry string for transmission
