@@ -24,6 +24,6 @@ cubesatsim-main-pico-0.6s_bom.csv.txt -- Bill of Materials in CSV format
 
 I use PCBWay to fabricate PCBs https://pcbway.com
 
-Here is a very draft bill of materials https://octopart.com/bom-tool/qqEuO6mB
+Here is a very draft bill of materials h[ttps://octopart.com/bom-tool/qqEuO6mB](https://docs.google.com/spreadsheets/d/1CgiQtu549QPQgSDi-5jrkjbsNukUo29fWkVvJcoWSy8/edit?usp=sharing)
 
 Draft wiki instructions: https://github.com/alanbjohnston/CubeSatSim/wiki/Pico-v0.4-Board
