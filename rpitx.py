@@ -142,7 +142,8 @@ if __name__ == "__main__":
 					f = open("/home/pi/CubeSatSim/ready")
 					if (debug_mode == 1):
 						print("Packet ready!")
-					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")					
+					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")
+					system("cat /home/pi/CubeSatSim/t.txt")
 					output(txLed, txLedOn)
 					output(pd, 1)
 					output (ptt, 0)
@@ -152,7 +153,7 @@ if __name__ == "__main__":
 #					else:
 #						system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					system("aplay /home/pi/CubeSatSim/telem.wav")
-					sleep(0.1)
+					sleep(0.5)  # was 0.1 sec
 					output (ptt, 1)
 					output(pd, 0)
 					output(txLed, txLedOff)
