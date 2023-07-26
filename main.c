@@ -390,7 +390,8 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+//  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+  if (sim_mode == TRUE) {
 
     sim_mode = TRUE;
 	    
