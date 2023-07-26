@@ -130,6 +130,7 @@ if __name__ == "__main__":
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
 		if (mode == 'a'):
+			output(pd, 1)
 			print("AFSK")
 #			sleep(5)
 ##			try:
@@ -145,7 +146,7 @@ if __name__ == "__main__":
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")
 					system("cat /home/pi/CubeSatSim/t.txt")
 					output(txLed, txLedOn)
-					output(pd, 1)
+#					output(pd, 1)
 					output (ptt, 0)
 					sleep(.1)
 #					if (debug_mode == 1):
@@ -155,7 +156,7 @@ if __name__ == "__main__":
 					system("aplay /home/pi/CubeSatSim/telem.wav")
 					sleep(0.5)  # was 0.1 sec
 					output (ptt, 1)
-					output(pd, 0)
+#					output(pd, 0)
 					output(txLed, txLedOff)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/ready")
