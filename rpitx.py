@@ -104,7 +104,8 @@ if __name__ == "__main__":
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
-	if (mode != 'a'):
+#	if (mode != 'a'):
+	if True:	
 		output(pd, 1)
 		output (ptt, 0)
 		output(txLed, txLedOn)
