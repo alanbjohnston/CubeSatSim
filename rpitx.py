@@ -54,7 +54,8 @@ GPIO.setwarnings(False)
 GPIO.setup(txLed, GPIO.OUT)
 
 GPIO.setup(pd, GPIO.OUT)
-output(pd, 1)
+#output(pd, 1)
+output(pd, 0)
 GPIO.setup(ptt, GPIO.OUT)
 output (ptt, 1)
 
@@ -104,6 +105,7 @@ if __name__ == "__main__":
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
 	if (mode != 'a'):
+		output(pd, 1)
 		output (ptt, 0)
 		output(txLed, txLedOn)
 		sleep(0.1)
@@ -115,6 +117,7 @@ if __name__ == "__main__":
 		sleep(0.1)
 		output(txLed, txLedOff)
 		output (ptt, 1)
+		output(pd, 0)
 		sleep(1)
 	else:
 		print("Don't transmit CW ID for APRS")
@@ -140,6 +143,7 @@ if __name__ == "__main__":
 						print("Packet ready!")
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")					
 					output(txLed, txLedOn)
+					output(pd, 1)
 					output (ptt, 0)
 					sleep(.1)
 #					if (debug_mode == 1):
@@ -149,6 +153,7 @@ if __name__ == "__main__":
 					system("aplay /home/pi/CubeSatSim/telem.wav")
 					sleep(0.1)
 					output (ptt, 1)
+					output(pd, 0)
 					output(txLed, txLedOff)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/ready")
@@ -166,6 +171,7 @@ if __name__ == "__main__":
 			except:
 				system("echo 'hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > /home/pi/CubeSatSim/cw.txt")
 			output(txLed, txLedOn)
+			output(pd, 1)
 			output (ptt, 0)
 			sleep(0.1)
 #			if (debug_mode == 1):
@@ -175,12 +181,14 @@ if __name__ == "__main__":
 			system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay /home/pi/CubeSatSim/morse.wav")
 			output(txLed, txLedOff)
 			output (ptt, 1)
+			output(pd, 0)
 
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1")
 					output(txLed, txLedOn)
+					output(pd, 1)
 					output (ptt, 0)
 					sleep(0.1)
 #					if (debug_mode == 1):
@@ -191,6 +199,7 @@ if __name__ == "__main__":
 					sleep(0.1)
 					output(txLed, txLedOff)
 					output (ptt, 1)
+					output(pd, 0)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(1)
@@ -216,6 +225,7 @@ if __name__ == "__main__":
 #				while 1:
 			output(txLed, txLedOff)
 			output (ptt, 1)
+			output(pd, 0)
 			if (camera_present == 1):
 				try:
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
@@ -223,6 +233,7 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
+					output(pd, 1)
 					output (ptt, 0)
 					system("aplay /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
 			#		if (debug_mode == 1):
@@ -231,6 +242,7 @@ if __name__ == "__main__":
 			#			system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					output(txLed, txLedOff)
 					output (ptt, 1)
+					output(pd, 0)
 	#					sleep(1)
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
@@ -241,6 +253,7 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
+					output(pd, 1)
 					output (ptt, 0)
 					system("aplay /home/pi/CubeSatSim/camera_out.jpg.wav")						
 #					if (debug_mode == 1):
@@ -249,6 +262,7 @@ if __name__ == "__main__":
 #						system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					output(txLed, txLedOff)
 					output (ptt, 1)
+					output(pd, 0)
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1") 
 					sleep(1)
 			else:
@@ -258,6 +272,7 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg") 
 					print ("Sending SSTV image")
 					output(txLed, txLedOn)
+					output(pd, 1)
 					output (ptt, 0)
 					system("aplay /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")					
 #					if (debug_mode == 1):
@@ -266,6 +281,7 @@ if __name__ == "__main__":
 #						system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 					output(txLed, txLedOff)
 					output (ptt, 1)
+					output(pd, 0)
 					sleep(1)
 				except:
 					print("image 1 did not load - copy from CubeSatSim/sstv directory")
@@ -276,6 +292,7 @@ if __name__ == "__main__":
 					while 1:
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
+						output(pd, 1)
 						output (ptt, 0)
 						system("aplay /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")										
 #						if (debug_mode == 1):
@@ -284,6 +301,7 @@ if __name__ == "__main__":
 #							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 						output(txLed, txLedOff)
 						output (ptt, 1)
+						output(pd, 0)
 						sleep(5)
 				except:	
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
@@ -291,11 +309,13 @@ if __name__ == "__main__":
 #					system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
 					while 1:
 						output(txLed, txLedOn)
+						output(pd, 1)
 						output (ptt, 0)
 #						sleep(60)
 						system("aplay /home/pi/CubeSatSim/sstv.wav")
 						output(txLed, txLedOff)
 						output (ptt, 1)
+						output(pd, 0)
 						sleep(1)
 		elif (mode == 'b'):
 			print("BPSK")
