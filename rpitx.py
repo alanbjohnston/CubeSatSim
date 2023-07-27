@@ -9,7 +9,7 @@ from time import sleep
 import sys
 from os import system
 
-print("CubeSatSim v1.1 rpitx.py starting...")
+print("CubeSatSim v1.3b rpitx.py starting...")
 
 pd = 21
 ptt = 20
