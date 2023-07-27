@@ -13,12 +13,14 @@ print("CubeSatSim v1.1 rpitx.py starting...")
 
 pd = 21
 ptt = 20
+txc = 7
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 transmit = False
 if GPIO.input(12) == False:
@@ -59,6 +61,12 @@ output(pd, 0)
 GPIO.setup(ptt, GPIO.OUT)
 output (ptt, 1)
 
+txc = False
+if GPIO.input(7) == False:
+	print("TXC is present")
+	txc = True;
+elif:
+	print("TXC not present")
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
@@ -110,11 +118,15 @@ if __name__ == "__main__":
 		output (ptt, 0)
 		output(txLed, txLedOn)
 		sleep(0.1)
-	#	if (debug_mode == 1):
-	#		system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
-	#	else:
-	#		system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-		system("aplay /home/pi/CubeSatSim/morse.wav")	
+		
+		if (txc):
+			system("aplay /home/pi/CubeSatSim/morse.wav")	
+		else:	
+			if (debug_mode == 1):
+				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+			else:
+				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+		
 		sleep(0.1)
 		output(txLed, txLedOff)
 		output (ptt, 1)
@@ -149,11 +161,15 @@ if __name__ == "__main__":
 #					output(pd, 1)
 					output (ptt, 0)
 					sleep(.1)
-#					if (debug_mode == 1):
-#						system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
-#					else:
-#						system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-					system("aplay /home/pi/CubeSatSim/telem.wav")
+
+					if (txc):
+						system("aplay /home/pi/CubeSatSim/telem.wav")
+					else:			
+						if (debug_mode == 1):
+							system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+						else:
+							system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+					
 					sleep(0.1)  
 					output (ptt, 1)
 #					output(pd, 0)
