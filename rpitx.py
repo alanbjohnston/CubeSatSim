@@ -65,7 +65,7 @@ txc = False
 if GPIO.input(7) == False:
 	print("TXC is present")
 	txc = True;
-elif:
+else:
 	print("TXC not present")
 output(txLed, txLedOn)
 sleep(1)
