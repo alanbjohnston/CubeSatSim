@@ -133,12 +133,12 @@ sudo raspi-config nonint do_legacy 0
   
   sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
   
-#  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
-#    echo "dtoverlay=i2c-gpio already in /boot/config.txt"
-#  else
-#    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
-#    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
-#  fi
+  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
+    echo "dtoverlay=i2c-gpio already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
+  fi
 
   if [[ $(grep 'enable_uart=1' /boot/config.txt) ]]; then
     echo "enable_uart=1 already in /boot/config.txt"
