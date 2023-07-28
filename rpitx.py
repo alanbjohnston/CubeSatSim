@@ -257,6 +257,7 @@ if __name__ == "__main__":
 
 					if (txc):
 						system("aplay /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+					else:	
 						if (debug_mode == 1):
 							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 						else:
