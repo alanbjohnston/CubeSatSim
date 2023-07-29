@@ -134,7 +134,7 @@ void setup() {
   sr_frs_present = true;	 
   program_radio();  
   start_payload();		
-
+  pinMode(15, INPUT_PULLUP);
 /*	
   get_input();	
 	
@@ -238,7 +238,10 @@ void setup() {
 void loop() {
 
   payload_OK_only();
-  sleep(1.0);	
+  sleep(1.0);
+  Serial.println(" ");	
+  Serial.println(digitalRead(15));
+  Serial.println(" ");	
 }
 
 void config_gpio() {
