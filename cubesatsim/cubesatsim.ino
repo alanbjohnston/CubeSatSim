@@ -75,7 +75,7 @@ MQTTClient client;
 
 #define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
-#define APRS_VHF
+//#define APRS_VHF
 
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
@@ -96,15 +96,15 @@ void setup() {
 	
   delay(10000);	
 	
-  LittleFS.begin();
+//  LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
-#ifdef APRS_VHF	  
-   mode = AFSK;	// force to APRS	
-#else	
-  read_mode();
-#endif
+//#ifdef APRS_VHF	  
+//   mode = AFSK;	// force to APRS	
+//#else	
+//  read_mode();
+//#endif
 	
-  new_mode = mode;
+//  new_mode = mode;
 	
 //  pinMode(LED_BUILTIN, OUTPUT);	
 //  blinkTimes(1);	
@@ -113,7 +113,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.39 starting...\n");
+  Serial.println("CubeSatSim Pico v0.40 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -130,6 +130,12 @@ void setup() {
 	
   config_gpio();
 
+  Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
+  sr_frs_present = true;	 
+  program_radio();  
+  start_payload();		
+
+/*	
   get_input();	
 	
   start_clockgen();		
@@ -144,7 +150,7 @@ void setup() {
 // if Pi is present, run Payload OK software
 
 ///  load_files();			
-/*	
+*	
   pinMode(PI_3V3_PIN, INPUT); 	
   Serial.print("Pi 3.3V: ");
   Serial.println(digitalRead(PI_3V3_PIN));
@@ -156,7 +162,7 @@ void setup() {
 //      payload_OK_only();    
     }
   }
-*/
+*
 // configure STEM Payload sensors
 	
 //  pinMode(PI_3V3_PIN, OUTPUT);
@@ -167,14 +173,13 @@ void setup() {
   start_payload();  // above code not working, so forcing it
 	
   read_config_file();	
-	
-/*	
+		
   sim_mode = FALSE;
   if (sim_mode)
     config_simulated_telem();
   else
     ; // configure ina219s
-*/    	  
+    	  
   start_ina219();
 	
   if ((i2c_bus3 == false) || (sim_mode))	
@@ -198,14 +203,13 @@ void setup() {
   prompt = PROMPT_HELP;  // display input help menu	
   prompt_for_input();
 	
-/**/
+
 //  Serial.println("Transmitting callsign");	
 //  strcpy(callsign, call);	
   if ((mode != CW)  || (!filter_present))
     transmit_callsign(callsign);
 //  sleep(5.0);		
   sleep(1.0);		
-/**/
 		
   config_telem();	
 
@@ -224,7 +228,7 @@ void setup() {
   ready = TRUE;  // flag for core1 to start looping
 
   // get_input();	
-/*	
+*	
   Serial.print("s");
   Serial.print(" ");
   Serial.println(millis());
@@ -232,6 +236,54 @@ void setup() {
 }
 
 void loop() {
+
+  payload_OK_only();
+  sleep(1.0);	
+}
+
+void config_gpio() {
+	
+  // set all Pico GPIO connected pins to input	
+  for (int i = 6; i < 22; i++) { 
+      pinMode(i, INPUT);	  
+  }
+  pinMode(26, INPUT);	
+  pinMode(27, INPUT);	
+  pinMode(28, INPUT);		
+}	
+
+void program_radio() {
+ if (sr_frs_present) {	
+  Serial.println("Programming SR_FRS!");	
+		
+  digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
+  digitalWrite(PTT_PIN, HIGH);  // stop transmit	
+	
+  DumbTXSWS mySerial(SWTX_PIN); // TX pin
+  mySerial.begin(9600);
+    
+  for (int i = 0; i < 5; i++) {
+     sleep(0.5); // delay(500);
+//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
+//    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
+//     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+//     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
+//     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
+#ifdef APRS_VHF	  
+     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
+#else
+     mySerial.println("AT+DMOSETGROUP=0,434.9000,435.0000,0,3,0,0\r");   // squelch set to 3
+#endif	  
+
+   sleep(0.5);	  
+   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+	
+  }
+ }	
+  digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
+}
+
+/*
 	
   int startSleep = millis();	
   loop_count++;
@@ -278,12 +330,12 @@ void loop() {
 	  load_sstv_image_2_as_cam_dot_jpg(); 
 	}
       }  
-/*	  
+*	  
       if (debug_mode)  {	  
         Serial.print("\nSending SSTV image ");
         print_string(image_file);
       }
-*/	  
+*	  
 //      send_sstv("/cam.raw");
 	  
 //      send_sstv(image_file);
@@ -367,8 +419,9 @@ void loop() {
 //  longitude = longitude + 0.01;		
 //  set_lat_lon();	
 #endif	
-}	
 
+}	
+*/
 bool TimerHandler1(struct repeating_timer *t) {
 /*	
   if (((skip++)%10) == 0)	
@@ -3858,21 +3911,12 @@ void blink_pin(int pin, int duration) {
 	
 }
 
-void config_gpio() {
-	
-  // set all Pico GPIO connected pins to input	
-  for (int i = 6; i < 22; i++) { 
-      pinMode(i, INPUT);	  
-  }
-  pinMode(26, INPUT);	
-  pinMode(27, INPUT);	
-  pinMode(28, INPUT);		
-	
+
 ///  pinMode(PI_3V3_PIN, INPUT); 	
 ///  Serial.print("Pi 3.3V: ");
 ///  Serial.println(digitalRead(PI_3V3_PIN));
 ///  if (digitalRead(PI_3V3_PIN) == HIGH)  {
- 	
+/* 	
  {
     Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
     sr_frs_present = true;	 
@@ -3884,8 +3928,9 @@ void config_gpio() {
       payload_OK_only();
       sleep(1.0);	    
     }
-  }	
-	
+  }
+*/	
+/*	
   // set audio out to TXC board
   pinMode(AUDIO_OUT_PIN, OUTPUT);	
 	
@@ -3956,7 +4001,10 @@ void config_gpio() {
 
   pinMode(PD_PIN, OUTPUT);  // PD active HIGH
   digitalWrite(PD_PIN, LOW);  	
-}
+  
+*/
+  
+//}
 
 bool TimerHandler0(struct repeating_timer *t) {
 
@@ -5079,37 +5127,6 @@ void set_lat_lon() {
 	  
   set_lat_lon_icon(lat_string, lon_string, icon);	
 
-}
-
-void program_radio() {
- if (sr_frs_present) {	
-  Serial.println("Programming SR_FRS!");	
-		
-  digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
-  digitalWrite(PTT_PIN, HIGH);  // stop transmit	
-	
-  DumbTXSWS mySerial(SWTX_PIN); // TX pin
-  mySerial.begin(9600);
-    
-  for (int i = 0; i < 5; i++) {
-     sleep(0.5); // delay(500);
-//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
-//    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
-//     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-//     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
-//     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
-#ifdef APRS_VHF	  
-     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
-#else
-     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-#endif	  
-
-   sleep(0.5);	  
-   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
-	
-  }
- }	
-  digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
 }
 
 void read_mode() {
