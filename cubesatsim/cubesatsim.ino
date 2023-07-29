@@ -133,8 +133,13 @@ void setup() {
   Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
   sr_frs_present = true;	 
   program_radio();  
-  start_payload();		
+  start_payload();
+	
   pinMode(15, INPUT_PULLUP);
+  pinMode(22, OUTPUT);
+  digitalWrite(22, 1);
+  pinMode(17, OUTPUT);
+  digitalWrite(17, 1);	
 /*	
   get_input();	
 	
