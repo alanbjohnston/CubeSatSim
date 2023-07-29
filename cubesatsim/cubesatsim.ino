@@ -275,7 +275,7 @@ void program_radio() {
 #ifdef APRS_VHF	  
      mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
 #else
-     mySerial.println("AT+DMOSETGROUP=0,434.9000,435.0000,0,0,0,0\r");   // squelch set to 0
+     mySerial.println("AT+DMOSETGROUP=0,434.9000,435.0000,0,1,0,0\r");   // squelch set to 1
 #endif	  
 
    sleep(0.5);	  
