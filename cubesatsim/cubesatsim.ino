@@ -284,12 +284,13 @@ void program_radio() {
 #else
      mySerial.println("AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r");   // squelch set to 3
 #endif	  
-
    sleep(0.5);	  
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
  }
+ Serial.println("Programming FM tx 434.9, rx on 435.0 MHz");
+	
 //  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
 //  sleep(0.5);
 //  digitalWrite(PTT_PIN, HIGH);	
