@@ -208,7 +208,6 @@ if __name__ == "__main__":
 							print("Turning on transmit")
 							system("echo > command_tx True")
 						else:
-						if (command_tx == True):
 							print("Turning off transmit")
 							system("echo > command_tx False")
 				except:		  
