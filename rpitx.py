@@ -413,7 +413,6 @@ if __name__ == "__main__":
 						sleep(60)
 				if (command_tx == True):		
 					output(txLed, txLedOn)
-				output(txLed, txLedOn)
 				sleep(4.0)
 		else:
 			print("FSK") 
