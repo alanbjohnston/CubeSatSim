@@ -16,7 +16,7 @@ ptt = 20
 txc = 7
 squelch = 6
 
-command_tx = True
+# command_tx = True
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -102,6 +102,16 @@ if __name__ == "__main__":
 	print("Mode is: ")
 	print(mode)
 
+	try:
+		file = open("/home/pi/CubeSatSim/command_tx")
+		command_tx = file.readline().split(" ")[0]
+	except:
+		command_tx = True
+		if (debug_mode == 1):
+			print("Can't open command_tx file, defaulting to True")
+	print("Command_tx: ")
+	print(command_tx)
+	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
 		callsign = file.readline().split(" ")[0]
