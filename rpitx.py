@@ -132,7 +132,7 @@ if __name__ == "__main__":
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
 #	if (mode != 'a'):
-	if True:	
+	if (command_tx == True):	
 		output(pd, 1)
 		output (ptt, 0)
 		output(txLed, txLedOn)
@@ -152,7 +152,7 @@ if __name__ == "__main__":
 		output(pd, 0)
 		sleep(1)
 	else:
-		print("Don't transmit CW ID for APRS")
+		print("Don't transmit CW ID since command_tx is False")
 
 	if (transmit):
 	
@@ -403,8 +403,9 @@ if __name__ == "__main__":
 			print("FSK") 
 			print("turn on FM rx")
 			output(pd, 1)
-			output(ptt, 1)			
-			system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
+			output(ptt, 1)
+			if (command_tx == True):
+				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
 			print("Turning LED on/off and listening for carrier")
 			while 1:
 				output(txLed, txLedOff)
@@ -412,8 +413,18 @@ if __name__ == "__main__":
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
 					command_tx = not command_tx
-					print(command_tx)				
-				output(txLed, txLedOn)
+					print(command_tx)
+					if (command_tx == True):
+						print("Turning on transmit")
+						system("echo > command_tx True")
+						system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
+					else:
+						print("Turning of transmit and rebooting")
+						system("echo > command_tx False")
+						system("sudo reboot now")
+						sleep(60)
+				if (command_tx == True):		
+					output(txLed, txLedOn)
 				sleep(4.0)
 	else:
 		print("No Low Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
