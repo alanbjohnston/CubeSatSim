@@ -194,8 +194,9 @@ if __name__ == "__main__":
 						output (ptt, 1)
 #						output(pd, 0)
 						output(txLed, txLedOff)
+						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
-					system("sudo rm /home/pi/CubeSatSim/ready")
+					
 					if (debug_mode == 1):
 						print("Ready for next packet!")
 						
@@ -207,9 +208,9 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							print("Turning on transmit")
 							system("echo > command_tx True")
-							output(txLed, txLedOn)
-							sleep(0.5)
-							output(txLed, txLedff)
+#							output(txLed, txLedOn)
+#							sleep(0.5)
+#							output(txLed, txLedff)
 						else:
 							print("Turning off transmit")
 							system("echo > command_tx False")
