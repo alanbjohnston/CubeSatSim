@@ -393,10 +393,25 @@ if __name__ == "__main__":
 			while 1:
 				output(txLed, txLedOff)
 				sleep(0.5)
+				if (command_tx == False):
+					output(txLed, txLedOn)
+					sleep(0.01)
+					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
+					if (command_tx == True):
+						print("Turning on transmit")
+						system("echo > command_tx True")
+						system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
+					else:
+						print("Turning of transmit and rebooting")
+						system("echo > command_tx False")
+						system("sudo reboot now")
+						sleep(60)
+				if (command_tx == True):		
+					output(txLed, txLedOn)
 				output(txLed, txLedOn)
 				sleep(4.0)
 		else:
@@ -410,6 +425,10 @@ if __name__ == "__main__":
 			while 1:
 				output(txLed, txLedOff)
 				sleep(0.5)
+				if (command_tx == False):
+					output(txLed, txLedOn)
+					sleep(0.01)
+					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
 					command_tx = not command_tx
