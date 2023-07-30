@@ -381,7 +381,7 @@ if __name__ == "__main__":
 				sleep(0.5)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
-					command_tx = ~command_tx
+					command_tx = not command_tx
 					print(command_tx)
 				output(txLed, txLedOn)
 				sleep(4.0)
@@ -397,7 +397,7 @@ if __name__ == "__main__":
 				sleep(0.5)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
-					command_tx = ~command_tx
+					command_tx = not command_tx
 					print(command_tx)				
 				output(txLed, txLedOn)
 				sleep(4.0)
