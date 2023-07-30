@@ -207,6 +207,9 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							print("Turning on transmit")
 							system("echo > command_tx True")
+							output(txLed, txLedOn)
+							sleep(0.5)
+							output(txLed, txLedff)
 						else:
 							print("Turning off transmit")
 							system("echo > command_tx False")
