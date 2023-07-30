@@ -409,7 +409,8 @@ if __name__ == "__main__":
 					else:
 						print("Turning of transmit and rebooting")
 						system("echo > command_tx False")
-						system("sudo reboot now")
+						system("sudo systemctl restart rpitx")
+#						system("sudo reboot now")
 						sleep(60)
 				if (command_tx == True):		
 					output(txLed, txLedOn)
@@ -440,7 +441,8 @@ if __name__ == "__main__":
 					else:
 						print("Turning of transmit and rebooting")
 						system("echo > command_tx False")
-						system("sudo reboot now")
+						system("sudo systemctl restart rpitx")
+#						system("sudo reboot now")
 						sleep(60)
 				if (command_tx == True):		
 					output(txLed, txLedOn)
