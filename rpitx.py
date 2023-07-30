@@ -104,7 +104,11 @@ if __name__ == "__main__":
 
 	try:
 		file = open("/home/pi/CubeSatSim/command_tx")
-		command_tx = file.readline().split(" ")[0]
+		char = file.read(1)
+		if (char == 'T')
+			command_tx = True
+		else:
+			command_tx = False
 	except:
 		command_tx = True
 		if (debug_mode == 1):
