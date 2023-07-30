@@ -290,9 +290,9 @@ void program_radio() {
 	
   }
  }
-  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
-  sleep(0.5);
-  digitalWrite(PTT_PIN, HIGH);	
+//  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
+//  sleep(0.5);
+//  digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
   pinMode(PD_PIN, INPUT);
   pinMode(PTT_PIN, INPUT);	
