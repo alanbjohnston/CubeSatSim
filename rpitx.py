@@ -14,6 +14,9 @@ print("CubeSatSim v1.3b rpitx.py starting...")
 pd = 21
 ptt = 20
 txc = 7
+squelch = 6
+
+command_tx = True
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -21,6 +24,8 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+GPIO.setup(squelch, GPIO.IN)
 
 transmit = False
 if GPIO.input(12) == False:
@@ -371,6 +376,9 @@ if __name__ == "__main__":
 			while 1:
 				output(txLed, txLedOff)
 				sleep(0.5)
+				if GPIO.input(squelch) == False:
+					command_tx = ~command_tx
+					print(command_tx)
 				output(txLed, txLedOn)
 				sleep(4.0)
 		else:
@@ -380,6 +388,9 @@ if __name__ == "__main__":
 			while 1:
 				output(txLed, txLedOff)
 				sleep(0.5)
+				if GPIO.input(squelch) == False:
+					command_tx = ~command_tx
+					print(command_tx)				
 				output(txLed, txLedOn)
 				sleep(4.0)
 	else:
