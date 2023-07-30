@@ -396,7 +396,7 @@ if __name__ == "__main__":
 				sleep(0.5)
 				if (command_tx == False):
 					output(txLed, txLedOn)
-					sleep(0.1)
+					sleep(0.03)
 					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
@@ -427,7 +427,7 @@ if __name__ == "__main__":
 				sleep(0.5)
 				if (command_tx == False):
 					output(txLed, txLedOn)
-					sleep(0.1)
+					sleep(0.03)
 					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
