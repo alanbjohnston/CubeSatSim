@@ -263,7 +263,9 @@ void config_gpio() {
 void program_radio() {
  if (sr_frs_present) {	
   Serial.println("Programming SR_FRS!");	
-		
+
+  pinMode(PD_PIN, OUTPUT);
+  pinMode(PTT_PIN, OUTPUT);
   digitalWrite(PD_PIN, HIGH);  // enable SR_FRS
   digitalWrite(PTT_PIN, HIGH);  // stop transmit	
 	
@@ -280,15 +282,20 @@ void program_radio() {
 #ifdef APRS_VHF	  
      mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,8,0,0\r");    // can change to 144.39 for standard APRS	  
 #else
-     mySerial.println("AT+DMOSETGROUP=0,434.9000,435.0000,0,8,0,0\r");   // squelch set to 3
+     mySerial.println("AT+DMOSETGROUP=0,434.9000,435.0000,0,8,0,0\r");   // squelch set to 8
 #endif	  
 
    sleep(0.5);	  
    mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
- }	
+ }
+  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
+  sleep(0.5);
+  digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
+  pinMode(PD_PIN, INPUT);
+  pinMode(PTT_PIN, INPUT);	
 }
 
 /*
