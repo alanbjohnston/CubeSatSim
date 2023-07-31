@@ -295,6 +295,7 @@ if __name__ == "__main__":
 					print("First SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
 
+					output(pd, 1)
 					if GPIO.input(squelch) == False:
 						print("carrier received!")
 						command_tx = not command_tx
@@ -308,7 +309,7 @@ if __name__ == "__main__":
 						else:
 							print("Turning off transmit")
 							system("echo > command_tx False")
-					
+					output(pd, 0)
 					
 					if (command_tx == True):
 						print ("Sending SSTV image")
