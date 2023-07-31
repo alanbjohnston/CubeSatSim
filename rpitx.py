@@ -295,7 +295,6 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
 					if (command_tx == True):
 						print ("Sending SSTV image")
-						if (command_tx == True):
 						output(txLed, txLedOn)
 						output(pd, 1)
 						output (ptt, 0)
