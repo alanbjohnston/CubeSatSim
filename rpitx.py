@@ -200,6 +200,11 @@ if __name__ == "__main__":
 						print("carrier received!")
 						command_tx = not command_tx
 						print(command_tx)
+						
+						output(txLed, txLedOn)
+						sleep(0.03)
+						output(txLed, txLedOff)
+						
 						if (command_tx == True):
 							print("Turning on transmit")
 							system("echo > command_tx True")
@@ -326,6 +331,11 @@ if __name__ == "__main__":
 						print("carrier received!")
 						command_tx = not command_tx
 						print(command_tx)
+						
+						output(txLed, txLedOn)
+						sleep(0.03)
+						output(txLed, txLedOff)
+						
 						if (command_tx == True):
 							print("Turning on transmit")
 							system("echo > command_tx True")
@@ -440,6 +450,11 @@ if __name__ == "__main__":
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
+						
+					output(txLed, txLedOn)
+					sleep(0.03)
+					output(txLed, txLedOff)
+						
 					if (command_tx == True):
 						print("Turning on transmit")
 						system("echo > command_tx True")
@@ -472,6 +487,11 @@ if __name__ == "__main__":
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
+						
+					output(txLed, txLedOn)
+					sleep(0.03)
+					output(txLed, txLedOff)
+						
 					if (command_tx == True):
 						print("Turning on transmit")
 						system("echo > command_tx True")
