@@ -294,22 +294,6 @@ if __name__ == "__main__":
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					print("First SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
-
-					output(pd, 1)
-					if GPIO.input(squelch) == False:
-						print("carrier received!")
-						command_tx = not command_tx
-						print(command_tx)
-						if (command_tx == True):
-							print("Turning on transmit")
-							system("echo > command_tx True")
-#							output(txLed, txLedOn)
-#							sleep(0.5)
-#							output(txLed, txLedff)
-						else:
-							print("Turning off transmit")
-							system("echo > command_tx False")
-					output(pd, 0)
 					
 					if (command_tx == True):
 						print ("Sending SSTV image")
@@ -336,6 +320,22 @@ if __name__ == "__main__":
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
+
+					output(pd, 1)
+					if GPIO.input(squelch) == False:
+						print("carrier received!")
+						command_tx = not command_tx
+						print(command_tx)
+						if (command_tx == True):
+							print("Turning on transmit")
+							system("echo > command_tx True")
+#							output(txLed, txLedOn)
+#							sleep(0.5)
+#							output(txLed, txLedff)
+						else:
+							print("Turning off transmit")
+							system("echo > command_tx False")
+					output(pd, 0)			
 
 					if (command_tx == True):
 						print ("Sending SSTV image")
