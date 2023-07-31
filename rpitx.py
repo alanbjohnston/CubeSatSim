@@ -201,6 +201,7 @@ if __name__ == "__main__":
 						print("Ready for next packet!")
 						
 					sleep(0.5)
+				except:
 					if GPIO.input(squelch) == False:
 						print("carrier received!")
 						command_tx = not command_tx
@@ -214,7 +215,6 @@ if __name__ == "__main__":
 						else:
 							print("Turning off transmit")
 							system("echo > command_tx False")
-				except:		  
 					sleep(0.5)
 		elif (mode == 'm'):
 			print("CW")
@@ -293,22 +293,24 @@ if __name__ == "__main__":
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					print("First SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
-					print ("Sending SSTV image")
-					output(txLed, txLedOn)
-					output(pd, 1)
-					output (ptt, 0)
+					if (command_tx == True):
+						print ("Sending SSTV image")
+						if (command_tx == True):
+						output(txLed, txLedOn)
+						output(pd, 1)
+						output (ptt, 0)
 
-					if (txc):
-						system("aplay /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
-					else:	
-						if (debug_mode == 1):
-							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
-						else:
-							system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+						if (txc):
+							system("aplay /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+						else:	
+							if (debug_mode == 1):
+								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+							else:
+								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 
-					output(txLed, txLedOff)
-					output (ptt, 1)
-					output(pd, 0)
+						output(txLed, txLedOff)
+						output (ptt, 1)
+						output(pd, 0)
 	#					sleep(1)
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
@@ -317,21 +319,38 @@ if __name__ == "__main__":
 					print("Photo taken")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
-					print ("Sending SSTV image")
-					output(txLed, txLedOn)
-					output(pd, 1)
-					output (ptt, 0)
 
-					if (txc):
-						system("aplay /home/pi/CubeSatSim/camera_out.jpg.wav")	
-					else:	
-						if (debug_mode == 1):
-							system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+					if (command_tx == True):
+						print ("Sending SSTV image")
+						output(txLed, txLedOn)
+						output(pd, 1)
+						output (ptt, 0)
+
+						if (txc):
+							system("aplay /home/pi/CubeSatSim/camera_out.jpg.wav")	
+						else:	
+							if (debug_mode == 1):
+								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+							else:
+								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+
+						output(txLed, txLedOff)
+						output (ptt, 1)
+
+					if GPIO.input(squelch) == False:
+						print("carrier received!")
+						command_tx = not command_tx
+						print(command_tx)
+						if (command_tx == True):
+							print("Turning on transmit")
+							system("echo > command_tx True")
+#							output(txLed, txLedOn)
+#							sleep(0.5)
+#							output(txLed, txLedff)
 						else:
-							system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
-
-					output(txLed, txLedOff)
-					output (ptt, 1)
+							print("Turning off transmit")
+							system("echo > command_tx False")
+					
 					output(pd, 0)
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1") 
 					sleep(1)
