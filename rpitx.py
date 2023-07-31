@@ -196,12 +196,6 @@ if __name__ == "__main__":
 						output(txLed, txLedOff)
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
-					
-					if (debug_mode == 1):
-						print("Ready for next packet!")
-						
-					sleep(0.5)
-				except:
 					if GPIO.input(squelch) == False:
 						print("carrier received!")
 						command_tx = not command_tx
@@ -215,6 +209,13 @@ if __name__ == "__main__":
 						else:
 							print("Turning off transmit")
 							system("echo > command_tx False")
+							
+					if (debug_mode == 1):
+						print("Ready for next packet!")
+						
+					sleep(0.5)
+				except:
+
 					sleep(0.5)
 		elif (mode == 'm'):
 			print("CW")
