@@ -25,7 +25,7 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(green, GPIO.IN, INPUT)
+GPIO.setup(green, GPIO.OUT)
 
 GPIO.setup(squelch, GPIO.IN)
 
