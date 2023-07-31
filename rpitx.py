@@ -15,7 +15,7 @@ pd = 21
 ptt = 20
 txc = 7
 squelch = 6
-green = 26
+green = 16
 
 # command_tx = True
 
