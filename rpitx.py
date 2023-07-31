@@ -15,6 +15,7 @@ pd = 21
 ptt = 20
 txc = 7
 squelch = 6
+green = 26
 
 # command_tx = True
 
@@ -24,6 +25,7 @@ GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(green, GPIO.IN, INPUT)
 
 GPIO.setup(squelch, GPIO.IN)
 
@@ -202,9 +204,9 @@ if __name__ == "__main__":
 						command_tx = not command_tx
 						print(command_tx)
 						
-						output(txLed, txLedOn)
+						output(green, txLedOff)
 						sleep(0.03)
-						output(txLed, txLedOff)
+						output(green, txLedOn)
 						
 						if (command_tx == True):
 							print("Turning on transmit")
@@ -335,9 +337,9 @@ if __name__ == "__main__":
 						command_tx = not command_tx
 						print(command_tx)
 						
-						output(txLed, txLedOn)
+						output(green, txLedOff)
 						sleep(0.03)
-						output(txLed, txLedOff)
+						output(green, txLedOn)
 						
 						if (command_tx == True):
 							print("Turning on transmit")
@@ -445,18 +447,18 @@ if __name__ == "__main__":
 			while 1:
 				output(txLed, txLedOff)
 				sleep(0.5)
-				if (command_tx == False):
-					output(txLed, txLedOn)
-					sleep(0.03)
-					output(txLed, txLedOff)
+#				if (command_tx == False):
+#					output(txLed, txLedOn)
+#					sleep(0.03)
+#					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
 						
-					output(txLed, txLedOn)
+					output(green, txLedOff)
 					sleep(0.03)
-					output(txLed, txLedOff)
+					output(green, txLedOn)
 						
 					if (command_tx == True):
 						print("Turning on transmit")
@@ -482,18 +484,18 @@ if __name__ == "__main__":
 			while 1:
 				output(txLed, txLedOff)
 				sleep(0.5)
-				if (command_tx == False):
-					output(txLed, txLedOn)
-					sleep(0.03)
-					output(txLed, txLedOff)
+#				if (command_tx == False):
+#					output(txLed, txLedOn)
+#					sleep(0.03)
+#					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
 						
-					output(txLed, txLedOn)
+					output(green, txLedOff)
 					sleep(0.03)
-					output(txLed, txLedOff)
+					output(green, txLedOn)
 						
 					if (command_tx == True):
 						print("Turning on transmit")
