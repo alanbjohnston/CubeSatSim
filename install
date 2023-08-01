@@ -189,7 +189,7 @@ sudo raspi-config nonint do_legacy 0
     sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
   fi
 
-sudo sed -i 's/force_turbo=1/#force_turbo=1/g' /boot/cohfig.txt
+sudo sh -c 'echo "\n" >> /boot/config.txt'
 
 echo "Would you like to reboot to complete the installation (y/n)?"
 
