@@ -76,9 +76,7 @@ elif [ "$1" = "-m" ]; then
 elif [ "$1" = "-f" ]; then
 	echo "changing CubeSatSim to FSK mode"
 	sudo echo "f" > /home/pi/CubeSatSim/.mode
-  	if ! grep -q force_turbo=1 /boot/config.txt ; then
-    	 sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'
-  	fi
+  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	echo "rebooting"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
@@ -86,9 +84,7 @@ elif [ "$1" = "-f" ]; then
 elif [ "$1" = "-b" ]; then
 	echo "changing CubeSatSim to BPSK mode"
 	sudo echo "b" > /home/pi/CubeSatSim/.mode
-  	if ! grep -q force_turbo=1 /boot/config.txt ; then
-    	 sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'
-  	fi
+  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	echo "rebooting"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
