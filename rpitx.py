@@ -250,14 +250,30 @@ if __name__ == "__main__":
 
 			output(txLed, txLedOff)
 			output (ptt, 1)
-			output(pd, 0)
+			output(pd, 1)
 
 			while True:
+				if GPIO.input(squelch) == False:
+					print("carrier received!")
+					command_tx = not command_tx
+					print(command_tx)
+						
+					output(green, txLedOff)
+					sleep(0.03)
+					output(green, txLedOn)
+					
+					if (command_tx == True):
+						print("Turning on transmit")
+						system("echo > command_tx True")
+#						output(txLed, txLedOn)
+#						sleep(0.5)
+#						output(txLed, txLedff)
+					else:
+						print("Turning off transmit")							system("echo > command_tx F				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1")
 					output(txLed, txLedOn)
-					output(pd, 1)
 					output (ptt, 0)
 					sleep(0.1)
 
@@ -272,7 +288,6 @@ if __name__ == "__main__":
 					sleep(0.1)
 					output(txLed, txLedOff)
 					output (ptt, 1)
-					output(pd, 0)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(1)
