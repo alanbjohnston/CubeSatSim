@@ -270,7 +270,7 @@ if __name__ == "__main__":
 #						output(txLed, txLedff)
 					else:
 						print("Turning off transmit")	
-						system("echo > command_tx F				
+						system("echo > command_tx False")				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1")
