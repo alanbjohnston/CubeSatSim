@@ -291,7 +291,7 @@ if __name__ == "__main__":
 					output (ptt, 1)
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
-					sleep(1)
+					sleep(5)
 				except:		  
 					sleep(1)
 		elif (mode == 's'):
