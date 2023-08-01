@@ -52,6 +52,7 @@ if [ "$1" = "" ]; then
 	set -- "-h"
 fi	
 
+
 if [ "$1" = "-i" ]; then
 	echo "Restarting CubeSatSim"
 	sudo systemctl restart cubesatsim
