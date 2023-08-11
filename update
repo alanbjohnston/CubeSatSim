@@ -142,6 +142,47 @@ git pull > .updated_p
     echo "nothing to do for pi-power-button."
   fi 
 
+  if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
+    echo "dtparam=audio=on already in /boot/config.txt"
+  else
+    echo "adding dtparam=audio=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
+    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
+    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'disable_splash=1 ' /boot/config.txt) ]]; then
+    echo "disable_splash=1 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'boot_delay=0' /boot/config.txt) ]]; then
+    echo "boot_delay=0 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+
 if [ $FLAG -eq 1 ]; then
   echo "systemctl daemon-reload and reboot"
   sudo systemctl daemon-reload 
