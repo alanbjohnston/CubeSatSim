@@ -355,7 +355,7 @@ if __name__ == "__main__":
 					font1 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 20)
 
 					try:
-						file = open("/home/pi/CubeSatSim/telem_string.txt)
+						file = open("/home/pi/CubeSatSim/telem_string.txt")
 						telem_string = file.readline()
 					except:
 						telem_string = ""
