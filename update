@@ -161,12 +161,12 @@ git pull > .updated_p
   if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
     echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
   else
-    echo "adding  to /boot/config.txt"
+    echo "adding dtoverlay=pwm,pin=18,func=2 to /boot/config.txt"
     sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
     FLAG=1
   fi
 
-  if [[ $(grep 'disable_splash=1 ' /boot/config.txt) ]]; then
+  if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
     echo "disable_splash=1 already in /boot/config.txt"
   else
     echo "adding  to /boot/config.txt"
