@@ -8,6 +8,7 @@ from time import sleep
 #import os
 import sys
 from os import system
+from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 print("CubeSatSim v1.3b rpitx.py starting...")
 
@@ -349,6 +350,25 @@ if __name__ == "__main__":
 				while 1:
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
+
+					file='/home/pi/CubeSatSim/camera_out.jpg'
+					font1 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 20)
+
+					try:
+						file = open("/home/pi/CubeSatSim/telem_string.txt)
+						telem_string = file.readline()
+					except:
+						telem_string = ""
+					if (debug_mode == 1):
+						print("Can't read telem_string.txr")		
+					print(telem_string)
+					
+					img = Image.open(file)
+					draw = ImageDraw.Draw(img) 
+					draw.text((10, 225), callsign, font=font1, fill='black')
+					draw.text((120, 225), telem_string, font=font1, fill='black')
+					img.save(file)
+					
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
