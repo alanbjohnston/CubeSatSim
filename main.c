@@ -827,7 +827,7 @@ int main(int argc, char * argv[]) {
       sleep(10);
     }
 
-    FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w")
+    FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     fprintf(fp, "Vbatt = %4.2f", batteryVoltage);	 
     fclose(fp);	  
 	    
