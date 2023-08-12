@@ -6,7 +6,7 @@
  *
  *  Portions Copyright (C) 2018 Jonathan Brandenburg
  *
- *  This program is free software: you can redistribute it and/or modify
+ *  This program is free software: you can redistributVe it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  (at your option) any later version.
  *
@@ -826,6 +826,11 @@ int main(int argc, char * argv[]) {
       pclose(file6);
       sleep(10);
     }
+
+    FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w")
+    fprintf(fp, "Vbatt = %4.2f", batteryVoltage);	 
+    fclose(fp);	  
+	    
 /**/
     //  sleep(1);  // Delay 1 second
     ctr = 0;
