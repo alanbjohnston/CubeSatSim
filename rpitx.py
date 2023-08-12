@@ -359,8 +359,8 @@ if __name__ == "__main__":
 						telem_string = filep.readline()
 					except:
 						telem_string = ""
-					if (debug_mode == 1):
-						print("Can't read telem_string.txt")		
+						if (debug_mode == 1):
+							print("Can't read telem_string.txt")		
 					print(telem_string)
 					
 					img = Image.open(file)
