@@ -188,7 +188,7 @@ if [ ! -d "/home/pi/CubeSatSim/telem_string.txt" ]; then
 
   sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
 
-  pip3 install pillow
+  sudo pip3 install pillow
 
 fi
 
