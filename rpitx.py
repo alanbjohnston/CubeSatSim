@@ -8,7 +8,7 @@ from time import sleep
 #import os
 import sys
 from os import system
-from PIL import Image, ImageDraw, ImageFont, ImageColor
+from pillow import Image, ImageDraw, ImageFont, ImageColor
 
 print("CubeSatSim v1.3b rpitx.py starting...")
 
