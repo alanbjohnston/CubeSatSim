@@ -360,7 +360,7 @@ if __name__ == "__main__":
 					except:
 						telem_string = ""
 					if (debug_mode == 1):
-						print("Can't read telem_string.txr")		
+						print("Can't read telem_string.txt")		
 					print(telem_string)
 					
 					img = Image.open(file)
