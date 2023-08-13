@@ -131,6 +131,8 @@ fi
 
 cd /home/pi/pi-power-button
 
+git checkout reboot-mode-change
+
 git pull > .updated_p
 
   grep 'changed' /home/pi/pi-power-button/.updated_p
