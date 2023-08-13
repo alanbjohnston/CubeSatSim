@@ -341,11 +341,24 @@ elif [ "$1" = "-S" ]; then
 	echo "Scan both I2C buses on the Raspberry Pi"
 	echo 
 
+	i2cdetect -y 1
+
+	i2cdetect -y 3
+
 elif [ "$1" = "-C" ]; then
 
 	echo	
 	echo "Clear logs"
 	echo 
+
+	sudo systemctl stop cubesatsim
+	sudo systemctl stop rpitx
+
+	sudo journalctl --vacuum-time=1s
+
+	sudo systemctl reboot now
+
+	echo "rebooting"
 
 elif [ "$1" = "-T" ]; then
 
@@ -353,11 +366,41 @@ elif [ "$1" = "-T" ]; then
 	echo "Change command state"
 	echo 
 
+	echo "Current command state is:"
+	cat /home/pi/CubeSatSim/command_state.txt
+	echo
+
+	echo "Do you want to set beacon transmit to ON (y/n) "
+	read reset
+	echo
+	
+	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+		echo "True" > /home/pi/CubeSatSim/command_count.txt
+		echo "Command state set to True to enable beacon"
+	else
+		echo "False" > /home/pi/CubeSatSim/command_count.txt
+		echo "Command state set to False to disable beacon"	fi
+
 elif [ "$1" = "-R" ]; then
 
 	echo	
-	echo "Change the Commands Count in the file command_count.txt"
+	echo "Reset the Commands Count in the file command_count.txt"
 	echo 
+
+	echo "Current commands count is:"
+	cat /home/pi/CubeSatSim/commands_count.txt
+	echo
+
+	echo "Do you want to reset the commands count to zero (y/n) "
+	read reset
+	echo
+	
+	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+		echo "0" > /home/pi/CubeSatSim/command_count.txt
+		echo "Commands count reset to 0"
+	else
+		echo "Commands count not reset"
+	fi
 fi
 
 # sudo systemctl restart cubesatsim
