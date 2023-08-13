@@ -1,6 +1,7 @@
 #!/bin/bash
 
 echo "CubeSatSim v1.3b configuration tool"
+echo
 
 if [ "$2" = "-n" ]; then
 	norestart=1
@@ -26,7 +27,7 @@ if [ "$1" = "" ]; then
 	else
 		echo 
 	fi
-	
+	echo
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
@@ -47,14 +48,12 @@ if [ "$1" = "" ]; then
 	echo "Current beacon transmit mode is:"
 	cat /home/pi/CubeSatSim/command_tx
 	echo
-	echo
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	
 	echo $1 $2 $3 $4 $5
 	echo
 	
-	echo
 	echo "To change, include an OPTION"
 	echo "To see options, type config -h"
 #	echo
