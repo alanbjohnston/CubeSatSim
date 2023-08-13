@@ -1518,7 +1518,7 @@ void get_tlm_fox() {
       if ( (fgets(count_string, 10, command_count_file)) != NULL)
 	   groundCommandCount = atoi(count_string); 
     } else
-	    fprint("Error opening command_count.txt!\n");
+	    printf("Error opening command_count.txt!\n");
     fclose(command_count_file);
     printf("Command count: %d\n", groundCommandCount);	  
     
