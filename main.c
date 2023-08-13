@@ -20,8 +20,9 @@
  */
  
 
-
 #include "main.h"
+
+#define HAB
 
 int main(int argc, char * argv[]) {
 
@@ -1006,8 +1007,12 @@ void get_tlm(void) {
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
-          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-//          sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon	    
+#ifdef HAB
+	sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
+#else
+	sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long with Satellite icon	
+#endif		
+          	           	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
