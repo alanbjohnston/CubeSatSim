@@ -1512,6 +1512,16 @@ void get_tlm_fox() {
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
 
+    FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
+    if (command_count_file != NULL) {	
+      char count_string[10];	
+      if ( (fgets(count_string, 10, command_count_file)) != NULL)
+	   groundCommandCount = strotascii(count_string); 
+    } else
+	    print("Error opening command_count.txt!\n");
+    fclose(command_count_file);
+    printf("Command count: %d\n", groundCommandCount);	  
+    
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
