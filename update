@@ -131,7 +131,7 @@ fi
 
 cd /home/pi/pi-power-button
 
-git checkout reboot-mode-change
+# git checkout reboot-mode-change
 
 git pull > .updated_p
 
@@ -182,6 +182,11 @@ git pull > .updated_p
     echo "adding dtoverlay=pwm,pin=18,func=2 to /boot/config.txt"
     sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
     FLAG=1
+
+    cd /home/pi/pi-power-button
+    git checkout reboot-mode-change
+    install/install
+
   fi
 
   if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
