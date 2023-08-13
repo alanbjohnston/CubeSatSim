@@ -287,6 +287,19 @@ if __name__ == "__main__":
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
+					
+					try:
+						command_count += 1
+						filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+						command_count_string = str(command_count)
+						print(command_count_string)
+						string = filec.write(command_count_string)
+						filec.close()
+					except:
+						if (debug_mode == 1):
+							print("Can't write command_count file!")
+					print("Command_count: ")
+					print(command_count)					
 						
 					output(green, txLedOff)
 					sleep(0.03)
@@ -407,6 +420,19 @@ if __name__ == "__main__":
 						command_tx = not command_tx
 						print(command_tx)
 						
+						try:
+							command_count += 1
+							filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+							command_count_string = str(command_count)
+							print(command_count_string)
+							string = filec.write(command_count_string)
+							filec.close()
+						except:
+							if (debug_mode == 1):
+								print("Can't write command_count file!")
+						print("Command_count: ")
+						print(command_count)					
+						
 						output(green, txLedOff)
 						sleep(0.03)
 						output(green, txLedOn)
@@ -480,6 +506,18 @@ if __name__ == "__main__":
 							print("carrier received!")
 							command_tx = not command_tx
 							print(command_tx)
+							try:
+								command_count += 1
+								filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+								command_count_string = str(command_count)
+								print(command_count_string)
+								string = filec.write(command_count_string)
+								filec.close()
+							except:
+								if (debug_mode == 1):
+									print("Can't write command_count file!")
+							print("Command_count: ")
+							print(command_count)					
 						
 							output(green, txLedOff)
 							sleep(0.03)
@@ -554,6 +592,19 @@ if __name__ == "__main__":
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
+
+					try:
+						command_count += 1
+						filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+						command_count_string = str(command_count)
+						print(command_count_string)
+						string = filec.write(command_count_string)
+						filec.close()
+					except:
+						if (debug_mode == 1):
+							print("Can't write command_count file!")
+					print("Command_count: ")
+					print(command_count)					
 						
 					output(green, txLedOff)
 					sleep(0.03)
