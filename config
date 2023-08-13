@@ -379,7 +379,8 @@ elif [ "$1" = "-T" ]; then
 		echo "Command state set to True to enable beacon"
 	else
 		echo "False" > /home/pi/CubeSatSim/command_count.txt
-		echo "Command state set to False to disable beacon"	fi
+		echo "Command state set to False to disable beacon"
+	fi
 
 elif [ "$1" = "-R" ]; then
 
