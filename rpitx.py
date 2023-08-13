@@ -127,6 +127,10 @@ if __name__ == "__main__":
 		command_count = 0
 		if (debug_mode == 1):
 			print("Can't open command_count file, setting to 0")
+		file = open("/home/pi/CubeSatSim/command_count.txt", "w")
+		count_string = str(command_count)
+		file.write(count_string)
+		file.close()
 	print("Command_count: ")
 	print(command_count)	
 	
