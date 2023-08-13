@@ -22,7 +22,7 @@
 
 #include "main.h"
 
-#define HAB
+// #define HAB  // uncomment to change APRS icon from Satellite to Balloon
 
 int main(int argc, char * argv[]) {
 
