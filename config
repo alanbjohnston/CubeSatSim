@@ -375,10 +375,10 @@ elif [ "$1" = "-T" ]; then
 	echo
 	
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-		sudo sed -i 'False/True/g' /home/pi/CubeSatSim/command_tx 
+		sudo sed -i 's/False/True/g' /home/pi/CubeSatSim/command_tx
 		echo "Command state set to True to enable beacon"
 	else
-		sudo sed -i 'True/False/g' /home/pi/CubeSatSim/command_tx 
+		sudo sed -i 's/True/False/g' /home/pi/CubeSatSim/command_tx
 		echo "Command state set to False to disable beacon"
 	fi
 
