@@ -367,7 +367,7 @@ elif [ "$1" = "-T" ]; then
 	echo 
 
 	echo "Current command state is:"
-	cat /home/pi/CubeSatSim/command_state.txt
+	cat /home/pi/CubeSatSim/command_state
 	echo
 
 	echo "Do you want to set beacon transmit to ON (y/n) "
@@ -375,10 +375,10 @@ elif [ "$1" = "-T" ]; then
 	echo
 	
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-		echo "True" > /home/pi/CubeSatSim/command_count.txt
+		echo "True" > /home/pi/CubeSatSim/command_state
 		echo "Command state set to True to enable beacon"
 	else
-		echo "False" > /home/pi/CubeSatSim/command_count.txt
+		echo "False" > /home/pi/CubeSatSim/command_state
 		echo "Command state set to False to disable beacon"
 	fi
 
