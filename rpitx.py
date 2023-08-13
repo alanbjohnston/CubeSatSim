@@ -215,6 +215,17 @@ if __name__ == "__main__":
 						print("carrier received!")
 						command_tx = not command_tx
 						print(command_tx)
+
+						try:
+							command_count += 1
+							filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+							string = filec.write(str(command_count_string))
+							filec.close()
+						except:
+							if (debug_mode == 1):
+								print("Can't write command_count file!")
+						print("Command_count: ")
+						print(command_count)							
 						
 						output(green, txLedOff)
 						sleep(0.03)
