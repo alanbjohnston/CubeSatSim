@@ -577,11 +577,11 @@ if __name__ == "__main__":
 
 					try:
 						command_count += 1
-						file = open("/home/pi/CubeSatSim/command_count.txt", "w")
-						string = file.write(str(command_count))
+						filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+						string = filec.write(str(command_count))
 					except:
 						if (debug_mode == 1):
-							print("Can't write command_count file")
+							print("Can't write command_count file!")
 					print("Command_count: ")
 					print(command_count)	
 	
