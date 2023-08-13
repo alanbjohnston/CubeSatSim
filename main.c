@@ -828,7 +828,7 @@ int main(int argc, char * argv[]) {
     }
 
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
-    printf("Writing telem_string.txt");	  
+    printf("Writing telem_string.txt\n");	  
     fprintf(fp, "Vbatt = %4.2f\n", batteryVoltage);	 
     fclose(fp);	  
 	    
@@ -1006,8 +1006,8 @@ void get_tlm(void) {
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
-//          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-          sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon	    
+          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
+//          sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
