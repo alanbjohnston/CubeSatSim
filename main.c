@@ -1516,9 +1516,9 @@ void get_tlm_fox() {
     if (command_count_file != NULL) {	
       char count_string[10];	
       if ( (fgets(count_string, 10, command_count_file)) != NULL)
-	   groundCommandCount = strotascii(count_string); 
+	   groundCommandCount = atoi(count_string); 
     } else
-	    print("Error opening command_count.txt!\n");
+	    fprint("Error opening command_count.txt!\n");
     fclose(command_count_file);
     printf("Command count: %d\n", groundCommandCount);	  
     
