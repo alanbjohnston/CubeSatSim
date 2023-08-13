@@ -219,7 +219,9 @@ if __name__ == "__main__":
 						try:
 							command_count += 1
 							filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-							string = filec.write(str(command_count_string))
+							command_count_string = str(command_count)
+							print(command_count_string)
+							string = filec.write(command_count_string)
 							filec.close()
 						except:
 							if (debug_mode == 1):
