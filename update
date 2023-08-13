@@ -28,6 +28,22 @@ git pull > .updated
 
 make debug
 
+FILE=/home/pi/CubeSatSim/command_tx
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "True\n" > /home/pi/CubeSatSim/command_tx
+fi
+
+FILE=/home/pi/CubeSatSim/command_count.txt
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "0\n" > /home/pi/CubeSatSim/command_count.txt
+fi
+
 FLAG=0
 
 if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
