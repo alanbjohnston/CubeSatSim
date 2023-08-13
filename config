@@ -113,6 +113,10 @@ elif [ "$1" = "-h" ]; then
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
+	echo "   -S     Scan both I2C buses on the Raspberry Pi"
+	echo "   -C     Clear logs"
+	echo "   -T     Change command state"
+	echo "   -R     Change the Commands Count in the file command_count.txt"
 	echo
 	exit
 
@@ -330,6 +334,30 @@ elif [ "$1" = "-l" ]; then
 		echo
 		sudo systemctl restart cubesatsim
 	fi
+
+elif [ "$1" = "-S" ]; then
+
+	echo	
+	echo "Scan both I2C buses on the Raspberry Pi"
+	echo 
+
+elif [ "$1" = "-C" ]; then
+
+	echo	
+	echo "Clear logs"
+	echo 
+
+elif [ "$1" = "-T" ]; then
+
+	echo	
+	echo "Change command state"
+	echo 
+
+elif [ "$1" = "-R" ]; then
+
+	echo	
+	echo "Change the Commands Count in the file command_count.txt"
+	echo 
 fi
 
 # sudo systemctl restart cubesatsim
