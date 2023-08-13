@@ -375,10 +375,10 @@ elif [ "$1" = "-T" ]; then
 	echo
 	
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-		echo "True" > /home/pi/CubeSatSim/command_tx
+		sudo echo "True" > /home/pi/CubeSatSim/command_tx
 		echo "Command state set to True to enable beacon"
 	else
-		echo "False" > /home/pi/CubeSatSim/command_tx
+		sudo echo "False" > /home/pi/CubeSatSim/command_tx
 		echo "Command state set to False to disable beacon"
 	fi
 
@@ -397,7 +397,7 @@ elif [ "$1" = "-R" ]; then
 	echo
 	
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-		echo "0" > /home/pi/CubeSatSim/command_count.txt
+		sudo echo "0" > /home/pi/CubeSatSim/command_count.txt
 		echo "Commands count reset to 0"
 	else
 		echo "Commands count not reset"
