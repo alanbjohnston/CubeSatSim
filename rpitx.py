@@ -120,8 +120,8 @@ if __name__ == "__main__":
 	print(command_tx)
 	
 	try:
-		file = open("/home/pi/CubeSatSim/command_count.txt")
-		string = file.read
+		file = open("/home/pi/CubeSatSim/command_count.txt", "r")
+		string = file.read()
 		command_count = int(string)
 	except:
 		command_count = 0
