@@ -120,6 +120,17 @@ if __name__ == "__main__":
 	print(command_tx)
 	
 	try:
+		file = open("/home/pi/CubeSatSim/command_count.txt")
+		string = file.read
+		command_count = int(string)
+	except:
+		command_count = 0
+		if (debug_mode == 1):
+			print("Can't open command_count file, setting to 0")
+	print("Command_count: ")
+	print(command_count)	
+	
+	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
 		callsign = file.readline().split(" ")[0]
 	except:
@@ -563,7 +574,17 @@ if __name__ == "__main__":
 					print("carrier received!")
 					command_tx = not command_tx
 					print(command_tx)
-						
+
+					try:
+						command_count += 1
+						file = open("/home/pi/CubeSatSim/command_count.txt", "w")
+						string = file.write(str(command_count))
+					except:
+						if (debug_mode == 1):
+							print("Can't write command_count file")
+					print("Command_count: ")
+					print(command_count)	
+	
 					output(green, txLedOff)
 					sleep(0.03)
 					output(green, txLedOn)
