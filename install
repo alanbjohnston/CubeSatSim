@@ -10,6 +10,22 @@ else
     echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
 fi
 
+FILE=/home/pi/CubeSatSim/command_tx
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "True\n" > /home/pi/CubeSatSim/command_tx
+fi
+
+FILE=/home/pi/CubeSatSim/command_count.txt
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "0\n" > /home/pi/CubeSatSim/command_count.txt
+fi
+
 cd
 
 CubeSatSim/config -c -n
