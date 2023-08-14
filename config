@@ -349,9 +349,14 @@ elif [ "$1" = "-S" ]; then
 	echo "Scan both I2C buses on the Raspberry Pi"
 	echo 
 
+	echo "I2C Bus 1"
+	echo
 	i2cdetect -y 1
-
+	echo
+	echo "I2C Bus 1"
+	echo
 	i2cdetect -y 3
+	echo
 
 elif [ "$1" = "-C" ]; then
 
