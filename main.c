@@ -1537,6 +1537,10 @@ void get_tlm_fox() {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
     }
+    if (t\rxAntennaDeployed == 0) {
+      t\rxAntennaDeployed = 1;
+      printf("RX Antenna Deployed!\n");
+    }	  
     
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
