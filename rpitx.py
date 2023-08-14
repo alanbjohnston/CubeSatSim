@@ -157,7 +157,7 @@ if __name__ == "__main__":
 		sleep(0.1)
 		
 		if (txc):
-			system("aplay /home/pi/CubeSatSim/morse.wav")	
+			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
 		else:	
 			if (debug_mode == 1):
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
@@ -201,7 +201,7 @@ if __name__ == "__main__":
 						sleep(.1)
 				
 						if (txc):
-							system("aplay /home/pi/CubeSatSim/telem.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")
 						else:			
 							if (debug_mode == 1):
 								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
@@ -272,7 +272,7 @@ if __name__ == "__main__":
 				sleep(0.1)
 
 				if (txc):
-					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay /home/pi/CubeSatSim/morse.wav")
+					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
 				else:
 					if (debug_mode == 1):
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
@@ -325,7 +325,7 @@ if __name__ == "__main__":
 						sleep(0.1)
 
 						if (txc):
-							system("aplay /home/pi/CubeSatSim/morse.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
 						else:
 							if (debug_mode == 1):
 								system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
@@ -375,7 +375,7 @@ if __name__ == "__main__":
 						output (ptt, 0)
 
 						if (txc):
-							system("aplay /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
@@ -458,7 +458,7 @@ if __name__ == "__main__":
 						output (ptt, 0)
 
 						if (txc):
-							system("aplay /home/pi/CubeSatSim/camera_out.jpg.wav")	
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
@@ -484,7 +484,7 @@ if __name__ == "__main__":
 						output (ptt, 0)
 
 						if (txc):
-							system("aplay /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
@@ -544,7 +544,7 @@ if __name__ == "__main__":
 							output (ptt, 0)
 
 							if (txc):
-								system("aplay /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 							else:
 								if (debug_mode == 1):
 									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") 
@@ -568,7 +568,7 @@ if __name__ == "__main__":
 							output (ptt, 0)
 						
 							if (txc):
-								system("aplay /home/pi/CubeSatSim/sstv.wav")
+								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv.wav")
 							else:
 								sleep(60)
 							
