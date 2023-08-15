@@ -7,7 +7,7 @@
 
 #include "main.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) {Exploring Satellite Telemetry with the CubeSat Simulator
   int debug = OFF;	
   if (argc > 1) {
     if ( * argv[1] == 'd') {
@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  printf("CubeSatSim v1.2 INA219 Voltage and Current Telemetry\n");  
+  printf("CubeSatSim v1.3 INA219 Voltage and Current Telemetry\n");  
   map[MINUS_X] = MINUS_Y;
   map[PLUS_Z] = MINUS_X;	
   map[MINUS_Y] = PLUS_Z;			
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   printf("-Y  | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_Y]], current[map[MINUS_Y]]);
   printf("-Z  | % 4.2f V % 5.0f mA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
   printf("Bat | % 4.2f V % 5.0f mA \n", voltage[map[BAT]], current[map[BAT]]);
-  printf("Bus | % 4.2f V % 5.0f mA \n\n", voltage[map[BUS]], current[map[BUS]]);
+//  printf("Bus | % 4.2f V % 5.0f mA \n\n", voltage[map[BUS]], current[map[BUS]]);
   fclose(file1);
 
   return 0;
