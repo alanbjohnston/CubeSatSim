@@ -184,6 +184,7 @@ git pull > .updated_p
     FLAG=1
 
     cd /home/pi/pi-power-button
+    git pull
     git checkout reboot-mode-change
     install/install
 
