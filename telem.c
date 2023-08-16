@@ -7,7 +7,7 @@
 
 #include "main.h"
 
-int main(int argc, char *argv[]) {Exploring Satellite Telemetry with the CubeSat Simulator
+int main(int argc, char *argv[]) {
   int debug = OFF;	
   if (argc > 1) {
     if ( * argv[1] == 'd') {
