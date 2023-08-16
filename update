@@ -188,6 +188,10 @@ git pull > .updated_p
     git checkout reboot-mode-change
     install/install
 
+    sudo apt-get update && sudo apt-get dist-upgrade -y
+    sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
+    sudo pip3 install pillow
+
   fi
 
   if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
@@ -206,15 +210,15 @@ git pull > .updated_p
     FLAG=1
   fi
 
-if [ ! -f "/home/pi/CubeSatSim/telem_string.txt" ]; then
+#if [ ! -f "/home/pi/CubeSatSim/telem_string.txt" ]; then
 
-  sudo apt-get update && sudo apt-get dist-upgrade -y
+#  sudo apt-get update && sudo apt-get dist-upgrade -y
 
-  sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
+#  sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
 
-  sudo pip3 install pillow
+#  sudo pip3 install pillow
 
-fi
+#fi
 
 
 if [ $FLAG -eq 1 ]; then
