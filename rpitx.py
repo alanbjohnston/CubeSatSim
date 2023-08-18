@@ -7,7 +7,7 @@ from RPi.GPIO import output
 from time import sleep
 #import os
 import sys
-from os import 
+from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 def increment_mode():
