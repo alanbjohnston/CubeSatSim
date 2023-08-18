@@ -19,82 +19,82 @@ def increment_mode():
 	except:
 #		mode = "f"
 		if (debug_mode == 1):
-			print("Can't open .mode file, defaulting to FSK")
+			print("Can't open .mode file") # , defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
 	if (mode == 'a'):
 		mode = 'f'
-		GPIO.output(powerPin, 0); # blink two times
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(0.1);
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(1.5)
+		GPIO.output(powerPin, 0) # blink two times
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(2.5)
 
 	elif (mode == 'f'):
 		mode = 'b'
-		GPIO.output(powerPin, 0); # blink three times
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(0.1);
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);	
+		GPIO.output(powerPin, 0) # blink three times
 		sleep(0.1)
-		GPIO.output(powerPin, 0);
+		GPIO.output(powerPin, 1)
 		sleep(0.1)
-		GPIO.output(powerPin, 1);
-		sleep(1.5)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)	
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(2.5)
 	
 	elif (mode == 'b'):
 		mode = 's'
-		GPIO.output(powerPin, 0); # blink four times
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(0.1);
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);	
+		GPIO.output(powerPin, 0) # blink four times
 		sleep(0.1)
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);	
+		GPIO.output(powerPin, 1)
 		sleep(0.1)
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(1.5)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)	
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)	
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(2.5)
 
 	elif (mode == 's'):
 		mode = 'm'
-		GPIO.output(powerPin, 0); # blink five times
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(0.1);
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);	
+		GPIO.output(powerPin, 0) # blink five times
 		sleep(0.1)
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);	
+		GPIO.output(powerPin, 1)
 		sleep(0.1)
-		GPIO.output(powerPin, 0);
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
+		GPIO.output(powerPin, 0)
 		sleep(0.1)
-		GPIO.output(powerPin, 0);
+		GPIO.output(powerPin, 1)	
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
 		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(1.5)
+		GPIO.output(powerPin, 1)	
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(0.1)
+		GPIO.output(powerPin, 0)
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(2.5)
 	else:
 		mode = 'a'
-		GPIO.output(powerPin, 0); # blink one time
-		sleep(0.1);
-		GPIO.output(powerPin, 1);
-		sleep(1.5)
+		GPIO.output(powerPin, 0) # blink one time
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(2.5)
 
 	try:	
 		file = open("/home/pi/CubeSatSim/.mode", "w")
@@ -104,7 +104,8 @@ def increment_mode():
 		print(".mode file written")
 		
 		GPIO.setwarnings(False)
-		GPIO.output(txLed, 0)	
+		GPIO.output(txLed, 0)
+		GPIO.output(powerPin, 0)
 		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
@@ -339,10 +340,6 @@ if __name__ == "__main__":
 						print("Command_count: ")
 						print(command_count)							
 						
-						output(green, txLedOff)
-						sleep(0.03)
-						output(green, txLedOn)
-
 						increment_mode()
 						
 						if (command_tx == True):
@@ -408,10 +405,6 @@ if __name__ == "__main__":
 							print("Can't write command_count file!")
 					print("Command_count: ")
 					print(command_count)					
-						
-					output(green, txLedOff)
-					sleep(0.03)
-					output(green, txLedOn)
 
 					increment_mode()
 					
@@ -546,10 +539,6 @@ if __name__ == "__main__":
 						print("Command_count: ")
 						print(command_count)					
 						
-						output(green, txLedOff)
-						sleep(0.03)
-						output(green, txLedOn)
-
 						increment_mode()
 						
 						if (command_tx == True):
@@ -634,10 +623,6 @@ if __name__ == "__main__":
 							print("Command_count: ")
 							print(command_count)					
 						
-							output(green, txLedOff)
-							sleep(0.03)
-							output(green, txLedOn)
-
 							increment_mode()
 						
 							if (command_tx == True):
@@ -723,10 +708,6 @@ if __name__ == "__main__":
 					print("Command_count: ")
 					print(command_count)					
 						
-					output(green, txLedOff)
-					sleep(0.03)
-					output(green, txLedOn)
-
 					increment_mode()
 						
 					if (command_tx == True):
@@ -774,10 +755,6 @@ if __name__ == "__main__":
 							print("Can't write command_count file!")
 					print("Command_count: ")
 					print(command_count)	
-	
-					output(green, txLedOff)
-					sleep(0.03)
-					output(green, txLedOn)
 
 					increment_mode()
 						
