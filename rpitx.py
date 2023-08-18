@@ -19,7 +19,7 @@ def increment_mode():
 		mode = 's'
 	elif (mode == 's'):
 		mode = 'm'
-	else
+	else:
 		mode = 'a'
 	try:	
 		file = open("/home/pi/CubeSatSim/.mode", "w")
