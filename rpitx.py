@@ -2,7 +2,44 @@
 
 def increment_mode():
 	print("increment mode")
-	
+	try:
+		file = open("/home/pi/CubeSatSim/.mode")
+		mode = file.read(1)
+	except:
+#		mode = "f"
+		if (debug_mode == 1):
+			print("Can't open .mode file, defaulting to FSK")
+	print("Mode is: ")
+	print(mode)
+	if (mode == 'a'):
+		mode = 'f'
+	elif (mode == 'f'):
+		mode = 'b'
+	elif (mode == 'b'):
+		mode = 's'
+	elif (mode == 's'):
+		mode = 'm'
+	else
+		mode = 'a'
+	try:	
+		file = open("/home/pi/CubeSatSim/.mode", "w")
+#		count_string = str(command_count)
+		file.write(mode)
+		file.close()
+
+		GPIO.setwarnings(False)
+		GPIO.output(txLed, 0)	
+		print("sudo reboot -h now")
+		GPIO.setwarnings(False)
+		GPIO.setup(16, GPIO.OUT)
+		GPIO.output(16, 0);		
+		subprocess.call(['reboot', '-h', 'now'], shell=False)
+#		release = True;
+		time.sleep(10);
+	except:
+		print("can't write to .mode file")
+		
+
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
 #import subprocess
