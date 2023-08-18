@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+def increment_mode():
+	print("increment mode")
+	
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
 #import subprocess
@@ -236,6 +239,8 @@ if __name__ == "__main__":
 						output(green, txLedOff)
 						sleep(0.03)
 						output(green, txLedOn)
+
+						increment_mode()
 						
 						if (command_tx == True):
 							print("Turning on transmit")
@@ -304,6 +309,8 @@ if __name__ == "__main__":
 					output(green, txLedOff)
 					sleep(0.03)
 					output(green, txLedOn)
+
+					increment_mode()
 					
 					if (command_tx == True):
 						print("Turning on transmit")
@@ -439,6 +446,8 @@ if __name__ == "__main__":
 						output(green, txLedOff)
 						sleep(0.03)
 						output(green, txLedOn)
+
+						increment_mode()
 						
 						if (command_tx == True):
 							print("Turning on transmit")
@@ -525,6 +534,8 @@ if __name__ == "__main__":
 							output(green, txLedOff)
 							sleep(0.03)
 							output(green, txLedOn)
+
+							increment_mode()
 						
 							if (command_tx == True):
 								print("Turning on transmit")
@@ -612,6 +623,8 @@ if __name__ == "__main__":
 					output(green, txLedOff)
 					sleep(0.03)
 					output(green, txLedOn)
+
+					increment_mode()
 						
 					if (command_tx == True):
 						print("Turning on transmit")
@@ -662,6 +675,8 @@ if __name__ == "__main__":
 					output(green, txLedOff)
 					sleep(0.03)
 					output(green, txLedOn)
+
+					increment_mode()
 						
 					if (command_tx == True):
 						print("Turning on transmit")
