@@ -12,6 +12,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 def increment_mode():
 	print("increment mode")
+	powerPin = 16
 	try:
 		file = open("/home/pi/CubeSatSim/.mode")
 		mode = file.read(1)
@@ -23,14 +24,78 @@ def increment_mode():
 	print(mode)
 	if (mode == 'a'):
 		mode = 'f'
+		GPIO.output(powerPin, 0); # blink two times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+
 	elif (mode == 'f'):
 		mode = 'b'
+		GPIO.output(powerPin, 0); # blink three times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1)
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+	
 	elif (mode == 'b'):
 		mode = 's'
+		GPIO.output(powerPin, 0); # blink four times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+
 	elif (mode == 's'):
 		mode = 'm'
+		GPIO.output(powerPin, 0); # blink five times
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);	
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(0.1)
+		GPIO.output(powerPin, 0);
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
 	else:
 		mode = 'a'
+		GPIO.output(powerPin, 0); # blink one time
+		time.sleep(0.1);
+		GPIO.output(powerPin, 1);
+		time.sleep(1.5)
+
 	try:	
 		file = open("/home/pi/CubeSatSim/.mode", "w")
 #		count_string = str(command_count)
@@ -42,8 +107,8 @@ def increment_mode():
 		GPIO.output(txLed, 0)	
 		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
-		GPIO.setup(16, GPIO.OUT)
-		GPIO.output(16, 0);		
+		GPIO.setup(powerPin, GPIO.OUT)
+		GPIO.output(powerPin, 0);		
 		system("reboot -h now")
 #		release = True;
 		time.sleep(10);
