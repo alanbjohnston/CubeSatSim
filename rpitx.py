@@ -25,76 +25,76 @@ def increment_mode():
 	if (mode == 'a'):
 		mode = 'f'
 		GPIO.output(powerPin, 0); # blink two times
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
+		sleep(1.5)
 
 	elif (mode == 'f'):
 		mode = 'b'
 		GPIO.output(powerPin, 0); # blink three times
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
+		sleep(1.5)
 	
 	elif (mode == 'b'):
 		mode = 's'
 		GPIO.output(powerPin, 0); # blink four times
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
+		sleep(1.5)
 
 	elif (mode == 's'):
 		mode = 'm'
 		GPIO.output(powerPin, 0); # blink five times
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);	
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(0.1)
+		sleep(0.1)
 		GPIO.output(powerPin, 0);
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
+		sleep(1.5)
 	else:
 		mode = 'a'
 		GPIO.output(powerPin, 0); # blink one time
-		time.sleep(0.1);
+		sleep(0.1);
 		GPIO.output(powerPin, 1);
-		time.sleep(1.5)
+		sleep(1.5)
 
 	try:	
 		file = open("/home/pi/CubeSatSim/.mode", "w")
@@ -111,7 +111,7 @@ def increment_mode():
 		GPIO.output(powerPin, 0);		
 		system("reboot -h now")
 #		release = True;
-		time.sleep(10);
+		sleep(10);
 	except:
 		print("can't write to .mode file")
 		
@@ -182,7 +182,7 @@ if GPIO.input(7) == False:
 else:
 	print("TXC not present")
 output(txLed, txLedOn)
-sleep(1)
+(1)
 output(txLed, txLedOff)
 
 # print(txLedOn)
@@ -251,7 +251,7 @@ if __name__ == "__main__":
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	GPIO.setup(txLed, GPIO.OUT)
 	
-	sleep(1)
+	(1)
 	
 	("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
