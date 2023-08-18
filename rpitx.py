@@ -386,7 +386,7 @@ if __name__ == "__main__":
 
 				output(txLed, txLedOff)
 				output (ptt, 1)
-
+			sleep(5)
 			while True:
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
