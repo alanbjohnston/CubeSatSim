@@ -59,7 +59,7 @@ txc = 7
 squelch = 6
 green = 16
 
-# command_tx = True
+command_tx = True
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 					sleep(1)
 					if GPIO.input(squelch) == False:
 						print("carrier received!")
-						command_tx = not command_tx
+						# command_tx = not command_tx
 						print(command_tx)
 
 						try:
@@ -328,7 +328,7 @@ if __name__ == "__main__":
 			while True:
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
-					command_tx = not command_tx
+					# command_tx = not command_tx
 					print(command_tx)
 					
 					try:
@@ -465,7 +465,7 @@ if __name__ == "__main__":
 					sleep(1)
 					if GPIO.input(squelch) == False:
 						print("carrier received!")
-						command_tx = not command_tx
+						# command_tx = not command_tx
 						print(command_tx)
 						
 						try:
@@ -554,7 +554,7 @@ if __name__ == "__main__":
 						sleep(1)
 						if GPIO.input(squelch) == False:
 							print("carrier received!")
-							command_tx = not command_tx
+							# command_tx = not command_tx
 							print(command_tx)
 							try:
 								command_count += 1
@@ -642,7 +642,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
-					command_tx = not command_tx
+					# command_tx = not command_tx
 					print(command_tx)
 
 					try:
@@ -694,7 +694,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOff)
 				if GPIO.input(squelch) == False:
 					print("carrier received!")
-					command_tx = not command_tx
+					# command_tx = not command_tx
 					print(command_tx)
 
 					try:
