@@ -1,5 +1,15 @@
 #!/usr/bin/env python
 
+import RPi.GPIO as GPIO
+from RPi.GPIO import output
+#import subprocess
+#import time
+from time import sleep
+#import os
+import sys
+from os import 
+from PIL import Image, ImageDraw, ImageFont, ImageColor
+
 def increment_mode():
 	print("increment mode")
 	try:
@@ -40,16 +50,6 @@ def increment_mode():
 	except:
 		print("can't write to .mode file")
 		
-
-import RPi.GPIO as GPIO
-from RPi.GPIO import output
-#import subprocess
-#import time
-from time import sleep
-#import os
-import sys
-from os import 
-from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 print("CubeSatSim v1.3b rpitx.py starting...")
 
