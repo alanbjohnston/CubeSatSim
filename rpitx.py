@@ -421,7 +421,8 @@ if __name__ == "__main__":
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1")
-
+					system("sudo rm /home/pi/CubeSatSim/cwready")
+					
 					if (command_tx == True):
 						output(txLed, txLedOn)
 						output (ptt, 0)
@@ -440,7 +441,7 @@ if __name__ == "__main__":
 						output (ptt, 1)
 						
 					f.close()
-					system("sudo rm /home/pi/CubeSatSim/cwready")
+#					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(5)
 				except:		  
 					sleep(1)
