@@ -26,14 +26,15 @@ def increment_mode():
 #		count_string = str(command_count)
 		file.write(mode)
 		file.close()
-
+		print(".mode file written")
+		
 		GPIO.setwarnings(False)
 		GPIO.output(txLed, 0)	
 		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(16, GPIO.OUT)
 		GPIO.output(16, 0);		
-		subprocess.call(['reboot', '-h', 'now'], shell=False)
+		system("reboot -h now")
 #		release = True;
 		time.sleep(10);
 	except:
@@ -47,7 +48,7 @@ from RPi.GPIO import output
 from time import sleep
 #import os
 import sys
-from os import system
+from os import 
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 
 print("CubeSatSim v1.3b rpitx.py starting...")
@@ -187,7 +188,7 @@ if __name__ == "__main__":
 	
 	sleep(1)
 	
-	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
+	("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
 #	if (mode != 'a'):
 	if (command_tx == True):	
@@ -197,10 +198,10 @@ if __name__ == "__main__":
 		sleep(0.1)
 		
 		if (txc):
-			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
+			("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
 		else:	
 			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+				("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 			else:
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 		
