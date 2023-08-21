@@ -822,7 +822,7 @@ int main(int argc, char * argv[]) {
 
       FILE * file6 = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
       pclose(file6);
-      sleep(40);	    
+      sleep(80);	    
       file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       pclose(file6);
       sleep(10);
