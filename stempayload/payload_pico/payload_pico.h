@@ -388,9 +388,9 @@ unsigned long pb_press_start;
 const char sstv1_filename[] = "/sstv_image_1_320_x_240.jpg";
 const char sstv2_filename[] = "/sstv_image_2_320_x_240.jpg";
 
-bool TimerHandler0(struct repeating_timer *t);
-RPI_PICO_Timer ITimer0(0);
-RPI_PICO_Timer ITimer1(1);
+//bool TimerHandler0(struct repeating_timer *t);
+//RPI_PICO_Timer ITimer0(0);
+//RPI_PICO_Timer ITimer1(1);
 
 bool timer0_on = false;
 volatile int timer_counter;
