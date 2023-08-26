@@ -1469,7 +1469,8 @@ void get_input() {
 //  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
 //      process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
-      process_bootsel();
+//      process_bootsel();
+      Serial.println("boot selector button pressed!");	
 	
   if (prompt) {
 //    Serial.println("Need to prompt for input!");
