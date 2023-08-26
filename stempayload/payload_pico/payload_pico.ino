@@ -140,6 +140,8 @@ void setup() {
   digitalWrite(22, 1);
   pinMode(17, OUTPUT);
   digitalWrite(17, 1);
+
+  prompt = false;	
   
 }
 
