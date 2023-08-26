@@ -1864,18 +1864,18 @@ void read_config() {
   Serial.println("Reading config file");	
   char buff[32];		
   File mode_file = LittleFS.open("/config.txt", "r");	
-  if (!mode_file) {
-    write_mode(mode);	  
-  } else {
-    if (mode_file.read((uint8_t *)buff, 31)) {
+//  if (!mode_file) {
+//    write_mode(mode);	  
+//  } else {
+  //  if (mode_file.read((uint8_t *)buff, 31)) {
 //      Serial.println("Reading mode from .mode file");    
       sscanf(buff, "%d", &mode);
       mode_file.close();
 //      Serial.print("Mode is ");
 //      Serial.print(mode);
 	    
-    }
-  }		
+//    }
+  //}		
 }
 
 void write_config(int save_mode) {
