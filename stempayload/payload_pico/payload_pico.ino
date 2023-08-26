@@ -1,5 +1,5 @@
 /*
- *  Transmits CubeSat Telemetry at 432.25MHz in AFSK, FSK, BPSK, or CW format
+ *  Pico Payload code for the v1.3 and later STEM Payload Board for the CubeSatSim
  *
  *  Copyright Alan B. Johnston
  *
@@ -78,7 +78,7 @@ MQTTClient client;
 //#define APRS_VHF
 
 byte green_led_counter = 0;
-char call[] = "AMSAT";   // put your callsign here
+//char call[] = "AMSAT";   // put your callsign here
 
 //extern bool get_camera_image(bool debug);
 //extern bool start_camera();
@@ -113,7 +113,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico v0.40 starting...\n");
+  Serial.println("CubeSatSim Pico Payload v0.1 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -130,7 +130,7 @@ void setup() {
 	
   config_gpio();
 
-  Serial.print("Pi Zero present, so running Payload OK code instead of CubeSatSim code.");
+  Serial.print("Pi Zero present, so running Payload OK code.");
   sr_frs_present = true;	 
   program_radio();  
   start_payload();
@@ -139,8 +139,7 @@ void setup() {
   pinMode(22, OUTPUT);
   digitalWrite(22, 1);
   pinMode(17, OUTPUT);
-  digitalWrite(17, 1);	
-
+  digitalWrite(17, 1);
   
 }
 
@@ -201,42 +200,6 @@ void program_radio() {
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
   pinMode(PD_PIN, INPUT);
   pinMode(PTT_PIN, INPUT);	
-}
-
-
-void read_reset_count() {
-	
-  long stored_reset, reset_flag;
-  EEPROM.get(16, reset_flag);
-	  
-  if (reset_flag == 0xA07)  // not first time, read stored reset count
-  {	
-
-    EEPROM.get(20, stored_reset);
-    reset_count = (int) stored_reset;
-    Serial.print("Reading reset count from EEPROM as ");	
-    Serial.println(reset_count);		  
-    stored_reset += 1;	  // increment for next boot
-    EEPROM.put(20, stored_reset);
-    if (EEPROM.commit()) {
-      Serial.println("EEPROM successfully committed");
-    } else {
-      Serial.println("ERROR! EEPROM commit failed");
-    }	
-  } else  {                  // first time, store flag and reset count as 0
-
-    Serial.println("Storing initial reset count in EEPROM");	  
-    Serial.println("Reset count is 0");	
-    reset_flag = 0xA07;
-    EEPROM.put(16, reset_flag);	
-    stored_reset = 0;	
-    EEPROM.put(20, stored_reset + 1);
-    if (EEPROM.commit()) {
-      Serial.println("EEPROM successfully committed");
-    } else {
-      Serial.println("ERROR! EEPROM commit failed");
-    }		
-  }	  	
 }
 
 void read_config_file() {
@@ -322,31 +285,6 @@ void read_sensors()
 {
 	
 }	
-
-//  Returns lower digit of a number which must be less than 99
-//
-int lower_digit(int number) {
-
-  int digit = 0;
-  if (number < 100)
-    digit = number - ((int)(number / 10) * 10);
-  else
-   Serial.println("ERROR: Not a digit in lower_digit!\n");
-  return digit;
-}
-
-// Returns upper digit of a number which must be less than 99
-//
-int upper_digit(int number) {
-
-  int digit = 0;
-  if (number < 100)
-
-    digit = (int)(number / 10);
-  else
-    Serial.println("ERROR: Not a digit in upper_digit!\n");
-  return digit;
-}
 
 void print_string(char *string)
 {
@@ -495,241 +433,6 @@ void start_payload() {
 	
 }
 
-void read_payload()
-{
-  unsigned long read_time = millis();	
-  payload_str[0] = '\0';  // clear the payload string
-//  print_string(payload_str);	
-	
-//  if ((Serial.available() > 0)|| first_time == true) 
-  {
-//    blink(50);
-    char result = Serial.read();
-    char header[] = "OK BME280 ";
-    char str[100];
-	  
-    strcpy(payload_str, header);
-//    print_string(payload_str);		  
-    if (bmePresent) 
-//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
-   	sprintf(str, "%.1f %.2f %.1f %.2f ", 
-	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
-    else
-        sprintf(str, "0.0 0.0 0.0 0.0 "); 
-    strcat(payload_str, str);
-//    print_string(payload_str);
-      if ((millis() - read_time) > 500) {
-        Serial.println("There is a bme280 sensor problem");	 
-	bmePresent = false;
-      }
-      read_time = millis();
-	  
-    if (mpuPresent) 	 { 
-//    print_string(payload_str);	
-      mpu6050.update();
-
-//    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
-      sprintf(str, "MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
-        mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
-
-      float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
-      float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
-//    Serial.print(rotation);
-//    Serial.print(" ");
-//    Serial.println(acceleration);
- 
-      if (acceleration > 1.2)
-        led_set(STEM_LED_GREEN, HIGH);
-      else
-        led_set(STEM_LED_GREEN, LOW);
-        
-      if (rotation > 5)
-        led_set(STEM_LED_BLUE, HIGH);
-      else
-        led_set(STEM_LED_BLUE, LOW);  	 
-	    
-      if ((millis() - read_time) > 500) {
-        Serial.println("There is an mpu6050 sensor problem");	 
-	mpuPresent = false;
-      }	    
-    }   else
-        sprintf(str, "MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 ");     
-    strcat(payload_str, str);
-//    print_string(payload_str);		  
-	  
-    sensorValue = analogRead(TEMPERATURE_PIN);
-    //Serial.println(sensorValue);  
-    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
-//    sprintf(str, "XS %.1f %.1f\n", Temp, Sensor1);
-    sprintf(str, "XS %.1f 0.0\n", Temp);
-    strcat(payload_str, str);
-	  
-    if ((debug_mode) || (payload_command == PAYLOAD_QUERY)) {
-      payload_command = false;	    
-      print_string(payload_str);
-    }
-	  
-/*	  
-    if (result == 'R') {
-      Serial.println("OK");
-      delay(100);
-      first_time = true;
-      setup();
-    }
-    else if (result == 'C') {
-      Serial.println("Clearing stored gyro offsets in EEPROM\n");
-      EEPROM.put(0, (float)0.0);
-      first_time = true;
-      setup();
-    }
-*/	  
-//    if ((result == '?') || first_time == true)
-	  
-/*
-    if (true)
-    {
-      first_time = false;
-      if (bmePresent) {
-        Serial.print("OK BME280 ");
-        Serial.print(bme.readTemperature());
-        Serial.print(" ");
-        Serial.print(bme.readPressure() / 100.0F);
-        Serial.print(" ");
-        Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-        Serial.print(" ");
-        Serial.print(bme.readHumidity());
-      } else
-      {
-        Serial.print("OK BME280 0.0 0.0 0.0 0.0");
-      }
-    if (mpuPresent) 	 { 
-      mpu6050.update();
-
-      Serial.print(" MPU6050 ");
-      Serial.print(mpu6050.getGyroX());
-      Serial.print(" ");
-      Serial.print(mpu6050.getGyroY());
-      Serial.print(" ");
-      Serial.print(mpu6050.getGyroZ());
-
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccX());   
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccY());   
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccZ());  
-    }
-   else
-        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 "); 	    
-
-    Serial.print(" XS ");
-    Serial.print(Temp);   
-    Serial.print(" ");
-    Serial.println(Sensor1);    	  
-  
-  if (mpuPresent) 	 { 	    
-    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
-    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
-//    Serial.print(rotation);
-//    Serial.print(" ");
-//    Serial.println(acceleration);
- 
-    if (acceleration > 1.2)
-        led_set(greenLED, HIGH);
-    else
-        led_set(greenLED, LOW);
-        
-    if (rotation > 5)
-        led_set(blueLED, HIGH);
-    else
-        led_set(blueLED, LOW);  
-    } 
-*/
-	  
-//   }    
-  }
-
-  if (Serial1.available() > 0) {
- 
-//    blink(50);
-    char result = Serial1.read();
-    //    Serial1.println(result);
-
-    if (result == 'R') {
-      Serial1.println("OK");
-      delay(100);
-      first_read = true;
-      start_payload();     
-//      setup();
-    }
-
-    if (result == '?')
-    {
-      if (bmePresent) {
-        Serial1.print("OK BME280 ");
-        Serial1.print(bme.readTemperature());
-        Serial1.print(" ");
-        Serial1.print(bme.readPressure() / 100.0F);
-        Serial1.print(" ");
-        Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-        Serial1.print(" ");
-        Serial1.print(bme.readHumidity());
-      } else
-      {
-        Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
-      }
-      mpu6050.update();
-
-      Serial1.print(" MPU6050 ");
-      Serial1.print(mpu6050.getGyroX());
-      Serial1.print(" ");
-      Serial1.print(mpu6050.getGyroY());
-      Serial1.print(" ");
-      Serial1.print(mpu6050.getGyroZ());
-
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccX());   
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccY());   
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccZ());   
-
-    sensorValue = analogRead(TEMPERATURE_PIN);
-    //Serial.println(sensorValue);  
-    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
-
-    Serial1.print(" XS ");
-    Serial1.print(Temp);   
-    Serial1.print(" ");
-    Serial1.println(Sensor2);              
-     
-    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
-    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
-//    Serial.print(rotation);
-//    Serial.print(" ");
-//    Serial.println(acceleration);
-
-    if (first_read == true) {
-      first_read = false;
-      rest = acceleration;
-    }
-
-    if (acceleration > 1.2 * rest)
-        led_set(greenLED, HIGH);
-    else
-        led_set(greenLED, LOW);
-        
-    if (rotation > 5)
-        led_set(blueLED, HIGH);
-    else
-        led_set(blueLED, LOW);
-    }
-  }
-
-//  delay(100);
-}
-
-/**/
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
@@ -904,10 +607,10 @@ void payload_OK_only()
     Sensor1 = flat;
     Sensor2 = flon;
     Sensor3 = flalt; // (float) gps.altitude.meters();
-    Serial.printf("New GPS data: %f %f %f  ms: %d\n", Sensor1, Sensor2, Sensor3, millis() - start);	    
+//    Serial.printf("New GPS data: %f %f %f  ms: %d\n", Sensor1, Sensor2, Sensor3, millis() - start);	    
   }    else
-	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
-	  
+//	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
+	;
   
     blink(50);
 /*	  
@@ -1085,118 +788,6 @@ void sleep(float timer) {  // sleeps for intervals more than 0.01 milli seconds
   }
 }
 
-void process_bootsel() {
-	
-  if ((new_mode != mode) || (prompt != false)) {
-    Serial.println("******* BOOTSEL bounce error!! *******\n\n");
-    return;
-  }
-		
-
-//  Serial.println("BOOTSEL pressed!");  
-	
-  int release = FALSE;
-		
-  if (wifi)	
-    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-  else
-    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON		
-  sleep(1.0);
-	
-//  int pb_value = digitalRead(MAIN_PB_PIN);
-/*	
-  if (!BOOTSEL) {
-    Serial.println("BOOTSEL: Reboot!");
-    release = TRUE;
-    prompt = PROMPT_REBOOT;    
-  }
-*/	
-  blinkTimes(1);
-  sleep(1.5);
-	
-//  pb_value = digitalRead(MAIN_PB_PIN);
-  if ((!BOOTSEL) && (release == FALSE)) {
-    new_mode = AFSK;	  
-    Serial.println("BOOTSEL: Switch to AFSK");
-    release = TRUE;
-//    setup();	  
-  }
-	
-  if (release == FALSE) {
-    blinkTimes(2);
-    sleep(1.5);
-  }
-	  
-//  pb_value = digitalRead(MAIN_PB_PIN);
-  if ((!BOOTSEL) && (release == FALSE)) {
-    new_mode = FSK;	  
-    Serial.println("BOOTSEL: Switch to FSK");
-    release = TRUE;
-  }
-	
-  if (release == FALSE) {
-    blinkTimes(3);
-    sleep(1.5);
-  }
-	  
-//  pb_value = digitalRead(MAIN_PB_PIN);
-  if ((!BOOTSEL) && (release == FALSE)) {
-    new_mode = BPSK;	  	  
-    Serial.println("BOOTSEL: Switch to BPSK");
-    release = TRUE;
-  }
-	
-  if (release == FALSE) {
-    blinkTimes(4);
-    sleep(1.5);
-  }	
-	  
-//  pb_value = digitalRead(MAIN_PB_PIN);
-  if ((!BOOTSEL) && (release == FALSE)) {
-    new_mode = SSTV;	  
-    Serial.println("BOOTSEL: Switch to SSTV");
-    release = TRUE;
-  }
-	
-  if (release == FALSE) {
-    blinkTimes(5);
-    sleep(1.5);
-  }	
-	  
-//  pb_value = digitalRead(MAIN_PB_PIN);
-  if ((!BOOTSEL) && (release == FALSE)) {
-    new_mode = CW;	  
-    Serial.println("BOOTSEL: Switch to CW");
-    release = TRUE;
-  }
-	
-  if (release == FALSE) {
-    Serial.println("BOOTSEL: Reboot!");
-    prompt = PROMPT_REBOOT;	  
-    digitalWrite(MAIN_LED_GREEN, LOW);
-    sleep(0.5);
-    digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);
-    digitalWrite(MAIN_LED_GREEN, LOW);
-    sleep(0.5);
-    digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);	  
-    digitalWrite(MAIN_LED_GREEN, LOW);
-    sleep(0.5);
-    digitalWrite(MAIN_LED_GREEN, HIGH);
-    sleep(0.5);	  
-   }
-  if (new_mode != mode)
-    transmit_off();
-//  sleep(2.0);	
-	
-  // make sure built-in LED is off
-  if (wifi)	
-    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
-  else
-    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF	
-}
-
 void blinkTimes(int blinks) {
   for (int i = 0; i < blinks; i++) {
     digitalWrite(MAIN_LED_GREEN, LOW);
@@ -1277,39 +868,6 @@ bool check_for_wifi() {
      Serial.println("\nPico detected!\n");
      return(false);  
   }
-}
-
-void parse_payload() {
-
-	if ((payload_str[0] == 'O') && (payload_str[1] == 'K')) // only process if valid payload response
-	{
-	  int count1;
-	  char * token;
-
-	  const char space[2] = " ";
-	  token = strtok(payload_str, space);
-	  for (count1 = 0; count1 < 17; count1++) {
-	    if (token != NULL) {
-	      sensor[count1] = (float) atof(token);
-//	      Serial.print("sensor: ");
-//	      Serial.println(sensor[count1]);
-	      token = strtok(NULL, space);
-	    }
-	  }
-//	  printf("\n");
-//	}
-//	else
-//		payload = OFF;  // turn off since STEM Payload is not responding
-//	}
-//	if ((payload_str[0] == 'O') && (payload_str[1] == 'K')) {
-	  for (int count1 = 0; count1 < 17; count1++) {
-	    if (sensor[count1] < sensor_min[count1])
-	      sensor_min[count1] = sensor[count1];
-	    if (sensor[count1] > sensor_max[count1])
-	      sensor_max[count1] = sensor[count1];
-	    //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
-  	  }
-	}		
 }
 
 void show_dir() {
@@ -1902,14 +1460,14 @@ void write_config(int save_mode) {
 
 
 void get_input() {
-  if (mode != SSTV)	
-    Serial.print("+");	
-  if ((mode == CW) || (mode == SSTV))
+//  if (mode != SSTV)	
+//    Serial.print("+");	
+//  if ((mode == CW) || (mode == SSTV))
     serial_input();  
 	
 // check for button press 
-  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
-      process_pushbutton();
+//  if (digitalRead(MAIN_PB_PIN) == PRESSED) // pushbutton is pressed
+//      process_pushbutton();
   if (BOOTSEL)	  // boot selector button is pressed on Pico
       process_bootsel();
 	
