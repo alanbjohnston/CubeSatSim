@@ -141,7 +141,8 @@ void setup() {
   pinMode(17, OUTPUT);
   digitalWrite(17, 1);
 
-  prompt = false;	
+  prompt = false;
+  prompting = false;
   
 }
 
