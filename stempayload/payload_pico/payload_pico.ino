@@ -1478,28 +1478,17 @@ void prompt_for_input() {
     case PROMPT_HELP:		  
        Serial.println("\nChange settings by typing the letter:");	     
        Serial.println("h  Help info");	  
-       Serial.println("a  AFSK/APRS mode");	     
-       Serial.println("m  CW mode");	     
-       Serial.println("f  FSK/DUV mode");	     
        Serial.println("F  Format flash memory");
-       Serial.println("b  BPSK mode");	     
-       Serial.println("s  SSTV mode");	     
        Serial.println("S  I2C scan");	   
        Serial.println("i  Restart");	     
-       Serial.println("c  Change CALLSIGN");	
-       Serial.println("C  Debug Camera");		  
-       Serial.println("t  Simulated Telemetry");	     
-       Serial.println("r  Reset Count");	
        Serial.println("p  Reset payload and stored EEPROM values");	
-       Serial.println("l  Change Lat and Lon");	     
        Serial.println("?  Query sensors");	
-       Serial.println("v  Read INA219 voltage and current");	
        Serial.println("o  Read diode temperature");	
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
-		  
+//       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+/*		  
        switch(mode) {
 		       
 	case(AFSK):
@@ -1522,120 +1511,8 @@ void prompt_for_input() {
 	  Serial.println("CW mode");
 	  break;			       
        }
-		  
+*/		  
        break;	
-		  
-    case PROMPT_CALLSIGN:
-      Serial.println("Editing the CALLSIGN in the onfiguration file for CubeSatSim");	
-      Serial.println("Return keeps current value.");
-      Serial.print("\nCurrent callsign is ");
-      Serial.println(callsign);
-		  
-      Serial.print("Enter callsign in all capitals: ");
-      get_serial_string();
-		  
-      print_string(serial_string);
-		  
-      if (strlen(serial_string) > 0)	{	  
-        strcpy(callsign, serial_string);
-	if (mode == AFSK) {
-	  char destination[] = "APCSS";	
-	  set_callsign(callsign, destination);	
-	}
-        Serial.println("Callsign updated!");
-	write_config_file();      
-      } else
-        Serial.println("Callsign not updated!");	      
-
-      break;		  		  
-		  
-    case PROMPT_SIM:
-      if (sim_mode == TRUE)
-	Serial.println("Simulted Telemetry mode is currently on");      
-      else
-	Serial.println("Simulted Telemetry mode is currently off");  
-      Serial.println("Do you want Simulated Telemetry on (y/n)");
-      get_serial_char();
-      if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
-        Serial.println("Setting Simulated telemetry to on");
-	reset_min_max();      
-	config_simulated_telem();     
-	write_config_file();    	      
-      } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
-        Serial.println("Setting Simulated telemetry to off");
-	reset_min_max();   	      
-	sim_mode = false;      
-        if (!ina219_started)
-	  start_ina219(); 
-	write_config_file();    	      
-      } else      
-        Serial.println("No change to Simulated Telemetry mode");
-      break;	
-		  
-    case PROMPT_LAT:
-
-      Serial.println("Changing the  latitude and longitude  - only used for APRS telemetry");
-      Serial.println("Hitting return keeps the current value.");
-		  
-      Serial.print("Current value of latitude is ");
-      Serial.println(latitude);		  
-      Serial.println("Enter latitude  (decimal degrees, positive is north): ");	  
-      get_serial_string();		  
-      float_result = atof(serial_string);
-      if (float_result != 0.0)  {
-        Serial.print("Latitude updated to ");	    
-        Serial.println(float_result);		  
-        latitude = float_result;
-      } else
-        Serial.println("Latitude not updated");	
-
-      get_serial_clear_buffer();		  
-      Serial.print("Current value of longitude is ");
-      Serial.println(longitude);		  
-      Serial.println("Enter longitude  (decimal degrees, positive is east): ");	  
-      get_serial_string();		  
-      float_result = atof(serial_string);
-      if (float_result != 0.0)  {
-        Serial.print("Longitude updated to ");	    
-        Serial.println(float_result);		  
-        longitude = float_result;
-      } else
-        Serial.println("Longitude not updated");
-		  
-      write_config_file();     	  
-      if (mode == AFSK)
-	set_lat_lon();
-		  
-      break;	
-		  
-    case PROMPT_QUERY:
-      Serial.println("Querying payload sensors");		  		  
-      payload_command = PAYLOAD_QUERY;		  
-      break;
-		  
-   case PROMPT_CAMERA:
-      show_dir();		  
-      get_camera_image(debug_camera);	 
-      show_dir();		  
-      break;
-				    
-    case PROMPT_TEMP:		  
-      sensorValue = analogRead(TEMPERATURE_PIN);
-      Serial.print("Raw diode voltage: ");		  
-      Serial.println(sensorValue);  
-      Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
-      Serial.print("Calculated temperature: ");		  
-      Serial.print(Temp);  
-      Serial.println(" C");		  	  
-      break;
-		    
-    case PROMPT_VOLTAGE:
-      Serial.println("Querying INA219 voltage and current sensors");
-      if (!ina219_started)
-	start_ina219();
-      voltage_read = true;		  
-      read_ina219();		  	  
-      break;	
 
     case PROMPT_REBOOT:
        Serial.println("Rebooting...");
@@ -1659,35 +1536,7 @@ void prompt_for_input() {
       payload_command = PAYLOAD_RESET;
       start_payload();      		  
       break;			  
-		  
-    case PROMPT_RESET:
-      Serial.println("Reset count is now 0");	
-      reset_count = 0;
-      write_config_file();    	  
-      break;	
-		  
-    case PROMPT_RESTART:
-      prompt = false;
-//    Serial.println("Restart not yet implemented");
-      start_payload();
-//      start_ina219();
-      if ((mode != CW)  || (!filter_present))
-        transmit_callsign(callsign);
-      sleep(0.5);	 
-      config_telem();
-      config_radio();
-      sampleTime = (unsigned int) millis();	 		  
-      break;	  
-		  
-    case PROMPT_DEBUG:
-      Serial.print("Changing Debug Mode to ");
-      debug_mode = !debug_mode;
-      if (debug_mode)  
-        Serial.println("on");	
-      else  
-        Serial.println("off");
-      break;	
-		  
+
     case PROMPT_WIFI:
       Serial.println(wifi);		  
       if (wifi) {		  
@@ -1839,6 +1688,128 @@ void prompt_for_input() {
 }		  	  
         Serial.println("complete");
       break;	
+
+
+	  
+/*	  
+		  
+    case PROMPT_SIM:
+      if (sim_mode == TRUE)
+	Serial.println("Simulted Telemetry mode is currently on");      
+      else
+	Serial.println("Simulted Telemetry mode is currently off");  
+      Serial.println("Do you want Simulated Telemetry on (y/n)");
+      get_serial_char();
+      if ((serial_string[0] == 'y') || (serial_string[0] == 'Y'))	{  
+        Serial.println("Setting Simulated telemetry to on");
+	reset_min_max();      
+	config_simulated_telem();     
+	write_config_file();    	      
+      } else if ((serial_string[0] == 'n') || (serial_string[0] == 'N')) {	      
+        Serial.println("Setting Simulated telemetry to off");
+	reset_min_max();   	      
+	sim_mode = false;      
+        if (!ina219_started)
+	  start_ina219(); 
+	write_config_file();    	      
+      } else      
+        Serial.println("No change to Simulated Telemetry mode");
+      break;	
+		  
+    case PROMPT_LAT:
+
+      Serial.println("Changing the  latitude and longitude  - only used for APRS telemetry");
+      Serial.println("Hitting return keeps the current value.");
+		  
+      Serial.print("Current value of latitude is ");
+      Serial.println(latitude);		  
+      Serial.println("Enter latitude  (decimal degrees, positive is north): ");	  
+      get_serial_string();		  
+      float_result = atof(serial_string);
+      if (float_result != 0.0)  {
+        Serial.print("Latitude updated to ");	    
+        Serial.println(float_result);		  
+        latitude = float_result;
+      } else
+        Serial.println("Latitude not updated");	
+
+      get_serial_clear_buffer();		  
+      Serial.print("Current value of longitude is ");
+      Serial.println(longitude);		  
+      Serial.println("Enter longitude  (decimal degrees, positive is east): ");	  
+      get_serial_string();		  
+      float_result = atof(serial_string);
+      if (float_result != 0.0)  {
+        Serial.print("Longitude updated to ");	    
+        Serial.println(float_result);		  
+        longitude = float_result;
+      } else
+        Serial.println("Longitude not updated");
+		  
+      write_config_file();     	  
+      if (mode == AFSK)
+	set_lat_lon();
+		  
+      break;	
+		  
+    case PROMPT_QUERY:
+      Serial.println("Querying payload sensors");		  		  
+      payload_command = PAYLOAD_QUERY;		  
+      break;
+		  
+   case PROMPT_CAMERA:
+      show_dir();		  
+      get_camera_image(debug_camera);	 
+      show_dir();		  
+      break;
+				    
+    case PROMPT_TEMP:		  
+      sensorValue = analogRead(TEMPERATURE_PIN);
+      Serial.print("Raw diode voltage: ");		  
+      Serial.println(sensorValue);  
+      Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+      Serial.print("Calculated temperature: ");		  
+      Serial.print(Temp);  
+      Serial.println(" C");		  	  
+      break;
+		    
+    case PROMPT_VOLTAGE:
+      Serial.println("Querying INA219 voltage and current sensors");
+      if (!ina219_started)
+	start_ina219();
+      voltage_read = true;		  
+      read_ina219();		  	  
+      break;	
+
+		  
+    case PROMPT_RESET:
+      Serial.println("Reset count is now 0");	
+      reset_count = 0;
+      write_config_file();    	  
+      break;	
+		  
+    case PROMPT_RESTART:
+      prompt = false;
+//    Serial.println("Restart not yet implemented");
+      start_payload();
+//      start_ina219();
+      if ((mode != CW)  || (!filter_present))
+        transmit_callsign(callsign);
+      sleep(0.5);	 
+      config_telem();
+      config_radio();
+      sampleTime = (unsigned int) millis();	 		  
+      break;	  
+		  
+    case PROMPT_DEBUG:
+      Serial.print("Changing Debug Mode to ");
+      debug_mode = !debug_mode;
+      if (debug_mode)  
+        Serial.println("on");	
+      else  
+        Serial.println("off");
+      break;	
+*/		  
 		  
   }
   prompt = false;
@@ -1947,7 +1918,7 @@ void get_input() {
     prompt_for_input();	  
     prompt = false;	  
   }
-	
+/*	
   // check to see if the mode has changed
  if (mode != new_mode) {
     Serial.println("Changing mode");
@@ -1965,7 +1936,8 @@ void get_input() {
     Serial.flush();	 
     watchdog_reboot (0, SRAM_END, 500); //10);	 // restart Pico
 	 
-    sleep(20.0);	 
+    sleep(20.0);	
+	 */
 /*	 
     if (new_mode != CW)
       transmit_callsign(callsign);
@@ -1982,6 +1954,6 @@ void get_input() {
 	
     sampleTime = (unsigned int) millis();
 */	 
- }		
+// }		
 	
 }
