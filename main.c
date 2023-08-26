@@ -156,7 +156,7 @@ int main(int argc, char * argv[]) {
     latitude = lat_file;
     longitude = long_file;	  
     printf("Lat/Long %f %f\n", latitude, longitude);		  
-    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", toAprsFormat(latitude), toAprsFormat(longitude));
+    printf("Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
     newGpsTime = millis();	  
    	  
   } else { // set default
@@ -784,7 +784,7 @@ int main(int argc, char * argv[]) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
      		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
        		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
-	        printf("GPS Location with Rnd: APRS %7.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
+	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
 	  
@@ -996,9 +996,9 @@ void get_tlm(void) {
       if (mode != CW) {
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
-          sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
+          sprintf(header_lat, "%07.2f%c", toAprsFormat(latitude), 'N'); // lat
         else
-          sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
+          sprintf(header_lat, "%07.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
         if (longitude > 0)
           sprintf(header_long, "%08.2f%c", toAprsFormat(longitude) , 'E'); // long
         else
