@@ -20,48 +20,48 @@
 
 //#define PICO_0V1 // define for Pico v0.1 hardware
 
-#include "cubesatsim.h"
+#include "payload_pico.h"
 #include "DumbTXSWS.h"
 #include <Wire.h>
-#include <Adafruit_INA219.h>
+//#include <Adafruit_INA219.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
-#include <MPU6050_tockn.h>
+//#include <MPU6050_tockn.h>
 #include <EEPROM.h>
-#include <Arduino-APRS-Library.h>
+//#include <Arduino-APRS-Library.h>
 #include <stdio.h>
 #include "pico/stdlib.h"   // stdlib 
-#include "hardware/irq.h"  // interrupts
-#include "hardware/pwm.h"  // pwm 
-#include "hardware/sync.h" // wait for interrupt 
-#include "RPi_Pico_ISR_Timer.h"
-#include "RPi_Pico_TimerInterrupt.h"
+//#include "hardware/irq.h"  // interrupts
+//#include "hardware/pwm.h"  // pwm 
+//#include "hardware/sync.h" // wait for interrupt 
+//#include "RPi_Pico_ISR_Timer.h"
+//#include "RPi_Pico_TimerInterrupt.h"
 #include <WiFi.h>
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 //#include "SSTV-Arduino-Scottie1-Library.h"
 #include "LittleFS.h"
-#include <Adafruit_SI5351_Library.h>
-#include "picosstvpp.h"
+//#include <Adafruit_SI5351_Library.h>
+//#include "picosstvpp.h"
 #include "pico/bootrom.h"
 #include "hardware/watchdog.h"
 #include <MQTT.h>
 #include <TinyGPS++.h>
 
 // jpg files to be stored in flash storage on Pico (FS 512kB setting)
-#include "sstv1.h"
-#include "sstv2.h"
+//#include "sstv1.h"
+//#include "sstv2.h"
 
-Adafruit_INA219 ina219_1_0x40;
-Adafruit_INA219 ina219_1_0x41(0x41);
-Adafruit_INA219 ina219_1_0x44(0x44);
+//Adafruit_INA219 ina219_1_0x40;
+//Adafruit_INA219 ina219_1_0x41(0x41);
+//Adafruit_INA219 ina219_1_0x44(0x44);
 //Adafruit_INA219 ina219_1_0x45(0x45);
-Adafruit_INA219 ina219_2_0x40(0x40);
-Adafruit_INA219 ina219_2_0x41(0x41);
-Adafruit_INA219 ina219_2_0x44(0x44);
-Adafruit_INA219 ina219_2_0x45(0x45);
+//Adafruit_INA219 ina219_2_0x40(0x40);
+//Adafruit_INA219 ina219_2_0x41(0x41);
+//Adafruit_INA219 ina219_2_0x44(0x44);
+//Adafruit_INA219 ina219_2_0x45(0x45);
 
-Adafruit_SI5351 clockgen = Adafruit_SI5351();
+//Adafruit_SI5351 clockgen = Adafruit_SI5351();
 TinyGPSPlus gps;
 
 unsigned long micros3;
@@ -80,8 +80,8 @@ MQTTClient client;
 byte green_led_counter = 0;
 char call[] = "AMSAT";   // put your callsign here
 
-extern bool get_camera_image(bool debug);
-extern bool start_camera();
+//extern bool get_camera_image(bool debug);
+//extern bool start_camera();
 
 float rand_float(float lower, float upper) {
 
