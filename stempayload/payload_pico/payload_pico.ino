@@ -1458,13 +1458,7 @@ void serial_input() {
        Serial.println("Not a command\n");	
 		   
        break;
-    }
-    if ((mode == SSTV) && prompt)  // stop SSTV if need to prompt for input
-      sstv_end();	    
-	    
-    if (new_mode != mode)
-      transmit_off();
-//    sleep(2.0);		    
+    }	    
    }
  }
  }
