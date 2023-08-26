@@ -147,9 +147,10 @@ void loop() {
 
   payload_OK_only();
   sleep(1.0);
-  Serial.println(" ");	
+  Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
-  Serial.println(" ");	
+//  Serial.println(" ");	
+  prompt_for_input();	
 }
 
 void config_gpio() {
