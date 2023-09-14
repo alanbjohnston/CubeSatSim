@@ -263,7 +263,8 @@ if __name__ == "__main__":
 		output(txLed, txLedOn)
 		sleep(0.1)
 		
-		if (txc):
+#		if (txc):
+		if (False):
 			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
 		else:	
 			if (debug_mode == 1):
