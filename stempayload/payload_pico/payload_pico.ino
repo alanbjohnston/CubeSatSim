@@ -637,7 +637,7 @@ void payload_OK_only()
     {
       if (bmePresent) {
 //        Serial1.print("START_FLAGOK BME280 ");
-        Serial1.print(sensor_start_flag);
+//        Serial1.print(sensor_start_flag);
         Serial1.print("OK BME280 ");
 	Serial1.print(bme.readTemperature());
         Serial1.print(" ");
@@ -649,7 +649,7 @@ void payload_OK_only()
       } else
       {
 //        Serial1.print("START_FLAGOK BME280 0.0 0.0 0.0 0.0");
-        Serial1.print(sensor_start_flag);
+//        Serial1.print(sensor_start_flag);
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");	      
       }
       if (mpuPresent) 	 {     
@@ -687,7 +687,7 @@ void payload_OK_only()
     Serial1.print(" MQ ");
     Serial1.print(sensorValue); //,0);  
 //    Serial1.println("END_FLAG");  	    
-    Serial1.println(sensor_end_flag);  	    
+//    Serial1.println(sensor_end_flag);  	    
 	    
     blink(50);
     delay(50);
