@@ -6,7 +6,7 @@
  *
  *  Portions Copyright (C) 2018 Jonathan Brandenburg
  *
- *  This program is free software: you can redistribute it and/or modify
+ *  This program is free software: you can redistributVe it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  (at your option) any later version.
  *
@@ -20,8 +20,9 @@
  */
  
 
-
 #include "main.h"
+
+// #define HAB  // uncomment to change APRS icon from Satellite to Balloon
 
 int main(int argc, char * argv[]) {
 
@@ -42,7 +43,7 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero 2 detected");
   }
 	
-  printf("\n\nCubeSatSim v1.2 starting...\n\n");
+  printf("\n\nCubeSatSim v1.3b starting...\n\n");
 	
   FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   pclose(rpitx_stop);
@@ -155,7 +156,7 @@ int main(int argc, char * argv[]) {
     latitude = lat_file;
     longitude = long_file;	  
     printf("Lat/Long %f %f\n", latitude, longitude);		  
-    printf("Lat/Long in APRS DDMM.MM format: %f/%f\n", toAprsFormat(latitude), toAprsFormat(longitude));
+    printf("Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
     newGpsTime = millis();	  
    	  
   } else { // set default
@@ -391,6 +392,7 @@ int main(int argc, char * argv[]) {
   }
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+//  if (sim_mode == TRUE) {
 
     sim_mode = TRUE;
 	    
@@ -693,8 +695,13 @@ int main(int argc, char * argv[]) {
 	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
-
-  
+        printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
+	fflush(stdout); 
+	printf("String: %s\n", buffer2);       
+	fflush(stdout);   
+	      
+	strcpy(sensor_payload, buffer2);      
+/*  
         char c;
         unsigned int waitTime;
 	int i, end, trys = 0;
@@ -728,8 +735,13 @@ int main(int argc, char * argv[]) {
           //  sensor_payload[i++] = '\n';
           sensor_payload[i] = '\0';
           printf(" Response from STEM Payload board: %s\n", sensor_payload);
+		
+		
 	  sleep(0.1);  // added sleep between loops
 	}
+*/	  
+	printf(" Response from STEM Payload board: %s\n", sensor_payload);
+      
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
           int count1;
@@ -737,6 +749,7 @@ int main(int argc, char * argv[]) {
  
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
+//	  printf("token: %s\n", token);	
           for (count1 = 0; count1 < 17; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
@@ -771,7 +784,7 @@ int main(int argc, char * argv[]) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
      		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
        		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
-	        printf("GPS Location with Rnd: APRS %7.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
+	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
 	  
@@ -809,11 +822,17 @@ int main(int argc, char * argv[]) {
 
       FILE * file6 = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
       pclose(file6);
-      sleep(40);	    
+      sleep(80);	    
       file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       pclose(file6);
       sleep(10);
     }
+
+    FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
+    printf("Writing telem_string.txt\n");	  
+    fprintf(fp, "Vbatt = %4.2f\n", batteryVoltage);	 
+    fclose(fp);	  
+	    
 /**/
     //  sleep(1);  // Delay 1 second
     ctr = 0;
@@ -977,9 +996,9 @@ void get_tlm(void) {
       if (mode != CW) {
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
         if (latitude > 0)
-          sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude), 'N'); // lat
+          sprintf(header_lat, "%07.2f%c", toAprsFormat(latitude), 'N'); // lat
         else
-          sprintf(header_lat, "%7.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
+          sprintf(header_lat, "%07.2f%c", toAprsFormat(latitude) * (-1.0), 'S'); // lat
         if (longitude > 0)
           sprintf(header_long, "%08.2f%c", toAprsFormat(longitude) , 'E'); // long
         else
@@ -988,8 +1007,12 @@ void get_tlm(void) {
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
-//          sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long	    
-          sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon	    
+#ifdef HAB
+	sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
+#else
+	sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long with Satellite icon	
+#endif		
+          	           	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
       } else {
@@ -1007,12 +1030,12 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
 
-       if (mode != AFSK) 
+//       if (mode != AFSK) 
          strcat(str, tlm_str);
     }
 
     // read payload sensor if available
-
+/*
     char sensor_payload[500];
 
     if (payload == ON) {
@@ -1048,6 +1071,7 @@ void get_tlm(void) {
         sensor_payload[i++] = ' ';
         //  sensor_payload[i++] = '\n';
         sensor_payload[i] = '\0';
+	
         printf(" Response from STEM Payload board: %s\n", sensor_payload);
 	sleep(0.1);  // added sleep between loops
       }	    
@@ -1055,7 +1079,15 @@ void get_tlm(void) {
       if (mode != CW)
         strcat(str, sensor_payload); // append to telemetry string for transmission
     }
-
+*/
+    strcpy(sensor_payload, buffer2);      	  
+    printf(" Response from STEM Payload board:: %s\n", sensor_payload);
+//    printf(" Str so far: %s\n", str);   
+	  
+    if (mode != CW) {
+        strcat(str, sensor_payload); // append to telemetry string for transmission
+//	printf(" Str so far: %s\n", str);    
+    }
     if (mode == CW) {
 
       char cw_str2[1000];
@@ -1485,6 +1517,16 @@ void get_tlm_fox() {
     encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
     encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
 
+    FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
+    if (command_count_file != NULL) {	
+      char count_string[10];	
+      if ( (fgets(count_string, 10, command_count_file)) != NULL)
+	   groundCommandCount = atoi(count_string); 
+    } else
+	    printf("Error opening command_count.txt!\n");
+    fclose(command_count_file);
+    printf("Command count: %d\n", groundCommandCount);	  
+    
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
@@ -1495,6 +1537,10 @@ void get_tlm_fox() {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
     }
+    if (rxAntennaDeployed == 0) {
+      rxAntennaDeployed = 1;
+      printf("RX Antenna Deployed!\n");
+    }	  
     
     if (mode == BPSK) {  // wod field experiments
       unsigned long val = 0xffff;
@@ -1949,4 +1995,172 @@ float toAprsFormat(float input) {
     int mm2 = (int)((input - dd - (float)mm1/60.0) * 60.0 * 60.0);
     float output = dd * 100 + mm1 + (float)mm2 * 0.01;
     return(output);	
+}
+
+
+//#define GET_IMAGE_DEBUG
+
+//#define DEBUG
+
+//#define PICOW true
+//int led_pin = LED_BUILTIN;
+
+/*
+void loop() {
+
+  char input_file[] = "/cam.jpg"; 
+  char output_file[] = "/cam.bin"; 
+  
+  get_image_file();
+
+  Serial.println("Got image from ESP-32-CAM!");
+
+  delay(1000);
+
+}
+*/
+
+int get_payload_serial(int debug_camera)  {
+ 
+  index1 = 0;
+  flag_count = 0;
+  start_flag_detected = FALSE;
+  start_flag_complete = FALSE;
+  end_flag_detected = FALSE;
+  jpeg_start = 0;
+ 
+// #ifdef GET_IMAGE_DEBUG
+ if (debug_camera)
+  printf("Received from Payload:\n");
+ // #endif
+  finished = FALSE;
+
+  unsigned long time_start = millis();	    
+  while ((!finished) && ((millis() - time_start) < CAMERA_TIMEOUT)) {
+	  
+    if (serialDataAvail(uart_fd)) {
+	      char octet = (char) serialGetchar(uart_fd);
+              printf("%c", octet);
+              fflush(stdout);	  
+
+//   if (Serial2.available()) {      // If anything comes in Serial2
+//      byte octet = Serial2.read();
+///      if ((!start_flag_detected) && (debug_camera))
+///        Serial.write(octet);
+
+     if (start_flag_complete) {
+//       printf("Start flag complete detected\n");
+       buffer2[index1++] = octet;
+       if (octet == end_flag[flag_count]) {  // looking for end flag
+//         if (end_flag_detected) {
+            flag_count++;
+#ifdef GET_IMAGE_DEBUG  
+//       if (debug_camera)  
+            printf("Found part of end flag!\n");
+#endif
+            if (flag_count >= strlen(end_flag)) {  // complete image           
+///              buffer2[index1++] = octet;
+//              Serial.println("\nFound end flag");
+//              Serial.println(octet, HEX);
+///              while(!Serial2.available()) { }     // Wait for another byte
+//              octet = Serial2.read(); 
+//              buffer2[index1++] = octet;
+//              Serial.println(octet, HEX);
+//              while(!Serial2.available()) { }     // Wait for another byte
+///              int received_crc = Serial2.read(); 
+//              buffer2[index1++] = octet;
+/*                            
+              Serial.print("\nFile length: ");
+              Serial.println(index1 - (int)strlen(end_flag));
+//              index1 -= 1; // 40;
+//              Serial.println(buffer2[index1 - 1], HEX); 
+//              int received_crc = buffer2[index1];
+//              index1 -= 1;
+
+              uint8_t * data = (uint8_t *) &buffer2[0];
+#ifdef GET_IMAGE_DEBUG
+       Serial.println(buffer2[0], HEX);
+      Serial.println(buffer2[index1 - 1], HEX);
+      Serial.println(index1);            
+ #endif  
+     if (debug_camera) {                
+      Serial.print("\nCRC received:");
+      Serial.println(received_crc, HEX);   
+    }
+           
+              int calculated_crc = CRC8.smbus(data, index1);
+ //             Serial.println(calculated_crc, HEX);
+              if (received_crc == calculated_crc)
+                Serial.println("CRC check succeeded!");
+              else  
+               Serial.println("CRC check failed!"); 
+
+*/		    
+//              index1 -= 40;                         
+              index1 -= strlen(end_flag);
+	      buffer2[index1++] = 0;
+	      printf(" Payload length: %d \n",index1); 	    
+
+//              write_jpg();
+	      finished = TRUE;	    
+              index1 = 0;           
+              start_flag_complete = FALSE;
+              start_flag_detected = FALSE; // get ready for next image 
+              end_flag_detected = FALSE;
+              flag_count = 0; 
+//              delay(6000);
+            }
+         } else {
+	   if (flag_count > 1)    
+             printf("Resetting. Not end flag.\n");    	       
+           flag_count = 0;
+	       
+         }
+ ///        buffer2[index1++] = octet;
+           
+//#ifdef GET_IMAGE_DEBUG 
+    if (debug_camera) {   
+           char hexValue[5];
+           if (octet != 0x66) {
+             sprintf(hexValue, "%02X", octet);
+//             printf(hexValue);
+           } else {
+//             Serial.println("\n********************************************* Got a 66!");
+             printf("66");
+           } 
+//             Serial.write(octet);
+    }
+//#endif             
+           if (index1 > 1000) {
+             index1 = 0; 
+	     printf("Resetting index!\n");	   
+	   }
+//         }
+    } else if (octet == start_flag[flag_count]) {  // looking for start flag
+          start_flag_detected = TRUE;
+          flag_count++;
+#ifdef GET_IMAGE_DEBUG  
+          printf("Found part of start flag! \n");
+#endif  
+          if (flag_count >= strlen(start_flag)) {
+            flag_count = 0;
+            start_flag_complete = TRUE;
+#ifdef GET_IMAGE_DEBUG  
+            printf("Found all of start flag!\n");        
+#endif  
+          }
+      } else {  // not the flag, keep looking
+          start_flag_detected = FALSE;
+          flag_count = 0;
+#ifdef GET_IMAGE_DEBUG  
+          printf("Resetting. Not start flag.\n");        
+#endif  
+       } 
+    }
+//    Serial.println("writing to Serial2");
+  }
+  if (debug_camera)                 
+      printf("\nComplete\n");
+  fflush(stdout);	
+  return(finished);
 }

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v1.2\n"
+echo -e "\nupdate script for CubeSatSim v1.3b\n"
 
 sudo rm /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/id.txt /home/pi/CubeSatSim/cw.txt > /dev/null 2>&1 
 
@@ -27,6 +27,22 @@ cd /home/pi/CubeSatSim
 git pull > .updated
 
 make debug
+
+FILE=/home/pi/CubeSatSim/command_tx
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "True\n" > /home/pi/CubeSatSim/command_tx
+fi
+
+FILE=/home/pi/CubeSatSim/command_count.txt
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "0\n" > /home/pi/CubeSatSim/command_count.txt
+fi
 
 FLAG=0
 
@@ -62,20 +78,6 @@ grep 'update' /home/pi/CubeSatSim/.updated
 if [[ $(grep 'update' /home/pi/CubeSatSim/.updated) ]]; then
   echo "update script updated, running again"
   /home/pi/CubeSatSim/update
-fi
-
-if [ $FLAG -eq 1 ]; then
-  echo "systemctl daemon-reload and restart"
-  sudo systemctl daemon-reload 
-  sudo systemctl restart cubesatsim
-else
-  grep 'changed' /home/pi/CubeSatSim/.updated
-  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
-    echo "systemctl restart cubesatsim"
-    sudo systemctl restart cubesatsim
-  else
-    echo "nothing to do."
-  fi  
 fi
 
 if [ ! -d "/home/pi/PiSSTVpp" ]; then
@@ -129,6 +131,8 @@ fi
 
 cd /home/pi/pi-power-button
 
+# git checkout reboot-mode-change
+
 git pull > .updated_p
 
   grep 'changed' /home/pi/pi-power-button/.updated_p
@@ -155,5 +159,82 @@ git pull > .updated_p
   else
     echo "nothing to do for pi-power-button."
   fi 
+
+  if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
+    echo "dtparam=audio=on already in /boot/config.txt"
+  else
+    echo "adding dtparam=audio=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
+    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
+    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=pwm,pin=18,func=2 to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
+    FLAG=1
+
+    cd /home/pi/pi-power-button
+    git pull
+    git checkout reboot-mode-change
+    script/install
+
+    sudo apt-get update && sudo apt-get dist-upgrade -y
+    sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
+    sudo pip3 install pillow
+
+  fi
+
+  if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
+    echo "disable_splash=1 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+  if [[ $(grep 'boot_delay=0' /boot/config.txt) ]]; then
+    echo "boot_delay=0 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
+    FLAG=1
+  fi
+
+#if [ ! -f "/home/pi/CubeSatSim/telem_string.txt" ]; then
+
+#  sudo apt-get update && sudo apt-get dist-upgrade -y
+
+#  sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
+
+#  sudo pip3 install pillow
+
+#fi
+
+
+if [ $FLAG -eq 1 ]; then
+  echo "systemctl daemon-reload and reboot"
+  sudo systemctl daemon-reload 
+  sudo reboot -h now
+#  sudo systemctl restart cubesatsim
+else
+  grep 'changed' /home/pi/CubeSatSim/.updated
+  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
+    echo "reboot"
+    sudo reboot -h now
+#    sudo systemctl restart cubesatsim
+  else
+    echo "nothing to do."
+  fi  
+fi
   
   echo "CubeSatSim update complete."

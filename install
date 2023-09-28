@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v1.2\n"
+echo -e "\ninstallation script for CubeSatSim v1.3b\n"
 
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
@@ -8,6 +8,22 @@ if [ -f "$FILE" ]; then
 else 
     echo "creating $FILE"
     echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
+fi
+
+FILE=/home/pi/CubeSatSim/command_tx
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "True\n" > /home/pi/CubeSatSim/command_tx
+fi
+
+FILE=/home/pi/CubeSatSim/command_count.txt
+if [ -f "$FILE" ]; then
+    echo "$FILE exists."
+else 
+    echo "creating $FILE"
+    echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
 
 cd
@@ -72,7 +88,7 @@ git clone https://github.com/alanbjohnston/pi-power-button.git
 
 cd pi-power-button
 
-git checkout master
+git checkout reboot-mode-change
 
 ./script/install
 
@@ -91,6 +107,16 @@ cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_
 echo "Copying SSTV image 2"
 cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 
+cd
+
+git clone https://github.com/alanbjohnston/rpitx.git
+
+cd rpitx
+
+./install.sh
+
+
+cd
 
 cd
 
@@ -119,7 +145,82 @@ sudo raspi-config nonint do_legacy 0
 ##  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
   
 
+  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
   
+  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
+  
+  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
+    echo "dtoverlay=i2c-gpio already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
+  fi
+
+  if [[ $(grep 'enable_uart=1' /boot/config.txt) ]]; then
+    echo "enable_uart=1 already in /boot/config.txt"
+  else
+    echo "adding enable_uart=1 to /boot/config.txt"
+    sudo sh -c 'echo "\nenable_uart=1" >> /boot/config.txt'
+  fi
+  
+  if [[ $(grep 'dtoverlay=disable-bt' /boot/config.txt) ]]; then
+    echo "dtoverlay=disable-bt already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=disable-bt to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=disable-bt" >> /boot/config.txt'
+  fi
+  
+  if [[ $(grep 'dtoverlay=dwc2' /boot/config.txt) ]]; then
+    echo "dtoverlay=dwc2 aalready in /boot/config.txt"
+  else
+    echo "adding dtoverlay=dwc2 to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=dwc2" >> /boot/config.txt'
+  fi
+
+  if [[ $(grep 'modules-load=dwc2,g_ether' /boot/cmdline.txt) ]]; then
+    echo "modules-load=dwc2,g_ether already in /boot/cmdline.txt"
+  else
+    echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
+    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
+  fi
+  
+  if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
+    echo "dtparam=audio=on already in /boot/config.txt"
+  else
+    echo "adding dtparam=audio=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
+  fi
+
+  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
+    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
+  else
+    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
+  fi
+
+  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
+    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
+  fi
+
+  if [[ $(grep 'disable_splash=1 ' /boot/config.txt) ]]; then
+    echo "disable_splash=1 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/config.txt'
+  fi
+
+  if [[ $(grep 'boot_delay=0' /boot/config.txt) ]]; then
+    echo "boot_delay=0 already in /boot/config.txt"
+  else
+    echo "adding  to /boot/config.txt"
+    sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
+  fi
+
+sudo sh -c 'echo "\n" >> /boot/config.txt'
+
 echo "Would you like to reboot to complete the installation (y/n)?"
 
 read -r ANS
