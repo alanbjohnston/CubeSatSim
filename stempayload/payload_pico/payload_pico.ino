@@ -75,7 +75,7 @@ MQTTClient client;
 
 #define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
-//#define APRS_VHF
+#define APRS_VHF
 
 byte green_led_counter = 0;
 //char call[] = "AMSAT";   // put your callsign here
