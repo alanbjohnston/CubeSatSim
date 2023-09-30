@@ -375,6 +375,7 @@ void payload_OK_only()
   {
     blink(50);
     char result = Serial.read();
+    Serial.println(result);	  
     char header[] = "OK BME280 ";
     char str[100];
 	  
