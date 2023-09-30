@@ -370,7 +370,9 @@ void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
 
-  Serial.println("Serial check");	
+  Serial.println("Serial check");
+  Serial.println(Serial.available());
+	
   if (Serial.available() > 0) 
   {
     char result = Serial.read();
