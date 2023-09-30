@@ -217,7 +217,7 @@ void get_serial_char();
 void get_serial_clear_buffer();
 void set_lat_lon();
 void program_radio();
-void read_config_file(); 
+bool read_config_file(); 
 void write_config_file(); 
 void read_mode(); 
 void write_mode(); 
