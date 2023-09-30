@@ -1030,12 +1030,15 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
 
-       if (mode == AFSK) 
-	  sprintf(tlm_str, "%4.2f%V 5.1%fmA ", voltage[map[BAT]], current[map[BAT]]);
-
-       strcat(str, tlm_str);
+       if (mode != AFSK) 
+         strcat(str, tlm_str);
 
     }
+
+    if (mode == AFSK) {
+      sprintf(tlm_str, "%4.2f%V 5.1%fmA ", batteryVoltage, batteryVoltage);
+      strcat(str, tlm_str);
+    }  
 
     // read payload sensor if available
 /*
