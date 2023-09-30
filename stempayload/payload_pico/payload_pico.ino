@@ -350,7 +350,7 @@ void start_payload() {
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
     eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
 */
-    flag = 0xA07;
+//    flag = 0xA07;
     xOffset = mpu6050.getGyroXoffset();
     yOffset = mpu6050.getGyroYoffset();
     zOffset = mpu6050.getGyroZoffset();
