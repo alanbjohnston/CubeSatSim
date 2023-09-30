@@ -106,11 +106,11 @@ def increment_mode():
 		GPIO.setwarnings(False)
 		GPIO.output(txLed, 0)
 		GPIO.output(powerPin, 0)
-		print("Don't sudo reboot -h now")
+		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
 		GPIO.output(powerPin, 0);		
-#		system("reboot -h now")
+		system("reboot -h now")
 #		release = True;
 		sleep(10);
 	except:
@@ -135,7 +135,13 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
-GPIO.setup(squelch, GPIO.IN)
+GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
+
+if GPIO.input(squelch) == False:
+	print("squelch not set correctly, no command input!")
+	no_command = True
+else:
+	no_command = False
 
 transmit = False
 if GPIO.input(12) == False:
@@ -322,7 +328,7 @@ if __name__ == "__main__":
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
 					sleep(1)
-					if GPIO.input(squelch) == False:
+					if (no_command == False and GPIO.input(squelch) == False)):
 						print("carrier received!")
 						# command_tx = not command_tx
 						print(command_tx)
@@ -388,7 +394,7 @@ if __name__ == "__main__":
 				output (ptt, 1)
 			sleep(5)
 			while True:
-				if GPIO.input(squelch) == False:
+				if (no_command == False and GPIO.input(squelch) == False)):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
@@ -522,7 +528,7 @@ if __name__ == "__main__":
 
 					output(pd, 1)
 					sleep(1)
-					if GPIO.input(squelch) == False:
+					if (no_command == False and GPIO.input(squelch) == False)):
 						print("carrier received!")
 						# command_tx = not command_tx
 						print(command_tx)
@@ -607,7 +613,7 @@ if __name__ == "__main__":
 
 						output(pd, 1)
 						sleep(1)
-						if GPIO.input(squelch) == False:
+						if (no_command == False and GPIO.input(squelch) == False)):
 							print("carrier received!")
 							# command_tx = not command_tx
 							print(command_tx)
@@ -691,7 +697,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				if GPIO.input(squelch) == False:
+				if (no_command == False and GPIO.input(squelch) == False)):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
@@ -739,7 +745,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				if GPIO.input(squelch) == False:
+				if (no_command == False and GPIO.input(squelch) == False)):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
