@@ -373,6 +373,8 @@ void payload_OK_only()
 
   Serial.println("Serial check");
   Serial.println(Serial.available());
+
+  get_input();	
 	
   if (Serial.available() > 0) 
   {
