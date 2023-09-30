@@ -106,11 +106,11 @@ def increment_mode():
 		GPIO.setwarnings(False)
 		GPIO.output(txLed, 0)
 		GPIO.output(powerPin, 0)
-		print("sudo reboot -h now")
+		print("Don't sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
 		GPIO.output(powerPin, 0);		
-		system("reboot -h now")
+#		system("reboot -h now")
 #		release = True;
 		sleep(10);
 	except:
