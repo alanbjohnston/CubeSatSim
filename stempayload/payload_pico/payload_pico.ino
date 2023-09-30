@@ -420,7 +420,8 @@ void payload_OK_only()
     strcat(payload_str, str);
 //    print_string(payload_str);
     }
-    if ((result == '?') || first_time == true)  // commented back in
+//    if ((result == '?') || first_time == true)  // commented back in
+    if (true)	    
     if (true)
     {
 	    	       
