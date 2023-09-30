@@ -152,6 +152,10 @@ uint32_t tx_channel = 0;
 //ax5043_conf_t hax5043;
 //ax25_conf_t hax25;
 
+float xOffset;
+float yOffset;	  
+float zOffset;
+
 int twosToInt(int val, int len);
 float toAprsFormat(float input);
 float rnd_float(double min, double max);
