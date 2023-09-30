@@ -113,7 +113,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico Payload v0.1 starting...\n");
+  Serial.println("CubeSatSim Pico Payload v0.2 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -329,14 +329,12 @@ void start_payload() {
     mpuPresent = 1;
     mpu6050.begin();	  
 
-
-  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
+//  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
+  if (read_config_file())
   {
     Serial.println("Reading gyro offsets from config file\n");
-    mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
-	  	  
-  }
-	  
+    mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);	  	  
+  }	  
   else
   {
     payload_command = false;
@@ -370,12 +368,34 @@ void start_payload() {
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
-	
-  if ((Serial.available() > 0)|| first_time == true)   // commented back in
+
+  if ((Serial.available() 
   {
-    blink(50);
     char result = Serial.read();
     Serial.println(result);	  
+    if (result == 'R') {
+      Serial.println("OK");
+      delay(100);
+//      first_time = true;
+      start_payload();	    
+//      setup();
+    }
+    else if (result == 'g') {
+	show_gps = !show_gps;    
+    }	  
+    else if (result == 'C') {
+      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      EEPROM.put(0, (float)0.0);
+//      first_time = true;
+      start_payload(); 	    
+//      setup();
+    }
+}	
+//  if ((Serial.available() > 0)|| first_time == true)   // commented back in
+  if (true)	  
+  {
+    blink(50);
+
     char header[] = "OK BME280 ";
     char str[100];
 	  
@@ -399,23 +419,6 @@ void payload_OK_only()
     
     strcat(payload_str, str);
 //    print_string(payload_str);
-    }
-    if (result == 'R') {
-      Serial.println("OK");
-      delay(100);
-//      first_time = true;
-      start_payload();	    
-//      setup();
-    }
-    else if (result == 'g') {
-	show_gps = !show_gps;    
-    }	  
-    else if (result == 'C') {
-      Serial.println("Clearing stored gyro offsets in EEPROM\n");
-      EEPROM.put(0, (float)0.0);
-//      first_time = true;
-      start_payload(); 	    
-//      setup();
     }
     if ((result == '?') || first_time == true)  // commented back in
     if (true)
