@@ -328,7 +328,7 @@ if __name__ == "__main__":
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
 					sleep(1)
-					if (no_command == False and GPIO.input(squelch) == False)):
+					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
 						# command_tx = not command_tx
 						print(command_tx)
@@ -394,7 +394,7 @@ if __name__ == "__main__":
 				output (ptt, 1)
 			sleep(5)
 			while True:
-				if (no_command == False and GPIO.input(squelch) == False)):
+				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
@@ -528,7 +528,7 @@ if __name__ == "__main__":
 
 					output(pd, 1)
 					sleep(1)
-					if (no_command == False and GPIO.input(squelch) == False)):
+					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
 						# command_tx = not command_tx
 						print(command_tx)
@@ -613,7 +613,7 @@ if __name__ == "__main__":
 
 						output(pd, 1)
 						sleep(1)
-						if (no_command == False and GPIO.input(squelch) == False)):
+						if (no_command == False and GPIO.input(squelch) == False):
 							print("carrier received!")
 							# command_tx = not command_tx
 							print(command_tx)
@@ -697,7 +697,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				if (no_command == False and GPIO.input(squelch) == False)):
+				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
@@ -745,7 +745,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				if (no_command == False and GPIO.input(squelch) == False)):
+				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
