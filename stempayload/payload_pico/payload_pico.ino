@@ -214,6 +214,7 @@ bool read_config_file() {
   File config_file = LittleFS.open("/payload.cfg", "r");	
 //  FILE * config_file = fopen("/payload.cfg", "r");
   if (!config_file) {
+    Serial.println("Can't open payload.cfg");	  
     return(false);  
   }
 
@@ -244,7 +245,7 @@ void write_config_file() {
   config_file.write(buff, strlen(buff));	  
 	  
   config_file.close();
-//  Serial.println("Write complete");	
+  Serial.println("Write complete");	
 	
 }
 
@@ -369,6 +370,7 @@ void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
 
+  Serial.println("Serial check");	
   if (Serial.available() > 0) 
   {
     char result = Serial.read();
