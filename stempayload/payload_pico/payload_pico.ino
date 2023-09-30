@@ -92,7 +92,8 @@ void setup() {
 
   set_sys_clock_khz(133000, true);  
 	
-  Serial.begin(115200);
+//  Serial.begin(115200);
+  Serial.begin(9600);
 	
   delay(10000);	
 	
