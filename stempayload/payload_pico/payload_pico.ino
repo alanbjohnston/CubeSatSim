@@ -207,75 +207,37 @@ void program_radio() {
   pinMode(PTT_PIN, INPUT);	
 }
 
-void read_config_file() {
+bool read_config_file() {
   char buff[255];
   // Open configuration file with callsign and reset count
   Serial.println("Reading config file");	
-  File config_file = LittleFS.open("/sim.cfg", "r");	
-//  FILE * config_file = fopen("/sim.cfg", "r");
+  File config_file = LittleFS.open("/payload.cfg", "r");	
+//  FILE * config_file = fopen("/payload.cfg", "r");
   if (!config_file) {
-    Serial.println("Creating config file.");
-//    config_file = fopen("/sim.cfg", "w+");
-     config_file = LittleFS.open("/sim.cfg", "w+");		  
-	  
-//    fprintf(config_file, "%s %d", " ", 100);
-//	  sprintf(buff, "%d\n", cnt);
-    sprintf(buff, "%s %d", "AMSAT", 0);
-    config_file.write(buff, strlen(buff));	  
-	  
-	  
-    config_file.close();
-	  
-    config_file = LittleFS.open("/sim.cfg", "r");	  
+    return(false);  
   }
 
 //  char * cfg_buf[100];
   config_file.read((uint8_t *)buff, 255);
 //  sscanf(buff, "%d", &cnt);	
-  sscanf(buff, "%s %d %f %f %s", callsign, & reset_count, & lat_file, & long_file, sim_yes);
+  sscanf(buff, "%f %f %f", xOffset, yOffset, zOffset);
   config_file.close();
-  if (debug_mode)	
-    Serial.printf("Config file /sim.cfg contains %s %d %f %f %s\n", callsign, reset_count, lat_file, long_file, sim_yes);
-	
-  reset_count = (reset_count + 1) % 0xffff;
-
-  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    Serial.println("Valid latitude and longitude in config file\n");
-// convert to APRS DDMM.MM format
-    latitude = lat_file; // toAprsFormat(lat_file);
-    longitude = long_file; // toAprsFormat(long_file);
-    Serial.printf("Lat/Lon updated to: %f/%f\n", latitude, longitude);
-  }
-//  } else { // set default
-//    latitude = toAprsFormat(latitude);
-//    longitude = toAprsFormat(longitude);
-//  }
-//  Serial.printf("sim_yes: %s\n", sim_yes);
-  char yes_string[] = "yes";	
-//  if (strcmp(sim_yes, yes_string) == 0) {
-  if (sim_yes[0] == 'y') {
-	  sim_mode = true;	
-	  Serial.println("Simulated telemetry mode set by config file");
-  }
+//  if (debug_mode)	
+    Serial.printf("Config file /payload.cfg contains %f %f %f\n", xOffset, yOffset, zOffset);
 	
   config_file.close();	
 	
   write_config_file();	
+
+  return(true);	
 }
 
 void write_config_file() {
-  Serial.println("Writing /sim.cfg file");	
+  Serial.println("Writing /payload.cfg file");	
   char buff[255];	
-  File config_file = LittleFS.open("/sim.cfg", "w+");		  
+  File config_file = LittleFS.open("/payload.cfg", "w+");		  
 	  
-//  sprintf(buff, "%s %d", callsign, );
-	
-  if (sim_mode)
-	strcpy(sim_yes, "yes");
-  else
-	strcpy(sim_yes, "no");
-	
-  sprintf(buff, "%s %d %f %f %s", callsign, reset_count, latitude, longitude, sim_yes);
+  sprintf(buff, "%f %f %f", xOffset, yOffset, zOffset);
   Serial.println("Writing string ");	
 //  if (debug_mode)	
     print_string(buff);	
@@ -366,28 +328,15 @@ void start_payload() {
   else {
     mpuPresent = 1;
     mpu6050.begin();	  
-	  
-  long flag;
-  float xOffset;
-  float yOffset;	  
-  float zOffset;		  
-  EEPROM.get(0, flag);
-	  
-  if ((flag == 0xA07) && (payload_command != PAYLOAD_RESET))
+
+
+  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
   {
-    Serial.println("Reading gyro offsets from EEPROM\n");
-
-    EEPROM.get(4, xOffset);
-    EEPROM.get(8, yOffset);
-    EEPROM.get(12, zOffset);
-	  
-    Serial.println(xOffset, DEC);
-    Serial.println(yOffset, DEC);
-    Serial.println(zOffset, DEC);
-
+    Serial.println("Reading gyro offsets from config file\n");
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
 	  	  
   }
+	  
   else
   {
     payload_command = false;
@@ -406,27 +355,7 @@ void start_payload() {
     yOffset = mpu6050.getGyroYoffset();
     zOffset = mpu6050.getGyroZoffset();
 	  
-    EEPROM.put(0, flag);
-    EEPROM.put(4, xOffset);
-    EEPROM.put(8, yOffset);
-    EEPROM.put(12, zOffset);
-	  
-    if (EEPROM.commit()) {
-      Serial.println("EEPROM successfully committed");
-    } else {
-      Serial.println("ERROR! EEPROM commit failed");
-    }
-	  
-    Serial.println(" ");	  
-    float f;	  
-    EEPROM.get(0, flag);  		  
-    Serial.println(flag, HEX);
-    EEPROM.get(4, f);  
-    Serial.println(f);		  
-    EEPROM.get(8, f);  
-    Serial.println(f);	
-    EEPROM.get(12, f);  
-    Serial.println(f);		  
+    write_config_file();	  
   }
   }		
 
@@ -1050,7 +979,7 @@ void prompt_for_input() {
        Serial.println("d  Change debug mode");
        Serial.println("w  Connect to WiFi\n");
 		  
-//       Serial.printf("Software version v0.39 \nConfig file /sim.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
+//       Serial.printf("Software version v0.39 \nConfig file /payload.cfg contains %s %d %f %f %s\n\n", callsign, reset_count, lat_file, long_file, sim_yes);
 /*		  
        switch(mode) {
 		       
