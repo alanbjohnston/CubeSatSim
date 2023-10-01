@@ -328,7 +328,8 @@ void start_payload() {
     mpu6050.begin();	  
 
 
-  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
+//  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
+  if (false)	  
   {
     Serial.println("Reading gyro offsets from config file\n");
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
