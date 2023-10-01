@@ -225,7 +225,7 @@ bool read_config_file() {
 	
   config_file.close();	
 	
-  write_config_file();	
+//  write_config_file();	
 
   return(true);	
 }
