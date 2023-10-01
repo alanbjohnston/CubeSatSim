@@ -6,7 +6,7 @@
  *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  (at your option) any later version.
- *
+ *F
  *  This program is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -40,7 +40,7 @@
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 //#include "SSTV-Arduino-Scottie1-Library.h"
-#include "LittleFS.h"
+#include ".h"
 //#include <Adafruit_SI5351_Library.h>
 //#include "picosstvpp.h"
 #include "pico/bootrom.h"
@@ -96,7 +96,7 @@ void setup() {
 	
   delay(10000);	
 	
-//  LittleFS.begin();
+  LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
 //#ifdef APRS_VHF	  
 //   mode = AFSK;	// force to APRS	
