@@ -113,7 +113,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico Payload v0.1 starting...\n");
+  Serial.println("CubeSatSim Pico Payload v0.2 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -181,11 +181,6 @@ void program_radio() {
     
   for (int i = 0; i < 5; i++) {
      sleep(0.5); // delay(500);
-//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
-//    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
-//     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
-//     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
-//     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
 #ifdef APRS_VHF	  
      mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
@@ -197,8 +192,11 @@ void program_radio() {
 	
   }
  }
+#ifdef APRS_VHF	  	
+ Serial.println("Programming FM tx 144.39, rx on 144.39 MHz");
+#else
  Serial.println("Programming FM tx 434.9, rx on 435.0 MHz");
-	
+#endif	
 //  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
 //  sleep(0.5);
 //  digitalWrite(PTT_PIN, HIGH);	
