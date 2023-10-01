@@ -40,7 +40,7 @@
 #include "hardware/gpio.h"
 #include "hardware/adc.h"
 //#include "SSTV-Arduino-Scottie1-Library.h"
-#include ".h"
+#include "LittleFS.h"
 //#include <Adafruit_SI5351_Library.h>
 //#include "picosstvpp.h"
 #include "pico/bootrom.h"
