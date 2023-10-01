@@ -93,14 +93,27 @@ void setup() {
   set_sys_clock_khz(133000, true);  
 	
   Serial.begin(115200);
-//  Serial.begin(9600);
 	
   delay(10000);	
 	
-  LittleFS.begin();
+//  LittleFS.begin();
 //  LittleFS.format();	// only format if files of size 0 keep showing up
+//#ifdef APRS_VHF	  
+//   mode = AFSK;	// force to APRS	
+//#else	
+//  read_mode();
+//#endif
+	
+//  new_mode = mode;
+	
+//  pinMode(LED_BUILTIN, OUTPUT);	
+//  blinkTimes(1);	
+
+///  sleep(5.0);	
+	
+// otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico Payload v0.2 starting...\n");
+  Serial.println("CubeSatSim Pico Payload v0.1 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
@@ -117,7 +130,7 @@ void setup() {
 	
   config_gpio();
 
-//  Serial.print("Pi Zero present, so running Payload OK code.");
+  Serial.print("Pi Zero present, so running Payload OK code.");
   sr_frs_present = true;	 
   program_radio();  
   start_payload();
@@ -140,7 +153,7 @@ void loop() {
   Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
 //  Serial.println(" ");	
-//  prompt_for_input();	
+  prompt_for_input();	
 }
 
 void config_gpio() {
@@ -168,6 +181,11 @@ void program_radio() {
     
   for (int i = 0; i < 5; i++) {
      sleep(0.5); // delay(500);
+//  Serial1.println("AT+DMOSETGROUP=0,434.9100,434.9100,1,2,1,1\r");
+//    mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,1,2,1,1\r");    
+//     mySerial.println("AT+DMOSETGROUP=0,434.9000,434.9000,0,8,0,0\r");  
+//     mySerial.println("AT+DMOSETGROUP=0,432.2510,432.2510,0,8,0,0\r");  
+//     mySerial.println("AT+DMOSETGROUP=0,432.2500,432.2500,0,8,0,0\r");  
 #ifdef APRS_VHF	  
      mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
@@ -179,12 +197,11 @@ void program_radio() {
 	
   }
  }
- #ifdef APRS_VHF	  	
-   Serial.println("Programming FM tx 144.39, rx on 144.39 MHz");
- #else
-   Serial.println("Programming FM tx 434.9, rx on 435.0 MHz");	
- #endif
+ Serial.println("Programming FM tx 434.9, rx on 435.0 MHz");
 	
+//  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
+//  sleep(0.5);
+//  digitalWrite(PTT_PIN, HIGH);	
   digitalWrite(PD_PIN, LOW);  // disable SR_FRS	
   pinMode(PD_PIN, INPUT);
   pinMode(PTT_PIN, INPUT);	
@@ -197,7 +214,6 @@ bool read_config_file() {
   File config_file = LittleFS.open("/payload.cfg", "r");	
 //  FILE * config_file = fopen("/payload.cfg", "r");
   if (!config_file) {
-    Serial.println("Can't open payload.cfg");	  
     return(false);  
   }
 
@@ -207,7 +223,7 @@ bool read_config_file() {
   sscanf(buff, "%f %f %f", xOffset, yOffset, zOffset);
   config_file.close();
 //  if (debug_mode)	
-  Serial.printf("Config file /payload.cfg contains %f %f %f\n", xOffset, yOffset, zOffset);
+    Serial.printf("Config file /payload.cfg contains %f %f %f\n", xOffset, yOffset, zOffset);
 	
   config_file.close();	
 	
@@ -228,7 +244,7 @@ void write_config_file() {
   config_file.write(buff, strlen(buff));	  
 	  
   config_file.close();
-  Serial.println("Write complete");	
+//  Serial.println("Write complete");	
 	
 }
 
@@ -283,6 +299,18 @@ void start_payload() {
   Serial.println("Starting payload!");
   
   blink_setup();
+/*
+  blink(500);
+  sleep(0.25); // delay(250);
+  blink(500);
+  sleep(0.25); // delay(250);
+  led_set(greenLED, HIGH);
+  sleep(0.25); // delay(250);
+  led_set(greenLED, LOW);
+  led_set(blueLED, HIGH);
+  sleep(0.25); // delay(250);
+  led_set(blueLED, LOW);
+*/ 
 	
   if (bme.begin()) {
     bmePresent = 1;
@@ -301,26 +329,34 @@ void start_payload() {
     mpuPresent = 1;
     mpu6050.begin();	  
 
-//  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
-    if (read_config_file())
-    {
-      Serial.println("Reading gyro offsets from config file\n");
-      mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);	  	  
-    }	  
-    else
-    {
-      payload_command = false;
-	  
-      Serial.println("Calculating gyro offsets and storing in EEPROM\n");
 
-      mpu6050.calcGyroOffsets(true);
-
-      xOffset = mpu6050.getGyroXoffset();
-      yOffset = mpu6050.getGyroYoffset();
-      zOffset = mpu6050.getGyroZoffset();
+  if ((read_config_file()) && (payload_command != PAYLOAD_RESET))
+  {
+    Serial.println("Reading gyro offsets from config file\n");
+    mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
+	  	  
+  }
 	  
-      write_config_file();	  
-    }
+  else
+  {
+    payload_command = false;
+	  
+    Serial.println("Calculating gyro offsets and storing in EEPROM\n");
+
+    mpu6050.calcGyroOffsets(true);
+/*
+    eeprom_word_write(0, 0xA07);
+    eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
+    eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
+    eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
+*/
+//    flag = 0xA07;
+    xOffset = mpu6050.getGyroXoffset();
+    yOffset = mpu6050.getGyroYoffset();
+    zOffset = mpu6050.getGyroZoffset();
+	  
+    write_config_file();	  
+  }
   }		
 
   if (!(payload = bmePresent || mpuPresent))
@@ -334,72 +370,90 @@ void start_payload() {
 void payload_OK_only()
 {
   payload_str[0] = '\0';  // clear the payload string
-
-//  Serial.println("Serial check");
-//  Serial.println(Serial.available());
-
-//  get_input();	
 	
-//  if (Serial.available() > 0) 
-//  {
-//    char result = Serial.read();
-//    Serial.println(result);	  
-//    if (result == 'R') {
-//      Serial.println("OK");
-//      delay(100);
-//      first_time = true;
-//      start_payload();	    
-//      setup();
-//    }
-//    else if (result == 'g') {
-//	show_gps = !show_gps;    
-//  }	  
-//    else if (result == 'C') {
-//      Serial.println("Clearing stored gyro offsets in EEPROM\n");
-//      EEPROM.put(0, (float)0.0);
-//      first_time = true;
-//      start_payload(); 	    
-//      setup();
-//    }
-// }	
-//  if ((Serial.available() > 0)|| first_time == true)   // commented back in
-  if (true)	  
+  if ((Serial.available() > 0)|| first_time == true)   // commented back in
   {
     blink(50);
-
+    char result = Serial.read();
     char header[] = "OK BME280 ";
     char str[100];
 	  
     strcpy(payload_str, header);
 //    print_string(str);		  
     if (bmePresent) 
+//    	sprintf(str, "%4.2f %6.2f %6.2f %5.2f ", 
    	sprintf(str, "%.1f %.2f %.1f %.2f ", 
 	  bme.readTemperature(), bme.readPressure() / 100.0, bme.readAltitude(SEALEVELPRESSURE_HPA), bme.readHumidity());
-    else 
+    else
         sprintf(str, "OK BME280 0.0 0.0 0.0 0.0 "); 
+    strcat(payload_str, str);
+
+    if (mpuPresent) 	 { 
+//    print_string(payload_str);	
+    mpu6050.update();
+
+//    sprintf(str, " MPU6050 %5.2f %5.2f %5.2f %5.2f %5.2f %5.2f ",
+    sprintf(str, " MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
+      mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
     
     strcat(payload_str, str);
-//    print_string(payload_str);		  
-    Serial.print(str);	  
-
+//    print_string(payload_str);
+    }
+    if (result == 'R') {
+      Serial.println("OK");
+      delay(100);
+//      first_time = true;
+      start_payload();	    
+//      setup();
+    }
+    else if (result == 'g') {
+	show_gps = !show_gps;    
+    }	  
+    else if (result == 'C') {
+      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      EEPROM.put(0, (float)0.0);
+//      first_time = true;
+      start_payload(); 	    
+//      setup();
+    }
+    if ((result == '?') || first_time == true)  // commented back in
+    if (true)
+    {
+	    	       
+//      first_time = false;
+      if (bmePresent) {
+        Serial.print("OK BME280 ");
+        Serial.print(bme.readTemperature());
+        Serial.print(" ");
+        Serial.print(bme.readPressure() / 100.0F);
+        Serial.print(" ");
+        Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial.print(" ");
+        Serial.print(bme.readHumidity());
+      } else
+      {
+        Serial.print("OK BME280 0.0 0.0 0.0 0.0");
+      }
     if (mpuPresent) 	 { 
       mpu6050.update();
 
-      sprintf(str, " MPU6050 %.1f %.1f %.1f %.1f %.1f %.1f ",
-        mpu6050.getGyroX(), mpu6050.getGyroY(), mpu6050.getGyroZ(), mpu6050.getAccX(), mpu6050.getAccY(), mpu6050.getAccZ()); 
-    } else
-      sprintf(str, " MPU6050 0.0 0.0 0.0 0.0 0.0 0.0"); 
-	  
-    strcat(payload_str, str);
-//    print_string(payload_str);
-    Serial.print(str);	 
-	  
-    }
-//    if ((result == '?') || first_time == true)  // commented back in
-//    if (true)	    
-    if (true)
-    {
+      Serial.print(" MPU6050 ");
+      Serial.print(mpu6050.getGyroX());
+      Serial.print(" ");
+      Serial.print(mpu6050.getGyroY());
+      Serial.print(" ");
+      Serial.print(mpu6050.getGyroZ());
 
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccX());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccY());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccZ());  
+    } else
+      {
+        Serial.print(" MPU6050 0.0 0.0 0.0 0.0 0.0 0.0");
+      }
 	    
     sensorValue = analogRead(TEMPERATURE_PIN);
     //Serial.println(sensorValue);  
