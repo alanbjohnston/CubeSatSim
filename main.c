@@ -22,7 +22,7 @@
 
 #include "main.h"
 
-#define HAB  // uncomment to change APRS icon from Satellite to Balloon
+//#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
 int main(int argc, char * argv[]) {
 
