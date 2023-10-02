@@ -61,6 +61,10 @@ int main(int argc, char * argv[]) {
   fflush(stdout);
 
 //  sleep(2);
+
+#ifdef HAB
+  Serial.println("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown");
+#endif
 	
   FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_restart);
