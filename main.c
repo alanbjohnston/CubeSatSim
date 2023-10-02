@@ -1031,16 +1031,18 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
 
-       if (mode != AFSK) 
+#ifdef HAB	    
+       if (mode != AFSK)
+#endif	       
          strcat(str, tlm_str);
 
     }
-
+#ifdef HAB
     if (mode == AFSK) {
       sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);
       strcat(str, tlm_str);
     }  
-
+#endif
     // read payload sensor if available
 /*
     char sensor_payload[500];
