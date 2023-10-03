@@ -44,6 +44,8 @@ int main(int argc, char * argv[]) {
   }
 	
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
+
+  program_radio();	
 	
   FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   pclose(rpitx_stop);
