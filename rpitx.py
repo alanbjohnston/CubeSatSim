@@ -519,7 +519,8 @@ if __name__ == "__main__":
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
 					draw.text((10, 10), callsign, font=font2, fill='black')
-					draw.text((120, 10), telem_string, font=font2, fill='black')
+					draw.text((121, 11), telem_string, font=font2, fill='black')
+					draw.text((120, 10), telem_string, font=font2, fill='white')
 					img.save(file)
 					
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
