@@ -473,30 +473,30 @@ if __name__ == "__main__":
 			output(pd, 0)
 			if (camera_present == 1):
 				try:
-					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-					print("First SSTV stored image detected")
-					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
+					file = open("/home/pi/CubeSatSim/sstv__2_320_x_256.jpg")
+					print("First SSTV stored  detected")
+					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv__2_320_x_256.jpg") 
 					
 					if (command_tx == True):
-						print ("Sending SSTV image")
+						print ("Sending SSTV ")
 						output(txLed, txLedOn)
 						output(pd, 1)
 						output (ptt, 0)
 
 						if (txc):
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv__2_320_x_256.jpg.wav")
 						else:	
 							if (debug_mode == 1):
-								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+								system("cat /home/pi/CubeSatSim/sstv__2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
 							else:
-								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+								system("cat /home/pi/CubeSatSim/sstv__2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 
 						output(txLed, txLedOff)
 						output (ptt, 1)
 						output(pd, 0)
 	#					sleep(1)
 				except:
-					print("image 2 did not load - copy from CubeSatSim/sstv directory")
+					print(" 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
