@@ -2190,9 +2190,9 @@ void program_radio() {
   digitalWrite(28, HIGH);  // stop transmit	
 	
 if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
-    
+  printf("serial opened 9600");  
   for (int i = 0; i < 5; i++) {
-     sleep(0.5); // delay(500);
+     sleep(1); // delay(500);
 #ifdef APRS_VHF
      char vhf_string[] = "AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r";	
      serialPrintf(uart_fd, vhf_string);	
@@ -2203,7 +2203,7 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
      serialPrintf(uart_fd, uhf_string);	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
 #endif	  
-   sleep(0.5);
+   sleep(1);
    char mic_string[] = "AT+DMOSETMIC=8,0\r";  
    serialPrintf(uart_fd, mic_string);
 //   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
@@ -2221,4 +2221,6 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   digitalWrite(29, LOW);  // disable SR_FRS	
   pinMode(28, INPUT);
   pinMode(29, INPUT);
+
+  serialClose(uart_fd);	
 }
