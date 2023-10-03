@@ -45,7 +45,9 @@ int main(int argc, char * argv[]) {
 	
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
 
-  program_radio();	
+  wiringPiSetup();
+	
+  program_radio();
 	
   FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   pclose(rpitx_stop);
@@ -173,8 +175,6 @@ int main(int argc, char * argv[]) {
 	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
-
-  wiringPiSetup();
 
   if (mode == AFSK)
   {
