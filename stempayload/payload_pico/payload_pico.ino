@@ -132,7 +132,7 @@ void setup() {
 
   Serial.print("Pi Zero present, so running Payload OK code.");
   sr_frs_present = true;	 
-  program_radio();  
+//  program_radio();  
   start_payload();
 	
   pinMode(15, INPUT_PULLUP);
