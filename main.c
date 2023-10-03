@@ -352,6 +352,9 @@ int main(int argc, char * argv[]) {
     payload = OFF;
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+      printf("Serial opened to Pico\n");	    
+      payload = ON;
+/*	    
       char c;
       int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
@@ -392,6 +395,7 @@ int main(int argc, char * argv[]) {
 	payload = ON;      
 	      
       }
+*/	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
