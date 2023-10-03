@@ -2192,15 +2192,18 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   for (int i = 0; i < 5; i++) {
      sleep(0.5); // delay(500);
 #ifdef APRS_VHF
-     serialPrintf(uart_fd, 'AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r');	
+     char vhf_string[] = "AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r";	
+     serialPrintf(uart_fd, vhf_string);	
 //     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
 #else
-     serialPrintf(uart_fd, 'AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r');	  
+     char uhf_string[] = "AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r";	  
+     serialPrintf(uart_fd, uhf_string);	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
 #endif	  
    sleep(0.5);
-   serialPrintf(uart_fd, 'AT+DMOSETMIC=8,0\r');
+   char mic_string[] = "AT+DMOSETMIC=8,0\r";  
+   serialPrintf(uart_fd, mic_string);
 //   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
 	
   }
