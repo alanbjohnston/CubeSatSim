@@ -2193,16 +2193,16 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   printf("serial opened 9600\n");  
   for (int i = 0; i < 5; i++) {
      sleep(1); // delay(500);
-#ifdef APRS_VHF
-     char vhf_string[] = "AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r\n";	
-     serialPrintf(uart_fd, vhf_string);	
+//#ifdef APRS_VHF
+//     char vhf_string[] = "AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r\n";	
+//     serialPrintf(uart_fd, vhf_string);	
 //     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
-#else
+//#else
      char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";	  
      serialPrintf(uart_fd, uhf_string);	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
-#endif	  
+//#endif	  
    sleep(1);
    char mic_string[] = "AT+DMOSETMIC=8,0\r\n";  
    serialPrintf(uart_fd, mic_string);
@@ -2210,11 +2210,11 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 	
   }
  }
-#ifdef APRS_VHF	  	
- printf("Programming FM tx 144.39, rx on 144.39 MHz\n");
-#else
+//#ifdef APRS_VHF	  	
+// printf("Programming FM tx 144.39, rx on 144.39 MHz\n");
+//#else
  printf("Programming FM tx 434.9, rx on 435.0 MHz\n");
-#endif	
+//#endif	
 //  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
 //  sleep(0.5);
 //  digitalWrite(PTT_PIN, HIGH);	
