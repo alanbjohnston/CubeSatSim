@@ -2177,3 +2177,43 @@ int get_payload_serial(int debug_camera)  {
   fflush(stdout);	
   return(finished);
 }
+
+void program_radio() {
+// if (sr_frs_present) {	
+  printf("Programming FM module!\n");	
+
+  pinMode(28, OUTPUT);	
+  pinMode(29, OUTPUT);
+  digitalWrite(29, HIGH);  // enable SR_FRS
+  digitalWrite(28, HIGH);  // stop transmit	
+	
+if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
+    
+  for (int i = 0; i < 5; i++) {
+     sleep(0.5); // delay(500);
+#ifdef APRS_VHF
+     serialPutchar(uart_fd, 'AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r');	
+//     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
+//    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
+#else
+     serialPutchar(uart_fd, 'AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r');	  
+//     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
+#endif	  
+   sleep(0.5);
+   serialPutchar(uart_fd, 'AT+DMOSETMIC=8,0\r');
+//   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+	
+  }
+ }
+#ifdef APRS_VHF	  	
+ printf("Programming FM tx 144.39, rx on 144.39 MHz\n");
+#else
+ printf("Programming FM tx 434.9, rx on 435.0 MHz\n");
+#endif	
+//  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
+//  sleep(0.5);
+//  digitalWrite(PTT_PIN, HIGH);	
+  digitalWrite(29, LOW);  // disable SR_FRS	
+  pinMode(28, INPUT);
+  pinMode(29, INPUT);
+}
