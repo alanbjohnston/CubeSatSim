@@ -518,9 +518,9 @@ if __name__ == "__main__":
 					draw = ImageDraw.Draw(img) 
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
-					draw.text((13, 13), callsign, font=font2, fill='black')
+					draw.text((12, 12), callsign, font=font2, fill='black')
 					draw.text((10, 10), callsign, font=font2, fill='white')
-					draw.text((123, 13), telem_string, font=font2, fill='black')
+					draw.text((122, 12), telem_string, font=font2, fill='black')
 					draw.text((120, 10), telem_string, font=font2, fill='white')
 					img.save(file)
 					
