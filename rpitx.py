@@ -503,7 +503,7 @@ if __name__ == "__main__":
 
 					file='/home/pi/CubeSatSim/camera_out.jpg'
 					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
-					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 20)
+					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
 
 					try:
 						filep = open("/home/pi/CubeSatSim/telem_string.txt")
@@ -518,8 +518,8 @@ if __name__ == "__main__":
 					draw = ImageDraw.Draw(img) 
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
-					draw.text((12, 12), callsign, font=font2, fill='black')
-					draw.text((10, 10), callsign, font=font2, fill='white')
+					draw.text((12, 12), callsign, font=font1, fill='black')
+					draw.text((10, 10), callsign, font=font1, fill='white')
 					draw.text((122, 12), telem_string, font=font2, fill='black')
 					draw.text((120, 10), telem_string, font=font2, fill='white')
 					img.save(file)
