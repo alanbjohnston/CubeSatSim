@@ -837,7 +837,7 @@ int main(int argc, char * argv[]) {
 #endif
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     printf("Writing telem_string.txt\n");	  
-    fprintf(fp, "Vbatt = %4.2f\n", batteryVoltage);	 
+    fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
     fclose(fp);	  
 	    
 /**/
