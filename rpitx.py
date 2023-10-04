@@ -109,8 +109,13 @@ def increment_mode():
 		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
-		GPIO.output(powerPin, 0);		
-		system("reboot -h now")
+		GPIO.output(powerPin, 0);
+		
+		if mode == 'b' or mode == 'f':
+			system("reboot -h now")
+		else:	
+			system("sudo systemctl restart cubesatsim");
+			system("sudo systemctl restart rpitx");
 #		release = True;
 		sleep(10);
 	except:
