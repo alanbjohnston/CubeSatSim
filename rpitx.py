@@ -135,7 +135,13 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
-GPIO.setup(squelch, GPIO.IN)
+GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
+
+if GPIO.input(squelch) == False:
+	print("squelch not set correctly, no command input!")
+	no_command = True
+else:
+	no_command = False
 
 transmit = False
 if GPIO.input(12) == False:
@@ -256,8 +262,7 @@ if __name__ == "__main__":
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
-#	if (mode != 'a'):
-	if (command_tx == True):	
+	if (mode != 'a') and (command_tx == True):	
 		output(pd, 1)
 		output (ptt, 0)
 		output(txLed, txLedOn)
@@ -277,7 +282,7 @@ if __name__ == "__main__":
 		output(pd, 0)
 		sleep(1)
 	else:
-		print("Don't transmit CW ID since command_tx is False")
+		print("Don't transmit CW ID since command_tx is False or APRS mode")
 
 	if (transmit):
 	
@@ -322,7 +327,7 @@ if __name__ == "__main__":
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
 					sleep(1)
-					if GPIO.input(squelch) == False:
+					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
 						# command_tx = not command_tx
 						print(command_tx)
@@ -388,7 +393,7 @@ if __name__ == "__main__":
 				output (ptt, 1)
 			sleep(5)
 			while True:
-				if GPIO.input(squelch) == False:
+				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
@@ -498,7 +503,7 @@ if __name__ == "__main__":
 
 					file='/home/pi/CubeSatSim/camera_out.jpg'
 					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
-					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 20)
+					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
 
 					try:
 						filep = open("/home/pi/CubeSatSim/telem_string.txt")
@@ -513,8 +518,10 @@ if __name__ == "__main__":
 					draw = ImageDraw.Draw(img) 
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
-					draw.text((10, 10), callsign, font=font2, fill='black')
-					draw.text((120, 10), telem_string, font=font2, fill='black')
+					draw.text((12, 12), callsign, font=font1, fill='black')
+					draw.text((10, 10), callsign, font=font1, fill='white')
+					draw.text((122, 12), telem_string, font=font2, fill='black')
+					draw.text((120, 10), telem_string, font=font2, fill='white')
 					img.save(file)
 					
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
@@ -522,7 +529,7 @@ if __name__ == "__main__":
 
 					output(pd, 1)
 					sleep(1)
-					if GPIO.input(squelch) == False:
+					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
 						# command_tx = not command_tx
 						print(command_tx)
@@ -607,7 +614,7 @@ if __name__ == "__main__":
 
 						output(pd, 1)
 						sleep(1)
-						if GPIO.input(squelch) == False:
+						if (no_command == False and GPIO.input(squelch) == False):
 							print("carrier received!")
 							# command_tx = not command_tx
 							print(command_tx)
@@ -691,7 +698,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				if GPIO.input(squelch) == False:
+				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)
@@ -739,7 +746,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				if GPIO.input(squelch) == False:
+				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
 					print(command_tx)

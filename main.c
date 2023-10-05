@@ -22,7 +22,7 @@
 
 #include "main.h"
 
-// #define HAB  // uncomment to change APRS icon from Satellite to Balloon
+//#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
 int main(int argc, char * argv[]) {
 
@@ -44,9 +44,13 @@ int main(int argc, char * argv[]) {
   }
 	
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
+
+  wiringPiSetup();
 	
-  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
-  pclose(rpitx_stop);
+  program_radio();
+	
+  //FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
+  //pclose(rpitx_stop);
 	
   FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
   pclose(file_deletes);	
@@ -61,6 +65,10 @@ int main(int argc, char * argv[]) {
   fflush(stdout);
 
 //  sleep(2);
+
+#ifdef HAB
+  Serial.println("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown");
+#endif
 	
   FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_restart);
@@ -167,8 +175,6 @@ int main(int argc, char * argv[]) {
 	
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
-
-  wiringPiSetup();
 
   if (mode == AFSK)
   {
@@ -346,6 +352,9 @@ int main(int argc, char * argv[]) {
     payload = OFF;
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+      printf("Serial opened to Pico\n");	    
+      payload = ON;
+/*	    
       char c;
       int charss = (char) serialDataAvail(uart_fd);
       if (charss != 0)
@@ -386,6 +395,7 @@ int main(int argc, char * argv[]) {
 	payload = ON;      
 	      
       }
+*/	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
@@ -805,6 +815,7 @@ int main(int argc, char * argv[]) {
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
 
 /**/
+#ifndef HAB	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -820,17 +831,17 @@ int main(int argc, char * argv[]) {
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
-      FILE * file6 = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
-      pclose(file6);
-      sleep(80);	    
+      FILE * file6; // = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
+//      pclose(file6);
+//      sleep(80);	    
       file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       pclose(file6);
       sleep(10);
     }
-
+#endif
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     printf("Writing telem_string.txt\n");	  
-    fprintf(fp, "Vbatt = %4.2f\n", batteryVoltage);	 
+    fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
     fclose(fp);	  
 	    
 /**/
@@ -1030,10 +1041,18 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
 
-//       if (mode != AFSK) 
+#ifdef HAB	    
+       if (mode != AFSK)
+#endif	       
          strcat(str, tlm_str);
-    }
 
+    }
+#ifdef HAB
+    if (mode == AFSK) {
+      sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);
+      strcat(str, tlm_str);
+    }  
+#endif
     // read payload sensor if available
 /*
     char sensor_payload[500];
@@ -2163,4 +2182,49 @@ int get_payload_serial(int debug_camera)  {
       printf("\nComplete\n");
   fflush(stdout);	
   return(finished);
+}
+
+void program_radio() {
+// if (sr_frs_present) {	
+  printf("Programming FM module!\n");	
+
+  pinMode(28, OUTPUT);	
+  pinMode(29, OUTPUT);
+  digitalWrite(29, HIGH);  // enable SR_FRS
+  digitalWrite(28, HIGH);  // stop transmit	
+	
+if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
+  printf("serial opened 9600\n");  
+  for (int i = 0; i < 5; i++) {
+     sleep(1); // delay(500);
+//#ifdef APRS_VHF
+//     char vhf_string[] = "AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r\n";	
+//     serialPrintf(uart_fd, vhf_string);	
+//     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
+//    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
+//#else
+     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";	  
+     serialPrintf(uart_fd, uhf_string);	  
+//     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
+//#endif	  
+   sleep(1);
+   char mic_string[] = "AT+DMOSETMIC=8,0\r\n";  
+   serialPrintf(uart_fd, mic_string);
+//   mySerial.println("AT+DMOSETMIC=8,0\r");  // was 8
+	
+  }
+ }
+//#ifdef APRS_VHF	  	
+// printf("Programming FM tx 144.39, rx on 144.39 MHz\n");
+//#else
+ printf("Programming FM tx 434.9, rx on 435.0 MHz\n");
+//#endif	
+//  digitalWrite(PTT_PIN, LOW);  // transmit carrier for 0.5 sec
+//  sleep(0.5);
+//  digitalWrite(PTT_PIN, HIGH);	
+  digitalWrite(29, LOW);  // disable SR_FRS	
+  pinMode(28, INPUT);
+  pinMode(29, INPUT);
+
+  serialClose(uart_fd);	
 }
