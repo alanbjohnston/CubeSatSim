@@ -258,7 +258,7 @@ if __name__ == "__main__":
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	GPIO.setup(txLed, GPIO.OUT)
 	
-#	sleep(10)  # delay so cubesatsim code catches up
+	sleep(10)  # delay so cubesatsim code catches up
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
