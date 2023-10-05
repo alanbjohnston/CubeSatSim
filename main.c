@@ -6,7 +6,7 @@
  *
  *  Portions Copyright (C) 2018 Jonathan Brandenburg
  *
- *  This program is free software: you can redistributVe it and/or modify
+ *  This program is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  (at your option) any later version.
  *
