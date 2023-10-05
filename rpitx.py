@@ -258,11 +258,12 @@ if __name__ == "__main__":
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	GPIO.setup(txLed, GPIO.OUT)
 	
-	sleep(1)
+	sleep(10)  # delay so cubesatsim code catches up
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")	
 	
-	if (mode != 'a') and (command_tx == True):	
+#	if (mode != 'a') and (command_tx == True):	
+	if (command_tx == True):	
 		output(pd, 1)
 		output (ptt, 0)
 		output(txLed, txLedOn)
