@@ -49,8 +49,8 @@ int main(int argc, char * argv[]) {
 	
   program_radio();
 	
-  //FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
-  //pclose(rpitx_stop);
+  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
+  pclose(rpitx_stop);
 	
   FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
   pclose(file_deletes);	
