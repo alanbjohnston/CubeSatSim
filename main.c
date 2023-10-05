@@ -52,8 +52,8 @@ int main(int argc, char * argv[]) {
   //FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   //pclose(rpitx_stop);
 	
-  FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
-  pclose(file_deletes);	
+//  FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
+//  pclose(file_deletes);	
 	
   printf("Test bus 1\n");
   fflush(stdout);	
