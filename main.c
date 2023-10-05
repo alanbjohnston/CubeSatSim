@@ -49,7 +49,8 @@ int main(int argc, char * argv[]) {
 	
   program_radio();
 	
-  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
+//  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
+  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_stop);
 	
   FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
@@ -70,8 +71,8 @@ int main(int argc, char * argv[]) {
   Serial.println("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown");
 #endif
 	
-  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
-  pclose(rpitx_restart);
+//  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
+//  pclose(rpitx_restart);
 	
   mode = FSK;
   frameCnt = 1;
