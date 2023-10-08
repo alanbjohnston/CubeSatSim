@@ -147,7 +147,7 @@ sudo raspi-config nonint do_legacy 0
 
   sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 
-  sudo sed -i 's/console=tty1/console=tty1 maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
 
   sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
   
