@@ -36,7 +36,7 @@ int main(int argc, char * argv[]) {
   
   fprintf(stderr, " %x ", resbuffer[0]);
   fprintf(stderr, " %x ", resbuffer[1]);	
-  if (resbuffer[1] != 0) 
+  if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
   {
     sleep(5);  // try sleep at start to help boot
     voltageThreshold = 3.7;
