@@ -346,8 +346,11 @@ if __name__ == "__main__":
       print("Python Error Recovered!")
       
     if not single:
-      inp = input()
-#      print(inp)    
+      try:
+        inp = input()
+#        print(inp)
+      except:
+        print("Python error getting input!")
     else:
       break
 
