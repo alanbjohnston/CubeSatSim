@@ -34,8 +34,8 @@ int main(int argc, char * argv[]) {
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
   fclose(file_test);	
   
-//  fprintf(stderr, " %x ", resbuffer[0]);
-//  fprintf(stderr, " %x ", resbuffer[1]);	
+  fprintf(stderr, " %x ", resbuffer[0]);
+  fprintf(stderr, " %x ", resbuffer[1]);	
   if (resbuffer[1] != 0) 
   {
     sleep(5);  // try sleep at start to help boot
