@@ -1165,10 +1165,11 @@ void get_tlm(void) {
       time(&timeStamp);   // get timestamp 
 //      printf("Timestamp: %s\n", ctime(&timeStamp));
 	    
-      char timeStampNoNl[31];    
+      char timeStampNoNl[31], bat_string[31];    
       snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
       printf("TimeStamp: %s\n", timeStampNoNl);
-      fprintf(telem_file, "%s %s\n", timeStampNoNl, sensor_payload);	 // write telemetry string to telem.txt file    
+      snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
+      fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
       fclose(telem_file);
     }	 	    
 	    
