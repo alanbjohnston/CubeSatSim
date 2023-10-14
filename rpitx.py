@@ -16,6 +16,7 @@ def battery_saver_check():
 		close(f)
 		txc = False
 	except:
+		pass
 		
 def increment_mode():
 	print("increment mode")
