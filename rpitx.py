@@ -316,6 +316,7 @@ if __name__ == "__main__":
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
+					f.close()
 					if (debug_mode == 1):
 						print("Packet ready!")
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")
@@ -441,6 +442,7 @@ if __name__ == "__main__":
 					sleep(5)	
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
+					f.close()
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1")
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					
@@ -475,7 +477,8 @@ if __name__ == "__main__":
 #				camera = PiCamera()
 				print("Testing for camera")
 				system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
-				f = open("/home/pi/CubeSatSim/camera_out.jpg") 
+				f = open("/home/pi/CubeSatSim/camera_out.jpg")
+				f.close()
 				print("Camera present")
 				camera_present = 1
 #				camera.close()
