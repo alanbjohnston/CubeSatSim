@@ -68,7 +68,16 @@ if [ "$1" = "-i" ]; then
 elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
 	sudo echo "a" > /home/pi/CubeSatSim/.mode
-	sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode activated."
+  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	else 
+    		echo "Not battery saver mode"
+    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	fi
+	
 	echo "rebooting"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
