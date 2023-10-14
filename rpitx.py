@@ -19,7 +19,7 @@ def battery_saver_check():
 		print("battery saver activated")
 	except:
 		print("not activated")
-		txc = True
+#		txc = True
 		
 def increment_mode():
 	print("increment mode")
@@ -204,7 +204,7 @@ if GPIO.input(txc_pin) == False:
 else:
 	print("TXC not present")
 
-txc = False  # forcing it off
+# txc = False  # forcing it off
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
