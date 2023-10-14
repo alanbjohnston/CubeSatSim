@@ -10,6 +10,12 @@ import sys
 from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 
+def battery_saver_check():
+	try:
+		f = open("/home/pi/CubeSatSim/battery_saver")
+		close(f)
+		txc = False
+		
 def increment_mode():
 	print("increment mode")
 	powerPin = 16
@@ -191,6 +197,7 @@ else:
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
+battery_saver_check()	
 
 # print(txLedOn)
 print(txLed)
@@ -269,6 +276,7 @@ if __name__ == "__main__":
 		output(txLed, txLedOn)
 		sleep(0.1)
 		
+		battery_saver_check()
 		if (txc):
 			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
 		else:	
@@ -312,7 +320,8 @@ if __name__ == "__main__":
 #						output(pd, 1)
 						output (ptt, 0)
 						sleep(.1)
-				
+						
+						battery_saver_check()
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")
 						else:			
@@ -381,6 +390,7 @@ if __name__ == "__main__":
 				output(txLed, txLedOn)
 				output (ptt, 0)
 				sleep(0.1)
+				battery_saver_check()
 
 				if (txc):
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
@@ -433,6 +443,7 @@ if __name__ == "__main__":
 						output(txLed, txLedOn)
 						output (ptt, 0)
 						sleep(0.1)
+						battery_saver_check()
 
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
@@ -483,6 +494,7 @@ if __name__ == "__main__":
 						output(txLed, txLedOn)
 						output(pd, 1)
 						output (ptt, 0)
+						battery_saver_check()
 
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
@@ -566,6 +578,7 @@ if __name__ == "__main__":
 						output(txLed, txLedOn)
 						output(pd, 1)
 						output (ptt, 0)
+						battery_saver_check()
 
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
@@ -592,6 +605,7 @@ if __name__ == "__main__":
 						output(txLed, txLedOn)
 						output(pd, 1)
 						output (ptt, 0)
+						battery_saver_check()
 
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
@@ -650,6 +664,7 @@ if __name__ == "__main__":
 							output(txLed, txLedOn)
 							output(pd, 1)
 							output (ptt, 0)
+							battery_saver_check()
 
 							if (txc):
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
@@ -674,6 +689,7 @@ if __name__ == "__main__":
 							output(txLed, txLedOn)
 							output(pd, 1)
 							output (ptt, 0)
+							battery_saver_check()
 						
 							if (txc):
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv.wav")
