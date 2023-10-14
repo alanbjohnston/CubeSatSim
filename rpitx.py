@@ -19,7 +19,7 @@ def battery_saver_check():
 		print("battery saver activated")
 	except:
 		print("not activated")
-		pass
+		txc = True
 		
 def increment_mode():
 	print("increment mode")
