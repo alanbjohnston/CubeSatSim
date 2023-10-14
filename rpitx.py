@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor
 def battery_saver_check():
 	try:
 		f = open("/home/pi/CubeSatSim/battery_saver")
-#		close(f)
+		f.close()
 		txc = False
 		print("battery saver activated")
 	except:
