@@ -132,7 +132,7 @@ print("CubeSatSim v1.3b rpitx.py starting...")
 
 pd = 21
 ptt = 20
-txc = 7
+txc_pin = 7
 squelch = 6
 green = 16
 
@@ -143,7 +143,7 @@ GPIO.setwarnings(False)
 GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
 GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
@@ -194,11 +194,13 @@ GPIO.setup(ptt, GPIO.OUT)
 output (ptt, 1)
 
 txc = False
-if GPIO.input(7) == False:
+if GPIO.input(txc_pin) == False:
 	print("TXC is present")
 	txc = True;
 else:
 	print("TXC not present")
+
+txc = False  # forcing it off
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
