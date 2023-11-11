@@ -255,6 +255,8 @@ if __name__ == "__main__":
 		callsign = config[0]
 		sim = config[4]
 		squelch = config[5]
+		print(config)
+		print
 		print(callsign)
 		print(sim)
 		print(squelch)
