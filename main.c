@@ -2205,8 +2205,17 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 //     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
 //#else
-     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";	  
-     serialPrintf(uart_fd, uhf_string);	  
+     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";
+     char uhf_string1[] = "AT+DMOSETGROUP=0,435.0000,434.9100,0,";	// changed frequency to verify
+     char uhf_string2[] = ",0,0\r\n";	
+     char sq_string[2];
+     sq_string[0] = '0' + squelch;
+     sq_string[1] = 0;
+//     serialPrintf(uart_fd, uhf_string);	
+	serialPrintf(uart_fd, uhf_string1);	
+	serialPrintf(uart_fd, sq_string);	
+	serialPrintf(uart_fd, uhf_string2);	
+	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
 //#endif	  
    sleep(1);
