@@ -253,12 +253,10 @@ if __name__ == "__main__":
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split(" ")		
 		callsign = config[0]
-		sim = config[4]
-		squelch = config[5]
+		squelch = config[10]
 		print(config)
 		print
 		print(callsign)
-		print(sim)
 		print(squelch)
 
 	except:
