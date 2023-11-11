@@ -48,6 +48,10 @@ if [ "$1" = "" ]; then
 	echo "Current beacon transmit mode is:"
 	cat /home/pi/CubeSatSim/command_tx
 	echo
+
+	echo "Squelch level is:"
+	echo $6
+	echo
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	
