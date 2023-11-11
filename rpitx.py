@@ -250,7 +250,15 @@ if __name__ == "__main__":
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
-		callsign = file.readline().split(" ")[0]
+#		callsign = file.readline().split(" ")[0]
+		config = file.readline().split(" ")		
+		callsign = config[0]
+		sim = config[4]
+		squelch = config[5]
+		print(callsign)
+		print(sim)
+		print(squelch)
+
 	except:
 		callsign = "AMSAT"
 		if (debug_mode == 1):
