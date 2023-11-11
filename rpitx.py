@@ -20,6 +20,7 @@ def increment_mode():
 #		mode = "f"
 		if (debug_mode == 1):
 			print("Can't open .mode file") # , defaulting to FSK")
+	file.close()
 	print("Mode is: ")
 	print(mode)
 	if (mode == 'a'):
@@ -253,7 +254,8 @@ if __name__ == "__main__":
 	except:
 		callsign = "AMSAT"
 		if (debug_mode == 1):
-			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")		
+			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")	
+	file.close()
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	GPIO.setup(txLed, GPIO.OUT)
