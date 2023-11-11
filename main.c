@@ -841,9 +841,12 @@ int main(int argc, char * argv[]) {
     }
 #endif
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
-    printf("Writing telem_string.txt\n");	  
-    fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
-    fclose(fp);	  
+    if (fp != NULL) {	  
+    	printf("Writing telem_string.txt\n");	  
+    	fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
+    	fclose(fp);	 
+    } else 
+	    printf("Error writing to telem_string.txt\n");
 	    
 /**/
     //  sleep(1);  // Delay 1 second
