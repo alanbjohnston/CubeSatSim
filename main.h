@@ -123,6 +123,7 @@ float uptime_sec = 0;
 long int uptime;
 char call[5];
 char sim_yes[10];
+int squelch = 3; // default squelch
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
