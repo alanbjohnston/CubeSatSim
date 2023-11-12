@@ -253,7 +253,7 @@ if __name__ == "__main__":
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split()		
 		callsign = config[0]
-		squelch = config[10]
+		squelch = config[last]
 		print(config)
 		print
 		print(callsign)
