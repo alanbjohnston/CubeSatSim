@@ -258,7 +258,7 @@ if __name__ == "__main__":
 		print
 #		print(callsign)
 		print(sq)
-		if sq == 8:
+		if sq == '8':
 			print("squelch set to 8, no command input!")
 			no_command = True
 		else:
