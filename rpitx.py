@@ -251,7 +251,7 @@ if __name__ == "__main__":
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
 #		callsign = file.readline().split(" ")[0]
-		config = file.readline().split(" ")		
+		config = file.readline().split()		
 		callsign = config[0]
 		squelch = config[10]
 		print(config)
