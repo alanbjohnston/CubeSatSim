@@ -256,14 +256,14 @@ if __name__ == "__main__":
 		squelch = config[5]
 		print(config)
 		print
-		print(callsign)
+#		print(callsign)
 		print(squelch)
 		if squelch == 8:
 			print("squelch set to 8, no command input!")
 			no_command = True
 		else:
 			no_command = False		
-
+		print(no_command)
 	except:
 		callsign = "AMSAT"
 		if (debug_mode == 1):
