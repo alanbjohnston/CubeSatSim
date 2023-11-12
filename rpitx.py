@@ -258,6 +258,11 @@ if __name__ == "__main__":
 		print
 		print(callsign)
 		print(squelch)
+		if squelch == 8:
+			print("squelch set to 8, no command input!")
+			no_command = True
+		else:
+			no_command = False		
 
 	except:
 		callsign = "AMSAT"
