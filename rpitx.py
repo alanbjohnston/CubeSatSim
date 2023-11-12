@@ -253,12 +253,12 @@ if __name__ == "__main__":
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split()		
 		callsign = config[0]
-		squelch = config[5]
+		sq = config[5]
 		print(config)
 		print
 #		print(callsign)
-		print(squelch)
-		if squelch == 8:
+		print(sq)
+		if sq == 8:
 			print("squelch set to 8, no command input!")
 			no_command = True
 		else:
