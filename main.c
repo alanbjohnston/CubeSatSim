@@ -45,6 +45,8 @@ int main(int argc, char * argv[]) {
 	
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
 
+  wiringPiSetup();	
+		
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   if (config_file == NULL) {
@@ -88,8 +90,6 @@ int main(int argc, char * argv[]) {
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 	
-  wiringPiSetup();	
-		
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_stop);
