@@ -152,9 +152,10 @@ int main(int argc, char * argv[]) {
 
 //  char * cfg_buf[100];
 
-  fscanf(config_file, "%s %d %f %f %s %d", call, & reset_count, & lat_file, & long_file, sim_yes, & squelch);
+  fscanf(config_file, "%s %d %f %f %s %d %s %s", call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d\n", call, reset_count, lat_file, long_file, sim_yes, squelch);
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s\n", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
@@ -298,7 +299,7 @@ int main(int argc, char * argv[]) {
   }	
 */
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f %s %d", call, reset_count, lat_file, long_file, sim_yes, squelch);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
