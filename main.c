@@ -2222,8 +2222,8 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
      sq_string[0] = '0' + squelch;
      sq_string[1] = 0;
 	  
-     serialPrintf(uart_fd, uhf_string);	
-/*	  
+//     serialPrintf(uart_fd, uhf_string);	
+/**/	  
 	serialPrintf(uart_fd, uhf_string1a);	
 	serialPrintf(uart_fd, tx);	
 	serialPrintf(uart_fd, comma);	
@@ -2231,7 +2231,7 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 	serialPrintf(uart_fd, uhf_string1b);	
 	serialPrintf(uart_fd, sq_string);	
 	serialPrintf(uart_fd, uhf_string2);	
-*/	  
+/**/	  
 	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
 //#endif	  
