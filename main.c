@@ -46,9 +46,7 @@ int main(int argc, char * argv[]) {
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
 
   wiringPiSetup();
-	
-  program_radio();
-	
+		
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_stop);
@@ -159,6 +157,8 @@ int main(int argc, char * argv[]) {
 
   printf("==%s==%s==\n", tx, rx);
 
+  program_radio();
+	
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
