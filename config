@@ -511,14 +511,14 @@ elif [ "$1" = "-F" ]; then
 
 		rx="$8"
 		echo "Keeping value of" $rx
-
+	fi
 #	else
 	
 		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
 		echo $callsign $2 $3 $4 $5 $6 $7 $8
 		echo $callsign $2 $3 $4 $5 $6 $tx $rx > /home/pi/CubeSatSim/sim.cfg
-	fi
+#	fi
 	
 #	if [ "$norestart" = "1" ]; then
 #		echo 
