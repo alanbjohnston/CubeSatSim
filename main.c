@@ -2225,9 +2225,9 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 //     serialPrintf(uart_fd, uhf_string);	
 /**/	  
 	serialPrintf(uart_fd, uhf_string1a);	
-	serialPrintf(uart_fd, tx);	
-	serialPrintf(uart_fd, comma);	
 	serialPrintf(uart_fd, rx);	
+	serialPrintf(uart_fd, comma);	
+	serialPrintf(uart_fd, tx);	
 	serialPrintf(uart_fd, uhf_string1b);	
 	serialPrintf(uart_fd, sq_string);	
 	serialPrintf(uart_fd, uhf_string2);	
