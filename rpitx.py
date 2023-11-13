@@ -253,7 +253,20 @@ if __name__ == "__main__":
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split()		
 		callsign = config[0]
-		sq = config[5]
+		if len(config) > 5:
+			sq = config[5]
+		else:	
+			sq = '0'
+		if len(config) > 6:
+			tx = config[6]
+			print(tx)
+		else:	
+			tx = '434.9000'			
+		if len(config) > 7:
+			rx = config[7]
+			print(rx)
+		else:	
+			rx = '435.0000'	
 		print(config)
 		print
 #		print(callsign)
