@@ -156,6 +156,9 @@ int main(int argc, char * argv[]) {
   fclose(config_file);
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s\n", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
+
+  printf("==%s==%s==\n", tx, rx);
+
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
