@@ -295,7 +295,8 @@ if __name__ == "__main__":
 		ser = serial.Serial("/dev/ttyAMA0", 9600)
 		print(ser.portstr)
 		for i in range(6):
-			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9200,0,3,0,0\r\n")
+#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
+			ser.write(b"AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n")
 			sleep(0.1)
 	except:
 		print("Error in serial write")
