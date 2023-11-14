@@ -512,12 +512,14 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						output(pd, 1)
-						output (ptt, 0)
 						battery_saver_check()
 
 						if (txc):
+							output(pd, 1)
+							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+							output (ptt, 1)
+							output(pd, 0)
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
@@ -525,8 +527,7 @@ if __name__ == "__main__":
 								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 
 						output(txLed, txLedOff)
-						output (ptt, 1)
-						output(pd, 0)
+
 	#					sleep(1)
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
