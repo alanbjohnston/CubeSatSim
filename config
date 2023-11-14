@@ -73,9 +73,11 @@ elif [ "$1" = "-a" ]; then
 	if [ -f "$FILE" ]; then
     		echo "Battery saver mode activated."
   		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+		sudo sed -i ':a;N;$!ba;s/\ndtoverlay=pwm,pin=18,func=2//g' /boot/config.txt
 	else 
     		echo "Not battery saver mode"
     		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+    		if ! grep -q dtoverlay=pwm,pin=18,func=2 /boot/config.txt ; then sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'; fi
 	fi
 	
 	echo "rebooting"
