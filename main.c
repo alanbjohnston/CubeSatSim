@@ -64,9 +64,9 @@ int main(int argc, char * argv[]) {
   printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s\n", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
 
-  printf("==%s==%s==\n", tx, rx);
+  printf("Transmit on %s Receive on %s\n", tx, rx);
 
-  program_radio();
+//  program_radio();  // do in rpitx instead
 	
   reset_count = (reset_count + 1) % 0xffff;
 
