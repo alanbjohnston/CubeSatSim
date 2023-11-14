@@ -9,6 +9,7 @@ from time import sleep
 import sys
 from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
+import serial
 
 def increment_mode():
 	print("increment mode")
@@ -285,6 +286,19 @@ if __name__ == "__main__":
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	GPIO.setup(txLed, GPIO.OUT)
+
+	print("Programming FM module!\n");	
+	output(pd, 1)
+	output (ptt, 1)
+
+	ser = serial.Serial("/dev/ttyAMA0", 9600)
+	print(ser.portstr)
+	for i in range(6):
+		ser.write("AT+DMOSETGROUP=0,435.0000,434.9100,0,3,0,0\r\n")
+		sleep(0.1)
+	ser.close()
+
+	output(pd, 0)
 	
 	sleep(10)  # delay so cubesatsim code catches up
 	
