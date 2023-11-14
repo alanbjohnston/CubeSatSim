@@ -282,24 +282,24 @@ if __name__ == "__main__":
 	
 #	if (mode != 'a') and (command_tx == True):	
 	if (command_tx == True):	
-		output(pd, 1)
-		output (ptt, 0)
-		output(txLed, txLedOn)
-		sleep(0.1)
-		
 		battery_saver_check()
+		output(txLed, txLedOn)			
 		if (txc):
-			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
+			output(pd, 1)
+			output (ptt, 0)
+			sleep(0.1)
+			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+			sleep(0.1)
+			output (ptt, 1)
+			output(pd, 0)
 		else:	
 			if (debug_mode == 1):
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 			else:
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 		
-		sleep(0.1)
 		output(txLed, txLedOff)
-		output (ptt, 1)
-		output(pd, 0)
+
 		sleep(1)
 	else:
 		print("Don't transmit CW ID since command_tx is False or APRS mode")
