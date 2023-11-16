@@ -73,13 +73,9 @@ elif [ "$1" = "-a" ]; then
 	if [ -f "$FILE" ]; then
     		echo "Battery saver mode activated."
   		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
-#		sudo sed -i ':a;N;$!ba;s/\ndtoverlay=pwm,pin=18,func=2//g' /boot/config.txt
-#		sudo sed -i ':a;N;$!ba;s/\ndtoverlay=audremap,enable_jack=on//g' /boot/config.txt
 	else 
     		echo "Not battery saver mode"
     		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
-#   		if ! grep -q dtoverlay=pwm,pin=18,func=2 /boot/config.txt ; then sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'; fi
-#  		if ! grep -q dtoverlay=audremap,enable_jack=on /boot/config.txt ; then sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'; fi
 	fi
 	
 	echo "rebooting"
@@ -89,7 +85,15 @@ elif [ "$1" = "-a" ]; then
 elif [ "$1" = "-m" ]; then
 	echo "changing CubeSatSim to CW mode"
 	sudo echo "m" > /home/pi/CubeSatSim/.mode
-	sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode activated."
+  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	else 
+    		echo "Not battery saver mode"
+    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	fi
 	echo "rebooting"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
@@ -113,7 +117,15 @@ elif [ "$1" = "-b" ]; then
 elif [ "$1" = "-s" ]; then
 	echo "changing CubeSatSim to SSTV mode"
 	sudo echo "s" > /home/pi/CubeSatSim/.mode
-	sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode activated."
+  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	else 
+    		echo "Not battery saver mode"
+    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	fi
 	echo "rebooting"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
@@ -138,6 +150,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -C     Clear logs"
 	echo "   -T     Change command state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
+	echo "   -B     Change battery saver mode manually"
 	echo
 	exit
 
@@ -433,6 +446,40 @@ elif [ "$1" = "-R" ]; then
 	else
 		echo "Commands count not reset"
 	fi
+
+elif [ "$1" = "-B" ]; then
+
+	echo	
+	echo "Manually setting battery saver mode"
+	echo
+	
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode is activated."
+		mode=1
+ 	else 
+    		echo "Battery saver mode is not activated."
+		mode=0
+	fi
+	
+	echo
+	
+	echo "Do you want Battery saver mode ON (y/n) "
+	read saver
+	echo
+	
+	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
+		echo "Battery saver mode is now ON"
+		touch /home/pi/CubeSatSim/battery_saver
+#		if ["$mode" = "0"] ; then sudo systemctl restart rpitx
+	else
+		echo "Battery saver mode is now OFF"
+		sudo rm /home/pi/CubeSatSim/battery_saver
+#		if ["$mode" = "1"] ; then sudo systemctl restart rpitx
+	fi
+
+#	sudo systemctl restart cubesatsim
+	
 fi
 
 # sudo systemctl restart cubesatsim
