@@ -2250,6 +2250,7 @@ int battery_saver_check() {
 }
 
 void battery_saver(int setting) {
+	return;
 if (setting == ON) {
 	FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
   	pclose(command);
