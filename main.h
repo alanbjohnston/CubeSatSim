@@ -173,3 +173,5 @@ int end_flag_detected = FALSE;
 int jpeg_start = 0;
 #define CAMERA_TIMEOUT 10000 // 20000  // Camera timeout in milli seconds
 
+int battery_saver();
+
