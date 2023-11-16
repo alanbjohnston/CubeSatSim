@@ -814,11 +814,11 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-printf("battery_saver_check() : %d current: %d\n", battery_saver_check(), batteryCurrent);
-if ((battery_saver_check() == 1) && (batteryCurrent < 0)) 
-	printf("Conditional true!\n");
+printf("\n\nbattery_saver_check() : %d current: %f\n", battery_saver_check(), batteryCurrent);
+if ((battery_saver_check() == 1) && (batteryCurrent < 0.0)) 
+	printf("\nConditional true!\n");
   else
-	printf("Conditional false!\n");
+	printf("\nConditional false!\n");
 /**/
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
