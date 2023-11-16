@@ -814,11 +814,11 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-printf("\n\nbattery_saver_check() : %d current: %f\n", battery_saver_check(), batteryCurrent);
+fprintf(stderr, "\n\nbattery_saver_check() : %d current: %f\n", battery_saver_check(), batteryCurrent);
 if ((battery_saver_check() == 1) && (batteryCurrent < 0.0)) 
-	printf("\nConditional true!\n");
+	fprintf(stderr,"\nConditional true!\n");
   else
-	printf("\nConditional false!\n");
+	fprintf(stderr,"\nConditional false!\n");
 /**/
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
@@ -2244,12 +2244,12 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 int battery_saver_check() {
 	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
-		printf("Battery saver mode is OFF\n");
+		fprintf(stderr,"Battery saver mode is OFF\n");
 		fclose(file);
 		return(0);
 	} 
 	fclose(file);
-	printf("Battery saver mode is ON\n");
+	fprintf(stderr,"Battery saver mode is ON\n");
 	return(1);
 }
 
@@ -2257,18 +2257,18 @@ void battery_saver(int setting) {
 if (setting == ON) {
 	FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
   	pclose(command);
-	printf("Turning Battery saver mode ON\n");  
+	fprintf(stderr,"Turning Battery saver mode ON\n");  
 	return;  
 	  
   } else if (setting == OFF) {
 	return;
 	FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
   	pclose(command);
-	printf("Turning Battery saver mode OFF\n");    
+	fprintf(stderr,"Turning Battery saver mode OFF\n");    
 	return; 	
 	  
   } else {
-	  printf("battery_saver function error");
+	  fprintf(stderr,"battery_saver function error");
 	  return;
   }
   return;
