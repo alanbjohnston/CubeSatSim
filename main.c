@@ -2257,7 +2257,7 @@ if (setting == ON) {
 	return;  
 	  
   } else if (setting == OFF) {
-	FILE *command = popen("sudo rm /home/pi/CubeSatSim/battery_saver", "r");
+	FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
   	pclose(command);
 	printf("Turning Battery saver mode OFF\n");    
 	return; 	
