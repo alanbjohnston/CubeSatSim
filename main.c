@@ -2255,17 +2255,33 @@ int battery_saver_check() {
 
 void battery_saver(int setting) {
 if (setting == ON) {
-	FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
-  	pclose(command);
-	fprintf(stderr,"Turning Battery saver mode ON\n");  
-	return;  
-	  
+	if ((mode == APRS) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == 0) {
+			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode ON\n");  
+			*command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi", "r");
+		  	pclose(command);
+			*command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return;  
+		}
+	}  
   } else if (setting == OFF) {
-	FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
-  	pclose(command);
-	fprintf(stderr,"Turning Battery saver mode OFF\n");    
-	return; 	
-	  
+	if ((mode == APRS) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == 1) {
+			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+			*command = popen("sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt ", "r");
+		  	pclose(command);
+			*command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return; 
+		}
+	}  
   } else {
 	  fprintf(stderr,"battery_saver function error");
 	  return;
