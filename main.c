@@ -820,7 +820,7 @@ printf("battery_saver_check() : %d \n", battery_saver_check());
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
     {
 	    battery_saver(ON);
-    } else if ((battery_saver_check()) && (batteryCurrent < 0))
+    } else if ((battery_saver_check() == 1) && (batteryCurrent < 0))
     {
 	    battery_saver(OFF);
     } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
