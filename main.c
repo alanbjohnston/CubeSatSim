@@ -2266,7 +2266,8 @@ if (setting == ON) {
 		  	pclose(command);
 			sleep(60);
 			return;  
-		}
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
 	}  
   } else if (setting == OFF) {
 	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
@@ -2280,7 +2281,8 @@ if (setting == ON) {
 		  	pclose(command);
 			sleep(60);
 			return; 
-		}
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
 	}  
   } else {
 	  fprintf(stderr,"battery_saver function error");
