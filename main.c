@@ -819,10 +819,10 @@ int main(int argc, char * argv[]) {
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
     {
-	    battery_saver(ON);
+	    (void)battery_saver(ON);
     } else if ((battery_saver(CHECK)) && (batteryCurrent < 0))
     {
-	    battery_saver(OFF);
+	    (void)battery_saver(OFF);
     } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
