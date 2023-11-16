@@ -2239,7 +2239,7 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 
 int battery_saver(int setting) {
   if (setting == CHECK) {	
-  	*FILE file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
+  	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
     		printf("Battery saver mode is OFF\n");
 		fclose(file);
