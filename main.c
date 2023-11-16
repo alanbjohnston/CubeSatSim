@@ -816,8 +816,14 @@ int main(int argc, char * argv[]) {
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
 
 /**/
-#ifndef HAB	  
-    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
+#ifndef HAB
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
+    {
+	    battery_saver(ON);
+    } else if ((battery_saver(CHECK)) && (batteryCurrent < 0))
+    {
+	    battery_saver(OFF);
+    } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
@@ -2229,4 +2235,35 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   pinMode(29, INPUT);
 
   serialClose(uart_fd);	
+}
+
+int battery_saver(int setting) {
+  if (setting == CHECK) {	
+  	*FILE file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
+	if (file == NULL) {
+    		printf("Battery saver mode is OFF\n");
+		fclose(file);
+		return(0);
+  	} 
+	fclose(file);
+  	printf("Battery saver mode is ON\n");
+	return(1);
+	  
+  } else if (setting == ON) {
+	FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
+  	pclose(command);
+	printf("Turning Battery saver mode ON\n");  
+	return(1);  
+	  
+  } else if (setting == OFF) {
+	FILE *command = popen("sudo rm /home/pi/CubeSatSim/battery_saver", "r");
+  	pclose(command);
+	printf("Turning Battery saver mode OFF\n");    
+	return(1); 	
+	  
+  } else {
+	  printf("battery_saver function error");
+	  return(0);
+  }
+  return(2);
 }
