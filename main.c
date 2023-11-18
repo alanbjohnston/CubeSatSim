@@ -2277,7 +2277,7 @@ if (setting == ON) {
 			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
 		  	pclose(command);
 			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
-			command = popen("sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt ", "r");
+			command = popen("sudo sed -i ':a;N;$!ba;s/\'$'\n''force_turbo=1//g' /boot/config.txt", "r");
 		  	pclose(command);
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
