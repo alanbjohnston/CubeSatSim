@@ -479,7 +479,7 @@ elif [ "$1" = "-B" ]; then
 #		if ["$mode" = "1"] ; then sudo systemctl restart rpitx
 	fi
 
-#	sudo systemctl restart cubesatsim
+	sudo systemctl restart cubesatsim
 	
 fi
 
