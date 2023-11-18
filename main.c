@@ -2264,7 +2264,7 @@ int battery_saver_check() {
 void battery_saver(int setting) {
 if (setting == ON) {
 	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
-		if (battery_saver_check() == 0) {
+		if (battery_saver_check() == OFF) {
 			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		  	pclose(command);
 			fprintf(stderr,"Turning Battery saver mode ON\n");  
@@ -2279,7 +2279,7 @@ if (setting == ON) {
 	}  
   } else if (setting == OFF) {
 	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
-		if (battery_saver_check() == 1) {
+		if (battery_saver_check() == ON) {
 			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
 		  	pclose(command);
 			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
