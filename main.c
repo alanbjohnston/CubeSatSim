@@ -836,7 +836,8 @@ fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode,
 	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
 	    if (battery_saver_mode == ON)
 	    	 battery_saver(OFF);
-    } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
+    } 
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
