@@ -177,20 +177,7 @@ int main(int argc, char * argv[]) {
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 
-
-	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
-	if (file == NULL) {
-		fprintf(stderr,"Battery saver mode is OFF!\n");
-//		fclose(file);
-		battery_saver_mode = OFF;
-	} 
-	else {
-		fclose(file);
-		fprintf(stderr,"Battery saver mode is ON!\n");
-		battery_saver_mode = OFF;
-	}
-	
-//  battery_saver_mode = battery_saver_check();
+  battery_saver_mode = battery_saver_check();
 	
   fprintf(stderr, "\nbattery_saver_mode: %d \n\n", battery_saver_mode);
   fflush(stderr);
@@ -833,11 +820,7 @@ int main(int argc, char * argv[]) {
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
 fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
-if ((battery_saver_mode == ON) && (batteryCurrent < 0.0)) 
-	fprintf(stderr,"\nConditional true!\n");
-  else
-	fprintf(stderr,"\nConditional false!\n");
-/**/
+
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
     {
@@ -2265,7 +2248,6 @@ int battery_saver_check() {
 	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
 		fprintf(stderr,"Battery saver mode is OFF!\n");
-		fclose(file);
 		return(ON);
 	} 
 	fclose(file);
