@@ -2248,11 +2248,11 @@ int battery_saver_check() {
 	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
 		fprintf(stderr,"Battery saver mode is OFF!\n");
-		return(ON);
+		return(OFF);
 	} 
 	fclose(file);
 	fprintf(stderr,"Battery saver mode is ON!\n");
-	return(OFF);
+	return(ON);
 }
 
 void battery_saver(int setting) {
