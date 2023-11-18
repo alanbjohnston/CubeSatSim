@@ -824,10 +824,12 @@ fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode,
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
     {
+	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
 	    if (battery_saver_mode == OFF)
 	    	battery_saver(ON);
     } else if ((battery_saver_mode == ON) && (batteryCurrent < 0))
     {
+	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
 	    if (battery_saver_mode == ON)
 	    	 battery_saver(OFF);
     } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
