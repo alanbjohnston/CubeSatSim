@@ -178,8 +178,12 @@ int main(int argc, char * argv[]) {
 	  sim_mode = TRUE;
 
   battery_saver_mode = battery_saver_check();
+
+  if (battery_saver_mode == ON)	
+  	fprintf(stderr, "\nBattery_saver_mode is ON\n\n");
+  else
+	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
 	
-  fprintf(stderr, "\nbattery_saver_mode: %d \n\n", battery_saver_mode);
   fflush(stderr);
   
   if (mode == AFSK)
