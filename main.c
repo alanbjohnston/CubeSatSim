@@ -177,6 +177,8 @@ int main(int argc, char * argv[]) {
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 
+  battery_saver_mode = battery_saver_check();	
+
   if (mode == AFSK)
   {
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -814,7 +816,7 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-fprintf(stderr, "\n\nbattery_saver_check() : %d current: %f\n", battery_saver_check(), batteryCurrent);
+fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
 if ((battery_saver_check() == 1) && (batteryCurrent < 0.0)) 
 	fprintf(stderr,"\nConditional true!\n");
   else
@@ -824,7 +826,7 @@ if ((battery_saver_check() == 1) && (batteryCurrent < 0.0))
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
     {
 	    battery_saver(ON);
-    } else if ((battery_saver_check() == 1) && (batteryCurrent < 0))
+    } else if ((battery_saver_mode == ON) && (batteryCurrent < 0))
     {
 	    battery_saver(OFF);
     } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
@@ -2246,11 +2248,11 @@ int battery_saver_check() {
 	if (file == NULL) {
 		fprintf(stderr,"Battery saver mode is OFF\n");
 		fclose(file);
-		return(0);
+		return(ON);
 	} 
 	fclose(file);
 	fprintf(stderr,"Battery saver mode is ON\n");
-	return(1);
+	return(OFF);
 }
 
 void battery_saver(int setting) {
