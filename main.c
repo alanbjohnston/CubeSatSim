@@ -68,7 +68,7 @@ int main(int argc, char * argv[]) {
 //  sleep(2);
 
 #ifdef HAB
-  Serial.println("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown");
+  printf("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown\n");
 #endif
 	
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
@@ -814,10 +814,20 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-
+fprintf(stderr, "\n\nbattery_saver_check() : %d current: %f\n", battery_saver_check(), batteryCurrent);
+if ((battery_saver_check() == 1) && (batteryCurrent < 0.0)) 
+	fprintf(stderr,"\nConditional true!\n");
+  else
+	fprintf(stderr,"\nConditional false!\n");
 /**/
-#ifndef HAB	  
-    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
+#ifndef HAB
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
+    {
+	    battery_saver(ON);
+    } else if ((battery_saver_check() == 1) && (batteryCurrent < 0))
+    {
+	    battery_saver(OFF);
+    } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
@@ -2229,4 +2239,54 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   pinMode(29, INPUT);
 
   serialClose(uart_fd);	
+}
+
+int battery_saver_check() {
+	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
+	if (file == NULL) {
+		fprintf(stderr,"Battery saver mode is OFF\n");
+		fclose(file);
+		return(0);
+	} 
+	fclose(file);
+	fprintf(stderr,"Battery saver mode is ON\n");
+	return(1);
+}
+
+void battery_saver(int setting) {
+if (setting == ON) {
+	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == 0) {
+			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode ON\n");  
+			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
+		  	pclose(command);
+			command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return;  
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
+	}  
+  } else if (setting == OFF) {
+	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == 1) {
+			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+			command = popen("sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt ", "r");
+		  	pclose(command);
+			command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return; 
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
+	}  
+  } else {
+	  fprintf(stderr,"battery_saver function error");
+	  return;
+  }
+  return;
 }
