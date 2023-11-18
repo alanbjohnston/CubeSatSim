@@ -177,3 +177,5 @@ int jpeg_start = 0;
 void battery_saver(int setting);
 int battery_saver_check(); 
 
+int hab_mode = FALSE; 
+int battery_saver_mode = FALSE;
