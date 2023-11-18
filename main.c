@@ -177,8 +177,10 @@ int main(int argc, char * argv[]) {
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 
-  battery_saver_mode = battery_saver_check();	
-
+  battery_saver_mode = battery_saver_check();
+  fprintf(stderr, "\nbattery_saver_mode: %d \n\n", battery_saver_mode);
+  fflush(stderr);
+  
   if (mode == AFSK)
   {
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -817,7 +819,7 @@ int main(int argc, char * argv[]) {
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
 fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
-if ((battery_saver_check() == 1) && (batteryCurrent < 0.0)) 
+if ((battery_saver_mode == ON) && (batteryCurrent < 0.0)) 
 	fprintf(stderr,"\nConditional true!\n");
   else
 	fprintf(stderr,"\nConditional false!\n");
@@ -825,10 +827,12 @@ if ((battery_saver_check() == 1) && (batteryCurrent < 0.0))
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
     {
-	    battery_saver(ON);
+	    if (battery_saver_mode == OFF)
+	    	battery_saver(ON);
     } else if ((battery_saver_mode == ON) && (batteryCurrent < 0))
     {
-	    battery_saver(OFF);
+	    if (battery_saver_mode == ON)
+	    	 battery_saver(OFF);
     } else if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
