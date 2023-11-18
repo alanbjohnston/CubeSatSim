@@ -208,6 +208,7 @@ else:
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
+
 battery_saver_check()	
 
 # print(txLedOn)
@@ -282,7 +283,7 @@ if __name__ == "__main__":
 	
 #	if (mode != 'a') and (command_tx == True):	
 	if (command_tx == True):	
-		battery_saver_check()
+		battery_saver_mode
 		output(txLed, txLedOn)			
 		if (txc):
 			output(pd, 1)
@@ -332,8 +333,8 @@ if __name__ == "__main__":
 #						output(pd, 1)
 #						output (ptt, 0)
 #						sleep(.1)
-						
-						battery_saver_check()
+#						
+#						battery_saver_check()
 						if (txc):
 							output(pd, 1)
 							output (ptt, 0)
@@ -406,7 +407,7 @@ if __name__ == "__main__":
 			
 			if (command_tx == True):
 				output(txLed, txLedOn)
-				battery_saver_check()
+#				battery_saver_check()
 
 				if (txc):
 					output (pd, 1)
@@ -467,7 +468,7 @@ if __name__ == "__main__":
 						output(txLed, txLedOn)
 						output (ptt, 0)
 						sleep(0.1)
-						battery_saver_check()
+#						battery_saver_check()
 
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
@@ -517,7 +518,7 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						battery_saver_check()
+#						battery_saver_check()
 
 						if (txc):
 							output(pd, 1)
@@ -602,7 +603,7 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						battery_saver_check()
+#						battery_saver_check()
 
 						if (txc):
 							output(pd, 1)
@@ -632,7 +633,7 @@ if __name__ == "__main__":
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
 
-						battery_saver_check()
+#						battery_saver_check()
 
 						if (txc):
 							output(pd, 1)
@@ -693,7 +694,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							print ("Sending SSTV image")
 							output(txLed, txLedOn)
-							battery_saver_check()
+#							battery_saver_check()
 
 							if (txc):
 								output(pd, 1)
@@ -720,7 +721,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 
 							output(txLed, txLedOn)
-							battery_saver_check()
+#							battery_saver_check()
 						
 							if (txc):
 								output(pd, 1)
