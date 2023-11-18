@@ -181,7 +181,7 @@ int main(int argc, char * argv[]) {
 	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
 		fprintf(stderr,"Battery saver mode is OFF!\n");
-		fclose(file);
+//		fclose(file);
 		battery_saver_mode = OFF;
 	} 
 	else {
