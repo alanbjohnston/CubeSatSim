@@ -1196,7 +1196,11 @@ void get_tlm(void) {
 	    
       strcat(str, footer_str1);
 //      strcat(str, call);
-      strcat(str, footer_str);
+      if (battery_saver_mode == ON)	    
+      	strcat(str, footer_str);  // add extra packet for rpitx transmission
+      else
+      	strcat(str, footer_str2);
+	    
       fprintf(stderr, "String to execute: %s\n", str);
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
