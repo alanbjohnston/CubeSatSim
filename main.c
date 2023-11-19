@@ -45,9 +45,50 @@ int main(int argc, char * argv[]) {
 	
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
 
-  wiringPiSetup();
+  wiringPiSetup();	
+		
+  // Open configuration file with callsign and reset count	
+  FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  if (config_file == NULL) {
+    printf("Creating config file.");
+    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "w");
+    fprintf(config_file, "%s %d", " ", 100);
+    fclose(config_file);
+    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  }
+
+//  char * cfg_buf[100];
+
+  fscanf(config_file, "%s %d %f %f %s %d %s %s", call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx);
+  fclose(config_file);
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s\n", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
+
+  printf("Transmit on %s Receive on %s\n", tx, rx);
+
+//  program_radio();  // do in rpitx instead
 	
-  program_radio();
+  reset_count = (reset_count + 1) % 0xffff;
+
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
+    printf("Valid latitude and longitude in config file\n");
+// convert to APRS DDMM.MM format
+//    latitude = toAprsFormat(lat_file);
+//    longitude = toAprsFormat(long_file);
+    latitude = lat_file;
+    longitude = long_file;	  
+    printf("Lat/Long %f %f\n", latitude, longitude);		  
+    printf("Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
+    newGpsTime = millis();	  
+   	  
+  } else { // set default
+//    latitude = toAprsFormat(latitude);
+//    longitude = toAprsFormat(longitude);
+      newGpsTime = millis();  
+  }
+	
+  if (strcmp(sim_yes, "yes") == 0)
+	  sim_mode = TRUE;
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
@@ -139,43 +180,6 @@ int main(int argc, char * argv[]) {
   fclose(telem_file);
   printf("Opened telem file\n");
 	
-	
-  // Open configuration file with callsign and reset count	
-  FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
-  if (config_file == NULL) {
-    printf("Creating config file.");
-    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "w");
-    fprintf(config_file, "%s %d", " ", 100);
-    fclose(config_file);
-    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
-  }
-
-//  char * cfg_buf[100];
-
-  fscanf(config_file, "%s %d %f %f %s", call, & reset_count, & lat_file, & long_file, sim_yes);
-  fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
-  reset_count = (reset_count + 1) % 0xffff;
-
-  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    printf("Valid latitude and longitude in config file\n");
-// convert to APRS DDMM.MM format
-//    latitude = toAprsFormat(lat_file);
-//    longitude = toAprsFormat(long_file);
-    latitude = lat_file;
-    longitude = long_file;	  
-    printf("Lat/Long %f %f\n", latitude, longitude);		  
-    printf("Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
-    newGpsTime = millis();	  
-   	  
-  } else { // set default
-//    latitude = toAprsFormat(latitude);
-//    longitude = toAprsFormat(longitude);
-      newGpsTime = millis();  
-  }
-	
-  if (strcmp(sim_yes, "yes") == 0)
-	  sim_mode = TRUE;
 
   battery_saver_mode = battery_saver_check();
 /*
@@ -307,7 +311,7 @@ int main(int argc, char * argv[]) {
   }	
 */
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f %s", call, reset_count, lat_file, long_file, sim_yes);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
@@ -861,9 +865,12 @@ int main(int argc, char * argv[]) {
     }
 #endif
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
-    printf("Writing telem_string.txt\n");	  
-    fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
-    fclose(fp);	  
+    if (fp != NULL) {	  
+    	printf("Writing telem_string.txt\n");	  
+    	fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
+    	fclose(fp);	 
+    } else 
+	    printf("Error writing to telem_string.txt\n");
 	    
 /**/
     //  sleep(1);  // Delay 1 second
@@ -2230,8 +2237,27 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 //     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
 //#else
-     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";	  
-     serialPrintf(uart_fd, uhf_string);	  
+     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";
+     char uhf_string1a[] = "AT+DMOSETGROUP=0,";	// changed frequency to verify
+     char comma[] = ",";
+     char uhf_string1b[] = ",0,";	// changed frequency to verify
+     char uhf_string1[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,";	// changed frequency to verify
+     char uhf_string2[] = ",0,0\r\n";	
+     char sq_string[2];
+     sq_string[0] = '0' + squelch;
+     sq_string[1] = 0;
+	  
+//     serialPrintf(uart_fd, uhf_string);	
+/**/	  
+	serialPrintf(uart_fd, uhf_string1a);	
+	serialPrintf(uart_fd, rx);	
+	serialPrintf(uart_fd, comma);	
+	serialPrintf(uart_fd, tx);	
+	serialPrintf(uart_fd, uhf_string1b);	
+	serialPrintf(uart_fd, sq_string);	
+	serialPrintf(uart_fd, uhf_string2);	
+/**/	  
+	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
 //#endif	  
    sleep(1);

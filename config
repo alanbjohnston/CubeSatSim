@@ -48,10 +48,14 @@ if [ "$1" = "" ]; then
 	echo "Current beacon transmit mode is:"
 	cat /home/pi/CubeSatSim/command_tx
 	echo
+
+	echo "Squelch level is:"
+	echo $6
+	echo
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	
-	echo $1 $2 $3 $4 $5
+	echo $1 $2 $3 $4 $5 $6 $7 $8 
 	echo
 	
 	echo "To change, include an OPTION"
@@ -151,6 +155,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -T     Change command state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
 	echo "   -B     Change battery saver mode manually"
+	echo "   -q     Change the Squelch setting for command receiver"
+	echo "   -F     Change the rx and tx frequency"
 	echo
 	exit
 
@@ -173,7 +179,7 @@ elif [ "$1" = "-t" ]; then
 	
 	echo
 	
-#	echo $1 $2 $3 $4
+#	echo $1 $2 $3 $4 $5 $6 $7 $8
 
 	echo "Do you want Simulated Telemetry ON (y/n) "
 	read sim
@@ -190,8 +196,8 @@ elif [ "$1" = "-t" ]; then
 	echo
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo
-	echo $1 $2 $3 $4 $sim
-	echo $1 $2 $3 $4 $sim > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $sim $6 $7 $8
+	echo $1 $2 $3 $4 $sim $6 $7 $8 > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuraation file"
 	echo
@@ -216,7 +222,7 @@ elif [ "$1" = "-c" ]; then
 	echo $1
 	echo
 	
-#	echo $1 $2 $3 $4 $5
+#	echo $1 $2 $3 $4 $5 $6 $7 $8
 
 	echo "Enter callsign in all capitals: "
 	read callsign
@@ -230,8 +236,8 @@ elif [ "$1" = "-c" ]; then
 	
 		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-		echo $callsign $2 $3 $4 $5
-		echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+		echo $callsign $2 $3 $4 $5 $6 $7 $8
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 > /home/pi/CubeSatSim/sim.cfg
 	fi
 	
 	if [ "$norestart" = "1" ]; then
@@ -262,7 +268,7 @@ elif [ "$1" = "-r" ]; then
 	echo $2
 	echo
 	
-#	echo $1 $2 $3 $4 $5
+#	echo $1 $2 $3 $4 $5 $6 $7 $8
 
 	echo -e "Enter Reset Count (integer): "
 
@@ -282,8 +288,8 @@ elif [ "$1" = "-r" ]; then
 
 		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 
-		echo $1 $resets $3 $4 $5
-		echo $1 $resets $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $resets $3 $4 $5 $6 $7 $8
+		echo $1 $resets $3 $4 $5 $6 $7 $8 > /home/pi/CubeSatSim/sim.cfg
 	fi	
 
 	if [ "$norestart" = "1" ]; then
@@ -315,7 +321,7 @@ elif [ "$1" = "-l" ]; then
 	echo $3
 	echo
 	
-#	echo $1 $2 $3 $4 $5
+#	echo $1 $2 $3 $4 $5 $6 $7 $8
 
 	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
@@ -357,8 +363,8 @@ elif [ "$1" = "-l" ]; then
 	fi 
 
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-	echo $1 $2 $lat $long $5
-	echo $1 $2 $lat $long $5 > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $lat $long $5 $6 $7 $8
+	echo $1 $2 $lat $long $5 $6 $7 $8 > /home/pi/CubeSatSim/sim.cfg
 	
 	if [ "$norestart" = "1" ]; then
 		echo 
@@ -487,6 +493,110 @@ elif [ "$1" = "-B" ]; then
 		echo "restarting"
 		sudo systemctl restart cubesatsim
 	fi
+
+elif [ "$1" = "-q" ]; then
+
+	echo	
+	echo "Editing the Squelch setting in"
+	echo  "the configuration file for CubeSatSim"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo
+	echo "Current value of squelch is"	
+	echo $6
+	echo
+	
+#	echo $1 $2 $3 $4 $5 $6 $7 $8
+
+	echo -e "Enter squelch  (integer 0 - 8): "
+
+	read sq 
+
+	if [ -z $sq ] ; then
+
+		sq="$6"
+		echo "Keeping value of" $lat
+	fi
+
+	if ! [[ $sq =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+
+		echo "Error: not a number!"
+		sq="$6"
+		echo "Keeping value of" $sq
+	fi 
+	
+	echo
+	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+	echo
+	echo $1 $2 $3 $4 $5 $sq $7 $8
+	echo $1 $2 $3 $4 $4 $sq $7 $8 > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuraation file"
+	echo
+
+	sudo systemctl restart cubesatsim
+
+elif [ "$1" = "-F" ]; then
+
+	echo	
+	echo "Editing the tx and rx frequency in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of tx is"	
+	echo $7
+	echo
+	echo "Current value of rx is"	
+	echo $8
+	echo	
+
+#	echo $1 $2 $3 $4 $5 $6 $7 $8
+
+	echo "Enter tx frequency as 4XX.XXXX: "
+	read tx
+
+	if [ -z $tx ] ; then
+
+		tx="$7"
+		echo "Keeping value of" $tx
+	fi
+
+	echo "Enter rx frequency as 4XX.XXXX: "
+	read rx
+
+	if [ -z $rx ] ; then
+
+		rx="$8"
+		echo "Keeping value of" $rx
+	fi
+#	else
+	
+		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+
+		echo $1 $2 $3 $4 $5 $6 $tx $rx
+		echo $1 $2 $3 $4 $5 $6 $tx $rx > /home/pi/CubeSatSim/sim.cfg
+#	fi
+	
+#	if [ "$norestart" = "1" ]; then
+#		echo 
+#	else
+		echo
+		echo "Restarting CubeSatSim with new configuraation file"
+		echo
+		sudo systemctl restart cubesatsim
+#	fi
+		
 fi
 
 # sudo systemctl restart cubesatsim
