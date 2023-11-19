@@ -178,12 +178,12 @@ int main(int argc, char * argv[]) {
 	  sim_mode = TRUE;
 
   battery_saver_mode = battery_saver_check();
-
+/*
   if (battery_saver_mode == ON)	
   	fprintf(stderr, "\nBattery_saver_mode is ON\n\n");
   else
 	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
-	
+*/	
   fflush(stderr);
   
   if (mode == AFSK)
@@ -823,7 +823,7 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
+// fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
 
 #ifndef HAB
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
