@@ -137,7 +137,7 @@ print("CubeSatSim v1.3b rpitx.py starting...")
 pd = 21
 ptt = 20
 txc_pin = 7
-squelch = 6
+ = 6
 green = 16
 
 command_tx = True
@@ -150,9 +150,9 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
-GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
+GPIO.setup(, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
 
-if GPIO.input(squelch) == False:
+if GPIO.input() == False:
 	print("squelch not set correctly, no command input!")
 	no_command = True
 else:
@@ -355,6 +355,8 @@ if __name__ == "__main__":
 						output(txLed, txLedOff)
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
+					output(pd, 1)
+					output(ptt, 1)
 					sleep(1)
 					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
@@ -387,7 +389,8 @@ if __name__ == "__main__":
 							system("echo > command_tx False")
 					else:
 						print("No carrier received!")
-						
+					output(pd, 0)
+					
 					if (debug_mode == 1):
 						print("Ready for next packet!")
 						
@@ -428,6 +431,9 @@ if __name__ == "__main__":
 #				output (ptt, 1)
 			sleep(5)
 			while True:
+				output(pd, 1)
+				output(ptt, 1)
+				sleep(1)
 				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
@@ -458,6 +464,8 @@ if __name__ == "__main__":
 						print("Turning off transmit")	
 						system("echo > command_tx False")
 					sleep(5)	
+				output(pd, 0)
+				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
@@ -568,6 +576,7 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
 					output(pd, 1)
+					output(ptt, 1)
 					sleep(1)
 					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
@@ -660,6 +669,7 @@ if __name__ == "__main__":
 					while 1:
 
 						output(pd, 1)
+						output(ptt, 1)
 						sleep(1)
 						if (no_command == False and GPIO.input(squelch) == False):
 							print("carrier received!")
@@ -689,7 +699,7 @@ if __name__ == "__main__":
 							else:
 								print("Turning off transmit")
 								system("echo > command_tx False")
-#						output(pd, 0)			
+						output(pd, 0)			
 	
 						if (command_tx == True):
 							print ("Sending SSTV image")
@@ -751,6 +761,9 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
+				output(pd, 1)
+				output(ptt, 1)
+				sleep(1)
 				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
@@ -781,6 +794,8 @@ if __name__ == "__main__":
 						system("sudo systemctl restart rpitx")
 #						system("sudo reboot now")
 						sleep(60)
+				output(pd, 0)
+				
 				if (command_tx == True):		
 					output(txLed, txLedOn)
 				sleep(4.0)
@@ -799,6 +814,9 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
+				output(pd, 1)
+				output(ptt, 1)
+				sleep(1)
 				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
