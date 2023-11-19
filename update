@@ -26,7 +26,7 @@ sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # si
 
 cd /home/pi/CubeSatSim
 
-git pull > .updated
+git pull --no-rebase > .updated
 
 make debug
 
@@ -135,7 +135,7 @@ cd /home/pi/pi-power-button
 
 # git checkout reboot-mode-change
 
-git pull > .updated_p
+git pull --no-rebase > .updated_p
 
   grep 'changed' /home/pi/pi-power-button/.updated_p
   if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
@@ -186,7 +186,7 @@ git pull > .updated_p
     FLAG=1
 
     cd /home/pi/pi-power-button
-    git pull
+    git pull --no-rebase
     git checkout reboot-mode-change
     script/install
 

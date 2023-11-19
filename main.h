@@ -54,6 +54,7 @@
 
 #define OFF - 1
 #define ON 1
+#define CHECK 0
 
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
@@ -175,3 +176,8 @@ int end_flag_detected = FALSE;
 int jpeg_start = 0;
 #define CAMERA_TIMEOUT 10000 // 20000  // Camera timeout in milli seconds
 
+void battery_saver(int setting);
+int battery_saver_check(); 
+
+int hab_mode = FALSE; 
+int battery_saver_mode = FALSE;

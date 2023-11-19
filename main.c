@@ -181,6 +181,15 @@ int main(int argc, char * argv[]) {
   printf("Opened telem file\n");
 	
 
+  battery_saver_mode = battery_saver_check();
+/*
+  if (battery_saver_mode == ON)	
+  	fprintf(stderr, "\nBattery_saver_mode is ON\n\n");
+  else
+	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
+*/	
+  fflush(stderr);
+  
   if (mode == AFSK)
   {
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -818,9 +827,20 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+// fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
 
-/**/
-#ifndef HAB	  
+#ifndef HAB
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
+    {
+	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
+	    if (battery_saver_mode == OFF)
+	    	battery_saver(ON);
+    } else if ((battery_saver_mode == ON) && (batteryCurrent < 0))
+    {
+	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
+	    if (battery_saver_mode == ON)
+	    	 battery_saver(OFF);
+    } 
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
@@ -999,8 +1019,9 @@ void get_tlm(void) {
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str[] = " && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-
+    char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
+    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready";  
+	  
     if (ax5043) {
       strcpy(str, header_str);
     } else {
@@ -1182,7 +1203,11 @@ void get_tlm(void) {
 	    
       strcat(str, footer_str1);
 //      strcat(str, call);
-      strcat(str, footer_str);
+      if (battery_saver_mode == ON)	    
+      	strcat(str, footer_str);  // add extra packet for rpitx transmission
+      else
+      	strcat(str, footer_str2);
+	    
       fprintf(stderr, "String to execute: %s\n", str);
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
@@ -2255,4 +2280,53 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   pinMode(29, INPUT);
 
   serialClose(uart_fd);	
+}
+
+int battery_saver_check() {
+	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
+	if (file == NULL) {
+		fprintf(stderr,"Battery saver mode is OFF!\n");
+		return(OFF);
+	} 
+	fclose(file);
+	fprintf(stderr,"Battery saver mode is ON!\n");
+	return(ON);
+}
+
+void battery_saver(int setting) {
+if (setting == ON) {
+	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == OFF) {
+			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode ON\n");  
+			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
+		  	pclose(command);
+			command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return;  
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
+	}  
+  } else if (setting == OFF) {
+	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == ON) {
+			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+			command = popen("sudo sed -i ':a;N;$!ba;s/\'$'\n''force_turbo=1//g' /boot/config.txt", "r");
+		  	pclose(command);
+			command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return; 
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
+	}  
+  } else {
+	  fprintf(stderr,"battery_saver function error");
+	  return;
+  }
+  return;
 }
