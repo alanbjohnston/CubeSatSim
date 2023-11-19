@@ -479,8 +479,14 @@ elif [ "$1" = "-B" ]; then
 #		if ["$mode" = "1"] ; then sudo systemctl restart rpitx
 	fi
 
-	sudo systemctl restart cubesatsim
-	
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
+		echo "restarting"
+		sudo systemctl restart cubesatsim
+	fi
 fi
 
 # sudo systemctl restart cubesatsim
