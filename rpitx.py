@@ -137,7 +137,7 @@ print("CubeSatSim v1.3b rpitx.py starting...")
 pd = 21
 ptt = 20
 txc_pin = 7
- = 6
+squelch = 6
 green = 16
 
 command_tx = True
@@ -150,9 +150,9 @@ GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
-GPIO.setup(, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
+GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
 
-if GPIO.input() == False:
+if GPIO.input(squelch) == False:
 	print("squelch not set correctly, no command input!")
 	no_command = True
 else:
