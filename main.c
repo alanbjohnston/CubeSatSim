@@ -1575,9 +1575,10 @@ void get_tlm_fox() {
       char count_string[10];	
       if ( (fgets(count_string, 10, command_count_file)) != NULL)
 	   groundCommandCount = atoi(count_string); 
+      fclose(command_count_file);	    
     } else
 	    printf("Error opening command_count.txt!\n");
-    fclose(command_count_file);
+    
     printf("Command count: %d\n", groundCommandCount);	  
     
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
