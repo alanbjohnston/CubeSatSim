@@ -59,10 +59,11 @@ int main(int argc, char * argv[]) {
 
 //  char * cfg_buf[100];
 
-  fscanf(config_file, "%s %d %f %f %s %d %s %s", call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx);
+  fscanf(config_file, "%s %d %f %f %s %d %s %s %s", 
+	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s\n", 
-	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx);
+  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s\n", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes);
 
   printf("Transmit on %s Receive on %s\n", tx, rx);
 
@@ -90,6 +91,10 @@ int main(int argc, char * argv[]) {
   if (strcmp(sim_yes, "yes") == 0)
 	  sim_mode = TRUE;
 	
+  if (strcmp(hab_yes, "yes") == 0)
+	  hab_mode = TRUE;
+	
+	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_stop);
@@ -108,9 +113,10 @@ int main(int argc, char * argv[]) {
 
 //  sleep(2);
 
-#ifdef HAB
-  printf("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown\n");
-#endif
+//#ifdef HAB
+  if (hab_mode)	
+  	printf("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown\n");
+//#endif
 	
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
 //  pclose(rpitx_restart);
@@ -830,18 +836,19 @@ int main(int argc, char * argv[]) {
 // fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
 
 #ifndef HAB
-    if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode)
+	  
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
 	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
 	    if (battery_saver_mode == OFF)
 	    	battery_saver(ON);
-    } else if ((battery_saver_mode == ON) && (batteryCurrent < 0))
+    } else if ((battery_saver_mode == ON) && (batteryCurrent < 0) && !sim_mode && !hab_mode)
     {
 	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
 	    if (battery_saver_mode == ON)
 	    	 battery_saver(OFF);
     } 
-    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode && !hab_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
@@ -1047,11 +1054,13 @@ void get_tlm(void) {
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
-#ifdef HAB
-	sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
-#else
-	sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long with Satellite icon	
-#endif		
+//#ifdef HAB
+	if (hab_mode)	
+		sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
+//#else
+	else
+		sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long with Satellite icon	
+//#endif		
           	           	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
@@ -1070,18 +1079,21 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
 
-#ifdef HAB	    
-       if (mode != AFSK)
-#endif	       
+//#ifdef HAB	    
+//       if (mode != AFSK)
+//#endif	
+       if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
          strcat(str, tlm_str);
 
     }
-#ifdef HAB
-    if (mode == AFSK) {
+//#ifdef HAB
+    if ((mode == AFSK) && (hab_mode)) {
       sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);
       strcat(str, tlm_str);
-    }  
-#endif
+    }  else
+      strcat(str, tlm_str);	// Is this needed???
+	  
+//#endif
     // read payload sensor if available
 /*
     char sensor_payload[500];
