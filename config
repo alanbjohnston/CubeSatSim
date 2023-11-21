@@ -98,10 +98,11 @@ elif [ "$1" = "-a" ]; then
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
 	
-	echo "rebooting"
-	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	echo "rebooting"
+#	sudo reboot now
+	sudo systemctl restart cubesatsim
 	exit 
+
 elif [ "$1" = "-m" ]; then
 	echo "changing CubeSatSim to CW mode"
 	sudo echo "m" > /home/pi/CubeSatSim/.mode
