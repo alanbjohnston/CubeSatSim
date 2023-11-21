@@ -88,12 +88,14 @@ int main(int argc, char * argv[]) {
       newGpsTime = millis();  
   }
 	
-  if (strcmp(sim_yes, "yes") == 0)
+  if (strcmp(sim_yes, "yes") == 0) {
 	  sim_mode = TRUE;
-	
-  if (strcmp(hab_yes, "yes") == 0)
+	  fprintf(stderr, "Sim mode is ON\n");
+  }
+  if (strcmp(hab_yes, "yes") == 0) {
 	  hab_mode = TRUE;
-	
+	  fprintf(stderr, "HAB mode is ON\n");
+  }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
