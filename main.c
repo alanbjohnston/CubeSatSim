@@ -117,7 +117,7 @@ int main(int argc, char * argv[]) {
 
 //#ifdef HAB
   if (hab_mode)	
-  	fprintf(stderr, "HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown\n");
+  	fprintf(stderr, "HAB mode enabled - in APRS balloon icon and no battery saver or low voltage shutdown\n");
 //#endif
 	
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
@@ -1072,7 +1072,7 @@ void get_tlm(void) {
       }
 //    }
 	printf("Str: %s \n", str);
-
+   if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
@@ -1085,17 +1085,18 @@ void get_tlm(void) {
 //#ifdef HAB	    
 //       if (mode != AFSK)
 //#endif	
-       if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
+ //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
          strcat(str, tlm_str);
 
     }
+  } else {  // APRS
 //#ifdef HAB
-    if ((mode == AFSK) && (hab_mode)) {
+//    if ((mode == AFSK) && (hab_mode)) {
       sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);
       strcat(str, tlm_str);
-    }  else
-      strcat(str, tlm_str);	// Is this needed???
-	  
+//    }  else
+//      strcat(str, tlm_str);	// Is this needed???
+   }  
 //#endif
     // read payload sensor if available
 /*
