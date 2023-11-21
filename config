@@ -64,7 +64,7 @@ if [ "$1" = "" ]; then
 	if [ -f "$FILE" ]; then
     		echo "Battery saver mode is ON"
 	else 
-    		echo "Battery saver is OFF"
+    		echo "Battery saver mode is OFF"
 	fi
 
 	echo
@@ -98,9 +98,10 @@ elif [ "$1" = "-a" ]; then
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
 	
-#	echo "rebooting"
-#	sudo reboot now
-	sudo systemctl restart cubesatsim
+	echo "rebooting"
+	sudo systemctl stop rpitx
+	sudo reboot now
+#	sudo systemctl restart cubesatsim
 	exit 
 
 elif [ "$1" = "-m" ]; then
@@ -514,8 +515,9 @@ elif [ "$1" = "-B" ]; then
 	set -- $value
 
 	if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
-		echo "restarting"
-		sudo systemctl restart cubesatsim
+		echo "rebooting"
+#		sudo systemctl restart cubesatsim
+		sudo reboot now
 	fi
 
 elif [ "$1" = "-q" ]; then
