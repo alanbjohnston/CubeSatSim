@@ -428,7 +428,7 @@ int main(int argc, char * argv[]) {
 
     sim_mode = TRUE;
 	    
-    printf("Simulated telemetry mode!\n");
+    fprintf(stderr. "Simulated telemetry mode!\n");
 
     srand((unsigned int)time(0));
 
@@ -702,7 +702,7 @@ int main(int argc, char * argv[]) {
       batteryVoltage = voltage[map[BAT]];
       batteryCurrent = current[map[BAT]];
 	    
-      if (batteryVoltage < 3.6) {
+      if (batteryVoltage < 3.7) {
         SafeMode = 1;
         printf("Safe Mode!\n");
       } else
@@ -1092,7 +1092,8 @@ void get_tlm(void) {
   } else {  // APRS
 //#ifdef HAB
 //    if ((mode == AFSK) && (hab_mode)) {
-      sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);
+//      sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent); 
+      sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
       strcat(str, tlm_str);
 //    }  else
 //      strcat(str, tlm_str);	// Is this needed???
