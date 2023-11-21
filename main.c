@@ -837,7 +837,7 @@ int main(int argc, char * argv[]) {
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
 // fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
 
-#ifndef HAB
+//#ifndef HAB
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
@@ -872,7 +872,8 @@ int main(int argc, char * argv[]) {
       pclose(file6);
       sleep(10);
     }
-#endif
+//#endif
+	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL) {	  
     	printf("Writing telem_string.txt\n");	  
