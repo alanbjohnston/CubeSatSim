@@ -62,24 +62,24 @@ int main(int argc, char * argv[]) {
   fscanf(config_file, "%s %d %f %f %s %d %s %s %s", 
 	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes);
   fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s\n", 
+  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s\n", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes);
 
-  printf("Transmit on %s Receive on %s\n", tx, rx);
+  fprintf(stderr, "Transmit on %s Receive on %s\n", tx, rx);
 
 //  program_radio();  // do in rpitx instead
 	
   reset_count = (reset_count + 1) % 0xffff;
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    printf("Valid latitude and longitude in config file\n");
+    fprintf(stderr, "Valid latitude and longitude in config file\n");
 // convert to APRS DDMM.MM format
 //    latitude = toAprsFormat(lat_file);
 //    longitude = toAprsFormat(long_file);
     latitude = lat_file;
     longitude = long_file;	  
-    printf("Lat/Long %f %f\n", latitude, longitude);		  
-    printf("Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
+    fprintf(stderr, "Lat/Long %f %f\n", latitude, longitude);		  
+    fprintf(stderr, "Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
     newGpsTime = millis();	  
    	  
   } else { // set default
@@ -117,7 +117,7 @@ int main(int argc, char * argv[]) {
 
 //#ifdef HAB
   if (hab_mode)	
-  	printf("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown\n");
+  	fprintf(stderr, "HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown\n");
 //#endif
 	
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
