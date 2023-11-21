@@ -428,7 +428,7 @@ int main(int argc, char * argv[]) {
 
     sim_mode = TRUE;
 	    
-    fprintf(stderr. "Simulated telemetry mode!\n");
+    fprintf(stderr, "Simulated telemetry mode!\n");
 
     srand((unsigned int)time(0));
 
