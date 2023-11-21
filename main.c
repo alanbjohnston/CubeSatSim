@@ -2318,7 +2318,8 @@ if (setting == ON) {
 			fprintf(stderr,"Turning Battery saver mode ON\n");  
 			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
 		  	pclose(command);
-			command = popen("sudo reboot now", "r");
+//			command = popen("sudo reboot now", "r");
+			command = popen("sudo systemctl restart cubesatsim, "r");
 		  	pclose(command);
 			sleep(60);
 			return;  
@@ -2333,8 +2334,9 @@ if (setting == ON) {
 			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 			command = popen("sudo sed -i ':a;N;$!ba;s/\'$'\n''force_turbo=1//g' /boot/config.txt", "r");
 		  	pclose(command);
-			command = popen("sudo reboot now", "r");
-		  	pclose(command);
+//			command = popen("sudo reboot now", "r");
+			command = popen("sudo systemctl restart cubesatsim, "r");
+			pclose(command);
 			sleep(60);
 			return; 
 		} else
