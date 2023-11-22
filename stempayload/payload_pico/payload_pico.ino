@@ -462,13 +462,13 @@ void payload_OK_only()
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
     
-    Serial.print(" XS2 ");
+    Serial.print(" GPS ");
     Serial.print(Sensor1,4);   
     Serial.print(" ");
     Serial.print(Sensor2,4);              
     Serial.print(" ");
     Serial.print(Sensor3,2);         
-    Serial.print(" MQ ");
+    Serial.print(" AN ");
     Serial.println(sensorValue); // ,0);  	    
 
   if (mpuPresent) 	 { 	    
@@ -610,13 +610,13 @@ void payload_OK_only()
     //Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
 
-    Serial1.print(" XS2 ");
+    Serial1.print(" GPS ");
     Serial1.print(Sensor1,4);   
     Serial1.print(" ");
     Serial1.print(Sensor2,4);              
     Serial1.print(" ");
     Serial1.print(Sensor3,2);    
-    Serial1.print(" MQ ");
+    Serial1.print(" AN ");
     Serial1.print(sensorValue); //,0);  
 //    Serial1.println("END_FLAG");  	    
     Serial1.println(sensor_end_flag);  	    
