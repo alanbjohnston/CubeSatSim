@@ -124,6 +124,7 @@ float uptime_sec = 0;
 long int uptime;
 char call[5];
 char sim_yes[10];
+char hab_yes[10];
 int squelch = 3; // default squelch
 char rx[12], tx[12];
 
