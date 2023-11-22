@@ -212,6 +212,8 @@ git pull --no-rebase > .updated_p
     FLAG=1
   fi
 
+  if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+
 #if [ ! -f "/home/pi/CubeSatSim/telem_string.txt" ]; then
 
 #  sudo apt-get update && sudo apt-get dist-upgrade -y
