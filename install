@@ -221,6 +221,8 @@ sudo raspi-config nonint do_legacy 0
     sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
   fi
 
+  if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+
 sudo sh -c 'echo "\n" >> /boot/config.txt'
 
 echo "Would you like to reboot to complete the installation (y/n)?"
