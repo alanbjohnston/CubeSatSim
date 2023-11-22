@@ -157,6 +157,9 @@ void loop() {
 }
 
 void config_gpio() {
+
+  pinMode(0, INPUT);
+  pinMode(1, INPUT);
 	
   // set all Pico GPIO connected pins to input	
   for (int i = 6; i < 22; i++) { 
