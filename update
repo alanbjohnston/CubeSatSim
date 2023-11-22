@@ -246,12 +246,11 @@ if [ $changed -eq 1 ]; then
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
-	echo
-	
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 > /home/pi/CubeSatSim/sim.cfg
+	echo
 fi
 
 if [ $FLAG -eq 1 ]; then
