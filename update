@@ -227,29 +227,32 @@ git pull --no-rebase > .updated_p
 
 #fi
 
-	value=`cat /home/pi/CubeSatSim/sim.cfg`
-	echo "$value" > /dev/null
-	set -- $value
+changed=0
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
 
+if [ -z "$1" ] ; then n1="AMSAT" ; else n1=$1 ; fi
+if [ -z "$2" ] ; then n2="AMSAT" ; else n2=$2 ; fi
+if [ -z "$3" ] ; then n3="AMSAT" ; else n3=$3 ; fi
+if [ -z "$4" ] ; then n4="AMSAT" ; else n4=$4 ; fi
+if [ -z "$5" ] ; then n5="AMSAT" ; else n5=$5 ; fi
+if [ -z "$6" ] ; then n6="AMSAT" ; else n6=$6 ; fi
+if [ -z "$7" ] ; then n7="AMSAT" ; else n7=$7 ; fi
+if [ -z "$8" ] ; then n8="AMSAT" ; else n8=$8 ; fi
+if [ -z "$9" ] ; then n9="AMSAT" ; changed=1 ; else n9=$9 ; fi
+
+if [ $changed -eq 1 ]; then
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 	echo
-
-	if [ -z "$1" ] ; then n1="AMSAT" ; else n1=$1 ; fi
-	if [ -z "$2" ] ; then n2="AMSAT" ; else n2=$2 ; fi
-	if [ -z "$3" ] ; then n3="AMSAT" ; else n3=$3 ; fi
-	if [ -z "$4" ] ; then n4="AMSAT" ; else n4=$4 ; fi
-	if [ -z "$5" ] ; then n5="AMSAT" ; else n5=$5 ; fi
-	if [ -z "$6" ] ; then n6="AMSAT" ; else n6=$6 ; fi
-	if [ -z "$7" ] ; then n7="AMSAT" ; else n7=$7 ; fi
-	if [ -z "$8" ] ; then n8="AMSAT" ; else n8=$8 ; fi
-	if [ -z "$9" ] ; then n9="AMSAT" ; else n9=$9 ; fi
 	
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 > /home/pi/CubeSatSim/sim.cfg
+fi
 
 if [ $FLAG -eq 1 ]; then
   echo "systemctl daemon-reload and reboot"
