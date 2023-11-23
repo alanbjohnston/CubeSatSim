@@ -57,7 +57,7 @@ sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circui
 
 cd ~/CubeSatSim
 
-git pull
+git pull --no-rebase
 
 make debug
 
