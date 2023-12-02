@@ -67,7 +67,7 @@ if [ "$1" = "" ]; then
     		echo "Battery saver mode is OFF"
 	fi
 
-#	echo
+	echo
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
