@@ -110,16 +110,16 @@ def increment_mode():
 		sleep(2.5)
 
 	try:	
-#		file = open("/home/pi/CubeSatSim/.mode", "w")
-#		count_string = str(command_count)
-#		file.write(mode)
-#		file.close()
-#		print(".mode file written")
+		file = open("/home/pi/CubeSatSim/.mode", "w")
+		count_string = str(command_count)
+		file.write(mode)
+		file.close()
+		print(".mode file written")
 		
 		GPIO.setwarnings(False)
 		GPIO.output(txLed, 0)
 		GPIO.output(powerPin, 0)
-#		print("sudo reboot -h now")
+		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
 		GPIO.output(powerPin, 0);
@@ -127,7 +127,8 @@ def increment_mode():
 #		release = True;
 
 		print("Changing mode now")
-		system("/home/pi/CubeSatSim/config -" + mode)
+#		system("/home/pi/CubeSatSim/config -" + mode)
+		system("reboot -h now")
 
 		sleep(10);
 	except:
