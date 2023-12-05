@@ -219,7 +219,7 @@ print(txLed)
 # GPIO.setup(27, GPIO.OUT)
 # GPIO.output(27, 0)
 
-debug_mode = 1  #no debugging rpitx
+debug_mode = 0  #no debugging rpitx
 
 if __name__ == "__main__":
 
