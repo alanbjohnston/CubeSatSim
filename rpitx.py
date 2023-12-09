@@ -388,7 +388,7 @@ if __name__ == "__main__":
 						if (txc):
 							output(pd, 1)
 							output (ptt, 0)
-							sleep(0.1)
+							sleep(0.2)   # add more time at start
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")							
 							sleep(0.1)
 							output (ptt, 1)
