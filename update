@@ -143,20 +143,22 @@ git pull --no-rebase > .updated_p
     echo "updating pi-power-button."
     
     script/install
+
+    FLAG=1
     
-    echo "You need to reboot to complete this update.  Reboot now (y/n)?"
+#    echo "You need to reboot to complete this update.  Reboot now (y/n)?"
 
-    read -r ANS
+#    read -r ANS
 
-    if [ "$ANS" = "y" ]; then
+ #   if [ "$ANS" = "y" ]; then
 
-      sudo reboot now
+ #     sudo reboot now
 
-    else
+ #   else
 
-      echo "The CubeSatSim software may not work correctly until you reboot."
+  #    echo "The CubeSatSim software may not work correctly until you reboot."
 
-  fi  
+ # fi  
 
   else
     echo "nothing to do for pi-power-button."
