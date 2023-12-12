@@ -279,13 +279,21 @@ if __name__ == "__main__":
 		else:	
 			sq = '0'
 		if len(config) > 6:
-			tx = config[6]
-			print(tx)
+#                       tx = config[6]
+                        txf = float(config[6])
+                        print(txf)
+#                        print( "{:.4f}".format(txf))
+                        tx = "{:.4f}".format(txf)
+                        print(tx)
 		else:	
 			tx = '434.9000'			
 		if len(config) > 7:
-			rx = config[7]
-			print(rx)
+#                       rx = config[7]
+                        rxf = float(config[7])
+                        print(rxf)
+#                        print( "{:.4f}".format(rxf))
+                        rx = "{:.4f}".format(rxf)
+                        print(rx)
 		else:	
 			rx = '435.0000'	
 		print(config)
