@@ -919,9 +919,13 @@ int main(int argc, char * argv[]) {
 //#endif
 	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
-    if (fp != NULL) {	  
-    	printf("Writing telem_string.txt\n");	  
-    	fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
+    if ((fp != NULL)  {	  
+    	printf("Writing telem_string.txt\n");
+	if (batteryVoltage != 4.5)    
+    		fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	
+	else
+    		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
+		
     	fclose(fp);	 
     } else 
 	    printf("Error writing to telem_string.txt\n");
