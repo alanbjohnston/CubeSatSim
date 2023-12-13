@@ -545,7 +545,7 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
-  if (!sim_mode)
+//  if (!sim_mode)  // always read sensors, even in sim mode
   {
     strcpy(pythonStr, pythonCmd);
     strcat(pythonStr, busStr);
@@ -603,7 +603,42 @@ int main(int argc, char * argv[]) {
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     fflush(stdout);
     loopTime = millis();
-	  	  
+
+   {
+      int count1;
+      char * token;
+      fputc('\n', file1);
+      fgets(cmdbuffer, 1000, file1);
+      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
+
+      const char space[2] = " ";
+      token = strtok(cmdbuffer, space);
+
+      for (count1 = 0; count1 < 8; count1++) {
+        if (token != NULL) {
+          voltage[count1] = (float) atof(token);
+          #ifdef DEBUG_LOGGING
+//            printf("voltage: %f ", voltage[count1]);
+          #endif
+          token = strtok(NULL, space);
+          if (token != NULL) {
+            current[count1] = (float) atof(token);
+            if ((current[count1] < 0) && (current[count1] > -0.5))
+              current[count1] *= (-1.0f);
+            #ifdef DEBUG_LOGGING
+//              printf("current: %f\n", current[count1]);
+            #endif
+            token = strtok(NULL, space);
+          }
+        }
+        if (voltage[map[BAT]] == 0.0)
+		batteryVoltage = 4.5;
+	else
+		batteryVoltage = voltage[map[BAT]];
+        batteryCurrent = current[map[BAT]];
+	   
+   }
+	  
     if (sim_mode) { // simulated telemetry 
 
       double time = ((long int)millis() - time_start) / 1000.0;
@@ -671,6 +706,9 @@ int main(int argc, char * argv[]) {
       // end of simulated telemetry
     }
     else {
+// code moved
+
+/*	    
       int count1;
       char * token;
       fputc('\n', file1);
@@ -697,10 +735,16 @@ int main(int argc, char * argv[]) {
             token = strtok(NULL, space);
           }
         }
+        if (voltage[map[BAT]] == 0.0)
+		batteryVoltage = 4.5;
+	else
+		batteryVoltage = voltage[map[BAT]];
+        batteryCurrent = current[map[BAT]];
+*/	      
       }
 	
-      batteryVoltage = voltage[map[BAT]];
-      batteryCurrent = current[map[BAT]];
+//      batteryVoltage = voltage[map[BAT]];
+//      batteryCurrent = current[map[BAT]];
 	    
       if (batteryVoltage < 3.7) {
         SafeMode = 1;
