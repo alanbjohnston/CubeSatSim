@@ -113,7 +113,7 @@ void setup() {
 	
 // otherwise, run CubeSatSim Pico code
   
-  Serial.println("CubeSatSim Pico Payload v0.3 starting...\n");
+  Serial.println("CubeSatSim Pico Payload v0.4 starting...\n");
 	
 /**/	
   if (check_for_wifi()) {
