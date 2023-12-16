@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "CubeSatSim v1.3b configuration tool"
+echo "CubeSatSim v1.3.2 configuration tool"
 echo
 
 if [ "$2" = "-n" ]; then
