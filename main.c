@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero 2 detected");
   }
 	
-  printf("\n\nCubeSatSim v1.3b starting...\n\n");
+  printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
 
   wiringPiSetup();	
 		
