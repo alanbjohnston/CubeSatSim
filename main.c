@@ -45,9 +45,57 @@ int main(int argc, char * argv[]) {
 	
   printf("\n\nCubeSatSim v1.3b starting...\n\n");
 
-  wiringPiSetup();
+  wiringPiSetup();	
+		
+  // Open configuration file with callsign and reset count	
+  FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  if (config_file == NULL) {
+    printf("Creating config file.");
+    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "w");
+    fprintf(config_file, "%s %d", " ", 100);
+    fclose(config_file);
+    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
+  }
+
+//  char * cfg_buf[100];
+
+  fscanf(config_file, "%s %d %f %f %s %d %s %s %s", 
+	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes);
+  fclose(config_file);
+  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s\n", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes);
+
+  fprintf(stderr, "Transmit on %s Receive on %s\n", tx, rx);
+
+//  program_radio();  // do in rpitx instead
 	
-  program_radio();
+  reset_count = (reset_count + 1) % 0xffff;
+
+  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
+    fprintf(stderr, "Valid latitude and longitude in config file\n");
+// convert to APRS DDMM.MM format
+//    latitude = toAprsFormat(lat_file);
+//    longitude = toAprsFormat(long_file);
+    latitude = lat_file;
+    longitude = long_file;	  
+    fprintf(stderr, "Lat/Long %f %f\n", latitude, longitude);		  
+    fprintf(stderr, "Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
+    newGpsTime = millis();	  
+   	  
+  } else { // set default
+//    latitude = toAprsFormat(latitude);
+//    longitude = toAprsFormat(longitude);
+      newGpsTime = millis();  
+  }
+	
+  if (strcmp(sim_yes, "yes") == 0) {
+	  sim_mode = TRUE;
+	  fprintf(stderr, "Sim mode is ON\n");
+  }
+  if (strcmp(hab_yes, "yes") == 0) {
+	  hab_mode = TRUE;
+	  fprintf(stderr, "HAB mode is ON\n");
+  }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
@@ -67,9 +115,10 @@ int main(int argc, char * argv[]) {
 
 //  sleep(2);
 
-#ifdef HAB
-  Serial.println("HAB mode enabled - balloon icon and BAT only telem and no low voltage shutdown");
-#endif
+//#ifdef HAB
+  if (hab_mode)	
+  	fprintf(stderr, "HAB mode enabled - in APRS balloon icon and no battery saver or low voltage shutdown\n");
+//#endif
 	
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
 //  pclose(rpitx_restart);
@@ -139,44 +188,16 @@ int main(int argc, char * argv[]) {
   fclose(telem_file);
   printf("Opened telem file\n");
 	
-	
-  // Open configuration file with callsign and reset count	
-  FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
-  if (config_file == NULL) {
-    printf("Creating config file.");
-    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "w");
-    fprintf(config_file, "%s %d", " ", 100);
-    fclose(config_file);
-    config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
-  }
 
-//  char * cfg_buf[100];
-
-  fscanf(config_file, "%s %d %f %f %s", call, & reset_count, & lat_file, & long_file, sim_yes);
-  fclose(config_file);
-  printf("Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s\n", call, reset_count, lat_file, long_file, sim_yes);
-  reset_count = (reset_count + 1) % 0xffff;
-
-  if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
-    printf("Valid latitude and longitude in config file\n");
-// convert to APRS DDMM.MM format
-//    latitude = toAprsFormat(lat_file);
-//    longitude = toAprsFormat(long_file);
-    latitude = lat_file;
-    longitude = long_file;	  
-    printf("Lat/Long %f %f\n", latitude, longitude);		  
-    printf("Lat/Long in APRS DDMM.MM format: %07.2f/%08.2f\n", toAprsFormat(latitude), toAprsFormat(longitude));
-    newGpsTime = millis();	  
-   	  
-  } else { // set default
-//    latitude = toAprsFormat(latitude);
-//    longitude = toAprsFormat(longitude);
-      newGpsTime = millis();  
-  }
-	
-  if (strcmp(sim_yes, "yes") == 0)
-	  sim_mode = TRUE;
-
+  battery_saver_mode = battery_saver_check();
+/*
+  if (battery_saver_mode == ON)	
+  	fprintf(stderr, "\nBattery_saver_mode is ON\n\n");
+  else
+	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
+*/	
+  fflush(stderr);
+  
   if (mode == AFSK)
   {
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -298,7 +319,7 @@ int main(int argc, char * argv[]) {
   }	
 */
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f %s", call, reset_count, lat_file, long_file, sim_yes);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
@@ -407,7 +428,7 @@ int main(int argc, char * argv[]) {
 
     sim_mode = TRUE;
 	    
-    printf("Simulated telemetry mode!\n");
+    fprintf(stderr, "Simulated telemetry mode!\n");
 
     srand((unsigned int)time(0));
 
@@ -524,7 +545,7 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
-  if (!sim_mode)
+//  if (!sim_mode)  // always read sensors, even in sim mode
   {
     strcpy(pythonStr, pythonCmd);
     strcat(pythonStr, busStr);
@@ -582,7 +603,42 @@ int main(int argc, char * argv[]) {
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     fflush(stdout);
     loopTime = millis();
-	  	  
+
+   {
+      int count1;
+      char * token;
+      fputc('\n', file1);
+      fgets(cmdbuffer, 1000, file1);
+      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
+
+      const char space[2] = " ";
+      token = strtok(cmdbuffer, space);
+
+      for (count1 = 0; count1 < 8; count1++) {
+        if (token != NULL) {
+          voltage[count1] = (float) atof(token);
+          #ifdef DEBUG_LOGGING
+//            printf("voltage: %f ", voltage[count1]);
+          #endif
+          token = strtok(NULL, space);
+          if (token != NULL) {
+            current[count1] = (float) atof(token);
+            if ((current[count1] < 0) && (current[count1] > -0.5))
+              current[count1] *= (-1.0f);
+            #ifdef DEBUG_LOGGING
+//              printf("current: %f\n", current[count1]);
+            #endif
+            token = strtok(NULL, space);
+          }
+        }
+        if (voltage[map[BAT]] == 0.0)
+		batteryVoltage = 4.5;
+	else
+		batteryVoltage = voltage[map[BAT]];
+        batteryCurrent = current[map[BAT]];
+	   
+   }
+	  
     if (sim_mode) { // simulated telemetry 
 
       double time = ((long int)millis() - time_start) / 1000.0;
@@ -650,6 +706,9 @@ int main(int argc, char * argv[]) {
       // end of simulated telemetry
     }
     else {
+// code moved
+
+/*	    
       int count1;
       char * token;
       fputc('\n', file1);
@@ -676,12 +735,18 @@ int main(int argc, char * argv[]) {
             token = strtok(NULL, space);
           }
         }
+        if (voltage[map[BAT]] == 0.0)
+		batteryVoltage = 4.5;
+	else
+		batteryVoltage = voltage[map[BAT]];
+        batteryCurrent = current[map[BAT]];
+*/	      
       }
 	
-      batteryVoltage = voltage[map[BAT]];
-      batteryCurrent = current[map[BAT]];
+//      batteryVoltage = voltage[map[BAT]];
+//      batteryCurrent = current[map[BAT]];
 	    
-      if (batteryVoltage < 3.6) {
+      if (batteryVoltage < 3.7) {
         SafeMode = 1;
         printf("Safe Mode!\n");
       } else
@@ -814,10 +879,22 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 //    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
+// fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
 
-/**/
-#ifndef HAB	  
-    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode) // currentThreshold ensures that this won't happen when running on DC power.
+//#ifndef HAB
+	  
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
+    {
+	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
+	    if (battery_saver_mode == OFF)
+	    	battery_saver(ON);
+    } else if ((battery_saver_mode == ON) && (batteryCurrent < 0) && !sim_mode && !hab_mode)
+    {
+	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
+	    if (battery_saver_mode == ON)
+	    	 battery_saver(OFF);
+    } 
+    if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode && !hab_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
@@ -839,11 +916,19 @@ int main(int argc, char * argv[]) {
       pclose(file6);
       sleep(10);
     }
-#endif
+//#endif
+	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
-    printf("Writing telem_string.txt\n");	  
-    fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	 
-    fclose(fp);	  
+    if (fp != NULL)  {	  
+    	printf("Writing telem_string.txt\n");
+	if (batteryVoltage != 4.5)    
+    		fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	
+	else
+    		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
+		
+    	fclose(fp);	 
+    } else 
+	    printf("Error writing to telem_string.txt\n");
 	    
 /**/
     //  sleep(1);  // Delay 1 second
@@ -992,8 +1077,9 @@ void get_tlm(void) {
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str[] = " && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-
+    char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
+    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready";  
+	  
     if (ax5043) {
       strcpy(str, header_str);
     } else {
@@ -1019,11 +1105,13 @@ void get_tlm(void) {
         if (ax5043)
           sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
         else
-#ifdef HAB
-	sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
-#else
-	sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long with Satellite icon	
-#endif		
+//#ifdef HAB
+	if (hab_mode)	
+		sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
+//#else
+	else
+		sprintf(header_str2b, "=%s%c%c%sShi hi ", header_lat, 0x5c, 0x5c, header_long); // add APRS lat and long with Satellite icon	
+//#endif		
           	           	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
@@ -1032,7 +1120,7 @@ void get_tlm(void) {
       }
 //    }
 	printf("Str: %s \n", str);
-
+   if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
       sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
@@ -1042,18 +1130,23 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
       //        printf("%s",tlm_str);
 
-#ifdef HAB	    
-       if (mode != AFSK)
-#endif	       
+//#ifdef HAB	    
+//       if (mode != AFSK)
+//#endif	
+ //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
          strcat(str, tlm_str);
 
     }
-#ifdef HAB
-    if (mode == AFSK) {
-      sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);
+  } else {  // APRS
+//#ifdef HAB
+//    if ((mode == AFSK) && (hab_mode)) {
+//      sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent); 
+      sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
       strcat(str, tlm_str);
-    }  
-#endif
+//    }  else
+//      strcat(str, tlm_str);	// Is this needed???
+   }  
+//#endif
     // read payload sensor if available
 /*
     char sensor_payload[500];
@@ -1175,7 +1268,11 @@ void get_tlm(void) {
 	    
       strcat(str, footer_str1);
 //      strcat(str, call);
-      strcat(str, footer_str);
+      if (battery_saver_mode == ON)	    
+      	strcat(str, footer_str);  // add extra packet for rpitx transmission
+      else
+      	strcat(str, footer_str2);
+	    
       fprintf(stderr, "String to execute: %s\n", str);
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
@@ -1543,9 +1640,10 @@ void get_tlm_fox() {
       char count_string[10];	
       if ( (fgets(count_string, 10, command_count_file)) != NULL)
 	   groundCommandCount = atoi(count_string); 
+      fclose(command_count_file);	    
     } else
 	    printf("Error opening command_count.txt!\n");
-    fclose(command_count_file);
+    
     printf("Command count: %d\n", groundCommandCount);	  
     
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
@@ -2205,8 +2303,27 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 //     mySerial.println("AT+DMOSETGROUP=0,144.3900,144.3900,0,3,0,0\r");    // can change to 144.39 for standard APRS	  
 //    mySerial.println("AT+DMOSETGROUP=0,145.0000,145.0000,0,3,0,0\r");    // can change to 145 for testing ASPRS	  
 //#else
-     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";	  
-     serialPrintf(uart_fd, uhf_string);	  
+     char uhf_string[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n";
+     char uhf_string1a[] = "AT+DMOSETGROUP=0,";	// changed frequency to verify
+     char comma[] = ",";
+     char uhf_string1b[] = ",0,";	// changed frequency to verify
+     char uhf_string1[] = "AT+DMOSETGROUP=0,435.0000,434.9000,0,";	// changed frequency to verify
+     char uhf_string2[] = ",0,0\r\n";	
+     char sq_string[2];
+     sq_string[0] = '0' + squelch;
+     sq_string[1] = 0;
+	  
+//     serialPrintf(uart_fd, uhf_string);	
+/**/	  
+	serialPrintf(uart_fd, uhf_string1a);	
+	serialPrintf(uart_fd, rx);	
+	serialPrintf(uart_fd, comma);	
+	serialPrintf(uart_fd, tx);	
+	serialPrintf(uart_fd, uhf_string1b);	
+	serialPrintf(uart_fd, sq_string);	
+	serialPrintf(uart_fd, uhf_string2);	
+/**/	  
+	  
 //     mySerial.println("AT+DMOSETGROUP=0,435.1000,434.9900,0,3,0,0\r");   // squelch set to 3
 //#endif	  
    sleep(1);
@@ -2229,4 +2346,53 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
   pinMode(29, INPUT);
 
   serialClose(uart_fd);	
+}
+
+int battery_saver_check() {
+	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
+	if (file == NULL) {
+		fprintf(stderr,"Battery saver mode is OFF!\n");
+		return(OFF);
+	} 
+	fclose(file);
+	fprintf(stderr,"Battery saver mode is ON!\n");
+	return(ON);
+}
+
+void battery_saver(int setting) {
+if (setting == ON) {
+	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == OFF) {
+			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode ON\n");  
+//			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
+//		  	pclose(command);
+			command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return;  
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
+	}  
+  } else if (setting == OFF) {
+	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if (battery_saver_check() == ON) {
+			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
+		  	pclose(command);
+			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+//			command = popen("sudo sed -i ':a;N;$!ba;s/\'$'\n''force_turbo=1//g' /boot/config.txt", "r");
+//		  	pclose(command);
+			command = popen("sudo reboot now", "r");
+		  	pclose(command);
+			sleep(60);
+			return; 
+		} else
+			fprintf(stderr, "Nothing to do for battery_saver\n");
+	}  
+  } else {
+	  fprintf(stderr,"battery_saver function error");
+	  return;
+  }
+  return;
 }

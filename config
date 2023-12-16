@@ -39,19 +39,39 @@ if [ "$1" = "" ]; then
 #		sim="no"
 		echo "Simulated Telemetry is OFF"
 	fi
+	echo
+
+	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
+		echo "Balloon mode is ON"
+	else
+		echo "Balloon mode is OFF"
+	fi
 
 	echo
-	echo "Current command count is:"
+	echo -n "Current command count is: "
 	cat /home/pi/CubeSatSim/command_count.txt
 	echo
 	echo
-	echo "Current beacon transmit mode is:"
-	cat /home/pi/CubeSatSim/command_tx
+#	echo "Current beacon transmit mode is:"
+#	cat /home/pi/CubeSatSim/command_tx
+#	echo
+
+	echo -n "Squelch level is: "
+	echo $6
+	echo
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode is ON"
+	else 
+    		echo "Battery saver mode is OFF"
+	fi
+
 	echo
 	echo -e "Current sim.cfg configuration file:"	
-	echo
+#	echo
 	
-	echo $1 $2 $3 $4 $5
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 	echo
 	
 	echo "To change, include an OPTION"
@@ -68,40 +88,71 @@ if [ "$1" = "-i" ]; then
 elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
 	sudo echo "a" > /home/pi/CubeSatSim/.mode
-	sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode is ON."
+#  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	else 
+    		echo "Battery saver mode os OFF."
+#    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	fi
+	
 	echo "rebooting"
+	sudo systemctl stop rpitx
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
+
 elif [ "$1" = "-m" ]; then
 	echo "changing CubeSatSim to CW mode"
 	sudo echo "m" > /home/pi/CubeSatSim/.mode
-	sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode is ON."
+ # 		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	else 
+    		echo "Battery saver mode is OFF."
+ #   		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	fi
 	echo "rebooting"
+	sudo systemctl stop rpitx
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-f" ]; then
 	echo "changing CubeSatSim to FSK mode"
 	sudo echo "f" > /home/pi/CubeSatSim/.mode
-  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+#  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	echo "rebooting"
+	sudo systemctl stop rpitx
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-b" ]; then
 	echo "changing CubeSatSim to BPSK mode"
 	sudo echo "b" > /home/pi/CubeSatSim/.mode
-  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+#  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	echo "rebooting"
+	sudo systemctl stop rpitx
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-s" ]; then
 	echo "changing CubeSatSim to SSTV mode"
 	sudo echo "s" > /home/pi/CubeSatSim/.mode
-	sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode ON."
+#  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	else 
+    		echo "Battery saver mode is OFF."
+#    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	fi
 	echo "rebooting"
+	sudo systemctl stop rpitx
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
@@ -125,6 +176,10 @@ elif [ "$1" = "-h" ]; then
 	echo "   -C     Clear logs"
 	echo "   -T     Change command state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
+	echo "   -B     Change battery saver mode manually"
+	echo "   -q     Change the Squelch setting for command receiver"
+	echo "   -F     Change the rx and tx frequency"
+	echo "   -H     Chnage the Balloon mode"
 	echo
 	exit
 
@@ -147,7 +202,7 @@ elif [ "$1" = "-t" ]; then
 	
 	echo
 	
-#	echo $1 $2 $3 $4
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 
 	echo "Do you want Simulated Telemetry ON (y/n) "
 	read sim
@@ -161,13 +216,13 @@ elif [ "$1" = "-t" ]; then
 		echo "Simulated Telemetry is OFF"
 	fi
 	
+#	echo
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+#	echo
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-	echo
-	echo $1 $2 $3 $4 $sim
-	echo $1 $2 $3 $4 $sim > /home/pi/CubeSatSim/sim.cfg
-	echo
-	echo "Restarting CubeSatSim with new configuraation file"
+	echo "Restarting CubeSatSim with new configuration file"
 	echo
 
 	sudo systemctl restart cubesatsim
@@ -190,7 +245,7 @@ elif [ "$1" = "-c" ]; then
 	echo $1
 	echo
 	
-#	echo $1 $2 $3 $4 $5
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 
 	echo "Enter callsign in all capitals: "
 	read callsign
@@ -202,17 +257,17 @@ elif [ "$1" = "-c" ]; then
 		norestart=1
 	else
 	
-		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $callsign $2 $3 $4 $5
-		echo $callsign $2 $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
 	fi
 	
 	if [ "$norestart" = "1" ]; then
 		echo 
 	else
 		echo
-		echo "Restarting CubeSatSim with new configuraation file"
+		echo "Restarting CubeSatSim with new configuration file"
 		echo
 		sudo systemctl restart cubesatsim
 	fi
@@ -236,7 +291,7 @@ elif [ "$1" = "-r" ]; then
 	echo $2
 	echo
 	
-#	echo $1 $2 $3 $4 $5
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 
 	echo -e "Enter Reset Count (integer): "
 
@@ -254,17 +309,17 @@ elif [ "$1" = "-r" ]; then
 		norestart=1
 	else
 
-		echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $resets $3 $4 $5
-		echo $1 $resets $3 $4 $5 > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
 	fi	
 
 	if [ "$norestart" = "1" ]; then
 		echo
 	else
 		echo
-		echo "Restarting CubeSatSim with new configuraation file"
+		echo "Restarting CubeSatSim with new configuration file"
 		echo
 		sudo systemctl restart cubesatsim
 	fi
@@ -289,7 +344,7 @@ elif [ "$1" = "-l" ]; then
 	echo $3
 	echo
 	
-#	echo $1 $2 $3 $4 $5
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 
 	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
@@ -330,15 +385,15 @@ elif [ "$1" = "-l" ]; then
 		echo "Keeping value of" $long
 	fi 
 
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-	echo $1 $2 $lat $long $5
-	echo $1 $2 $lat $long $5 > /home/pi/CubeSatSim/sim.cfg
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
 	
 	if [ "$norestart" = "1" ]; then
 		echo 
 	else
 		echo
-		echo "Restarting CubeSatSim with new configuraation file"
+		echo "Restarting CubeSatSim with new configuration file"
 		echo
 		sudo systemctl restart cubesatsim
 	fi
@@ -367,6 +422,7 @@ elif [ "$1" = "-C" ]; then
 	sudo systemctl stop cubesatsim
 	sudo systemctl stop rpitx
 
+	sudo journalctl --rotate
 	sudo journalctl --vacuum-time=1s
 
 	sudo systemctl reboot now
@@ -391,11 +447,13 @@ elif [ "$1" = "-T" ]; then
 		sudo sed -i 's/False/True/g' /home/pi/CubeSatSim/command_tx
 		echo "Command state set to True to enable beacon"
 		echo "rebooting"
+		sudo systemctl stop rpitx
 		sudo reboot now
 	else
 		sudo sed -i 's/True/False/g' /home/pi/CubeSatSim/command_tx
 		echo "Command state set to False to disable beacon"
 		echo "rebooting"
+		sudo systemctl stop rpitx
 		sudo reboot now
 	fi
 
@@ -420,6 +478,194 @@ elif [ "$1" = "-R" ]; then
 	else
 		echo "Commands count not reset"
 	fi
+
+elif [ "$1" = "-B" ]; then
+
+	echo	
+	echo "Manually setting battery saver mode"
+	echo
+	
+	FILE=/home/pi/CubeSatSim/battery_saver
+	if [ -f "$FILE" ]; then
+    		echo "Battery saver mode is ON."
+		mode=1
+ 	else 
+    		echo "Battery saver mode is OFF."
+		mode=0
+	fi
+	
+	echo
+	
+	echo "Do you want Battery saver mode ON (y/n) "
+	read saver
+	echo
+	
+	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
+		echo "Battery saver mode is now ON"
+		touch /home/pi/CubeSatSim/battery_saver
+#		if ["$mode" = "0"] ; then sudo systemctl restart rpitx
+	else
+		echo "Battery saver mode is now OFF"
+		sudo rm /home/pi/CubeSatSim/battery_saver
+#		if ["$mode" = "1"] ; then sudo systemctl restart rpitx
+	fi
+
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
+		echo "rebooting"
+#		sudo systemctl restart cubesatsim
+		sudo reboot now
+	fi
+
+elif [ "$1" = "-q" ]; then
+
+	echo	
+	echo "Editing the Squelch setting in"
+	echo  "the configuration file for CubeSatSim"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo
+	echo "Current value of squelch is"	
+	echo $6
+	echo
+	
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+	echo -e "Enter squelch  (integer 0 - 8): "
+
+	read sq 
+
+	if [ -z $sq ] ; then
+
+		sq="$6"
+		echo "Keeping value of" $lat
+	fi
+
+	if ! [[ $sq =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+
+		echo "Error: not a number!"
+		sq="$6"
+		echo "Keeping value of" $sq
+	fi 
+	
+#	echo
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+#	echo
+	echo $1 $2 $3 $4 $5 $sq $7 $8 $9
+	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuration file"
+	echo
+
+	sudo systemctl restart cubesatsim
+
+elif [ "$1" = "-F" ]; then
+
+	echo	
+	echo "Editing the tx and rx frequency in the"
+	echo  "configuration file for CubeSatSim"	
+	echo
+	echo "Return keeps current value."
+#	echo -e "Current sim.cfg configuration file:"	
+#	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "Current value of tx is"	
+	echo $7
+	echo
+	echo "Current value of rx is"	
+	echo $8
+	echo	
+
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+	echo "Enter tx frequency as 4XX.XXXX: "
+	read tx
+
+	if [ -z $tx ] ; then
+
+		tx="$7"
+		echo "Keeping value of" $tx
+	fi
+
+	echo "Enter rx frequency as 4XX.XXXX: "
+	read rx
+
+	if [ -z $rx ] ; then
+
+		rx="$8"
+		echo "Keeping value of" $rx
+	fi
+#	else
+	
+		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+
+		echo $1 $2 $3 $4 $5 $6 $tx $rx $9
+		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 > /home/pi/CubeSatSim/sim.cfg
+#	fi
+	
+#	if [ "$norestart" = "1" ]; then
+#		echo 
+#	else
+		echo
+		echo "Restarting CubeSatSim with new configuration file"
+		echo
+		sudo systemctl restart cubesatsim
+#	fi
+elif [ "$1" = "-H" ]; then
+
+#	echo	
+	echo "Editing the Balloon mode setting in"
+	echo  "the configuration file for CubeSatSim"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
+		echo "Balloon mode is ON"
+	else
+		echo "Balloon mode is OFF"
+	fi
+	
+	echo
+	
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
+
+	echo "Do you want Balloon mode ON (y/n) "
+	read hab
+	echo
+	
+	if [ "$hab" = "y" ] || [ "$hab" = "yes" ]  ; then
+		hab="yes"
+		echo "Balloon mode is ON"
+	else
+		hab="no"
+		echo "Balloon mode is OFF"
+	fi
+	
+#	echo
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+#	echo
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab > /home/pi/CubeSatSim/sim.cfg
+	echo
+	echo "Restarting CubeSatSim with new configuration file"
+	echo
+
+	sudo systemctl restart cubesatsim
+			
 fi
 
 # sudo systemctl restart cubesatsim

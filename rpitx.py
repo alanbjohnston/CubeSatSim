@@ -9,7 +9,19 @@ from time import sleep
 import sys
 from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
+import serial
 
+def battery_saver_check():
+	try:
+		global txc
+		f = open("/home/pi/CubeSatSim/battery_saver", "r")
+		f.close()
+		txc = False
+		print("battery saver activated")
+	except:
+		print("not activated")
+#		txc = True
+		
 def increment_mode():
 	print("increment mode")
 	powerPin = 16
@@ -20,6 +32,7 @@ def increment_mode():
 #		mode = "f"
 		if (debug_mode == 1):
 			print("Can't open .mode file") # , defaulting to FSK")
+	file.close()
 	print("Mode is: ")
 	print(mode)
 	if (mode == 'a'):
@@ -98,7 +111,7 @@ def increment_mode():
 
 	try:	
 		file = open("/home/pi/CubeSatSim/.mode", "w")
-#		count_string = str(command_count)
+		count_string = str(command_count)
 		file.write(mode)
 		file.close()
 		print(".mode file written")
@@ -109,9 +122,14 @@ def increment_mode():
 		print("sudo reboot -h now")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
-		GPIO.output(powerPin, 0);		
-		system("reboot -h now")
+		GPIO.output(powerPin, 0);
+#		system("reboot -h now")
 #		release = True;
+
+		print("Changing mode now")
+#		system("/home/pi/CubeSatSim/config -" + mode)
+		system("reboot -h now")
+
 		sleep(10);
 	except:
 		print("can't write to .mode file")
@@ -121,7 +139,7 @@ print("CubeSatSim v1.3b rpitx.py starting...")
 
 pd = 21
 ptt = 20
-txc = 7
+txc_pin = 7
 squelch = 6
 green = 16
 
@@ -132,7 +150,7 @@ GPIO.setwarnings(False)
 GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(7, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
 GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
@@ -183,21 +201,25 @@ GPIO.setup(ptt, GPIO.OUT)
 output (ptt, 1)
 
 txc = False
-if GPIO.input(7) == False:
+if GPIO.input(txc_pin) == False:
 	print("TXC is present")
 	txc = True;
 else:
 	print("TXC not present")
+
+# txc = False  # forcing it off
 output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
+
+battery_saver_check()	
 
 # print(txLedOn)
 print(txLed)
 # GPIO.setup(27, GPIO.OUT)
 # GPIO.output(27, 0)
 
-debug_mode = 1
+debug_mode = 0  #no debugging rpitx
 
 if __name__ == "__main__":
 
@@ -249,14 +271,67 @@ if __name__ == "__main__":
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
-		callsign = file.readline().split(" ")[0]
+#		callsign = file.readline().split(" ")[0]
+		config = file.readline().split()		
+		callsign = config[0]
+		if len(config) > 5:
+			sq = config[5]
+		else:	
+			sq = '0'
+		if len(config) > 6:
+#                       tx = config[6]
+                        txf = float(config[6])
+                        print(txf)
+#                        print( "{:.4f}".format(txf))
+                        tx = "{:.4f}".format(txf)
+                        print(tx)
+		else:	
+			tx = '434.9000'			
+		if len(config) > 7:
+#                       rx = config[7]
+                        rxf = float(config[7])
+                        print(rxf)
+#                        print( "{:.4f}".format(rxf))
+                        rx = "{:.4f}".format(rxf)
+                        print(rx)
+		else:	
+			rx = '435.0000'	
+		print(config)
+		print
+#		print(callsign)
+		print(sq)
+		if sq == '8':
+			print("squelch set to 8, no command input!")
+			no_command = True
+		else:
+			no_command = False		
+		print(no_command)
 	except:
 		callsign = "AMSAT"
 		if (debug_mode == 1):
-			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")		
+			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")	
+	file.close()
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	GPIO.setup(txLed, GPIO.OUT)
+
+	print("Programming FM module!\n");	
+	output(pd, 1)
+	output (ptt, 1)
+
+	try:
+		ser = serial.Serial("/dev/ttyAMA0", 9600)
+		print(ser.portstr)
+		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+		for i in range(6):
+#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
+			ser.write(uhf_string.encode())
+			sleep(0.1)
+	except:
+		print("Error in serial write")
+	ser.close()
+
+	output(pd, 0)
 	
 	sleep(10)  # delay so cubesatsim code catches up
 	
@@ -264,23 +339,26 @@ if __name__ == "__main__":
 	
 #	if (mode != 'a') and (command_tx == True):	
 	if (command_tx == True):	
-		output(pd, 1)
-		output (ptt, 0)
-		output(txLed, txLedOn)
-		sleep(0.1)
-		
+#		battery_saver_mode
+		output(txLed, txLedOn)			
 		if (txc):
-			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")	
+			output(pd, 1)
+			output (ptt, 0)
+			sleep(0.1)
+			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+			sleep(0.1)
+			output (ptt, 1)
+			output(pd, 0)
 		else:	
 			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+#				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 			else:
-				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+#				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 		
-		sleep(0.1)
 		output(txLed, txLedOff)
-		output (ptt, 1)
-		output(pd, 0)
+
 		sleep(1)
 	else:
 		print("Don't transmit CW ID since command_tx is False or APRS mode")
@@ -292,7 +370,7 @@ if __name__ == "__main__":
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
 		if (mode == 'a'):
-			output(pd, 1)
+#			output(pd, 1)
 			print("AFSK")
 #			sleep(5)
 ##			try:
@@ -303,6 +381,7 @@ if __name__ == "__main__":
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
+					f.close()
 					if (debug_mode == 1):
 						print("Packet ready!")
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")
@@ -310,23 +389,32 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						output(txLed, txLedOn)
 #						output(pd, 1)
-						output (ptt, 0)
-						sleep(.1)
-				
+#						output (ptt, 0)
+#						sleep(.1)
+#						
+#						battery_saver_check()
 						if (txc):
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")
+							output(pd, 1)
+							output (ptt, 0)
+							sleep(0.2)   # add more time at start
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")							
+							sleep(0.1)
+							output (ptt, 1)
+							output(pd, 0)							
 						else:			
 							if (debug_mode == 1):
-								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 					
 						sleep(0.1)  
-						output (ptt, 1)
+#						output (ptt, 1)
 #						output(pd, 0)
 						output(txLed, txLedOff)
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
+					output(pd, 1)
+					output(ptt, 1)
 					sleep(1)
 					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
@@ -359,7 +447,8 @@ if __name__ == "__main__":
 							system("echo > command_tx False")
 					else:
 						print("No carrier received!")
-						
+					output(pd, 0)
+					
 					if (debug_mode == 1):
 						print("Ready for next packet!")
 						
@@ -379,21 +468,30 @@ if __name__ == "__main__":
 			
 			if (command_tx == True):
 				output(txLed, txLedOn)
-				output (ptt, 0)
-				sleep(0.1)
+#				battery_saver_check()
 
 				if (txc):
+					output (pd, 1)
+					output (ptt, 0)
+					sleep(0.1)
+
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+					sleep(0.1)
+					output (ptt, 1)
+					output (pd, 0)
 				else:
 					if (debug_mode == 1):
-						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 					else:
-						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 
 				output(txLed, txLedOff)
-				output (ptt, 1)
+#				output (ptt, 1)
 			sleep(5)
 			while True:
+				output(pd, 1)
+				output(ptt, 1)
+				sleep(1)
 				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
@@ -424,8 +522,11 @@ if __name__ == "__main__":
 						print("Turning off transmit")	
 						system("echo > command_tx False")
 					sleep(5)	
+				output(pd, 0)
+				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
+					f.close()
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1")
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					
@@ -433,14 +534,15 @@ if __name__ == "__main__":
 						output(txLed, txLedOn)
 						output (ptt, 0)
 						sleep(0.1)
+#						battery_saver_check()
 
 						if (txc):
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
 						else:
 							if (debug_mode == 1):
-								system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
+								system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+								system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 					
 						sleep(0.1)
 						output(txLed, txLedOff)
@@ -459,7 +561,8 @@ if __name__ == "__main__":
 #				camera = PiCamera()
 				print("Testing for camera")
 				system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
-				f = open("/home/pi/CubeSatSim/camera_out.jpg") 
+				f = open("/home/pi/CubeSatSim/camera_out.jpg")
+				f.close()
 				print("Camera present")
 				camera_present = 1
 #				camera.close()
@@ -470,8 +573,8 @@ if __name__ == "__main__":
 
 #				while 1:
 			output(txLed, txLedOff)
-			output (ptt, 1)
-			output(pd, 0)
+#			output (ptt, 1)
+#			output(pd, 0)
 			if (camera_present == 1):
 				try:
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
@@ -481,20 +584,22 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						output(pd, 1)
-						output (ptt, 0)
+#						battery_saver_check()
 
 						if (txc):
+							output(pd, 1)
+							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+							output (ptt, 1)
+							output(pd, 0)
 						else:	
 							if (debug_mode == 1):
-								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 
 						output(txLed, txLedOff)
-						output (ptt, 1)
-						output(pd, 0)
+
 	#					sleep(1)
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
@@ -529,6 +634,7 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
 					output(pd, 1)
+					output(ptt, 1)
 					sleep(1)
 					if (no_command == False and GPIO.input(squelch) == False):
 						print("carrier received!")
@@ -564,21 +670,24 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						output(pd, 1)
-						output (ptt, 0)
+#						battery_saver_check()
 
 						if (txc):
+							output(pd, 1)
+							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
+							output(ptt, 1)
+							output (pd, 0)
 						else:	
 							if (debug_mode == 1):
-								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 
 						output(txLed, txLedOff)
-						output (ptt, 1)
+#						output (ptt, 1)
 					
-					output(pd, 0)
+#					output(pd, 0)
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1") 
 					sleep(1)
 			else:
@@ -590,20 +699,24 @@ if __name__ == "__main__":
 
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
-						output(pd, 1)
-						output (ptt, 0)
+
+#						battery_saver_check()
 
 						if (txc):
+							output(pd, 1)
+							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+							output(ptt, 1)
+							output (pd, 0)
 						else:	
 							if (debug_mode == 1):
-								system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3")
+								system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+								system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 
 						output(txLed, txLedOff)
-						output (ptt, 1)
-						output(pd, 0)
+#						output (ptt, 1)
+#						output(pd, 0)
 					sleep(1)
 				except:
 					print("image 1 did not load - copy from CubeSatSim/sstv directory")
@@ -614,6 +727,7 @@ if __name__ == "__main__":
 					while 1:
 
 						output(pd, 1)
+						output(ptt, 1)
 						sleep(1)
 						if (no_command == False and GPIO.input(squelch) == False):
 							print("carrier received!")
@@ -648,41 +762,47 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							print ("Sending SSTV image")
 							output(txLed, txLedOn)
-							output(pd, 1)
-							output (ptt, 0)
+#							battery_saver_check()
 
 							if (txc):
+								output(pd, 1)
+								output (ptt, 0)
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+								output(ptt, 1)
+								output (pd, 0)
 							else:
 								if (debug_mode == 1):
-									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3") 
+									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3") 
 								else:
-									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
+									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 
 							output(txLed, txLedOff)
-							output (ptt, 1)
-							output(pd, 0)
+#							output (ptt, 1)
+#							output(pd, 0)
 						sleep(5)
 				except:	
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 					if (txc == False):
 						if (command_tx == True):
-							system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434.9e3 &")
+							system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					while 1:
 						if (command_tx == True):
 
 							output(txLed, txLedOn)
-							output(pd, 1)
-							output (ptt, 0)
+#							battery_saver_check()
 						
 							if (txc):
+								output(pd, 1)
+								output (ptt, 0)		
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv.wav")
+								output(ptt, 1)
+								output (pd, 0)		
 							else:
 								sleep(60)
 							
 							output(txLed, txLedOff)
-							output (ptt, 1)
-							output(pd, 0)
+#							output (ptt, 1)
+#							output(pd, 0)
 						sleep(1)
 		elif (mode == 'b'):
 			print("BPSK")
@@ -690,7 +810,8 @@ if __name__ == "__main__":
 			output(pd, 1)
 			output(ptt, 1)
 			if (command_tx == True):
-				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
+#				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
+				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f " + tx + "e6 -t float &")
 			print("Turning LED on/off and listening for carrier")
 			while 1:
 				output(txLed, txLedOff)
@@ -699,6 +820,9 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
+				output(pd, 1)
+				output(ptt, 1)
+				sleep(1)
 				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
@@ -722,13 +846,15 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print("Turning on transmit")
 						system("echo > command_tx True")
-						system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
+						system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f " + tx + "e6 -t float &")
 					else:
 						print("Turning off transmit") # and rebooting")
 						system("echo > command_tx False")
 						system("sudo systemctl restart rpitx")
 #						system("sudo reboot now")
 						sleep(60)
+				output(pd, 0)
+				
 				if (command_tx == True):		
 					output(txLed, txLedOn)
 				sleep(4.0)
@@ -738,7 +864,7 @@ if __name__ == "__main__":
 			output(pd, 1)
 			output(ptt, 1)
 			if (command_tx == True):
-				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
+				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 &")
 			print("Turning LED on/off and listening for carrier")
 			while 1:
 				output(txLed, txLedOff)
@@ -747,6 +873,9 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
+				output(pd, 1)
+				output(ptt, 1)
+				sleep(1)
 				if (no_command == False and GPIO.input(squelch) == False):
 					print("carrier received!")
 					# command_tx = not command_tx
@@ -770,7 +899,7 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print("Turning on transmit")
 						system("echo > command_tx True")
-						system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 &")
+						system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 &")
 					else:
 						print("Turning of transmit and rebooting")
 						system("echo > command_tx False")
