@@ -266,7 +266,7 @@ void print_string(char *string)
 
 void start_payload() {
 
-#ifdef APRS_VHF	  
+//#ifdef APRS_VHF	  
 // Serial2.setRX(9);	
 // Serial2.setRX(9);		
 //   Serial2.setRX(1);
@@ -281,7 +281,8 @@ void start_payload() {
    delay(100);
    Serial1.setTX(0);
    delay(10);
-*/	
+*/
+/*
    Serial1.begin(115200); // serial to Pi
 	
    Serial.println("Starting Serial1 for payload");
@@ -289,13 +290,18 @@ void start_payload() {
    Serial2.begin(115200);  // serial from GPS	
 	
    Serial.println("Starting Serial2 for GPS");	
-#else	
+*/	
+//#else	
    Serial1.setRX(1);
    delay(100);
    Serial1.setTX(0);
    delay(100);		
-  Serial1.begin(115200);  // Pi UART faster speed
-#endif	
+   Serial1.begin(115200);  // Pi UART faster speed
+
+   Serial2.begin(9600);  // serial from GPS - some GPS modules need 115200	
+	
+   Serial.println("Starting Serial2 for GPS");		
+//#endif	
 
   Serial.println("Starting payload!");
   
