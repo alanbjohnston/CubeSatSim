@@ -179,7 +179,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -B     Change battery saver mode manually"
 	echo "   -q     Change the Squelch setting for command receiver"
 	echo "   -F     Change the rx and tx frequency"
-	echo "   -H     Chnage the HAB mode"
+	echo "   -H     Chnage the Balloon mode"
 	echo
 	exit
 
@@ -624,7 +624,7 @@ elif [ "$1" = "-F" ]; then
 #	fi
 elif [ "$1" = "-H" ]; then
 
-	echo	
+#	echo	
 	echo "Editing the Balloon mode setting in"
 	echo  "the configuration file for CubeSatSim"	
 	echo
