@@ -65,7 +65,7 @@
 TinyGPSPlus gps;
 
 unsigned long micros3;
-bool show_gps = false;
+bool show_gps = true;  // set to false to not see all GPS messages
 volatile int skip = 0;
 
 //WiFiServer server(port);
