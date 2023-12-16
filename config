@@ -42,9 +42,9 @@ if [ "$1" = "" ]; then
 	echo
 
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
-		echo "HAB mode is ON"
+		echo "Balloon mode is ON"
 	else
-		echo "HAB mode is OFF"
+		echo "Balloon mode is OFF"
 	fi
 
 	echo
@@ -625,7 +625,7 @@ elif [ "$1" = "-F" ]; then
 elif [ "$1" = "-H" ]; then
 
 	echo	
-	echo "Editing the High Altitude Balloon (HAB) setting in"
+	echo "Editing the Balloon mode setting in"
 	echo  "the configuration file for CubeSatSim"	
 	echo
 	
@@ -634,25 +634,25 @@ elif [ "$1" = "-H" ]; then
 	set -- $value
 
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
-		echo "HAB mode is ON"
+		echo "Balloon mode is ON"
 	else
-		echo "HAB mode is OFF"
+		echo "Balloon mode is OFF"
 	fi
 	
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9
 
-	echo "Do you want HAB mode ON (y/n) "
+	echo "Do you want Balloon mode ON (y/n) "
 	read hab
 	echo
 	
 	if [ "$hab" = "y" ] || [ "$hab" = "yes" ]  ; then
 		hab="yes"
-		echo "HAB mode is ON"
+		echo "Balloon mode is ON"
 	else
 		hab="no"
-		echo "HAB mode is OFF"
+		echo "Balloon mode is OFF"
 	fi
 	
 #	echo
