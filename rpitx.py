@@ -295,7 +295,7 @@ if __name__ == "__main__":
                         rx = "{:.4f}".format(rxf)
                         print(rx)
 		else:	
-			rx = '436.0000'	
+			rx = '435.0000'	
 		print(config)
 		print
 #		print(callsign)
