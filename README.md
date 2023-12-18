@@ -33,7 +33,7 @@ The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or
 
 ## Disk Image Option Steps
 
-See the Wiki Software Install page for details: https://github.com/alanbjohnston/CubeSatSim/wiki/V1.3.2-2.-Software-Install.
+See the Wiki Software Install page for details: [https://github.com/alanbjohnston/CubeSatSim/wiki/V1.3.2-2.-Software-Install](https://github.com/alanbjohnston/CubeSatSim/wiki/V1.3.2-2.-Software-Install#disk-image-option-steps).
 
 ## Installation Script Option Steps
 
