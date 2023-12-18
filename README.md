@@ -2,11 +2,14 @@
 
 This is the beta release for the new CubeSatSim hardware.  
 
-### The hardware files are here: https://CubeSatSim.org/hardware-beta 
+### The hardware files are here: 
+https://CubeSatSim.org/hardware-beta 
 
-### The wiki instructions are here: https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.  
+### The wiki instructions are here: 
+https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.  
 
-### The Bill of Materials (BOM) is here: https://CubeSatSim.org/bom-beta.
+### The Bill of Materials (BOM) is here: 
+https://CubeSatSim.org/bom-beta.
 
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
