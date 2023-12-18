@@ -241,7 +241,7 @@ if [ -z "$4" ] ; then n4="0" ; changed=1 ; else n4=$4 ; fi # lon
 if [ -z "$5" ] ; then n5="no" ; changed=1 ; else n5=$5 ; fi # sim mode
 if [ -z "$6" ] ; then n6="3" ; changed=1 ; else n6=$6 ; fi # squelch
 if [ -z "$7" ] ; then n7="434.9000" ; changed=1 ; else n7=$7 ; fi # transmit frequency
-if [ -z "$8" ] ; then n8="436.0000" ; changed=1 ; else n8=$8 ; fi # receive frequency
+if [ -z "$8" ] ; then n8="435.0000" ; changed=1 ; else n8=$8 ; fi # receive frequency
 if [ -z "$9" ] ; then n9="no" ; changed=1 ; else n9=$9 ; fi # hab mode
 
 if [ $changed -eq 1 ]; then
