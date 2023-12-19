@@ -1,3 +1,5 @@
+<img src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-battery-b1.3.2b_top.png">
+
 Here is information about the Beta version of the CubeSatSim V2 Boards, version beta v1.3.2
 
 There are 3 boards: STEM Payload, Solar (was Main in v1), and Battery
