@@ -1,4 +1,4 @@
-<img height=400 width=400 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-battery-b1.3.2b_top.png"><img height=400 width=400 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-STEM-b1.3.2b_top.png"><img height=400 width=400 src=" https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-solar-b1.3.2._top.png">
+<img height=300 width=300 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-battery-b1.3.2b_top.png"><img height=300 width=300 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-STEM-b1.3.2b_top.png"><img height=300 width=300 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-solar-b1.3.2._top.png">
 
 Here is information about the Beta version of the CubeSatSim V2 Boards, version beta v1.3.2
 
