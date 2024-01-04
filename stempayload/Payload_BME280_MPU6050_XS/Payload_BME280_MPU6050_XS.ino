@@ -206,16 +206,16 @@ void loop() {
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
  
-    Serial1.print(" XS ");
+    Serial1.print(" GPS 0 0 0 AN ");
     Serial1.print(Temp);   
     Serial1.print(" ");
-    Serial1.println(Sensor2);              
-    Serial1.println(sensor_end_flag);
+//    Serial1.println(Sensor2);              
+//    Serial1.println(sensor_end_flag);
 
-    Serial.print(" XS ");
+    Serial.print(" GPS 0 0 0 AN ");
     Serial.print(Temp);   
-    Serial.print(" ");
-    Serial.println(Sensor2);     
+//    Serial.print(" ");
+//    Serial.println(Sensor2);     
      
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
@@ -422,6 +422,13 @@ void led_set(int ledPin, bool state)
 #if defined __AVR_ATmega32U4__
   digitalWrite(ledPin, state);   
 #endif  
+
+#if defined ARDUINO_ARCH_RP2040 
+  if (ledPin == greenLED)
+    digitalWrite(19, state);
+  else if (ledPin == blueLED)
+    digitalWrite(18, state);  
+#endif	
 }
 
 int read_analog()
@@ -432,6 +439,9 @@ int read_analog()
 #endif
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
     sensorValue = analogRead(PA7);
+#endif
+#if defined ARDUINO_ARCH_RP2040 
+    sensorValue = analogRead(28);  
 #endif
     return(sensorValue); 
 }
@@ -445,18 +455,11 @@ bool check_for_wifi() {
 	
 #endif
 	
-//     stdio_init_all();
-
-//   adc_init();
-//   adc_gpio_init(29);
   pinMode(29, INPUT);	
-//   adc_select_input(3);
    const float conversion_factor = 3.3f / (1 << 12);
-//   uint16_t result = adc_read();
    uint16_t result = analogRead(29);
 //   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
 
-//  if (result < 0x100) {	
   if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
