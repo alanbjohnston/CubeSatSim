@@ -138,10 +138,21 @@ void loop() {
         Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
         Serial1.print(" ");
         Serial1.print(bme.readHumidity());
+
+        Serial.print("OK BME280 ");
+        Serial.print(bme.readTemperature());
+        Serial.print(" ");
+        Serial.print(bme.readPressure() / 100.0F);
+        Serial.print(" ");
+        Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial.print(" ");
+        Serial.print(bme.readHumidity());
       } else
       {
         Serial1.print(sensor_start_flag);
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
+
+        Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
       mpu6050.update();
  
@@ -158,7 +169,21 @@ void loop() {
     Serial1.print(mpu6050.getAccY());   
     Serial1.print(" ");
     Serial1.print(mpu6050.getAccZ());   
+
+      Serial.print(" MPU6050 ");
+      Serial.print(mpu6050.getGyroX());
+      Serial.print(" ");
+      Serial.print(mpu6050.getGyroY());
+      Serial.print(" ");
+      Serial.print(mpu6050.getGyroZ());
  
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccX());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccY());   
+    Serial.print(" ");
+    Serial.print(mpu6050.getAccZ());  
+     
     sensorValue = read_analog();
      
 //  Serial.println(sensorValue);  
@@ -169,6 +194,11 @@ void loop() {
     Serial1.print(" ");
     Serial1.println(Sensor2);              
     Serial1.println(sensor_end_flag);
+
+    Serial.print(" XS ");
+    Serial.print(Temp);   
+    Serial.print(" ");
+    Serial.println(Sensor2);     
      
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
