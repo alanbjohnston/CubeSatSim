@@ -64,7 +64,7 @@ void setup() {
  
   Serial.println("Starting!");
 
-#ifdefined ARDUINO_ARCH_RP2040
+#ifdef ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
   pinMode(0, INPUT);
@@ -118,7 +118,7 @@ void setup() {
   }
   else
   {
-#ifdefined ARDUINO_ARCH_RP2040	  
+#ifdef ARDUINO_ARCH_RP2040	  
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);
 #endif	  
