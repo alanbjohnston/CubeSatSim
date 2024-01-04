@@ -153,7 +153,7 @@ void loop() {
 	
   if (Serial1.available() > 0) {
     char result = Serial1.read();
-//  Serial1.println(result);
+    Serial.println(result);
 //  Serial1.println("OK");
   }
   {
