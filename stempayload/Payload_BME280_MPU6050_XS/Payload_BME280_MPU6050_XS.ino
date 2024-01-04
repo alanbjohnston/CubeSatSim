@@ -18,8 +18,8 @@ int greenLED = 9;
 int blueLED = 8;
 int Sensor1 = 0;
 float Sensor2 = 0;
-void eeprom_word_write(int addr, int val);
-short eeprom_word_read(int addr);
+void prom_word_write(int addr, int val);
+short prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 bool check_for_wifi();
@@ -57,14 +57,14 @@ void setup() {
 
   Serial.begin(115200); // Serial Monitor for testing
  
-  Serial1.begin(115200);  // Pi UART faster speed
-//  Serial1.begin(9600);  // Pi UART faster speed
+  Serial1.begin(115200);  // Pi UART faster spd
+//  Serial1.begin(9600);  // Pi UART faster spd
 
   delay(10000);		
  
   Serial.println("Starting!");
 
-#ifndef ARDUINO_ARCH_RP2040
+#ifdefined ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
   pinMode(0, INPUT);
@@ -86,9 +86,9 @@ void setup() {
   delay(250);
   blink(500);
   delay(250);
-  led_set(greenLED, HIGH);
+  led_set(grnLED, HIGH);
   delay(250);
-  led_set(greenLED, LOW);
+  led_set(grnLED, LOW);
   led_set(blueLED, HIGH);
   delay(250);
   led_set(blueLED, LOW);
@@ -101,7 +101,7 @@ void setup() {
   }
  
   mpu6050.begin();
- 
+	
   if (eeprom_word_read(0) == 0xA07)
   {
     Serial.println("Reading gyro offsets from EEPROM\n");
@@ -118,8 +118,12 @@ void setup() {
   }
   else
   {
+#ifdefined ARDUINO_ARCH_RP2040	  
+    Serial.println("Calculating gyro offsets\n");
+    mpu6050.calcGyroOffsets(true);
+#endif	  
+#ifndef ARDUINO_ARCH_RP2040 
     Serial.println("Calculating gyro offsets and storing in EEPROM\n");
- 
     mpu6050.calcGyroOffsets(true);
  
     eeprom_word_write(0, 0xA07);
@@ -131,6 +135,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
+#endif	  
   }
 /**/      
 }
