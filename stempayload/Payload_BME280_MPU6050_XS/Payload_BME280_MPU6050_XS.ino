@@ -86,9 +86,9 @@ void setup() {
   delay(250);
   blink(500);
   delay(250);
-  led_set(grnLED, HIGH);
+  led_set(greenLED, HIGH);
   delay(250);
-  led_set(grnLED, LOW);
+  led_set(greenLED, LOW);
   led_set(blueLED, HIGH);
   delay(250);
   led_set(blueLED, LOW);
