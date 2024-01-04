@@ -262,10 +262,12 @@ void loop() {
       setup();
     }
   else if (result == 'C') {
+#ifndef	ARDUINO_ARCH_RP2040  
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
       first_time = true;
       setup();
+#endif	  
     }  
    
  if ((result == '?') || first_time == true)
