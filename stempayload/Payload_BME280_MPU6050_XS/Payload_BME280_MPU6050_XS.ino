@@ -152,9 +152,10 @@ void loop() {
   blink(50);
 	
   if (Serial1.available() > 0) {
-   String result;
-   result = Serial1.readString();
-    Serial.println(result);
+    while (Serial1.available() > 0) {	  
+      char result = Serial1.read();
+      Serial.print(result);
+    }
 //  Serial1.println("OK");
   }
   {
