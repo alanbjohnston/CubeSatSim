@@ -152,11 +152,12 @@ void loop() {
   blink(50);
 	
   if (Serial1.available() > 0) {
+    Serial.print("Received serial data!!!\n");	  
     while (Serial1.available() > 0) {	  
       char result = Serial1.read();
       Serial.print(result);
     }
-//  Serial1.println("OK");
+    Serial.println(" ");
   }
   {
 //    if (result == '?')
