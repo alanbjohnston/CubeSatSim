@@ -23,6 +23,12 @@ short eeprom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 
+#if defined ARDUINO_ARCH_RP2040
+float T2 = 26.3; // Temperature data point 1
+float R2 = 167; // Reading data point 1
+float T1 = 2; // Temperature data point 2
+float R1 = 179; // Reading data point 2
+#endif
 #if defined __AVR_ATmega32U4__ 
 float T2 = 26.3; // Temperature data point 1
 float R2 = 167; // Reading data point 1
