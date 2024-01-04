@@ -45,6 +45,9 @@ float R1 = 695; // Reading data point 2
 int sensorValue;
 float Temp;
 float rest;
+
+char sensor_end_flag[] = "_END_FLAG_";
+char sensor_start_flag[] = "_START_FLAG_";
   
 void setup() {
 
@@ -125,6 +128,7 @@ void loop() {
 //    if (result == '?')
     {
       if (bmePresent) {
+        Serial1.print(sensor_start_flag);
         Serial1.print("OK BME280 ");
         Serial1.print(bme.readTemperature());
         Serial1.print(" ");
@@ -135,6 +139,7 @@ void loop() {
         Serial1.print(bme.readHumidity());
       } else
       {
+        Serial1.print(sensor_start_flag);
         Serial1.print("OK BME280 0.0 0.0 0.0 0.0");
       }
       mpu6050.update();
@@ -162,6 +167,7 @@ void loop() {
     Serial1.print(Temp);   
     Serial1.print(" ");
     Serial1.println(Sensor2);              
+    Serial1.println(sensor_end_flag);
      
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
