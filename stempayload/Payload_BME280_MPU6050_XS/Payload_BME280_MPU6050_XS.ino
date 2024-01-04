@@ -224,7 +224,7 @@ void loop() {
     Serial1.println(Temp);   
 //    Serial1.print(" ");
 //    Serial1.println(Sensor2);              
-//    Serial1.println(sensor_end_flag);
+    Serial1.println(sensor_end_flag);
 
     Serial.print(" GPS 0 0 0 AN ");
     Serial.println(Temp);   
