@@ -48,6 +48,10 @@ void setup() {
 //  Serial1.begin(9600);  // Pi UART faster speed
  
   Serial.println("Starting!");
+
+#ifndef ARDUINO_ARCH_RP2040
+  Serial.println("This code is for the Raspberry Pi Pico hardware.");
+#endif	
  
   blink_setup();
  
