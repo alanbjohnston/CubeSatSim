@@ -310,7 +310,7 @@ void loop() {
         led_set(blueLED, LOW);
     }
   }  
-  delay(100);
+  delay(1000);
 }
  
 void eeprom_word_write(int addr, int val)
