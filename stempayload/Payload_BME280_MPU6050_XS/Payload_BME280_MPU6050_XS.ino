@@ -152,7 +152,8 @@ void loop() {
   blink(50);
 	
   if (Serial1.available() > 0) {
-    Serial.print("Received serial data!!!\n");	  
+    Serial.print("Received serial data!!!\n");	 
+    delay(10);	  
     while (Serial1.available() > 0) {	  
       char result = Serial1.read();
       Serial.print(result);
