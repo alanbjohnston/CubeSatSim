@@ -335,9 +335,10 @@ void loop() {
     else
         led_set(blueLED, LOW);
     }
+*/	
   }  
 
-*/	
+
   delay(1000);
 }
  
