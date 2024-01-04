@@ -134,9 +134,10 @@ void setup() {
 }
  
 void loop() {
- 
+
+  blink(50);
+	
   if (Serial1.available() > 0) {
-    blink(50);
     char result = Serial1.read();
 //  Serial1.println(result);
 //  Serial1.println("OK");
