@@ -55,10 +55,12 @@ char sensor_start_flag[] = "_START_FLAG_";
   
 void setup() {
 
-  Serial.begin(9600); // Serial Monitor for testing
+  Serial.begin(115200); // Serial Monitor for testing
  
   Serial1.begin(115200);  // Pi UART faster speed
 //  Serial1.begin(9600);  // Pi UART faster speed
+
+  delay(10000);		
  
   Serial.println("Starting!");
 
@@ -207,13 +209,13 @@ void loop() {
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
  
     Serial1.print(" GPS 0 0 0 AN ");
-    Serial1.print(Temp);   
-    Serial1.print(" ");
+    Serial1.println(Temp);   
+//    Serial1.print(" ");
 //    Serial1.println(Sensor2);              
 //    Serial1.println(sensor_end_flag);
 
     Serial.print(" GPS 0 0 0 AN ");
-    Serial.print(Temp);   
+    Serial.println(Temp);   
 //    Serial.print(" ");
 //    Serial.println(Sensor2);     
      
