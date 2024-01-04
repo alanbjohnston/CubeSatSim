@@ -22,6 +22,9 @@ void eeprom_word_write(int addr, int val);
 short eeprom_word_read(int addr);
 int first_time = true;
 int first_read = true;
+bool check_for_wifi();
+bool wifi = false;
+#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 #if defined ARDUINO_ARCH_RP2040
 float T2 = 26.3; // Temperature data point 1
@@ -60,6 +63,18 @@ void setup() {
 
 #ifndef ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
+
+  pinMode(0, INPUT);
+  pinMode(1, INPUT);
+	
+  // set all Pico GPIO connected pins to input	
+  for (int i = 6; i < 22; i++) { 
+      pinMode(i, INPUT);	  
+  }
+  pinMode(26, INPUT);	
+  pinMode(27, INPUT);	
+  pinMode(28, INPUT);	
+ 
 #endif	
  
   blink_setup();
@@ -339,6 +354,20 @@ void blink_setup()
   pinMode(greenLED, OUTPUT);
   pinMode(blueLED,OUTPUT);
 #endif
+
+#if defined ARDUINO_ARCH_RP2040
+   if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else  {
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+     pinMode(led_builtin_pin, OUTPUT);		  
+  }
+#endif
+
 }
  
 void blink(int length)
@@ -351,8 +380,13 @@ void blink(int length)
   digitalWrite(RXLED, LOW);   // set the RX LED ON
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
- 
-  delay(length);              // wait for a lenth of time
+
+#if defined ARDUINO_ARCH_RP2040
+   if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
+#endif  
  
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
   digitalWrite(PC13, HIGH);    // turn the LED off by making the voltage LOW
@@ -362,6 +396,16 @@ void blink(int length)
   digitalWrite(RXLED, HIGH);    // set the RX LED OFF
   TXLED0; //TX LED macro to turn LED ON
 #endif  
+
+#if defined ARDUINO_ARCH_RP2040 
+   if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+ 
+//  delay(length);              // wait for a lenth of time
+#endif   
+
 }
  
 void led_set(int ledPin, bool state)
@@ -389,3 +433,35 @@ int read_analog()
 #endif
     return(sensorValue); 
 }
+
+bool check_for_wifi() {
+	
+#ifndef PICO_W
+	
+  Serial.println("WiFi disabled in software");
+  return(false);  // skip check if not Pico W board or compilation will fail
+	
+#endif
+	
+//     stdio_init_all();
+
+//   adc_init();
+//   adc_gpio_init(29);
+  pinMode(29, INPUT);	
+//   adc_select_input(3);
+   const float conversion_factor = 3.3f / (1 << 12);
+//   uint16_t result = adc_read();
+   uint16_t result = analogRead(29);
+//   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
+
+//  if (result < 0x100) {	
+  if (result < 0x10) {
+    Serial.println("\nPico W detected!\n");
+    return(true);
+  }
+  else {
+     Serial.println("\nPico detected!\n");
+     return(false);  
+  }
+}
+
