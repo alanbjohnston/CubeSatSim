@@ -254,22 +254,22 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-   
-  if (result == 'R') {
+#ifndef	ARDUINO_ARCH_RP2040     
+  if (result == 'R') {	  
       Serial1.println("OK");
       delay(100);
       first_read = true;
       setup();
     }
   else if (result == 'C') {
-#ifndef	ARDUINO_ARCH_RP2040  
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
       first_time = true;
       setup();
-#endif	  
     }  
-   
+#endif	  
+	  
+/*   
  if ((result == '?') || first_time == true)
     {
       first_time = false;
@@ -336,6 +336,8 @@ void loop() {
         led_set(blueLED, LOW);
     }
   }  
+
+*/	
   delay(1000);
 }
  
