@@ -124,7 +124,8 @@ void loop() {
     char result = Serial1.read();
 //  Serial1.println(result);
 //  Serial1.println("OK");
- 
+  }
+  {
 //    if (result == '?')
     {
       if (bmePresent) {
