@@ -378,7 +378,10 @@ void blink_setup()
   }  else  {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-     pinMode(led_builtin_pin, OUTPUT);		  
+     pinMode(led_builtin_pin, OUTPUT);
+
+     pinMode(18, OUTPUT);
+     pinMode(19, OUTPUT);	   
   }
 #endif
 
