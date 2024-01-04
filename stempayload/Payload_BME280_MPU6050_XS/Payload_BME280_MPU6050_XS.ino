@@ -55,6 +55,13 @@ char sensor_start_flag[] = "_START_FLAG_";
   
 void setup() {
 
+#ifdef ARDUINO_ARCH_RP2040	
+   Serial1.setRX(1);
+   delay(100);
+   Serial1.setTX(0);
+   delay(100);	
+#endif
+	
   Serial.begin(115200); // Serial Monitor for testing
  
   Serial1.begin(115200);  // Pi UART faster spd
