@@ -611,6 +611,8 @@ int main(int argc, char * argv[]) {
       fgets(cmdbuffer, 1000, file1);
       fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
 
+      serialPuts(uart_fd, cmdbuffer);   // write INA data to Pico over serial
+
       const char space[2] = " ";
       token = strtok(cmdbuffer, space);
 
