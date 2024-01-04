@@ -152,7 +152,8 @@ void loop() {
   blink(50);
 	
   if (Serial1.available() > 0) {
-    char result = Serial1.read();
+   string result;
+   result = Serial1.readString();
     Serial.println(result);
 //  Serial1.println("OK");
   }
