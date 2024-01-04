@@ -24,6 +24,7 @@ int first_time = true;
 int first_read = true;
 bool check_for_wifi();
 bool wifi = false;
+int led_builtin_pin;
 #define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 #if defined ARDUINO_ARCH_RP2040
