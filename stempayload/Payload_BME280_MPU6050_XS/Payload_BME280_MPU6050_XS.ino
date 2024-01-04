@@ -74,8 +74,8 @@ void setup() {
 #ifdef ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
-  pinMode(0, INPUT);
-  pinMode(1, INPUT);
+  // pinMode(0, INPUT);
+  // pinMode(1, INPUT);
 	
   // set all Pico GPIO connected pins to input	
   for (int i = 6; i < 22; i++) { 
