@@ -438,7 +438,7 @@ void led_set(int ledPin, bool state)
   digitalWrite(ledPin, state);   
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040 
+#ifdef ARDUINO_ARCH_RP2040 
   if (ledPin == greenLED)
     digitalWrite(19, state);
   else if (ledPin == blueLED)
