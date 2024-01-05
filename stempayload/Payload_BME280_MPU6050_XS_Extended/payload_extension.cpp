@@ -18,12 +18,16 @@ float magRawAbs = 0;
 // put your setup code here
 void payload_setup() {
 
+  Serial.println("Starting Si1145 sensor!");
+
   if (! uv.begin()) {
     Serial.println("Si1145 sensor fault");
     uvPresent = 0;
   } else {
     uvPresent = 1;
   }
+
+  Serial.println("Starting LIS3MDL sensor!");
 
   if (! lis3mdl.begin_I2C()) {
     Serial.println("LIS3MDL sensor fault");
