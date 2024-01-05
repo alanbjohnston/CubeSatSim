@@ -672,12 +672,15 @@ elif [ "$1" = "-p" ]; then
 
 	echo "Real-time output from the serial port from the Pico:"
 	echo
-	sleep 2
+#	sleep 2
+	timeout 2 cat /dev/serial0 > /dev/null
 
 	timeout 3 cat /dev/serial0
 
 elif [ "$1" = "-v" ]; then
 
+	echo "Real-time output from the INA219 voltage and current sensors:"
+	echo
 	/home/pi/CubeSatSim/telem
 
 fi
