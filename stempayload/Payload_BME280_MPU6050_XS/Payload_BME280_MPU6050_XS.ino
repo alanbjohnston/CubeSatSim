@@ -57,6 +57,7 @@ char sensor_end_flag[] = "_END_FLAG_";
 char sensor_start_flag[] = "_START_FLAG_";
 bool show_ = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
+void get_gps();
 
 void setup() {
 
@@ -240,6 +241,8 @@ void loop() {
      
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
+
+    get_gps();	    
  
 //    Serial1.print(" GPS 0 0 0 TMP ");
 
@@ -538,3 +541,48 @@ bool check_for_wifi() {
   }
 }
 
+void get_gps() {
+	
+  newData = false;  
+  unsigned long starting = millis();	
+	
+  for (unsigned long start = millis(); millis() - start < 1000;) // 5000;)
+  {  
+    while (Serial2.available())
+    {
+      char c = Serial2.read();
+      if (show_gps)	    	    
+        Serial.write(c); // uncomment this line if you want to see the GPS data flowing
+      if (gps.encode(c)) // Did a new valid sentence come in?
+        newData = true;
+    }
+  }	  
+  if (newData) {
+    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
+//    float flon = 0.0, flat = 0.0, flalt = 0.0;
+//    unsigned long age;
+    starting = millis();	    
+//    gps.f_get_position(&flat, &flon, &age);
+	    
+    Serial.print(F("Location: ")); 
+    if (gps.location.isValid())
+    {
+      Serial.print(gps.location.lat(), 6);
+      Serial.print(F(","));
+      Serial.print(gps.location.lng(), 6);
+	  
+      flat = gps.location.lat();	  
+      flon = gps.location.lng();	  
+      flalt = gps.altitude.meters();	  
+    }
+    else
+    {
+      Serial.print(F("INVALID"));	  
+    }
+    Serial.print("\r\n");   
+	    
+  } else
+//	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
+    ;
+	
+}
