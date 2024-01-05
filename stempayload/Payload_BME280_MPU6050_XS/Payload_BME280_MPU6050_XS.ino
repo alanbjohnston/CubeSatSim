@@ -79,7 +79,7 @@ void setup() {
 #ifdef ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
-  Serial.println("Starting Serial2 for ");		
+  Serial.println("Starting Serial2 for optional GPS on JP12");		
 //  Serial2.begin(9600);  // serial from  - some  modules need 115200	
 
   // pinMode(0, INPUT);
