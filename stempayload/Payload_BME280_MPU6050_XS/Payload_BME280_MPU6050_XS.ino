@@ -55,7 +55,7 @@ float rest;
 
 char sensor_end_flag[] = "_END_FLAG_";
 char sensor_start_flag[] = "_START_FLAG_";
-bool show_gps = true;  // set to false to not see all GPS messages
+bool show_ = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
 
 void setup() {
@@ -79,8 +79,8 @@ void setup() {
 #ifdef ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
-  Serial.println("Starting Serial2 for GPS");		
-//  Serial2.begin(9600);  // serial from GPS - some GPS modules need 115200	
+  Serial.println("Starting Serial2 for ");		
+//  Serial2.begin(9600);  // serial from  - some  modules need 115200	
 
   // pinMode(0, INPUT);
   // pinMode(1, INPUT);
@@ -235,22 +235,29 @@ void loop() {
  
 //    Serial1.print(" GPS 0 0 0 AN ");
 
+    Serial1.print(" GPS ");
+    Serial1.print(flat,4);   
+    Serial1.print(" ");
+    Serial1.print(flon,4);              
+    Serial1.print(" ");
+    Serial1.print(flalt,2);  
+
+    Serial1.print(" TMP ");	    
+    Serial1.println(Temp);  
+	    
+//    Serial1.print(" ");
+//    Serial1.println(Sensor2);              
+
     Serial.print(" GPS ");
     Serial.print(flat,4);   
     Serial.print(" ");
     Serial.print(flon,4);              
     Serial.print(" ");
-    Serial.print(flalt,2);  
+    Serial.print(flalt,2);  	    
 
-    Serial1.print(" AN ");	    
-    Serial1.println(Temp);  
-	    
-//    Serial1.print(" ");
-//    Serial1.println(Sensor2);              
-    Serial1.println(sensor_end_flag);
-
-    Serial.print(" GPS 0 0 0 AN ");
-    Serial.println(Temp);   
+//    Serial.print(" GPS 0 0 0 AN ");
+    Serial.print(" TMP ");	    
+    Serial.print(Temp);   
 //    Serial.print(" ");
 //    Serial.println(Sensor2);     
      
@@ -275,7 +282,11 @@ void loop() {
     else
         led_set(blueLED, LOW);
     }
-   
+
+    Serial1.println(" ");
+    Serial1.println(sensor_end_flag);	  
+    Serial.println(" ");
+	  
   }
 
   if (Serial.available() > 0) {
