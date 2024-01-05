@@ -59,6 +59,9 @@ bool show_gps = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
 void get_gps();
 
+void payload_setup();
+void payload_loop()
+
 void setup() {
 
 #ifdef ARDUINO_ARCH_RP2040	
@@ -162,7 +165,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
 #endif	  
   }
-/**/      
+  payload_setup();     
 }
  
 void loop() {
@@ -291,6 +294,8 @@ void loop() {
     else
         led_set(blueLED, LOW);
     }
+
+    payload_loop(); 	  
 
 //    Serial1.println(" ");
     Serial1.println(sensor_end_flag);	  
