@@ -1,6 +1,11 @@
+// Use this template for adding additional sensors
+
+
+// put your library includes here
 #include "Adafruit_SI1145.h"
 #include <Adafruit_LIS3MDL.h>
 
+// put your globals here
 Adafruit_SI1145 uv = Adafruit_SI1145();
 Adafruit_LIS3MDL lis3mdl;
 
@@ -10,6 +15,7 @@ int magPresent;
 float magRaw = 0;
 float magRawAbs = 0;
 
+// put your setup code here
 void payload_setup() {
 
   if (! uv.begin()) {
@@ -27,15 +33,17 @@ void payload_setup() {
   }
 }
 
+// put your loop code here
+// Very Important: only use print, not println!!
 void payload_loop() {
 
         if (uvPresent) {
-          Serial1.print(uv.readVisible());
+          Serial1.print(uv.readVisible());  // Serial1 sends the sensor data to the Pi Zero for transmission
           Serial1.print(" ");
           Serial1.print(uv.readIR());
           Serial1.print(" ");
 
-          Serial.print(uv.readVisible());
+          Serial.print(uv.readVisible());   // Serial sends the sensor data to the Serial Monitor for debugging
           Serial.print(" ");
           Serial.print(uv.readIR());
           Serial.print(" ");          
