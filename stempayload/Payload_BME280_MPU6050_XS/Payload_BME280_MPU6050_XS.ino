@@ -1,5 +1,5 @@
-// code for Pro Micro or STM32 on the CubeSat Simulator STEM Payload board
-// answers "OK" on the serial port Serial1 when queried by the Pi
+// code for Pico or Pro Micro or STM32 on the CubeSat Simulator STEM Payload board
+// works wih CubeSatSim software v1.3.2 or later
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -241,8 +241,6 @@ void loop() {
      
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
-
-    get_gps();	    
  
 //    Serial1.print(" GPS 0 0 0 TMP ");
 
@@ -319,75 +317,7 @@ void loop() {
       first_time = true;
       setup();
     }  
-#endif	  
-	  
-/*   
- if ((result == '?') || first_time == true)
-    {
-      first_time = false;
-      if (bmePresent) {
-        Serial.print("OK BME280 ");
-        Serial.print(bme.readTemperature());
-        Serial.print(" ");
-        Serial.print(bme.readPressure() / 100.0F);
-        Serial.print(" ");
-        Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
-        Serial.print(" ");
-        Serial.print(bme.readHumidity());
-      } else
-      {
-        Serial.print("OK BME280 0.0 0.0 0.0 0.0");
-      }
-      mpu6050.update();
- 
-      Serial.print(" MPU6050 ");
-      Serial.print(mpu6050.getGyroX());
-      Serial.print(" ");
-      Serial.print(mpu6050.getGyroY());
-      Serial.print(" ");
-      Serial.print(mpu6050.getGyroZ());
- 
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccX());   
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccY());   
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccZ());   
-    
-    sensorValue = read_analog();
- 
-    Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
- 
-    Serial.print(" XS ");
-    Serial.print(Temp);   
-    Serial.print(" ");
-    Serial.print(Sensor2);              
-    Serial.print(" (");  
-    Serial.print(sensorValue);   
-    Serial.println(")"); 
-  
-    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
-    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
-//    Serial.print(rotation);
-//    Serial.print(" ");
-//    Serial.println(acceleration);
- 
-    if (first_read == true) {
-      first_read = false;
-      rest = acceleration;
-    }
- 
-    if (acceleration > 1.2 * rest)
-        led_set(greenLED, HIGH);
-    else
-        led_set(greenLED, LOW);
-        
-    if (rotation > 5)
-        led_set(blueLED, HIGH);
-    else
-        led_set(blueLED, LOW);
-    }
-*/	
+#endif	  	
   }  
 	  
 #ifdef ARDUINO_ARCH_RP2040
@@ -396,6 +326,8 @@ void loop() {
 #endif
 	
 //  delay(1000);  not needed due to gps 1 second polling delay
+  get_gps();	    
+	
 }
  
 void eeprom_word_write(int addr, int val)
