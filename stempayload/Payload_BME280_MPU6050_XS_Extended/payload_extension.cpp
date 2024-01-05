@@ -38,25 +38,31 @@ void payload_setup() {
 void payload_loop() {
 
         if (uvPresent) {
+          Serial1.print(" SI ");  // chose a 2-3 letter hint for your sensor
           Serial1.print(uv.readVisible());  // Serial1 sends the sensor data to the Pi Zero for transmission
           Serial1.print(" ");
           Serial1.print(uv.readIR());
           Serial1.print(" ");
 
+          Serial.print(" SI ");
           Serial.print(uv.readVisible());   // Serial sends the sensor data to the Serial Monitor for debugging
           Serial.print(" ");
           Serial.print(uv.readIR());
           Serial.print(" ");          
       } else
       {
-        Serial1.print("0.0 0.0 ");
-        Serial.print("0.0 0.0 ");        
+        Serial1.print("SI 0.0 0.0 ");
+        Serial.print("SI 0.0 0.0 ");        
       }
       if (magPresent) {
         lis3mdl.read();
         magRaw = (((lis3mdl.x + lis3mdl.y + lis3mdl.z) / 3));
         magRawAbs = abs(magRaw);
+        
+        Serial1.print(" LI ");
         Serial1.print(magRawAbs);
+
+        Serial1.print(" LI ");
         Serial.print(magRawAbs);
       } else
       {
