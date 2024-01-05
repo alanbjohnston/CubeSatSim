@@ -252,7 +252,7 @@ void loop() {
     Serial1.print(flalt,2);  
 
     Serial1.print(" TMP ");	    
-    Serial1.println(Temp);  
+    Serial1.print(Temp);  
 	    
 //    Serial1.print(" ");
 //    Serial1.println(Sensor2);              
@@ -292,7 +292,7 @@ void loop() {
         led_set(blueLED, LOW);
     }
 
-    Serial1.println(" ");
+//    Serial1.println(" ");
     Serial1.println(sensor_end_flag);	  
     Serial.println(" ");
 	  
