@@ -55,8 +55,8 @@ void payload_loop() {
 //          Serial.print(" ");          
       } else
       {
-        Serial1.print(" SI 0.0 0.0 ");
-        Serial.print(" SI 0.0 0.0 ");        
+        Serial1.print(" SI 0.0 0.0");
+        Serial.print(" SI 0.0 0.0");        
       }
       if (magPresent) {
         lis3mdl.read();
