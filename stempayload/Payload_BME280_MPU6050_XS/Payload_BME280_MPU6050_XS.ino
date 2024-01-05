@@ -6,11 +6,14 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
+//#include <TinyGPS++.h>
+
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
- 
+//TinyGPSPlus gps;
+
 long timer = 0;
 int bmePresent;
 int RXLED = 17;  // The RX LED has a defined Arduino pin
@@ -52,7 +55,9 @@ float rest;
 
 char sensor_end_flag[] = "_END_FLAG_";
 char sensor_start_flag[] = "_START_FLAG_";
-  
+bool show_gps = true;  // set to false to not see all GPS messages
+float flon = 0.0, flat = 0.0, flalt = 0.0;
+
 void setup() {
 
 #ifdef ARDUINO_ARCH_RP2040	
@@ -65,7 +70,7 @@ void setup() {
   Serial.begin(115200); // Serial Monitor for testing
  
   Serial1.begin(115200);  // Pi UART faster spd
-//  Serial1.begin(9600);  // Pi UART faster spd
+//  Serial1.begin(9600);  // Pi UART faster spd	
 
   delay(10000);		
  
@@ -73,6 +78,9 @@ void setup() {
 
 #ifdef ARDUINO_ARCH_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
+
+  Serial.println("Starting Serial2 for GPS");		
+//  Serial2.begin(9600);  // serial from GPS - some GPS modules need 115200	
 
   // pinMode(0, INPUT);
   // pinMode(1, INPUT);
@@ -83,7 +91,8 @@ void setup() {
   }
   pinMode(26, INPUT);	
   pinMode(27, INPUT);	
-  pinMode(28, INPUT);	
+  pinMode(28, INPUT);
+  pinMode(15, INPUT_PULLUP);  // squelch
  
 #endif	
  
@@ -224,8 +233,18 @@ void loop() {
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
  
-    Serial1.print(" GPS 0 0 0 AN ");
-    Serial1.println(Temp);   
+//    Serial1.print(" GPS 0 0 0 AN ");
+
+    Serial.print(" GPS ");
+    Serial.print(flat,4);   
+    Serial.print(" ");
+    Serial.print(flon,4);              
+    Serial.print(" ");
+    Serial.print(flalt,2);  
+
+    Serial1.print(" AN ");	    
+    Serial1.println(Temp);  
+	    
 //    Serial1.print(" ");
 //    Serial1.println(Sensor2);              
     Serial1.println(sensor_end_flag);
@@ -348,8 +367,12 @@ void loop() {
     }
 */	
   }  
-
-
+	  
+#ifdef ARDUINO_ARCH_RP2040
+  Serial.print("Squelch: ");	
+  Serial.println(digitalRead(15));
+#endif
+	
   delay(1000);
 }
  
