@@ -6,13 +6,13 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
-//#include <TinyGPS++.h>
+#include <TinyGPS++.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
-//TinyGPSPlus gps;
+TinyGPSPlus gps;
 
 long timer = 0;
 int bmePresent;
@@ -241,7 +241,7 @@ void loop() {
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
  
-//    Serial1.print(" GPS 0 0 0 AN ");
+//    Serial1.print(" GPS 0 0 0 TMP ");
 
     Serial1.print(" GPS ");
     Serial1.print(flat,4);   
@@ -263,7 +263,7 @@ void loop() {
     Serial.print(" ");
     Serial.print(flalt,2);  	    
 
-//    Serial.print(" GPS 0 0 0 AN ");
+//    Serial.print(" GPS 0 0 0 TMP ");
     Serial.print(" TMP ");	    
     Serial.print(Temp);   
 //    Serial.print(" ");
