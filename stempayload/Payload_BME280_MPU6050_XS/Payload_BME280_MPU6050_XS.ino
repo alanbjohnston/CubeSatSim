@@ -544,9 +544,10 @@ bool check_for_wifi() {
 void get_gps() {
 	
   bool newData = false;  
-  unsigned long starting = millis();	
+  unsigned long start = millis();	
 	
-  for (unsigned long start = millis(); millis() - start < 1000;) // 5000;)
+//  for (unsigned long start = millis(); millis() - start < 1000;) // 5000;)
+  while ((millis() - start) < 1000) // 5000;)
   {  
     while (Serial2.available())
     {
