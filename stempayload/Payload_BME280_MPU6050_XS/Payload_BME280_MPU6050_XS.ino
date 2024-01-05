@@ -562,7 +562,7 @@ void get_gps() {
     Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
 //    float flon = 0.0, flat = 0.0, flalt = 0.0;
 //    unsigned long age;
-    starting = millis();	    
+//    starting = millis();	    
 //    gps.f_get_position(&flat, &flon, &age);
 	    
     Serial.print(F("Location: ")); 
