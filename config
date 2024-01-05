@@ -180,6 +180,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -q     Change the Squelch setting for command receiver"
 	echo "   -F     Change the rx and tx frequency"
 	echo "   -H     Chnage the Balloon mode"
+	echo "   -p     Display payload sensor data"
+	echo "   -v     Display voltage and current data"
 	echo
 	exit
 
@@ -665,7 +667,19 @@ elif [ "$1" = "-H" ]; then
 	echo
 
 	sudo systemctl restart cubesatsim
-			
+
+elif [ "$1" = "-p" ]; then
+
+	echo "Real-time output from the serial port from the Pico:"
+	echo
+	sleep 2
+
+	timeout 3 cat /dev/serial0
+
+elif [ "$1" = "-v" ]; then
+
+	/home/pi/CubeSatSim/telem
+
 fi
 
 # sudo systemctl restart cubesatsim
