@@ -71,6 +71,6 @@ void payload_loop() {
       } else
       {
         Serial1.print(" LI 0.0");
-        Serial.print("0.0");
+        Serial.print(" LI 0.0");
       }
 }
