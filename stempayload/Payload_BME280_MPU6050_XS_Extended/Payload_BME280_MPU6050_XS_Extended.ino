@@ -9,6 +9,8 @@
 #include <TinyGPS++.h>
 #include "Adafruit_SI1145.h"
 #include <Adafruit_LIS3MDL.h>
+Adafruit_SI1145 uv = Adafruit_SI1145();
+Adafruit_LIS3MDL lis3mdl;
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
