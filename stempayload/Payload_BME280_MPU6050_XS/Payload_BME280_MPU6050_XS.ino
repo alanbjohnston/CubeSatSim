@@ -93,6 +93,12 @@ void setup() {
   pinMode(27, INPUT);	
   pinMode(28, INPUT);
   pinMode(15, INPUT_PULLUP);  // squelch
+
+  pinMode(22, OUTPUT);
+  digitalWrite(22, 1);
+  pinMode(17, OUTPUT);
+  digitalWrite(17, 1);
+	
  
 #endif	
  
