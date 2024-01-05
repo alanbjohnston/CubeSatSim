@@ -47,9 +47,9 @@ void payload_loop() {
       if (magPresent) {
         lis3mdl.read();
         magRaw = (((lis3mdl.x + lis3mdl.y + lis3mdl.z) / 3));
-        magAbs = abs(magRaw);
-        Serial1.print(magAbs);
-        Serial.print(magAbs);
+        magRawAbs = abs(magRaw);
+        Serial1.print(magRawAbs);
+        Serial.print(magRawAbs);
       } else
       {
         Serial1.print("0.0");
