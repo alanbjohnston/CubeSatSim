@@ -1,5 +1,6 @@
 // code for Pico or Pro Micro or STM32 on the CubeSat Simulator STEM Payload board
 // works wih CubeSatSim software v1.3.2 or later
+// extra sensors can be added in payload_extension.cpp
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -7,8 +8,6 @@
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
 #include <TinyGPS++.h>
-//#include "Adafruit_SI1145.h"
-//#include <Adafruit_LIS3MDL.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
