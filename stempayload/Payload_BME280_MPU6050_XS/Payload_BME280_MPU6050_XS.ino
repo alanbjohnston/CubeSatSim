@@ -543,7 +543,7 @@ bool check_for_wifi() {
 
 void get_gps() {
 	
-  newData = false;  
+  bool newData = false;  
   unsigned long starting = millis();	
 	
   for (unsigned long start = millis(); millis() - start < 1000;) // 5000;)
