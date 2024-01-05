@@ -1,8 +1,8 @@
 #include "Adafruit_SI1145.h"
 #include <Adafruit_LIS3MDL.h>
 
-// Adafruit_SI1145 uv = Adafruit_SI1145();
-//Adafruit_LIS3MDL lis3mdl;
+Adafruit_SI1145 uv = Adafruit_SI1145();
+Adafruit_LIS3MDL lis3mdl;
 
 int uvPresent;
 int magPresent;
