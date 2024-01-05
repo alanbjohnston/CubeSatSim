@@ -7,8 +7,8 @@
 #include <MPU6050_tockn.h>
 #include <EEPROM.h>
 #include <TinyGPS++.h>
-#include "Adafruit_SI1145.h"
-#include <Adafruit_LIS3MDL.h>
+//#include "Adafruit_SI1145.h"
+//#include <Adafruit_LIS3MDL.h>
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
