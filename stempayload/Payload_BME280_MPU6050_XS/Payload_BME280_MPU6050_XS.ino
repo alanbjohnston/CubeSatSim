@@ -395,7 +395,7 @@ void loop() {
   Serial.println(digitalRead(15));
 #endif
 	
-  delay(1000);
+//  delay(1000);  not needed due to gps 1 second polling delay
 }
  
 void eeprom_word_write(int addr, int val)
