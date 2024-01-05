@@ -62,7 +62,7 @@ float flon = 0.0, flat = 0.0, flalt = 0.0;
 void get_gps();
 
 extern void payload_setup();
-extern void payload_loop()
+extern void payload_loop();
 
 void setup() {
 
