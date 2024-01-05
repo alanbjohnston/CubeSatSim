@@ -55,7 +55,7 @@ float rest;
 
 char sensor_end_flag[] = "_END_FLAG_";
 char sensor_start_flag[] = "_START_FLAG_";
-bool show_ = true;  // set to false to not see all  messages
+bool show_gps = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
 void get_gps();
 
