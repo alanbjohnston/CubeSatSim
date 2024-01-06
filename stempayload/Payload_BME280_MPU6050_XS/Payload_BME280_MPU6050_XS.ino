@@ -22,8 +22,8 @@ int greenLED = 9;
 int blueLED = 8;
 int Sensor1 = 0;
 float Sensor2 = 0;
-void prom_word_write(int addr, int val);
-short prom_word_read(int addr);
+void ee_prom_word_write(int addr, int val);
+short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 bool check_for_wifi();
@@ -60,8 +60,8 @@ bool show_gps = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
 void get_gps();
 
-extern void payload_setup();
-extern void payload_loop();
+extern void payload_setup();  // sensor extension setup function defined in payload_extension.cpp
+extern void payload_loop();  // sensor extension read function defined in payload_extension.cpp
 
 void setup() {
 
@@ -97,15 +97,7 @@ void setup() {
   pinMode(26, INPUT);	
   pinMode(27, INPUT);	
   pinMode(28, INPUT);
-  pinMode(15, INPUT_PULLUP);  // squelch
-
-/*	
-  Serial.println("Testing squelch");	
-  pinMode(22, OUTPUT);
-  digitalWrite(22, 1);
-  pinMode(17, OUTPUT);
-  digitalWrite(17, 1);
-*/	
+  pinMode(15, INPUT_PULLUP);  // squelch	
  
 #endif	
  
@@ -166,7 +158,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
 #endif	  
   }
-  payload_setup();     
+  payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
 }
  
 void loop() {
@@ -220,12 +212,12 @@ void loop() {
       Serial1.print(" ");
       Serial1.print(mpu6050.getGyroZ());
  
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccX());   
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccY());   
-    Serial1.print(" ");
-    Serial1.print(mpu6050.getAccZ());   
+      Serial1.print(" ");
+      Serial1.print(mpu6050.getAccX());   
+      Serial1.print(" ");
+      Serial1.print(mpu6050.getAccY());   
+      Serial1.print(" ");
+      Serial1.print(mpu6050.getAccZ());   
 
       Serial.print(" MPU6050 ");
       Serial.print(mpu6050.getGyroX());
@@ -234,14 +226,14 @@ void loop() {
       Serial.print(" ");
       Serial.print(mpu6050.getGyroZ());
  
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccX());   
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccY());   
-    Serial.print(" ");
-    Serial.print(mpu6050.getAccZ());  
+      Serial.print(" ");
+      Serial.print(mpu6050.getAccX());   
+      Serial.print(" ");
+      Serial.print(mpu6050.getAccY());   
+      Serial.print(" ");
+      Serial.print(mpu6050.getAccZ());  
      
-    sensorValue = read_analog();
+      sensorValue = read_analog();
      
 //  Serial.println(sensorValue);  
     Temp = T1 + (sensorValue - R1) *((T2 - T1)/(R2 - R1));
@@ -296,7 +288,7 @@ void loop() {
         led_set(blueLED, LOW);
     }
 
-    payload_loop(); 	  
+    payload_loop(); // sensor extension read function defined in payload_extension.cpp	  
 
 //    Serial1.println(" ");
     Serial1.println(sensor_end_flag);	  
