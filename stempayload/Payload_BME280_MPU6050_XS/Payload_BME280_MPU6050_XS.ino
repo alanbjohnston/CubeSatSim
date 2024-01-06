@@ -1,5 +1,6 @@
 // code for Pico or Pro Micro or STM32 on the CubeSat Simulator STEM Payload board
 // works wih CubeSatSim software v1.3.2 or later
+// extra sensors can be added in payload_extension.cpp
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -58,6 +59,9 @@ char sensor_start_flag[] = "_START_FLAG_";
 bool show_gps = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
 void get_gps();
+
+extern void payload_setup();
+extern void payload_loop();
 
 void setup() {
 
@@ -162,7 +166,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
 #endif	  
   }
-/**/      
+  payload_setup();     
 }
  
 void loop() {
@@ -291,6 +295,8 @@ void loop() {
     else
         led_set(blueLED, LOW);
     }
+
+    payload_loop(); 	  
 
 //    Serial1.println(" ");
     Serial1.println(sensor_end_flag);	  
