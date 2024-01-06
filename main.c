@@ -612,8 +612,6 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
 
 //      serialPuts(uart_fd, cmdbuffer);   // write INA data to Pico over serial
- 	char test[] = "Hello\n";	   
-      serialPuts(uart_fd, test);   // write data to Pico over serial
 
       const char space[2] = " ";
       token = strtok(cmdbuffer, space);
