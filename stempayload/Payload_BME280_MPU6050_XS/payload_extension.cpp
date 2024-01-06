@@ -1,4 +1,5 @@
 // Use this template for adding additional sensors
+// see Payload_BME280_MPU6050_XS_Extended for an example
 
 // put your library includes here
 #include "Arduino.h"
