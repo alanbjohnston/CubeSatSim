@@ -6,8 +6,13 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
-#include <EEPROM.h>
 #include <TinyGPS++.h>
+#ifdef ARDUINO_ARCH_RP2040
+UART Serial2(8, 9, 0, 0);
+#else
+#include <EEPROM.h>
+#endif
+
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
@@ -60,16 +65,16 @@ bool show_gps = true;  // set to false to not see all  messages
 float flon = 0.0, flat = 0.0, flalt = 0.0;
 void get_gps();
 
-extern void payload_setup(); // sensor extension setup function defined in payload_extension.cpp
-extern void payload_loop(); // sensor extension read function defined in payload_extension.cpp
+extern void payload_setup();  // sensor extension setup function defined in payload_extension.cpp
+extern void payload_loop();  // sensor extension read function defined in payload_extension.cpp
 
 void setup() {
 
 #ifdef ARDUINO_ARCH_RP2040	
-   Serial1.setRX(1);
-   delay(100);
-   Serial1.setTX(0);
-   delay(100);	
+//   Serial1.setRX(1);
+//   delay(100);
+//   Serial1.setTX(0);
+//   delay(100);	
 #endif
 	
   Serial.begin(115200); // Serial Monitor for testing
@@ -101,7 +106,7 @@ void setup() {
  
 #endif	
  
-  blink_setup(); // sensor extension setup function defined in payload_extension.cpp
+  blink_setup();
  
   blink(500);
   delay(250);
@@ -158,7 +163,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
 #endif	  
   }
-  payload_setup();     
+  payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
 }
  
 void loop() {
@@ -323,20 +328,24 @@ void loop() {
   Serial.println(digitalRead(15));
 #endif
 	
-//  delay(1000);  not needed due to gps 1 second polling delay
+//  delay(1000);  // not needed due to gps 1 second polling delay
   get_gps();	    
 	
 }
  
 void eeprom_word_write(int addr, int val)
 {
+#ifndef ARDUINO_ARCH_RP2040 	
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
+#endif	
 }
  
 short eeprom_word_read(int addr)
 {
+#ifndef ARDUINO_ARCH_RP2040 	
   return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
+#endif	
 }
  
 void blink_setup() 
@@ -356,7 +365,7 @@ void blink_setup()
 #endif
 
 #if defined ARDUINO_ARCH_RP2040
-   if (check_for_wifi()) {
+/*   if (check_for_wifi()) {
      wifi = true;
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
      pinMode(LED_BUILTIN, OUTPUT);		  
@@ -364,11 +373,13 @@ void blink_setup()
   }  else  {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-     pinMode(led_builtin_pin, OUTPUT);
-
+*/	   
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);     
+     wifi = true;
      pinMode(18, OUTPUT);
      pinMode(19, OUTPUT);	   
-  }
+//  }
 #endif
 
 }
@@ -438,6 +449,7 @@ int read_analog()
  #if defined __AVR_ATmega32U4__ 
     sensorValue = analogRead(A3);
 #endif
+	
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
     sensorValue = analogRead(PA7);
 #endif
@@ -459,8 +471,14 @@ bool check_for_wifi() {
   pinMode(29, INPUT);	
    const float conversion_factor = 3.3f / (1 << 12);
    uint16_t result = analogRead(29);
+/*	
 //   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
-
+   Serial.print("ADC3 value and voltage: ");
+   Serial.print(result);
+   Serial.print(" ");
+   Serial.println(result * conversion_factor);
+*/	
+	
   if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
@@ -472,7 +490,7 @@ bool check_for_wifi() {
 }
 
 void get_gps() {
-	
+//#ifndef ARDUINO_ARCH_RP2040 	
   bool newData = false;  
   unsigned long start = millis();	
 	
@@ -489,7 +507,9 @@ void get_gps() {
     }
   }	  
   if (newData) {
-    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
+    Serial.print("GPS read new data in ms: ");	    
+    Serial.println(millis() - start);	    
+
 //    float flon = 0.0, flat = 0.0, flalt = 0.0;
 //    unsigned long age;
 //    starting = millis();	    
@@ -515,5 +535,5 @@ void get_gps() {
   } else
 //	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
     ;
-	
+//#endif	
 }
