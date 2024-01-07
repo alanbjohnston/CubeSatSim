@@ -498,7 +498,7 @@ void get_gps() {
     }
   }	  
   if (newData) {
-    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
+////    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
 //    float flon = 0.0, flat = 0.0, flalt = 0.0;
 //    unsigned long age;
 //    starting = millis();	    
