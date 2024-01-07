@@ -370,10 +370,10 @@ void blink_setup()
 */	   
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
      pinMode(LED_BUILTIN, OUTPUT);     
-
+     wifi = true;
      pinMode(18, OUTPUT);
      pinMode(19, OUTPUT);	   
-  }
+//  }
 #endif
 
 }
