@@ -447,6 +447,7 @@ int read_analog()
  #if defined __AVR_ATmega32U4__ 
     sensorValue = analogRead(A3);
 #endif
+	
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
     sensorValue = analogRead(PA7);
 #endif
@@ -481,7 +482,7 @@ bool check_for_wifi() {
 }
 
 void get_gps() {
-	
+#ifndef ARDUINO_ARCH_RP2040 	
   bool newData = false;  
   unsigned long start = millis();	
 	
@@ -498,7 +499,7 @@ void get_gps() {
     }
   }	  
   if (newData) {
-////    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
+    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
 //    float flon = 0.0, flat = 0.0, flalt = 0.0;
 //    unsigned long age;
 //    starting = millis();	    
@@ -524,5 +525,5 @@ void get_gps() {
   } else
 //	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
     ;
-	
+#endif	
 }
