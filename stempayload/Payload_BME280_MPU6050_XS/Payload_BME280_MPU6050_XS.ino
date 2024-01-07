@@ -7,7 +7,9 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <TinyGPS++.h>
-#ifndef ARDUINO_ARCH_RP2040
+#ifdef ARDUINO_ARCH_RP2040
+#include <SoftwareSerial.h>
+#else
 #include <EEPROM.h>
 #endif
 
