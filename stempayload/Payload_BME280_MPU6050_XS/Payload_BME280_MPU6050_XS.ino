@@ -333,13 +333,17 @@ void loop() {
  
 void eeprom_word_write(int addr, int val)
 {
+#ifndef ARDUINO_ARCH_RP2040 	
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
+#endif	
 }
  
 short eeprom_word_read(int addr)
 {
+#ifndef ARDUINO_ARCH_RP2040 	
   return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
+#endif	
 }
  
 void blink_setup() 
