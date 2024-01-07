@@ -6,8 +6,11 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
-#include <EEPROM.h>
 #include <TinyGPS++.h>
+#ifndef ARDUINO_ARCH_RP2040
+#include <EEPROM.h>
+#endif
+
 
 #define SEALEVELPRESSURE_HPA (1013.25)
 
@@ -356,7 +359,7 @@ void blink_setup()
 #endif
 
 #if defined ARDUINO_ARCH_RP2040
-   if (check_for_wifi()) {
+/*   if (check_for_wifi()) {
      wifi = true;
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
      pinMode(LED_BUILTIN, OUTPUT);		  
@@ -364,7 +367,9 @@ void blink_setup()
   }  else  {
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
-     pinMode(led_builtin_pin, OUTPUT);
+*/	   
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);     
 
      pinMode(18, OUTPUT);
      pinMode(19, OUTPUT);	   
