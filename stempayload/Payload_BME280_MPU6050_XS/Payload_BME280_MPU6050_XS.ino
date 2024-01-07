@@ -471,8 +471,14 @@ bool check_for_wifi() {
   pinMode(29, INPUT);	
    const float conversion_factor = 3.3f / (1 << 12);
    uint16_t result = analogRead(29);
+/*	
 //   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
-
+   Serial.print("ADC3 value and voltage: ");
+   Serial.print(result);
+   Serial.print(" ");
+   Serial.println(result * conversion_factor);
+*/	
+	
   if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
@@ -501,7 +507,9 @@ void get_gps() {
     }
   }	  
   if (newData) {
-    Serial.printf("GPS read new data in ms: %d\n", millis() - start);	    
+    Serial.print("GPS read new data in ms: ");	    
+    Serial.println(millis() - start);	    
+
 //    float flon = 0.0, flat = 0.0, flalt = 0.0;
 //    unsigned long age;
 //    starting = millis();	    
