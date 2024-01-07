@@ -484,7 +484,7 @@ bool check_for_wifi() {
 }
 
 void get_gps() {
-#ifndef ARDUINO_ARCH_RP2040 	
+//#ifndef ARDUINO_ARCH_RP2040 	
   bool newData = false;  
   unsigned long start = millis();	
 	
@@ -527,5 +527,5 @@ void get_gps() {
   } else
 //	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
     ;
-#endif	
+//#endif	
 }
