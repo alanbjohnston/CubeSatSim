@@ -1299,8 +1299,10 @@ void get_tlm(void) {
   return;
 }
 
-void get_tlm_fox() {
+// generates telemetry which is decoded by AMSAT's FoxTelem: https://www.amsat.org/foxtelem-software-for-windows-mac-linux/
+// for more info about how we use FoxTelem see https://www.g0kla.com/foxtelem/amsat_telemetry_designers_handbook.pdf
 
+void get_tlm_fox() {  
   int i;
 
   long int sync = syncWord;
