@@ -466,7 +466,7 @@ bool check_for_wifi() {
    Serial.print(" ");
    Serial.println(result * conversion_factor);
 */	
-	
+/*	
   if (result < 0x10) {
     Serial.println("\nPico W detected!\n");
     return(true);
