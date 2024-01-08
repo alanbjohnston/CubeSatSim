@@ -424,6 +424,8 @@ elif [ "$1" = "-C" ]; then
 	sudo systemctl stop cubesatsim
 	sudo systemctl stop rpitx
 
+	sudo mv /home/pi/CubeSatSim/telem.txt /home/pi/CubeSatSim/telem.txt.bk
+
 	sudo journalctl --rotate
 	sudo journalctl --vacuum-time=1s
 
