@@ -8,7 +8,7 @@
 #include <MPU6050_tockn.h>
 #include <TinyGPS++.h>
 #ifdef ARDUINO_ARCH_RP2040
-//UART Serial2(8, 9, 0, 0);
+UART Serial2(8, 9, 0, 0);
 #else
 #include <EEPROM.h>
 #endif
@@ -83,7 +83,7 @@ void setup() {
 
   Serial.println("Starting Serial2 for optional GPS on JP12");		
 //  Serial2.begin(9600);  // serial from  - some  modules need 115200
-   UART Serial2(8, 9, 0, 0);
+//   UART Serial2(8, 9, 0, 0);
    Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
 
   // set all Pico GPIO connected pins to input	
