@@ -1,6 +1,6 @@
 // code for Pico or Pro Micro or STM32 on the CubeSat Simulator STEM Payload board
 // works wih CubeSatSim software v1.3.2 or later
-// extra sensors can be added in payload_extension.cpp
+// extra sensors can be added in payload_extension.cpp file
 
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
@@ -8,7 +8,7 @@
 #include <MPU6050_tockn.h>
 #include <TinyGPS++.h>
 #ifdef ARDUINO_ARCH_RP2040
-UART Serial2(8, 9, 0, 0);
+//UART Serial2(8, 9, 0, 0);
 #else
 #include <EEPROM.h>
 #endif
@@ -31,10 +31,10 @@ void ee_prom_word_write(int addr, int val);
 short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
-bool check_for_wifi();
-bool wifi = false;
-int led_builtin_pin;
-#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
+//bool check_for_wifi();
+//bool wifi = false;
+//int led_builtin_pin;
+//#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 #if defined ARDUINO_ARCH_RP2040
 float T2 = 26.3; // Temperature data point 1
@@ -69,18 +69,10 @@ extern void payload_setup();  // sensor extension setup function defined in payl
 extern void payload_loop();  // sensor extension read function defined in payload_extension.cpp
 
 void setup() {
-
-#ifdef ARDUINO_ARCH_RP2040	
-//   Serial1.setRX(1);
-//   delay(100);
-//   Serial1.setTX(0);
-//   delay(100);	
-#endif
 	
   Serial.begin(115200); // Serial Monitor for testing
  
-  Serial1.begin(115200);  // Pi UART faster spd
-//  Serial1.begin(9600);  // Pi UART faster spd	
+  Serial1.begin(115200);  // for communication with Pi Zero 
 
   delay(10000);		
  
@@ -90,11 +82,10 @@ void setup() {
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
   Serial.println("Starting Serial2 for optional GPS on JP12");		
-//  Serial2.begin(9600);  // serial from  - some  modules need 115200	
+//  Serial2.begin(9600);  // serial from  - some  modules need 115200
+   UART Serial2(8, 9, 0, 0);
+   Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
 
-  // pinMode(0, INPUT);
-  // pinMode(1, INPUT);
-	
   // set all Pico GPIO connected pins to input	
   for (int i = 6; i < 22; i++) { 
       pinMode(i, INPUT);	  
@@ -144,13 +135,10 @@ void setup() {
   }
   else
   {
-#ifdef ARDUINO_ARCH_RP2040	  
     Serial.println("Calculating gyro offsets\n");
-    mpu6050.calcGyroOffsets(true);
-#endif	  
-#ifndef ARDUINO_ARCH_RP2040 
-    Serial.println("Calculating gyro offsets and storing in EEPROM\n");
-    mpu6050.calcGyroOffsets(true);
+    mpu6050.calcGyroOffsets(true);	  
+#ifndef ARDUINO_ARCH_RP2040	  	  
+    Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
     eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
@@ -374,11 +362,11 @@ void blink_setup()
      led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
 //     pinMode(25, OUTPUT);
 */	   
-     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+//     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
      pinMode(LED_BUILTIN, OUTPUT);     
-     wifi = true;
-     pinMode(18, OUTPUT);
-     pinMode(19, OUTPUT);	   
+//     wifi = true;
+     pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
+     pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
 //  }
 #endif
 
@@ -396,10 +384,10 @@ void blink(int length)
 #endif  
 
 #if defined ARDUINO_ARCH_RP2040
-   if (wifi)	
+//   if (wifi)	
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-  else
-    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
+//  else
+//    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
 #endif  
  
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
@@ -412,10 +400,10 @@ void blink(int length)
 #endif  
 
 #if defined ARDUINO_ARCH_RP2040 
-   if (wifi)	
+//   if (wifi)	
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
-  else
-    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
+//  else
+//    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
  
 //  delay(length);              // wait for a lenth of time
 #endif   
@@ -458,12 +446,12 @@ int read_analog()
 #endif
     return(sensorValue); 
 }
-
+/*
 bool check_for_wifi() {
 	
 #ifndef PICO_W
 	
-  Serial.println("WiFi disabled in software");
+  Serial.println("WiFi disafbled in software");
   return(false);  // skip check if not Pico W board or compilation will fail
 	
 #endif
@@ -488,7 +476,7 @@ bool check_for_wifi() {
      return(false);  
   }
 }
-
+*/
 void get_gps() {
 //#ifndef ARDUINO_ARCH_RP2040 	
   bool newData = false;  
