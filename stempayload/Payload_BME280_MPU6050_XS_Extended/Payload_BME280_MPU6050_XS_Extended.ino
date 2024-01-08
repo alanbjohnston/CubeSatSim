@@ -13,7 +13,6 @@ UART Serial2(8, 9, 0, 0);
 #include <EEPROM.h>
 #endif
 
-
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 Adafruit_BME280 bme;
@@ -31,10 +30,6 @@ void ee_prom_word_write(int addr, int val);
 short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
-//bool check_for_wifi();
-//bool wifi = false;
-//int led_builtin_pin;
-//#define PICO_W    // define if Pico W board.  Otherwise, compilation fail for Pico or runtime fail if compile as Pico W
 
 #if defined ARDUINO_ARCH_RP2040
 float T2 = 26.3; // Temperature data point 1
@@ -83,8 +78,7 @@ void setup() {
 
   Serial.println("Starting Serial2 for optional GPS on JP12");		
 //  Serial2.begin(9600);  // serial from  - some  modules need 115200
-//   UART Serial2(8, 9, 0, 0);
-   Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
+  Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
 
   // set all Pico GPIO connected pins to input	
   for (int i = 6; i < 22; i++) { 
@@ -317,8 +311,7 @@ void loop() {
 #endif
 	
 //  delay(1000);  // not needed due to gps 1 second polling delay
-  get_gps();	    
-	
+  get_gps();	    	
 }
  
 void eeprom_word_write(int addr, int val)
@@ -353,23 +346,10 @@ void blink_setup()
 #endif
 
 #if defined ARDUINO_ARCH_RP2040
-/*   if (check_for_wifi()) {
-     wifi = true;
-     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
-     pinMode(LED_BUILTIN, OUTPUT);		  
-//     configure_wifi();	  
-  }  else  {
-     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
-//     pinMode(25, OUTPUT);
-*/	   
-//     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
      pinMode(LED_BUILTIN, OUTPUT);     
-//     wifi = true;
      pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
      pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
-//  }
 #endif
-
 }
  
 void blink(int length)
@@ -384,10 +364,7 @@ void blink(int length)
 #endif  
 
 #if defined ARDUINO_ARCH_RP2040
-//   if (wifi)	
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
-//  else
-//    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
 #endif  
  
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
@@ -400,14 +377,8 @@ void blink(int length)
 #endif  
 
 #if defined ARDUINO_ARCH_RP2040 
-//   if (wifi)	
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
-//  else
-//    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED OFF
- 
-//  delay(length);              // wait for a lenth of time
 #endif   
-
 }
  
 void led_set(int ledPin, bool state)
@@ -446,39 +417,8 @@ int read_analog()
 #endif
     return(sensorValue); 
 }
-/*
-bool check_for_wifi() {
-	
-#ifndef PICO_W
-	
-  Serial.println("WiFi disafbled in software");
-  return(false);  // skip check if not Pico W board or compilation will fail
-	
-#endif
-	
-  pinMode(29, INPUT);	
-   const float conversion_factor = 3.3f / (1 << 12);
-   uint16_t result = analogRead(29);
-/*	
-//   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
-   Serial.print("ADC3 value and voltage: ");
-   Serial.print(result);
-   Serial.print(" ");
-   Serial.println(result * conversion_factor);
-*/	
-/*	
-  if (result < 0x10) {
-    Serial.println("\nPico W detected!\n");
-    return(true);
-  }
-  else {
-     Serial.println("\nPico detected!\n");
-     return(false);  
-  }
-}
-*/
+
 void get_gps() {
-//#ifndef ARDUINO_ARCH_RP2040 	
   bool newData = false;  
   unsigned long start = millis();	
 	
@@ -523,5 +463,4 @@ void get_gps() {
   } else
 //	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
     ;
-//#endif	
 }
