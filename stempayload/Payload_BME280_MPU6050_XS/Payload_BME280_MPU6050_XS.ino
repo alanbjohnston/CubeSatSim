@@ -308,10 +308,12 @@ void loop() {
 #ifdef ARDUINO_ARCH_RP2040
   Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
+
+  get_gps();
+#else
+  delay(1000);  // not needed due to gps 1 second polling delay
+
 #endif
-	
-//  delay(1000);  // not needed due to gps 1 second polling delay
-  get_gps();	    	
 }
  
 void eeprom_word_write(int addr, int val)
