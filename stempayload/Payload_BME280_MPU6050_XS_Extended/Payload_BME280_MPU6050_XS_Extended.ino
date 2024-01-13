@@ -150,7 +150,7 @@ void setup() {
  
 void loop() {
 
-  blink(50);
+  blink(150);
 	
   if (Serial1.available() > 0) {
     Serial.print("Received serial data!!!\n");	 
@@ -308,10 +308,12 @@ void loop() {
 #ifdef ARDUINO_ARCH_RP2040
   Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
+
+  get_gps();
+#else
+  delay(1000);  // not needed due to gps 1 second polling delay
+
 #endif
-	
-//  delay(1000);  // not needed due to gps 1 second polling delay
-  get_gps();	    	
 }
  
 void eeprom_word_write(int addr, int val)
@@ -419,6 +421,7 @@ int read_analog()
 }
 
 void get_gps() {
+#ifdef ARDUINO_ARCH_RP2040	
   bool newData = false;  
   unsigned long start = millis();	
 	
@@ -463,4 +466,5 @@ void get_gps() {
   } else
 //	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
     ;
+#endif	
 }
