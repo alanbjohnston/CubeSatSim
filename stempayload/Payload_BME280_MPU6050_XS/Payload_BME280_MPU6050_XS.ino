@@ -69,7 +69,7 @@ void setup() {
  
   Serial1.begin(115200);  // for communication with Pi Zero 
 
-  delay(10000);		
+  delay(1000);		
  
   Serial.println("Starting!");
 
