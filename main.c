@@ -35,12 +35,12 @@ int main(int argc, char * argv[]) {
   fclose(file_test);	
   
   fprintf(stderr, " %x ", resbuffer[0]);
-  fprintf(stderr, " %x ", resbuffer[1]);	
+  fprintf(stderr, " %x \n", resbuffer[1]);	
   if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
   {
     sleep(5);  // try sleep at start to help boot
     voltageThreshold = 3.7;
-    printf("Pi Zero 2 detected");
+    printf("Pi Zero 2 detected\n");
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
@@ -369,7 +369,8 @@ int main(int argc, char * argv[]) {
   // try connecting to STEM Payload board using UART
   // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
 
-  if (!ax5043 && !vB3 && !(mode == CW) && !(mode == SSTV)) // don't test for payload if AX5043 is present or CW or SSTV modes
+//  if (!ax5043 && !vB3 && !(mode == CW) && !(mode == SSTV)) // don't test for payload if AX5043 is present or CW or SSTV modes
+  if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
 
