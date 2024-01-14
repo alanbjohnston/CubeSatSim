@@ -920,6 +920,20 @@ int main(int argc, char * argv[]) {
       sleep(10);
     }
 //#endif
+    if (payload == ON) {
+      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
+      printf("Writing payload string\n");
+      time_t timeStamp;
+      time(&timeStamp);   // get timestamp 
+//      printf("Timestamp: %s\n", ctime(&timeStamp));
+	    
+      char timeStampNoNl[31], bat_string[31];    
+      snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
+      printf("TimeStamp: %s\n", timeStampNoNl);
+      snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
+      fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
+      fclose(telem_file);
+    }
 	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
@@ -1253,7 +1267,7 @@ void get_tlm(void) {
       sleep(4);  // was 2
 	    
     } else {  // APRS using rpitx
-	    
+/*	    
      if (payload == ON) {	    
       telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
       printf("Writing payload string\n");
@@ -1268,7 +1282,7 @@ void get_tlm(void) {
       fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
       fclose(telem_file);
     }	 	    
-	    
+*/	    
       strcat(str, footer_str1);
 //      strcat(str, call);
       if (battery_saver_mode == ON)	    
