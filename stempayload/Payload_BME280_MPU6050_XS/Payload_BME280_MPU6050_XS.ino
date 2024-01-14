@@ -368,6 +368,8 @@ void blink(int length)
 #if defined ARDUINO_ARCH_RP2040
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
 #endif  
+
+delay(length);	
  
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
   digitalWrite(PC13, HIGH);    // turn the LED off by making the voltage LOW
