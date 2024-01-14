@@ -641,7 +641,72 @@ int main(int argc, char * argv[]) {
         batteryCurrent = current[map[BAT]];
 	   
    }
+
+      if (payload == ON) {  // moved to here
+        STEMBoardFailure = 0;
+        printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
+	fflush(stdout); 
+	printf("String: %s\n", buffer2);       
+	fflush(stdout);   
+	strcpy(sensor_payload, buffer2);      
+	printf(" Response from STEM Payload board: %s\n", sensor_payload);
+      
+        if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
+        {
+          int count1;
+          char * token;
+ 
+          const char space[2] = " ";
+          token = strtok(sensor_payload, space);
+//	  printf("token: %s\n", token);	
+          for (count1 = 0; count1 < 17; count1++) {
+            if (token != NULL) {
+              sensor[count1] = (float) atof(token);
+//              #ifdef DEBUG_LOGGING
+                printf("sensor: %f ", sensor[count1]);  // print sensor data
+//              #endif
+              token = strtok(NULL, space);
+            }
+          }
+          printf("\n");
+//	  if (sensor[XS1] != 0) {     		
+	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  { 
+		if (sensor[XS1] != latitude) {  
+			latitude = sensor[XS1];  
+			printf("Latitude updated to %f \n", latitude); 
+			newGpsTime = millis();  
+	 	}
+	  }
+//	  if (sensor[XS2] != 0)  {
+	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {   
+		if (sensor[XS2] != longitude) {  		  
+			longitude = sensor[XS2];  
+			printf("Longitude updated to %f \n", longitude); 
+			newGpsTime = millis();  
+		}
+	  }
+        }
+	else
+		; //payload = OFF;  // turn off since STEM Payload is not responding
+      }
+      if ((millis() - newGpsTime) > 60000) {
+		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
+     		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
+       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
+	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
+	      	newGpsTime = millis();  
+      }
 	  
+      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+        for (int count1 = 0; count1 < 17; count1++) {
+          if (sensor[count1] < sensor_min[count1])
+            sensor_min[count1] = sensor[count1];
+          if (sensor[count1] > sensor_max[count1])
+            sensor_max[count1] = sensor[count1];
+            //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+        }
+      }
+	   
     if (sim_mode) { // simulated telemetry 
 
       double time = ((long int)millis() - time_start) / 1000.0;
@@ -771,54 +836,15 @@ int main(int argc, char * argv[]) {
       }
       fclose(cpuTempSensor);
     } 
-	  
+// move this code out of get_tlm
+/*	  
       if (payload == ON) {  // -55
         STEMBoardFailure = 0;
         printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
 	fflush(stdout); 
 	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
-	      
 	strcpy(sensor_payload, buffer2);      
-/*  
-        char c;
-        unsigned int waitTime;
-	int i, end, trys = 0;
-	sensor_payload[0] = 0;
-	sensor_payload[1] = 0;
-	while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
-          i = 0;
-//	  serialPutchar(uart_fd, '?');
-//	  sleep(0.05);  // added delay after ?
-//          printf("%d Querying payload with ?\n", trys);
-          waitTime = millis() + 500;
-          end = FALSE;
-          //  int retry = FALSE;
-          while ((millis() < waitTime) && !end) {
-            int chars = (char) serialDataAvail(uart_fd);
-            while ((chars > 0) && !end) {
-//	      printf("Chars: %d\ ", chars);
-	      chars--;
-	      c = (char) serialGetchar(uart_fd);
-              //	printf ("%c", c);
-              //	fflush(stdout);
-              if (c != '\n') {
-                sensor_payload[i++] = c;
-              } else {
-                end = TRUE;
-              }
-            }
-          }
-	
-          sensor_payload[i++] = ' ';
-          //  sensor_payload[i++] = '\n';
-          sensor_payload[i] = '\0';
-          printf(" Response from STEM Payload board: %s\n", sensor_payload);
-		
-		
-	  sleep(0.1);  // added sleep between loops
-	}
-*/	  
 	printf(" Response from STEM Payload board: %s\n", sensor_payload);
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
@@ -876,6 +902,7 @@ int main(int argc, char * argv[]) {
             //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
         }
       }
+*/	  
 //  }	  
 	  
     #ifdef DEBUG_LOGGING
