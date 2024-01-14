@@ -150,7 +150,7 @@ void setup() {
  
 void loop() {
 
-  blink(150);
+  blink(50);
 	
   if (Serial1.available() > 0) {
     Serial.print("Received serial data!!!\n");	 
