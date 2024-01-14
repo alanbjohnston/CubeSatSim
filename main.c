@@ -650,6 +650,19 @@ int main(int argc, char * argv[]) {
 	fflush(stdout);   
 	strcpy(sensor_payload, buffer2);      
 	printf(" Response from STEM Payload board: %s\n", sensor_payload);
+
+        telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
+        printf("Writing payload string\n");
+        time_t timeStamp;
+        time(&timeStamp);   // get timestamp 
+//      printf("Timestamp: %s\n", ctime(&timeStamp));
+	    
+        char timeStampNoNl[31], bat_string[31];    
+        snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
+        printf("TimeStamp: %s\n", timeStampNoNl);
+        snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
+        fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
+        fclose(telem_file);
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
@@ -947,20 +960,6 @@ int main(int argc, char * argv[]) {
       sleep(10);
     }
 //#endif
-    if (payload == ON) {
-      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
-      printf("Writing payload string\n");
-      time_t timeStamp;
-      time(&timeStamp);   // get timestamp 
-//      printf("Timestamp: %s\n", ctime(&timeStamp));
-	    
-      char timeStampNoNl[31], bat_string[31];    
-      snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
-      printf("TimeStamp: %s\n", timeStampNoNl);
-      snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
-      fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
-      fclose(telem_file);
-    }
 	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
