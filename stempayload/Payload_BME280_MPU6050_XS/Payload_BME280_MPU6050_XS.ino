@@ -73,7 +73,7 @@ void setup() {
  
   Serial.println("Starting!");
 
-#ifdef ARDUINO_ARCH_RP2040
+#ifdef ARDUINO_ARCH_MBED_RP2040
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
   Serial.println("Starting Serial2 for optional GPS on JP12");		
@@ -131,7 +131,7 @@ void setup() {
   {
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);	  
-#ifndef ARDUINO_ARCH_RP2040	  	  
+#ifndef ARDUINO_ARCH_MBED_RP2040	  	  
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -305,7 +305,7 @@ void loop() {
 #endif	  	
   }  
 	  
-#ifdef ARDUINO_ARCH_RP2040
+#ifdef ARDUINO_ARCH_MBED_RP2040
   Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
 
