@@ -6,8 +6,8 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
-#include <TinyGPS++.h>
 #ifdef ARDUINO_ARCH_MBED_RP2040
+#include <TinyGPS++.h>
 UART Serial2(8, 9, 0, 0);
 #else
 #include <EEPROM.h>
