@@ -7,7 +7,7 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <TinyGPS++.h>
-#ifdef ARDUINO_ARCH_RP2040
+#ifdef ARDUINO_ARCH_MBED_RP2040
 UART Serial2(8, 9, 0, 0);
 #else
 #include <EEPROM.h>
@@ -31,7 +31,7 @@ short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 
-#if defined ARDUINO_ARCH_RP2040
+#if defined ARDUINO_ARCH_MBED_RP2040
 float T2 = 26.3; // Temperature data point 1
 float R2 = 167; // Reading data point 1
 float T1 = 2; // Temperature data point 2
@@ -289,7 +289,7 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-#ifndef	ARDUINO_ARCH_RP2040     
+#ifndef	ARDUINO_ARCH_MBED_RP2040     
   if (result == 'R') {	  
       Serial1.println("OK");
       delay(100);
@@ -318,7 +318,7 @@ void loop() {
  
 void eeprom_word_write(int addr, int val)
 {
-#ifndef ARDUINO_ARCH_RP2040 	
+#ifndef ARDUINO_ARCH_MBED_RP2040 	
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
 #endif	
@@ -326,7 +326,7 @@ void eeprom_word_write(int addr, int val)
  
 short eeprom_word_read(int addr)
 {
-#ifndef ARDUINO_ARCH_RP2040 	
+#ifndef ARDUINO_ARCH_MBED_RP2040 	
   return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
 #endif	
 }
@@ -347,7 +347,7 @@ void blink_setup()
   pinMode(blueLED,OUTPUT);
 #endif
 
-#if defined ARDUINO_ARCH_RP2040
+#if defined ARDUINO_ARCH_MBED_RP2040
      pinMode(LED_BUILTIN, OUTPUT);     
      pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
      pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
@@ -365,7 +365,7 @@ void blink(int length)
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040
+#if defined ARDUINO_ARCH_MBED_RP2040
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
 #endif  
 
@@ -380,7 +380,7 @@ delay(length);
   TXLED0; //TX LED macro to turn LED ON
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040 
+#if defined ARDUINO_ARCH_MBED_RP2040 
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
 #endif   
 }
@@ -398,7 +398,7 @@ void led_set(int ledPin, bool state)
   digitalWrite(ledPin, state);   
 #endif  
 
-#ifdef ARDUINO_ARCH_RP2040 
+#ifdef ARDUINO_ARCH_MBED_RP2040 
   if (ledPin == greenLED)
     digitalWrite(19, state);
   else if (ledPin == blueLED)
@@ -416,14 +416,14 @@ int read_analog()
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
     sensorValue = analogRead(PA7);
 #endif
-#if defined ARDUINO_ARCH_RP2040 
+#if defined ARDUINO_ARCH_MBED_RP2040 
     sensorValue = analogRead(28);  
 #endif
     return(sensorValue); 
 }
 
 void get_gps() {
-#ifdef ARDUINO_ARCH_RP2040	
+#ifdef ARDUINO_ARCH_MBED_RP2040	
   bool newData = false;  
   unsigned long start = millis();	
 	
