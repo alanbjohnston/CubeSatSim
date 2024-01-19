@@ -424,6 +424,7 @@ int read_analog()
 
 void get_gps() {
 #ifdef ARDUINO_ARCH_MBED_RP2040	
+  Serial.println("Getting GPS data");	
   bool newData = false;  
   unsigned long start = millis();	
 	
