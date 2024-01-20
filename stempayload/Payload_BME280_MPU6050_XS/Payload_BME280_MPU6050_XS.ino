@@ -7,12 +7,12 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 
-#ifdef ARDUINO_ARCH_MBED_RP2040  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
+#if defined(ARDUINO_ARCH_MBED_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
 #include <TinyGPS++.h>
 TinyGPSPlus gps;
 UART Serial2(8, 9, 0, 0);
 
-#elseif ARDUINO_ARCH_RP2040  // if Raspberry Pi RP2040 Boards in Arduino IDE
+#elseif define(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
 #include <TinyGPS++.h>
 TinyGPSPlus gps;
 bool check_for_wifi();
