@@ -500,7 +500,7 @@ bool check_for_wifi() {
 
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
 void get_gps() {
-  Serial.println("Getting GPS data");	
+//  Serial.println("Getting GPS data");	
   bool newData = false;  
   unsigned long start = millis();	
 	
