@@ -374,13 +374,13 @@ void blink_setup()
   pinMode(blueLED,OUTPUT);
 #endif
 
-if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   pinMode(LED_BUILTIN, OUTPUT);     
   pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
   pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
 #endif
 
-if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   if (check_for_wifi()) {
      wifi = true;
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
@@ -408,11 +408,11 @@ void blink(int length)
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
 
-if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
 #endif  
 
-if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   if (wifi)	
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
   else
@@ -430,11 +430,11 @@ delay(length);
   TXLED0; //TX LED macro to turn LED ON
 #endif  
 
-if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
 #endif  
 
-if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   if (wifi)	
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED ON
   else
@@ -479,7 +479,7 @@ int read_analog()
     return(sensorValue); 
 }
 
-if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
 bool check_for_wifi() {
 
   pinMode(29, INPUT);	
