@@ -353,9 +353,11 @@ void eeprom_word_write(int addr, int val)
  
 short eeprom_word_read(int addr)
 {
+  int result = 0;	
 #if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
-  return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
-#endif	
+  result = ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
+#endif
+  return result	
 }
  
 void blink_setup() 
