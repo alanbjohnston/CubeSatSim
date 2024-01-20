@@ -75,7 +75,7 @@ void setup() {
  
   Serial.println("Starting!");
 
-#ifdef ARDUINO_ARCH_MBED_RP2040
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   Serial.println("This code is for the Raspberry Pi Pico hardware.");
 
   Serial.println("Starting Serial2 for optional GPS on JP12");		
@@ -133,7 +133,8 @@ void setup() {
   {
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);	  
-#ifndef ARDUINO_ARCH_MBED_RP2040	  	  
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
+#else	  
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -291,7 +292,8 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-#ifndef	ARDUINO_ARCH_MBED_RP2040     
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
+#else	
   if (result == 'R') {	  
       Serial1.println("OK");
       delay(100);
@@ -307,7 +309,7 @@ void loop() {
 #endif	  	
   }  
 	  
-#ifdef ARDUINO_ARCH_MBED_RP2040
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
 
@@ -400,7 +402,7 @@ void led_set(int ledPin, bool state)
   digitalWrite(ledPin, state);   
 #endif  
 
-#ifdef ARDUINO_ARCH_MBED_RP2040 
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   if (ledPin == greenLED)
     digitalWrite(19, state);
   else if (ledPin == blueLED)
@@ -418,14 +420,14 @@ int read_analog()
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
     sensorValue = analogRead(PA7);
 #endif
-#if defined ARDUINO_ARCH_MBED_RP2040 
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
     sensorValue = analogRead(28);  
 #endif
     return(sensorValue); 
 }
 
 void get_gps() {
-#ifdef ARDUINO_ARCH_MBED_RP2040	
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   Serial.println("Getting GPS data");	
   bool newData = false;  
   unsigned long start = millis();	
