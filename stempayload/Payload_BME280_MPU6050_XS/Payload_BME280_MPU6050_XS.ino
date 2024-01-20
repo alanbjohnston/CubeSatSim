@@ -10,7 +10,9 @@
 #include <TinyGPS++.h>
 TinyGPSPlus gps;
 UART Serial2(8, 9, 0, 0);
-#else
+#else ifdef ARDUINO_ARCH_RP2040
+#include <TinyGPS++.h>
+TinyGPSPlus gps;
 #include <EEPROM.h>
 #endif
 
@@ -31,7 +33,7 @@ short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 
-#if defined ARDUINO_ARCH_MBED_RP2040
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
 float T2 = 26.3; // Temperature data point 1
 float R2 = 167; // Reading data point 1
 float T1 = 2; // Temperature data point 2
