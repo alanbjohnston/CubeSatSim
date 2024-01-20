@@ -156,8 +156,9 @@ void setup() {
   {
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);	  
-#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-#else	  
+//#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
+#if !defined (ARDUINO_ARCH_RP2040)
+//#else	  
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -315,8 +316,9 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-#else	
+//#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
+#if !defined (ARDUINO_ARCH_RP2040)
+//#else	  
   if (result == 'R') {	  
       Serial1.println("OK");
       delay(100);
