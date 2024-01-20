@@ -12,7 +12,7 @@
 TinyGPSPlus gps;
 UART Serial2(8, 9, 0, 0);
 
-#elseif defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
+#elif defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
 #include <TinyGPS++.h>
 TinyGPSPlus gps;
 bool check_for_wifi();
