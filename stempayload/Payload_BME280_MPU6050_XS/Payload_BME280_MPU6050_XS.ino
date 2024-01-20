@@ -8,6 +8,7 @@
 #include <MPU6050_tockn.h>
 #ifdef ARDUINO_ARCH_MBED_RP2040
 #include <TinyGPS++.h>
+TinyGPSPlus gps;
 UART Serial2(8, 9, 0, 0);
 #else
 #include <EEPROM.h>
@@ -17,7 +18,6 @@ UART Serial2(8, 9, 0, 0);
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
-TinyGPSPlus gps;
 
 long timer = 0;
 int bmePresent;
