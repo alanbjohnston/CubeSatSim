@@ -7,12 +7,12 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 
-#if defined(ARDUINO_ARCH_MBED_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
 #include <TinyGPS++.h>
 TinyGPSPlus gps;
 UART Serial2(8, 9, 0, 0);
 
-#elif defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
+#elif !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
 #include <TinyGPS++.h>
 TinyGPSPlus gps;
 bool check_for_wifi();
@@ -76,30 +76,32 @@ void setup() {
 	
   Serial.begin(115200); // Serial Monitor for testing
 
-#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-  Serial.println("Pico with Mbed");
-#elif defined (!ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-  Serial.println("Pico with RP2040");	
-#else
-  Serial.println("Pro Micro");
-#endif	
-/*	
-#ifdef ARDUINO_ARCH_RP2040	
+#if defined (!ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
    Serial1.setRX(1);
    delay(100);
    Serial1.setTX(0);
    delay(100);	
 #endif 
-*/	
+	
   Serial1.begin(115200);  // for communication with Pi Zero 
 
-  delay(1000);		
- 
+  delay(2000);
+	
+#if defined (ARDUINO_ARCH_MBED_RP2040) && (ARDUINO_ARCH_RP2040)
+  Serial.println("Pico with Mbed");
+#elif !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  Serial.println("Pico with RP2040");  
+#elif defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  Serial.println("STM32");
+#elif defined __AVR_ATmega32U4__
+  Serial.println("Pro Micro");
+#else
+  Serial.println("Unknown board");
+#endif  
+	
   Serial.println("Starting!");
 
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-  Serial.println("This code is for the Raspberry Pi Pico hardware.");
-
   Serial.println("Starting Serial2 for optional GPS on JP12");		
 //  Serial2.begin(9600);  // serial from  - some  modules need 115200
   Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
@@ -111,8 +113,7 @@ void setup() {
   pinMode(26, INPUT);	
   pinMode(27, INPUT);	
   pinMode(28, INPUT);
-  pinMode(15, INPUT_PULLUP);  // squelch	
- 
+  pinMode(15, INPUT_PULLUP);  // squelch	 
 #endif	
  
   blink_setup();
@@ -373,13 +374,13 @@ void blink_setup()
   pinMode(blueLED,OUTPUT);
 #endif
 
-#if defined ARDUINO_ARCH_MBED_RP2040
+if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   pinMode(LED_BUILTIN, OUTPUT);     
   pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
   pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
 #endif
 
-#if defined ARDUINO_ARCH_RP2040
+if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   if (check_for_wifi()) {
      wifi = true;
      led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
@@ -407,11 +408,11 @@ void blink(int length)
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
 
-#if defined ARDUINO_ARCH_MBED_RP2040
+if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040
+if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   if (wifi)	
     digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
   else
@@ -429,11 +430,11 @@ delay(length);
   TXLED0; //TX LED macro to turn LED ON
 #endif  
 
-#if defined ARDUINO_ARCH_MBED_RP2040 
+if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040
+if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   if (wifi)	
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED ON
   else
@@ -478,7 +479,7 @@ int read_analog()
     return(sensorValue); 
 }
 
-#if defined (ARDUINO_ARCH_MBED_RP2040)
+if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
 bool check_for_wifi() {
 
   pinMode(29, INPUT);	
