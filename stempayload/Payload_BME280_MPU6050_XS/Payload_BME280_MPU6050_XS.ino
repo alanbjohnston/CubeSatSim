@@ -76,7 +76,7 @@ void setup() {
 	
   Serial.begin(115200); // Serial Monitor for testing
 
-#if defined (!ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
    Serial1.setRX(1);
    delay(100);
    Serial1.setTX(0);
