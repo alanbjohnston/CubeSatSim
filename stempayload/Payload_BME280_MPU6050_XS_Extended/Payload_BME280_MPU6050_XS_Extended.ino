@@ -7,7 +7,7 @@
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
 #include <TinyGPS++.h>
-#ifdef ARDUINO_ARCH_RP2040
+#ifdef ARDUINO_ARCH_MBED_RP2040
 UART Serial2(8, 9, 0, 0);
 #else
 #include <EEPROM.h>
