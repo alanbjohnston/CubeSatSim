@@ -6,10 +6,20 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
+
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
 #include <TinyGPS++.h>
-#ifdef ARDUINO_ARCH_RP2040
+TinyGPSPlus gps;
 UART Serial2(8, 9, 0, 0);
-#else
+
+#elif !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
+#include <TinyGPS++.h>
+TinyGPSPlus gps;
+bool check_for_wifi();
+bool wifi = false;
+int led_builtin_pin;
+
+#else  // if Sparkfun Pro Micro or STM32 
 #include <EEPROM.h>
 #endif
 
@@ -17,7 +27,6 @@ UART Serial2(8, 9, 0, 0);
 
 Adafruit_BME280 bme;
 MPU6050 mpu6050(Wire);
-TinyGPSPlus gps;
 
 long timer = 0;
 int bmePresent;
@@ -31,7 +40,7 @@ short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 
-#if defined ARDUINO_ARCH_RP2040
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
 float T2 = 26.3; // Temperature data point 1
 float R2 = 167; // Reading data point 1
 float T1 = 2; // Temperature data point 2
@@ -66,29 +75,45 @@ extern void payload_loop();  // sensor extension read function defined in payloa
 void setup() {
 	
   Serial.begin(115200); // Serial Monitor for testing
- 
+
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+   Serial1.setRX(1);
+   delay(100);
+   Serial1.setTX(0);
+   delay(100);	
+#endif 
+	
   Serial1.begin(115200);  // for communication with Pi Zero 
 
-  delay(1000);		
- 
+  delay(2000);
+	
+#if defined (ARDUINO_ARCH_MBED_RP2040) && (ARDUINO_ARCH_RP2040)
+  Serial.println("Pico with Mbed");
+#elif !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  Serial.println("Pico with RP2040");  
+#elif defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
+  Serial.println("STM32");
+#elif defined __AVR_ATmega32U4__
+  Serial.println("Pro Micro");
+#else
+  Serial.println("Unknown board");
+#endif  
+	
   Serial.println("Starting!");
 
-#ifdef ARDUINO_ARCH_RP2040
-  Serial.println("This code is for the Raspberry Pi Pico hardware.");
-
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   Serial.println("Starting Serial2 for optional GPS on JP12");		
 //  Serial2.begin(9600);  // serial from  - some  modules need 115200
   Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
 
   // set all Pico GPIO connected pins to input	
-  for (int i = 6; i < 22; i++) { 
+  for (int i = 10; i < 22; i++) { 
       pinMode(i, INPUT);	  
   }
   pinMode(26, INPUT);	
   pinMode(27, INPUT);	
   pinMode(28, INPUT);
-  pinMode(15, INPUT_PULLUP);  // squelch	
- 
+  pinMode(15, INPUT_PULLUP);  // squelch	 
 #endif	
  
   blink_setup();
@@ -131,7 +156,7 @@ void setup() {
   {
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);	  
-#ifndef ARDUINO_ARCH_RP2040	  	  
+#if !defined (ARDUINO_ARCH_RP2040)
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -289,7 +314,7 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-#ifndef	ARDUINO_ARCH_RP2040     
+#if !defined (ARDUINO_ARCH_RP2040)
   if (result == 'R') {	  
       Serial1.println("OK");
       delay(100);
@@ -305,7 +330,7 @@ void loop() {
 #endif	  	
   }  
 	  
-#ifdef ARDUINO_ARCH_RP2040
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   Serial.print("Squelch: ");	
   Serial.println(digitalRead(15));
 
@@ -318,7 +343,7 @@ void loop() {
  
 void eeprom_word_write(int addr, int val)
 {
-#ifndef ARDUINO_ARCH_RP2040 	
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
 #endif	
@@ -326,9 +351,11 @@ void eeprom_word_write(int addr, int val)
  
 short eeprom_word_read(int addr)
 {
-#ifndef ARDUINO_ARCH_RP2040 	
-  return ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
-#endif	
+  int result = 0;	
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
+  result = ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
+#endif
+  return result;	
 }
  
 void blink_setup() 
@@ -347,11 +374,27 @@ void blink_setup()
   pinMode(blueLED,OUTPUT);
 #endif
 
-#if defined ARDUINO_ARCH_RP2040
-     pinMode(LED_BUILTIN, OUTPUT);     
-     pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
-     pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  pinMode(LED_BUILTIN, OUTPUT);     
+  pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
+  pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
 #endif
+
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  if (check_for_wifi()) {
+     wifi = true;
+     led_builtin_pin = LED_BUILTIN; // use default GPIO for Pico W	  
+     pinMode(LED_BUILTIN, OUTPUT);		  
+//     configure_wifi();	  
+  }  else  {
+     led_builtin_pin = 25; // manually set GPIO 25 for Pico board	  
+//     pinMode(25, OUTPUT);
+     pinMode(led_builtin_pin, OUTPUT);
+
+     pinMode(18, OUTPUT);
+     pinMode(19, OUTPUT);	   
+  }
+#endif	
 }
  
 void blink(int length)
@@ -365,9 +408,16 @@ void blink(int length)
   TXLED0; //TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040
-    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
 #endif  
+
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, HIGH);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, HIGH);   // set the built-in LED ON
+#endif  	
 
 delay(length);	
  
@@ -380,9 +430,16 @@ delay(length);
   TXLED0; //TX LED macro to turn LED ON
 #endif  
 
-#if defined ARDUINO_ARCH_RP2040 
+#if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
     digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED OFF
-#endif   
+#endif  
+
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+  if (wifi)	
+    digitalWrite(LED_BUILTIN, LOW);   // set the built-in LED ON
+  else
+    digitalWrite(led_builtin_pin, LOW);   // set the built-in LED ON
+#endif  	
 }
  
 void led_set(int ledPin, bool state)
@@ -398,7 +455,7 @@ void led_set(int ledPin, bool state)
   digitalWrite(ledPin, state);   
 #endif  
 
-#ifdef ARDUINO_ARCH_RP2040 
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
   if (ledPin == greenLED)
     digitalWrite(19, state);
   else if (ledPin == blueLED)
@@ -416,14 +473,34 @@ int read_analog()
 #if defined(ARDUINO_ARCH_STM32F0) || defined(ARDUINO_ARCH_STM32F1) || defined(ARDUINO_ARCH_STM32F3) || defined(ARDUINO_ARCH_STM32F4) || defined(ARDUINO_ARCH_STM32L4)
     sensorValue = analogRead(PA7);
 #endif
-#if defined ARDUINO_ARCH_RP2040 
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
     sensorValue = analogRead(28);  
 #endif
     return(sensorValue); 
 }
 
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+bool check_for_wifi() {
+
+  pinMode(29, INPUT);	
+   const float conversion_factor = 3.3f / (1 << 12);
+   uint16_t result = analogRead(29);
+//   Serial.printf("ADC3 value: 0x%03x, voltage: %f V\n", result, result * conversion_factor);
+
+  if (result < 0x10) {
+    Serial.println("\nPico W detected!\n");
+    return(true);
+  }
+  else {
+     Serial.println("\nPico detected!\n");
+     return(false);  
+  }
+}
+#endif
+
+#if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
 void get_gps() {
-#ifdef ARDUINO_ARCH_RP2040	
+  Serial.println("Getting GPS data");	
   bool newData = false;  
   unsigned long start = millis();	
 	
@@ -468,5 +545,5 @@ void get_gps() {
   } else
 //	    Serial.printf("GPS read no new data: %d\n", millis() - start);	      
     ;
-#endif	
 }
+#endif	
