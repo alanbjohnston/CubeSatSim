@@ -41,10 +41,10 @@ int first_time = true;
 int first_read = true;
 
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-float T2 = 26.3; // Temperature data point 1
-float R2 = 167; // Reading data point 1
-float T1 = 2; // Temperature data point 2
-float R1 = 179; // Reading data point 2
+float T2 = 24; // Temperature data point 1
+float R2 = 169; // Reading data point 1
+float T1 = 6; // Temperature data point 2
+float R1 = 181; // Reading data point 2
 #endif
 #if defined __AVR_ATmega32U4__ 
 float T2 = 26.3; // Temperature data point 1
