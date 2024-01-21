@@ -523,7 +523,7 @@ if __name__ == "__main__":
 						print("Turning off transmit")	
 						system("echo > command_tx False")
 					sleep(5)	
-				output(pd, 0)
+				output(pd, 1)  # changed from 0 to 1
 				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
