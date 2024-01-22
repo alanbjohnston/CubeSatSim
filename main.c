@@ -642,8 +642,8 @@ int main(int argc, char * argv[]) {
 	   
    }
 
-//      if (payload == ON) {  // moved to here
-      if ((payload == ON) && (mode != BPSK)) {  // moved to here
+      if (payload == ON) {  // moved to here
+//      if ((payload == ON) && (mode != BPSK)) {  // moved to here
         STEMBoardFailure = 0;
         printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
 	fflush(stdout); 
