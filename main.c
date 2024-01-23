@@ -643,6 +643,7 @@ int main(int argc, char * argv[]) {
    }
 
       if (payload == ON) {  // moved to here
+//      if ((payload == ON) && (mode != BPSK)) {  // moved to here
         STEMBoardFailure = 0;
         printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
 	fflush(stdout); 
@@ -1393,7 +1394,8 @@ void get_tlm_fox() {
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
      if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
-        sleep(2.0); // 0.5);  // 25);  // initial period
+//        sleep(2.0); // 0.5);  // 25);  // initial period
+        sleep(1.0); // 0.5);  // 25);  // initial period
      while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);

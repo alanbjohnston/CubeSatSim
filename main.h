@@ -134,7 +134,8 @@ unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
 int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
-float voltageThreshold = 3.6, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
+// float voltageThreshold = 3.6, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
+float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
@@ -175,7 +176,7 @@ int start_flag_detected = FALSE;
 int start_flag_complete = FALSE;
 int end_flag_detected = FALSE;
 int jpeg_start = 0;
-#define CAMERA_TIMEOUT 10000 // 20000  // Camera timeout in milli seconds
+#define CAMERA_TIMEOUT 2000 // 10000 // 20000  // Payload timeout in milli seconds
 
 void battery_saver(int setting);
 int battery_saver_check(); 
