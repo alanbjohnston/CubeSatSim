@@ -39,7 +39,7 @@ int main(int argc, char * argv[]) {
   if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
   {
     sleep(5);  // try sleep at start to help boot
-    voltageThreshold = 3.7;
+    // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
   }
 	
