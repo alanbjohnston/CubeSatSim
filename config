@@ -168,7 +168,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
-	echo "   -i     Restarts CubeSatsim software"
+	echo "   -i     Reboots CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
@@ -225,7 +225,7 @@ elif [ "$1" = "-t" ]; then
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Restarting CubeSatSim with new configuration file"
+	echo "Rebooting CubeSatSim with new configuration file"
 	echo
 
 	sudo reboot now
@@ -324,7 +324,7 @@ elif [ "$1" = "-r" ]; then
 		echo
 	else
 		echo
-		echo "Restarting CubeSatSim with new configuration file"
+		echo "Rebooting CubeSatSim with new configuration file"
 		echo
 		sudo reboot now
 #		sudo systemctl restart cubesatsim
