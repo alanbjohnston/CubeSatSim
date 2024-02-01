@@ -570,10 +570,11 @@ elif [ "$1" = "-q" ]; then
 	echo $1 $2 $3 $4 $5 $sq $7 $8 $9
 	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Restarting CubeSatSim with new configuration file"
+	echo "Rebooting CubeSatSim with new configuration file"
 	echo
 
-	sudo systemctl restart cubesatsim
+	sudo reboot now
+#	sudo systemctl restart cubesatsim
 
 elif [ "$1" = "-F" ]; then
 
@@ -627,9 +628,10 @@ elif [ "$1" = "-F" ]; then
 #		echo 
 #	else
 		echo
-		echo "Restarting CubeSatSim with new configuration file"
+		echo "Rebooting CubeSatSim with new configuration file"
 		echo
-		sudo systemctl restart cubesatsim
+		sudo reboot now
+#		sudo systemctl restart cubesatsim
 #	fi
 elif [ "$1" = "-H" ]; then
 
@@ -670,10 +672,11 @@ elif [ "$1" = "-H" ]; then
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Restarting CubeSatSim with new configuration file"
+	echo "Rebooting CubeSatSim with new configuration file"
 	echo
 
-	sudo systemctl restart cubesatsim
+	sudo reboot now
+#	sudo systemctl restart cubesatsim
 
 elif [ "$1" = "-p" ]; then
 
