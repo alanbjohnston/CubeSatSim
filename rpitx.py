@@ -396,10 +396,11 @@ if __name__ == "__main__":
 #						battery_saver_check()
 						if (txc):
 							output(pd, 1)
+							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
-							sleep(0.2)   # add more time at start
+							sleep(0.3)   # add even more time at start
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")							
-							sleep(0.1)
+							sleep(0.2)  # add more time at end
 							output (ptt, 1)
 							output(pd, 0)							
 						else:			
