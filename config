@@ -82,8 +82,9 @@ fi
 
 
 if [ "$1" = "-i" ]; then
-	echo "Restarting CubeSatSim"
-	sudo systemctl restart cubesatsim
+	echo "Rebooting CubeSatSim"
+	sudo reboot now
+#	sudo systemctl restart cubesatsim
 	exit 
 elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
@@ -227,7 +228,8 @@ elif [ "$1" = "-t" ]; then
 	echo "Restarting CubeSatSim with new configuration file"
 	echo
 
-	sudo systemctl restart cubesatsim
+	sudo reboot now
+#	sudo systemctl restart cubesatsim
 	
 elif [ "$1" = "-c" ]; then
 
@@ -269,9 +271,10 @@ elif [ "$1" = "-c" ]; then
 		echo 
 	else
 		echo
-		echo "Restarting CubeSatSim with new configuration file"
+		echo "Rebooting CubeSatSim with new configuration file"
 		echo
-		sudo systemctl restart cubesatsim
+		sudo reboot now
+#		sudo systemctl restart cubesatsim
 	fi
 	
 elif [ "$1" = "-r" ]; then
@@ -323,7 +326,8 @@ elif [ "$1" = "-r" ]; then
 		echo
 		echo "Restarting CubeSatSim with new configuration file"
 		echo
-		sudo systemctl restart cubesatsim
+		sudo reboot now
+#		sudo systemctl restart cubesatsim
 	fi
 	
 elif [ "$1" = "-l" ]; then
@@ -395,9 +399,10 @@ elif [ "$1" = "-l" ]; then
 		echo 
 	else
 		echo
-		echo "Restarting CubeSatSim with new configuration file"
+		echo "Rebooting CubeSatSim with new configuration file"
 		echo
-		sudo systemctl restart cubesatsim
+		sudo reboot now
+#		sudo systemctl restart cubesatsim
 	fi
 
 elif [ "$1" = "-S" ]; then
