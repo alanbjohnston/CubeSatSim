@@ -41,6 +41,9 @@ int main(int argc, char * argv[]) {
     sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
+    delta = 100;  // reduced delta time for Pi Zero 2	  
+  } else {
+    delta = 250;  // delta time for Pi Zero 
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
@@ -499,7 +502,7 @@ int main(int argc, char * argv[]) {
       samplePeriod =  (int) (((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen)))) / (float) bitRate) * 1000 - 500);
       sleepTime = 0.1f;
 	   
-      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000 - delta; // frame time in ms
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
@@ -523,7 +526,7 @@ int main(int argc, char * argv[]) {
       //samplePeriod = 2200; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
 	   
-      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000 - delta; // frame time in ms
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
@@ -1393,10 +1396,10 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
+     if ((millis() - sampleTime) < ((unsigned int)frameTime))  // moved under delta to frameTime calculation
 //        sleep(2.0); // 0.5);  // 25);  // initial period
         sleep(1.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
+     while ((millis() - sampleTime) < ((unsigned int)frameTime))  // moved under delta to frameTime calculation
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
