@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero 2 detected\n");
     delta = 100;  // reduced delta time for Pi Zero 2	  
   } else {
-    delta = 50;  // delta time for Pi Zero 
+    delta = 100;  // delta time for Pi Zero 
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
@@ -526,7 +526,7 @@ int main(int argc, char * argv[]) {
       //samplePeriod = 2200; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
 	   
-      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000 - delta; // frame time in ms
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // no  - delta; // frame time in ms
 
       printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
         bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
