@@ -139,7 +139,7 @@ float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentT
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
-int frameTime;
+int frameTime, delta;  // delta is time taken off frameTime
 long int newGpsTime;
 
 float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
