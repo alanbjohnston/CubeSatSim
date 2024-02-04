@@ -1400,7 +1400,7 @@ void get_tlm_fox() {
 //        sleep(2.0); // 0.5);  // 25);  // initial period
         sleep(1.0); // 0.5);  // 25);  // initial period
      while ((millis() - sampleTime) < ((unsigned int)frameTime))  // moved under delta to frameTime calculation
-        sleep(0.1); // 25); // 0.5);  // 25);
+        sleep(0.05); // 0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
       printf("Sleep period: %d\n", millis() - startSleep);
