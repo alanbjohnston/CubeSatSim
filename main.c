@@ -41,7 +41,7 @@ int main(int argc, char * argv[]) {
     sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
-    delta = 50; // 100;  // reduced delta time for Pi Zero 2	  
+    delta = 25; // 50; // 100;  // reduced delta time for Pi Zero 2	  
   } else {
     delta = 350; // 150; // 400; // 350; // 200; // 100;  // delta time for Pi Zero 
   }
