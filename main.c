@@ -43,7 +43,7 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero 2 detected\n");
     delta = 100;  // reduced delta time for Pi Zero 2	  
   } else {
-    delta = 350; // 200; // 100;  // delta time for Pi Zero 
+    delta = 50; // 350; // 200; // 100;  // delta time for Pi Zero 
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
