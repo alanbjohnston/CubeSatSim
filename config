@@ -60,6 +60,13 @@ if [ "$1" = "" ]; then
 	echo $6
 	echo
 
+	FILE=/home/pi/CubeSatSim/command_control
+	if [ -f "$FILE" ]; then
+    		echo "Radio command and control is ON"
+	else 
+    		echo "Radio command and control is OFF"
+	fi
+
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
     		echo "Battery saver mode is ON"
