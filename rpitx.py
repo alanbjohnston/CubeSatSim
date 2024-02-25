@@ -11,6 +11,51 @@ from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial
 
+def command_control_check():
+
+	global command_control
+	global no_command
+	global debug_mode
+	global command_count
+	
+	output(pd, 1)
+	output(ptt, 1)
+	sleep(1)
+	if (no_command == False and GPIO.input(squelch) == False):
+		print("carrier received!")
+		# command_tx = not command_tx
+#			print(command_tx)
+
+		try:
+			command_count += 1
+			filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+			command_count_string = str(command_count)
+			print(command_count_string)
+			string = filec.write(command_count_string)
+			filec.close()
+		except:
+			if (debug_mode == 1):
+				print("Can't write command_count file!")
+		print("Command_count: ")
+		print(command_count)							
+		
+		increment_mode()
+		
+#			if (command_tx == True):
+#				print("Turning on transmit")
+#				system("echo > command_tx True")
+#							output(txLed, txLedOn)
+#							sleep(0.5)
+#							output(txLed, txLedff)
+#			else:
+#				print("Turning off transmit")
+#				system("echo > command_tx False")
+	else:
+		print("No carrier received!")
+	output(pd, 0)
+#					sleep(1)
+		
+
 def battery_saver_check():
 	try:
 		global txc
@@ -430,41 +475,7 @@ if __name__ == "__main__":
 						
 					sleep(0.5)
 				except:
-					output(pd, 1)
-					output(ptt, 1)
-					sleep(1)
-					if (no_command == False and GPIO.input(squelch) == False):
-						print("carrier received!")
-						# command_tx = not command_tx
-						print(command_tx)
-
-						try:
-							command_count += 1
-							filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-							command_count_string = str(command_count)
-							print(command_count_string)
-							string = filec.write(command_count_string)
-							filec.close()
-						except:
-							if (debug_mode == 1):
-								print("Can't write command_count file!")
-						print("Command_count: ")
-						print(command_count)							
-						
-						increment_mode()
-						
-						if (command_tx == True):
-							print("Turning on transmit")
-							system("echo > command_tx True")
-#							output(txLed, txLedOn)
-#							sleep(0.5)
-#							output(txLed, txLedff)
-						else:
-							print("Turning off transmit")
-							system("echo > command_tx False")
-					else:
-						print("No carrier received!")
-					output(pd, 0)
+					command_control_check()
 					sleep(1)
 		elif (mode == 'm'):
 			print("CW")
