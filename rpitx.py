@@ -424,6 +424,12 @@ if __name__ == "__main__":
 						output(txLed, txLedOff)
 						system("sudo rm /home/pi/CubeSatSim/ready")
 					f.close()
+				
+					if (debug_mode == 1):
+						print("Ready for next packet!")
+						
+					sleep(0.5)
+				except:
 					output(pd, 1)
 					output(ptt, 1)
 					sleep(1)
@@ -459,14 +465,7 @@ if __name__ == "__main__":
 					else:
 						print("No carrier received!")
 					output(pd, 0)
-					
-					if (debug_mode == 1):
-						print("Ready for next packet!")
-						
-					sleep(0.5)
-				except:
-
-					sleep(0.5)
+					sleep(1)
 		elif (mode == 'm'):
 			print("CW")
 #			sleep(4)
