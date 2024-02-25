@@ -15,15 +15,15 @@ if [ "$1" = "" ]; then
 	set -- $value
 
 	if [ "$1" = "a" ]; then
-		echo "APRS mode is set"
+		echo "Mode is APRS"
 	elif [ "$1" = "m" ]; then
-		echo "CW mode is set"
+		echo "Mode is CW"
 	elif [ "$1" = "f" ]; then
-		echo "FSK mode is set"
+		echo "Mode is FSK"
 	elif [ "$1" = "b" ]; then
-		echo "BPSK mode is set"	
+		echo "Mode is BPSK"	
 	elif [ "$1" = "s" ]; then
-		echo "SSTV mode is set"
+		echo "Mode is SSTV"
 	else
 		echo 
 	fi
@@ -103,7 +103,7 @@ elif [ "$1" = "-a" ]; then
     		echo "Battery saver mode is ON."
 #  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
-    		echo "Battery saver mode os OFF."
+    		echo "Battery saver mode is OFF."
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
 	
