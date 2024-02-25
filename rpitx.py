@@ -510,40 +510,7 @@ if __name__ == "__main__":
 #				output (ptt, 1)
 			sleep(5)
 			while True:
-				output(pd, 1)
-				output(ptt, 1)
-				sleep(1)
-				if (no_command == False and GPIO.input(squelch) == False):
-					print("carrier received!")
-					# command_tx = not command_tx
-					print(command_tx)
-					
-					try:
-						command_count += 1
-						filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-						command_count_string = str(command_count)
-						print(command_count_string)
-						string = filec.write(command_count_string)
-						filec.close()
-					except:
-						if (debug_mode == 1):
-							print("Can't write command_count file!")
-					print("Command_count: ")
-					print(command_count)					
-
-					increment_mode()
-					
-					if (command_tx == True):
-						print("Turning on transmit")
-						system("echo > command_tx True")
-#						output(txLed, txLedOn)
-#						sleep(0.5)
-#						output(txLed, txLedff)
-					else:
-						print("Turning off transmit")	
-						system("echo > command_tx False")
-					sleep(5)	
-				output(pd, 1)  # changed from 0 to 1
+				command_control_check()
 				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
@@ -625,6 +592,8 @@ if __name__ == "__main__":
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
+					command_control_check()			
+					
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
 
@@ -651,42 +620,12 @@ if __name__ == "__main__":
 					draw.text((120, 10), telem_string, font=font2, fill='white')
 					img.save(file)
 					
+					command_control_check()			
+					
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
-					output(pd, 1)
-					output(ptt, 1)
-					sleep(1)
-					if (no_command == False and GPIO.input(squelch) == False):
-						print("carrier received!")
-						# command_tx = not command_tx
-						print(command_tx)
-						
-						try:
-							command_count += 1
-							filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-							command_count_string = str(command_count)
-							print(command_count_string)
-							string = filec.write(command_count_string)
-							filec.close()
-						except:
-							if (debug_mode == 1):
-								print("Can't write command_count file!")
-						print("Command_count: ")
-						print(command_count)					
-						
-						increment_mode()
-						
-						if (command_tx == True):
-							print("Turning on transmit")
-							system("echo > command_tx True")
-#							output(txLed, txLedOn)
-#							sleep(0.5)
-#							output(txLed, txLedff)
-						else:
-							print("Turning off transmit")
-							system("echo > command_tx False")
-					output(pd, 0)			
+					command_control_check()			
 
 					if (command_tx == True):
 						print ("Sending SSTV image")
@@ -713,9 +652,14 @@ if __name__ == "__main__":
 					sleep(1)
 			else:
 				try:
+					command_control_check()			
+					
 					file = open("/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg")
 					print("First SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg") 
+
+					command_control_check()			
+					
 					if (command_tx == True):
 
 						print ("Sending SSTV image")
@@ -742,43 +686,15 @@ if __name__ == "__main__":
 				except:
 					print("image 1 did not load - copy from CubeSatSim/sstv directory")
 				try:
+					command_control_check()			
+					
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					print("Second SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
+
 					while 1:
 
-						output(pd, 1)
-						output(ptt, 1)
-						sleep(1)
-						if (no_command == False and GPIO.input(squelch) == False):
-							print("carrier received!")
-							# command_tx = not command_tx
-							print(command_tx)
-							try:
-								command_count += 1
-								filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-								command_count_string = str(command_count)
-								print(command_count_string)
-								string = filec.write(command_count_string)
-								filec.close()
-							except:
-								if (debug_mode == 1):
-									print("Can't write command_count file!")
-							print("Command_count: ")
-							print(command_count)					
-						
-							increment_mode()
-						
-							if (command_tx == True):
-								print("Turning on transmit")
-								system("echo > command_tx True")
-#								output(txLed, txLedOn)
-#								sleep(0.5)
-#								output(txLed, txLedff)
-							else:
-								print("Turning off transmit")
-								system("echo > command_tx False")
-						output(pd, 0)			
+						command_control_check()		
 	
 						if (command_tx == True):
 							print ("Sending SSTV image")
@@ -841,40 +757,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				output(pd, 1)
-				output(ptt, 1)
-				sleep(1)
-				if (no_command == False and GPIO.input(squelch) == False):
-					print("carrier received!")
-					# command_tx = not command_tx
-					print(command_tx)
-
-					try:
-						command_count += 1
-						filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-						command_count_string = str(command_count)
-						print(command_count_string)
-						string = filec.write(command_count_string)
-						filec.close()
-					except:
-						if (debug_mode == 1):
-							print("Can't write command_count file!")
-					print("Command_count: ")
-					print(command_count)					
-						
-					increment_mode()
-						
-					if (command_tx == True):
-						print("Turning on transmit")
-						system("echo > command_tx True")
-						system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f " + tx + "e6 -t float &")
-					else:
-						print("Turning off transmit") # and rebooting")
-						system("echo > command_tx False")
-						system("sudo systemctl restart rpitx")
-#						system("sudo reboot now")
-						sleep(60)
-				output(pd, 0)
+				command_control_check()
 				
 				if (command_tx == True):		
 					output(txLed, txLedOn)
@@ -894,39 +777,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				output(pd, 1)
-				output(ptt, 1)
-				sleep(1)
-				if (no_command == False and GPIO.input(squelch) == False):
-					print("carrier received!")
-					# command_tx = not command_tx
-					print(command_tx)
-
-					try:
-						command_count += 1
-						filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-						command_count_string = str(command_count)
-						print(command_count_string)
-						string = filec.write(command_count_string)
-						filec.close()
-					except:
-						if (debug_mode == 1):
-							print("Can't write command_count file!")
-					print("Command_count: ")
-					print(command_count)	
-
-					increment_mode()
-						
-					if (command_tx == True):
-						print("Turning on transmit")
-						system("echo > command_tx True")
-						system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 &")
-					else:
-						print("Turning of transmit and rebooting")
-						system("echo > command_tx False")
-						system("sudo systemctl restart rpitx")
-#						system("sudo reboot now")
-						sleep(60)
+				command_control_check()
 				if (command_tx == True):		
 					output(txLed, txLedOn)
 				sleep(4.0)
