@@ -34,23 +34,23 @@
 #define MINUS_Y 5
 #define PLUS_Z 6
 #define MINUS_Z 7
-#define TEMP 2
+#define TEMP 2 // OK BME is positions 0 and 1
 #define PRES 3
 #define ALT 4
 #define HUMI 5
-#define GYRO_X 7
+#define GYRO_X 7 // MPU6050 is posisition 6
 #define GYRO_Y 8
 #define GYRO_Z 9
 #define ACCEL_X 10
 #define ACCEL_Y 11
 #define ACCEL_Z 12
-#define GPS1 14
+#define GPS1 14 // GPS is position 13
 #define GPS2 15
 #define GPS3 16
-#define DTEMP 21
-#define XS1 23
-#define XS2 24
-#define XS3 25
+#define DTEMP 18  // TMP is position 17
+#define XS1 20 // NEW user defined token will be position 19
+#define XS2 21  
+#define XS3 22
 #define SENSOR_FIELDS 26
 
 #define RSSI 0
