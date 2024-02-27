@@ -183,7 +183,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
 	echo "   -S     Scan both I2C buses on the Raspberry Pi"
 	echo "   -C     Clear logs"
-	echo "        Change command and control state"
+	echo "   -T     Change command and control state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
 	echo "   -B     Change battery saver mode manually"
 	echo "   -q     Change the Squelch setting for command receiver"
@@ -711,6 +711,11 @@ elif [ "$1" = "-v" ]; then
 	echo "Real-time output from the INA219 voltage and current sensors:"
 	echo
 	/home/pi/CubeSatSim/telem
+
+else
+	echo
+	echo "Unknown option.  Try config -h for a list of supported options."
+	echo
 
 fi
 
