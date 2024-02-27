@@ -455,6 +455,7 @@ elif [ "$1" = "-T" ]; then
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
     		echo "Radio command and control is ON"
+		echo
 		echo "Do you want to turn command and control to OFF (y/n) "
 		read reset
 		echo
@@ -469,7 +470,8 @@ elif [ "$1" = "-T" ]; then
 
 	else 
     		echo "Radio command and control is OFF"
-		echo "Do you want to set beacon transmit to ON (y/n) "
+		echo
+		echo "Do you want to set command and control to ON (y/n) "
 		read reset
 		echo
 
