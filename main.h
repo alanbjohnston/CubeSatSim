@@ -34,7 +34,7 @@
 #define MINUS_Y 5
 #define PLUS_Z 6
 #define MINUS_Z 7
-#define TEMP 2 // OK BME is positions 0 and 1
+#define TEMP 2 // OK and BME280 is positions 0 and 1
 #define PRES 3
 #define ALT 4
 #define HUMI 5
