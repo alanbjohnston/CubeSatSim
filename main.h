@@ -34,19 +34,24 @@
 #define MINUS_Y 5
 #define PLUS_Z 6
 #define MINUS_Z 7
-#define TEMP 2
+#define TEMP 2 // OK and BME280 is positions 0 and 1
 #define PRES 3
 #define ALT 4
 #define HUMI 5
-#define GYRO_X 7
+#define GYRO_X 7 // MPU6050 is posisition 6
 #define GYRO_Y 8
 #define GYRO_Z 9
 #define ACCEL_X 10
 #define ACCEL_Y 11
 #define ACCEL_Z 12
-#define XS1 14
-#define XS2 15
-#define XS3 16
+#define GPS1 14 // GPS is position 13
+#define GPS2 15
+#define GPS3 16
+#define DTEMP 18  // TMP is position 17
+#define XS1 20 // NEW user defined token will be position 19
+#define XS2 21  
+#define XS3 22
+#define SENSOR_FIELDS 26
 
 #define RSSI 0
 #define IHU_TEMP 2
@@ -146,7 +151,7 @@ float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, 
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE, rxAntennaDeployed = 0, txAntennaDeployed = 0;
 double eclipse_time;
 
-float voltage[9], current[9], sensor[17], other[3];
+float voltage[9], current[9], sensor[SENSOR_FIELDS], other[3];
 char sensor_payload[500];
 
 int test_i2c_bus(int bus);
@@ -157,7 +162,7 @@ char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[5] = "APCSS";
-float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[17], sensor_min[17], other_max[3], other_min[3];
+float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[SENSOR_FIELDS], sensor_min[SENSOR_FIELDS], other_max[3], other_min[3];
 
 int get_payload_serial(int debug_camera);
 int finished = FALSE;

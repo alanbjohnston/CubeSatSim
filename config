@@ -15,15 +15,15 @@ if [ "$1" = "" ]; then
 	set -- $value
 
 	if [ "$1" = "a" ]; then
-		echo "APRS mode is set"
+		echo "Mode is APRS"
 	elif [ "$1" = "m" ]; then
-		echo "CW mode is set"
+		echo "Mode is CW"
 	elif [ "$1" = "f" ]; then
-		echo "FSK mode is set"
+		echo "Mode is FSK"
 	elif [ "$1" = "b" ]; then
-		echo "BPSK mode is set"	
+		echo "Mode is BPSK"	
 	elif [ "$1" = "s" ]; then
-		echo "SSTV mode is set"
+		echo "Mode is SSTV"
 	else
 		echo 
 	fi
@@ -58,6 +58,14 @@ if [ "$1" = "" ]; then
 
 	echo -n "Squelch level is: "
 	echo $6
+	echo
+
+	FILE=/home/pi/CubeSatSim/command_control
+	if [ -f "$FILE" ]; then
+    		echo "Radio command and control is ON"
+	else 
+    		echo "Radio command and control is OFF"
+	fi
 	echo
 
 	FILE=/home/pi/CubeSatSim/battery_saver
@@ -95,7 +103,7 @@ elif [ "$1" = "-a" ]; then
     		echo "Battery saver mode is ON."
 #  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
-    		echo "Battery saver mode os OFF."
+    		echo "Battery saver mode is OFF."
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
 	
@@ -175,7 +183,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
 	echo "   -S     Scan both I2C buses on the Raspberry Pi"
 	echo "   -C     Clear logs"
-	echo "   -T     Change command state"
+	echo "   -T     Change command and control state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
 	echo "   -B     Change battery saver mode manually"
 	echo "   -q     Change the Squelch setting for command receiver"
@@ -441,29 +449,40 @@ elif [ "$1" = "-C" ]; then
 elif [ "$1" = "-T" ]; then
 
 	echo	
-	echo "Change command state"
+	echo "Change command and control state"
 	echo 
 
-	echo "Current command state is:"
-	cat /home/pi/CubeSatSim/command_tx
-	echo
+	FILE=/home/pi/CubeSatSim/command_control
+	if [ -f "$FILE" ]; then
+    		echo "Radio command and control is ON"
+		echo
+		echo "Do you want to turn command and control to OFF (y/n) "
+		read reset
+		echo
 
-	echo "Do you want to set beacon transmit to ON (y/n) "
-	read reset
-	echo
-	
-	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-		sudo sed -i 's/False/True/g' /home/pi/CubeSatSim/command_tx
-		echo "Command state set to True to enable beacon"
-		echo "rebooting"
-		sudo systemctl stop rpitx
-		sudo reboot now
-	else
-		sudo sed -i 's/True/False/g' /home/pi/CubeSatSim/command_tx
-		echo "Command state set to False to disable beacon"
-		echo "rebooting"
-		sudo systemctl stop rpitx
-		sudo reboot now
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control set to OFF"
+			sudo rm /home/pi/CubeSatSim/command_control
+			echo "rebooting"
+			sudo systemctl stop rpitx
+			sudo reboot now	
+		fi
+
+	else 
+    		echo "Radio command and control is OFF"
+		echo
+		echo "Do you want to set command and control to ON (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control set to ON"
+			sudo touch /home/pi/CubeSatSim/command_control
+			echo "rebooting"
+			sudo systemctl stop rpitx
+			sudo reboot now	
+		fi
+
 	fi
 
 elif [ "$1" = "-R" ]; then
@@ -692,6 +711,11 @@ elif [ "$1" = "-v" ]; then
 	echo "Real-time output from the INA219 voltage and current sensors:"
 	echo
 	/home/pi/CubeSatSim/telem
+
+else
+	echo
+	echo "Unknown option.  Try config -h for a list of supported options."
+	echo
 
 fi
 
