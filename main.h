@@ -44,9 +44,10 @@
 #define ACCEL_X 10
 #define ACCEL_Y 11
 #define ACCEL_Z 12
-#define XS1 14
-#define XS2 15
-#define XS3 16
+#define GPS1 14
+#define GPS2 15
+#define GPS3 16
+#define DTEMP 17
 
 #define RSSI 0
 #define IHU_TEMP 2
