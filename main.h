@@ -48,6 +48,7 @@
 #define GPS2 15
 #define GPS3 16
 #define DTEMP 17
+#define XS1 18
 
 #define RSSI 0
 #define IHU_TEMP 2
