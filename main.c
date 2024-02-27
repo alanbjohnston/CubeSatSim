@@ -683,18 +683,18 @@ int main(int argc, char * argv[]) {
             }
           }
           printf("\n");
-//	  if (sensor[XS1] != 0) {     		
-	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  { 
-		if (sensor[XS1] != latitude) {  
-			latitude = sensor[XS1];  
+//	  if (sensor[GPS1] != 0) {     		
+	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
+		if (sensor[GPS1] != latitude) {  
+			latitude = sensor[GPS1];  
 			printf("Latitude updated to %f \n", latitude); 
 			newGpsTime = millis();  
 	 	}
 	  }
-//	  if (sensor[XS2] != 0)  {
-	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {   
-		if (sensor[XS2] != longitude) {  		  
-			longitude = sensor[XS2];  
+//	  if (sensor[GPS2] != 0)  {
+	  if ((sensor[GPS2] > -180.0) && (sensor[GPS2] < 180.0) && (sensor[GPS2] != 0.0))  {   
+		if (sensor[GPS2] != longitude) {  		  
+			longitude = sensor[GPS2];  
 			printf("Longitude updated to %f \n", longitude); 
 			newGpsTime = millis();  
 		}
@@ -879,18 +879,18 @@ int main(int argc, char * argv[]) {
             }
           }
           printf("\n");
-//	  if (sensor[XS1] != 0) {     		
-	  if ((sensor[XS1] > -90.0) && (sensor[XS1] < 90.0) && (sensor[XS1] != 0.0))  { 
-		if (sensor[XS1] != latitude) {  
-			latitude = sensor[XS1];  
+//	  if (sensor[GPS1] != 0) {     		
+	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
+		if (sensor[GPS1] != latitude) {  
+			latitude = sensor[GPS1];  
 			printf("Latitude updated to %f \n", latitude); 
 			newGpsTime = millis();  
 	 	}
 	  }
-//	  if (sensor[XS2] != 0)  {
-	  if ((sensor[XS2] > -180.0) && (sensor[XS2] < 180.0) && (sensor[XS2] != 0.0))  {   
-		if (sensor[XS2] != longitude) {  		  
-			longitude = sensor[XS2];  
+//	  if (sensor[GPS2] != 0)  {
+	  if ((sensor[GPS2] > -180.0) && (sensor[GPS2] < 180.0) && (sensor[GPS2] != 0.0))  {   
+		if (sensor[GPS2] != longitude) {  		  
+			longitude = sensor[GPS2];  
 			printf("Longitude updated to %f \n", longitude); 
 			newGpsTime = millis();  
 		}
@@ -1588,10 +1588,10 @@ void get_tlm_fox() {
 	      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
 	      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 
-	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
-	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS2] * 10 + 0.5) + 2048);
+	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[GPS1] * 10 + 0.5) + 2048);
+	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[GPS2] * 10 + 0.5) + 2048);
 	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
-	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
+	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[] * 10 + 0.5));
       }	  
       else
       {	        	    
@@ -1641,8 +1641,8 @@ void get_tlm_fox() {
 	      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
 	      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
 
-	      encodeA(b_min, 48 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
-	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS2] * 10 + 0.5) + 2048);
+	      encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);
+	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
 	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
 	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
     }      
@@ -1679,8 +1679,8 @@ void get_tlm_fox() {
     encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
 
     encodeB(b, 46 + head_offset, PSUCurrent);
-    encodeA(b, 48 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
-    encodeB(b, 49 + head_offset, (int)(sensor[XS2] * 10 + 0.5) + 2048);
+    encodeA(b, 48 + head_offset, (int)(sensor[GPS1] * 10 + 0.5) + 2048);
+    encodeB(b, 49 + head_offset, (int)(sensor[GPS2] * 10 + 0.5) + 2048);
 
     FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
     if (command_count_file != NULL) {	
