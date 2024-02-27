@@ -567,7 +567,7 @@ int main(int argc, char * argv[]) {
     voltage_max[i] = -1000.0;
     current_max[i] = -1000.0;
   }
-  for (int i = 0; i < 17; i++) {
+  for (int i = 0; i < 20; i++) {
     sensor_min[i] = 1000.0;
     sensor_max[i] = -1000.0;
  //   printf("Sensor min and max initialized!");
@@ -673,7 +673,7 @@ int main(int argc, char * argv[]) {
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
 //	  printf("token: %s\n", token);	
-          for (count1 = 0; count1 < 17; count1++) {
+          for (count1 = 0; count1 < 20; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
@@ -712,7 +712,7 @@ int main(int argc, char * argv[]) {
       }
 	  
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (int count1 = 0; count1 < 17; count1++) {
+        for (int count1 = 0; count1 < 20; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
           if (sensor[count1] > sensor_max[count1])
@@ -869,7 +869,7 @@ int main(int argc, char * argv[]) {
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
 //	  printf("token: %s\n", token);	
-          for (count1 = 0; count1 < 17; count1++) {
+          for (count1 = 0; count1 < 20; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
@@ -908,7 +908,7 @@ int main(int argc, char * argv[]) {
       }
 	  
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (int count1 = 0; count1 < 17; count1++) {
+        for (int count1 = 0; count1 < 20; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
           if (sensor[count1] > sensor_max[count1])
@@ -1435,7 +1435,7 @@ void get_tlm_fox() {
 	      if (loop % 32 == 0) {  // was 8
 		printf("Sending MIN frame \n");
 		frm_type = 0x03;
-		for (int count1 = 0; count1 < 17; count1++) {
+		for (int count1 = 0; count1 < 20; count1++) {
 		  if (count1 < 3)
 		    other[count1] = other_min[count1];
 		  if (count1 < 8) {
@@ -1449,7 +1449,7 @@ void get_tlm_fox() {
 	      if ((loop + 16) % 32 == 0) {  // was 8
 		printf("Sending MAX frame \n");
 		frm_type = 0x02;
-		for (int count1 = 0; count1 < 17; count1++) {
+		for (int count1 = 0; count1 < 20; count1++) {
 		  if (count1 < 3)
 		    other[count1] = other_max[count1];
 		  if (count1 < 8) {
