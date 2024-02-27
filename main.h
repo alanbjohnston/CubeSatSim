@@ -47,11 +47,11 @@
 #define GPS1 14
 #define GPS2 15
 #define GPS3 16
-#define DTEMP 17
-#define XS1 19
-#define XS2 20
-#define XS3 21
-#define SENSOR_FIELDS 25
+#define DTEMP 21
+#define XS1 23
+#define XS2 24
+#define XS3 25
+#define SENSOR_FIELDS 26
 
 #define RSSI 0
 #define IHU_TEMP 2
