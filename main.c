@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
 
 
   char resbuffer[1000];
-  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902122'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
@@ -374,7 +374,7 @@ int main(int argc, char * argv[]) {
   {
     payload = OFF;
 
-    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115220)) >= 0) {  // was 9600
       printf("Serial opened to Pico\n");	    
       payload = ON;
 /*	    
@@ -413,7 +413,7 @@ int main(int argc, char * argv[]) {
 	sleep(2);  // delay to give payload time to get ready
       } 
       else {
-        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
+        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115220 baud?\n");
 	printf("Turning on Payload anyway\n");
 	payload = ON;      
 	      
@@ -457,9 +457,9 @@ int main(int argc, char * argv[]) {
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
     period = rnd_float(150, 300);
-    tempS = rnd_float(20, 55);
+    tempS = rnd_float(22, 55);
     temp_max = rnd_float(50, 70);
-    temp_min = rnd_float(10, 20);
+    temp_min = rnd_float(10, 22);
 
     #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
@@ -483,7 +483,7 @@ int main(int argc, char * argv[]) {
   }
 
    if (mode == FSK) {
-      bitRate = 200;
+      bitRate = 220;
       rsFrames = 1;
       payloads = 1;
       rsFrameLen = 64;
@@ -504,7 +504,7 @@ int main(int argc, char * argv[]) {
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
     } else if (mode == BPSK) {
-      bitRate = 1200;
+      bitRate = 1220;
       rsFrames = 3;
       payloads = 6;
       rsFrameLen = 159;
@@ -520,7 +520,7 @@ int main(int argc, char * argv[]) {
          samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
-      //samplePeriod = 2200; // reduce dut to python and sensor querying delays
+      //samplePeriod = 2220; // reduce dut to python and sensor querying delays
       sleepTime = 2.2f;
 	   
       frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
@@ -567,7 +567,7 @@ int main(int argc, char * argv[]) {
     voltage_max[i] = -1000.0;
     current_max[i] = -1000.0;
   }
-  for (int i = 0; i < 20; i++) {
+  for (int i = 0; i < 22; i++) {
     sensor_min[i] = 1000.0;
     sensor_max[i] = -1000.0;
  //   printf("Sensor min and max initialized!");
@@ -673,7 +673,7 @@ int main(int argc, char * argv[]) {
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
 //	  printf("token: %s\n", token);	
-          for (count1 = 0; count1 < 20; count1++) {
+          for (count1 = 0; count1 < 22; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
@@ -712,7 +712,7 @@ int main(int argc, char * argv[]) {
       }
 	  
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (int count1 = 0; count1 < 20; count1++) {
+        for (int count1 = 0; count1 < 22; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
           if (sensor[count1] > sensor_max[count1])
@@ -869,7 +869,7 @@ int main(int argc, char * argv[]) {
           const char space[2] = " ";
           token = strtok(sensor_payload, space);
 //	  printf("token: %s\n", token);	
-          for (count1 = 0; count1 < 20; count1++) {
+          for (count1 = 0; count1 < 22; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
@@ -908,7 +908,7 @@ int main(int argc, char * argv[]) {
       }
 	  
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (int count1 = 0; count1 < 20; count1++) {
+        for (int count1 = 0; count1 < 22; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
           if (sensor[count1] > sensor_max[count1])
@@ -1435,7 +1435,7 @@ void get_tlm_fox() {
 	      if (loop % 32 == 0) {  // was 8
 		printf("Sending MIN frame \n");
 		frm_type = 0x03;
-		for (int count1 = 0; count1 < 20; count1++) {
+		for (int count1 = 0; count1 < 22; count1++) {
 		  if (count1 < 3)
 		    other[count1] = other_min[count1];
 		  if (count1 < 8) {
@@ -1449,7 +1449,7 @@ void get_tlm_fox() {
 	      if ((loop + 16) % 32 == 0) {  // was 8
 		printf("Sending MAX frame \n");
 		frm_type = 0x02;
-		for (int count1 = 0; count1 < 20; count1++) {
+		for (int count1 = 0; count1 < 22; count1++) {
 		  if (count1 < 3)
 		    other[count1] = other_max[count1];
 		  if (count1 < 8) {
