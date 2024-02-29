@@ -714,7 +714,7 @@ elif [ "$1" = "-h" ]; then
 	exit
 
 else
-	echo
+#	echo
 	echo "Unknown option.  Try config -h for a list of supported options."
 	echo
 
