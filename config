@@ -86,10 +86,10 @@ if [ "$1" = "" ]; then
 	echo "To see options, type config -h"
 #	echo
 #	set -- "-h"
-fi	
+# fi	
 
 
-if [ "$1" = "-i" ]; then
+elif [ "$1" = "-i" ]; then
 	echo "Rebooting CubeSatSim"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
@@ -165,34 +165,6 @@ elif [ "$1" = "-s" ]; then
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
-elif [ "$1" = "-h" ]; then
-	echo "config OPTION"
-	echo
-	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
-	echo 
-	echo "   -h     This help info"
-	echo "   -a     Change to AFSK/APRS mode"
-	echo "   -m     Change to CW mode"
-	echo "   -f     Change to FSK/DUV mode"
-	echo "   -b     Change to BPSK mode"
-	echo "   -s     Change to SSTV mode"
-	echo "   -i     Reboots CubeSatsim software"
-	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
-	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
-	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
-	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
-	echo "   -S     Scan both I2C buses on the Raspberry Pi"
-	echo "   -C     Clear logs"
-	echo "   -T     Change command and control state"
-	echo "   -R     Change the Commands Count in the file command_count.txt"
-	echo "   -B     Change battery saver mode manually"
-	echo "   -q     Change the Squelch setting for command receiver"
-	echo "   -F     Change the rx and tx frequency"
-	echo "   -H     Chnage the Balloon mode"
-	echo "   -p     Display payload sensor data"
-	echo "   -v     Display voltage and current data"
-	echo
-	exit
 
 elif [ "$1" = "-t" ]; then
 
@@ -711,6 +683,35 @@ elif [ "$1" = "-v" ]; then
 	echo "Real-time output from the INA219 voltage and current sensors:"
 	echo
 	/home/pi/CubeSatSim/telem
+
+elif [ "$1" = "-h" ]; then
+	echo "config OPTION"
+	echo
+	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
+	echo 
+	echo "   -h     This help info"
+	echo "   -a     Change to AFSK/APRS mode"
+	echo "   -m     Change to CW mode"
+	echo "   -f     Change to FSK/DUV mode"
+	echo "   -b     Change to BPSK mode"
+	echo "   -s     Change to SSTV mode"
+	echo "   -i     Reboots CubeSatsim software"
+	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
+	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
+	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
+	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
+	echo "   -S     Scan both I2C buses on the Raspberry Pi"
+	echo "   -C     Clear logs"
+	echo "   -T     Change command and control state"
+	echo "   -R     Change the Commands Count in the file command_count.txt"
+	echo "   -B     Change battery saver mode manually"
+	echo "   -q     Change the Squelch setting for command receiver"
+	echo "   -F     Change the rx and tx frequency"
+	echo "   -H     Chnage the Balloon mode"
+	echo "   -p     Display payload sensor data"
+	echo "   -v     Display voltage and current data"
+	echo
+	exit
 
 else
 	echo
