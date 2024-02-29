@@ -1117,7 +1117,7 @@ void get_tlm(void) {
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
-    char header_str4[] = "hi hi ";
+    char header_str4[] = "hi hi de ";
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
@@ -1159,8 +1159,10 @@ void get_tlm(void) {
           	           	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
-      } else {
+      } else {  // CW mode
         strcat(str, header_str4);
+	strcat(str, call);
+	      
       }
 //    }
 	printf("Str: %s \n", str);
@@ -1247,9 +1249,9 @@ void get_tlm(void) {
     }
     if (mode == CW) {
 
-      char cw_str2[1000];
-      char cw_header2[] = "echo '";
-      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+//      char cw_str2[1000];
+//      char cw_header2[] = "echo '";
+//      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
       char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
 
 //    printf("Str str: %s \n", str);
