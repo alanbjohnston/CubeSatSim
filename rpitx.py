@@ -511,7 +511,8 @@ if __name__ == "__main__":
 #				output (ptt, 1)
 #			sleep(5)
 			while True:
-				command_control_check()
+#				command_control_check()
+				print("don't command control check 0")
 				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
