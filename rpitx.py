@@ -519,9 +519,10 @@ if __name__ == "__main__":
 					channel = 1
 					print(channel)
 					for chan in range(7):
+						print(channel)
 						print(chan)
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + channel + ".txt -r 48000 > /dev/null 2>&1")
-#						channel += 1
+						channel = channel + 1
 #						print("Sending cw1.txt")
 #						system("cat /home/pi/CubeSatSim/cw1.txt")      
 						
