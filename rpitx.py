@@ -521,7 +521,7 @@ if __name__ == "__main__":
 					print("after rm")
 					ch = 1
 					print("after ch")
-					print(channel)
+#					print(channel)
 					for chan in range(7):
 						print(channel)
 						print(chan)
