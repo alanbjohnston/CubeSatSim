@@ -517,7 +517,7 @@ if __name__ == "__main__":
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
-					channel = 1
+					ch = 1
 					print(channel)
 					for chan in range(7):
 						print(channel)
@@ -525,9 +525,9 @@ if __name__ == "__main__":
 					print("done for")	
 					for chan in range(7):
 						print("for loop")
-						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + channel + ".txt -r 48000 > /dev/null 2>&1")
+						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + ch + ".txt -r 48000 > /dev/null 2>&1")
 						print("for loop1")
-						channel = channel + 1
+						ch = ch + 1
 						print("for loop2")
 						
 #						print("Sending cw1.txt")
