@@ -480,35 +480,35 @@ if __name__ == "__main__":
 		elif (mode == 'm'):
 			print("CW")
 #			sleep(4)
-			try:
-				file = open("/home/pi/CubeSatSim/cw.txt")
-				file.close()
-			except:
-				system("echo 'hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > /home/pi/CubeSatSim/cw.txt")
-			output(pd, 1)
-			
-			if (command_tx == True):
-				output(txLed, txLedOn)
+#			try:
+#				file = open("/home/pi/CubeSatSim/cw.txt")
+#				file.close()
+#			except:
+#				system("echo 'hi hi 100 199 199 199 298 299 299 278 380 350 300 300 439 400 400 400 500 500 500 500 600 600 600 650' > /home/pi/CubeSatSim/cw.txt")
+#			output(pd, 1)
+#			
+#			if (command_tx == True):
+#				output(txLed, txLedOn)
 #				battery_saver_check()
-
-				if (txc):
-					output (pd, 1)
-					output (ptt, 0)
-					sleep(0.1)
-
-					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
-					sleep(0.1)
-					output (ptt, 1)
-					output (pd, 0)
-				else:
-					if (debug_mode == 1):
-						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-					else:
-						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-
-				output(txLed, txLedOff)
+#
+#				if (txc):
+#					output (pd, 1)
+#					output (ptt, 0)
+#					sleep(0.1)
+#
+#					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+#					sleep(0.1)
+#					output (ptt, 1)
+#					output (pd, 0)
+#				else:
+#					if (debug_mode == 1):
+#						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+#					else:
+#						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+#
+#				output(txLed, txLedOff)
 #				output (ptt, 1)
-			sleep(5)
+#			sleep(5)
 			while True:
 				command_control_check()
 				
@@ -539,7 +539,8 @@ if __name__ == "__main__":
 					f.close()
 #					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(5)
-				except:		  
+				except:	
+					command_control_check()
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
