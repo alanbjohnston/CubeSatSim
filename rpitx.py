@@ -518,8 +518,8 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					channel = 1
 					print(channel)
-					for channel in range(7):
-						print(channel)
+					for chan in range(7):
+						print(chan)
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + channel + ".txt -r 48000 > /dev/null 2>&1")
 #						channel += 1
 #						print("Sending cw1.txt")
@@ -543,9 +543,9 @@ if __name__ == "__main__":
 							sleep(0.1)
 							output(txLed, txLedOff)
 							output (ptt, 1)
-						print(channel)	
+						print(chan)	
 						command_control_check()	
-						print(channel)
+						print(chan)
 					f.close()
 #					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(5)
