@@ -555,7 +555,8 @@ if __name__ == "__main__":
 							print("for loop4")
 						print("for loop5")
 						print(chan)	
-						command_control_check()	
+#						command_control_check()	
+						print("dont command control check")
 						print("for loop6")
 						print(chan)
 					print("done 2nd for")
@@ -563,7 +564,8 @@ if __name__ == "__main__":
 #					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(5)
 				except:	
-					command_control_check()
+#					command_control_check()
+					print("dont command control check")
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
