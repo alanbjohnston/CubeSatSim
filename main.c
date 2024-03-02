@@ -1173,7 +1173,7 @@ void get_tlm(void) {
    if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "echo '%d%d%d %d%d%d %d%d%d %d%d%d' > cw%1d.txt",
+      sprintf(tlm_str, "echo ' %d%d%d %d%d%d %d%d%d %d%d%d ' > cw%1d.txt",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
