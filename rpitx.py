@@ -523,8 +523,9 @@ if __name__ == "__main__":
 					print("after ch")
 #					print(channel)
 					for chan in range(7):
-						print(channel)
+#						print(channel)
 						print(chan)
+					print("after for chan")	
 					print("done for")	
 					for chan in range(7):
 						print("for loop")
