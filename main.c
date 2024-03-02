@@ -1122,7 +1122,7 @@ void get_tlm(void) {
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
     char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready";  
+    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready"; 
 	  
     if (ax5043) {
       strcpy(str, header_str);
@@ -1161,7 +1161,11 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {  // CW mode
         strcat(str, header_str4);
-	strcat(str, call);
+	strcat(str, call); 
+
+	sprintf(tlm_str, "%s' > cw0.txt", &str);      
+	FILE * cw_file = popen(tlm_str, "r");
+        pclose(cw_file);      
 	      
       }
 //    }
@@ -1169,11 +1173,11 @@ void get_tlm(void) {
    if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+      sprintf(tlm_str, "echo '%d%d%d %d%d%d %d%d%d %d%d%d' > cw%1d.txt",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
-        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]), channel);
       //        printf("%s",tlm_str);
 
 //#ifdef HAB	    
@@ -1181,6 +1185,9 @@ void get_tlm(void) {
 //#endif	
  //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
          strcat(str, tlm_str);
+
+	FILE * cw_file = popen(tlm_str, "r");
+        pclose(cw_file);	     
 
     }
   } else {  // APRS
