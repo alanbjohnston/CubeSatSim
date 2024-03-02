@@ -378,6 +378,7 @@ if __name__ == "__main__":
 		print(ser.portstr)
 		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
 		for i in range(6):
+			print(i)
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
 			ser.write(uhf_string.encode())
 			sleep(0.1)
@@ -521,6 +522,8 @@ if __name__ == "__main__":
 					for chan in range(7):
 						print(channel)
 						print(chan)
+					print("done for")	
+					for chan in range(7):	
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + channel + ".txt -r 48000 > /dev/null 2>&1")
 						channel = channel + 1
 #						print("Sending cw1.txt")
@@ -547,6 +550,7 @@ if __name__ == "__main__":
 						print(chan)	
 						command_control_check()	
 						print(chan)
+					print("done 2nd for")
 					f.close()
 #					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(5)
