@@ -530,6 +530,7 @@ if __name__ == "__main__":
 					for chan in range(7):
 						print("for loop")
 						command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + ch + ".txt -r 48000 > /dev/null 2>&1"
+						print("after command assignment")
 						system(command)
 						print("for loop1")
 						ch = ch + 1
