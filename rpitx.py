@@ -516,7 +516,7 @@ if __name__ == "__main__":
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
 					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw0.txt -r 48000 > /dev/null 2>&1")
-					system("sudo rm /home/pi/CubeSatSim/cwready")
+###					system("sudo rm /home/pi/CubeSatSim/cwready")
 					print("Sending cw0.txt")
 					system("cat /home/pi/CubeSatSim/cw0.txt")      
 					
