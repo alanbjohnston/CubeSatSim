@@ -520,6 +520,7 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					print("after rm")
 					ch = 1
+					print("after ch")
 					print(channel)
 					for chan in range(7):
 						print(channel)
