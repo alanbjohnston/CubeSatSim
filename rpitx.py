@@ -518,6 +518,7 @@ if __name__ == "__main__":
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
+					print("after rm")
 					ch = 1
 					print(channel)
 					for chan in range(7):
@@ -566,7 +567,7 @@ if __name__ == "__main__":
 					sleep(5)
 				except:	
 #					command_control_check()
-					print("dont command control check")
+					print("dont command control check 1")
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
