@@ -543,8 +543,9 @@ if __name__ == "__main__":
 							sleep(0.1)
 							output(txLed, txLedOff)
 							output (ptt, 1)
-							
+						print(channel)	
 						command_control_check()	
+						print(channel)
 					f.close()
 #					system("sudo rm /home/pi/CubeSatSim/cwready")
 					sleep(5)
