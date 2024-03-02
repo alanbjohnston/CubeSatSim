@@ -518,10 +518,10 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					channel = 0
 					print(channel)
-					while channel < 7:
+					for channel in range(7):
 						print(channel)
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + channel + ".txt -r 48000 > /dev/null 2>&1")
-						channel += 1
+#						channel += 1
 #						print("Sending cw1.txt")
 #						system("cat /home/pi/CubeSatSim/cw1.txt")      
 						
