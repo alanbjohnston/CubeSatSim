@@ -489,7 +489,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							output(txLed, txLedOn)
 							output (pd, 1)
-							sleep(0.1)
+							sleep(0.3)
 							output (ptt, 0)						
 	
 							if (txc):
