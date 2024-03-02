@@ -515,15 +515,16 @@ if __name__ == "__main__":
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
-					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw1.txt -r 48000") #  > /dev/null 2>&1")
-###					system("sudo rm /home/pi/CubeSatSim/cwready")
+					system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw1.txt -r 48000 > /dev/null 2>&1")
+					system("sudo rm /home/pi/CubeSatSim/cwready")
 					print("Sending cw1.txt")
 					system("cat /home/pi/CubeSatSim/cw1.txt")      
 					
 					if (command_tx == True):
 						output(txLed, txLedOn)
-						output (ptt, 0)
+						output (pd, 1)
 						sleep(0.1)
+						output (ptt, 0)						
 #						battery_saver_check()
 
 						if (txc):
