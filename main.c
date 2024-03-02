@@ -1163,7 +1163,8 @@ void get_tlm(void) {
         strcat(str, header_str4);
 	strcat(str, call); 
 
-	sprintf(tlm_str, "%s' > cw0.txt", &str);      
+	sprintf(tlm_str, "%s' > cw0.txt", &str);   
+	printf("CW string to execute: %s\n", &tlm_str);     
 	FILE * cw_file = popen(tlm_str, "r");
         pclose(cw_file);      
 	      
@@ -1184,8 +1185,10 @@ void get_tlm(void) {
 //       if (mode != AFSK)
 //#endif	
  //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
-         strcat(str, tlm_str);
-
+        strcat(str, tlm_str);
+	    
+	printf("CW string to execute: %s\n", &tlm_str);
+	    
 	FILE * cw_file = popen(tlm_str, "r");
         pclose(cw_file);	     
 
