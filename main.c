@@ -1260,16 +1260,17 @@ void get_tlm(void) {
 //      char cw_header2[] = "echo '";
 //      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
       char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
+      char cwready[] = "touch /home/pi/CubeSatSim/cwready";  // cw frame is complete. transmit is done by rpitx.py
 
 //    printf("Str str: %s \n", str);
 //    fflush(stdout);
       strcat(str, cw_footer3);
 //    printf("Str: %s \n", str);
 //    fflush(stdout);	    
-      printf("CW string to execute: %s\n", str);
+      printf("CW string to execute: %s\n", cwready);
       fflush(stdout);
 
-      FILE * cw_file = popen(str, "r");
+      FILE * cw_file = popen(cwready, "r");
       pclose(cw_file);	    
 	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
