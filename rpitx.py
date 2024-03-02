@@ -523,13 +523,18 @@ if __name__ == "__main__":
 						print(channel)
 						print(chan)
 					print("done for")	
-					for chan in range(7):	
+					for chan in range(7):
+						print("for loop")
 						system("gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + channel + ".txt -r 48000 > /dev/null 2>&1")
+						print("for loop1")
 						channel = channel + 1
+						print("for loop2")
+						
 #						print("Sending cw1.txt")
 #						system("cat /home/pi/CubeSatSim/cw1.txt")      
 						
 						if (command_tx == True):
+							print("for loop3")
 							output(txLed, txLedOn)
 							output (pd, 1)
 							sleep(0.1)
@@ -547,8 +552,11 @@ if __name__ == "__main__":
 							sleep(0.1)
 							output(txLed, txLedOff)
 							output (ptt, 1)
+							print("for loop4")
+						print("for loop5")
 						print(chan)	
 						command_control_check()	
+						print("for loop6")
 						print(chan)
 					print("done 2nd for")
 					f.close()
