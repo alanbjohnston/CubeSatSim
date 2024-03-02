@@ -516,7 +516,7 @@ if __name__ == "__main__":
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
-					channel = 0
+					channel = 1
 					print(channel)
 					for channel in range(7):
 						print(channel)
