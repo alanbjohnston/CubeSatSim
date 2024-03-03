@@ -483,9 +483,9 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					ch = 1
 					for chan in range(7):
-						command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
-						print(command)
-						system(command)
+#						command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
+#						print(command)
+#						system(command)
 						chan = chan + 1						
 						if (command_tx == True):
 							output(txLed, txLedOn)
@@ -495,12 +495,12 @@ if __name__ == "__main__":
 	
 							if (txc):
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
-							else:
-								if (debug_mode == 1):
-									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-								else:
-									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-						
+#							else:
+#								if (debug_mode == 1):
+#									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+#								else:
+#									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+#						
 							sleep(0.1)
 							output(txLed, txLedOff)
 							output (ptt, 1)
