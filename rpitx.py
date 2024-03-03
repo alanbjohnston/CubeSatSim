@@ -520,6 +520,7 @@ if __name__ == "__main__":
 					
 					if (command_tx == True):
 						output(txLed, txLedOn)
+						output (pd, 1)
 						output (ptt, 0)
 						sleep(0.1)
 #						battery_saver_check()
