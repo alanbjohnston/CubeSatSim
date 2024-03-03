@@ -504,11 +504,11 @@ if __name__ == "__main__":
 							sleep(0.1)
 							output(txLed, txLedOff)
 							output (ptt, 1)
-						command_control_check()	
+#						command_control_check()	
 					f.close()
 					sleep(5)
 				except:	
-					command_control_check()
+#					command_control_check()
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
