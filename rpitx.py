@@ -483,9 +483,9 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 					ch = 1
 					for chan in range(7):
-#						command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
-#						print(command)
-#						system(command)
+						command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
+						print(command)
+						system(command)
 						chan = chan + 1						
 						if (command_tx == True):
 							output(txLed, txLedOn)
