@@ -393,7 +393,7 @@ if __name__ == "__main__":
 	
 #	if (mode != 'a') and (command_tx == True):	
 #	if (command_tx == True):	
-	if (mode != CW):	
+	if (mode != 'm'):	
 #		battery_saver_mode
 		output(txLed, txLedOn)			
 #		if (txc):
