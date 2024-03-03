@@ -173,7 +173,7 @@ def increment_mode():
 
 		print("Changing mode now")
 #		system("/home/pi/CubeSatSim/config -" + mode)
-###		system("reboot -h now")
+		system("reboot -h now")
 
 		sleep(10);
 	except:
