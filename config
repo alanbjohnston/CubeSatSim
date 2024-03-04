@@ -70,7 +70,7 @@ if [ "$1" = "" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-    		echo "Battery saver mode is ON"
+		echo "Safe Mode! Battery saver mode is ON"
 	else 
     		echo "Battery saver mode is OFF"
 	fi
@@ -86,10 +86,10 @@ if [ "$1" = "" ]; then
 	echo "To see options, type config -h"
 #	echo
 #	set -- "-h"
-fi	
+# fi	
 
 
-if [ "$1" = "-i" ]; then
+elif [ "$1" = "-i" ]; then
 	echo "Rebooting CubeSatSim"
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
@@ -100,7 +100,7 @@ elif [ "$1" = "-a" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-    		echo "Battery saver mode is ON."
+		echo "Safe Mode! Battery saver mode is ON."
 #  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
@@ -119,7 +119,7 @@ elif [ "$1" = "-m" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-    		echo "Battery saver mode is ON."
+		echo "Safe Mode! Battery saver mode is ON."
  # 		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
@@ -154,7 +154,7 @@ elif [ "$1" = "-s" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-    		echo "Battery saver mode ON."
+		echo "Safe Mode! Battery saver mode ON."
 #  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
@@ -165,34 +165,6 @@ elif [ "$1" = "-s" ]; then
 	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	exit 
-elif [ "$1" = "-h" ]; then
-	echo "config OPTION"
-	echo
-	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
-	echo 
-	echo "   -h     This help info"
-	echo "   -a     Change to AFSK/APRS mode"
-	echo "   -m     Change to CW mode"
-	echo "   -f     Change to FSK/DUV mode"
-	echo "   -b     Change to BPSK mode"
-	echo "   -s     Change to SSTV mode"
-	echo "   -i     Reboots CubeSatsim software"
-	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
-	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
-	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
-	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
-	echo "   -S     Scan both I2C buses on the Raspberry Pi"
-	echo "   -C     Clear logs"
-	echo "   -T     Change command and control state"
-	echo "   -R     Change the Commands Count in the file command_count.txt"
-	echo "   -B     Change battery saver mode manually"
-	echo "   -q     Change the Squelch setting for command receiver"
-	echo "   -F     Change the rx and tx frequency"
-	echo "   -H     Chnage the Balloon mode"
-	echo "   -p     Display payload sensor data"
-	echo "   -v     Display voltage and current data"
-	echo
-	exit
 
 elif [ "$1" = "-t" ]; then
 
@@ -510,42 +482,52 @@ elif [ "$1" = "-R" ]; then
 elif [ "$1" = "-B" ]; then
 
 	echo	
-	echo "Manually setting battery saver mode"
+	echo "Manually setting Safe Mode (battery saver mode)"
 	echo
 	
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-    		echo "Battery saver mode is ON."
+		echo "Safe Mode! Battery saver mode is ON."
 		mode=1
  	else 
+		echo "Safe Mode is OFF."
     		echo "Battery saver mode is OFF."
 		mode=0
 	fi
 	
 	echo
 	
-	echo "Do you want Battery saver mode ON (y/n) "
+	echo "Do you want Safe Mode (battery saver mode) ON (y/n) "
 	read saver
 	echo
-	
+
+	reboot=0
+
 	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
-		echo "Battery saver mode is now ON"
-		touch /home/pi/CubeSatSim/battery_saver
-#		if ["$mode" = "0"] ; then sudo systemctl restart rpitx
+		if [ "$mode" = "0" ] ; then
+			echo "Safe Mode will be turned on! Battery saver will be turned ON"
+			sudo touch /home/pi/CubeSatSim/battery_saver
+			reboot=1
+		fi
 	else
-		echo "Battery saver mode is now OFF"
-		sudo rm /home/pi/CubeSatSim/battery_saver
-#		if ["$mode" = "1"] ; then sudo systemctl restart rpitx
+		
+		if [ "$mode" = "1" ] ; then 
+			echo "Safe Mode will be turned OFF. Battery saver mode will be turned OFF"
+			sudo rm /home/pi/CubeSatSim/battery_saver
+			reboot=1
+		fi
 	fi
 
-	value=`cat /home/pi/CubeSatSim/.mode`
-	echo "$value" > /dev/null
-	set -- $value
-
-	if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
-		echo "rebooting"
-#		sudo systemctl restart cubesatsim
-		sudo reboot now
+	if [ "$reboot" = "1" ] ; then  
+		value=`cat /home/pi/CubeSatSim/.mode`
+		echo "$value" > /dev/null
+		set -- $value
+	
+		if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
+			echo "rebooting"
+	#		sudo systemctl restart cubesatsim
+			sudo reboot now
+		fi
 	fi
 
 elif [ "$1" = "-q" ]; then
@@ -712,8 +694,37 @@ elif [ "$1" = "-v" ]; then
 	echo
 	/home/pi/CubeSatSim/telem
 
-else
+elif [ "$1" = "-h" ]; then
+	echo "config OPTION"
 	echo
+	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
+	echo 
+	echo "   -h     This help info"
+	echo "   -a     Change to AFSK/APRS mode"
+	echo "   -m     Change to CW mode"
+	echo "   -f     Change to FSK/DUV mode"
+	echo "   -b     Change to BPSK mode"
+	echo "   -s     Change to SSTV mode"
+	echo "   -i     Reboots CubeSatsim software"
+	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
+	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
+	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
+	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
+	echo "   -S     Scan both I2C buses on the Raspberry Pi"
+	echo "   -C     Clear logs"
+	echo "   -T     Change command and control state"
+	echo "   -R     Change the Commands Count in the file command_count.txt"
+	echo "   -B     Change Safe Mode (battery saver mode) manually"
+	echo "   -q     Change the Squelch setting for command receiver"
+	echo "   -F     Change the rx and tx frequency"
+	echo "   -H     Chnage the Balloon mode"
+	echo "   -p     Display payload sensor data"
+	echo "   -v     Display voltage and current data"
+	echo
+	exit
+
+else
+#	echo
 	echo "Unknown option.  Try config -h for a list of supported options."
 	echo
 

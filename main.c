@@ -190,12 +190,12 @@ int main(int argc, char * argv[]) {
 	
 
   battery_saver_mode = battery_saver_check();
-/*
+/**/
   if (battery_saver_mode == ON)	
-  	fprintf(stderr, "\nBattery_saver_mode is ON\n\n");
+  	fprintf(stderr, "Safe Mode! Battery_saver_mode is ON\n\n");
   else
 	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
-*/	
+/**/	
   fflush(stderr);
   
   if (mode == AFSK)
@@ -827,13 +827,14 @@ int main(int argc, char * argv[]) {
 	
 //      batteryVoltage = voltage[map[BAT]];
 //      batteryCurrent = current[map[BAT]];
-	    
+
+/*	   
       if (batteryVoltage < 3.7) {
         SafeMode = 1;
         printf("Safe Mode!\n");
       } else
         SafeMode = 0;
-
+*/
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
@@ -929,14 +930,22 @@ int main(int argc, char * argv[]) {
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
-	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
-	    if (battery_saver_mode == OFF)
+	    fprintf(stderr,"Battery voltage low\n");
+	    if (battery_saver_mode == OFF) {
+		fprintf(stderr,"Switch to battery saver\n");    
 	    	battery_saver(ON);
+        	fprintf(stderr, "Safe Mode!\n");
+		SafeMode = 1;    
+		    
+	    }
     } else if ((battery_saver_mode == ON) && (batteryCurrent < 0) && !sim_mode && !hab_mode)
     {
 	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
-	    if (battery_saver_mode == ON)
-	    	 battery_saver(OFF);
+	    if (battery_saver_mode == ON) {
+	    	battery_saver(OFF);
+        	fprintf(stderr, "Safe Mode off!\n");
+		SafeMode = 0;  		    
+	    }
     } 
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode && !hab_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
@@ -1117,12 +1126,12 @@ void get_tlm(void) {
     char header_str2b[30]; // for APRS coordinates
     char header_lat[10];
     char header_long[10];
-    char header_str4[] = "hi hi ";
+    char header_str4[] = "hi hi de ";
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
     char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready";  
+    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready"; 
 	  
     if (ax5043) {
       strcpy(str, header_str);
@@ -1159,26 +1168,38 @@ void get_tlm(void) {
           	           	    
         printf("\n\nString is %s \n\n", header_str2b);
         strcat(str, header_str2b);
-      } else {
+      } else {  // CW mode
         strcat(str, header_str4);
+	strcat(str, call); 
+
+	sprintf(tlm_str, "%s' > cw0.txt", &str);   
+	printf("CW string to execute: %s\n", &tlm_str);     
+	FILE * cw_file = popen(tlm_str, "r");
+        pclose(cw_file);      
+	      
       }
 //    }
 	printf("Str: %s \n", str);
    if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+      sprintf(tlm_str, "echo ' %d%d%d %d%d%d %d%d%d %d%d%d ' > cw%1d.txt",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
-        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]), channel);
       //        printf("%s",tlm_str);
 
 //#ifdef HAB	    
 //       if (mode != AFSK)
 //#endif	
  //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
-         strcat(str, tlm_str);
+        strcat(str, tlm_str);
+	    
+	printf("CW string to execute: %s\n", &tlm_str);
+	    
+	FILE * cw_file = popen(tlm_str, "r");
+        pclose(cw_file);	     
 
     }
   } else {  // APRS
@@ -1247,20 +1268,24 @@ void get_tlm(void) {
     }
     if (mode == CW) {
 
-      char cw_str2[1000];
-      char cw_header2[] = "echo '";
-      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
+//      char cw_str2[1000];
+//      char cw_header2[] = "echo '";
+//      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
       char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
+      char cwready[] = "touch /home/pi/CubeSatSim/cwready";  // cw frame is complete. transmit is done by rpitx.py
 
 //    printf("Str str: %s \n", str);
 //    fflush(stdout);
-      strcat(str, cw_footer3);
+//      strcat(str, cw_footer3);
 //    printf("Str: %s \n", str);
 //    fflush(stdout);	    
-      printf("CW string to execute: %s\n", str);
-      fflush(stdout);
+//      printf("CW string to execute:: %s\n", str);
+//      fflush(stdout);
 
-      FILE * cw_file = popen(str, "r");
+//      FILE * cw_file = popen(str, "r");
+//      pclose(cw_file);	
+	    
+      FILE * cw_file = popen(cwready, "r");
       pclose(cw_file);	    
 	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
@@ -1312,7 +1337,7 @@ void get_tlm(void) {
 */	    
       strcat(str, footer_str1);
 //      strcat(str, call);
-      if (battery_saver_mode == ON)	    
+      if (battery_saver_mode  == ON)	    
       	strcat(str, footer_str);  // add extra packet for rpitx transmission
       else
       	strcat(str, footer_str2);
@@ -2400,11 +2425,12 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 int battery_saver_check() {
 	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
-		fprintf(stderr,"Battery saver mode is OFF!\n");
+//		fprintf(stderr,"Battery saver mode is OFF!\n");
 		return(OFF);
 	} 
 	fclose(file);
-	fprintf(stderr,"Battery saver mode is ON!\n");
+//        fprintf(stderr, "Safe Mode!\n");
+//	fprintf(stderr,"Battery saver mode is ON!\n");
 	return(ON);
 }
 
@@ -2414,6 +2440,7 @@ if (setting == ON) {
 		if (battery_saver_check() == OFF) {
 			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		  	pclose(command);
+			fprintf(stderr,"Turning Safe Mode ON\n"); 
 			fprintf(stderr,"Turning Battery saver mode ON\n");  
 //			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
 //		  	pclose(command);
