@@ -1275,17 +1275,17 @@ void get_tlm(void) {
 
 //    printf("Str str: %s \n", str);
 //    fflush(stdout);
-      strcat(str, cw_footer3);
+//      strcat(str, cw_footer3);
 //    printf("Str: %s \n", str);
 //    fflush(stdout);	    
-      printf("CW string to execute:: %s\n", str);
-      fflush(stdout);
+//      printf("CW string to execute:: %s\n", str);
+//      fflush(stdout);
 
-      FILE * cw_file = popen(str, "r");
-      pclose(cw_file);	
+//      FILE * cw_file = popen(str, "r");
+//      pclose(cw_file);	
 	    
-//      FILE * cw_file = popen(cwready, "r");
-//      pclose(cw_file);	    
+      FILE * cw_file = popen(cwready, "r");
+      pclose(cw_file);	    
 	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
         fclose(cw_file); 
