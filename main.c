@@ -190,12 +190,12 @@ int main(int argc, char * argv[]) {
 	
 
   battery_saver_mode = battery_saver_check();
-/*
+/**/
   if (battery_saver_mode == ON)	
-  	fprintf(stderr, "\nBattery_saver_mode is ON\n\n");
+  	fprintf(stderr, "Safe Mode! Battery_saver_mode is ON\n\n");
   else
 	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
-*/	
+/**/	
   fflush(stderr);
   
   if (mode == AFSK)
@@ -1336,7 +1336,7 @@ void get_tlm(void) {
 */	    
       strcat(str, footer_str1);
 //      strcat(str, call);
-      if (battery_saver_mode == ON)	    
+      if ( == ON)	    
       	strcat(str, footer_str);  // add extra packet for rpitx transmission
       else
       	strcat(str, footer_str2);
@@ -2424,12 +2424,12 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 9600)) >= 0) {  // was 9600
 int battery_saver_check() {
 	FILE *file = fopen("/home/pi/CubeSatSim/battery_saver", "r");
 	if (file == NULL) {
-		fprintf(stderr,"Battery saver mode is OFF!\n");
+//		fprintf(stderr,"Battery saver mode is OFF!\n");
 		return(OFF);
 	} 
 	fclose(file);
-        fprintf(stderr, "Safe Mode!\n");
-	fprintf(stderr,"Battery saver mode is ON!\n");
+//        fprintf(stderr, "Safe Mode!\n");
+//	fprintf(stderr,"Battery saver mode is ON!\n");
 	return(ON);
 }
 
