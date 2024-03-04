@@ -62,9 +62,10 @@ def battery_saver_check():
 		f = open("/home/pi/CubeSatSim/battery_saver", "r")
 		f.close()
 		txc = False
+		print("Safe Mode!")
 		print("battery saver activated")
 	except:
-		print("not activated")
+		print("battery saver not activated")
 #		txc = True
 		
 def increment_mode():
@@ -489,22 +490,23 @@ if __name__ == "__main__":
 						system(command)
 ##						chan = chan + 1						
 						if (command_tx == True):
-							output(txLed, txLedOn)
-							output (pd, 1)
-							sleep(0.3)
-							output (ptt, 0)						
+							output(txLed, txLedOn)					
 	
 							if (txc):
+								output (pd, 1)
+								sleep(0.3)
+								output (ptt, 0)	
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+								sleep(0.1)
+								output (ptt, 1)
+#								output (pd, 0)
 							else:
 								if (debug_mode == 1):
 									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 								else:
-									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-						
-							sleep(0.1)
+									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")					
 							output(txLed, txLedOff)
-							output (ptt, 1)
+							
 						command_control_check()	
 					f.close()
 					sleep(5)
