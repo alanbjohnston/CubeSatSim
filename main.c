@@ -827,13 +827,14 @@ int main(int argc, char * argv[]) {
 	
 //      batteryVoltage = voltage[map[BAT]];
 //      batteryCurrent = current[map[BAT]];
-	    
+
+/*	   
       if (batteryVoltage < 3.7) {
         SafeMode = 1;
         printf("Safe Mode!\n");
       } else
         SafeMode = 0;
-
+*/
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
@@ -930,13 +931,20 @@ int main(int argc, char * argv[]) {
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
 	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
-	    if (battery_saver_mode == OFF)
+	    if (battery_saver_mode == OFF) {
 	    	battery_saver(ON);
+        	printf("Safe Mode!\n");
+		SafeMode = 1;    
+		    
+	    }
     } else if ((battery_saver_mode == ON) && (batteryCurrent < 0) && !sim_mode && !hab_mode)
     {
 	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
-	    if (battery_saver_mode == ON)
-	    	 battery_saver(OFF);
+	    if (battery_saver_mode == ON) {
+	    	battery_saver(OFF);
+        	printf("Safe Mode off!\n");
+		SafeMode = 0;  		    
+	    }
     } 
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < voltageThreshold) && !sim_mode && !hab_mode) // currentThreshold ensures that this won't happen when running on DC power.
     {
