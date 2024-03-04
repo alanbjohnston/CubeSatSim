@@ -930,8 +930,9 @@ int main(int argc, char * argv[]) {
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
-	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
+	    fprintf(stderr,"Battery voltage low\n");
 	    if (battery_saver_mode == OFF) {
+		fprintf(stderr,"Switch to battery saver\n");    
 	    	battery_saver(ON);
         	fprintf(stderr, "Safe Mode!\n");
 		SafeMode = 1;    
