@@ -512,8 +512,7 @@ elif [ "$1" = "-B" ]; then
 #		if ["$mode" = "0"] ; then sudo systemctl restart rpitx
 	else
 		echo "Safe Mode is OFF. Battery saver mode is now OFF"
-		sudo rm /home/pi/CubeSatSim/battery_saver
-#		if ["$mode" = "1"] ; then sudo systemctl restart rpitx
+		if ["$mode" = "1"] ; then sudo rm /home/pi/CubeSatSim/battery_saver
 	fi
 
 	value=`cat /home/pi/CubeSatSim/.mode`
