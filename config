@@ -70,8 +70,7 @@ if [ "$1" = "" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-		echo "Safe Mode!"
-    		echo "Battery saver mode is ON"
+		echo "Safe Mode! Battery saver mode is ON"
 	else 
     		echo "Battery saver mode is OFF"
 	fi
@@ -101,8 +100,7 @@ elif [ "$1" = "-a" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-		echo "Safe Mode!"
-    		echo "Battery saver mode is ON."
+		echo "Safe Mode! Battery saver mode is ON."
 #  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
@@ -121,8 +119,7 @@ elif [ "$1" = "-m" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-		echo "Safe Mode!"
-    		echo "Battery saver mode is ON."
+		echo "Safe Mode! Battery saver mode is ON."
  # 		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
@@ -157,8 +154,7 @@ elif [ "$1" = "-s" ]; then
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-		echo "Safe Mode!"
-    		echo "Battery saver mode ON."
+		echo "Safe Mode! Battery saver mode ON."
 #  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
@@ -491,8 +487,7 @@ elif [ "$1" = "-B" ]; then
 	
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
-		echo "Safe Mode!"
-    		echo "Battery saver mode is ON."
+		echo "Safe Mode! Battery saver mode is ON."
 		mode=1
  	else 
 		echo "Safe Mode is OFF."
