@@ -1336,7 +1336,7 @@ void get_tlm(void) {
 */	    
       strcat(str, footer_str1);
 //      strcat(str, call);
-      if ( == ON)	    
+      if (battery_saver_mode  == ON)	    
       	strcat(str, footer_str);  // add extra packet for rpitx transmission
       else
       	strcat(str, footer_str2);
