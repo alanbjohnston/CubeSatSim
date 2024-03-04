@@ -501,19 +501,19 @@ elif [ "$1" = "-B" ]; then
 	read saver
 	echo
 
-	reboot = 0
+	reboot=0
 
 	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
 		echo "Safe Mode! Battery saver mode is now ON"
 		touch /home/pi/CubeSatSim/battery_saver
 		if [ "$mode" = "0" ] ; then
-			reboot = 1
+			reboot=1
 		fi
 	else
 		echo "Safe Mode is OFF. Battery saver mode is now OFF"
 		if [ "$mode" = "1" ] ; then 
 			sudo rm /home/pi/CubeSatSim/battery_saver
-			reboot = 1
+			reboot=1
 		fi
 	fi
 
