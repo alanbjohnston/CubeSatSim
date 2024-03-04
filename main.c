@@ -1122,7 +1122,7 @@ void get_tlm(void) {
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
     char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready";  
+    char footer_str2[] = " && touch /home/pi/CubeSatSim/ready"; 
 	  
     if (ax5043) {
       strcpy(str, header_str);
@@ -1161,7 +1161,12 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {  // CW mode
         strcat(str, header_str4);
-	strcat(str, call);
+	strcat(str, call); 
+
+	sprintf(tlm_str, "%s' > cw0.txt", &str);   
+	printf("CW string to execute: %s\n", &tlm_str);     
+	FILE * cw_file = popen(tlm_str, "r");
+        pclose(cw_file);      
 	      
       }
 //    }
@@ -1169,18 +1174,23 @@ void get_tlm(void) {
    if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "%d%d%d %d%d%d %d%d%d %d%d%d ",
+      sprintf(tlm_str, "echo ' %d%d%d %d%d%d %d%d%d %d%d%d ' > cw%1d.txt",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
-        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]));
+        channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]), channel);
       //        printf("%s",tlm_str);
 
 //#ifdef HAB	    
 //       if (mode != AFSK)
 //#endif	
  //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
-         strcat(str, tlm_str);
+        strcat(str, tlm_str);
+	    
+	printf("CW string to execute: %s\n", &tlm_str);
+	    
+	FILE * cw_file = popen(tlm_str, "r");
+        pclose(cw_file);	     
 
     }
   } else {  // APRS
@@ -1253,6 +1263,7 @@ void get_tlm(void) {
 //      char cw_header2[] = "echo '";
 //      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
       char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
+      char cwready[] = "touch /home/pi/CubeSatSim/cwready";  // cw frame is complete. transmit is done by rpitx.py
 
 //    printf("Str str: %s \n", str);
 //    fflush(stdout);
@@ -1263,7 +1274,10 @@ void get_tlm(void) {
       fflush(stdout);
 
       FILE * cw_file = popen(str, "r");
-      pclose(cw_file);	    
+      pclose(cw_file);	
+	    
+//      FILE * cw_file = popen(cwready, "r");
+//      pclose(cw_file);	    
 	    
       while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
         fclose(cw_file); 
