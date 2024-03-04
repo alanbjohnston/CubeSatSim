@@ -500,26 +500,33 @@ elif [ "$1" = "-B" ]; then
 	echo "Do you want Safe Mode (battery saver mode) ON (y/n) "
 	read saver
 	echo
-	
+
+	reboot = 0
+
 	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
 		echo "Safe Mode! Battery saver mode is now ON"
 		touch /home/pi/CubeSatSim/battery_saver
-#		if [ "$mode" = "0" ] ; then sudo systemctl restart rpitx
+		if [ "$mode" = "0" ] ; then
+			reboot = 1
+		fi
 	else
 		echo "Safe Mode is OFF. Battery saver mode is now OFF"
 		if [ "$mode" = "1" ] ; then 
 			sudo rm /home/pi/CubeSatSim/battery_saver
+			reboot = 1
 		fi
 	fi
 
-	value=`cat /home/pi/CubeSatSim/.mode`
-	echo "$value" > /dev/null
-	set -- $value
-
-	if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
-		echo "rebooting"
-#		sudo systemctl restart cubesatsim
-		sudo reboot now
+	if [ "$reboot" = "1" ] ; then  
+		value=`cat /home/pi/CubeSatSim/.mode`
+		echo "$value" > /dev/null
+		set -- $value
+	
+		if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
+			echo "rebooting"
+	#		sudo systemctl restart cubesatsim
+			sudo reboot now
+		fi
 	fi
 
 elif [ "$1" = "-q" ]; then
