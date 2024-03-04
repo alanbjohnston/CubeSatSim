@@ -62,9 +62,10 @@ def battery_saver_check():
 		f = open("/home/pi/CubeSatSim/battery_saver", "r")
 		f.close()
 		txc = False
+		print("Safe Mode!")
 		print("battery saver activated")
 	except:
-		print("not activated")
+		print("battery saver not activated")
 #		txc = True
 		
 def increment_mode():
