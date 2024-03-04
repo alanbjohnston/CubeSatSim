@@ -933,7 +933,7 @@ int main(int argc, char * argv[]) {
 	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
 	    if (battery_saver_mode == OFF) {
 	    	battery_saver(ON);
-        	printf("Safe Mode!\n");
+        	fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);"Safe Mode!\n");
 		SafeMode = 1;    
 		    
 	    }
@@ -942,7 +942,7 @@ int main(int argc, char * argv[]) {
 	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
 	    if (battery_saver_mode == ON) {
 	    	battery_saver(OFF);
-        	printf("Safe Mode off!\n");
+        	fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);"Safe Mode off!\n");
 		SafeMode = 0;  		    
 	    }
     } 
@@ -2428,6 +2428,7 @@ int battery_saver_check() {
 		return(OFF);
 	} 
 	fclose(file);
+        fprintf(stderr, "Safe Mode!");
 	fprintf(stderr,"Battery saver mode is ON!\n");
 	return(ON);
 }
@@ -2438,6 +2439,7 @@ if (setting == ON) {
 		if (battery_saver_check() == OFF) {
 			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		  	pclose(command);
+			fprintf(stderr,"Turning Safe Mode ON\n"); 
 			fprintf(stderr,"Turning Battery saver mode ON\n");  
 //			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
 //		  	pclose(command);
