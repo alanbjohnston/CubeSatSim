@@ -1278,7 +1278,7 @@ void get_tlm(void) {
       strcat(str, cw_footer3);
 //    printf("Str: %s \n", str);
 //    fflush(stdout);	    
-      printf("CW string to execute: %s\n", str);
+      printf("CW string to execute:: %s\n", str);
       fflush(stdout);
 
       FILE * cw_file = popen(str, "r");
@@ -2428,7 +2428,7 @@ int battery_saver_check() {
 		return(OFF);
 	} 
 	fclose(file);
-        fprintf(stderr, "Safe Mode!");
+        fprintf(stderr, "Safe Mode!\n");
 	fprintf(stderr,"Battery saver mode is ON!\n");
 	return(ON);
 }
