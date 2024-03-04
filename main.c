@@ -933,7 +933,7 @@ int main(int argc, char * argv[]) {
 	    fprintf(stderr,"Battery voltage low - switch to battery saver\n");
 	    if (battery_saver_mode == OFF) {
 	    	battery_saver(ON);
-        	fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);"Safe Mode!\n");
+        	fprintf(stderr, "Safe Mode!\n");
 		SafeMode = 1;    
 		    
 	    }
@@ -942,7 +942,7 @@ int main(int argc, char * argv[]) {
 	    fprintf(stderr,"Battery is being charged - switch battery saver off\n");
 	    if (battery_saver_mode == ON) {
 	    	battery_saver(OFF);
-        	fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);"Safe Mode off!\n");
+        	fprintf(stderr, "Safe Mode off!\n");
 		SafeMode = 0;  		    
 	    }
     } 
