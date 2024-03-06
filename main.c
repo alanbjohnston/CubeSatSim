@@ -124,7 +124,7 @@ int main(int argc, char * argv[]) {
 //  pclose(rpitx_restart);
 
  if (battery_saver_check() == ON)
-	 SafeMode = 0;
+	 SafeMode = 1;
 	
   mode = FSK;
   frameCnt = 1;
