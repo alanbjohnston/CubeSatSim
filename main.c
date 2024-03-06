@@ -122,13 +122,6 @@ int main(int argc, char * argv[]) {
 	
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
 //  pclose(rpitx_restart);
-
- if (battery_saver_check() == ON) {
-	 SafeMode = 1;
-	 fprintf(stderr, "Safe Mode is activated by config setting!\n");
- }
- else
-	 SafeMode = 0;
 	
   mode = FSK;
   frameCnt = 1;
@@ -198,11 +191,16 @@ int main(int argc, char * argv[]) {
 
   battery_saver_mode = battery_saver_check();
 /**/
-  if (battery_saver_mode == ON)	
+  if (battery_saver_mode == ON)	{
+	SafeMode = 1;
   	fprintf(stderr, "Safe Mode! Battery_saver_mode is ON\n\n");
-  else
+  }
+  else {
 	fprintf(stderr, "\nBattery_saver_mode is OFF\n\n");
+	SafeMode = 0;
+  }
 /**/	
+
   fflush(stderr);
   
   if (mode == AFSK)
