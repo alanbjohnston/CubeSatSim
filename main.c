@@ -123,8 +123,12 @@ int main(int argc, char * argv[]) {
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
 //  pclose(rpitx_restart);
 
- if (battery_saver_check() == ON)
+ if (battery_saver_check() == ON) {
 	 SafeMode = 1;
+	 fprintf(stderr, "Safe Mode is activated by config setting!\n");
+ }
+ else
+	 SafeMode = 0;
 	
   mode = FSK;
   frameCnt = 1;
