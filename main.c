@@ -2441,35 +2441,33 @@ int battery_saver_check() {
 
 void battery_saver(int setting) {
 if (setting == ON) {
-	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
-		if (battery_saver_check() == OFF) {
-			FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
-		  	pclose(command);
-			fprintf(stderr,"Turning Safe Mode ON\n"); 
-			fprintf(stderr,"Turning Battery saver mode ON\n");  
-//			command = popen("if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo force_turbo=1 >> /boot/config.txt'; fi", "r");
-//		  	pclose(command);
+	if (battery_saver_check() == OFF) {
+		FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
+		pclose(command);
+		fprintf(stderr,"Turning Safe Mode ON\n"); 
+		fprintf(stderr,"Turning Battery saver mode ON\n");  
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
 			return;  
-		} else
-			fprintf(stderr, "Nothing to do for battery_saver\n");
+		}
+//		} else
+//			fprintf(stderr, "Nothing to do for battery_saver\n");
 	}  
   } else if (setting == OFF) {
-	if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
-		if (battery_saver_check() == ON) {
-			FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
-		  	pclose(command);
-			fprintf(stderr,"Turning Battery saver mode OFF\n"); 
-//			command = popen("sudo sed -i ':a;N;$!ba;s/\'$'\n''force_turbo=1//g' /boot/config.txt", "r");
-//		  	pclose(command);
+	if (battery_saver_check() == ON) {
+		FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
+		pclose(command);
+		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
 			return; 
-		} else
-			fprintf(stderr, "Nothing to do for battery_saver\n");
+		}
+//		} else
+//			fprintf(stderr, "Nothing to do for battery_saver\n");
 	}  
   } else {
 	  fprintf(stderr,"battery_saver function error");
