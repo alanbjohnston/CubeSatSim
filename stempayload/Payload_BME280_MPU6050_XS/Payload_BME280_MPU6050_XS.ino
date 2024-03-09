@@ -37,6 +37,8 @@ int blueLED = 8;
 int Sensor1 = 0;
 float Sensor2 = 0;
 float temp;
+int calibration = 0;
+
 void ee_prom_word_write(int addr, int val);
 short ee_prom_word_read(int addr);
 int first_time = true;
@@ -375,20 +377,24 @@ void loop() {
       setup();
     }
   else if (result == 'S') {
-    Serial.println("Storing temperature calibration data point in EEPROM\n");
-
+    Serial.print("Storing temperature calibration data point "); //  in EEPROM\n");
+    Serial.print(calibration + 1);	  
+    Serial.print("  in EEPROM\n");
+	    
     Serial.println(temp);
     Serial.println(sensorValue);
     Serial.println(" ");	  
 	  
-    eeprom_word_write(6, (int)(temp * 10.0) + 0.5);
-    eeprom_word_write(7, sensorValue);
+    eeprom_word_write(calibration * 2 + 4 , (int)(temp * 10.0) + 0.5);
+    eeprom_word_write(calibration * 2 + 5, sensorValue);
+
+    calibration = (calibration++) % 1	  
 	  
-   if (EEPROM.commit()) {
+    if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
-   } else {
+    } else {
       Serial.println("ERROR! EEPROM commit failed");
-   }
+    }
 	  
   }  
 //#endif	  	
