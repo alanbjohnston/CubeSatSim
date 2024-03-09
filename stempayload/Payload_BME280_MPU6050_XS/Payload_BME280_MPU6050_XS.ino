@@ -177,18 +177,30 @@ void setup() {
     eeprom_word_write(0, 0xA07);
     eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
-    eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
-
-    if (EEPROM.commit()) {
-      Serial.println("EEPROM successfully committed");
-    } else {
-      Serial.println("ERROR! EEPROM commit failed");
-    }	  
+    eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);  
  
     Serial.println(eeprom_word_read(0), HEX);
     Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
+
+   Serial.println("Storing emperature calibration data in EEPROM\n");
+
+   eeprom_word_write(4, (int)(T1 * 10.0) + 0.5);
+   eeprom_word_write(5, (int) R1);	  
+   eeprom_word_write(6, (int)(T2 * 10.0) + 0.5);
+   eeprom_word_write(7, (int) R2);
+	  
+   T1 = ((float)eeprom_word_read(4)) / 10.0;
+   R1 = ((float)eeprom_word_read(5));
+   T2 = ((float)eeprom_word_read(6)) / 10.0;
+   R2 = ((float)eeprom_word_read(7));
+
+   if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed");
+   } else {
+      Serial.println("ERROR! EEPROM commit failed");
+   }		  
 //#endif	  
   }
   payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
