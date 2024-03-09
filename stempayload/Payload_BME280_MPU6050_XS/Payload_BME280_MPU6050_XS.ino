@@ -401,7 +401,7 @@ void loop() {
 	    T1 = temp;
 	    R1 = sensorValue;
 	    calibration = 1;
-    } else
+    } else {
 	    T2 = temp;
 	    R2 = sensorValue;
 	    calibration = 0;
