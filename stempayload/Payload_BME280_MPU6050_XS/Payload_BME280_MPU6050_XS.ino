@@ -388,7 +388,7 @@ void loop() {
     eeprom_word_write(calibration * 2 + 4 , (int)(temp * 10.0) + 0.5);
     eeprom_word_write(calibration * 2 + 5, sensorValue);
 
-    calibration = (calibration++) % 1;	  
+    calibration = (calibration++) % 2;	  
 	  
     if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
