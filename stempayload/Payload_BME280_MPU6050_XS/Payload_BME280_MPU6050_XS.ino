@@ -165,6 +165,12 @@ void setup() {
     eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
     eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
+
+    if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed");
+    } else {
+      Serial.println("ERROR! EEPROM commit failed");
+    }	  
  
     Serial.println(eeprom_word_read(0), HEX);
     Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
