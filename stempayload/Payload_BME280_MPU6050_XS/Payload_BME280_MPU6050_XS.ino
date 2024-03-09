@@ -90,7 +90,10 @@ void setup() {
 #endif 
 	
   Serial1.begin(115200);  // for communication with Pi Zero 
+	
+#elif !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE	
   EEPROM.begin(512);
+#endif
 	
   delay(2000);
 	
