@@ -162,7 +162,7 @@ void setup() {
  
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
 
-    Serial.println("Temperature calibration data from EEPROM\n");
+    Serial.println("\nTemperature calibration data from EEPROM\n");
  
     T1 = ((float)eeprom_word_read(4)) / 10.0;
     R1 = ((float)eeprom_word_read(5));
