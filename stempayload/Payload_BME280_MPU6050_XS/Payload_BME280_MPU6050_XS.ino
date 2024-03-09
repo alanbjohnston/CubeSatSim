@@ -153,6 +153,19 @@ void setup() {
     Serial.println(zOffset, DEC);
  
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
+
+    Serial.println("Temperature calibration data from EEPROM\n");
+ 
+    T1 = ((float)eeprom_word_read(4)) / 10.0;
+    R1 = ((float)eeprom_word_read(5));
+    T2 = ((float)eeprom_word_read(6)) / 10.0;
+    R2 = ((float)eeprom_word_read(7));
+ 
+    Serial.println(T1, DEC);
+    Serial.println(R1, DEC);
+    Serial.println(T2, DEC);
+    Serial.println(R2, DEC);	  
+	  
   }
   else
   {
@@ -322,7 +335,7 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-#if !defined (ARDUINO_ARCH_RP2040)
+//#if !defined (ARDUINO_ARCH_RP2040)
   if (result == 'R') {	  
       Serial1.println("OK");
       delay(100);
@@ -335,7 +348,7 @@ void loop() {
       first_time = true;
       setup();
     }  
-#endif	  	
+//#endif	  	
   }  
 	  
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
