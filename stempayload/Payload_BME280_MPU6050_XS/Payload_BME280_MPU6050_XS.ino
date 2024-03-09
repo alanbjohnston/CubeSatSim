@@ -345,6 +345,11 @@ void loop() {
   else if (result == 'C') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
+      if (EEPROM.commit()) {
+      	Serial.println("EEPROM successfully committed");
+      } else {
+        Serial.println("ERROR! EEPROM commit failed");
+      }		  
       first_time = true;
       setup();
     }  
