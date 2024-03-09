@@ -381,8 +381,8 @@ void loop() {
     Serial.println(sensorValue);
     Serial.println(" ");	  
 	  
-    eeprom_word_write(4, (int)(temp * 10.0) + 0.5);
-    eeprom_word_write(5, sensorValue);
+    eeprom_word_write(6, (int)(temp * 10.0) + 0.5);
+    eeprom_word_write(7, sensorValue);
 	  
    if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
