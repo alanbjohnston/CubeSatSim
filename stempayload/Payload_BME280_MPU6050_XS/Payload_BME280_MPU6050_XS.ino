@@ -397,8 +397,18 @@ void loop() {
     eeprom_word_write(calibration * 2 + 4 , (int)(temp * 10.0) + 0.5);
     eeprom_word_write(calibration * 2 + 5, sensorValue);
 
-    calibration = (calibration + 1) % 2;
-//    Serial.println(calibration + 1);
+    if (calibration == 0) {
+	    T1 = temp;
+	    R1 = sensorValue;
+	    calibration = 1;
+    } else
+	    T2 = temp;
+	    R2 = sensorValue;
+	    calibration = 0;
+    } 	    
+
+//    calibration = (calibration + 1) % 2;
+//    Serial.println(calibration + 1);	  
 	  
 #if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
