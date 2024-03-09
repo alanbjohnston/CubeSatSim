@@ -370,11 +370,12 @@ void loop() {
   if (result == 'R' || result == 'r') {	  
 //      Serial1.println("OK");
 //      delay(100);
+      Serial.println("Resetting\n");	  
       first_read = true;
       setup();
     }
   else if (result == 'D' || result == 'd') {
-    Serial.println("Current temperature calibration data\n");	  
+    Serial.println("\nCurrent temperature calibration data\n");	  
     Serial.println(T1, DEC);
     Serial.println(R1, DEC);
     Serial.println(" ");	  
@@ -383,7 +384,7 @@ void loop() {
     Serial.println(" ");
   }
   else if (result == 'C' || result == 'c') {
-      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+      Serial.println("\nClearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
 #if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
