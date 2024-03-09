@@ -6,6 +6,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
+#include <EEPROM.h>
 
 #if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
 #include <TinyGPS++.h>
@@ -84,7 +85,8 @@ void setup() {
 #endif 
 	
   Serial1.begin(115200);  // for communication with Pi Zero 
-
+  EEPROM.begin(512);
+	
   delay(2000);
 	
 #if defined (ARDUINO_ARCH_MBED_RP2040) && (ARDUINO_ARCH_RP2040)
@@ -156,7 +158,7 @@ void setup() {
   {
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);	  
-#if !defined (ARDUINO_ARCH_RP2040)
+//#if !defined (ARDUINO_ARCH_RP2040)
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -168,7 +170,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
-#endif	  
+//#endif	  
   }
   payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
 }
@@ -343,18 +345,18 @@ void loop() {
  
 void eeprom_word_write(int addr, int val)
 {
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
+//#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
-#endif	
+//#endif	
 }
  
 short eeprom_word_read(int addr)
 {
   int result = 0;	
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
+//#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
   result = ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
-#endif
+//#endif
   return result;	
 }
  
