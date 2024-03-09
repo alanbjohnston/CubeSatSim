@@ -214,11 +214,13 @@ void setup() {
     Serial.println(R2, DEC);
     Serial.println(" ");
 	  
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE	  
    if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed\n");
    } else {
       Serial.println("ERROR! EEPROM commit failed\n");
-   }		  
+   }
+#endif	  
 #endif	  
   }
   payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
@@ -386,7 +388,7 @@ void loop() {
   else if (result == 'C' || result == 'c') {
       Serial.println("\nClearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
-#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
       if (EEPROM.commit()) {
       	Serial.println("EEPROM successfully committed\n");
@@ -422,7 +424,7 @@ void loop() {
 //    calibration = (calibration + 1) % 2;
 //    Serial.println(calibration + 1);	  
 	  
-#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
     if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed\n");
