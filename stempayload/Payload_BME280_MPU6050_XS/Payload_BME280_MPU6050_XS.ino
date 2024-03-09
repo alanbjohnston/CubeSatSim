@@ -179,8 +179,9 @@ void setup() {
   else
   {
     Serial.println("Calculating gyro offsets\n");
-    mpu6050.calcGyroOffsets(true);	  
-//#if !defined (ARDUINO_ARCH_RP2040)
+    mpu6050.calcGyroOffsets(true);
+	  
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -211,7 +212,6 @@ void setup() {
     Serial.println(R2, DEC);
     Serial.println(" ");
 	  
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
    if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed\n");
    } else {
