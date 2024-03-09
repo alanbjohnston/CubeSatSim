@@ -6,7 +6,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)
 #include <EEPROM.h>
 #endif
 
@@ -91,7 +91,7 @@ void setup() {
 	
   Serial1.begin(115200);  // for communication with Pi Zero 
 	
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE	
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE	
   EEPROM.begin(512);
 #endif
 	
@@ -182,7 +182,7 @@ void setup() {
     Serial.println("Calculating gyro offsets\n");
     mpu6050.calcGyroOffsets(true);
 	  
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
@@ -386,7 +386,7 @@ void loop() {
   else if (result == 'C' || result == 'c') {
       Serial.println("\nClearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
       if (EEPROM.commit()) {
       	Serial.println("EEPROM successfully committed\n");
@@ -422,7 +422,7 @@ void loop() {
 //    calibration = (calibration + 1) % 2;
 //    Serial.println(calibration + 1);	  
 	  
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
     if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed\n");
@@ -448,7 +448,7 @@ void loop() {
  
 void eeprom_word_write(int addr, int val)
 {
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
 #endif	
@@ -457,7 +457,7 @@ void eeprom_word_write(int addr, int val)
 short eeprom_word_read(int addr)
 {
   int result = 0;	
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
   result = ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
 #endif
   return result;	
