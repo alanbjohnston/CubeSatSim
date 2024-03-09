@@ -164,7 +164,8 @@ void setup() {
     Serial.println(T1, DEC);
     Serial.println(R1, DEC);
     Serial.println(T2, DEC);
-    Serial.println(R2, DEC);	  
+    Serial.println(R2, DEC);
+    Serial.println(" ");	  
 	  
   }
   else
@@ -184,7 +185,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
 
-   Serial.println("Storing emperature calibration data in EEPROM\n");
+   Serial.println("Storing temperature calibration data in EEPROM\n");
 
    eeprom_word_write(4, (int)(T1 * 10.0) + 0.5);
    eeprom_word_write(5, (int) R1);	  
@@ -195,6 +196,12 @@ void setup() {
    R1 = ((float)eeprom_word_read(5));
    T2 = ((float)eeprom_word_read(6)) / 10.0;
    R2 = ((float)eeprom_word_read(7));
+
+    Serial.println(T1, DEC);
+    Serial.println(R1, DEC);
+    Serial.println(T2, DEC);
+    Serial.println(R2, DEC);
+    Serial.println(" ");
 
    if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
