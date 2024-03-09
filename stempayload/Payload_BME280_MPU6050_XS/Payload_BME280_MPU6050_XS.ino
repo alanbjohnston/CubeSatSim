@@ -365,7 +365,7 @@ void loop() {
       first_read = true;
       setup();
     }
-  else if (result == 'C' result == 'c') {
+  else if (result == 'C' || result == 'c') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
       if (EEPROM.commit()) {
@@ -376,7 +376,7 @@ void loop() {
       first_time = true;
       setup();
     }
-  else if (result == 'S' result == 's') {
+  else if (result == 'S' || result == 's') {
     Serial.print("\nStoring temperature calibration data point "); //  in EEPROM\n");
     Serial.print(calibration + 1);	  
     Serial.print("  in EEPROM\n");
