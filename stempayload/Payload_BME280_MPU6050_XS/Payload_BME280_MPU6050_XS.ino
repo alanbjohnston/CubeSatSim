@@ -400,9 +400,9 @@ void loop() {
 #if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
 	  
     if (EEPROM.commit()) {
-      Serial.println("EEPROM successfully committed");
+      Serial.println("EEPROM successfully committed\n");
     } else {
-      Serial.println("ERROR! EEPROM commit failed");
+      Serial.println("ERROR! EEPROM commit failed\n");
     }
 #endif
 	  
