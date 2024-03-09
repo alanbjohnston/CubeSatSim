@@ -6,7 +6,9 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
 #include <EEPROM.h>
+#endif
 
 #if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
 #include <TinyGPS++.h>
