@@ -36,13 +36,14 @@ int greenLED = 9;
 int blueLED = 8;
 int Sensor1 = 0;
 float Sensor2 = 0;
+float temp;
 void ee_prom_word_write(int addr, int val);
 short ee_prom_word_read(int addr);
 int first_time = true;
 int first_read = true;
 
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-float T2 = -24; // Temperature data point 1
+float T2 = 24; // Temperature data point 1
 float R2 = 169; // Reading data point 1
 float T1 = 6; // Temperature data point 2
 float R1 = 181; // Reading data point 2
@@ -241,7 +242,8 @@ void loop() {
         Serial1.print(bme.readHumidity());
 
         Serial.print("OK BME280 ");
-        Serial.print(bme.readTemperature());
+	temp = bme.readTemperature();       
+        Serial.print(temp);
         Serial.print(" ");
         Serial.print(bme.readPressure() / 100.0F);
         Serial.print(" ");
@@ -371,7 +373,24 @@ void loop() {
       }		  
       first_time = true;
       setup();
-    }  
+    }
+  else if (result == 'S') {
+    Serial.println("Storing temperature calibration data point in EEPROM\n");
+
+    Serial.println(temp);
+    Serial.println(sensorValue);
+    Serial.println(" ");	  
+	  
+    eeprom_word_write(4, (int)(temp * 10.0) + 0.5);
+    eeprom_word_write(5, sensorValue);
+	  
+   if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed");
+   } else {
+      Serial.println("ERROR! EEPROM commit failed");
+   }
+	  
+  }  
 //#endif	  	
   }  
 	  
