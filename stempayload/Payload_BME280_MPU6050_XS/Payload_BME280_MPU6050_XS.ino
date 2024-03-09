@@ -171,6 +171,7 @@ void setup() {
  
     Serial.println(T1, DEC);
     Serial.println(R1, DEC);
+    Serial.println(" ");	  
     Serial.println(T2, DEC);
     Serial.println(R2, DEC);
     Serial.println(" ");	  
@@ -208,6 +209,7 @@ void setup() {
 
     Serial.println(T1, DEC);
     Serial.println(R1, DEC);
+    Serial.println(" ");
     Serial.println(T2, DEC);
     Serial.println(R2, DEC);
     Serial.println(" ");
@@ -366,11 +368,20 @@ void loop() {
 //    Serial.println(counter++); 
 //#if !defined (ARDUINO_ARCH_RP2040)
   if (result == 'R' || result == 'r') {	  
-      Serial1.println("OK");
-      delay(100);
+//      Serial1.println("OK");
+//      delay(100);
       first_read = true;
       setup();
     }
+  else if (result == 'D' || result == 'd') {
+    Serial.println("Current temperature calibration data\n");	  
+    Serial.println(T1, DEC);
+    Serial.println(R1, DEC);
+    Serial.println(" ");	  
+    Serial.println(T2, DEC);
+    Serial.println(R2, DEC);
+    Serial.println(" ");
+  }
   else if (result == 'C' || result == 'c') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
