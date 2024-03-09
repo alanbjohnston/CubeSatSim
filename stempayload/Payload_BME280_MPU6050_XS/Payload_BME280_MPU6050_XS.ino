@@ -379,7 +379,7 @@ void loop() {
   else if (result == 'S' || result == 's') {
     Serial.print("\nStoring temperature calibration data point "); //  in EEPROM\n");
     Serial.print(calibration + 1);	  
-    Serial.print("  in EEPROM\n");
+    Serial.print(" in EEPROM\n");
 	    
     Serial.println(temp);
     Serial.println(sensorValue);
