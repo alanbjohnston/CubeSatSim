@@ -207,9 +207,9 @@ void setup() {
     Serial.println(" ");
 
    if (EEPROM.commit()) {
-      Serial.println("EEPROM successfully committed");
+      Serial.println("EEPROM successfully committed\n");
    } else {
-      Serial.println("ERROR! EEPROM commit failed");
+      Serial.println("ERROR! EEPROM commit failed\n");
    }		  
 //#endif	  
   }
@@ -369,15 +369,15 @@ void loop() {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
       if (EEPROM.commit()) {
-      	Serial.println("EEPROM successfully committed");
+      	Serial.println("EEPROM successfully committed\n");
       } else {
-        Serial.println("ERROR! EEPROM commit failed");
+        Serial.println("ERROR! EEPROM commit failed\n");
       }		  
       first_time = true;
       setup();
     }
   else if (result == 'S') {
-    Serial.print("Storing temperature calibration data point "); //  in EEPROM\n");
+    Serial.print("\nStoring temperature calibration data point "); //  in EEPROM\n");
     Serial.print(calibration + 1);	  
     Serial.print("  in EEPROM\n");
 	    
