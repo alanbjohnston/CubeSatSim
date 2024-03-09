@@ -42,7 +42,7 @@ int first_time = true;
 int first_read = true;
 
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
-float T2 = 24; // Temperature data point 1
+float T2 = -24; // Temperature data point 1
 float R2 = 169; // Reading data point 1
 float T1 = 6; // Temperature data point 2
 float R1 = 181; // Reading data point 2
