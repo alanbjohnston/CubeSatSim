@@ -195,7 +195,7 @@ void setup() {
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
 
-   Serial.println("Storing temperature calibration data in EEPROM\n");
+   Serial.println("\nStoring temperature calibration data in EEPROM\n");
 
    eeprom_word_write(4, (int)(T1 * 10.0) + 0.5);
    eeprom_word_write(5, (int) R1);	  
