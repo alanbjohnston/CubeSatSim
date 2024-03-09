@@ -359,13 +359,13 @@ void loop() {
 //    Serial.println("OK");
 //    Serial.println(counter++); 
 //#if !defined (ARDUINO_ARCH_RP2040)
-  if (result == 'R') {	  
+  if (result == 'R' || result == 'r') {	  
       Serial1.println("OK");
       delay(100);
       first_read = true;
       setup();
     }
-  else if (result == 'C') {
+  else if (result == 'C' result == 'c') {
       Serial.println("Clearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
       if (EEPROM.commit()) {
@@ -376,7 +376,7 @@ void loop() {
       first_time = true;
       setup();
     }
-  else if (result == 'S') {
+  else if (result == 'S' result == 's') {
     Serial.print("\nStoring temperature calibration data point "); //  in EEPROM\n");
     Serial.print(calibration + 1);	  
     Serial.print("  in EEPROM\n");
@@ -389,7 +389,7 @@ void loop() {
     eeprom_word_write(calibration * 2 + 5, sensorValue);
 
     calibration = (calibration + 1) % 2;
-    Serial.println(calibration + 1);	  
+//    Serial.println(calibration + 1);	  
 	  
     if (EEPROM.commit()) {
       Serial.println("EEPROM successfully committed");
