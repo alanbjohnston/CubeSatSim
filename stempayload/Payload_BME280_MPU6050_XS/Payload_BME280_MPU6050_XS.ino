@@ -383,6 +383,9 @@ void loop() {
     Serial.println(" ");	  
     Serial.println(T2, DEC);
     Serial.println(R2, DEC);
+	  
+    Serial.println("\nCurrent raw temperature reading\n");	  
+    Serial.println(sensorValue, DEC);	
     Serial.println(" ");
   }
   else if (result == 'C' || result == 'c') {
