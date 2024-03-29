@@ -90,7 +90,8 @@ int main(int argc, char * argv[]) {
 	
   if (strcmp(sim_yes, "yes") == 0) {
 	  sim_mode = TRUE;
-	  fprintf(stderr, "Sim mode is ON\n");
+	  fprintf(stderr, "Sim mode is turned ON by configuration\n");
+	  sim_config = TRUE;
   }
   if (strcmp(hab_yes, "yes") == 0) {
 	  hab_mode = TRUE;
@@ -643,7 +644,7 @@ int main(int argc, char * argv[]) {
 		batteryVoltage = 4.5;
 	else  {
 		batteryVoltage = voltage[map[BAT]];
-		if (sim_mode) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
+		if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 			sim_mode = FALSE; 
 			fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
 		}
