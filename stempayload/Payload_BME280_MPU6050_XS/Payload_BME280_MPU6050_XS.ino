@@ -6,6 +6,9 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <MPU6050_tockn.h>
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)
+#include <EEPROM.h>
+#endif
 
 #if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
 #include <TinyGPS++.h>
@@ -35,6 +38,9 @@ int greenLED = 9;
 int blueLED = 8;
 int Sensor1 = 0;
 float Sensor2 = 0;
+float temp;
+int calibration = 0;
+
 void ee_prom_word_write(int addr, int val);
 short ee_prom_word_read(int addr);
 int first_time = true;
@@ -84,7 +90,11 @@ void setup() {
 #endif 
 	
   Serial1.begin(115200);  // for communication with Pi Zero 
-
+	
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE	
+  EEPROM.begin(512);
+#endif
+	
   delay(2000);
 	
 #if defined (ARDUINO_ARCH_MBED_RP2040) && (ARDUINO_ARCH_RP2040)
@@ -151,23 +161,66 @@ void setup() {
     Serial.println(zOffset, DEC);
  
     mpu6050.setGyroOffsets(xOffset, yOffset, zOffset);
+
+    Serial.println("\nTemperature calibration data from EEPROM\n");
+ 
+    T1 = ((float)eeprom_word_read(4)) / 10.0;
+    R1 = ((float)eeprom_word_read(5));
+    T2 = ((float)eeprom_word_read(6)) / 10.0;
+    R2 = ((float)eeprom_word_read(7));
+ 
+    Serial.println(T1, DEC);
+    Serial.println(R1, DEC);
+    Serial.println(" ");	  
+    Serial.println(T2, DEC);
+    Serial.println(R2, DEC);
+    Serial.println(" ");	  
+	  
   }
   else
   {
     Serial.println("Calculating gyro offsets\n");
-    mpu6050.calcGyroOffsets(true);	  
-#if !defined (ARDUINO_ARCH_RP2040)
+    mpu6050.calcGyroOffsets(true);
+	  
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
     Serial.println("Storing gyro offsets in EEPROM\n");
  
     eeprom_word_write(0, 0xA07);
     eeprom_word_write(1, (int)(mpu6050.getGyroXoffset() * 100.0) + 0.5);
     eeprom_word_write(2, (int)(mpu6050.getGyroYoffset() * 100.0) + 0.5);
-    eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);
+    eeprom_word_write(3, (int)(mpu6050.getGyroZoffset() * 100.0) + 0.5);  
  
     Serial.println(eeprom_word_read(0), HEX);
     Serial.println(((float)eeprom_word_read(1)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(2)) / 100.0, DEC);
     Serial.println(((float)eeprom_word_read(3)) / 100.0, DEC);
+
+   Serial.println("\nStoring temperature calibration data in EEPROM\n");
+
+   eeprom_word_write(4, (int)(T1 * 10.0) + 0.5);
+   eeprom_word_write(5, (int) R1);	  
+   eeprom_word_write(6, (int)(T2 * 10.0) + 0.5);
+   eeprom_word_write(7, (int) R2);
+	  
+   T1 = ((float)eeprom_word_read(4)) / 10.0;
+   R1 = ((float)eeprom_word_read(5));
+   T2 = ((float)eeprom_word_read(6)) / 10.0;
+   R2 = ((float)eeprom_word_read(7));
+
+    Serial.println(T1, DEC);
+    Serial.println(R1, DEC);
+    Serial.println(" ");
+    Serial.println(T2, DEC);
+    Serial.println(R2, DEC);
+    Serial.println(" ");
+	  
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE	  
+   if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed\n");
+   } else {
+      Serial.println("ERROR! EEPROM commit failed\n");
+   }
+#endif	  
 #endif	  
   }
   payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
@@ -201,7 +254,8 @@ void loop() {
         Serial1.print(bme.readHumidity());
 
         Serial.print("OK BME280 ");
-        Serial.print(bme.readTemperature());
+	temp = bme.readTemperature();       
+        Serial.print(temp);
         Serial.print(" ");
         Serial.print(bme.readPressure() / 100.0F);
         Serial.print(" ");
@@ -314,20 +368,76 @@ void loop() {
 //    Serial.println(result);
 //    Serial.println("OK");
 //    Serial.println(counter++); 
-#if !defined (ARDUINO_ARCH_RP2040)
-  if (result == 'R') {	  
-      Serial1.println("OK");
-      delay(100);
+//#if !defined (ARDUINO_ARCH_RP2040)
+  if (result == 'R' || result == 'r') {	  
+//      Serial1.println("OK");
+//      delay(100);
+      Serial.println("Resetting\n");	  
       first_read = true;
       setup();
     }
-  else if (result == 'C') {
-      Serial.println("Clearing stored gyro offsets in EEPROM\n");
+  else if (result == 'D' || result == 'd') {
+    Serial.println("\nCurrent temperature calibration data\n");	  
+    Serial.println(T1, DEC);
+    Serial.println(R1, DEC);
+    Serial.println(" ");	  
+    Serial.println(T2, DEC);
+    Serial.println(R2, DEC);
+	  
+    Serial.println("\nCurrent raw temperature reading\n");	  
+    Serial.println(sensorValue, DEC);	
+    Serial.println(" ");
+  }
+  else if (result == 'C' || result == 'c') {
+      Serial.println("\nClearing stored gyro offsets in EEPROM\n");
       eeprom_word_write(0, 0x00);
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+	  
+      if (EEPROM.commit()) {
+      	Serial.println("EEPROM successfully committed\n");
+      } else {
+        Serial.println("ERROR! EEPROM commit failed\n");
+      }	
+#endif	  
       first_time = true;
       setup();
-    }  
-#endif	  	
+    }
+  else if (result == 'S' || result == 's') {
+    Serial.print("\nStoring temperature calibration data point "); //  in EEPROM\n");
+    Serial.print(calibration + 1);	  
+    Serial.print(" in EEPROM\n");
+	    
+    Serial.println(temp);
+    Serial.println(sensorValue);
+    Serial.println(" ");	  
+	  
+    eeprom_word_write(calibration * 2 + 4 , (int)(temp * 10.0) + 0.5);
+    eeprom_word_write(calibration * 2 + 5, sensorValue);
+
+    if (calibration == 0) {
+	    T1 = temp;
+	    R1 = sensorValue;
+	    calibration = 1;
+    } else {
+	    T2 = temp;
+	    R2 = sensorValue;
+	    calibration = 0;
+    } 	    
+
+//    calibration = (calibration + 1) % 2;
+//    Serial.println(calibration + 1);	  
+	  
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
+	  
+    if (EEPROM.commit()) {
+      Serial.println("EEPROM successfully committed\n");
+    } else {
+      Serial.println("ERROR! EEPROM commit failed\n");
+    }
+#endif
+	  
+  }  
+//#endif	  	
   }  
 	  
 #if defined (ARDUINO_ARCH_MBED_RP2040) || (ARDUINO_ARCH_RP2040)
@@ -343,7 +453,7 @@ void loop() {
  
 void eeprom_word_write(int addr, int val)
 {
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
   EEPROM.write(addr * 2, lowByte(val));
   EEPROM.write(addr * 2 + 1, highByte(val));
 #endif	
@@ -352,7 +462,7 @@ void eeprom_word_write(int addr, int val)
 short eeprom_word_read(int addr)
 {
   int result = 0;	
-#if !defined(ARDUINO_ARCH_MBED_RP2040) && !defined(ARDUINO_ARCH_RP2040)	
+#if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards is used in Arduino IDE
   result = ((EEPROM.read(addr * 2 + 1) << 8) | EEPROM.read(addr * 2));
 #endif
   return result;	
