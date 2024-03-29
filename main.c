@@ -372,66 +372,19 @@ int main(int argc, char * argv[]) {
   file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
-  // try connecting to STEM Payload board using UART
-  // /boot/config.txt and /boot/cmdline.txt must be set correctly for this to work	
-
-//  if (!ax5043 && !vB3 && !(mode == CW) && !(mode == SSTV)) // don't test for payload if AX5043 is present or CW or SSTV modes
   if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
       printf("Serial opened to Pico\n");	    
-      payload = ON;
-/*	    
-      char c;
-      int charss = (char) serialDataAvail(uart_fd);
-      if (charss != 0)
-        printf("Clearing buffer of %d chars \n", charss);
-      while ((charss--> 0))
-        c = (char) serialGetchar(uart_fd); // clear buffer
-
-      unsigned int waitTime;
-      int i;
-      for (i = 0; i < 2; i++) {
-	if (payload != ON) {
-          serialPutchar(uart_fd, 'R');
-          printf("Querying payload with R to reset\n");
-          waitTime = millis() + 500;
-          while ((millis() < waitTime) && (payload != ON)) {
-            if (serialDataAvail(uart_fd)) {
-              printf("%c", c = (char) serialGetchar(uart_fd));
-              fflush(stdout);
-              if (c == 'O') {
-                printf("%c", c = (char) serialGetchar(uart_fd));
-                fflush(stdout);
-                if (c == 'K')
-                  payload = ON;
-              }
-            }
-            printf("\n");
-            //        sleep(0.75);
-          }
-        }
-      }
-      if (payload == ON)  {	    
-        printf("\nSTEM Payload is present!\n");
-	sleep(2);  // delay to give payload time to get ready
-      } 
-      else {
-        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
-	printf("Turning on Payload anyway\n");
-	payload = ON;      
-	      
-      }
-*/	    
+      payload = ON;	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
-//  if (sim_mode == TRUE) {
 
     sim_mode = TRUE;
 	    
@@ -799,53 +752,7 @@ int main(int argc, char * argv[]) {
       // end of simulated telemetry
     }
     else {
-// code moved
 
-/*	    
-      int count1;
-      char * token;
-      fputc('\n', file1);
-      fgets(cmdbuffer, 1000, file1);
-      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
-
-      const char space[2] = " ";
-      token = strtok(cmdbuffer, space);
-
-      for (count1 = 0; count1 < 8; count1++) {
-        if (token != NULL) {
-          voltage[count1] = (float) atof(token);
-          #ifdef DEBUG_LOGGING
-//            printf("voltage: %f ", voltage[count1]);
-          #endif
-          token = strtok(NULL, space);
-          if (token != NULL) {
-            current[count1] = (float) atof(token);
-            if ((current[count1] < 0) && (current[count1] > -0.5))
-              current[count1] *= (-1.0f);
-            #ifdef DEBUG_LOGGING
-//              printf("current: %f\n", current[count1]);
-            #endif
-            token = strtok(NULL, space);
-          }
-        }
-        if (voltage[map[BAT]] == 0.0)
-		batteryVoltage = 4.5;
-	else
-		batteryVoltage = voltage[map[BAT]];
-        batteryCurrent = current[map[BAT]];
-*/	      
-      }
-	
-//      batteryVoltage = voltage[map[BAT]];
-//      batteryCurrent = current[map[BAT]];
-
-/*	   
-      if (batteryVoltage < 3.7) {
-        SafeMode = 1;
-        printf("Safe Mode!\n");
-      } else
-        SafeMode = 0;
-*/
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
@@ -861,83 +768,11 @@ int main(int argc, char * argv[]) {
       //  IHUcpuTemp = (int)((cpuTemp * 10.0) + 0.5);
       }
       fclose(cpuTempSensor);
-    } 
-// move this code out of get_tlm
-/*	  
-      if (payload == ON) {  // -55
-        STEMBoardFailure = 0;
-        printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
-	fflush(stdout); 
-	printf("String: %s\n", buffer2);       
-	fflush(stdout);   
-	strcpy(sensor_payload, buffer2);      
-	printf(" Response from STEM Payload board: %s\n", sensor_payload);
-      
-        if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
-        {
-          int count1;
-          char * token;
- 
-          const char space[2] = " ";
-          token = strtok(sensor_payload, space);
-//	  printf("token: %s\n", token);	
-          for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
-            if (token != NULL) {
-              sensor[count1] = (float) atof(token);
-//              #ifdef DEBUG_LOGGING
-                printf("sensor: %f ", sensor[count1]);  // print sensor data
-//              #endif
-              token = strtok(NULL, space);
-            }
-          }
-          printf("\n");
-//	  if (sensor[GPS1] != 0) {     		
-	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
-		if (sensor[GPS1] != latitude) {  
-			latitude = sensor[GPS1];  
-			printf("Latitude updated to %f \n", latitude); 
-			newGpsTime = millis();  
-	 	}
-	  }
-//	  if (sensor[GPS2] != 0)  {
-	  if ((sensor[GPS2] > -180.0) && (sensor[GPS2] < 180.0) && (sensor[GPS2] != 0.0))  {   
-		if (sensor[GPS2] != longitude) {  		  
-			longitude = sensor[GPS2];  
-			printf("Longitude updated to %f \n", longitude); 
-			newGpsTime = millis();  
-		}
-	  }
-        }
-	else
-		; //payload = OFF;  // turn off since STEM Payload is not responding
-      }
-      if ((millis() - newGpsTime) > 60000) {
-		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
-     		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
-       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
-	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
-	      	newGpsTime = millis();  
-      }
-	  
-      if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-        for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
-          if (sensor[count1] < sensor_min[count1])
-            sensor_min[count1] = sensor[count1];
-          if (sensor[count1] > sensor_max[count1])
-            sensor_max[count1] = sensor[count1];
-            //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
-        }
-      }
-*/	  
-//  }	  
+    }   
 	  
     #ifdef DEBUG_LOGGING
     fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
-//    if ((batteryVoltage > 1.0) && (batteryVoltage < batteryThreshold)) // no battery INA219 will give 0V, no battery plugged into INA219 will read < 1V
-// fprintf(stderr, "\n\nbattery_saver_mode : %d current: %f\n", battery_saver_mode, batteryCurrent);
-
-//#ifndef HAB
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
@@ -974,8 +809,6 @@ int main(int argc, char * argv[]) {
       digitalWrite(onLed, onLedOff);
 
       FILE * file6; // = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
-//      pclose(file6);
-//      sleep(80);	    
       file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       pclose(file6);
       sleep(10);
@@ -1199,13 +1032,8 @@ void get_tlm(void) {
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
         channel, upper_digit(tlm[channel][4]), lower_digit(tlm[channel][4]), channel);
-      //        printf("%s",tlm_str);
 
-//#ifdef HAB	    
-//       if (mode != AFSK)
-//#endif	
- //      if ((!hab_mode) || ((hab_mode) && (mode != AFSK)))       
-        strcat(str, tlm_str);
+	strcat(str, tlm_str);
 	    
 	printf("CW string to execute: %s\n", &tlm_str);
 	    
@@ -1214,61 +1042,10 @@ void get_tlm(void) {
 
     }
   } else {  // APRS
-//#ifdef HAB
-//    if ((mode == AFSK) && (hab_mode)) {
-//      sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent); 
+
       sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
       strcat(str, tlm_str);
-//    }  else
-//      strcat(str, tlm_str);	// Is this needed???
-   }  
-//#endif
-    // read payload sensor if available
-/*
-    char sensor_payload[500];
-
-    if (payload == ON) {
-      char c;
-      unsigned int waitTime;
-      int i, end, trys = 0;
-      sensor_payload[0] = 0;
-      sensor_payload[1] = 0;
-      while (((sensor_payload[0] != 'O') || (sensor_payload[1] != 'K')) && (trys++ < 10)) {	      
-        i = 0;
-	serialPutchar(uart_fd, '?');
-	sleep(0.05);  // added delay after ?
-        printf("%d Querying payload with ?\n", trys);
-        waitTime = millis() + 500;
-        end = FALSE;
-        //  int retry = FALSE;
-        while ((millis() < waitTime) && !end) {
-          int chars = (char) serialDataAvail(uart_fd);
-          while ((chars > 0) && !end) {
-//	    printf("Chars: %d\ ", chars);
-	    chars--;
-	    c = (char) serialGetchar(uart_fd);
-            //	printf ("%c", c);
-            //	fflush(stdout);
-            if (c != '\n') {
-              sensor_payload[i++] = c;
-            } else {
-              end = TRUE;
-            }
-          }
-        }
-	
-        sensor_payload[i++] = ' ';
-        //  sensor_payload[i++] = '\n';
-        sensor_payload[i] = '\0';
-	
-        printf(" Response from STEM Payload board: %s\n", sensor_payload);
-	sleep(0.1);  // added sleep between loops
-      }	    
-
-      if (mode != CW)
-        strcat(str, sensor_payload); // append to telemetry string for transmission
-    }
-*/
+  }  
     strcpy(sensor_payload, buffer2);      	  
     printf(" Response from STEM Payload board:: %s\n", sensor_payload);
 //    printf(" Str so far: %s\n", str);   
@@ -1284,17 +1061,6 @@ void get_tlm(void) {
 //      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
       char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
       char cwready[] = "touch /home/pi/CubeSatSim/cwready";  // cw frame is complete. transmit is done by rpitx.py
-
-//    printf("Str str: %s \n", str);
-//    fflush(stdout);
-//      strcat(str, cw_footer3);
-//    printf("Str: %s \n", str);
-//    fflush(stdout);	    
-//      printf("CW string to execute:: %s\n", str);
-//      fflush(stdout);
-
-//      FILE * cw_file = popen(str, "r");
-//      pclose(cw_file);	
 	    
       FILE * cw_file = popen(cwready, "r");
       pclose(cw_file);	    
@@ -1330,22 +1096,7 @@ void get_tlm(void) {
       sleep(4);  // was 2
 	    
     } else {  // APRS using rpitx
-/*	    
-     if (payload == ON) {	    
-      telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
-      printf("Writing payload string\n");
-      time_t timeStamp;
-      time(&timeStamp);   // get timestamp 
-//      printf("Timestamp: %s\n", ctime(&timeStamp));
 	    
-      char timeStampNoNl[31], bat_string[31];    
-      snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
-      printf("TimeStamp: %s\n", timeStampNoNl);
-      snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
-      fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
-      fclose(telem_file);
-    }	 	    
-*/	    
       strcat(str, footer_str1);
 //      strcat(str, call);
       if (battery_saver_mode  == ON)	    
@@ -2199,29 +1950,6 @@ float toAprsFormat(float input) {
     return(output);	
 }
 
-
-//#define GET_IMAGE_DEBUG
-
-//#define DEBUG
-
-//#define PICOW true
-//int led_pin = LED_BUILTIN;
-
-/*
-void loop() {
-
-  char input_file[] = "/cam.jpg"; 
-  char output_file[] = "/cam.bin"; 
-  
-  get_image_file();
-
-  Serial.println("Got image from ESP-32-CAM!");
-
-  delay(1000);
-
-}
-*/
-
 int get_payload_serial(int debug_camera)  {
 
   index1 = 0;
@@ -2247,11 +1975,6 @@ int get_payload_serial(int debug_camera)  {
               printf("%c", octet);
               fflush(stdout);	  
 
-//   if (Serial2.available()) {      // If anything comes in Serial2
-//      byte octet = Serial2.read();
-///      if ((!start_flag_detected) && (debug_camera))
-///        Serial.write(octet);
-
      if (start_flag_complete) {
 //       printf("Start flag complete detected\n");
        buffer2[index1++] = octet;
@@ -2263,44 +1986,6 @@ int get_payload_serial(int debug_camera)  {
             printf("Found part of end flag!\n");
 #endif
             if (flag_count >= strlen(end_flag)) {  // complete image           
-///              buffer2[index1++] = octet;
-//              Serial.println("\nFound end flag");
-//              Serial.println(octet, HEX);
-///              while(!Serial2.available()) { }     // Wait for another byte
-//              octet = Serial2.read(); 
-//              buffer2[index1++] = octet;
-//              Serial.println(octet, HEX);
-//              while(!Serial2.available()) { }     // Wait for another byte
-///              int received_crc = Serial2.read(); 
-//              buffer2[index1++] = octet;
-/*                            
-              Serial.print("\nFile length: ");
-              Serial.println(index1 - (int)strlen(end_flag));
-//              index1 -= 1; // 40;
-//              Serial.println(buffer2[index1 - 1], HEX); 
-//              int received_crc = buffer2[index1];
-//              index1 -= 1;
-
-              uint8_t * data = (uint8_t *) &buffer2[0];
-#ifdef GET_IMAGE_DEBUG
-       Serial.println(buffer2[0], HEX);
-      Serial.println(buffer2[index1 - 1], HEX);
-      Serial.println(index1);            
- #endif  
-     if (debug_camera) {                
-      Serial.print("\nCRC received:");
-      Serial.println(received_crc, HEX);   
-    }
-           
-              int calculated_crc = CRC8.smbus(data, index1);
- //             Serial.println(calculated_crc, HEX);
-              if (received_crc == calculated_crc)
-                Serial.println("CRC check succeeded!");
-              else  
-               Serial.println("CRC check failed!"); 
-
-*/		    
-//              index1 -= 40;                         
               index1 -= strlen(end_flag);
 	      buffer2[index1++] = 0;
 	      printf(" Payload length: %d \n",index1); 	    
