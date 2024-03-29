@@ -89,7 +89,7 @@ int main(int argc, char * argv[]) {
   }
 	
   if (strcmp(sim_yes, "yes") == 0) {
-	   = TRUE;
+	  sim_mode = TRUE;
 	  fprintf(stderr, "Sim mode is ON\n");
   }
   if (strcmp(hab_yes, "yes") == 0) {
@@ -429,10 +429,10 @@ int main(int argc, char * argv[]) {
     }
   }
 
-  if ((i2c_bus3 == OFF) || ( == TRUE)) {
-//  if ( == TRUE) {
+  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+//  if (sim_mode == TRUE) {
 
-     = TRUE;
+    sim_mode = TRUE;
 	    
     fprintf(stderr, "Simulated telemetry mode!\n");
 
@@ -547,7 +547,7 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));	
 	
-  if (((mode == FSK) || (mode == BPSK))) // && !)
+  if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
@@ -641,10 +641,12 @@ int main(int argc, char * argv[]) {
         }
         if (voltage[map[BAT]] == 0.0)
 		batteryVoltage = 4.5;
-	else {
+	else  {
 		batteryVoltage = voltage[map[BAT]];
-		if (sim_mode)	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
+		if (sim_mode) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 			sim_mode = FALSE; 
+			fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
+		}
 	}
         batteryCurrent = current[map[BAT]];
 	   
@@ -795,7 +797,7 @@ int main(int argc, char * argv[]) {
 
       // end of simulated telemetry
     }
-//    else {
+    else {
 // code moved
 
 /*	    
@@ -831,7 +833,7 @@ int main(int argc, char * argv[]) {
 		batteryVoltage = voltage[map[BAT]];
         batteryCurrent = current[map[BAT]];
 */	      
-//      }
+      }
 	
 //      batteryVoltage = voltage[map[BAT]];
 //      batteryCurrent = current[map[BAT]];
