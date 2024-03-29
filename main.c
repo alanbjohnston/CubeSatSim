@@ -378,7 +378,7 @@ int main(int argc, char * argv[]) {
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
       printf("Serial opened to Pico\n");	    
-      payload = ON;	    
+//      payload = ON;	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
@@ -606,10 +606,12 @@ int main(int argc, char * argv[]) {
 	   
    }
 
-      if (payload == ON) {  // moved to here
+//      if (payload == ON) {  // moved to here
+      if (!ax503) {	      
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
-        STEMBoardFailure = 0;
-        printf("get_payload_status: %d \n", get_payload_serial(FALSE));  // not debug
+//        STEMBoardFailure = 0;
+	payload = get_payload_serial(FALSE);      
+        printf("get_payload_status: %d \n", payload);  // not debug
 	fflush(stdout); 
 	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
