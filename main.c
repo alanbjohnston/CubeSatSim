@@ -607,7 +607,7 @@ int main(int argc, char * argv[]) {
    }
 
 //      if (payload == ON) {  // moved to here
-      if (!ax503) {	      
+      if (!ax5043) {	      
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
 //        STEMBoardFailure = 0;
 	payload = get_payload_serial(FALSE);      
