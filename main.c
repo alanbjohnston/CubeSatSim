@@ -513,7 +513,7 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
-  if (!sim_mode)
+  // if (!sim_mode)  // always read sensors even in sim mode
   {
     strcpy(pythonStr, pythonCmd);
     strcat(pythonStr, busStr);
