@@ -638,7 +638,8 @@ int main(int argc, char * argv[]) {
 
       // end of simulated telemetry
     }
-    else {
+ //   else   // always read telemetry
+    {
       int count1;
       char * token;
       fputc('\n', file1);
