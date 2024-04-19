@@ -1037,7 +1037,7 @@ void get_tlm(void) {
     }
 
     if (mode == AFSK) {
-      sprintf(tlm_str, "%4.2f V  %5.1f mA ", batteryVoltage, batteryVoltage);
+      sprintf(tlm_str, "%4.2f V  %5.1f mA ", batteryVoltage, batteryCurrent);
       strcat(str, tlm_str);
     }  
 
