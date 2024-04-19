@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
 #import subprocess
-#import time
+import time
 from time import sleep
 #import os
 import sys
@@ -582,7 +582,9 @@ if __name__ == "__main__":
 					
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
-
+					current_time = time.strftime("%m-%d-%H%M%S", time.localtime())
+					system("raspistill -o " + "/home/pi/payload/img"+current_time+".jpg")
+					
 					file='/home/pi/CubeSatSim/camera_out.jpg'
 					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
 					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
