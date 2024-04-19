@@ -334,6 +334,16 @@ if __name__ == "__main__":
                         print(rx)
 		else:	
 			rx = '435.0000'	
+		if len(config) > 8:
+			if (config[8] == 'y') or (config[8] == 'yes'):
+				hab_mode = True
+				print("HAB Mode set - CW ID using FM Transceiver, only camera images in SSTV mode")
+			else:
+				hab_mode = False
+				print("HAB Mode not set")
+		else:
+			hab_mode = False
+			
 		print(config)
 		print
 #		print(callsign)
@@ -397,16 +407,17 @@ if __name__ == "__main__":
 	if (mode != 'm'):	
 #		battery_saver_mode
 		output(txLed, txLedOn)			
-#		if (txc):
-#			output(pd, 1)
-#			output (ptt, 0)
-#			sleep(0.1)
-#			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
-#			sleep(0.1)
-#			output (ptt, 1)
-#			output(pd, 0)
-#		else:	
-		if (True):
+		if (txc and hab_mode):
+			print("HAB Mode is true, CW ID using FM transceiver")
+			output(pd, 1)
+			output (ptt, 0)
+			sleep(0.1)
+			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+			sleep(0.1)
+			output (ptt, 1)
+			output(pd, 0)
+		else:	
+#		if (True):
 			if (debug_mode == 1):
 #				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
@@ -537,34 +548,35 @@ if __name__ == "__main__":
 #			output (ptt, 1)
 #			output(pd, 0)
 			if (camera_present == 1):
-				try:
-					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
-					print("First SSTV stored image detected")
-					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
-					command_control_check()	
-					
-					if (command_tx == True):
-						print ("Sending SSTV image")
-						output(txLed, txLedOn)
-#						battery_saver_check()
-
-						if (txc):
-							output(pd, 1)
-							output (ptt, 0)
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
-							output (ptt, 1)
-							output(pd, 0)
-						else:	
-							if (debug_mode == 1):
-								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
-							else:
-								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-
-						output(txLed, txLedOff)
-
-	#					sleep(1)
-				except:
-					print("image 2 did not load - copy from CubeSatSim/sstv directory")
+				if (hab_mode == False):
+					try:
+						file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
+						print("First SSTV stored image detected")
+						system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
+						command_control_check()	
+						
+						if (command_tx == True):
+							print ("Sending SSTV image")
+							output(txLed, txLedOn)
+	#						battery_saver_check()
+	
+							if (txc):
+								output(pd, 1)
+								output (ptt, 0)
+								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+								output (ptt, 1)
+								output(pd, 0)
+							else:	
+								if (debug_mode == 1):
+									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
+								else:
+									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+	
+							output(txLed, txLedOff)
+	
+		#					sleep(1)
+					except:
+						print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 					command_control_check()			
 					
