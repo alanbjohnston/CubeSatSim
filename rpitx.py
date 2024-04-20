@@ -406,8 +406,9 @@ if __name__ == "__main__":
 #	if (command_tx == True):	
 	if (mode != 'm'):	
 #		battery_saver_mode
-		output(txLed, txLedOn)			
-		if (txc and hab_mode):
+		output(txLed, txLedOn)	
+		if (False):
+#		if (txc and hab_mode):
 			print("HAB Mode is true, CW ID using FM transceiver")
 			output(pd, 1)
 			output (ptt, 0)
