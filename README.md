@@ -5,7 +5,7 @@ This is the beta release for the new CubeSatSim hardware.
 ### The hardware files are here: 
 https://CubeSatSim.org/hardware-beta 
 
-<img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/7bdc7b40408baa588a83d360d2112190a803403d/hardware/beta-v1.3.2/cubesatsim-battery-b1.3.2.1b_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-STEM-b1.3.2b_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-solar-b1.3.2._top.png">
+<img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/7bdc7b40408baa588a83d360d2112190a803403d/hardware/beta-v1.3.2/cubesatsim-battery-b1.3.2.1b_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-STEM-b1.3.2.1_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-solar-b1.3.2._top.png">
 
 ### The wiki instructions are here: 
 https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.  
