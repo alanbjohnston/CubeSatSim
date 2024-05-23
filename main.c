@@ -42,6 +42,8 @@ int main(int argc, char * argv[]) {
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
   }
+
+  read_adc();	
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
 
@@ -2167,4 +2169,38 @@ if (setting == ON) {
 	  return;
   }
   return;
+}
+
+void read_adc() 
+{
+	// Create I2C bus
+	int file;
+	char *bus = "/dev/i2c-1";
+	if ((file = open(bus, O_RDWR)) < 0) 
+	{
+		printf("Failed to open the bus. \n");
+		exit(1);
+	}
+	// Get I2C device, ADS7830 I2C address is 0x48(72)
+	ioctl(file, I2C_SLAVE, 0x48);
+
+	// Differential inputs, Channel-0, Channel-1 selected
+	char config[1] = {0x04};
+	write(file, config, 1);
+	sleep(1);
+
+	// Read 1 byte of data
+	char data[1]={0};
+	if(read(file, data, 1) != 1)
+	{
+		printf("Erorr : Input/output Erorr \n");
+	}
+	else 
+	{
+		// Convert the data
+		int raw_adc = data[0];
+
+		// Output data to screen
+		printf("Digital value of analog input: %d \n", raw_adc);
+	}
 }
