@@ -20,6 +20,10 @@
 #include <arpa/inet.h>
 #include <errno.h>
 
+#include <linux/i2c-dev.h>
+#include <sys/ioctl.h>
+//#include <fcntl.h>
+
 #define PORT 8080
 
 #define A 1
