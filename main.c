@@ -2251,7 +2251,7 @@ void init_adc()
 	char data[1]={0};
 	if(read(adc_file, data, 1) != 1)
 	{
-		fprintf(stderr,"Erorr: ADC Input/output Erorr \n");
+		fprintf(stderr,"Error: ADC Input/output Erorr \n");
 	}
 	else 
 	{
@@ -2281,7 +2281,7 @@ void read_adc_process(int sig_num)
 	        adc_buffer[wav_position] = 0;  
 		if(read(adc_file, data, 1) != 1)
 		{
-			fprintf(stderr,"Erorr: ADC Input/output Erorr \n");
+			fprintf(stderr,"Error: ADC Input/output Erorr \n");
 		}
 		else 
 		{
@@ -2289,7 +2289,7 @@ void read_adc_process(int sig_num)
 			adc_buffer[wav_position] = data[0];
 	
 			// Output data to screen
-	//		printf("Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
+			printf("Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
 		}
 		    
 	        wav_position++;
