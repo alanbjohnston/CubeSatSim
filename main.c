@@ -46,7 +46,7 @@ int main(int argc, char * argv[]) {
 
   read_adc();	
 
-    signal(SIGALRM, alarmWakeup);   
+    signal(SIGALRM, read_adc_process);   
     ualarm(125, 125);
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
