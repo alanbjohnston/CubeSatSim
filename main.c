@@ -2273,16 +2273,19 @@ void read_adc_process(int sig_num)
 {
 //    fprintf(stderr,"read_adc_process starting\n");
 	
-//    if(sig_num == SIGALRM)
+    if(sig_num == SIGALRM)
     {
 // read ADC  
 //	    printf("read_adc_process\n");
-	    if (wav_position > (BUFFER_SIZE - 1)) { 
-	        // set pwm level 
-	        // allow the pwm value to repeat for 8 cycles this is >>3 
-	        adc_buffer[wav_position] = 0;  
-		if(read(adc_file, data, 1) != 1)
-		{
+	    if (wav_position > (BUFFER_SIZE - 1)) { 		    
+	        wav_position++;
+	    } else {
+	        // reset to start
+	        wav_position = 0;
+	    }
+	    adc_buffer[wav_position] = 0; 
+	    if(read(adc_file, data, 1) != 1)
+	        {
 			fprintf(stderr,"Error: ADC Input/output Erorr \n");
 		}
 		else 
@@ -2293,12 +2296,7 @@ void read_adc_process(int sig_num)
 			// Output data to screen
 			fprintf(stderr, "Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
 		}
-		    
-	        wav_position++;
-	    } else {
-	        // reset to start
-	        wav_position = 0;
-	    }    
+
     }
 
 }
