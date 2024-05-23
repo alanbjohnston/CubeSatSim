@@ -2273,7 +2273,7 @@ void read_adc_process(int sig_num)
 {
 //    fprintf(stderr,"read_adc_process starting\n");
 	
-    if(sig_num == SIGALRM)
+//    if(sig_num == SIGALRM)
     {
 // read ADC  
 //	    printf("read_adc_process\n");
