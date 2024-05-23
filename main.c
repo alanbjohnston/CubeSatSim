@@ -2294,7 +2294,7 @@ void read_adc_process(int sig_num)
 			adc_buffer[wav_position] = data[0];
 	
 			// Output data to screen
-			fprintf(stderr, "Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
+//			fprintf(stderr, "Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
 		}
 
     }
