@@ -21,6 +21,7 @@
  
 
 #include "main.h"
+void read_adc_process(int sig_num);
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
@@ -44,6 +45,9 @@ int main(int argc, char * argv[]) {
   }
 
   read_adc();	
+
+    signal(SIGALRM, alarmWakeup);   
+    ualarm(125, 125);
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
 
@@ -2213,5 +2217,15 @@ void read_adc()
 	}
 	time_stop = (long int) micros();
 	printf("Digital value of analog input: %d in %d us\n", raw_adc, (time_stop - time_start)/10); // millis() - time_start);
+
+}
+
+void read_adc_process(int sig_num)
+{
+    if(sig_num == SIGALRM)
+    {
+// read ADC  
+	    printf("read_adc_process\n");
+    }
 
 }
