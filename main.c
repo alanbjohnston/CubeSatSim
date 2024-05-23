@@ -2211,7 +2211,7 @@ void read_adc()
 //		printf("Digital value of analog input: %d in %d us\n", raw_adc, micros() - time_start); // millis() - time_start);
 	}
 	}
-	time_stop = micros();
-	printf("Digital value of analog input: %d in %d us\n", raw_adc, (time_stop - time_start)/10.0); // millis() - time_start);
+	time_stop = (long int) micros();
+	printf("Digital value of analog input: %d in %d us\n", raw_adc, (time_stop - time_start)/10); // millis() - time_start);
 
 }
