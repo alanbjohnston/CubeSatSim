@@ -90,7 +90,7 @@ static int init_rf();
 extern int Encode_8b10b[][256];
 void program_radio();
 void read_adc(); 
-void init_read_adc(); 
+void init_adc(); 
 void read_adc_process(int sig_num);
 
 int socket_open = 0;
