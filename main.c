@@ -2271,7 +2271,7 @@ void init_adc()
 
 void read_adc_process(int sig_num)
 {
-    fprintf(stderr,"read_adc_process starting\n");
+//    fprintf(stderr,"read_adc_process starting\n");
 	
     if(sig_num == SIGALRM)
     {
