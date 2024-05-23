@@ -88,6 +88,7 @@ void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
 static int init_rf();
 extern int Encode_8b10b[][256];
 void program_radio();
+void read_adc(); 
 
 int socket_open = 0;
 int sock = 0;
