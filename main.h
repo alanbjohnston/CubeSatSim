@@ -106,7 +106,7 @@ short int buffer[2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 FILE *telem_file;	
 int adc_file;
-#define BUFFER_SIZE  10000
+#define BUFFER_SIZE  2^16
 uint8_t adc_buffer[BUFFER_SIZE];
 unsigned long int wav_position = 0;
 
