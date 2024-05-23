@@ -549,6 +549,8 @@ int main(int argc, char * argv[]) {
     fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
+
+    fprintf(stderr, "ADC count: %d \n", wav_position);	  
 	  
     sensor_payload[0] = 0;
     memset(voltage, 0, sizeof(voltage));
