@@ -3,7 +3,7 @@
  *  Or transmits SSTV stored images or Pi camera iamges.
  *
  *  Copyright Alan B. Johnston
- *
+ * 
  *  Portions Copyright (C) 2018 Jonathan Brandenburg
  *
  *  This program is free software: you can redistribute it and/or modify
@@ -44,12 +44,13 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero 2 detected\n");
   }
 
-  read_adc();	
-
-    signal(SIGALRM, read_adc_process);   
-    ualarm(125, 125);
+//  read_adc();	
+  init_adc();	
+  signal(SIGALRM, read_adc_process);   
+  ualarm(125, 125);
+  fprintf(stderr,"\nStarting ADC ISR\n\n");	
 	
-  printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
+  fprintf(stderr,"\n\nCubeSatSim v1.3.2 starting...\n\n");
 
   wiringPiSetup();	
 		
@@ -2182,7 +2183,7 @@ void read_adc()
 	char *bus = "/dev/i2c-1";
 	if ((file = open(bus, O_RDWR)) < 0) 
 	{
-		printf("Failed to open the bus. \n");
+		fprintf(stderr,"Failed to open the bus. \n");
 		exit(1);
 	}
 	// Get I2C device, ADS7830 I2C address is 0x48(72)
@@ -2204,7 +2205,7 @@ void read_adc()
 	char data[1]={0};
 	if(read(file, data, 1) != 1)
 	{
-		printf("Erorr : Input/output Erorr \n");
+		fprintf(stderr,"Erorr : Input/output Erorr \n");
 	}
 	else 
 	{
@@ -2216,16 +2217,85 @@ void read_adc()
 	}
 	}
 	time_stop = (long int) micros();
-	printf("Digital value of analog input: %d in %d us\n", raw_adc, (time_stop - time_start)/10); // millis() - time_start);
+	fprintf(stderr,"Digital value of analog input: %d in %d us\n", raw_adc, (time_stop - time_start)/10); // millis() - time_start);
 
 }
+
+void init_adc() 
+{
+	// Create I2C bus
+//	int file;
+	char *bus = "/dev/i2c-1";
+	if ((adc_file = open(bus, O_RDWR)) < 0) 
+	{
+		fprintf(stderr,"Failed to open the bus. \n");
+		exit(1);
+	}
+	// Get I2C device, ADS7830 I2C address is 0x48(72)
+	ioctl(adc_file, I2C_SLAVE, 0x48);
+
+	// Differential inputs, Channel-0, Channel-1 selected
+	char config[1] = {0x04};
+	write(adc_file, config, 1);
+	sleep(1);
+
+	long int time_start, time_stop;
+
+	int i = 0;
+	time_start = (long int) micros(); //millis();	
+	int raw_adc;
+	while (i++ < 10) {
+
+	// Read 1 byte of data
+	char data[1]={0};
+	if(read(adc_file, data, 1) != 1)
+	{
+		fprintf(stderr,"Erorr: ADC Input/output Erorr \n");
+	}
+	else 
+	{
+		// Convert the data
+		raw_adc = data[0];
+
+		// Output data to screen
+//		printf("Digital value of analog input: %d in %d us\n", raw_adc, micros() - time_start); // millis() - time_start);
+	}
+	}
+	time_stop = (long int) micros();
+	fprintf(stderr,"Digital value of analog input: %d in %d us\n", raw_adc, (time_stop - time_start)/10); // millis() - time_start);
+	
+	wav_position = 0;
+}
+
 
 void read_adc_process(int sig_num)
 {
     if(sig_num == SIGALRM)
     {
 // read ADC  
-	    printf("read_adc_process\n");
+//	    printf("read_adc_process\n");
+	    if (wav_position > (BUFFER_SIZE - 1)) { 
+	        // set pwm level 
+	        // allow the pwm value to repeat for 8 cycles this is >>3 
+	        buffer[wav_position] = 0;  
+		if(read(adc_file, data, 1) != 1)
+		{
+			fprintf(stderr,"Erorr: ADC Input/output Erorr \n");
+		}
+		else 
+		{
+			// Convert the data
+			buffer[wav_position] = data[0];
+	
+			// Output data to screen
+	//		printf("Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
+		}
+		    
+	        wav_position++;
+	    } else {
+	        // reset to start
+	        wav_position = 0;
+	    }    
     }
 
 }
