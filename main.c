@@ -2278,10 +2278,10 @@ void read_adc_process(int sig_num)
 // read ADC  
 //	    printf("read_adc_process\n");
 	    if (wav_position > (BUFFER_SIZE - 1)) { 		    
-	        wav_position++;
+	     // reset to start
+	        wav_position = 0;    
 	    } else {
-	        // reset to start
-	        wav_position = 0;
+	        wav_position++;
 	    }
 	    adc_buffer[wav_position] = 0; 
 	    if(read(adc_file, data, 1) != 1)
