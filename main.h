@@ -98,14 +98,14 @@ int firstTime = ON; // 0;
 long start;
 int testCount = 0;
 long time_start;
-char cmdbuffer[1000];
+char cmd1000];
 FILE * file1;
-short int buffer[2336400]; // max size for 10 frames count of BPSK
+short int 2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 FILE *telem_file;	
 int adc_file;
 #define BUFFER_SIZE  10000
-uint8_t buffer[BUFFER_SIZE];
+uint8_t adc_buffer[BUFFER_SIZE];
 unsigned long int wav_position = 0;
 
 #define S_RATE	(48000) // (44100)
