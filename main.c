@@ -2193,6 +2193,7 @@ void read_adc()
 
 	int i = 0;
 	time_start = (long int) micros(); //millis();	
+	int raw_adc;
 	while (i++ < 10) {
 
 	// Read 1 byte of data
@@ -2204,7 +2205,7 @@ void read_adc()
 	else 
 	{
 		// Convert the data
-		int raw_adc = data[0];
+		raw_adc = data[0];
 
 		// Output data to screen
 //		printf("Digital value of analog input: %d in %d us\n", raw_adc, micros() - time_start); // millis() - time_start);
