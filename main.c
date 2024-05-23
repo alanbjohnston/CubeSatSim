@@ -2277,7 +2277,7 @@ void read_adc_process(int sig_num)
 	    if (wav_position > (BUFFER_SIZE - 1)) { 
 	        // set pwm level 
 	        // allow the pwm value to repeat for 8 cycles this is >>3 
-	        buffer[wav_position] = 0;  
+	        adc_buffer[wav_position] = 0;  
 		if(read(adc_file, data, 1) != 1)
 		{
 			fprintf(stderr,"Erorr: ADC Input/output Erorr \n");
@@ -2285,7 +2285,7 @@ void read_adc_process(int sig_num)
 		else 
 		{
 			// Convert the data
-			buffer[wav_position] = data[0];
+			adc_buffer[wav_position] = data[0];
 	
 			// Output data to screen
 	//		printf("Digital value of analog input: %d in %d us\n", data[0], micros() - time_start); // millis() - time_start);
