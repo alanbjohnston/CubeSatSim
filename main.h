@@ -105,7 +105,7 @@ FILE *sopen(const char *program);
 FILE *telem_file;	
 int adc_file;
 #define BUFFER_SIZE  10000
-byte buffer[BUFFER_SIZE];
+uint8_t buffer[BUFFER_SIZE];
 unsigned long int wav_position = 0;
 
 #define S_RATE	(48000) // (44100)
