@@ -2183,6 +2183,7 @@ void read_adc()
 	}
 	// Get I2C device, ADS7830 I2C address is 0x48(72)
 	ioctl(file, I2C_SLAVE, 0x48);
+	ioctl(file, I2C_SET_SPEED, 400000);
 
 	// Differential inputs, Channel-0, Channel-1 selected
 	char config[1] = {0x04};
