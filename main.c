@@ -2192,7 +2192,7 @@ void read_adc()
 	long int time_start;
 	
 	while (1) {
-	time_start = (long int) millis();	
+	time_start = (long int) micros(); //millis();	
 	// Read 1 byte of data
 	char data[1]={0};
 	if(read(file, data, 1) != 1)
@@ -2205,7 +2205,7 @@ void read_adc()
 		int raw_adc = data[0];
 
 		// Output data to screen
-		printf("Digital value of analog input: %d in %d ms\n", raw_adc, millis() - time_start);
+		printf("Digital value of analog input: %d in %d us\n", raw_adc, micros() - time_start); // millis() - time_start);
 	}
 	}
 }
