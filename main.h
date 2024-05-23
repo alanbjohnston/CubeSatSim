@@ -22,7 +22,8 @@
 
 #include <linux/i2c-dev.h>
 #include <sys/ioctl.h>
-//#include <fcntl.h>
+#include <signal.h>
+#include <unistd.h>
 
 #define PORT 8080
 
