@@ -98,7 +98,7 @@ int firstTime = ON; // 0;
 long start;
 int testCount = 0;
 long time_start;
-char cmd1000];
+char cmdbuffer[1000];
 FILE * file1;
 short int 2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
