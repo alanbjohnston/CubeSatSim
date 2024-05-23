@@ -21,7 +21,6 @@
  
 
 #include "main.h"
-void read_adc_process(int sig_num);
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
