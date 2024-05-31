@@ -26,7 +26,7 @@ if __name__ == "__main__":
 			mode = 'f'
 			change_mode = True
 		if (line.find("MODE=b")) > 0:
-			system("echo 'BPSK Mode!!'")
+			system("echo '\nBPSK Mode!!\n'")
 			mode = 'b'
 			change_mode = True
 		if (line.find("MODE=s")) > 0:
