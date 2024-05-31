@@ -432,6 +432,8 @@ if __name__ == "__main__":
 			output(ptt, 1)			
 			print("AFSK")
 			while True:
+				sleep(0.1)
+			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
 					f.close()
