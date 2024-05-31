@@ -481,7 +481,8 @@ if __name__ == "__main__":
 			print("CW")
 			while True:
 				command_control_check()
-				
+				output (pd, 1)
+				output (ptt, 1)				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
@@ -496,7 +497,7 @@ if __name__ == "__main__":
 							output(txLed, txLedOn)					
 	
 							if (txc):
-								output (pd, 1)
+#								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
@@ -519,6 +520,8 @@ if __name__ == "__main__":
 		elif (mode == 's'):
 			print("SSTV")
 			command_control_check()	
+			output (ptt, 1)
+			output(pd, 1)			
 			try: 
 #				from picamera import PiCamera
 #					from pysstv.sstv import SSTV
@@ -552,11 +555,11 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
-							output(pd, 1)
+#							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
 							output (ptt, 1)
-							output(pd, 0)
+#							output(pd, 0)
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
@@ -610,11 +613,11 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
-							output(pd, 1)
+#							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
 							output(ptt, 1)
-							output (pd, 0)
+#							output (pd, 0)
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
@@ -645,11 +648,11 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
-							output(pd, 1)
+#							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 							output(ptt, 1)
-							output (pd, 0)
+#							output (pd, 0)
 						else:	
 							if (debug_mode == 1):
 								system("cat /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3")
@@ -679,11 +682,11 @@ if __name__ == "__main__":
 #							battery_saver_check()
 
 							if (txc):
-								output(pd, 1)
+#								output(pd, 1)
 								output (ptt, 0)
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 								output(ptt, 1)
-								output (pd, 0)
+#								output (pd, 0)
 							else:
 								if (debug_mode == 1):
 									system("cat /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3") 
@@ -706,11 +709,11 @@ if __name__ == "__main__":
 #							battery_saver_check()
 						
 							if (txc):
-								output(pd, 1)
+#								output(pd, 1)
 								output (ptt, 0)		
 								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv.wav")
 								output(ptt, 1)
-								output (pd, 0)		
+#								output (pd, 0)		
 							else:
 								sleep(60)
 							
