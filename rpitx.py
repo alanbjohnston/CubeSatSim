@@ -52,7 +52,7 @@ def command_control_check():
 #				system("echo > command_tx False")
 	else:
 		print("No carrier received!")
-	output(pd, 0)
+#	output(pd, 0)
 #					sleep(1)
 		
 
