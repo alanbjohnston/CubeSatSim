@@ -428,7 +428,8 @@ if __name__ == "__main__":
 #        		print("There are arguments!")
 		if (mode == 'a'):
 			command_control_check()	
-#			output(pd, 1)
+			output(pd, 1)
+			output(ptt, 1)			
 			print("AFSK")
 			while True:
 				try:
@@ -446,14 +447,14 @@ if __name__ == "__main__":
 #						
 #						battery_saver_check()
 						if (txc):
-							output(pd, 1)
+#							output(pd, 1)
 							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
 							sleep(0.3)   # add even more time at start
 							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")							
 							sleep(0.2)  # add more time at end
 							output (ptt, 1)
-							output(pd, 0)							
+#							output(pd, 0)							
 						else:			
 							if (debug_mode == 1):
 								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
