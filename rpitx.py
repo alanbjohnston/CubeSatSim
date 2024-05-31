@@ -81,7 +81,7 @@ def increment_mode():
 	file.close()
 	print("Mode is: ")
 	print(mode)
-	if (mode == 'a'):
+	if (mode == ):
 		mode = 'f'
 		GPIO.output(powerPin, 0) # blink two times
 		sleep(0.1)
@@ -149,7 +149,7 @@ def increment_mode():
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 	else:
-		mode = 'a'
+		mode = 
 		GPIO.output(powerPin, 0) # blink one time
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
@@ -392,7 +392,7 @@ if __name__ == "__main__":
 	
 	command_control_check()
 	
-#	if (mode != 'a') and (command_tx == True):	
+#	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
 	if (mode != 'm'):	
 #		battery_saver_mode
@@ -431,8 +431,8 @@ if __name__ == "__main__":
 			output(pd, 1)
 			output(ptt, 1)			
 			print("AFSK")
-			while True:
-				sleep(0.1)
+#			while True:
+#				sleep(0.1)
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
