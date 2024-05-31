@@ -18,11 +18,11 @@ if __name__ == "__main__":
 #				break
 
 		if (line.find("MODE=a")) > 0:
-			system("echo 'APRS Mode!!'")
+			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
 			change_mode = True
 		if (line.find("MODE=f")) > 0:
-			system("echo 'FSK Mode!!'")
+			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
 			change_mode = True
 		if (line.find("MODE=b")) > 0:
@@ -30,15 +30,15 @@ if __name__ == "__main__":
 			mode = 'b'
 			change_mode = True
 		if (line.find("MODE=s")) > 0:
-			system("echo 'SSTV Mode!!'")
+			system("echo '\nSSTV Mode!!\n'")
 			mode = 's'
 			change_mode = True
 		if (line.find("MODE=m")) > 0:
-			system("echo 'CW Mode!!'")
+			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
 		if (debug_mode == False)  and (change_mode == True):
-			print("/home/pi/CubeSatSim/config -" + mode)
+			print("\n/home/pi/CubeSatSim/config -" + mode)
 			system("/home/pi/CubeSatSim/config -" + mode)
 			change_mode = False
 	print("Done")
