@@ -37,7 +37,7 @@ if __name__ == "__main__":
 			system("echo 'CW Mode!!'")
 			mode = 'm'
 			change_mode = True
-		if (debug_mode == True)  and (change_mode == True):
+		if (debug_mode == False)  and (change_mode == True):
 			print("/home/pi/CubeSatSim/config -" + mode)
 			system("/home/pi/CubeSatSim/config -" + mode)
 			change_mode = False
