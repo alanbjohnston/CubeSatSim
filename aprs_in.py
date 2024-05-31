@@ -4,10 +4,11 @@ from os import system
 if __name__ == "__main__":
 
 	change_mode = False
+	debug_mode = False
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
 		if ('d' == sys.argv[1]):
-			debug_mode = 1
+			debug_mode = True
 			
 	for line in sys.stdin:
 		if (debug_mode):
