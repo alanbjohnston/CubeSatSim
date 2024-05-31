@@ -10,7 +10,7 @@ echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 			echo "rebooting"
 			sudo systemctl stop rpitx
 			sudo reboot now	
-		fi
+#		fi
 
 	else 
     		echo "Radio command and control is OFF"
