@@ -81,7 +81,7 @@ def increment_mode():
 	file.close()
 	print("Mode is: ")
 	print(mode)
-	if (mode == ):
+	if (mode == 'a'):
 		mode = 'f'
 		GPIO.output(powerPin, 0) # blink two times
 		sleep(0.1)
