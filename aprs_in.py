@@ -12,7 +12,7 @@ if __name__ == "__main__":
 			
 	for line in sys.stdin:
 		if (debug_mode):
-			print(line)
+			print(line, end =" ")
 			
 #			if '^c' == line.rstrip():
 #				break
