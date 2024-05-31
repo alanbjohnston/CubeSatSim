@@ -149,7 +149,7 @@ def increment_mode():
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 	else:
-		mode = 
+		mode = 'a'
 		GPIO.output(powerPin, 0) # blink one time
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
