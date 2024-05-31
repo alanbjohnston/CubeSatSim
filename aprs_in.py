@@ -6,7 +6,7 @@ if __name__ == "__main__":
 	change_mode = False
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
-		if (('d' == sys.argv[1]):
+		if ('d' == sys.argv[1]):
 			debug_mode = 1
 	try:
 		for line in sys.stdin:
