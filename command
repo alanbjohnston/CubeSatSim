@@ -18,6 +18,15 @@ echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 
 echo "Starting direwolf"
 
+if [ "$1" = "d" ]; then
+
+echo "debug mode"
+
 direwolf -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/aprs_in.py d
 
-	
+else
+
+direwolf -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/aprs_in.py
+
+fi
+
