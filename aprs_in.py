@@ -17,7 +17,7 @@ if __name__ == "__main__":
 #			if '^c' == line.rstrip():
 #				break
 
-		if ((line.find("MODE=a")) > 0) or (line.find"Raw Touch Tone Data, DireWolf, WB2OSZ\n2#")) > 0):
+		if ((line.find("MODE=a")) > 0) or (line.find("Raw Touch Tone Data, DireWolf, WB2OSZ\n2#")) > 0):
 			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
 			change_mode = True
