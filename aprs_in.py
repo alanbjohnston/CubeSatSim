@@ -21,19 +21,19 @@ if __name__ == "__main__":
 			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
 			change_mode = True
-		if (line.find("MODE=f")) > 0:
+		if ((line.find("MODE=f")) > 0) or ((line.find("DTMF>APDW15:t2#")) > 0):
 			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
 			change_mode = True
-		if (line.find("MODE=b")) > 0:
+		if ((line.find("MODE=b")) > 0) or ((line.find("DTMF>APDW15:t3#")) > 0):
 			system("echo '\nBPSK Mode!!\n'")
 			mode = 'b'
 			change_mode = True
-		if (line.find("MODE=s")) > 0:
+		if ((line.find("MODE=s")) > 0) or ((line.find("DTMF>APDW15:t4#")) > 0):
 			system("echo '\nSSTV Mode!!\n'")
 			mode = 's'
 			change_mode = True
-		if (line.find("MODE=m")) > 0:
+		if ((line.find("MODE=m")) > 0) or ((line.find("DTMF>APDW15:t5#")) > 0):
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
