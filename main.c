@@ -556,7 +556,7 @@ int main(int argc, char * argv[]) {
 
   sleep(2);	// moved to later in startup
  	
-  FILE * pigs = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
+  FILE * pigs = popen("pigs m 13 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
   sleep(2);	
   pclose(pigs);	
 	
