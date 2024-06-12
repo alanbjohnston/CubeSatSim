@@ -103,7 +103,7 @@ int main(int argc, char * argv[]) {
 
   sleep(2);	
  	
-  gpiod = popen("pigs m 12 0", "r");		// set PWM audio utput to GPIO 12 (pin 32)
+  gpiod = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
   pclose(gpiod);
 
 	/*
