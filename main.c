@@ -100,7 +100,7 @@ int main(int argc, char * argv[]) {
 
   FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
   pclose(gpiod);
-  gpiod = popen("pigs m 19 5", "r");		// set PWM audio utput to GPIO 19 (pin 35)
+  gpiod = popen("pigs m 13 0", "r");		// set PWM audio utput to GPIO 13 (pin 33)
   pclose(gpiod);	
 //  gpiod = popen("pigs hc 6 12880000", "r");		// set clock to 12.88 MHz on GPIO 6 (pin 31)  // commented out as it seemed to crash Pi Zero
 //  pclose(gpiod);	
