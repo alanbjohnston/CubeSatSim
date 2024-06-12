@@ -554,12 +554,13 @@ int main(int argc, char * argv[]) {
     other_max[i] = -1000.0;
   }
 
-  FILE * gpiod = popen("sudo pigpiod &", "r");  // start gpiod
+  FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
+  sleep(2);		
   pclose(gpiod);
 	
   sleep(2);	// moved to later in startup
  	
-  FILE * pigs = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
+  FILE * pigs = popen("pigs m 12 0", "r");		// set PWM audio utput to GPIO 12 (pin 32)
   sleep(2);	
   pclose(pigs);	
 	
