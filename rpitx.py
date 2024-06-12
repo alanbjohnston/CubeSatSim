@@ -201,6 +201,9 @@ GPIO.setup(green, GPIO.OUT)
 
 #transmit = False
 transmit = True # force on for now
+txLed = 27
+txLedOn = 1
+txLedOff = 0
 #if GPIO.input(12) == False:
 #	print("Version is v1 with UHF BPF")
 #	transmit = True
