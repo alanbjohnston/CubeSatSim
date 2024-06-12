@@ -102,8 +102,8 @@ int main(int argc, char * argv[]) {
   pclose(gpiod);
   gpiod = popen("pigs m 19 5", "r");		// set PWM audio utput to GPIO 19 (pin 35)
   pclose(gpiod);	
-  gpiod = popen("pigs hc 6 12880000", "r");		// set clock to 12.88 MHz on GPIO 6 (pin 31)
-  pclose(gpiod);	
+//  gpiod = popen("pigs hc 6 12880000", "r");		// set clock to 12.88 MHz on GPIO 6 (pin 31)  // commented out as it seemed to crash Pi Zero
+//  pclose(gpiod);	
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
