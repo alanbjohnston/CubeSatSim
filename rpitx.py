@@ -199,7 +199,8 @@ GPIO.setwarnings(False)
 GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
-transmit = False
+#transmit = False
+transmit = True # force on for now
 #if GPIO.input(12) == False:
 #	print("Version is v1 with UHF BPF")
 #	transmit = True
