@@ -221,11 +221,11 @@ transmit = True # force on for now
 #	txLed = 27
 #	txLedOn = 1
 #	txLedOff = 0
-else:
-	print("No BPF")
-	txLed = 27
-	txLedOn = 1 
-	txLedOff = 0
+#else:
+#	print("No BPF")
+#	txLed = 27
+#	txLedOn = 1 
+#	txLedOff = 0
 
 # GPIO.setup(txLed, GPIO.OUT)
 # output(txLed, txLedOff)
