@@ -193,7 +193,7 @@ command_tx = True
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 #GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
