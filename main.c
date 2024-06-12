@@ -103,7 +103,7 @@ int main(int argc, char * argv[]) {
 //  gpiod = popen("pigs m 13 0", "r");		// set PWM audio utput to GPIO 13 (pin 33)
 //  pclose(gpiod);
 
-  file1 = sopen("pigs m 13 0");  // python sensor polling function	  
+  file1 = sopen("pigs m 12 0");  // python sensor polling function	  
   fgets(cmdbuffer, 1000, file1);
   fprintf(stderr, "pigs result: %s\n", cmdbuffer);
 ///  }
