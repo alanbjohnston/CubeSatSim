@@ -100,13 +100,17 @@ int main(int argc, char * argv[]) {
 
   FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
   pclose(gpiod);
-//  gpiod = popen("pigs m 13 0", "r");		// set PWM audio utput to GPIO 13 (pin 33)
-//  pclose(gpiod);
 
+  sleep(2);	
+ 	
+  gpiod = popen("pigs m 12 0", "r");		// set PWM audio utput to GPIO 12 (pin 32)
+  pclose(gpiod);
+
+	/*
   file1 = sopen("pigs m 12 0");  // python sensor polling function	  
   fgets(cmdbuffer, 1000, file1);
   fprintf(stderr, "pigs result: %s\n", cmdbuffer);
-///  }
+*/
 	
 //  gpiod = popen("pigs hc 6 12880000", "r");		// set clock to 12.88 MHz on GPIO 6 (pin 31)  // commented out as it seemed to crash Pi Zero
 //  pclose(gpiod);	
