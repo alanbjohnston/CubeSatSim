@@ -12,7 +12,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo apt-get install -y python3-smbus
+sudo apt-get install -y python3-smbus pigpio
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
