@@ -98,8 +98,8 @@ int main(int argc, char * argv[]) {
 	  fprintf(stderr, "HAB mode is ON\n");
   }
 
-  FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
-  pclose(gpiod);
+//  FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
+//  pclose(gpiod);
 //
 //  sleep(2);	
 // 	
@@ -554,6 +554,9 @@ int main(int argc, char * argv[]) {
     other_max[i] = -1000.0;
   }
 
+  FILE * gpiod = popen("sudo pigpiod &", "r");  // start gpiod
+  pclose(gpiod);
+	
   sleep(2);	// moved to later in startup
  	
   FILE * pigs = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
