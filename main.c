@@ -100,12 +100,12 @@ int main(int argc, char * argv[]) {
 
   FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
   pclose(gpiod);
-
-  sleep(2);	
- 	
-  FILE * pigs = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
-  sleep(2);	
-  pclose(pigs);
+//
+//  sleep(2);	
+// 	
+//  FILE * pigs = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
+//  sleep(2);	
+//  pclose(pigs);
 
 	/*
   file1 = sopen("pigs m 12 0");  // python sensor polling function	  
@@ -553,6 +553,12 @@ int main(int argc, char * argv[]) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
   }
+
+  sleep(2);	// moved to later in startup
+ 	
+  FILE * pigs = popen("pigs m 12 0 &", "r");		// set PWM audio utput to GPIO 12 (pin 32)
+  sleep(2);	
+  pclose(pigs);	
 	
   long int loopTime;
   loopTime = millis();	
