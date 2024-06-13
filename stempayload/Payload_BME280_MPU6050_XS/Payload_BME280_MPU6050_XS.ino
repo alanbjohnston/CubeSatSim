@@ -8,6 +8,7 @@
 #include <MPU6050_tockn.h>
 #if !defined(ARDUINO_ARCH_MBED_RP2040) // && defined(ARDUINO_ARCH_RP2040)
 #include <EEPROM.h>
+#include "RP2040_PWM.h"
 #endif
 
 #if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Arduino Mbed OS RP2040 Boards is used in Arduino IDE
@@ -21,6 +22,8 @@ TinyGPSPlus gps;
 bool check_for_wifi();
 bool wifi = false;
 int led_builtin_pin;
+RP2040_PWM* PWM_Instance1;
+RP2040_PWM* PWM_Instance2;
 
 #else  // if Sparkfun Pro Micro or STM32 
 #include <EEPROM.h>
@@ -224,6 +227,29 @@ void setup() {
 #endif	  
   }
   payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
+
+#if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
+	
+ PWM_Instance1 = new RP2040_PWM(20, 12880000.0f, 50.0f);
+ if (PWM_Instance1)
+ {
+    PWM_Instance1->setPWM();
+    Serial.println("Starting 12.88 MHz clock!");	 
+ }
+ else {
+    Serial.println("Error starting 12.88 MHz clock!");
+ }
+ PWM_Instance2 = new RP2040_PWM(20, 2048000.0f, 50.0f);
+ if (PWM_Instance2)
+ {
+    PWM_Instance2->setPWM();
+    Serial.println("Starting 2.048 MHz clock!");		 
+ }
+ else {
+    Serial.println("Error starting 2.048 MHz clock!");
+ }
+		
+#endif	
 }
  
 void loop() {
