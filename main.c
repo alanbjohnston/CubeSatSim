@@ -553,7 +553,7 @@ int main(int argc, char * argv[]) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
   }
-
+/*
   FILE * gpiod = popen("sudo pigpiod", "r");  // start gpiod
   sleep(2);		
   pclose(gpiod);
@@ -563,7 +563,7 @@ int main(int argc, char * argv[]) {
   FILE * pigs = popen("pigs m 12 0", "r");		// set PWM audio utput to GPIO 12 (pin 32)
   sleep(2);	
   pclose(pigs);	
-	
+*/	
   long int loopTime;
   loopTime = millis();	
 	
