@@ -235,7 +235,6 @@ void setup() {
  {
     PWM_Instance1->setPWM();
     Serial.println("Starting 12.88 MHz clock!");
-    printPWMInfo(PWM_Instance1);
  }
  else {
     Serial.println("Error starting 12.88 MHz clock!");
@@ -245,7 +244,6 @@ void setup() {
  {
     PWM_Instance2->setPWM();
     Serial.println("Starting 2.048 MHz clock!");
-    printPWMInfo(PWM_Instance2);
  }
  else {
     Serial.println("Error starting 2.048 MHz clock!");
