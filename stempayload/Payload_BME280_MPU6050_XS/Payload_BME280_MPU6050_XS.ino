@@ -231,7 +231,7 @@ void setup() {
 
 #if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)  // if Raspberry Pi RP2040 Boards in Arduino IDE
 	
- PWM_Instance1 = new RP2040_PWM(20, 12880000.0f, 50.0f);
+ PWM_Instance1 = new RP2040_PWM(20, 12880000.0f, 50.0f, true);
  if (PWM_Instance1)
  {
     PWM_Instance1->setPWM();
@@ -240,7 +240,9 @@ void setup() {
  else {
     Serial.println("Error starting 12.88 MHz clock!");
  }
- PWM_Instance2 = new RP2040_PWM(21, 2048000.0f, 50.0f);
+// PWM_Instance2 = new RP2040_PWM(21, 2048000.0f, 50.0f);
+ PWM_Instance2 = new RP2040_PWM(21, 12880000.0f, 50.0f, true;
+	
  if (PWM_Instance2)
  {
     PWM_Instance2->setPWM();
