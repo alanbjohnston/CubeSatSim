@@ -120,7 +120,8 @@ void setup() {
   Serial2.begin(9600);   // serial from GPS or other serial sensor.  Some GPS need 115200
 
   // set all Pico GPIO connected pins to input	
-  for (int i = 10; i < 22; i++) { 
+//  for (int i = 10; i < 22; i++) { 
+  for (int i = 10; i < 19; i++) { 
       pinMode(i, INPUT);	  
   }
   pinMode(26, INPUT);	
