@@ -240,6 +240,7 @@ void setup() {
  else {
     Serial.println("Error starting 12.88 MHz clock!");
  }
+/*	
  PWM_Instance2 = new RP2040_PWM(21, 2048000.0f, 50.0f, true);
 // PWM_Instance2 = new RP2040_PWM(21, 12880000.0f, 50.0f, true);
 	
@@ -251,7 +252,7 @@ void setup() {
  else {
     Serial.println("Error starting 2.048 MHz clock!");
  }
-		
+*/		
 #endif	
 }
  
