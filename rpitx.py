@@ -193,37 +193,42 @@ command_tx = True
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
-GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(green, GPIO.OUT)
 
-transmit = False
-if GPIO.input(12) == False:
-	print("Version is v1 with UHF BPF")
-	transmit = True
-	txLed = 27
-	txLedOn = 1
-	txLedOff = 0
-elif GPIO.input(27) == False:
-	print("Version is TFB")
-	transmit = True
-	txLed = 22
-	txLedOn = 0
-	txLedOff = 1
-elif GPIO.input(13) == False:
-	print("Version is v1 with VHF BPF")
-	print("VHF transmit not implemented yet")
+#transmit = False
+transmit = True # force on for now
+txLed = 27
+txLedOn = 1
+txLedOff = 0
+#if GPIO.input(12) == False:
+#	print("Version is v1 with UHF BPF")
 #	transmit = True
-	txLed = 27
-	txLedOn = 1
-	txLedOff = 0
-else:
-	print("No BPF")
-	txLed = 27
-	txLedOn = 1 
-	txLedOff = 0
+#	txLed = 27
+#	txLedOn = 1
+#	txLedOff = 0
+#elif GPIO.input(27) == False:
+#	print("Version is TFB")
+#	transmit = True
+#	txLed = 22
+#	txLedOn = 0
+#	txLedOff = 1
+#elif GPIO.input(13) == False:
+#if GPIO.input(13) == False:
+#	print("Version is v1 with VHF BPF")
+#	print("VHF transmit not implemented yet")
+#	transmit = True
+#	txLed = 27
+#	txLedOn = 1
+#	txLedOff = 0
+#else:
+#	print("No BPF")
+#	txLed = 27
+#	txLedOn = 1 
+#	txLedOff = 0
 
 # GPIO.setup(txLed, GPIO.OUT)
 # output(txLed, txLedOff)
