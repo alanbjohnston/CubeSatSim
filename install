@@ -53,8 +53,6 @@ sudo pip3 install --upgrade setuptools
 
 sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
 
-
-
 cd ~/CubeSatSim
 
 git pull --no-rebase
@@ -81,7 +79,6 @@ sudo make install
 
 make install-rpi
 
-
 cd
 
 git clone https://github.com/alanbjohnston/pi-power-button.git
@@ -91,7 +88,6 @@ cd pi-power-button
 git checkout reboot-mode-change
 
 ./script/install
-
 
 cd
 
@@ -115,9 +111,6 @@ cd rpitx
 
 ./install.sh
 
-
-cd
-
 cd
 
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
@@ -131,7 +124,6 @@ sudo systemctl enable rpitx
 sudo cp /boot/config.txt /boot/config.txt.0
 
 sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
-
 
 sudo raspi-config nonint do_i2c 0
 
@@ -193,19 +185,19 @@ sudo raspi-config nonint do_legacy 0
     sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
   fi
 
-  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
-    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
+  if [[ $(grep 'dtoverlay=audremap,pins_12_13,enable_jack=on' /boot/config.txt) ]]; then
+    echo "dtoverlay=audremap,pins_12_13,enable_jack=on already in /boot/config.txt"
   else
-    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
+    echo "adding dtoverlay=audremap,pins_12_13,enable_jack=on to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=audremap,pins_12_13,enable_jack=on" >> /boot/config.txt'
   fi
 
-  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
-    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
-  else
-    echo "adding  to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
-  fi
+#  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
+#    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
+#  else
+#    echo "adding  to /boot/config.txt"
+#    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
+#  fi
 
   if [[ $(grep 'disable_splash=1 ' /boot/config.txt) ]]; then
     echo "disable_splash=1 already in /boot/config.txt"
@@ -250,6 +242,20 @@ if [ $changed -eq 1 ]; then
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 > /home/pi/CubeSatSim/sim.cfg
 	echo
 fi
+
+cd
+
+sudo apt-get -y update && sudo apt-get -y upgrade  
+
+# sudo reboot now
+
+# sudo apt install python3-pip
+
+sudo pip3 install --upgrade adafruit-python-shell
+
+wget https://raw.githubusercontent.com/alanbjohnston/Raspberry-Pi-Installer-Scripts/master/i2smic.py
+
+sudo python3 i2smic.py # edit so doesn't prompt about install on boot
 
 echo "Would you like to reboot to complete the installation (y/n)?"
 
