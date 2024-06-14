@@ -184,7 +184,7 @@ def increment_mode():
 print("CubeSatSim v1.3.2 rpitx.py starting...")
 
 pd = 21
-ptt = 20
+ptt = 5 # was 20, moved due to i2s pin conflict
 txc_pin = 7
 squelch = 6
 green = 16
