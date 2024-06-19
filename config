@@ -6,7 +6,7 @@ echo $1
 echo $2
 echo
 
-# if [ "$2" = "n" ] ; then
+if [ "$2" = "n" ] ; then
 # if [ -z "$2"]; then
 	norestart=1
 else
