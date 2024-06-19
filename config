@@ -72,10 +72,10 @@ if [ "$1" = "" ]; then
 	echo
 
 	echo -n "RX PL code is: "
-	echo $10
+	echo ${10}
 	echo
 	echo -n "TX PL code is: "
-	echo $11
+	echo 
 	echo
 
 	FILE=/home/pi/CubeSatSim/battery_saver
@@ -89,7 +89,7 @@ if [ "$1" = "" ]; then
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
 	echo
 	
 	echo "To change, include an OPTION"
@@ -201,7 +201,7 @@ elif [ "$1" = "-t" ]; then
 	
 	echo
 	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
 
 	echo "Do you want Simulated Telemetry ON (y/n) "
 	read sim
@@ -218,8 +218,8 @@ elif [ "$1" = "-t" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 $10 $11
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} 
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10}  > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -246,7 +246,7 @@ elif [ "$1" = "-c" ]; then
 	echo $1
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
 
 	echo "Enter callsign in all capitals: "
 	read callsign
@@ -260,8 +260,8 @@ elif [ "$1" = "-c" ]; then
 	
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
-		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10}  > /home/pi/CubeSatSim/sim.cfg
 	fi
 	
 	if [ "$norestart" = "1" ]; then
@@ -294,7 +294,7 @@ elif [ "$1" = "-r" ]; then
 	echo $2
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
 
 	echo -e "Enter Reset Count (integer): "
 
@@ -314,8 +314,8 @@ elif [ "$1" = "-r" ]; then
 
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 $10 $11
-		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} 
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10}  > /home/pi/CubeSatSim/sim.cfg
 	fi	
 
 	if [ "$norestart" = "1" ]; then
@@ -349,7 +349,7 @@ elif [ "$1" = "-l" ]; then
 	echo $3
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
 
 	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
@@ -391,8 +391,8 @@ elif [ "$1" = "-l" ]; then
 	fi 
 
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
-	echo $1 $2 $lat $long $5 $6 $7 $8 $9 $10 $11
-	echo $1 $2 $lat $long $5 $6 $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11}
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
 	
 	if [ "$norestart" = "1" ]; then
 		echo 
@@ -573,7 +573,7 @@ elif [ "$1" = "-q" ]; then
 	echo $6
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 
 	echo -e "Enter squelch  (integer 0 - 8): "
 
@@ -595,8 +595,8 @@ elif [ "$1" = "-q" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 $10 $11
-	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 ${10} ${11}
+	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -619,12 +619,12 @@ elif [ "$1" = "-P" ]; then
 
 	echo
 	echo "Current value of RX PL is"	
-	echo $10
+	echo ${10}
 	echo "Current value of TX PL is"	
-	echo $11
+	echo ${11}
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 
 	echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
 
@@ -632,14 +632,14 @@ elif [ "$1" = "-P" ]; then
 
 	if [ -z $rxpl ] ; then
 
-		rxpl="$10"
+		rxpl="${10}"
 		echo "Keeping value of" $rxpl
 	fi
 
 	if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 
 		echo "Error: not a number!"
-		rxpl="$10"
+		rxpl="${10}"
 		echo "Keeping value of" $rxpl
 	fi 
 
@@ -649,14 +649,14 @@ elif [ "$1" = "-P" ]; then
 
 	if [ -z $txpl ] ; then
 
-		txpl="$11"
+		txpl="${11}"
 		echo "Keeping value of" $txpl
 	fi
 
 	if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 
 		echo "Error: not a number!"
-		txpl="$11"
+		txpl="${11}"
 		echo "Keeping value of" $txpl
 	fi 
 	
@@ -694,7 +694,7 @@ elif [ "$1" = "-F" ]; then
 	echo $8
 	echo	
 
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 
 	echo "Enter tx frequency as 4XX.XXXX: "
 	read tx
@@ -717,8 +717,8 @@ elif [ "$1" = "-F" ]; then
 	
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 $10 $11
-		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11}
+		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
 #	fi
 	
 #	if [ "$norestart" = "1" ]; then
@@ -750,7 +750,7 @@ elif [ "$1" = "-H" ]; then
 	
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 
 	echo "Do you want Balloon mode ON (y/n) "
 	read hab
@@ -767,8 +767,8 @@ elif [ "$1" = "-H" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab $10 $11
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab $10 $11 > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
