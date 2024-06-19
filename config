@@ -6,11 +6,11 @@ echo $1
 echo $2
 echo
 
-# if [ "$2" = "n" ]; then
-if [ -z "$2"]; then
-	norestart=0
-else
+# if [ "$2" = "n" ] ; then
+# if [ -z "$2"]; then
 	norestart=1
+else
+	norestart=0
 fi
 
 reboot=0
