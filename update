@@ -252,8 +252,8 @@ if [ $changed -eq 1 ]; then
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo
-	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $10 $11
-	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11
+	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11 > /home/pi/CubeSatSim/sim.cfg
 	echo
 fi
 
