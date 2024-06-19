@@ -306,6 +306,12 @@ if __name__ == "__main__":
 		file.close()
 	print("Command_count: ")
 	print(command_count)	
+
+	txpl_value = '0'
+	rxpl_value = '0'
+	sq = '0'
+	tx = '434.9000'	
+	rx = '435.0000'	
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -314,26 +320,30 @@ if __name__ == "__main__":
 		callsign = config[0]
 		if len(config) > 5:
 			sq = config[5]
-		else:	
-			sq = '0'
 		if len(config) > 6:
-#                       tx = config[6]
                         txf = float(config[6])
                         print(txf)
 #                        print( "{:.4f}".format(txf))
                         tx = "{:.4f}".format(txf)
                         print(tx)
-		else:	
-			tx = '434.9000'			
 		if len(config) > 7:
-#                       rx = config[7]
                         rxf = float(config[7])
                         print(rxf)
 #                        print( "{:.4f}".format(rxf))
                         rx = "{:.4f}".format(rxf)
                         print(rx)
-		else:	
-			rx = '435.0000'	
+		if len(config) > 9:
+                        rxpl = float(config[9])
+                        print(rxpl)
+                        print( "{:.0f}".format(rxpl))
+                        rxpl_value = "{:.0f}".format(rxpl)
+                        print(rxpl_value)
+		if len(config) > 10:
+                        txpl = float(config[10])
+                        print(txpl)
+                        print( "{:.0f}".format(txpl))
+                        rxpl_value = "{:.0f}".format(txpl)
+                        print(txpl_value)			
 		print(config)
 		print
 #		print(callsign)
@@ -376,7 +386,8 @@ if __name__ == "__main__":
 	try:
 		ser = serial.Serial("/dev/ttyAMA0", 9600)
 		print(ser.portstr)
-		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
 		for i in range(6):
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
 			ser.write(uhf_string.encode())
