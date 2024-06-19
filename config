@@ -7,7 +7,7 @@ echo $2
 echo
 
 # if [ "$2" = "n" ] ; then
-if [ -z "$2"] ; then
+if [ -z "$2" ] ; then
 	noreboot=0
 else
 	noreboot=1
