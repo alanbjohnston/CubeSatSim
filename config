@@ -8,13 +8,13 @@ echo
 
 # if [ "$2" = "n" ] ; then
 if [ -z "$2"] ; then
-	norestart=0
+	noreboot=0
 else
-	norestart=1
+	noreboot=1
 fi
 
-echo "No restart"
-echo $norestart
+echo "No reboot"
+echo $noreboot
 
 reboot=0
 restart=0
@@ -839,6 +839,8 @@ fi
 # sudo systemctl restart cubesatsim
 
 echo "Checking for reboot or restart"
+
+echo $noreboot
 
 if [ "$noreboot" = "0" ] ; then  
 
