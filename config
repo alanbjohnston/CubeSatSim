@@ -9,6 +9,9 @@ else
 	norestart=0
 fi
 
+reboot=0
+restart=0
+
 if [ "$1" = "" ]; then
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
@@ -97,10 +100,11 @@ if [ "$1" = "" ]; then
 
 
 elif [ "$1" = "-i" ]; then
-	echo "Rebooting CubeSatSim"
-	sudo reboot now
+	reboot=1
+##	echo "Rebooting CubeSatSim"
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
-	exit 
+##	exit 
 elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
 	sudo echo "a" > /home/pi/CubeSatSim/.mode
@@ -113,12 +117,13 @@ elif [ "$1" = "-a" ]; then
     		echo "Battery saver mode is OFF."
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
-	
-	echo "rebooting"
-	sudo systemctl stop rpitx
-	sudo reboot now
+
+	reboot=1
+##	echo "rebooting"
+##	sudo systemctl stop rpitx
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
-	exit 
+##	exit 
 
 elif [ "$1" = "-m" ]; then
 	echo "changing CubeSatSim to CW mode"
@@ -132,29 +137,32 @@ elif [ "$1" = "-m" ]; then
     		echo "Battery saver mode is OFF."
  #   		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
-	echo "rebooting"
-	sudo systemctl stop rpitx
-	sudo reboot now
+	reboot=1
+##	echo "rebooting"
+##	sudo systemctl stop rpitx
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
-	exit 
+##	exit 
 elif [ "$1" = "-f" ]; then
 	echo "changing CubeSatSim to FSK mode"
 	sudo echo "f" > /home/pi/CubeSatSim/.mode
 #  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
-	echo "rebooting"
-	sudo systemctl stop rpitx
-	sudo reboot now
+	reboot=1
+##	echo "rebooting"
+##	sudo systemctl stop rpitx
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
-	exit 
+##	exit 
 elif [ "$1" = "-b" ]; then
 	echo "changing CubeSatSim to BPSK mode"
 	sudo echo "b" > /home/pi/CubeSatSim/.mode
 #  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
-	echo "rebooting"
-	sudo systemctl stop rpitx
-	sudo reboot now
+	reboot=1
+##	echo "rebooting"
+##	sudo systemctl stop rpitx
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
-	exit 
+##	exit 
 elif [ "$1" = "-s" ]; then
 	echo "changing CubeSatSim to SSTV mode"
 	sudo echo "s" > /home/pi/CubeSatSim/.mode
@@ -167,11 +175,12 @@ elif [ "$1" = "-s" ]; then
     		echo "Battery saver mode is OFF."
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
 	fi
-	echo "rebooting"
-	sudo systemctl stop rpitx
-	sudo reboot now
+	reboot=1
+##	echo "rebooting"
+##	sudo systemctl stop rpitx
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
-	exit 
+##	exit 
 
 elif [ "$1" = "-t" ]; then
 
@@ -212,10 +221,11 @@ elif [ "$1" = "-t" ]; then
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 $10 $11
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Rebooting CubeSatSim with new configuration file"
-	echo
+##	echo "Rebooting CubeSatSim with new configuration file"
+##	echo
 
-	sudo reboot now
+	reboot=1
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 	
 elif [ "$1" = "-c" ]; then
@@ -258,9 +268,10 @@ elif [ "$1" = "-c" ]; then
 		echo 
 	else
 		echo
-		echo "Rebooting CubeSatSim with new configuration file"
-		echo
-		sudo reboot now
+##		echo "Rebooting CubeSatSim with new configuration file"
+##		echo
+		reboot=1
+##		sudo reboot now
 #		sudo systemctl restart cubesatsim
 	fi
 	
@@ -310,10 +321,11 @@ elif [ "$1" = "-r" ]; then
 	if [ "$norestart" = "1" ]; then
 		echo
 	else
-		echo
-		echo "Rebooting CubeSatSim with new configuration file"
-		echo
-		sudo reboot now
+##		echo
+##		echo "Rebooting CubeSatSim with new configuration file"
+##		echo
+		reboot=1
+##		sudo reboot now
 #		sudo systemctl restart cubesatsim
 	fi
 	
@@ -385,10 +397,11 @@ elif [ "$1" = "-l" ]; then
 	if [ "$norestart" = "1" ]; then
 		echo 
 	else
-		echo
-		echo "Rebooting CubeSatSim with new configuration file"
-		echo
-		sudo reboot now
+##		echo
+##		echo "Rebooting CubeSatSim with new configuration file"
+##		echo
+		reboot=1
+##		sudo reboot now
 #		sudo systemctl restart cubesatsim
 	fi
 
@@ -421,9 +434,10 @@ elif [ "$1" = "-C" ]; then
 	sudo journalctl --rotate
 	sudo journalctl --vacuum-time=1s
 
-	sudo systemctl reboot now
+	reboot=1
+##	sudo systemctl reboot now
 
-	echo "rebooting"
+##	echo "rebooting"
 
 elif [ "$1" = "-T" ]; then
 
@@ -442,9 +456,10 @@ elif [ "$1" = "-T" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to OFF"
 			sudo rm /home/pi/CubeSatSim/command_control
-			echo "rebooting"
-			sudo systemctl stop rpitx
-			sudo reboot now	
+			reboot=1
+##			echo "rebooting"
+##			sudo systemctl stop rpitx
+##			sudo reboot now	
 		fi
 
 	else 
@@ -457,9 +472,10 @@ elif [ "$1" = "-T" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to ON"
 			sudo touch /home/pi/CubeSatSim/command_control
-			echo "rebooting"
-			sudo systemctl stop rpitx
-			sudo reboot now	
+##			echo "rebooting"
+			reboot=1
+##			sudo systemctl stop rpitx
+##			sudo reboot now	
 		fi
 
 	fi
@@ -508,7 +524,7 @@ elif [ "$1" = "-B" ]; then
 	read saver
 	echo
 
-	reboot=0
+##	reboot=0
 
 	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
 		if [ "$mode" = "0" ] ; then
@@ -531,11 +547,13 @@ elif [ "$1" = "-B" ]; then
 		set -- $value
 	
 		if [ "$1" = "a" ] ||  [ "$1" = "s" ] ||  [ "$1" = "m" ] ; then
-			echo "rebooting"
-			sudo reboot now
+			reboot=1
+##			echo "rebooting"
+##			sudo reboot now
 		else
-			echo "restarting"
-			sudo systemctl restart cubesatsim
+			restart=1
+##			echo "restarting"
+##			sudo systemctl restart cubesatsim
 		fi
 	fi
 
@@ -580,10 +598,11 @@ elif [ "$1" = "-q" ]; then
 	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 $10 $11
 	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Rebooting CubeSatSim with new configuration file"
-	echo
+##	echo "Rebooting CubeSatSim with new configuration file"
+##	echo
 
-	sudo reboot now
+	reboot=1
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
 
@@ -647,10 +666,11 @@ elif [ "$1" = "-P" ]; then
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Rebooting CubeSatSim with new configuration file"
-	echo
+##	echo "Rebooting CubeSatSim with new configuration file"
+##	echo
 
-	sudo reboot now
+	reboot=1
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
 elif [ "$1" = "-F" ]; then
@@ -705,9 +725,10 @@ elif [ "$1" = "-F" ]; then
 #		echo 
 #	else
 		echo
-		echo "Rebooting CubeSatSim with new configuration file"
-		echo
-		sudo reboot now
+##		echo "Rebooting CubeSatSim with new configuration file"
+##		echo
+		reboot=1
+##		sudo reboot now
 #		sudo systemctl restart cubesatsim
 #	fi
 elif [ "$1" = "-H" ]; then
@@ -749,10 +770,11 @@ elif [ "$1" = "-H" ]; then
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab $10 $11
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab $10 $11 > /home/pi/CubeSatSim/sim.cfg
 	echo
-	echo "Rebooting CubeSatSim with new configuration file"
-	echo
+##	echo "Rebooting CubeSatSim with new configuration file"
+##	echo
 
-	sudo reboot now
+	reboot=1
+##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
 elif [ "$1" = "-p" ]; then
@@ -808,3 +830,22 @@ else
 fi
 
 # sudo systemctl restart cubesatsim
+
+echo "Checking for reboot or restart"
+
+if [ "$noreboot" = "0" ] ; then  
+
+	if [ "$reboot" = "1" ] ; then  
+		echo "Rebooting"
+	fi
+
+	if [ "$restart" = "1" ] ; then  
+		echo "Restarting"
+	fi
+else
+
+	echo "Reboot disabled"
+
+fi
+
+
