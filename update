@@ -231,6 +231,7 @@ git pull --no-rebase > .updated_p
 
 changed=0
 value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value"
 echo "$value" > /dev/null
 set -- $value
 
