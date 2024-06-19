@@ -2,6 +2,9 @@
 
 echo "CubeSatSim v1.3.2 configuration tool"
 echo
+echo $1
+echo $2
+echo
 
 if [ "$2" = "-n" ]; then
 	norestart=1
@@ -75,7 +78,7 @@ if [ "$1" = "" ]; then
 	echo ${10}
 	echo
 	echo -n "TX PL code is: "
-	echo 
+	echo ${11}
 	echo
 
 	FILE=/home/pi/CubeSatSim/battery_saver
