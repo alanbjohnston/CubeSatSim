@@ -9,8 +9,8 @@ else
 	noreboot=0
 fi
 
-echo "No reboot"
-echo $noreboot
+# echo "No reboot"
+# echo $noreboot
 
 sudo rm /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/id.txt /home/pi/CubeSatSim/cw.txt > /dev/null 2>&1 
 
