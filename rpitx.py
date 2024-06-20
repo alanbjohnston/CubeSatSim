@@ -389,6 +389,7 @@ if __name__ == "__main__":
 		print(ser.portstr)
 #		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
 		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
+		print(uhf_string)
 		for i in range(6):
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
 			ser.write(uhf_string.encode())
