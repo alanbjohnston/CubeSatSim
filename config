@@ -13,8 +13,8 @@ else
 	noreboot=1
 fi
 
-echo "No reboot"
-echo $noreboot
+# echo "No reboot"
+# echo $noreboot
 
 reboot=0
 restart=0
