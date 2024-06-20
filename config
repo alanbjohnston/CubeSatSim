@@ -842,19 +842,19 @@ echo "Checking for reboot or restart"
 
 echo $noreboot
 
-if [ "$noreboot" = "0" ] ; then  
 
-	if [ "$reboot" = "1" ] ; then  
+if [ "$reboot" = "1" ] ; then 
+	if [ "$noreboot" = "0" ] ; then 
 		echo "Rebooting"
+	else
+		echo "Reboot needed for changes to take effect"
 	fi
-
-	if [ "$restart" = "1" ] ; then  
-		echo "Restarting"
-	fi
-else
-
-	echo "Reboot disabled"
-
 fi
 
-
+if [ "$restart" = "1" ] ; then  
+	if [ "$reboot" = "1" ] ; then 
+		echo "Restarting"
+	else
+		echo "Restart needed for changes to take effect"
+	fi
+fi
