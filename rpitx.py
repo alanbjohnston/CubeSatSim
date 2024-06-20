@@ -320,28 +320,29 @@ if __name__ == "__main__":
 		callsign = config[0]
 		if len(config) > 5:
 			sq = config[5]
+			print(sq)
 		if len(config) > 6:
                         txf = float(config[6])
-                        print(txf)
+#                        print(txf)
 #                        print( "{:.4f}".format(txf))
                         tx = "{:.4f}".format(txf)
                         print(tx)
 		if len(config) > 7:
                         rxf = float(config[7])
-                        print(rxf)
+#                        print(rxf)
 #                        print( "{:.4f}".format(rxf))
                         rx = "{:.4f}".format(rxf)
                         print(rx)
 		if len(config) > 9:
                         rxpl = float(config[9])
-                        print(rxpl)
-                        print( "{:.0f}".format(rxpl))
+  #                      print(rxpl)
+  #                      print( "{:.0f}".format(rxpl))
                         rxpl_value = "{:.0f}".format(rxpl)
                         print(rxpl_value)
 		if len(config) > 10:
                         txpl = float(config[10])
-                        print(txpl)
-                        print( "{:.0f}".format(txpl))
+  #                      print(txpl)
+  #                      print( "{:.0f}".format(txpl))
                         rxpl_value = "{:.0f}".format(txpl)
                         print(txpl_value)			
 		print(config)
