@@ -62,7 +62,7 @@ int main(int argc, char * argv[]) {
   fscanf(config_file, "%s %d %f %f %s %d %s %s %s %s %s", 
 	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes, & rx_pl, & tx_pl);
   fclose(config_file);
-  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %s %s\n", 
+  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d\n", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
 
   fprintf(stderr, "Transmit on %s Receive on %s\n", tx, rx);
@@ -325,7 +325,7 @@ int main(int argc, char * argv[]) {
   }	
 */
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %s %s", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %d %d", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
