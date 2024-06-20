@@ -4,9 +4,9 @@ echo -e "\nupdate script for CubeSatSim v1.3.2\n"
 
 if [ "$1" = "n" ] ; then
 # if [ -z "$2" ] ; then
-	noreboot=0
-else
 	noreboot=1
+else
+	noreboot=0
 fi
 
 echo "No reboot"
