@@ -838,9 +838,9 @@ fi
 
 # sudo systemctl restart cubesatsim
 
-echo "Checking for reboot or restart"
+# echo "Checking for reboot or restart"
 
-echo $noreboot
+# echo $noreboot
 
 
 if [ "$reboot" = "1" ] ; then 
