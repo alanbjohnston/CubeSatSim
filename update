@@ -2,6 +2,16 @@
 
 echo -e "\nupdate script for CubeSatSim v1.3.2\n"
 
+if [ "$1" = "n" ] ; then
+# if [ -z "$2" ] ; then
+	noreboot=0
+else
+	noreboot=1
+fi
+
+echo "No reboot"
+echo $noreboot
+
 sudo rm /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/id.txt /home/pi/CubeSatSim/cw.txt > /dev/null 2>&1 
 
 if [ "$1" = "u" ]; then
