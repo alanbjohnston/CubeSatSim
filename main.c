@@ -59,7 +59,7 @@ int main(int argc, char * argv[]) {
 
 //  char * cfg_buf[100];
 
-  fscanf(config_file, "%s %d %f %f %s %d %s %s %s %s %s", 
+  fscanf(config_file, "%s %d %f %f %s %d %s %s %s %d %d", 
 	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes, & rx_pl, & tx_pl);
   fclose(config_file);
   fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d\n", 
