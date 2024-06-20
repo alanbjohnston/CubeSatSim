@@ -846,6 +846,8 @@ echo $noreboot
 if [ "$reboot" = "1" ] ; then 
 	if [ "$noreboot" = "0" ] ; then 
 		echo "Rebooting"
+		sudo systemctl stop rpitx
+		sudo reboot now
 	else
 		echo "Reboot needed for changes to take effect"
 	fi
@@ -854,6 +856,7 @@ fi
 if [ "$restart" = "1" ] ; then  
 	if [ "$reboot" = "1" ] ; then 
 		echo "Restarting"
+		sudo systemctl restart cubesatsim
 	else
 		echo "Restart needed for changes to take effect"
 	fi
