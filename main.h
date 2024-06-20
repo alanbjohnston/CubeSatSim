@@ -132,6 +132,8 @@ char sim_yes[10];
 char hab_yes[10];
 int squelch = 3; // default squelch
 char rx[12], tx[12];
+int tx_pl = 0;
+int rx_pl = 0;
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
