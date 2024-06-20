@@ -214,7 +214,7 @@ elif GPIO.input(27) == False:
 	txLedOff = 1
 elif GPIO.input(13) == False:
 	print("Version is v1 with VHF BPF")
-	print("VHF transmit not implemented yet")
+	print("VHF transmit not imemented yet")
 #	transmit = True
 	txLed = 27
 	txLedOn = 1
@@ -307,8 +307,8 @@ if __name__ == "__main__":
 	print("Command_count: ")
 	print(command_count)	
 
-	txpl_value = '0'
-	rxpl_value = '0'
+	tx_value = '0'
+	rx_value = '0'
 	sq = '0'
 	tx = '434.9000'	
 	rx = '435.0000'	
@@ -335,14 +335,14 @@ if __name__ == "__main__":
                         print(rx)
 		if len(config) > 9:
                         rxpl = float(config[9])
-  #                      print(rxpl)
-  #                      print( "{:.0f}".format(rxpl))
+                        print(rxpl)
+                        print( "{:.0f}".format(rxpl))
                         rxpl_value = "{:.0f}".format(rxpl)
                         print(rxpl_value)
 		if len(config) > 10:
                         txpl = float(config[10])
-  #                      print(txpl)
-  #                      print( "{:.0f}".format(txpl))
+                        print(txpl)
+                        print( "{:.0f}".format(txpl))
                         rxpl_value = "{:.0f}".format(txpl)
                         print(txpl_value)			
 		print(config)
