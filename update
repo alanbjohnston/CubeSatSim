@@ -286,8 +286,9 @@ if [ "$noreboot" = "0" ] ; then
 	  fi  
 	fi
 else
-
-	echo "Reboot disabled"
+	if [ $FLAG -eq 1 ]; then
+		echo "reboot needed for changes to take effect"
+	fi
 fi
 
 echo "CubeSatSim update complete."
