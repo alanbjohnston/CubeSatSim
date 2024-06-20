@@ -641,6 +641,8 @@ elif [ "$1" = "-P" ]; then
 
 		rxpl="${10}"
 		echo "Keeping value of" $rxpl
+	else
+		restart=1
 	fi
 
 	if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
@@ -648,6 +650,8 @@ elif [ "$1" = "-P" ]; then
 		echo "Error: not a number!"
 		rxpl="${10}"
 		echo "Keeping value of" $rxpl
+	else
+		restart=1
 	fi 
 
 	echo -e "Enter TX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
