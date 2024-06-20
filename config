@@ -2,9 +2,9 @@
 
 echo "CubeSatSim v1.3.2 configuration tool"
 echo
-echo $1
-echo $2
-echo
+# echo $1
+# echo $2
+# echo
 
 # if [ "$2" = "n" ] ; then
 if [ -z "$2" ] ; then
