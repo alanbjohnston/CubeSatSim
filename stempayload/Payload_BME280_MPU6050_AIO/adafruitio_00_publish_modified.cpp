@@ -31,7 +31,7 @@ bool aio_connected = false;
 unsigned long time_stamp;
 
 // should match the number of feeds define below so throttling delay is set correctly
-#define FEEDS 10 
+#define FEEDS 7 
 
 // set up the 'counter' feed
 //AdafruitIO_Feed *counter = io.feed("counter");
@@ -42,9 +42,9 @@ AdafruitIO_Feed *humidity = io.feed("humidity");
 AdafruitIO_Feed *accel_x = io.feed("Acceleration X Axis");
 AdafruitIO_Feed *accel_y = io.feed("Acceleration Y Axis");
 AdafruitIO_Feed *accel_z = io.feed("Acceleration Z Axis");
-AdafruitIO_Feed *gyro_x = io.feed("Rotation X Axis");
-AdafruitIO_Feed *gyro_y = io.feed("Rotation Y Axis");
-AdafruitIO_Feed *gyro_z = io.feed("Rotation Z Axis");
+// AdafruitIO_Feed *gyro_x = io.feed("Rotation X Axis");
+// AdafruitIO_Feed *gyro_y = io.feed("Rotation Y Axis");
+// AdafruitIO_Feed *gyro_z = io.feed("Rotation Z Axis");
 
 void aio_setup() {
 /*
@@ -111,21 +111,21 @@ void aio_loop(float tlm[]) {
       Serial.print(tlm[3]);
       humidity->save(tlm[3]);
       Serial.print(tlm[4]);
-      gyro_x->save(tlm[4]);
+//      gyro_x->save(tlm[4]);
+//      Serial.print(" ");
+//      Serial.print(tlm[5]);
+//      gyro_y->save(tlm[5]);
+//      Serial.print(" ");
+//      Serial.print(tlm[6]);
+//      gyro_z->save(tlm[6]);
+      Serial.print(tlm[4]);
+      accel_x->save(tlm[4]);
       Serial.print(" ");
       Serial.print(tlm[5]);
-      gyro_y->save(tlm[5]);
+      accel_y->save(tlm[5]);
       Serial.print(" ");
       Serial.print(tlm[6]);
-      gyro_z->save(tlm[6]);
-      Serial.print(tlm[7]);
-      accel_x->save(tlm[7]);
-      Serial.print(" ");
-      Serial.print(tlm[8]);
-      accel_y->save(tlm[8]);
-      Serial.print(" ");
-      Serial.print(tlm[9]);
-      accel_z->save(tlm[9]);      
+      accel_z->save(tlm[6]);      
   
       Serial.println(" ");
       
