@@ -89,6 +89,6 @@ void aio_loop(float tlm[]) {
   // Adafruit IO is rate limited for publishing, so a delay is required in
   // between feed->save events. In this example, we will wait three seconds
   // (1000 milliseconds == 1 second) during each loop.
-  delay(3000);
+  delay(15000); // 3000
 
 }
