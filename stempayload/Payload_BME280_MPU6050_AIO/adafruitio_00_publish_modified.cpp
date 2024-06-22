@@ -28,7 +28,7 @@
 // this int will hold the current count for our sketch
 int count = 0;
 bool aio_connected = false;
-unsigned long delay;
+unsigned long time_stamp;
 
 // set up the 'counter' feed
 //AdafruitIO_Feed *counter = io.feed("counter");
@@ -60,7 +60,7 @@ void aio_setup() {
   Serial.println();
   Serial.println(io.statusText());
 */
-  delay = millis();
+  time_stamp = millis();
 }
 
 void aio_loop(float tlm[]) {
@@ -81,8 +81,8 @@ void aio_loop(float tlm[]) {
     // io.adafruit.com, and processes any incoming data.
     io.run();
 
-    if ((millis() - delay) > 8000)    {  // Only send if 8 seconds have passed 
-      delay = millis();
+    if ((millis() - time_stamp) > 8000)    {  // Only send if 8 seconds have passed 
+      time_stamp = millis();
       // save count to the 'counter' feed on Adafruit IO
       Serial.print("\nSending to Adafruit IO -> ");
     //  Serial.println(count);
