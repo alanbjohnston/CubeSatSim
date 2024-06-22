@@ -54,7 +54,7 @@ void aio_setup() {
 
 }
 
-void aio_loop() {
+void aio_loop(float tlm[]) {
 
   // io.run(); is required for all sketches.
   // it should always be present at the top of your loop
@@ -65,7 +65,8 @@ void aio_loop() {
   // save count to the 'counter' feed on Adafruit IO
   Serial.print("sending -> ");
   Serial.println(count);
-  counter->save(count);
+//  counter->save(count);
+  counter->save(tlm[0]);
 
   // increment the count by 1
   count++;
