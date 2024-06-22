@@ -31,7 +31,7 @@ bool aio_connected = false;
 unsigned long time_stamp;
 
 // should match the number of feeds define below so throttling delay is set correctly
-#define FEEDS = 10 
+#define FEEDS 10 
 
 // set up the 'counter' feed
 //AdafruitIO_Feed *counter = io.feed("counter");
