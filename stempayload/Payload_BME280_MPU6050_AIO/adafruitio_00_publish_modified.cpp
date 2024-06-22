@@ -63,11 +63,13 @@ void aio_loop(float tlm[]) {
   io.run();
 
   // save count to the 'counter' feed on Adafruit IO
-  Serial.print("sending -> ");
-  Serial.println(count);
+  Serial.print("\nsending to Adafruit IO -> ");
+//  Serial.println(count);
 //  counter->save(count);
+  Serial.println(tlm[0]);
   counter->save(tlm[0]);
-
+  Serial.println(tlm[1]);
+  counter->save(tlm[1]);
   // increment the count by 1
   count++;
 
