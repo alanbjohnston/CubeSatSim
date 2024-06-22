@@ -21,6 +21,7 @@ TinyGPSPlus gps;
 bool check_for_wifi();
 bool wifi = false;
 int led_builtin_pin;
+float tlm[20];
 
 #else  // if Sparkfun Pro Micro or STM32 
 #include <EEPROM.h>
@@ -79,7 +80,7 @@ extern void payload_setup();  // sensor extension setup function defined in payl
 extern void payload_loop();  // sensor extension read function defined in payload_extension.cpp
 
 extern void aio_setup();  // Adafruit IO setup code defined in adafruitio_00_publish.cpp
-extern void aio_loop();  // Adafruit IO loop code defined in adafruitio_00_publish.cpp
+extern void aio_loop(float telem[]);  // Adafruit IO loop code defined in adafruitio_00_publish.cpp
 
 void setup() {
 	
@@ -228,7 +229,10 @@ void setup() {
   }
   payload_setup();  // sensor extension setup function defined in payload_extension.cpp   
   aio_setup();  // Adafruit IO setup code defined in adafruitio_00_publish.cpp
-  
+
+  for (int i = 0; i++; i < 20)
+	  tlm[i] = 0.0; 
+  tlm[0] = 23.1;
 }
  
 void loop() {
@@ -360,7 +364,7 @@ void loop() {
     }
 
     payload_loop(); // sensor extension read function defined in payload_extension.cpp	  
-    aio_loop();  // Adafruit IO loop code defined in adafruitio_00_publish.cpp
+    aio_loop(tlm);  // Adafruit IO loop code defined in adafruitio_00_publish.cpp
 
 //    Serial1.println(" ");
     Serial1.println(sensor_end_flag);	  
