@@ -91,10 +91,11 @@ void aio_loop(float tlm[]) {
     Serial.print(" ");
     Serial.print(tlm[2]);
     altitude->save(tlm[2]);
-    Serial.println(" ");
     Serial.print(" ");
     Serial.print(tlm[3]);
     humidity->save(tlm[3]);
+
+    Serial.println(" ");
     
     // increment the count by 1
     count++;
