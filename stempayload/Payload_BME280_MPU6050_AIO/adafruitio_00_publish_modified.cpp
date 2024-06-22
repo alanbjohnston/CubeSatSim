@@ -37,13 +37,13 @@ AdafruitIO_Feed *altitude = io.feed("altitude");
 AdafruitIO_Feed *humidity = io.feed("humidity");
 
 void aio_setup() {
-
+/*
   // start the serial connection
   Serial.begin(115200);
 
   // wait for serial monitor to open
   while(! Serial);
-
+*/
   Serial.print("\nConnecting to Adafruit IO");
 
   // connect to io.adafruit.com
