@@ -25,6 +25,7 @@
 
 // this int will hold the current count for our sketch
 int count = 0;
+bool aio_connected = false;
 
 // set up the 'counter' feed
 //AdafruitIO_Feed *counter = io.feed("counter");
@@ -46,7 +47,7 @@ void aio_setup() {
   // connect to io.adafruit.com
   io.connect();
 
-  // wait for a connection
+/*  // wait for a connection
   while(io.status() < AIO_CONNECTED) {
     Serial.print(".");
     delay(500);
@@ -55,40 +56,49 @@ void aio_setup() {
   // we are connected
   Serial.println();
   Serial.println(io.statusText());
-
+*/
 }
 
 void aio_loop(float tlm[]) {
 
-  // io.run(); is required for all sketches.
-  // it should always be present at the top of your loop
-  // function. it keeps the client connected to
-  // io.adafruit.com, and processes any incoming data.
-  io.run();
-
-  // save count to the 'counter' feed on Adafruit IO
-  Serial.print("\nsending to Adafruit IO -> ");
-//  Serial.println(count);
-//  counter->save(count);
-  Serial.print(tlm[0]);
-  temperature->save(tlm[0]);
-  Serial.print(" ");
-  Serial.print(tlm[1]);
-  pressure->save(tlm[1]);
-  Serial.print(" ");
-  Serial.print(tlm[2]);
-  altitude->save(tlm[2]);
-  Serial.println(" ");
-  Serial.print(" ");
-  Serial.print(tlm[3]);
-  humidity->save(tlm[3]);
+  if (!aio_connected) {
+    if (io.status() < AIO_CONNECTED) {
+       Serial.println("Connecting to Adafruit IO...");
+    } else {
+      Serial.println();
+      Serial.println(io.statusText());
+      aio_connected = true;
+    }
+  } else {
+    // io.run(); is required for all sketches.
+    // it should always be present at the top of your loop
+    // function. it keeps the client connected to
+    // io.adafruit.com, and processes any incoming data.
+    io.run();
   
-  // increment the count by 1
-  count++;
-
-  // Adafruit IO is rate limited for publishing, so a delay is required in
-  // between feed->save events. In this example, we will wait three seconds
-  // (1000 milliseconds == 1 second) during each loop.
-  delay(15000); // 3000
-
+    // save count to the 'counter' feed on Adafruit IO
+    Serial.print("\nSending to Adafruit IO -> ");
+  //  Serial.println(count);
+  //  counter->save(count);
+    Serial.print(tlm[0]);
+    temperature->save(tlm[0]);
+    Serial.print(" ");
+    Serial.print(tlm[1]);
+    pressure->save(tlm[1]);
+    Serial.print(" ");
+    Serial.print(tlm[2]);
+    altitude->save(tlm[2]);
+    Serial.println(" ");
+    Serial.print(" ");
+    Serial.print(tlm[3]);
+    humidity->save(tlm[3]);
+    
+    // increment the count by 1
+    count++;
+  
+    // Adafruit IO is rate limited for publishing, so a delay is required in
+    // between feed->save events. In this example, we will wait three seconds
+    // (1000 milliseconds == 1 second) during each loop.
+    delay(3000); // 15000
+  }
 }
