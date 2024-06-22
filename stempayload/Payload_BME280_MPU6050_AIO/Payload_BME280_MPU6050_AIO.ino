@@ -232,10 +232,10 @@ void setup() {
 
   for (int i = 0; i++; i < 20)
 	  tlm[i] = 0.0; 
-  tlm[0] = 23.1;
-  tlm[1] = 1000.2;
-  tlm[2] = 122;
-  tlm[3] = 56.8;
+//  tlm[0] = 23.1;  // uncomment for non-zero test values if no BME or MPU sensor is attached.
+//  tlm[1] = 1000.2;
+//  tlm[2] = 122;
+//  tlm[3] = 56.8;
 }
  
 void loop() {
@@ -287,34 +287,41 @@ void loop() {
         Serial.print("OK BME280 0.0 0.0 0.0 0.0");
       }
       mpu6050.update();
- 
+
+      tlm[4] = mpu6050.getGyroX();	    
+      tlm[5] = mpu6050.getGyroY();	
+      tlm[6] = mpu6050.getGyroZ();		    
+      tlm[7] = mpu6050.getAccX();
+      tlm[8] = mpu6050.getAccY();	    
+      tlm[9] = mpu6050.getAccZ();
+	    
       Serial1.print(" MPU6050 ");
-      Serial1.print(mpu6050.getGyroX());
+      Serial1.print(tlm[4]);
       Serial1.print(" ");
-      Serial1.print(mpu6050.getGyroY());
+      Serial1.print(tlm[5]);
       Serial1.print(" ");
-      Serial1.print(mpu6050.getGyroZ());
+      Serial1.print(tlm[6]);
  
       Serial1.print(" ");
-      Serial1.print(mpu6050.getAccX());   
+      Serial1.print(tlm[7]);   
       Serial1.print(" ");
-      Serial1.print(mpu6050.getAccY());   
+      Serial1.print(tlm[8]);   
       Serial1.print(" ");
-      Serial1.print(mpu6050.getAccZ());   
+      Serial1.print(tlm[9]);   
 
       Serial.print(" MPU6050 ");
-      Serial.print(mpu6050.getGyroX());
+      Serial.print(tlm[4]);
       Serial.print(" ");
-      Serial.print(mpu6050.getGyroY());
+      Serial.print(tlm[5]);
       Serial.print(" ");
-      Serial.print(mpu6050.getGyroZ());
+      Serial.print(tlm[6]);
  
       Serial.print(" ");
-      Serial.print(mpu6050.getAccX());   
+      Serial.print(tlm[7]);   
       Serial.print(" ");
-      Serial.print(mpu6050.getAccY());   
+      Serial.print(tlm[8]);   
       Serial.print(" ");
-      Serial.print(mpu6050.getAccZ());  
+      Serial.print(tlm[9]);  
      
       sensorValue = read_analog();
      
