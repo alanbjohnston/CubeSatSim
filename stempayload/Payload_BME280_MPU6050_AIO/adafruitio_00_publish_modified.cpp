@@ -26,9 +26,12 @@
 /************************ Example Starts Here *******************************/
 
 // this int will hold the current count for our sketch
-int count = 0;
+// int count = 0;
 bool aio_connected = false;
 unsigned long time_stamp;
+
+// should match the number of feeds define below so throttling delay is set correctly
+#define FEEDS = 7 
 
 // set up the 'counter' feed
 //AdafruitIO_Feed *counter = io.feed("counter");
@@ -36,6 +39,9 @@ AdafruitIO_Feed *temperature = io.feed("temperature");
 AdafruitIO_Feed *pressure = io.feed("pressure");
 AdafruitIO_Feed *altitude = io.feed("altitude");
 AdafruitIO_Feed *humidity = io.feed("humidity");
+AdafruitIO_Feed *accel_x = io.feed("accel_x");
+AdafruitIO_Feed *accel_y = io.feed("accel_y");
+AdafruitIO_Feed *accel_z = io.feed("accel_z");
 
 void aio_setup() {
 /*
@@ -81,7 +87,7 @@ void aio_loop(float tlm[]) {
     // io.adafruit.com, and processes any incoming data.
     io.run();
 
-    if ((millis() - time_stamp) < 8000)    {  // Only send if 8 seconds have passed 
+    if ((millis() - time_stamp) < (2000 * FEEDS)) // 8000)    {  // Only send if 8 seconds have passed 
       Serial.print("\nWaiting to send Adafruit IO\n");
     }
     else {
@@ -101,11 +107,19 @@ void aio_loop(float tlm[]) {
       Serial.print(" ");
       Serial.print(tlm[3]);
       humidity->save(tlm[3]);
+      Serial.print(tlm[4]);
+      accel_x->save(tlm[4]);
+      Serial.print(" ");
+      Serial.print(tlm[5]);
+      accel_y->save(tlm[5]);
+      Serial.print(" ");
+      Serial.print(tlm[6]);
+      accel_z->save(tlm[6]);
   
       Serial.println(" ");
       
       // increment the count by 1
-      count++;
+//      count++;
     
       // Adafruit IO is rate limited for publishing, so a delay is required in
       // between feed->save events. In this example, we will wait three seconds
