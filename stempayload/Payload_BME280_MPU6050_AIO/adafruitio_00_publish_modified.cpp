@@ -110,7 +110,8 @@ void aio_loop(float tlm[]) {
       Serial.print(" ");
       Serial.print(tlm[3]);
       humidity->save(tlm[3]);
-      Serial.print(tlm[4]);
+      Serial.print(" ");        
+//      Serial.print(tlm[4]);    
 //      gyro_x->save(tlm[4]);
 //      Serial.print(" ");
 //      Serial.print(tlm[5]);
