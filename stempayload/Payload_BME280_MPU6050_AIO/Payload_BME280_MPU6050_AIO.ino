@@ -233,7 +233,9 @@ void setup() {
   for (int i = 0; i++; i < 20)
 	  tlm[i] = 0.0; 
   tlm[0] = 23.1;
-  tlm[1] = 1000.2;	
+  tlm[1] = 1000.2;
+  tlm[2] = 84.2;
+  tlm[3] = 100.8;
 }
  
 void loop() {
@@ -253,25 +255,30 @@ void loop() {
 //    if (result == '?')
     {
       if (bmePresent) {
+
+  	tlm[0] = bme.readTemperature();
+  	tlm[1] = bme.readPressure() / 100.0F;
+	tlm[2] = bme.readAltitude(SEALEVELPRESSURE_HPA);
+	tlm[3] = bme.readHumidity();
+	      
         Serial1.print(sensor_start_flag);
         Serial1.print("OK BME280 ");
-        Serial1.print(bme.readTemperature());
+        Serial1.print(tlm[0]);
         Serial1.print(" ");
-        Serial1.print(bme.readPressure() / 100.0F);
+        Serial1.print(tlm[1]);
         Serial1.print(" ");
-        Serial1.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial1.print(tlm[2]);
         Serial1.print(" ");
-        Serial1.print(bme.readHumidity());
+        Serial1.print(tlm[3]);
 
         Serial.print("OK BME280 ");
-	temp = bme.readTemperature();       
-        Serial.print(temp);
+        Serial.print(tlm[0]);
         Serial.print(" ");
-        Serial.print(bme.readPressure() / 100.0F);
+        Serial.print(tlm[1]);
         Serial.print(" ");
-        Serial.print(bme.readAltitude(SEALEVELPRESSURE_HPA));
+        Serial.print(tlm[2]);
         Serial.print(" ");
-        Serial.print(bme.readHumidity());
+        Serial.print(tlm[3]);
       } else
       {
         Serial1.print(sensor_start_flag);
