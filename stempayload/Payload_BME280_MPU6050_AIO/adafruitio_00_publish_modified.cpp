@@ -27,7 +27,11 @@
 int count = 0;
 
 // set up the 'counter' feed
-AdafruitIO_Feed *counter = io.feed("counter");
+//AdafruitIO_Feed *counter = io.feed("counter");
+AdafruitIO_Feed *temperature = io.feed("temperature");
+AdafruitIO_Feed *pressure = io.feed("pressure");
+AdafruitIO_Feed *altitude = io.feed("altitude");
+AdafruitIO_Feed *humidity = io.feed("humidity");
 
 void aio_setup() {
 
@@ -66,10 +70,13 @@ void aio_loop(float tlm[]) {
   Serial.print("\nsending to Adafruit IO -> ");
 //  Serial.println(count);
 //  counter->save(count);
-  Serial.println(tlm[0]);
-  counter->save(tlm[0]);
-  Serial.println(tlm[1]);
-  counter->save(tlm[1]);
+  Serial.print(tlm[0]);
+  temperature->save(tlm[0]);
+  Serial.print(" ");
+  Serial.print(tlm[1]);
+  pressure->save(tlm[1]);
+
+  Serial.println(" ");
   // increment the count by 1
   count++;
 
