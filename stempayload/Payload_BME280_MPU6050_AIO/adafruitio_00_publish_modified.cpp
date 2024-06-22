@@ -67,7 +67,8 @@ void aio_loop(float tlm[]) {
     if (io.status() < AIO_CONNECTED) {
        Serial.println("\nConnecting to Adafruit IO...");
     } else {
-      Serial.println();
+      Serial.print("\nSuccessfully connected to Adafruit IO! Status: ");
+//      Serial.println();
       Serial.println(io.statusText());
       aio_connected = true;
     }
@@ -101,6 +102,6 @@ void aio_loop(float tlm[]) {
     // Adafruit IO is rate limited for publishing, so a delay is required in
     // between feed->save events. In this example, we will wait three seconds
     // (1000 milliseconds == 1 second) during each loop.
-    delay(5000); // 1000
+    delay(10000); // 1000
   }
 }
