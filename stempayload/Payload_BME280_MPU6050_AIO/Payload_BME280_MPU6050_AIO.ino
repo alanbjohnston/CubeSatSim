@@ -231,8 +231,9 @@ void setup() {
   aio_setup();  // Adafruit IO setup code defined in adafruitio_00_publish.cpp
 
   for (int i = 0; i++; i < 20)
-	  tlm[i] = 0.0; 
+	  i] = 0.0; 
   tlm[0] = 23.1;
+  tlm[1] = 1000.2;	
 }
  
 void loop() {
