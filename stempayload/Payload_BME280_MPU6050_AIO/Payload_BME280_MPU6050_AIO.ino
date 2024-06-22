@@ -356,8 +356,8 @@ void loop() {
 //    Serial.print(" ");
 //    Serial.println(Sensor2);     
      
-    float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
-    float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+    float rotation = sqrt(tlm[4]*tlm[4] + tlm[5]tlm[5] + tlm[6]*tlm[6]); 
+    float acceleration = qrt(tlm[7]*tlm[7] + tlm[8]tlm[8] + tlm[9]*tlm[9]); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
