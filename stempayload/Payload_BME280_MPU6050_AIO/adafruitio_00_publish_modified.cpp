@@ -81,7 +81,10 @@ void aio_loop(float tlm[]) {
     // io.adafruit.com, and processes any incoming data.
     io.run();
 
-    if ((millis() - time_stamp) > 8000)    {  // Only send if 8 seconds have passed 
+    if ((millis() - time_stamp) < 8000)    {  // Only send if 8 seconds have passed 
+      Serial.print("\nWaiting to send Adafruit IO\n");
+    }
+    else {
       time_stamp = millis();
       // save count to the 'counter' feed on Adafruit IO
       Serial.print("\nSending to Adafruit IO -> ");
