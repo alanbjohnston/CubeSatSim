@@ -28,6 +28,7 @@
 // this int will hold the current count for our sketch
 int count = 0;
 bool aio_connected = false;
+unsigned long delay;
 
 // set up the 'counter' feed
 //AdafruitIO_Feed *counter = io.feed("counter");
@@ -59,6 +60,7 @@ void aio_setup() {
   Serial.println();
   Serial.println(io.statusText());
 */
+  delay = millis();
 }
 
 void aio_loop(float tlm[]) {
@@ -78,31 +80,34 @@ void aio_loop(float tlm[]) {
     // function. it keeps the client connected to
     // io.adafruit.com, and processes any incoming data.
     io.run();
-  
-    // save count to the 'counter' feed on Adafruit IO
-    Serial.print("\nSending to Adafruit IO -> ");
-  //  Serial.println(count);
-  //  counter->save(count);
-    Serial.print(tlm[0]);
-    temperature->save(tlm[0]);
-    Serial.print(" ");
-    Serial.print(tlm[1]);
-    pressure->save(tlm[1]);
-    Serial.print(" ");
-    Serial.print(tlm[2]);
-    altitude->save(tlm[2]);
-    Serial.print(" ");
-    Serial.print(tlm[3]);
-    humidity->save(tlm[3]);
 
-    Serial.println(" ");
-    
-    // increment the count by 1
-    count++;
+    if ((millis() - delay) > 8000)    {  // Only send if 8 seconds have passed 
+      delay = millis();
+      // save count to the 'counter' feed on Adafruit IO
+      Serial.print("\nSending to Adafruit IO -> ");
+    //  Serial.println(count);
+    //  counter->save(count);
+      Serial.print(tlm[0]);
+      temperature->save(tlm[0]);
+      Serial.print(" ");
+      Serial.print(tlm[1]);
+      pressure->save(tlm[1]);
+      Serial.print(" ");
+      Serial.print(tlm[2]);
+      altitude->save(tlm[2]);
+      Serial.print(" ");
+      Serial.print(tlm[3]);
+      humidity->save(tlm[3]);
   
-    // Adafruit IO is rate limited for publishing, so a delay is required in
-    // between feed->save events. In this example, we will wait three seconds
-    // (1000 milliseconds == 1 second) during each loop.
-    delay(10000); // 1000
+      Serial.println(" ");
+      
+      // increment the count by 1
+      count++;
+    
+      // Adafruit IO is rate limited for publishing, so a delay is required in
+      // between feed->save events. In this example, we will wait three seconds
+      // (1000 milliseconds == 1 second) during each loop. 
+      //    delay(10000); // 1000
+    }
   }
 }
