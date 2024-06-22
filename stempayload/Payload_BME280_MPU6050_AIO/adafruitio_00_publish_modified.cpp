@@ -2,6 +2,8 @@
 //
 // changed setup to aio_setup and loop to aio_loop 
 //
+// You must put your account and WiFi info and rename config file as config.h
+//
 // Adafruit IO Publish Example
 //
 // Adafruit invests time and resources providing this open source code.
