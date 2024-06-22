@@ -119,14 +119,14 @@ void aio_loop(float tlm[]) {
 //      Serial.print(" ");
 //      Serial.print(tlm[6]);
 //      gyro_z->save(tlm[6]);
-      Serial.print(tlm[4]);
-      accel_x->save(tlm[4]);
+      Serial.print(tlm[7]);
+      accel_x->save(tlm[7]);
       Serial.print(" ");
-      Serial.print(tlm[5]);
-      accel_y->save(tlm[5]);
+      Serial.print(tlm[8]);
+      accel_y->save(tlm[8]);
       Serial.print(" ");
-      Serial.print(tlm[6]);
-      accel_z->save(tlm[6]);      
+      Serial.print(tlm[9]);
+      accel_z->save(tlm[9]);      
   
       Serial.println(" ");
       
