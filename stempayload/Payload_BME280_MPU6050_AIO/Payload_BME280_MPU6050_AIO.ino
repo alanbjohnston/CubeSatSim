@@ -357,7 +357,7 @@ void loop() {
 //    Serial.println(Sensor2);     
      
     float rotation = sqrt(tlm[4]*tlm[4] + tlm[5]tlm[5] + tlm[6]*tlm[6]); 
-    float acceleration = qrt(tlm[7]*tlm[7] + tlm[8]tlm[8] + tlm[9]*tlm[9]); 
+    float acceleration = sqrt(tlm[7]*tlm[7] + tlm[8]tlm[8] + tlm[9]*tlm[9]); 
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
