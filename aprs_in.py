@@ -43,6 +43,8 @@ if __name__ == "__main__":
 		if (debug_mode == False)  and (change_mode == True):
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
+			GPIO.setup(powerPin, GPIO.OUT)
+			GPIO.setup(txLed, GPIO.OUT)
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
 			system("sudo systemctl stop rpitx")
