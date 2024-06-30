@@ -147,11 +147,12 @@ def increment_mode():
 		print("/home/pi/CubeSatSim/config -" + mode)
 		if (debug_mode == False):		
 			GPIO.setwarnings(False)
+			system("/home/pi/CubeSatSim/config -" + mode)
+			print("Changing mode now")
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
 			system("sudo systemctl stop rpitx")
-			system("/home/pi/CubeSatSim/config -" + mode)
-			print("Changing mode now")		
+
 #		file = open("/home/pi/CubeSatSim/.mode", "w")
 #		count_string = str(command_count)
 #		file.write(mode)
