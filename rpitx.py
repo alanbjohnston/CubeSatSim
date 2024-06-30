@@ -373,9 +373,9 @@ if __name__ == "__main__":
 			print("squelch not set correctly, no command input!")
 			no_command = True
 		else:
-			print("command and control is activated")
+			print("NOT: command and control is activated")
 			no_command = False
-			system("/home/pi/CubeSatSim/command &")
+#			system("/home/pi/CubeSatSim/command &")
 	except:
 		print("command and control not activated")
 		no_command = True
