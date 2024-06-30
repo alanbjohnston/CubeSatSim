@@ -85,6 +85,14 @@ if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 2."
     cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 fi
+
+if [[ $(diff systemd/command.service /etc/systemd/system/command.service) ]]; then
+  echo "changed rpitx.service."
+  sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  FLAG=1
+else
+  echo "no changes to command.service."
+fi
       
 grep 'update' /home/pi/CubeSatSim/.updated
 if [[ $(grep 'update' /home/pi/CubeSatSim/.updated) ]]; then
@@ -278,7 +286,7 @@ if [ "$noreboot" = "0" ] ; then
 	else
 	  grep 'changed' /home/pi/CubeSatSim/.updated
 	  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
-	    echo "reboot"
+	    echo "reboot due to code changes " | wall
 	    sudo reboot -h now
 #    sudo systemctl restart cubesatsim
 	  else
