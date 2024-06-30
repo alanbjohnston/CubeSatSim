@@ -7,6 +7,7 @@ def command_control_check():
 #	global no_command
 #	global debug_mode	
 	command_count = 0
+	squelch = 6
 	
 #	output(pd, 1)
 #	output(ptt, 1)
