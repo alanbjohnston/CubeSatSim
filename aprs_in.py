@@ -15,8 +15,8 @@ if __name__ == "__main__":
 			debug_mode = True
 			
 	for line in sys.stdin:
-		if (debug_mode):
-			print(line, end =" ")
+#		if (debug_mode):
+		print(line, end =" ")
 			
 #			if '^c' == line.rstrip():
 #				break
