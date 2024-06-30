@@ -2,6 +2,8 @@
 
 echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 
+sleep 20
+
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
     		echo "Radio command and control is ON"
