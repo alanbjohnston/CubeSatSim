@@ -1,5 +1,6 @@
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
+import time
 
 def command_control_check():
 
