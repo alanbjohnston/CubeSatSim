@@ -77,7 +77,7 @@ def increment_mode():
 		GPIO.output(powerPin, 0)
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
-		sleep(2.5)
+		sleep(1)
 
 	elif (mode == 'f'):
 		mode = 'b'
@@ -92,7 +92,7 @@ def increment_mode():
 		GPIO.output(powerPin, 0)
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
-		sleep(2.5)
+		sleep(1)
 	
 	elif (mode == 'b'):
 		mode = 's'
@@ -111,7 +111,7 @@ def increment_mode():
 		GPIO.output(powerPin, 0)
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
-		sleep(2.5)
+		sleep(1)
 
 	elif (mode == 's'):
 		mode = 'm'
@@ -134,13 +134,13 @@ def increment_mode():
 		GPIO.output(powerPin, 0)
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
-		sleep(2.5)
+		sleep(1)
 	else:
 		mode = 'a'
 		GPIO.output(powerPin, 0) # blink one time
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
-		sleep(2.5)
+		sleep(1)
 
 	try:	
 		print("/home/pi/CubeSatSim/config -" + mode)
@@ -153,9 +153,10 @@ def increment_mode():
 #		file.close()
 #		print(".mode file written")
 		
-#		GPIO.setwarnings(False)
-#		GPIO.output(txLed, 0)
-#		GPIO.output(powerPin, 0)
+			GPIO.setwarnings(False)
+			GPIO.output(txLed, 0)
+			GPIO.output(powerPin, 0)
+			system("sudo systemctl stop rpitx")
 #		print("sudo reboot -h now")
 #		GPIO.setwarnings(False)
 #		GPIO.setup(powerPin, GPIO.OUT)
@@ -183,8 +184,10 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 squelch = 6
 powerPin = 16
+txLed = 27
 GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
 GPIO.setup(powerPin, GPIO.OUT)
+GPIO.setup(txLed, GPIO.OUT)
 
 while True:
 	command_control_check()
