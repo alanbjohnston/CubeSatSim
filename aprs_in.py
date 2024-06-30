@@ -143,4 +143,8 @@ if __name__ == "__main__":
 
 			
 			change_mode = False
+	
+	print("Waiting 5 seconds to allow unplug and plug of soundcard")
+	sleep(5)
 	print("Done")
+	
