@@ -5,8 +5,8 @@ def command_control_check():
 
 #	global command_control
 #	global no_command
-#	global debug_mode
-  command_count = 0
+#	global debug_mode	
+	command_count = 0
 	
 #	output(pd, 1)
 #	output(ptt, 1)
@@ -17,21 +17,21 @@ def command_control_check():
 		# command_tx = not command_tx
 #			print(command_tx)
 
-    try:
-      file = open("/home/pi/CubeSatSim/command_count.txt", "r")
-      string = file.read()
-      file.close()
-      command_count = int(string)
-      command_count += 1
-      filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-      command_count_string = str(command_count)
-      print(command_count_string)
-      string = filec.write(command_count_string)
-      filec.close()
-    except:
-      print("Can't write command_count file!")
-    print("Command_count: ")
-    print(command_count)						
+		try:
+			file = open("/home/pi/CubeSatSim/command_count.txt", "r")
+			string = file.read()
+			file.close()
+			command_count = int(string)
+			command_count += 1
+			filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
+			command_count_string = str(command_count)
+			print(command_count_string)
+			string = filec.write(command_count_string)
+			filec.close()
+		except:
+			print("Can't write command_count file!")
+			print("Command_count: ")
+			print(command_count)						
 		
 		increment_mode()
 		
@@ -162,4 +162,4 @@ def increment_mode():
 		print("can't write to .mode file")
 
 while True:
-  command_control_check()
+	command_control_check()
