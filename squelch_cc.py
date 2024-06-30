@@ -176,3 +176,4 @@ GPIO.setup(powerPin, GPIO.OUT)
 
 while True:
 	command_control_check()
+	sleep(0.5)
