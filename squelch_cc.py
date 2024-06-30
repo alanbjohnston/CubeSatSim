@@ -59,8 +59,8 @@ def increment_mode():
 		mode = file.read(1)
 	except:
 #		mode = "f"
-		if (debug_mode == 1):
-			print("Can't open .mode file") # , defaulting to FSK")
+#		if (debug_mode == 1):
+		print("Can't open .mode file") # , defaulting to FSK")
 	file.close()
 	print("Mode is: ")
 	print(mode)
