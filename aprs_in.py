@@ -2,6 +2,7 @@ import sys
 from os import system
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
+from time import sleep
 
 if __name__ == "__main__":
 	powerPin = 16
