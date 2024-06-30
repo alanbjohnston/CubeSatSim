@@ -850,6 +850,7 @@ fi
 
 if [ "$reboot" = "1" ] ; then 
 	if [ "$noreboot" = "0" ] ; then 
+		echo 'Reboot due to mode change!' | wall
 		echo "Rebooting"
 		sudo systemctl stop rpitx
 		sudo reboot now
