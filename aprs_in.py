@@ -131,13 +131,16 @@ if __name__ == "__main__":
 			except:
 				print("Can't write command_count file!")
 			print("Command_count: ")
-			print(command_count)							
-
-			print("\n/home/pi/CubeSatSim/config -" + mode)
-			system("/home/pi/CubeSatSim/config -" + mode)
+			print(command_count)	
+			
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
 			system("sudo systemctl stop rpitx")
+			system("sudo systemctl stop cubesatsim")
+			
+			print("\n/home/pi/CubeSatSim/config -" + mode)
+			system("/home/pi/CubeSatSim/config -" + mode)
+
 			
 			change_mode = False
 	print("Done")
