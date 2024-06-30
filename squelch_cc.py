@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
-import time
+from time import sleep
 
 def command_control_check():
 
