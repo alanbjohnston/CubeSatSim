@@ -1,8 +1,11 @@
 import sys
 from os import system
+import RPi.GPIO as GPIO
+from RPi.GPIO import output
 
 if __name__ == "__main__":
-
+	powerPin = 16
+	txLed = 27
 	change_mode = False
 	debug_mode = False
 	if (len(sys.argv)) > 1:
@@ -38,6 +41,11 @@ if __name__ == "__main__":
 			mode = 'm'
 			change_mode = True
 		if (debug_mode == False)  and (change_mode == True):
+			GPIO.setmode(GPIO.BCM)
+			GPIO.setwarnings(False)
+			GPIO.output(txLed, 0)
+			GPIO.output(powerPin, 0)
+			system("sudo systemctl stop rpitx")
 			try:
 				file = open("/home/pi/CubeSatSim/command_count.txt", "r")
 				string = file.read()
