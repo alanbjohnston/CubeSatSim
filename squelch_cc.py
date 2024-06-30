@@ -7,7 +7,7 @@ def command_control_check():
 
 #	global command_control
 #	global no_command
-#	global debug_mode	
+	global debug_mode	
 	command_count = 0
 	squelch = 6
 	
@@ -47,12 +47,14 @@ def command_control_check():
 #			else:
 #				print("Turning off transmit")
 #				system("echo > command_tx False")
-	else:
-		print("No carrier received!")
+##	else:
+##		print("No carrier received!")
 #	output(pd, 0)
 #					sleep(1)
 				
 def increment_mode():
+	global debug_mode	
+
 	print("increment mode")
 	powerPin = 16
 	try:
@@ -141,7 +143,8 @@ def increment_mode():
 
 	try:	
 		print("/home/pi/CubeSatSim/config -" + mode)
-		system("/home/pi/CubeSatSim/config -" + mode)
+		if (debug_mode == False):
+			system("/home/pi/CubeSatSim/config -" + mode)
 		
 #		file = open("/home/pi/CubeSatSim/.mode", "w")
 #		count_string = str(command_count)
@@ -166,7 +169,13 @@ def increment_mode():
 		sleep(10);
 	except:
 		print("can't change mode")
-		
+
+debug_mode = False
+if (len(sys.argv)) > 1:
+#        print("There are arguments!")
+	if ('d' == sys.argv[1]):
+		debug_mode = True
+
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 squelch = 6
