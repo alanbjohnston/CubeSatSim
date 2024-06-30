@@ -45,6 +45,76 @@ if __name__ == "__main__":
 			GPIO.setwarnings(False)
 			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(txLed, GPIO.OUT)
+
+			if (mode == 'f'):
+				GPIO.output(powerPin, 0) # blink two times
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)
+		
+			elif (mode == 'b'):
+				GPIO.output(powerPin, 0) # blink three times
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)
+			
+			elif (mode == 's'):
+				GPIO.output(powerPin, 0) # blink four times
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)
+		
+			elif (mode == 'm'):
+				GPIO.output(powerPin, 0) # blink five times
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1);
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)
+			else:
+				GPIO.output(powerPin, 0) # blink one time
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)
+			
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
 			system("sudo systemctl stop rpitx")
