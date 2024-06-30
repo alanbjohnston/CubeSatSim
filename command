@@ -37,4 +37,15 @@ echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 else
 	echo "Starting squelch C&C"
 
+	if [ "$1" = "d" ]; then
+	
+		echo "debug mode"
+	
+		python3 /home/pi/CubeSatSim/squelch_cc.py d
+	
+	else
+	
+		python3 /home/pi/CubeSatSim/squelch_cc.py
+	
+	fi	 
 fi
