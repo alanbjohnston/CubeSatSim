@@ -165,7 +165,9 @@ def increment_mode():
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 squelch = 6
+powerPin = 16
 GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
+GPIO.setup(powerPin, GPIO.OUT)
 
 while True:
 	command_control_check()
