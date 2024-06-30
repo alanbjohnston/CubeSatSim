@@ -117,9 +117,6 @@ if __name__ == "__main__":
 				GPIO.output(powerPin, 1)
 				sleep(1)
 			
-			GPIO.output(txLed, 0)
-			GPIO.output(powerPin, 0)
-			system("sudo systemctl stop rpitx")
 			try:
 				file = open("/home/pi/CubeSatSim/command_count.txt", "r")
 				string = file.read()
@@ -138,5 +135,9 @@ if __name__ == "__main__":
 
 			print("\n/home/pi/CubeSatSim/config -" + mode)
 			system("/home/pi/CubeSatSim/config -" + mode)
+			GPIO.output(txLed, 0)
+			GPIO.output(powerPin, 0)
+			system("sudo systemctl stop rpitx")
+			
 			change_mode = False
 	print("Done")
