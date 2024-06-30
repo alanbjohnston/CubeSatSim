@@ -163,19 +163,21 @@ def increment_mode():
 #		system("reboot -h now")
 #		release = True;
 
-		print("Changing mode now")
+			print("Changing mode now")
 #		system("/home/pi/CubeSatSim/config -" + mode)
 #		system("reboot -h now")
-
-		sleep(10);
+		print
+#		sleep(10);
 	except:
 		print("can't change mode")
 
+print("Squelch Command and Control active")
 debug_mode = False
 if (len(sys.argv)) > 1:
 #        print("There are arguments!")
 	if ('d' == sys.argv[1]):
 		debug_mode = True
+		print("Debug mode - mode changes not made")
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
