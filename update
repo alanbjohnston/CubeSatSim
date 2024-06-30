@@ -74,6 +74,21 @@ else
   echo "no changes to rpitx.service."
 fi
 
+FILE=/etc/systemd/system/command.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff systemd/command.service /etc/systemd/system/command.service) ]]; then
+    echo "changed command.service."
+    sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+    FLAG=1
+  else
+    echo "no change to command.service."
+  fi
+else
+  echo "creating command.service."
+  sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  FLAG=1
+fi
+
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 1."
@@ -84,14 +99,6 @@ FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 2."
     cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
-fi
-
-if [[ $(diff systemd/command.service /etc/systemd/system/command.service) ]]; then
-  echo "changed rpitx.service."
-  sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
-  FLAG=1
-else
-  echo "no changes to command.service."
 fi
       
 grep 'update' /home/pi/CubeSatSim/.updated
