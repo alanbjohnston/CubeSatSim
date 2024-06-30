@@ -102,8 +102,8 @@ int main(int argc, char * argv[]) {
   FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
   pclose(rpitx_stop);
 
-  FILE * cc_start = popen("/home/pi/CubeSatSim/command &", "r");
-  pclose(cc_start);	
+//  FILE * cc_start = popen("/home/pi/CubeSatSim/command &", "r");
+//  pclose(cc_start);	
 	
 //  FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
 //  pclose(file_deletes);	
