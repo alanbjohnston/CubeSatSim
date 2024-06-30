@@ -17,6 +17,8 @@ def command_control_check():
 	global no_command
 	global debug_mode
 	global command_count
+
+	return
 	
 	output(pd, 1)
 	output(ptt, 1)
