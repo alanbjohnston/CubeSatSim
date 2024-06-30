@@ -161,6 +161,8 @@ def increment_mode():
 		sleep(10);
 	except:
 		print("can't write to .mode file")
-
+		
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
 while True:
 	command_control_check()
