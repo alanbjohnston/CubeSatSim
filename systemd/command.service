@@ -10,7 +10,7 @@ StandardError=inherit
 Restart=always
 User=root
 CPUAccounting=true
-CPUQuota=8%
+CPUQuota=10%
 
 [Install]
 WantedBy=default.target
