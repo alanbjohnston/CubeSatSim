@@ -559,7 +559,7 @@ int main(int argc, char * argv[]) {
     uptime = (int) (uptime_sec + 0.5);
 //    printf("Uptime sec: %f \n", uptime_sec);	  
 //    #ifdef DEBUG_LOGGING
-    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+//    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
 //    #endif
     fclose(uptime_file);
 	  
@@ -572,7 +572,7 @@ int main(int argc, char * argv[]) {
       char * token;
       fputc('\n', file1);
       fgets(cmdbuffer, 1000, file1);
-      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
+//      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
 
 //      serialPuts(uart_fd, cmdbuffer);   // write INA data to Pico over serial
 
@@ -614,22 +614,22 @@ int main(int argc, char * argv[]) {
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
 //        STEMBoardFailure = 0;
 	payload = get_payload_serial(FALSE);      
-        printf("get_payload_status: %d \n", payload);  // not debug
+//        printf("get_payload_status: %d \n", payload);  // not debug
 	fflush(stdout); 
-	printf("String: %s\n", buffer2);       
+//	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
 	strcpy(sensor_payload, buffer2);      
-	printf(" Response from STEM Payload board: %s\n", sensor_payload);
+//	printf(" Response from STEM Payload board: %s\n", sensor_payload);
 
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
-        printf("Writing payload string\n");
+//        printf("Writing payload string\n");
         time_t timeStamp;
         time(&timeStamp);   // get timestamp 
 //      printf("Timestamp: %s\n", ctime(&timeStamp));
 	    
         char timeStampNoNl[31], bat_string[31];    
         snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
-        printf("TimeStamp: %s\n", timeStampNoNl);
+//        printf("TimeStamp: %s\n", timeStampNoNl);
         snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
@@ -776,7 +776,7 @@ int main(int argc, char * argv[]) {
     }   
 	  
     #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
+//    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
@@ -822,7 +822,7 @@ int main(int argc, char * argv[]) {
 	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
-    	printf("Writing telem_string.txt\n");
+//    	printf("Writing telem_string.txt\n");
 	if (batteryVoltage != 4.5)    
     		fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	
 	else
@@ -842,16 +842,16 @@ int main(int argc, char * argv[]) {
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
       sleep(25);
-      fprintf(stderr, "INFO: Sleeping for 25 sec\n");	 
+//      fprintf(stderr, "INFO: Sleeping for 25 sec\n");	 
 	    
       int rand_sleep = (int)rnd_float(0.0, 5.0);	    
       sleep(rand_sleep);	    
-      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
+//      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	    
-      fprintf(stderr, "Sleeping\n");
+//      fprintf(stderr, "Sleeping\n");
       sleep(50);	    
     }
 
@@ -865,17 +865,17 @@ int main(int argc, char * argv[]) {
     #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 1\n");
     #endif
-    printf("Sleeping to allow BPSK transmission to finish.\n");
+//    printf("Sleeping to allow BPSK transmission to finish.\n");
     sleep((unsigned int)(loop_count * 5));
-    printf("Done sleeping\n");
+ //   printf("Done sleeping\n");
 //    digitalWrite(txLed, txLedOff);
     #ifdef DEBUG_LOGGING
 //    printf("Tx LED Off\n");
     #endif
   } else if (mode == FSK) {
-    printf("Sleeping to allow FSK transmission to finish.\n");
+//    printf("Sleeping to allow FSK transmission to finish.\n");
     sleep((unsigned int)loop_count);
-    printf("Done sleeping\n");
+//    printf("Done sleeping\n");
   }
 
   return 0;
@@ -1192,7 +1192,7 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-      printf("Sleep period: %d\n", millis() - startSleep);
+//      printf("Sleep period: %d\n", millis() - startSleep);
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
@@ -1225,7 +1225,7 @@ void get_tlm_fox() {
       	  if (mode == FSK)
 	  {
 	      if (loop % 32 == 0) {  // was 8
-		printf("Sending MIN frame \n");
+//		printf("Sending MIN frame \n");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 		  if (count1 < 3)
@@ -1239,7 +1239,7 @@ void get_tlm_fox() {
 		}
 	      }
 	      if ((loop + 16) % 32 == 0) {  // was 8
-		printf("Sending MAX frame \n");
+//		printf("Sending MAX frame \n");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 		  if (count1 < 3)
@@ -1483,7 +1483,7 @@ void get_tlm_fox() {
     } else
 	    printf("Error opening command_count.txt!\n");
     
-    printf("Command count: %d\n", groundCommandCount);	  
+//    printf("Command count: %d\n", groundCommandCount);	  
     
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
@@ -1769,7 +1769,7 @@ void get_tlm_fox() {
       {
 	      start = millis();  // send frame until buffer fills
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
+//	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
 	      
 	      if ((millis() - start) > 500) {
 		      printf("Buffer over filled!\n");
