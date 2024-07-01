@@ -757,7 +757,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				command_control_check()
+#				command_control_check()
 				
 				if (command_tx == True):		
 					output(txLed, txLedOn)
