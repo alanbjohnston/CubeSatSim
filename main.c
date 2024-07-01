@@ -563,8 +563,8 @@ int main(int argc, char * argv[]) {
 //    #endif
     fclose(uptime_file);
 	  
-    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
-    fflush(stdout);
+//    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+//    fflush(stdout);
     loopTime = millis();
 
    {
@@ -1738,14 +1738,14 @@ void get_tlm_fox() {
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
     fflush(stdout);	  
     
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
       sleep(0.5);
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+//      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
 	  
     loop_count++;	  
