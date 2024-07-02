@@ -499,6 +499,49 @@ elif [ "$1" = "-T" ]; then
 
 	fi
 
+elif [ "$1" = "-d" ]; then
+
+	echo	
+	echo "Change command and control Direwolf state"
+	echo 
+
+	FILE=/home/pi/CubeSatSim/command_control_direwolf
+	if [ -f "$FILE" ]; then
+    		echo "Radio command and control with Direwolf for DTMF and APRS is ON"
+		echo
+		echo "Do you want to turn Direwolf OFF and do Carrier command and control (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control Direwolf set to OFF"
+			sudo rm /home/pi/CubeSatSim/command_control_direwolf
+			reboot=1
+##			echo "rebooting"
+##			sudo systemctl stop rpitx
+##			sudo reboot now	
+		fi
+
+	else 
+    		echo "Radio command and control with Direwolf for DTMF and APRS is OFF so carrier command and control is enabled"
+		echo
+		echo "Do you want to set command and control with Direwolf for DTMF and APRS to ON (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control Direwolf set to ON"
+			sudo touch /home/pi/CubeSatSim/command_control_direwolf
+##			echo "rebooting"
+			reboot=1
+##			sudo systemctl stop rpitx
+##			sudo reboot now	
+		fi
+
+	fi
+
+
+
 elif [ "$1" = "-R" ]; then
 
 	echo	
