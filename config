@@ -73,7 +73,11 @@ if [ "$1" = "" ]; then
 
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
-    		echo "Radio command and control is ON"
+    		
+		if [[ $(arecord -l | grep card) ]]; then
+			echo "Radio DTMF/APRS command and control is ON"
+		else
+			echo "Radio carrier command and control is ON"
 	else 
     		echo "Radio command and control is OFF"
 	fi
