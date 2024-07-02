@@ -516,9 +516,9 @@ elif [ "$1" = "-d" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control Direwolf set to OFF"
 			sudo rm /home/pi/CubeSatSim/command_control_direwolf
-			reboot=1
+#			reboot=1
 ##			echo "rebooting"
-##			sudo systemctl stop rpitx
+			sudo systemctl restart command
 ##			sudo reboot now	
 		fi
 
@@ -533,8 +533,8 @@ elif [ "$1" = "-d" ]; then
 			echo "Command and control Direwolf set to ON"
 			sudo touch /home/pi/CubeSatSim/command_control_direwolf
 ##			echo "rebooting"
-			reboot=1
-##			sudo systemctl stop rpitx
+#			reboot=1
+			sudo systemctl restart command
 ##			sudo reboot now	
 		fi
 
@@ -877,6 +877,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -S     Scan both I2C buses on the Raspberry Pi"
 	echo "   -C     Clear logs"
 	echo "   -T     Change command and control state"
+	echo "   -d     Change command and control Direwolf state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
 	echo "   -B     Change Safe Mode (battery saver mode) manually"
 	echo "   -q     Change the Squelch setting for command receiver"
