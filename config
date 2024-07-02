@@ -78,6 +78,7 @@ if [ "$1" = "" ]; then
 			echo "Radio DTMF/APRS command and control is ON"
 		else
 			echo "Radio carrier command and control is ON"
+		fi
 	else 
     		echo "Radio command and control is OFF"
 	fi
