@@ -75,13 +75,19 @@ if [ "$1" = "" ]; then
 	if [ -f "$FILE" ]; then
     		
 		if [[ $(arecord -l | grep card) ]]; then
-			echo "Radio DTMF/APRS command and control is ON"
+			FILE=/home/pi/CubeSatSim/command_control_direwolf
+			if [ -f "$FILE" ]; then
+				echo "Radio DTMF/APRS command and control is ON"
+			else
+				echo "Radio carrier command and control is ON"
+			fi
 		else
 			echo "Radio carrier command and control is ON"
 		fi
 	else 
     		echo "Radio command and control is OFF"
 	fi
+
 	echo
 
 	echo -n "RX PL code is: "
