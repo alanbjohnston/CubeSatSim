@@ -529,11 +529,11 @@ if __name__ == "__main__":
 							output(txLed, txLedOff)
 							
 						command_control_check()
-						sleep(0.5)
+						sleep(2)
 					f.close()
-					sleep(5)
+					sleep(10)
 				except:	
-					command_control_check()
+#					command_control_check()
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
@@ -714,12 +714,12 @@ if __name__ == "__main__":
 							output(txLed, txLedOff)
 #							output (ptt, 1)
 #							output(pd, 0)
-						sleep(5)
+						sleep(10)
 				except:	
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 					if (txc == False):
 						if (command_tx == True):
-							system("(while true; do (sleep 5 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+							system("(while true; do (sleep 10 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					while 1:
 						if (command_tx == True):
 							command_control_check()	
@@ -741,7 +741,7 @@ if __name__ == "__main__":
 						sleep(1)
 						
 		elif (mode == 'b'):
-			command_control_check()	
+#			command_control_check()	
 			print("BPSK")
 			print("turn on FM rx")
 			output(pd, 1)
@@ -777,7 +777,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOn)
 #					sleep(0.03)
 #					output(txLed, txLedOff)
-				command_control_check()
+#				command_control_check()
 				if (command_tx == True):		
 					output(txLed, txLedOn)
 				sleep(4.2)
