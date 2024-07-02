@@ -19,9 +19,8 @@ sleep 20
 		exit 1
 	fi
 
-
-# if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
- if [[ $(arecord -l | grep card) ]]; then
+FILE=/home/pi/CubeSatSim/command_control_direwolf
+if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
 
 	echo "Starting direwolf"
 
