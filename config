@@ -131,7 +131,7 @@ elif [ "$1" = "-a" ]; then
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
 		echo "Safe Mode! Battery saver mode is ON."
-#  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+#  		if ! grep  force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
@@ -692,7 +692,7 @@ elif [ "$1" = "-q" ]; then
 
 elif [ "$1" = "-Q" ]; then
 
-	echo	
+#	echo	
 	echo "Reading current Squelch for 10 seconds"
 	echo  "Squelch is active low (0 means squelch broken)"	
 	echo
