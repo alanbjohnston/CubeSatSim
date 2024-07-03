@@ -19,6 +19,7 @@ if __name__ == "__main__":
 	for line in sys.stdin:
 #		if (debug_mode):
 		print(line, end =" ")
+		logging.warning(line)
 			
 #			if '^c' == line.rstrip():
 #				break
