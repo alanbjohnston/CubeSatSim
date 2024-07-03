@@ -690,6 +690,14 @@ elif [ "$1" = "-q" ]; then
 ##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
+elif [ "$1" = "-Q" ]; then
+
+	echo	
+	echo "Reading current Squelch for 10 seconds"
+	echo  "Squelch is active low (0 means squelch broken)"	
+	echo
+
+	timeout 10 bash -c -- 'while true; do (gpio read 22 && sleep 1); done'
 
 elif [ "$1" = "-P" ]; then
 
