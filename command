@@ -23,12 +23,14 @@ echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 #		exit 1
 	fi
 
+echo "Waiting 20 seconds for USB"
+
+sleep 20
+
 FILE=/home/pi/CubeSatSim/command_control_direwolf
 if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
 
-	echo "Starting direwolf after 20 second delay"
-
-	sleep 20
+	echo "Starting Direwolf DTMF and APRS Command and Control"
 
 	if [ "$1" = "d" ]; then
 	
@@ -42,7 +44,7 @@ if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
 	
 	fi
 else
-	echo "Starting squelch C&C"
+	echo "Starting Carrier (squelch) Command and Control"
 
 	if [ "$1" = "d" ]; then
 	
