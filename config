@@ -475,9 +475,9 @@ elif [ "$1" = "-T" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to OFF"
 			sudo rm /home/pi/CubeSatSim/command_control
-			reboot=1
-##			echo "rebooting"
-##			sudo systemctl stop rpitx
+#			reboot=1
+			echo "restarting command and control"
+			sudo systemctl restart command
 ##			sudo reboot now	
 		fi
 
@@ -491,9 +491,9 @@ elif [ "$1" = "-T" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to ON"
 			sudo touch /home/pi/CubeSatSim/command_control
-##			echo "rebooting"
-			reboot=1
-##			sudo systemctl stop rpitx
+			echo "restarting command and control"
+#			reboot=1
+			sudo systemctl restart command
 ##			sudo reboot now	
 		fi
 
