@@ -86,6 +86,7 @@ if [ -f "$FILE" ]; then
 else
   echo "creating command.service."
   sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  sudo systemctl enable command
   FLAG=1
 fi
 
