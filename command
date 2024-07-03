@@ -14,7 +14,13 @@ echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 
 	else 
     		echo "Radio command and control is OFF"
-		exit 1
+
+		while true
+		do
+			sleep 60
+		done
+
+#		exit 1
 	fi
 
 FILE=/home/pi/CubeSatSim/command_control_direwolf
