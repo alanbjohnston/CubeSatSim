@@ -2,8 +2,6 @@
 
 echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 
-sleep 20
-
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
     		echo "Radio command and control is ON"
@@ -22,7 +20,9 @@ sleep 20
 FILE=/home/pi/CubeSatSim/command_control_direwolf
 if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
 
-	echo "Starting direwolf"
+	echo "Starting direwolf after 20 second delay"
+
+	sleep 20
 
 	if [ "$1" = "d" ]; then
 	
