@@ -2147,7 +2147,7 @@ if (setting == ON) {
 		fprintf(stderr,"Turning Battery saver mode ON\n");  
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
-			pclose(command)
+			pclose(command);
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
@@ -2163,7 +2163,7 @@ if (setting == ON) {
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
-			pclose(command)
+			pclose(command);
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
