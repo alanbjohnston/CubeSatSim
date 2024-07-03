@@ -44,7 +44,17 @@ if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
 	
 	fi
 else
-	echo "Starting Carrier (squelch) Command and Control"
+
+	if [ -f "$FILE" ]; then
+
+		echo "Direwolf mode set but no USB soundcard detected!"
+		echo "Instead, starting Carrier (squelch) Command and Control"
+
+	else
+
+		echo "Starting Carrier (squelch) Command and Control"
+
+	fi
 
 	if [ "$1" = "d" ]; then
 	
