@@ -128,6 +128,10 @@ sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
 
+sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+
+sudo systemctl enable command
+
 sudo cp /boot/config.txt /boot/config.txt.0
 
 sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
