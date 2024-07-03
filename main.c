@@ -800,7 +800,11 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
       digitalWrite(onLed, onLedOff);
-      
+
+      FILE * file6;	    
+      file6 = popen("echo 'shutdown due to low battery voltage!' | wall", "r");
+      pclose(file6);   
+      	    
       sleep(1);
       digitalWrite(onLed, onLedOn);
       sleep(1);
@@ -810,7 +814,6 @@ int main(int argc, char * argv[]) {
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
-      FILE * file6; // = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
       file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       pclose(file6);
       sleep(10);
@@ -2140,6 +2143,8 @@ if (setting == ON) {
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
 		fprintf(stderr,"Turning Battery saver mode ON\n");  
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
+			pclose(command)
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
@@ -2154,6 +2159,8 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
+			pclose(command)
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
