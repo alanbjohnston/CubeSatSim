@@ -32,7 +32,7 @@ sudo sed -i 's/more information/more\ninformation/g' /etc/motd
 
 sudo sed -i 's/update to/update\nto/g' /etc/motd
 
-sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
 
 cd /home/pi/CubeSatSim
 
@@ -190,27 +190,27 @@ git pull --no-rebase > .updated_p
     echo "nothing to do for pi-power-button."
   fi 
 
-  if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
-    echo "dtparam=audio=on already in /boot/config.txt"
+  if [[ $(grep 'dtparam=audio=on' /boot/firmware/config.txt) ]]; then
+    echo "dtparam=audio=on already in /boot/firmware/config.txt"
   else
-    echo "adding dtparam=audio=on to /boot/config.txt"
-    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
+    echo "adding dtparam=audio=on to /boot/firmware/config.txt"
+    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/firmware/config.txt'
     FLAG=1
   fi
 
-  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
-    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
+  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/firmware/config.txt) ]]; then
+    echo "dtoverlay=audremap,enable_jack=on already in /boot/firmware/config.txt"
   else
-    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
+    echo "adding dtoverlay=audremap,enable_jack=on to /boot/firmware/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/firmware/config.txt'
     FLAG=1
   fi
 
-  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
-    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
+  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/firmware/config.txt) ]]; then
+    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/firmware/config.txt"
   else
-    echo "adding dtoverlay=pwm,pin=18,func=2 to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
+    echo "adding dtoverlay=pwm,pin=18,func=2 to /boot/firmware/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/firmware/config.txt'
     FLAG=1
 
     cd /home/pi/pi-power-button
@@ -224,24 +224,24 @@ git pull --no-rebase > .updated_p
 
   fi
 
-  if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
-    echo "disable_splash=1 already in /boot/config.txt"
+  if [[ $(grep 'disable_splash=1' /boot/firmware/config.txt) ]]; then
+    echo "disable_splash=1 already in /boot/firmware/config.txt"
   else
-    echo "adding  to /boot/config.txt"
-    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/config.txt'
+    echo "adding  to /boot/firmware/config.txt"
+    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/firmware/config.txt'
     FLAG=1
   fi
 
-  if [[ $(grep 'boot_delay=0' /boot/config.txt) ]]; then
-    echo "boot_delay=0 already in /boot/config.txt"
+  if [[ $(grep 'boot_delay=0' /boot/firmware/config.txt) ]]; then
+    echo "boot_delay=0 already in /boot/firmware/config.txt"
   else
-    echo "adding  to /boot/config.txt"
-    sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
+    echo "adding  to /boot/firmware/config.txt"
+    sudo sh -c 'echo "\nboot_delay=0" >> /boot/firmware/config.txt'
     FLAG=1
   fi
 
-  if ! grep -q force_turbo=1 /boot/config.txt ; then 
-    sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt' 
+  if ! grep -q force_turbo=1 /boot/firmware/config.txt ; then 
+    sudo sh -c 'echo "force_turbo=1" >> /boot/firmware/config.txt' 
     FLAG=1
   fi
 
