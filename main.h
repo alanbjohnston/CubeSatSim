@@ -187,7 +187,9 @@ int jpeg_start = 0;
 #define CAMERA_TIMEOUT 2000 // 10000 // 20000  // Payload timeout in milli seconds
 
 void battery_saver(int setting);
-int battery_saver_check(); 
+int battery_saver_check();
+int pi_zero_2_offset = 0;
+
 
 int hab_mode = FALSE; 
 int battery_saver_mode = FALSE;
