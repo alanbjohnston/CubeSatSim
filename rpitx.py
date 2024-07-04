@@ -398,9 +398,9 @@ if __name__ == "__main__":
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
 			ser.write(uhf_string.encode())
 			sleep(0.1)
+		ser.close()	
 	except:
 		print("Error in serial write")
-	ser.close()
 	output(pd, 0)
 	
 	sleep(10)  # delay so cubesatsim code catches up
