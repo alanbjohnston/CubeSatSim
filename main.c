@@ -1195,7 +1195,7 @@ void get_tlm_fox() {
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-//      printf("Sleep period: %d\n", millis() - startSleep);
+      printf("Sleep period: %d\n", millis() - startSleep);
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
