@@ -563,8 +563,8 @@ int main(int argc, char * argv[]) {
 //    #endif
     fclose(uptime_file);
 	  
-//    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
-//    fflush(stdout);
+    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    fflush(stdout);
     loopTime = millis();
 
    {
@@ -675,8 +675,8 @@ int main(int argc, char * argv[]) {
       if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
      		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
-       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
-	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
+//       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
+//	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
 	  
