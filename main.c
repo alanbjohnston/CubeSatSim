@@ -26,7 +26,6 @@
 
 int main(int argc, char * argv[]) {
 
-
   char resbuffer[1000];
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
@@ -41,6 +40,7 @@ int main(int argc, char * argv[]) {
     sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
+    pi_zero_2_offset = 500; 
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
@@ -646,7 +646,7 @@ int main(int argc, char * argv[]) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
-                printf("sensor: %f ", sensor[count1]);  // print sensor data
+//                printf("sensor: %f ", sensor[count1]);  // print sensor data
 //              #endif
               token = strtok(NULL, space);
             }
@@ -1188,10 +1188,10 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 750))  // was 250 100 500 for FSK
+     if ((millis() - sampleTime) < ((unsigned int)frameTime - 750 - pi_zero_2_offset))  // was 250 100 500 for FSK
 //        sleep(2.0); // 0.5);  // 25);  // initial period
         sleep(1.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 750))  // was 250 100
+     while ((millis() - sampleTime) < ((unsigned int)frameTime - 750 - pi_zero_2_offse))  // was 250 100
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
@@ -1980,7 +1980,7 @@ int get_payload_serial(int debug_camera)  {
 	  
     if (serialDataAvail(uart_fd)) {
 	      char octet = (char) serialGetchar(uart_fd);
-              printf("%c", octet);
+//              printf("%c", octet);
               fflush(stdout);	  
 
      if (start_flag_complete) {
@@ -1996,7 +1996,7 @@ int get_payload_serial(int debug_camera)  {
             if (flag_count >= strlen(end_flag)) {  // complete image           
               index1 -= strlen(end_flag);
 	      buffer2[index1++] = 0;
-	      printf(" Payload length: %d \n",index1); 	    
+//	      printf(" Payload length: %d \n",index1); 	    
 
 //              write_jpg();
 	      finished = TRUE;	    
