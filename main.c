@@ -40,7 +40,7 @@ int main(int argc, char * argv[]) {
     sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
-    pi_zero_2_offset = 500; 
+    pi_zero_2_offset = 700; // 500; 
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
