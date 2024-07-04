@@ -47,13 +47,11 @@ sudo dpkg -i wiringpi-latest.deb
 cd
 
 #changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 
 
 sudo pip3 install --upgrade setuptools
 
-sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
-
-
+sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
 
 cd ~/CubeSatSim
 
