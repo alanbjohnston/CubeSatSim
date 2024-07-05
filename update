@@ -204,7 +204,7 @@ git pull --no-rebase > .updated_p
 
     sudo apt-get update && sudo apt-get dist-upgrade -y
     sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
-    sudo pip3 install pillow
+    sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
 
   fi
 
