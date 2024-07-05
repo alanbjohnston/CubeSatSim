@@ -184,7 +184,7 @@ int start_flag_detected = FALSE;
 int start_flag_complete = FALSE;
 int end_flag_detected = FALSE;
 int jpeg_start = 0;
-#define CAMERA_TIMEOUT 1500 // 2000 // 10000 // 20000  // Payload timeout in milli seconds
+#define CAMERA_TIMEOUT 2000 // 1500 // 2000 // 10000 // 20000  // Payload timeout in milli seconds
 
 void battery_saver(int setting);
 int battery_saver_check();
