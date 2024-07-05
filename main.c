@@ -40,7 +40,7 @@ int main(int argc, char * argv[]) {
     sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
-    pi_zero_2_offset = 700; // 500; 
+    _2_offset = 700; // 500; 
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
@@ -1188,14 +1188,14 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 750 - pi_zero_2_offset))  // was 250 100 500 for FSK
+     if ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  // was 250 100 500 for FSK
 //        sleep(2.0); // 0.5);  // 25);  // initial period
         sleep(1.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 750 - pi_zero_2_offset))  // was 250 100
+     while ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  // was 250 100
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-      printf("Sleep period: %d  while period: %d\n", millis() - startSleep, (unsigned int)frameTime - 750 - pi_zero_2_offset);
+      printf("Sleep period: %d  while period: %d\n", millis() - startSleep, (unsigned int)frameTime - 750 + pi_zero_2_offset);
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
