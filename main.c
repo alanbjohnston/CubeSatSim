@@ -1980,7 +1980,7 @@ int get_payload_serial(int debug_camera)  {
 	  
     if (serialDataAvail(uart_fd)) {
 	      char octet = (char) serialGetchar(uart_fd);
-//              printf("%c", octet);
+              printf("%c", octet);
               fflush(stdout);	  
 
      if (start_flag_complete) {
@@ -1996,7 +1996,7 @@ int get_payload_serial(int debug_camera)  {
             if (flag_count >= strlen(end_flag)) {  // complete image           
               index1 -= strlen(end_flag);
 	      buffer2[index1++] = 0;
-//	      printf(" Payload length: %d \n",index1); 	    
+	      printf(" Payload length: %d \n",index1); 	    
 
 //              write_jpg();
 	      finished = TRUE;	    
