@@ -378,12 +378,12 @@ int main(int argc, char * argv[]) {
   if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
-
+    fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
-      printf("Serial opened to Pico\n");	    
+      fprintf(stderr,"Serial opened to Pico\n");	    
 //      payload = ON;	
       payload = get_payload_serial(FALSE); 
-      printf("get_payload_status: %d \n", payload);  // not debug	    
+      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	    
 	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
