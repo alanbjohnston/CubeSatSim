@@ -390,7 +390,8 @@ int main(int argc, char * argv[]) {
     }
   }
 fprintf(stderr,"Try again immediately\n");
-get_payload_serial(FALSE); 
+      payload = get_payload_serial(FALSE); 
+      fprintf(stderr,"Get_payload_status: %d \n", payload); 
 	
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
@@ -441,7 +442,9 @@ get_payload_serial(FALSE);
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
-	get_payload_serial(FALSE); 
+fprintf(stderr,"2 immediately\n");
+      payload = get_payload_serial(FALSE); 
+      fprintf(stderr,"Get_payload_status: %d \n", payload); 
 	
   tx_freq_hz -= tx_channel * 50000;
 
@@ -473,8 +476,10 @@ get_payload_serial(FALSE);
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
 
-	   get_payload_serial(FALSE); 
-	   
+fprintf(stderr,"3 immediately\n");
+      payload = get_payload_serial(FALSE); 
+      fprintf(stderr,"Get_payload_status: %d \n", payload); 
+	
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
