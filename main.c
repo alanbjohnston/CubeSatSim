@@ -23,6 +23,7 @@
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
+#define OPEN_CLOSE_PAYLOAD
 
 int main(int argc, char * argv[]) {
 
@@ -374,7 +375,9 @@ int main(int argc, char * argv[]) {
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
   file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
-/*	
+
+#ifndef OPEN_CLOSE_PAYLOAD
+	
   if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
@@ -389,7 +392,8 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
-*/
+#endif
+	
    payload = get_payload_serial(FALSE);
 	
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
@@ -1972,8 +1976,7 @@ int get_payload_serial(int debug_camera)  {
   end_flag_detected = FALSE;
   jpeg_start = 0;
 	
-//  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
-
+#ifdef OPEN_CLOSE_PAYLOAD
     fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
       fprintf(stderr,"Serial opened to Pico\n");	    
@@ -1986,7 +1989,11 @@ int get_payload_serial(int debug_camera)  {
       serialClose(uart_fd);	    
       return(0);	    
     }	
- 
+#endif
+
+  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
+
+	
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
   printf("Received from Payload:\n");
