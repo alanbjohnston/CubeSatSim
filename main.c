@@ -380,17 +380,17 @@ int main(int argc, char * argv[]) {
     payload = OFF;
     fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
-      fprintf(stderr,"Serial opened to Pico\n");	    
+      fprintf(stderr,"Serial opened to Pico fd: %d\n", uart_fd);	    
 //      payload = ON;	
-      payload = get_payload_serial(FALSE); 
+      payload = get_payload_serial(TRUE); 
       fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	    
 	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
-fprintf(stderr,"Try again immediately\n");
-      payload = get_payload_serial(FALSE); 
+fprintf(stderr,"Try again immediately fd: %d\n", uart_fd);
+      payload = get_payload_serial(TRUE); 
       fprintf(stderr,"Get_payload_status: %d \n", payload); 
 	
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
