@@ -374,7 +374,7 @@ int main(int argc, char * argv[]) {
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
   file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
-	
+/*	
   if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
@@ -389,7 +389,9 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
-
+*/
+   payload = get_payload_serial(FALSE);
+	
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
     sim_mode = TRUE;
@@ -1970,7 +1972,20 @@ int get_payload_serial(int debug_camera)  {
   end_flag_detected = FALSE;
   jpeg_start = 0;
 	
-  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
+//  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
+
+    fprintf(stderr,"Opening serial\n");
+    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+      fprintf(stderr,"Serial opened to Pico\n");	    
+//      payload = ON;	
+//      payload = get_payload_serial(FALSE); 
+//      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	    
+	    
+    } else {
+      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
+      serialClose(uart_fd);	    
+      return(0);	    
+    }	
  
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
@@ -2061,7 +2076,8 @@ int get_payload_serial(int debug_camera)  {
   }
   if (debug_camera)                 
       printf("\nComplete\n");
-  fflush(stdout);	
+  fflush(stdout);
+  serialClose(uart_fd);	
   return(finished);
 }
 
