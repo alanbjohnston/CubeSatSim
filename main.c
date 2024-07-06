@@ -389,7 +389,9 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
   }
-
+fprintf(stderr,"Try again immediately\n");
+get_payload_serial(FALSE); 
+	
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
     sim_mode = TRUE;
