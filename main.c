@@ -439,6 +439,8 @@ int main(int argc, char * argv[]) {
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
+	get_payload_serial(FALSE); 
+	
   tx_freq_hz -= tx_channel * 50000;
 
   if (transmit == FALSE) {
@@ -468,6 +470,9 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+
+	   get_payload_serial(FALSE); 
+	   
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
@@ -500,6 +505,7 @@ int main(int argc, char * argv[]) {
 //	printf(" %d", sin_map[j]);	 		
       }	 		
       printf("\n");
+	   get_payload_serial(FALSE); 
    }
 	
   memset(voltage, 0, sizeof(voltage));
@@ -510,7 +516,9 @@ int main(int argc, char * argv[]) {
   if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
-	  
+
+get_payload_serial(FALSE); 
+	
 //  if (!sim_mode)  // always read sensors, even in sim mode
   {
     strcpy(pythonStr, pythonCmd);
@@ -544,6 +552,8 @@ int main(int argc, char * argv[]) {
 	
   long int loopTime;
   loopTime = millis();	
+
+	get_payload_serial(FALSE); 
 	
   while (loop-- != 0) {
     fflush(stdout);
