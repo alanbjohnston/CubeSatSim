@@ -46,7 +46,7 @@ int main(int argc, char * argv[]) {
     printf("Pi Zero detected\n");
     FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
     if (command_file == NULL) 
-	    pi_zero_offset = 500;
+	    pi_zero_2_offset = 500;
     sleep(10);
   }
 	
