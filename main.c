@@ -19,7 +19,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
@@ -555,8 +554,7 @@ int main(int argc, char * argv[]) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
   }
-	
-  long int loopTime;
+
   loopTime = millis();	
 	
   while (loop-- != 0) {
