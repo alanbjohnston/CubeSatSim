@@ -43,7 +43,10 @@ int main(int argc, char * argv[]) {
     sleep(5);  // try sleep at start to help boot
   }
   else {
-    printf("Pi Zero detected\n");	  
+    printf("Pi Zero detected\n");
+    FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+    if (command_file == NULL) 
+	    pi_zero_offset = 500;
     sleep(10);
   }
 	
