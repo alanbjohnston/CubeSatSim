@@ -193,3 +193,4 @@ int pi_zero_2_offset = 0;
 
 int hab_mode = FALSE; 
 int battery_saver_mode = FALSE;
+long int loopTime;
