@@ -37,10 +37,14 @@ int main(int argc, char * argv[]) {
   fprintf(stderr, " %x \n", resbuffer[1]);	
   if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
   {
-    sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
     pi_zero_2_offset = 500; 
+    sleep(5);  // try sleep at start to help boot
+  }
+  else {
+    printf("Pi Zero detected\n");	  
+    sleep(10);
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
