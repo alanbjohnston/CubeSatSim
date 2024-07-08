@@ -505,6 +505,11 @@ elif [ "$1" = "-d" ]; then
 	echo	
 	echo "Change command and control Direwolf state"
 	echo 
+	if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
+	else
+		echo "Note: No USB Sound Card is plugged in!"
+		echo "Direwolf will not run unless one is plugged in."
+	fi
 
 	FILE=/home/pi/CubeSatSim/command_control_direwolf
 	if [ -f "$FILE" ]; then
