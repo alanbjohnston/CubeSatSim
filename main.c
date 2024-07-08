@@ -47,11 +47,12 @@ int main(int argc, char * argv[]) {
     if (command_file == NULL) {
 	    pi_zero_2_offset = 500;
 	    printf("Command and control is OFF\n");
-    }
-    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
-    if (command_file == NULL)  {
-	    pi_zero_2_offset = 500;
-	    printf("Command and control Carrier (squelch) is ON\n");
+    } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+		    pi_zero_2_offset = 500;
+		    printf("Command and control Carrier (squelch) is ON\n");
+	    }
     }
     sleep(10);
   }
