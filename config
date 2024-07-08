@@ -505,7 +505,7 @@ elif [ "$1" = "-d" ]; then
 	echo	
 	echo "Change command and control Direwolf state"
 	echo 
-	if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
+	if [[ $(arecord -l | grep card) ]]; then
 		:
 	else
 		echo "Note: No USB Sound Card is plugged in!"
