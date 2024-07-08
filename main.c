@@ -537,8 +537,8 @@ int main(int argc, char * argv[]) {
     other_max[i] = -1000.0;
   }
 
-  FILE * command_start = popen("sudo systemctl start command", "r");
-  pclose(command_start);	
+//  FILE * command_start = popen("sudo systemctl start command", "r");
+//  pclose(command_start);	
 	
   long int loopTime;
   loopTime = millis();	
