@@ -91,7 +91,7 @@ if [ "$1" = "" ]; then
 	echo
 
 	echo -n "RX PL code is: "
-	echo ${10}
+	echo -n ${10}
 #	echo
 	echo -n " TX PL code is: "
 	echo ${11}
