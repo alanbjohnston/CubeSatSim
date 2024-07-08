@@ -26,7 +26,8 @@
 
 int main(int argc, char * argv[]) {
 
-
+  sleep(30); 
+	
   char resbuffer[1000];
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
@@ -537,8 +538,8 @@ int main(int argc, char * argv[]) {
     other_max[i] = -1000.0;
   }
 
-//  FILE * command_start = popen("sudo systemctl start command", "r");
-//  pclose(command_start);	
+  FILE * command_start = popen("sudo systemctl start command", "r");
+  pclose(command_start);	
 	
   long int loopTime;
   loopTime = millis();	
