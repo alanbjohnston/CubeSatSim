@@ -47,13 +47,11 @@ sudo dpkg -i wiringpi-latest.deb
 cd
 
 #changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial
 
 sudo pip3 install --upgrade setuptools
 
 sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
-
-
 
 cd ~/CubeSatSim
 
@@ -127,6 +125,10 @@ sudo systemctl enable cubesatsim
 sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
 sudo systemctl enable rpitx
+
+sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+
+sudo systemctl enable command
 
 sudo cp /boot/config.txt /boot/config.txt.0
 

@@ -74,6 +74,22 @@ else
   echo "no changes to rpitx.service."
 fi
 
+FILE=/etc/systemd/system/command.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff systemd/command.service /etc/systemd/system/command.service) ]]; then
+    echo "changed command.service."
+    sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+    FLAG=1
+  else
+    echo "no change to command.service."
+  fi
+else
+  echo "creating command.service."
+  sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  sudo systemctl enable command
+  FLAG=1
+fi
+
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 1."
@@ -143,7 +159,7 @@ fi
 
 cd /home/pi/pi-power-button
 
-# git checkout reboot-mode-change
+git checkout reboot-mode-change-cc
 
 git pull --no-rebase > .updated_p
 
@@ -203,7 +219,7 @@ git pull --no-rebase > .updated_p
     script/install
 
     sudo apt-get update && sudo apt-get dist-upgrade -y
-    sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 -y
+    sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 python3-pil
     sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
 
   fi
@@ -278,7 +294,7 @@ if [ "$noreboot" = "0" ] ; then
 	else
 	  grep 'changed' /home/pi/CubeSatSim/.updated
 	  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
-	    echo "reboot"
+	    echo "reboot due to code changes " | wall
 	    sudo reboot -h now
 #    sudo systemctl restart cubesatsim
 	  else

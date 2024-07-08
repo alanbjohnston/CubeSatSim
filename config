@@ -73,10 +73,21 @@ if [ "$1" = "" ]; then
 
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
-    		echo "Radio command and control is ON"
+    		
+		if [[ $(arecord -l | grep card) ]]; then
+			FILE=/home/pi/CubeSatSim/command_control_direwolf
+			if [ -f "$FILE" ]; then
+				echo "Radio DTMF/APRS command and control is ON"
+			else
+				echo "Radio carrier command and control is ON"
+			fi
+		else
+			echo "Radio carrier command and control is ON"
+		fi
 	else 
     		echo "Radio command and control is OFF"
 	fi
+
 	echo
 
 	echo -n "RX PL code is: "
@@ -111,7 +122,7 @@ elif [ "$1" = "-i" ]; then
 	reboot=1
 ##	echo "Rebooting CubeSatSim"
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 ##	exit 
 elif [ "$1" = "-a" ]; then
 	echo "changing CubeSatSim to AFSK mode"
@@ -120,7 +131,7 @@ elif [ "$1" = "-a" ]; then
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
 		echo "Safe Mode! Battery saver mode is ON."
-#  		if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+#  		if ! grep  force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	else 
     		echo "Battery saver mode is OFF."
 #    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
@@ -128,9 +139,9 @@ elif [ "$1" = "-a" ]; then
 
 	reboot=1
 ##	echo "rebooting"
-##	sudo systemctl stop rpitx
+##	sudo  stop rpitx
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 ##	exit 
 
 elif [ "$1" = "-m" ]; then
@@ -147,9 +158,9 @@ elif [ "$1" = "-m" ]; then
 	fi
 	reboot=1
 ##	echo "rebooting"
-##	sudo systemctl stop rpitx
+##	sudo  stop rpitx
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 ##	exit 
 elif [ "$1" = "-f" ]; then
 	echo "changing CubeSatSim to FSK mode"
@@ -157,9 +168,9 @@ elif [ "$1" = "-f" ]; then
 #  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	reboot=1
 ##	echo "rebooting"
-##	sudo systemctl stop rpitx
+##	sudo  stop rpitx
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 ##	exit 
 elif [ "$1" = "-b" ]; then
 	echo "changing CubeSatSim to BPSK mode"
@@ -167,9 +178,9 @@ elif [ "$1" = "-b" ]; then
 #  	if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	reboot=1
 ##	echo "rebooting"
-##	sudo systemctl stop rpitx
+##	sudo  stop rpitx
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 ##	exit 
 elif [ "$1" = "-s" ]; then
 	echo "changing CubeSatSim to SSTV mode"
@@ -185,9 +196,9 @@ elif [ "$1" = "-s" ]; then
 	fi
 	reboot=1
 ##	echo "rebooting"
-##	sudo systemctl stop rpitx
+##	sudo  stop rpitx
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 ##	exit 
 
 elif [ "$1" = "-t" ]; then
@@ -234,7 +245,7 @@ elif [ "$1" = "-t" ]; then
 
 	reboot=1
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+#	sudo  restart cubesatsim
 	
 elif [ "$1" = "-c" ]; then
 
@@ -436,6 +447,7 @@ elif [ "$1" = "-C" ]; then
 
 	sudo systemctl stop cubesatsim
 	sudo systemctl stop rpitx
+	sudo systemctl stop command
 
 	sudo mv -f /home/pi/CubeSatSim/telem.txt /home/pi/CubeSatSim/telem.txt.bk
 
@@ -464,9 +476,9 @@ elif [ "$1" = "-T" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to OFF"
 			sudo rm /home/pi/CubeSatSim/command_control
-			reboot=1
-##			echo "rebooting"
-##			sudo systemctl stop rpitx
+#			reboot=1
+			echo "restarting command and control"
+			sudo systemctl restart command
 ##			sudo reboot now	
 		fi
 
@@ -480,13 +492,78 @@ elif [ "$1" = "-T" ]; then
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to ON"
 			sudo touch /home/pi/CubeSatSim/command_control
-##			echo "rebooting"
-			reboot=1
-##			sudo systemctl stop rpitx
+			echo "restarting command and control"
+#			reboot=1
+			sudo systemctl restart command
 ##			sudo reboot now	
 		fi
 
 	fi
+
+elif [ "$1" = "-d" ]; then
+
+	echo	
+	echo "Change command and control Direwolf state"
+	echo 
+
+	FILE=/home/pi/CubeSatSim/command_control_direwolf
+	if [ -f "$FILE" ]; then
+    		echo "Radio command and control with Direwolf for DTMF and APRS is ON"
+		echo
+		echo "Do you want to turn Direwolf OFF and do Carrier command and control (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control Direwolf set to OFF"
+			sudo rm /home/pi/CubeSatSim/command_control_direwolf
+#			reboot=1
+##			echo "rebooting"
+			sudo systemctl restart command
+##			sudo reboot now	
+		fi
+
+	else 
+    		echo "Radio command and control with Direwolf for DTMF and APRS is OFF so carrier command and control is enabled"
+		echo
+		echo "Do you want to set command and control with Direwolf for DTMF and APRS to ON (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control Direwolf set to ON"
+			sudo touch /home/pi/CubeSatSim/command_control_direwolf
+##			echo "rebooting"
+#			reboot=1
+			sudo systemctl restart command
+##			sudo reboot now	
+		fi
+
+	fi
+
+	FILE=/home/pi/CubeSatSim/command_control
+	if [ -f "$FILE" ]; then
+    		echo
+
+	else 
+    		echo "Radio command and control is OFF"
+		echo
+		echo "Do you want to set command and control to ON (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Command and control set to ON"
+			sudo touch /home/pi/CubeSatSim/command_control
+			echo "restarting command and control"
+#			reboot=1
+			sudo systemctl restart command
+##			sudo reboot now	
+		fi
+
+	fi
+
+
 
 elif [ "$1" = "-R" ]; then
 
@@ -613,6 +690,14 @@ elif [ "$1" = "-q" ]; then
 ##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
+elif [ "$1" = "-Q" ]; then
+
+#	echo	
+	echo "Reading current Squelch for 10 seconds"
+	echo  "Squelch is active low (0 means squelch broken)"	
+	echo
+
+	timeout 10 bash -c -- 'while true; do (gpio read 22 && sleep 1); done'
 
 elif [ "$1" = "-P" ]; then
 
@@ -815,7 +900,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
-	echo "   -i     Reboots CubeSatsim software"
+	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
@@ -823,11 +908,12 @@ elif [ "$1" = "-h" ]; then
 	echo "   -S     Scan both I2C buses on the Raspberry Pi"
 	echo "   -C     Clear logs"
 	echo "   -T     Change command and control state"
+	echo "   -d     Change command and control Direwolf state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
 	echo "   -B     Change Safe Mode (battery saver mode) manually"
 	echo "   -q     Change the Squelch setting for command receiver"
-	echo "   -F     Change the rx and tx frequency"
-	echo "   -H     Chnage the Balloon mode"
+	echo "   -F     Change the RX and TX frequency"
+	echo "   -H     Change the Balloon (HAB) mode"
 	echo "   -p     Display payload sensor data"
 	echo "   -v     Display voltage and current data"
 	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
@@ -850,6 +936,7 @@ fi
 
 if [ "$reboot" = "1" ] ; then 
 	if [ "$noreboot" = "0" ] ; then 
+		echo 'Reboot due to config change!' | wall
 		echo "Rebooting"
 		sudo systemctl stop rpitx
 		sudo reboot now
