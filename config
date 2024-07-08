@@ -542,6 +542,10 @@ elif [ "$1" = "-d" ]; then
 ##			echo "rebooting"
 #			reboot=1
 			sudo systemctl restart command
+			if [[ $(arecord -l | grep card) ]]; then
+				echo "restarting cubesaatsim software"
+				sudo systemctl restart cubesatsim
+			fi
 ##			sudo reboot now	
 		fi
 
