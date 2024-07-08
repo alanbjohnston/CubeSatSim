@@ -538,7 +538,11 @@ int main(int argc, char * argv[]) {
     other_max[i] = -1000.0;
   }
 
-  FILE * command_start = popen("sudo systemctl start command", "r");
+  FILE * command_kill = popen("sudo killall -9 command", "r");
+  pclose(command_kill);	
+	
+//  FILE * command_start = popen("sudo systemctl start command", "r");
+  FILE * command_start = popen("/home/pi/CubeSatSim/command &", "r");
   pclose(command_start);	
 	
   long int loopTime;
