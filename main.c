@@ -45,8 +45,15 @@ int main(int argc, char * argv[]) {
   else {
     printf("Pi Zero detected\n");
     FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
-    if (command_file == NULL) 
+    if (command_file == NULL) {
 	    pi_zero_2_offset = 500;
+	    printf("Command and control is OFF\n");
+    }
+    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+    if (command_file == NULL)  {
+	    pi_zero_2_offset = 500;
+	    printf("Command and control Carrier (squelch) is ON\n");
+    }
     sleep(10);
   }
 	
@@ -572,10 +579,6 @@ int main(int argc, char * argv[]) {
 //    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
 //    #endif
     fclose(uptime_file);
-	  
-    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
-    fflush(stdout);
-    loopTime = millis();
 
    {
       int count1;
@@ -1211,6 +1214,10 @@ void get_tlm_fox() {
       sampleTime = (unsigned int) millis();
     } else
       printf("first time - no sleep\n");
+
+    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    fflush(stdout);
+    loopTime = millis();	  
 	
 //    if (mode == FSK) 
     {  // just moved
