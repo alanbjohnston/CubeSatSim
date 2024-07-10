@@ -832,11 +832,11 @@ elif [ "$1" = "-F" ]; then
 #		echo 
 #	else
 		echo
-##		echo "Rebooting CubeSatSim with new configuration file"
+##		echo "Restarting CubeSatSim with new configuration file"
 ##		echo
 		reboot=1
 ##		sudo reboot now
-#		sudo systemctl restart cubesatsim
+#		sudo systemctl restart rpitx
 #	fi
 elif [ "$1" = "-H" ]; then
 
@@ -899,7 +899,68 @@ elif [ "$1" = "-v" ]; then
 	echo
 	/home/pi/CubeSatSim/telem
 
+elif [ "$1" = "-A" ]; then
+
+	echo "Transmit APRS control packets to control another CubeSatSim"
+	echo
+
+	sudo systemctl stop cubesatsim
+
+	sim="y"
+
+	while [ "$sim" = "y" ]
+	do
+
+		echo "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW"
+		read MODE
+	
+		case $MODE in
+	
+			1)
+				echo "Mode 1 is APRS"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
+				;;
+			2)
+				echo "Mode 2 is FSK"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
+				;;
+			3)
+				echo "Mode 3 is BPSK"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
+				;;
+			4)
+				echo "Mode 4 is SSTV"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=s"
+				;;
+			5)
+				echo "Mode 5 is CW"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE==m"
+				;;
+			*)
+				echo "Unknown mode"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=?"
+				;;
+		esac
+		sudo rm /home/pi/CubeSatSim/t.txt
+		echo $STRING > /home/pi/CubeSatSim/t.txt
+		echo
+		echo -n "Sending APRS packet "
+		echo $STRING
+		sudo touch /home/pi/CubeSatSim/ready
+		sleep 5
+		sudo touch /home/pi/CubeSatSim/ready
+
+		echo
+		echo "Do you want to send another APRS command packet (y/n) "
+		read sim
+		echo
+	done
+	sudo rm /home/pi/CubeSatSim/t.txt
+#	sudo systemctl restart cubesatsim
+	reboot=1
+
 elif [ "$1" = "-h" ]; then
+
 	echo "config OPTION"
 	echo
 	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
@@ -927,6 +988,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -p     Display payload sensor data"
 	echo "   -v     Display voltage and current data"
 	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
+	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
 	echo
 	exit
 
