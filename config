@@ -903,46 +903,55 @@ elif [ "$1" = "-A" ]; then
 
 	echo "Transmit APRS control packets to control another CubeSatSim"
 	echo
-	echo 
 
 	sudo systemctl stop cubesatsim
 
-	echo -n "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW"
-	read MODE
+	sim="y"
 
-	case $MODE in
+	while [ "$sim" = "y" ]
+	do
 
-		1)
-			echo "Mode 1 is APRS"
-			STRING="KU2Y-1>APCSS:MODE=a"
-			;;
-		2)
-			echo "Mode 2 is FSK"
-			STRING="KU2Y-1>APCSS:MODE=a"
-			;;
-		3)
-			echo "Mode 3 is BPSK"
-			STRING="KU2Y-1>APCSS:MODE=b"
-			;;
-		4)
-			echo "Mode 4 is SSTV"
-			STRING="KU2Y-1>APCSS:MODE=s"
-			;;
-		5)
-			echo "Mode 5 is CW"
-			STRING="KU2Y-1>APCSS:MODE=m"
-			;;
-		*)
-			echo "Unknown mode"
-			STRING="KU2Y-1>APCSS:MODE=?"
-			;;
-	esac
+		echo "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW"
+		read MODE
+	
+		case $MODE in
+	
+			1)
+				echo "Mode 1 is APRS"
+				STRING="KU2Y-1>APCSS:MODE=a"
+				;;
+			2)
+				echo "Mode 2 is FSK"
+				STRING="KU2Y-1>APCSS:MODE=a"
+				;;
+			3)
+				echo "Mode 3 is BPSK"
+				STRING="KU2Y-1>APCSS:MODE=b"
+				;;
+			4)
+				echo "Mode 4 is SSTV"
+				STRING="KU2Y-1>APCSS:MODE=s"
+				;;
+			5)
+				echo "Mode 5 is CW"
+				STRING="KU2Y-1>APCSS:MODE=m"
+				;;
+			*)
+				echo "Unknown mode"
+				STRING="KU2Y-1>APCSS:MODE=?"
+				;;
+		esac
+		sudo rm /home/pi/CubeSatSim/t.txt
+		echo $STRING > /home/pi/CubeSatSim/t.txt
+		touch /home/pi/CubeSatSim/ready
+		sleep 1
+		touch /home/pi/CubeSatSim/ready
+	
+		echo "Do you want to send another command (y/n) "
+		read sim
+	done
 	sudo rm /home/pi/CubeSatSim/t.txt
-	echo $STRING > /home/pi/CubeSatSim/t.txt
-	touch /home/pi/CubeSatSim/ready
-	sleep 1
-	touch /home/pi/CubeSatSim/ready
-
+	sudo systemctl restart cubesatsim
 	
 elif [ "$1" = "-h" ]; then
 
