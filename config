@@ -943,15 +943,17 @@ elif [ "$1" = "-A" ]; then
 		esac
 		sudo rm /home/pi/CubeSatSim/t.txt
 		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo -n "\nSending APRS packet "
+		echo
+		echo -n "Sending APRS packet "
 		echo $STRING
-		touch /home/pi/CubeSatSim/ready
+		sudo touch /home/pi/CubeSatSim/ready
 		sleep 5
-		touch /home/pi/CubeSatSim/ready
+		sudo touch /home/pi/CubeSatSim/ready
 
 		echo
 		echo "Do you want to send another APRS command packet (y/n) "
 		read sim
+		echo
 	done
 	sudo rm /home/pi/CubeSatSim/t.txt
 	sudo systemctl restart cubesatsim
