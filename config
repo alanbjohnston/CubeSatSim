@@ -899,7 +899,42 @@ elif [ "$1" = "-v" ]; then
 	echo
 	/home/pi/CubeSatSim/telem
 
+elif [ "$1" = "-A" ]; then
+
+	echo "Transmit APRS control packets to control another CubeSatSim"
+	echo
+	echo 
+
+	sudo systemctl stop cubesatsim
+
+	echo -n "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW"
+	read MODE
+
+	case $MODE in
+
+		1)
+			echo "Mode 1 is APRS"
+			;;
+		2)
+			echo "Mode 2 is FSK"
+			;;
+		3)
+			echo "Mode 3 is BPSK"
+			;;
+		4)
+			echo "Mode 4 is SSTV"
+			;;
+		5)
+			echo "Mode 5 is CW"
+			;;
+		*)
+			echo "Unknown mode"
+			;;
+	esac
+
+
 elif [ "$1" = "-h" ]; then
+
 	echo "config OPTION"
 	echo
 	echo "Changes CubeSatSim mode, resets, or modifies configuration file"
@@ -927,6 +962,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -p     Display payload sensor data"
 	echo "   -v     Display voltage and current data"
 	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
+	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
 	echo
 	exit
 
