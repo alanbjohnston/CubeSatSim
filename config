@@ -914,25 +914,36 @@ elif [ "$1" = "-A" ]; then
 
 		1)
 			echo "Mode 1 is APRS"
+			STRING = "KU2Y-1>APCSS:MODE=a"
 			;;
 		2)
 			echo "Mode 2 is FSK"
+			STRING = "KU2Y-1>APCSS:MODE=a"
 			;;
 		3)
 			echo "Mode 3 is BPSK"
+			STRING = "KU2Y-1>APCSS:MODE=b"
 			;;
 		4)
 			echo "Mode 4 is SSTV"
+			STRING = "KU2Y-1>APCSS:MODE=s"
 			;;
 		5)
 			echo "Mode 5 is CW"
+			STRING = "KU2Y-1>APCSS:MODE=m"
 			;;
 		*)
 			echo "Unknown mode"
+			STRING = "KU2Y-1>APCSS:MODE=?"
 			;;
 	esac
+	sudo rm /home/pi/CubeSatSim/t.txt
+	echo $STRING > /home/pi/CubeSatSim/t.txt
+	touch /home/pi/CubeSatSim/ready
+	sleep 1
+	touch /home/pi/CubeSatSim/ready
 
-
+	
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
