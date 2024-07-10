@@ -922,7 +922,7 @@ elif [ "$1" = "-A" ]; then
 				;;
 			2)
 				echo "Mode 2 is FSK"
-				STRING="KU2Y-1>APCSS:MODE=a"
+				STRING="KU2Y-1>APCSS:MODE=f"
 				;;
 			3)
 				echo "Mode 3 is BPSK"
