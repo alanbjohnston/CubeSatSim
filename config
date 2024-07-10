@@ -918,27 +918,27 @@ elif [ "$1" = "-A" ]; then
 	
 			1)
 				echo "Mode 1 is APRS"
-				STRING="KU2Y-1>APCSS:MODE=a"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
 				;;
 			2)
 				echo "Mode 2 is FSK"
-				STRING="KU2Y-1>APCSS:MODE=f"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
 				;;
 			3)
 				echo "Mode 3 is BPSK"
-				STRING="KU2Y-1>APCSS:MODE=b"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
 				;;
 			4)
 				echo "Mode 4 is SSTV"
-				STRING="KU2Y-1>APCSS:MODE=s"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=s"
 				;;
 			5)
 				echo "Mode 5 is CW"
-				STRING="KU2Y-1>APCSS:MODE=m"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE==m"
 				;;
 			*)
 				echo "Unknown mode"
-				STRING="KU2Y-1>APCSS:MODE=?"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=?"
 				;;
 		esac
 		sudo rm /home/pi/CubeSatSim/t.txt
