@@ -956,8 +956,9 @@ elif [ "$1" = "-A" ]; then
 		echo
 	done
 	sudo rm /home/pi/CubeSatSim/t.txt
-	sudo systemctl restart cubesatsim
-	
+#	sudo systemctl restart cubesatsim
+	reboot=1
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
