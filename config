@@ -934,7 +934,7 @@ elif [ "$1" = "-A" ]; then
 				;;
 			5)
 				echo "Mode 5 is CW"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE==m"
+				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=m"
 				;;
 			*)
 				echo "Unknown mode"
