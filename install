@@ -86,7 +86,7 @@ git clone https://github.com/alanbjohnston/pi-power-button.git
 
 cd pi-power-button
 
-git checkout reboot-mode-change
+git checkout reboot-mode-change-beta
 
 ./script/install
 
