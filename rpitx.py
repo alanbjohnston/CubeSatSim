@@ -269,7 +269,7 @@ if __name__ == "__main__":
 		if (('d' == sys.argv[1]) or ('-d' in sys.argv[1])):
 			debug_mode = 1
 		elif (('x' == sys.argv[1]) or ('-x' in sys.argv[1])):	
-			mode = "a"
+			mode = "x"
 			print("Forcing APRS mode")
 	print(transmit)
 	if ( mode == "y"):
