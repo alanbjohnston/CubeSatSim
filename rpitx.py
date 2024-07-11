@@ -36,12 +36,12 @@ def command_control_check():
 			string = filec.write(command_count_string)
 			filec.close()
 		except:
-			if (debug_mode == 1):
+			if (debug_ == 1):
 				print("Can't write command_count file!")
 		print("Command_count: ")
 		print(command_count)							
 		
-		increment_mode()
+		increment_()
 		
 #			if (command_tx == True):
 #				print("Turning on transmit")
@@ -64,27 +64,27 @@ def battery_saver_check():
 		f = open("/home/pi/CubeSatSim/battery_saver", "r")
 		f.close()
 		txc = False
-		print("Safe Mode!")
+		print("Safe !")
 		print("battery saver activated")
 	except:
 		print("battery saver not activated")
 #		txc = True
 		
-def increment_mode():
-	print("increment mode")
+def increment_():
+	print("increment ")
 	powerPin = 16
 	try:
-		file = open("/home/pi/CubeSatSim/.mode")
-		mode = file.read(1)
+		file = open("/home/pi/CubeSatSim/.")
+		 = file.read(1)
 	except:
-#		mode = "f"
-		if (debug_mode == 1):
-			print("Can't open .mode file") # , defaulting to FSK")
+#		 = "f"
+		if (debug_ == 1):
+			print("Can't open . file") # , defaulting to FSK")
 	file.close()
-	print("Mode is: ")
-	print(mode)
-	if (mode == 'a'):
-		mode = 'f'
+	print(" is: ")
+	print()
+	if ( == 'a'):
+		 = 'f'
 		GPIO.output(powerPin, 0) # blink two times
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
@@ -94,8 +94,8 @@ def increment_mode():
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 
-	elif (mode == 'f'):
-		mode = 'b'
+	elif ( == 'f'):
+		 = 'b'
 		GPIO.output(powerPin, 0) # blink three times
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
@@ -109,8 +109,8 @@ def increment_mode():
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 	
-	elif (mode == 'b'):
-		mode = 's'
+	elif ( == 'b'):
+		 = 's'
 		GPIO.output(powerPin, 0) # blink four times
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
@@ -128,8 +128,8 @@ def increment_mode():
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 
-	elif (mode == 's'):
-		mode = 'm'
+	elif ( == 's'):
+		 = 'm'
 		GPIO.output(powerPin, 0) # blink five times
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
@@ -151,18 +151,18 @@ def increment_mode():
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 	else:
-		mode = 'a'
+		 = 'a'
 		GPIO.output(powerPin, 0) # blink one time
 		sleep(0.1)
 		GPIO.output(powerPin, 1)
 		sleep(2.5)
 
 	try:	
-		file = open("/home/pi/CubeSatSim/.mode", "w")
+		file = open("/home/pi/CubeSatSim/.", "w")
 		count_string = str(command_count)
-		file.write(mode)
+		file.write()
 		file.close()
-		print(".mode file written")
+		print(". file written")
 		
 		GPIO.setwarnings(False)
 		GPIO.output(txLed, 0)
@@ -174,13 +174,13 @@ def increment_mode():
 #		system("reboot -h now")
 #		release = True;
 
-		print("Changing mode now")
-#		system("/home/pi/CubeSatSim/config -" + mode)
+		print("Changing  now")
+#		system("/home/pi/CubeSatSim/config -" + )
 		system("reboot -h now")
 
 		sleep(10);
 	except:
-		print("can't write to .mode file")
+		print("can't write to . file")
 		
 
 print("CubeSatSim v1.3.2 rpitx.py starting...")
@@ -193,7 +193,7 @@ green = 16
 
 command_tx = True
 
-GPIO.setmode(GPIO.BCM)
+GPIO.set(GPIO.BCM)
 GPIO.setwarnings(False)
 GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
@@ -230,7 +230,7 @@ else:
 # GPIO.setup(txLed, GPIO.OUT)
 # output(txLed, txLedOff)
 
-GPIO.setmode(GPIO.BCM) # Repeat to make LED work on Pi 4
+GPIO.set(GPIO.BCM) # Repeat to make LED work on Pi 4
 GPIO.setwarnings(False)
 GPIO.setup(txLed, GPIO.OUT)
 
@@ -262,21 +262,23 @@ print(txLed)
 debug_mode = 0  #no debugging rpitx
 
 if __name__ == "__main__":
-
+	mode = "x"
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
 		if (('d' == sys.argv[1]) or ('-d' in sys.argv[1])):
 			debug_mode = 1
-			
+		else if (('a' == sys.argv[1]) or ('-a' in sys.argv[1])):	
+			mode = "a"
 	print(transmit)
 
-	try:
-		file = open("/home/pi/CubeSatSim/.mode")
-		mode = file.read(1)
-	except:
-		mode = "f"
-		if (debug_mode == 1):
-			print("Can't open .mode file, defaulting to FSK")
+	if ( mode == "x"):
+		try:
+			file = open("/home/pi/CubeSatSim/.mode")
+			mode = file.read(1)
+		except:
+			mode = "f"
+			if (debug_mode == 1):
+				print("Can't open .mode file, defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
 
