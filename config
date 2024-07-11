@@ -905,6 +905,9 @@ elif [ "$1" = "-A" ]; then
 	echo
 
 	sudo systemctl stop cubesatsim
+	sudo systemctl stop rpitx
+
+	python3 -u /home/pi/CubeSatSim/rpitx.py a  # Force APRS mode
 
 	sim="y"
 
