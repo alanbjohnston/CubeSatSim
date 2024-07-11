@@ -268,7 +268,7 @@ if __name__ == "__main__":
 #        	print("There are arguments!")
 		if (('d' == sys.argv[1]) or ('-d' in sys.argv[1])):
 			debug_mode = 1
-		else if (('a' == sys.argv[1]) or ('-a' in sys.argv[1])):	
+		elif (('a' == sys.argv[1]) or ('-a' in sys.argv[1])):	
 			mode = "a"
 			print("Forcing APRS mode")
 	print(transmit)
