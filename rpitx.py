@@ -263,16 +263,16 @@ debug_mode = 0  #no debugging rpitx
 
 if __name__ == "__main__":
 
-	mode = "x"
+	mode = "y"
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
 		if (('d' == sys.argv[1]) or ('-d' in sys.argv[1])):
 			debug_mode = 1
-		elif (('a' == sys.argv[1]) or ('-a' in sys.argv[1])):	
+		elif (('x' == sys.argv[1]) or ('-x' in sys.argv[1])):	
 			mode = "a"
 			print("Forcing APRS mode")
 	print(transmit)
-	if ( mode == "x"):
+	if ( mode == "y"):
 		try:
 			file = open("/home/pi/CubeSatSim/.mode")
 			mode = file.read(1)
@@ -405,8 +405,9 @@ if __name__ == "__main__":
 	except:
 		print("Error in serial write")
 	output(pd, 0)
-	
-	sleep(10)  # delay so cubesatsim code catches up
+
+	if (mode != 'x'):
+		sleep(10)  # delay so cubesatsim code catches up
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
 	
@@ -414,7 +415,7 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if (mode != 'm'):	
+	if (mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's'):	
 #		battery_saver_mode
 		output(txLed, txLedOn)			
 #		if (txc):
@@ -446,7 +447,7 @@ if __name__ == "__main__":
     
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-		if (mode == 'a'):
+		if (mode == 'a') or (mode == 'x'):
 			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)			
