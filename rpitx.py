@@ -263,20 +263,23 @@ debug_mode = 0  #no debugging rpitx
 
 if __name__ == "__main__":
 
+	mode = "x"
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
 		if (('d' == sys.argv[1]) or ('-d' in sys.argv[1])):
 			debug_mode = 1
-			
+		else if (('a' == sys.argv[1]) or ('-a' in sys.argv[1])):	
+			mode = "a"
+			print("Forcing APRS mode")
 	print(transmit)
-
-	try:
-		file = open("/home/pi/CubeSatSim/.mode")
-		mode = file.read(1)
-	except:
-		mode = "f"
-		if (debug_mode == 1):
-			print("Can't open .mode file, defaulting to FSK")
+	if ( mode == "x"):
+		try:
+			file = open("/home/pi/CubeSatSim/.mode")
+			mode = file.read(1)
+		except:
+			mode = "f"
+			if (debug_mode == 1):
+				print("Can't open .mode file, defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
 
