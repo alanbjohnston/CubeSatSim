@@ -1080,8 +1080,17 @@ function transmit_command_aprs {
 	sleep 5
 	sudo touch /home/pi/CubeSatSim/ready
 
+	sleep 5
+ 	echo "Stopping command and control"
 	sudo systemctl stop command
-	timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-dtmf-aprs.conf
+
+	echo "Transmit start"
+	gpio write 28 0 # ptt
+	timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf
+	gpio write 28 1 #ptt
+	echo "Transmit stop"
+
+ 	echo "Resuming command and control"
 	sudo systemctl start command
 
 	exit
