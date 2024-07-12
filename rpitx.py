@@ -284,16 +284,13 @@ if __name__ == "__main__":
 	print(mode)
 
 	try:
-		file = open("/home/pi/CubeSatSim/command_tx")
-		char = file.read(1)
-		if (char == 'T'):
-			command_tx = True
-		else:
-			command_tx = False
+		file = open("/home/pi/CubeSatSim/beacon_off")
+		file.close()
+		command_tx = False
 	except:
 		command_tx = True
 		if (debug_mode == 1):
-			print("Can't open command_tx file, defaulting to True")
+			print("Can't open beacon_off file, defaulting to False")
 	print("Command_tx: ")
 	print(command_tx)
 	
