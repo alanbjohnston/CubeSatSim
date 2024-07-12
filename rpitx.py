@@ -447,7 +447,7 @@ if __name__ == "__main__":
     
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-		if (mode == 'a') or (mode == 'x'):
+		if (mode == 'a') or (mode == 'x') or (mode == 'n'):
 			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)			
@@ -766,6 +766,24 @@ if __name__ == "__main__":
 				if (command_tx == True):		
 					output(txLed, txLedOn)
 				sleep(4.2)
+		elif (mode == 'e'):
+			print("Repeater")
+			print("Stopping command and control")
+			system("sudo systemctl stop command")
+			print("turn on FM rx")
+			output(pd, 1)
+			output(ptt, 1)
+			while True:
+				sleep(0.5)
+				if (GPIO.input(squelch) == False):
+					print("Carrier detected, starting repeater")
+#					system("arecord -D hw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+					system("arecord -D hw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+					while (GPIO.input(squelch) == False):
+						sleep(1)
+					print("No carrier detected, stopping repeater")	
+					system("sudo killall -9 arecord")	
+		
 		else:
 			print("FSK") 
 			print("turn on FM rx")
