@@ -867,7 +867,7 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();
     } else {  				// SSTV	    
 //      fprintf(stderr, "Sleeping\n");
-      sleep(50);	    
+      sleep(30);	    
     }
 
     #ifdef DEBUG_LOGGING
