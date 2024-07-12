@@ -35,6 +35,10 @@ if [ "$1" = "" ]; then
 		echo "Mode is BPSK"	
 	elif [ "$1" = "s" ]; then
 		echo "Mode is SSTV"
+	elif [ "$1" = "e" ]; then
+		echo "Mode is Repeater"	
+	elif [ "$1" = "n" ]; then
+		echo "Mode is Transmit Command and Control"
 	else
 		echo 
 	fi
@@ -899,16 +903,37 @@ elif [ "$1" = "-v" ]; then
 	echo
 	/home/pi/CubeSatSim/telem
 
+elif [ "$1" = "-e" ]; then
+
+	echo "changing CubeSatSim to Repeater mode"
+	sudo echo "e" > /home/pi/CubeSatSim/.mode
+
+	restart=1
+
+elif [ "$1" = "-n" ]; then
+
+	echo "changing CubeSatSim to Transmit Command and Control mode"
+	sudo echo "n" > /home/pi/CubeSatSim/.mode
+
+	restart=1
+
 elif [ "$1" = "-A" ]; then
 
 	echo "Transmit APRS control packets to control another CubeSatSim"
 	echo
 
-	sudo systemctl stop cubesatsim
-	sudo systemctl stop rpitx
-#	sudo rm /home/pi/CubeSatSim/t.txt
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
-	sudo python3 -u /home/pi/CubeSatSim/rpitx.py x > /dev/null 2>&1 &  # Force APRS mode
+	if [ "$1" != "n" ]; then
+
+		sudo systemctl stop cubesatsim
+		sudo systemctl stop rpitx
+	#	sudo rm /home/pi/CubeSatSim/t.txt
+	
+		sudo python3 -u /home/pi/CubeSatSim/rpitx.py x > /dev/null 2>&1 &  # Force APRS mode
+	fi
 
 	sim="y"
 
@@ -961,7 +986,10 @@ elif [ "$1" = "-A" ]; then
 	done
 	sudo rm /home/pi/CubeSatSim/t.txt
 #	sudo systemctl restart cubesatsim
-	reboot=1
+
+	if [ "$1" != "n" ]; then
+
+		reboot=1
 
 elif [ "$1" = "-h" ]; then
 
@@ -975,6 +1003,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
+	echo "   -n     Change to Transmit Command and Control mode"
+	echo "   -e     Change to Repeater mode"
 	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
@@ -1022,7 +1052,7 @@ if [ "$reboot" = "1" ] ; then
 fi
 
 if [ "$restart" = "1" ] ; then  
-	if [ "$reboot" = "1" ] ; then 
+	if [ "$reboot" = "0" ] ; then 
 		echo "Restarting"
 		sudo systemctl restart cubesatsim
 	else
