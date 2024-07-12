@@ -128,25 +128,32 @@ elif [ "$1" = "-i" ]; then
 ##	sudo reboot now
 #	sudo  restart cubesatsim
 ##	exit 
+
 elif [ "$1" = "-a" ]; then
-	echo "changing CubeSatSim to AFSK mode"
-	sudo echo "a" > /home/pi/CubeSatSim/.mode
 
-	FILE=/home/pi/CubeSatSim/battery_saver
-	if [ -f "$FILE" ]; then
-		echo "Safe Mode! Battery saver mode is ON."
-#  		if ! grep  force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
-	else 
-    		echo "Battery saver mode is OFF."
-#    		sudo sed -i ':a;N;$!ba;s/\nforce_turbo=1//g' /boot/config.txt 
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "$1" == "n" ]; then
+
+		echo "Transmit mode 1 is APRS"
+						
+		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
+		sudo rm /home/pi/CubeSatSim/t.txt
+		echo $STRING > /home/pi/CubeSatSim/t.txt
+		echo
+		echo -n "Sending APRS packet "
+		echo $STRING
+		sudo touch /home/pi/CubeSatSim/ready
+		sleep 5
+		sudo touch /home/pi/CubeSatSim/ready
+	else
+
+		echo "changing CubeSatSim to AFSK mode"
+		sudo echo "a" > /home/pi/CubeSatSim/.mode	
+		reboot=1
 	fi
-
-	reboot=1
-##	echo "rebooting"
-##	sudo  stop rpitx
-##	sudo reboot now
-#	sudo  restart cubesatsim
-##	exit 
 
 elif [ "$1" = "-m" ]; then
 	echo "changing CubeSatSim to CW mode"
