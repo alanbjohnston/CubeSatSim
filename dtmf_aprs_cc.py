@@ -45,6 +45,19 @@ if __name__ == "__main__":
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
+		if ((line.find("MODE=o")) > 0) or ((line.find("DTMF>APDW15:t10#")) > 0):
+			system("echo '\nBeacon Mode toggle!!\n'")
+
+			try:
+				f = open("/home/pi/CubeSatSim/beacon_off", "r")
+				f.close()
+				print("Beacon is on, turning it OFF")
+				system("touch /home/pi/CubeSatSim/beacon_off")
+			except:
+				print("Beacon is off, turning it ON")
+				system("sudo rm /home/pi/CubeSatSim/beacon_off")	
+			
+			change_mode = False
 		if (debug_mode == False)  and (change_mode == True):
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
