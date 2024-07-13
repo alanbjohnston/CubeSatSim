@@ -38,7 +38,13 @@ if [ "$1" = "" ]; then
 	elif [ "$1" = "e" ]; then
 		echo "Mode is Repeater"	
 	elif [ "$1" = "n" ]; then
-		echo "Mode is Transmit Command and Control"
+		echo -n "Mode is Transmit Command and Control with "
+		FILE=/home/pi/CubeSatSim/transmit_dtmf
+		if [ -f "$FILE" ]; then
+			echo -n "DTMF"
+		else	
+			echo -n "APRS"
+		fi
 	else
 		echo 
 	fi
@@ -584,7 +590,37 @@ elif [ "$1" = "-d" ]; then
 
 	fi
 
+elif [ "$1" = "-D" ]; then
 
+	echo	
+	echo "Change Transmit command state"
+	echo 
+
+	FILE=/home/pi/CubeSatSim/transmit_dtmf
+	if [ -f "$FILE" ]; then
+    		echo "Transmit commands in DTMF is set"
+		echo
+		echo "Do you want to transmit commands in APRS (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Transmit commands in APRS"
+			sudo rm /home/pi/CubeSatSim/transmit_dtmf
+		fi
+
+	else 
+    		echo "Transmit commands in APRS is set"
+		echo
+		echo "Do you want to transmit commands in DTMF (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "Transmit commands in DTMF"
+			touch /home/pi/CubeSatSim/transmit_dtmf
+		fi
+	fi
 
 elif [ "$1" = "-R" ]; then
 
@@ -1030,6 +1066,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -v     Display voltage and current data"
 	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
 	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
+	echo "   -D     Change Transmit command state APRS or DTMF"
 	echo
 	exit
 
