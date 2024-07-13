@@ -447,8 +447,12 @@ if __name__ == "__main__":
 		if (mode == 'a') or (mode == 'x') or (mode == 'n'):
 			command_control_check()	
 			output(pd, 1)
-			output(ptt, 1)			
-			print("AFSK")
+			output(ptt, 1)
+			if (mode == 'a'):
+				print("AFSK")
+			else:
+				GPIO.output(powerPin, 0)
+				print("Transmit APRS Commands")
 #			while True:
 #				sleep(0.1)
 			while True:
@@ -770,15 +774,21 @@ if __name__ == "__main__":
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
+			GPIO.output(powerPin, 0)
 			while True:
 				sleep(0.5)
 				if (GPIO.input(squelch) == False):
 					print("Carrier detected, starting repeater")
+					output(txLed, txLedOn)
 #					system("arecord -D hw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					system("arecord -D hw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+					GPIO.output(powerPin, 1)
+					sleep(1)
+					GPIO.output(powerPin, 0)
 					while (GPIO.input(squelch) == False):
 						sleep(1)
-					print("No carrier detected, stopping repeater")	
+					print("No carrier detected, stopping repeater")
+					output(txLed, txLedOff)
 					system("sudo killall -9 arecord")	
 		
 		else:
