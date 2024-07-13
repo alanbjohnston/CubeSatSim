@@ -1086,7 +1086,9 @@ function transmit_command_aprs {
 
 	echo "Transmit start"
 	gpio write 28 0 # ptt
+	gpio write 27 1 # tx LED
 	timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf
+	gpio write 27 0 # tx LED
 	gpio write 28 1 #ptt
 	echo "Transmit stop"
 
