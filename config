@@ -140,7 +140,7 @@ function transmit_command_sstv {
 	exit
 }
 
-function transmit_command_bpsk {
+function transmit_command_cw {
 
 	FILE=/home/pi/CubeSatSim/transmit_dtmf
 	if [ -f "$FILE" ]; then
@@ -367,7 +367,7 @@ elif [ "$1" = "-m" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_cw
+		transmit_command
 
 	else
 
