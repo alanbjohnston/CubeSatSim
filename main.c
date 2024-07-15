@@ -193,6 +193,12 @@ int main(int argc, char * argv[]) {
      } else if ( mode_string == 'm') {
         mode = CW;
         printf("Mode is CW\n");
+     } else if ( mode_string == 'e') {
+        mode = REPEATER;
+        printf("Mode is Repeater\n");
+     } else if ( mode_string == 'n') {
+        mode = TXCOMMAND;
+        printf("Mode is Transmit Command\n");	      
       } else {
         printf("Mode is FSK\n");
       }	    
