@@ -324,6 +324,13 @@ if [ "$1" = "" ]; then
     		echo "Battery saver mode is OFF"
 	fi
 
+	FILE=/home/pi/CubeSatSim/beacon_off
+	if [ -f "$FILE" ]; then
+    		echo "Transmit beacon telemetry is OFF"
+	else
+  		echo "Transmit beacon telemetry is ON"
+	fi
+
 	echo
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
@@ -1118,7 +1125,7 @@ elif [ "$1" = "-o" ]; then
 	else 
     		echo "Transmit beacon telemetry is on"
 		echo
-		echo "Do you want to turn beacon telemetry OFF(y/n) "
+		echo "Do you want to turn beacon telemetry OFF (y/n) "
 		read reset
 		echo
 
