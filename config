@@ -1033,6 +1033,7 @@ elif [ "$1" = "-A" ]; then
 	if [ "$1" != "n" ]; then
 
 		reboot=1
+	fi
 
 elif [ "$1" = "-h" ]; then
 
