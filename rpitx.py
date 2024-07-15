@@ -190,6 +190,7 @@ ptt = 20
 txc_pin = 7
 squelch = 6
 green = 16
+powerPin = 16
 
 command_tx = True
 
