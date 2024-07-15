@@ -1104,3 +1104,40 @@ if [ "$restart" = "1" ] ; then
 		echo "Restart needed for changes to take effect"
 	fi
 fi
+
+function transmit_command_aprs {
+
+	FILE=/home/pi/CubeSatSim/transmit_dtmf
+	if [ -f "$FILE" ]; then
+
+	 	echo "Stopping command and control"
+		sudo systemctl stop command
+
+		echo "Transmit start"
+		gpio write 28 0 # ptt
+		gpio write 27 1 # tx LED
+		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf
+		gpio write 27 0 # tx LED
+		gpio write 28 1 #ptt
+		echo "Transmit stop"
+
+	 	echo "Resuming command and control"
+		sudo systemctl start command
+
+	else
+
+		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
+		sudo rm /home/pi/CubeSatSim/t.txt
+		echo $STRING > /home/pi/CubeSatSim/t.txt
+		echo
+		echo -n "Sending APRS packet to change mode to APRS"
+		echo $STRING
+		sudo touch /home/pi/CubeSatSim/ready
+		sleep 5
+		sudo touch /home/pi/CubeSatSim/ready
+		sleep 5
+
+	fi
+
+	exit
+}
