@@ -10,9 +10,9 @@ function transmit_command_aprs {
 
 		echo "Transmit start"
 		gpio write 28 0 # ptt
-		gpio write 27 1 # tx LED
+		gpio write 2 1 # tx LED
 		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf  -t 0l 
-		gpio write 27 0 # tx LED
+		gpio write 2 0 # tx LED
 		gpio write 28 1 #ptt
 		echo "Transmit stop"
 
@@ -22,15 +22,15 @@ function transmit_command_aprs {
 	else
 
 		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
-		sudo rm /home/pi/CubeSatSim/t.txt
+		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
 		echo -n "Sending APRS packet to change mode to APRS"
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
-		sleep 5
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 5
+		sleep 3
+#		sudo touch /home/pi/CubeSatSim/ready
+#		sleep 5
 
 	fi
 
@@ -185,7 +185,7 @@ elif [ "$1" = "-a" ]; then
 #		echo "Transmit mode 1 is APRS"
 						
 #		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
-#		sudo rm /home/pi/CubeSatSim/t.txt
+#		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null
 #		echo $STRING > /home/pi/CubeSatSim/t.txt
 #		echo
 #		echo -n "Sending APRS packet "
@@ -531,7 +531,7 @@ elif [ "$1" = "-T" ]; then
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control set to OFF"
-			sudo rm /home/pi/CubeSatSim/command_control
+			sudo rm /home/pi/CubeSatSim/command_control > /dev/null
 #			reboot=1
 			echo "restarting command and control"
 			sudo systemctl restart command
@@ -578,7 +578,7 @@ elif [ "$1" = "-d" ]; then
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control Direwolf set to OFF"
-			sudo rm /home/pi/CubeSatSim/command_control_direwolf
+			sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null
 #			reboot=1
 ##			echo "rebooting"
 			sudo systemctl restart command
@@ -645,7 +645,7 @@ elif [ "$1" = "-D" ]; then
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Transmit commands in APRS"
-			sudo rm /home/pi/CubeSatSim/transmit_dtmf
+			sudo rm /home/pi/CubeSatSim/transmit_dtmf > /dev/null
 		fi
 
 	else 
@@ -676,7 +676,7 @@ elif [ "$1" = "-R" ]; then
 	echo
 	
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-		sudo rm /home/pi/CubeSatSim/command_count.txt
+		sudo rm /home/pi/CubeSatSim/command_count.txt > /dev/null
 		echo "Commands count reset to 0"
 		echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 	else
@@ -717,7 +717,7 @@ elif [ "$1" = "-B" ]; then
 		
 		if [ "$mode" = "1" ] ; then 
 			echo "Safe Mode will be turned OFF. Battery saver mode will be turned OFF"
-			sudo rm /home/pi/CubeSatSim/battery_saver
+			sudo rm /home/pi/CubeSatSim/battery_saver > /dev/null
 			reboot=1
 		fi
 	fi
@@ -1012,7 +1012,7 @@ elif [ "$1" = "-A" ]; then
 
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop rpitx
-	#	sudo rm /home/pi/CubeSatSim/t.txt
+	#	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null
 	
 		sudo python3 -u /home/pi/CubeSatSim/rpitx.py x > /dev/null 2>&1 &  # Force APRS mode
 	fi
@@ -1052,7 +1052,7 @@ elif [ "$1" = "-A" ]; then
 				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=?"
 				;;
 		esac
-		sudo rm /home/pi/CubeSatSim/t.txt
+		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
 		echo -n "Sending APRS packet "
@@ -1066,7 +1066,7 @@ elif [ "$1" = "-A" ]; then
 		read sim
 		echo
 	done
-	sudo rm /home/pi/CubeSatSim/t.txt
+	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null
 #	sudo systemctl restart cubesatsim
 
 	if [ "$1" != "n" ]; then
