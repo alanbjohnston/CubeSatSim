@@ -367,7 +367,7 @@ elif [ "$1" = "-m" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command
+		transmit_command_cw
 
 	else
 
