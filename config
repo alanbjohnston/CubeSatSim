@@ -216,6 +216,8 @@ echo
 # echo $2
 # echo
 
+sudo modprobe snd-aloop
+
 # if [ "$2" = "n" ] ; then
 if [ -z "$2" ] ; then
 	noreboot=0
