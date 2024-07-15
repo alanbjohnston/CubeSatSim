@@ -361,6 +361,10 @@ elif [ "$1" = "-a" ]; then
 
 elif [ "$1" = "-m" ]; then
 
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
 	if [ "$1" == "n" ]; then
 
 		transmit_command_cw
@@ -373,6 +377,10 @@ elif [ "$1" = "-m" ]; then
 	fi
  
 elif [ "$1" = "-f" ]; then
+
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
 	if [ "$1" == "n" ]; then
 
@@ -387,6 +395,10 @@ elif [ "$1" = "-f" ]; then
 
 elif [ "$1" = "-b" ]; then
 
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
 	if [ "$1" == "n" ]; then
 
 		transmit_command_bpsk
@@ -399,6 +411,10 @@ elif [ "$1" = "-b" ]; then
 	fi
 
 elif [ "$1" = "-s" ]; then
+
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
 	if [ "$1" == "n" ]; then
 
