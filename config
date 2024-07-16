@@ -1130,7 +1130,9 @@ elif [ "$1" = "-o" ]; then
 			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 				echo "Turn beacon telemetry ON"
 				sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
-				sudo systemctl restart rpitx
+				sudo systemctl stop rpitx
+				sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1
+
 	#			restart=1
 			fi
 	
