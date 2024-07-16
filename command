@@ -28,7 +28,7 @@ echo "Waiting 20 seconds for USB"
 sleep 20
 
 FILE=/home/pi/CubeSatSim/command_control_direwolf
-if [[ $(arecord -l | grep card) ]] && [ -f "$FILE" ]; then
+if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 
 	echo "Starting Direwolf DTMF and APRS Command and Control"
 
