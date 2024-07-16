@@ -50,12 +50,12 @@ if __name__ == "__main__":
 			try:
 				f = open("/home/pi/CubeSatSim/beacon_off", "r")
 				f.close()
-				print("Beacon is on, turning it OFF")
+				system("echo 'Beacon is on, turning it OFF'")
 				system("touch /home/pi/CubeSatSim/beacon_off")
 			except:
-				print("Beacon is off, turning it ON")
-				system("sudo rm /home/pi/CubeSatSim/beacon_off")
-			print("Restarting rpitx")	
+				system("echo 'Beacon is off, turning it ON'")
+				system("sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1")
+			system("echo 'Restarting rpitx'")	
 			system("sudo systemctl restart rpitx")
 			change_mode = False
 		if (debug_mode == False)  and (change_mode == True):
