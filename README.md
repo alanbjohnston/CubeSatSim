@@ -2,13 +2,13 @@
 
 There is beta release for the new CubeSatSim hardware and software in the beta branch.
 
-### The beta hardware files are here: 
-https://CubeSatSim.org/hardware-beta 
+### The beta hardware files are here:
+https://CubeSatSim.org/hardware-beta
 
-### The beta wiki instructions are here: 
-https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.  
+### The beta wiki instructions are here:
+https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.
 
-### The beta Bill of Materials (BOM) is here: 
+### The beta Bill of Materials (BOM) is here:
 https://CubeSatSim.org/bom-beta.
 
 ### Information about the latest beta software release is here:
@@ -31,7 +31,7 @@ The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or
 - pi-power-button
 - Direwolf
 - rpitx
-- python3-pip 
+- python3-pip
 - python3-smbus
 
 ## Disk Image Option Steps
