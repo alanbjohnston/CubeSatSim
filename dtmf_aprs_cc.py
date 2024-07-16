@@ -48,8 +48,8 @@ if __name__ == "__main__":
 		if ((line.find("MODE=o")) > 0) or ((line.find("DTMF>APDW15:t10#")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			try:
-				f = open("/home/pi/CubeSatSim/beacon_off", "r")
-				f.close()
+				fm = open("/home/pi/CubeSatSim/beacon_off")
+				fm.close()
 				system("echo 'Beacon is off, turning it ON'")
 				system("sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1")
 			except:
