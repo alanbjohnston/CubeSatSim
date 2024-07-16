@@ -654,7 +654,7 @@ if __name__ == "__main__":
 					
 #					output(pd, 0)
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1") 
-					sleep(1)
+					sleep(10)
 			else:
 				try:
 					command_control_check()			
@@ -745,7 +745,7 @@ if __name__ == "__main__":
 							output(txLed, txLedOff)
 #							output (ptt, 1)
 #							output(pd, 0)
-						sleep(1)
+						sleep(10)
 						
 		elif (mode == 'b'):
 #			command_control_check()	
