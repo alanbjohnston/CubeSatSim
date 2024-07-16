@@ -57,9 +57,9 @@ if __name__ == "__main__":
 				system("touch /home/pi/CubeSatSim/beacon_off")
 
 #			system("echo 'Restarting rpitx'")	
-#			system("sudo systemctl restart rpitx")
+			system("sudo systemctl stop rpitx")
 			system("echo 'Resuming rpitx'")
-			system("python3 -u /home/pi/CubeSatSim/rpitx.py s")
+			system("sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1")
 			change_mode = False
 		if (debug_mode == False)  and (change_mode == True):
 			GPIO.setmode(GPIO.BCM)
