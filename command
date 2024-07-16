@@ -48,8 +48,16 @@ else
 	if [ -f "$FILE" ]; then
 
 		echo "Direwolf mode set but no USB soundcard detected!"
-		echo "Instead, starting Carrier (squelch) Command and Control"
 
+		echo "Trying RTL-FM for 60 seconds"
+		sudo modprobe snd-aloop
+		rtl_fm -M fm -f 435M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1 &
+		direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
+		sleep 60
+		sudo killall -9 direwolf
+		sudo killall -9 rtl_fm
+
+		echo "Starting Carrier (squelch) Command and Control"
 	else
 
 		echo "Starting Carrier (squelch) Command and Control"
