@@ -263,7 +263,7 @@ print(txLed)
 debug_mode = 0  #no debugging rpitx
 
 if __name__ == "__main__":
-
+	skip = False
 	mode = "y"
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
@@ -272,6 +272,10 @@ if __name__ == "__main__":
 		elif (('x' == sys.argv[1]) or ('-x' in sys.argv[1])):	
 			mode = "x"
 			print("Forcing APRS mode")
+		elif (('s' == sys.argv[1]) or ('-s' in sys.argv[1])):
+			skip = True
+			print("Skipping delay and CW ID")
+			
 	print(transmit)
 	if ( mode == "y"):
 		try:
@@ -404,7 +408,7 @@ if __name__ == "__main__":
 		print("Error in serial write")
 	output(pd, 0)
 
-	if (mode != 'x'):
+	if (mode != 'x') and (skip == False):
 		sleep(10)  # delay so cubesatsim code catches up
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
@@ -413,7 +417,7 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True):	
+	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True) and (skip == False):	
 #		battery_saver_mode
 		output(txLed, txLedOn)			
 #		if (txc):
