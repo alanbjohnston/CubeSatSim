@@ -365,7 +365,11 @@ elif [ "$1" = "-a" ]; then
 
 		echo "changing CubeSatSim to AFSK mode"
 		sudo echo "a" > /home/pi/CubeSatSim/.mode	
-		reboot=1
+		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+			reboot=1
+		else
+			restart=1
+		fi	
 	fi
 
 elif [ "$1" = "-m" ]; then
@@ -382,7 +386,11 @@ elif [ "$1" = "-m" ]; then
 
 		echo "changing CubeSatSim to CW mode"
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
-		reboot=1
+		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+			reboot=1
+		else
+			restart=1
+		fi
 	fi
  
 elif [ "$1" = "-f" ]; then
@@ -399,7 +407,7 @@ elif [ "$1" = "-f" ]; then
 
 		echo "changing CubeSatSim to FSK mode"
 		sudo echo "f" > /home/pi/CubeSatSim/.mode
-		reboot=1
+		restart=1
 	fi
 
 elif [ "$1" = "-b" ]; then
@@ -416,7 +424,7 @@ elif [ "$1" = "-b" ]; then
 
 		echo "changing CubeSatSim to BPSK mode"
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
-		reboot=1
+		restart=1
 	fi
 
 elif [ "$1" = "-s" ]; then
@@ -433,7 +441,11 @@ elif [ "$1" = "-s" ]; then
 
 		echo "changing CubeSatSim to SSTV mode"
 		sudo echo "s" > /home/pi/CubeSatSim/.mode
-		reboot=1
+		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+			reboot=1
+		else
+			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-t" ]; then
@@ -1130,8 +1142,8 @@ elif [ "$1" = "-o" ]; then
 			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 				echo "Turn beacon telemetry ON"
 				sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
-				sudo systemctl stop rpitx
-				sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1
+				sudo systemctl restart rpitx
+	#			sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1
 
 	#			restart=1
 			fi
@@ -1365,6 +1377,8 @@ fi
 
 # echo $noreboot
 
+#reboot=0
+#restart=1
 
 if [ "$reboot" = "1" ] ; then 
 	if [ "$noreboot" = "0" ] ; then 
@@ -1380,6 +1394,7 @@ fi
 if [ "$restart" = "1" ] ; then  
 	if [ "$reboot" = "0" ] ; then 
 		echo "Restarting"
+		sudo systemctl stop rpitx
 		sudo systemctl restart cubesatsim
 	else
 		echo "Restart needed for changes to take effect"

@@ -262,8 +262,9 @@ print(txLed)
 
 debug_mode = 0  #no debugging rpitx
 
+skip = False
+
 if __name__ == "__main__":
-	skip = False
 	mode = "y"
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
@@ -277,6 +278,24 @@ if __name__ == "__main__":
 			print("Skipping delay and CW ID")
 			
 	print(transmit)
+
+
+	try:
+		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
+		file = open("/home/pi/CubeSatSim/uptime")
+		up = file.read().split(" ")[0]
+#		print(up)
+		uptime = float(up)
+#		print(uptime)
+		if (uptime < 30):
+			print("Uptime < 30 seconds")
+		else:
+			print("Uptime > 30 seconds")
+			skip = True
+		file.close() 
+	except:
+		print("Can't open /proc/uptime") 
+
 	if ( mode == "y"):
 		try:
 			file = open("/home/pi/CubeSatSim/.mode")
@@ -408,8 +427,8 @@ if __name__ == "__main__":
 		print("Error in serial write")
 	output(pd, 0)
 
-	if (mode != 'x') and (skip == False):
-		sleep(10)  # delay so cubesatsim code catches up
+#	if (mode != 'x') and (skip == False):
+#		sleep(10)  # delay so cubesatsim code catches up
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
 	
@@ -460,6 +479,8 @@ if __name__ == "__main__":
 				print("Transmit APRS Commands")
 #			while True:
 #				sleep(0.1)
+			system("touch /home/pi/CubeSatSim/ready")
+
 			while True:
 				try:
 					f = open("/home/pi/CubeSatSim/ready")
@@ -506,6 +527,7 @@ if __name__ == "__main__":
 					command_control_check()
 					sleep(1)
 		elif (mode == 'm'):
+			system("touch /home/pi/CubeSatSim/cwready")
 			print("CW")
 			while True:
 				command_control_check()
