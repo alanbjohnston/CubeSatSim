@@ -31,6 +31,11 @@ int main(int argc, char * argv[]) {
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
   fclose(file_test);	
+
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  printf("Uptime sec: %f \n", uptime_sec);	  
+  fclose(uptime_file);
   
   fprintf(stderr, " %x ", resbuffer[0]);
   fprintf(stderr, " %x \n", resbuffer[1]);	
@@ -38,8 +43,11 @@ int main(int argc, char * argv[]) {
   {
     // voltageThreshold = 3.7;
     printf("Pi Zero 2 detected\n");
-    pi_zero_2_offset = 500; 
-    sleep(5);  // try sleep at start to help boot
+    pi_zero_2_offset = 500;
+    if (uptime_sec > 30) {
+	printf("Sleep 5 sec");    
+	sleep(5);  // try sleep at start to help boot
+    }
   }
   else {
     printf("Pi Zero detected\n");
@@ -54,7 +62,10 @@ int main(int argc, char * argv[]) {
 		    printf("Command and control Carrier (squelch) is ON\n");
 	    }
     }
-    sleep(10);
+    if (uptime_sec > 30) {
+	printf("Sleep 10 sec");    
+    	sleep(10);
+    }
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
