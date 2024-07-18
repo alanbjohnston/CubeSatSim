@@ -42,28 +42,28 @@ int main(int argc, char * argv[]) {
   if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
   {
     // voltageThreshold = 3.7;
-    printf("Pi Zero 2 detected\n");
+    fprintf(stderr, "Pi Zero 2 detected\n");
     pi_zero_2_offset = 500;
-    if (uptime_sec > 30) {
-	printf("Sleep 5 sec");    
+    if (uptime_sec < 30.0) {
+        fprintf(stderr, "Sleep 5 sec");    
 	sleep(5);  // try sleep at start to help boot
     }
   }
   else {
-    printf("Pi Zero detected\n");
+    fprintf(stderr,"Pi Zero detected\n");
     FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
     if (command_file == NULL) {
 	    pi_zero_2_offset = 500;
-	    printf("Command and control is OFF\n");
+	    fprintf(stderr,"Command and control is OFF\n");
     } else {
 	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
 	    if (command_file == NULL)  {
 		    pi_zero_2_offset = 500;
-		    printf("Command and control Carrier (squelch) is ON\n");
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
 	    }
     }
-    if (uptime_sec > 30) {
-	printf("Sleep 10 sec");    
+    if (uptime_sec < 30.0) {
+	fprintf(stderr,"Sleep 10 sec");    
     	sleep(10);
     }
   }
