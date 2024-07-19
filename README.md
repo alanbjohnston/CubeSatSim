@@ -2,13 +2,13 @@
 
 There is beta release for the new CubeSatSim hardware and software in the beta branch.
 
-### The beta hardware files are here: 
-https://CubeSatSim.org/hardware-beta 
+### The beta hardware files are here:
+https://CubeSatSim.org/hardware-beta
 
-### The beta wiki instructions are here: 
-https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.  
+### The beta wiki instructions are here:
+https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.
 
-### The beta Bill of Materials (BOM) is here: 
+### The beta Bill of Materials (BOM) is here:
 https://CubeSatSim.org/bom-beta.
 
 ### Information about the latest beta software release is here:
@@ -31,7 +31,7 @@ The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or
 - pi-power-button
 - Direwolf
 - rpitx
-- python3-pip 
+- python3-pip
 - python3-smbus
 
 ## Disk Image Option Steps
@@ -40,7 +40,9 @@ See the Wiki Software Install page for details: https://github.com/alanbjohnston
 
 ## Installation Script Option Steps
 
-CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.  
+CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.
+
+*Note:* CubeSatSim expects to be installed as the `pi` user and references many paths in `/home/pi/*`. Installing as a different user will result in configuration files not saving along with many other issues.
 
 To get the software follow these steps:
 
