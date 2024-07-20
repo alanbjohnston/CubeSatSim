@@ -63,7 +63,7 @@ else
 
 		echo "Trying RTL-FM"
 
-		timeout 5 rtl-test
+		rtl-test
 
 		sudo modprobe snd-aloop
 
