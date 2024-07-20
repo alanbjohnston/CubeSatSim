@@ -23,6 +23,18 @@ echo -e "\nCommand and Control script for CubeSatSim v1.3.2\n"
 #		exit 1
 	fi
 
+if [ "$1" = "d" ]; then
+
+	echo "debug mode"
+
+	debug=1
+
+else
+
+	debug=0
+
+fi
+
 echo "Waiting 20 seconds for USB"
 
 sleep 20
@@ -32,7 +44,7 @@ if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 
 	echo "Starting Direwolf DTMF and APRS Command and Control"
 
-	if [ "$1" = "d" ]; then
+	if [ "$debug" = "1" ]; then
 	
 		echo "debug mode"
 	
@@ -49,15 +61,35 @@ else
 
 		echo "Direwolf mode set but no USB soundcard detected!"
 
-		echo "Trying RTL-FM for 60 seconds"
-		sudo modprobe snd-aloop
-		rtl_fm -M fm -f 435M -s 48k | aplay -D hw:2,0,0 -r 48000 -t raw -f S16_LE -c 1 &
-		direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
-		sleep 60
-		sudo killall -9 direwolf
-		sudo killall -9 rtl_fm
+		echo "Trying RTL-FM"
 
-		echo "Starting Carrier (squelch) Command and Control"
+		timeout 5 rtl-test
+
+		sudo modprobe snd-aloop
+
+		value=`aplay -l | grep "Loopback"`
+		echo "$value" > /dev/null
+		set -- $value
+
+		rtl_fm -M fm -f 435M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+
+		if [ "$debug" = "1" ]; then
+		
+			echo "debug mode"
+		
+			direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+		
+		else
+		
+			direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+		
+		fi
+
+		sleep 5
+#		sudo killall -9 direwolf
+#		sudo killall -9 rtl_fm
+
+#		echo "Starting Carrier (squelch) Command and Control"
 	else
 
 		echo "Starting Carrier (squelch) Command and Control"
