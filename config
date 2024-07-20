@@ -1134,9 +1134,11 @@ elif [ "$1" = "-o" ]; then
 		FILE=/home/pi/CubeSatSim/beacon_off
 		if [ -f "$FILE" ]; then
 	    		echo "Transmit beacon telemetry is off"
-			echo
-			echo "Do you want to turn beacon telemetry ON (y/n) "
-			read reset
+#			echo
+#			echo "Do you want to turn beacon telemetry ON (y/n) "
+#			read reset
+
+			reset="y"
 			echo
 	
 			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
@@ -1150,9 +1152,10 @@ elif [ "$1" = "-o" ]; then
 	
 		else 
 	    		echo "Transmit beacon telemetry is on"
-			echo
-			echo "Do you want to turn beacon telemetry OFF (y/n) "
-			read reset
+#			echo
+#			echo "Do you want to turn beacon telemetry OFF (y/n) "
+#			read reset
+			reset="y"
 			echo
 	
 			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
