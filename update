@@ -74,6 +74,8 @@ else
   echo "no changes to rpitx.service."
 fi
 
+sudo systemctl disable rpitx
+
 FILE=/etc/systemd/system/command.service
 if [ -f "$FILE" ]; then
   if [[ $(diff systemd/command.service /etc/systemd/system/command.service) ]]; then
@@ -304,13 +306,13 @@ if [ "$noreboot" = "0" ] ; then
 	  echo "systemctl daemon-reload and reboot"
 	  sudo systemctl daemon-reload 
 	  sudo reboot -h now
-#  sudo systemctl restart cubesatsim
+#  sudo  cubesatsim
 	else
 	  grep 'changed' /home/pi/CubeSatSim/.updated
 	  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
 	    echo "reboot due to code changes " | wall
 	    sudo reboot -h now
-#    sudo systemctl restart cubesatsim
+#    sudo  cubesatsim
 	  else
 	    echo "nothing to do."
 	  fi  
