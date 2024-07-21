@@ -365,7 +365,8 @@ elif [ "$1" = "-a" ]; then
 
 		echo "changing CubeSatSim to AFSK mode"
 		sudo echo "a" > /home/pi/CubeSatSim/.mode	
-		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+#		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+		if [ "$1" == "f" ] ; then
 #			restart=1
 			reboot=1
 		else
@@ -387,9 +388,10 @@ elif [ "$1" = "-m" ]; then
 
 		echo "changing CubeSatSim to CW mode"
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
-		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
-#			reboot=1
-			restart=1
+#		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+		if [ "$1" == "f" ]  ; then
+			reboot=1
+#			restart=1
 		else
 			restart=1
 		fi
