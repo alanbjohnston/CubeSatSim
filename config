@@ -1344,7 +1344,7 @@ elif [ "$1" = "-L" ]; then
 
 	if ! [ -z $mic ] &&  [[ $mic =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 		echo "Updating mic level"
-		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set Mic $mic %
+		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set Mic $mic%
 	else
 		echo "Not updating mic level"
 	fi
