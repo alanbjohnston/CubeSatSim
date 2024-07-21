@@ -159,6 +159,13 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
   
 fi
 
+if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
+    echo "rpitx already updated"
+  else
+    echo "updating rpitx"
+    /home/pi/rpitx/update.sh
+  fi
+
 cd /home/pi/pi-power-button
 
 git checkout reboot-mode-change-beta > .updated_b
