@@ -1332,6 +1332,23 @@ elif [ "$1" = "-A" ]; then
 		reboot=1
 	fi
 
+elif [ "$1" = "-L" ]; then
+
+	echo	
+	echo "Setting microphone level for command and control"
+	echo
+
+	echo -e "Enter microphone level in percentage  (integer 0 - 100): "
+
+	read mic 
+
+	if ! [ -z $mic ] &&  [[ $mic =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+		echo "Updating mic level"
+		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set Mic $mic %
+	else
+		echo "Not updating mic level"
+	fi
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1366,7 +1383,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
 	echo "   -D     Change Transmit command state APRS or DTMF"
 	echo "   -o     Change telemetry beacon transmit state"
-
+	echo "   -L     Change microphone level for command and control"
 	echo
 	exit
 
