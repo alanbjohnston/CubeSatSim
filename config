@@ -1255,9 +1255,16 @@ elif [ "$1" = "-n" ]; then
 
 	echo "changing CubeSatSim to Transmit Commands mode"
 
-	sudo echo "n" > /home/pi/CubeSatSim/.mode
-	restart=1
-
+	if [ "$1" = "n" ]; then
+		echo "Turning Transmit Command and Control mode OFF"
+		echo "Switching to FSK mode"
+		sudo echo "f" > /home/pi/CubeSatSim/.mode
+		reboot=1
+	else
+		echo "Turning Transmit Command and Control mode ON"
+		sudo echo "n" > /home/pi/CubeSatSim/.mode
+		restart=1
+	fi
 
 elif [ "$1" = "-A" ]; then
 
