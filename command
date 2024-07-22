@@ -63,7 +63,8 @@ else
 
 #		echo "Trying RTL-FM"
 
-		if [ $(rtl_test | grep "No supported devices found.") ] ; then
+		timeout 1 rtl_test &> out.txt
+		if [ $(grep "No supported" out.txt && rm out.txt) ] ; then
 
 			echo "No RTL-SDR detected.  Command and control is OFF"
 #			sleep 60
@@ -95,6 +96,7 @@ else
 	#		sudo killall -9 direwolf
 	#		sudo killall -9 rtl_fm
 		fi
+		rm out.txt
 	else
 
 		echo "Starting Carrier (squelch) Command and Control"
