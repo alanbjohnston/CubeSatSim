@@ -284,7 +284,7 @@ if [ "$1" = "" ]; then
 	echo -n "Current command count is: "
 	cat /home/pi/CubeSatSim/command_count.txt
 	echo
-	echo
+#	echo
 #	echo "Current beacon transmit mode is:"
 #	cat /home/pi/CubeSatSim/command_tx
 #	echo
@@ -326,6 +326,7 @@ if [ "$1" = "" ]; then
     		echo "Battery saver mode is OFF"
 	fi
 
+	echo
 	FILE=/home/pi/CubeSatSim/beacon_off
 	if [ -f "$FILE" ]; then
     		echo "Transmit beacon telemetry is OFF"
