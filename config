@@ -1255,6 +1255,10 @@ elif [ "$1" = "-n" ]; then
 
 	echo "changing CubeSatSim to Transmit Commands mode"
 
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Command and Control mode OFF"
 		echo "Switching to FSK mode"
