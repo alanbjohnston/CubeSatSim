@@ -31,30 +31,41 @@ int main(int argc, char * argv[]) {
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
   fclose(file_test);	
+
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  printf("Uptime sec: %f \n", uptime_sec);	  
+  fclose(uptime_file);
   
   fprintf(stderr, " %x ", resbuffer[0]);
   fprintf(stderr, " %x \n", resbuffer[1]);	
   if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
   {
     // voltageThreshold = 3.7;
-    printf("Pi Zero 2 detected\n");
-    pi_zero_2_offset = 500; 
-    sleep(5);  // try sleep at start to help boot
+    fprintf(stderr, "Pi Zero 2 detected\n");
+    pi_zero_2_offset = 500;
+    if (uptime_sec < 30.0) {
+        fprintf(stderr, "Sleep 5 sec");    
+	sleep(5);  // try sleep at start to help boot
+    }
   }
   else {
-    printf("Pi Zero detected\n");
+    fprintf(stderr,"Pi Zero detected\n");
     FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
     if (command_file == NULL) {
 	    pi_zero_2_offset = 500;
-	    printf("Command and control is OFF\n");
+	    fprintf(stderr,"Command and control is OFF\n");
     } else {
 	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
 	    if (command_file == NULL)  {
 		    pi_zero_2_offset = 500;
-		    printf("Command and control Carrier (squelch) is ON\n");
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
 	    }
     }
-    sleep(10);
+    if (uptime_sec < 30.0) {
+	fprintf(stderr,"Sleep 10 sec");    
+    	sleep(10);
+    }
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
