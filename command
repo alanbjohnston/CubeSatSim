@@ -70,6 +70,7 @@ else
 
 		else
 
+			echo "RTL-SDR detected."
 			sudo modprobe snd-aloop
 	
 			value=`aplay -l | grep "Loopback"`
