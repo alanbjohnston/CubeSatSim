@@ -64,7 +64,7 @@ else
 #		echo "Trying RTL-FM"
 
 		timeout 1 rtl_test &> out.txt
-		if [ $(grep "No supported" out.txt) ] ; then
+		if [[ $(grep "No supported" out.txt) ]] ; then
 
 			echo "No RTL-SDR detected.  Command and control is OFF"
 #			sleep 60
