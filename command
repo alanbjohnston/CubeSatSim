@@ -63,7 +63,7 @@ else
 
 #		echo "Trying RTL-FM"
 
-		if [[ $(rtl_test | grep "No supported devices found.") ]] ; then
+		if [ $(rtl_test | grep "No supported devices found.") ] ; then
 
 			echo "No RTL-SDR detected.  Command and control is OFF"
 #			sleep 60
