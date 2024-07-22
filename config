@@ -250,7 +250,7 @@ if [ "$1" = "" ]; then
 	elif [ "$1" = "e" ]; then
 		echo "Mode is Repeater"	
 	elif [ "$1" = "n" ]; then
-		echo -n "Mode is Transmit Command and Control with "
+		echo -n "Mode is Transmit Commands with "
 		FILE=/home/pi/CubeSatSim/transmit_dtmf
 		if [ -f "$FILE" ]; then
 			echo -n "DTMF"
@@ -365,7 +365,7 @@ elif [ "$1" = "-a" ]; then
 
 		echo "changing CubeSatSim to AFSK mode"
 		sudo echo "a" > /home/pi/CubeSatSim/.mode	
-		if [ "$1" == "f" ] ; then
+		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
 #			restart=1
 			reboot=1
 		else
@@ -387,9 +387,9 @@ elif [ "$1" = "-m" ]; then
 
 		echo "changing CubeSatSim to CW mode"
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
-		if [ "$1" == "f" ] ; then
-#			reboot=1
-			restart=1
+		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
+			reboot=1
+#			restart=1
 		else
 			restart=1
 		fi
@@ -444,8 +444,8 @@ elif [ "$1" = "-s" ]; then
 		echo "changing CubeSatSim to SSTV mode"
 		sudo echo "s" > /home/pi/CubeSatSim/.mode
 		if [ "$1" == "f" ] || [ "$1" == "b" ] ; then
-#			reboot=1
-			restart=1
+			reboot=1
+#			restart=1
 		else
 			restart=1
 		fi
@@ -826,31 +826,31 @@ elif [ "$1" = "-d" ]; then
 elif [ "$1" = "-D" ]; then
 
 	echo	
-	echo "Change Transmit command state"
+	echo "Change Transmit Commands state"
 	echo 
 
 	FILE=/home/pi/CubeSatSim/transmit_dtmf
 	if [ -f "$FILE" ]; then
-    		echo "Transmit commands in DTMF is set"
+    		echo "Transmit Commands in DTMF is set"
 		echo
-		echo "Do you want to transmit commands in APRS (y/n) "
+		echo "Do you want to Transmit Commands in APRS (y/n) "
 		read reset
 		echo
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Transmit commands in APRS"
+			echo "Transmit Commands in APRS"
 			sudo rm /home/pi/CubeSatSim/transmit_dtmf > /dev/null 2>&1
 		fi
 
 	else 
-    		echo "Transmit commands in APRS is set"
+    		echo "Transmit Commands in APRS is set"
 		echo
-		echo "Do you want to transmit commands in DTMF (y/n) "
+		echo "Do you want to Transmit Commands in DTMF (y/n) "
 		read reset
 		echo
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Transmit commands in DTMF"
+			echo "Transmit Commands in DTMF"
 			touch /home/pi/CubeSatSim/transmit_dtmf
 		fi
 	fi
@@ -1240,22 +1240,11 @@ elif [ "$1" = "-e" ]; then
 
 elif [ "$1" = "-n" ]; then
 
-	echo "changing CubeSatSim to Transmit Command and Control mode"
+	echo "changing CubeSatSim to Transmit Commands mode"
 
-	value=`cat /home/pi/CubeSatSim/.mode`
-	echo "$value" > /dev/null
-	set -- $value
+	sudo echo "n" > /home/pi/CubeSatSim/.mode
+	restart=1
 
-	if [ "$1" = "n" ]; then
-		echo "Turning Transmit Command and Control mode OFF"
-		echo "Switching to FSK mode"
-		sudo echo "f" > /home/pi/CubeSatSim/.mode
-		reboot=1
-	else
-		echo "Turning Transmit Command and Control mode ON"
-		sudo echo "n" > /home/pi/CubeSatSim/.mode
-		restart=1
-	fi
 
 elif [ "$1" = "-A" ]; then
 
@@ -1361,7 +1350,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
-	echo "   -n     Change to Transmit Command and Control mode"
+	echo "   -n     Change to Transmit Commands mode"
 	echo "   -e     Change to Repeater mode"
 	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
@@ -1381,7 +1370,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -v     Display voltage and current data"
 	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
 	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
-	echo "   -D     Change Transmit command state APRS or DTMF"
+	echo "   -D     Change Transmit Commands state APRS or DTMF"
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
 	echo
