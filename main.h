@@ -105,8 +105,8 @@ FILE *telem_file;
 #define BPSK 3
 #define SSTV 4
 #define CW 5
-#define REPEATER 6
-#define TXCOMMAND 7
+#define REPEATER 11
+#define TXCOMMAND 12
 
 int rpitxStatus = -1;
 
