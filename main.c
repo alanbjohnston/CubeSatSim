@@ -340,15 +340,15 @@ int main(int argc, char * argv[]) {
       }
     }
   }
-  pinMode(txLed, OUTPUT);
-  digitalWrite(txLed, txLedOff);
+//  pinMode(txLed, OUTPUT);
+//  digitalWrite(txLed, txLedOff);
   #ifdef DEBUG_LOGGING
-  printf("Tx LED Off\n");
+//  printf("Tx LED Off\n");
   #endif
-  pinMode(onLed, OUTPUT);
-  digitalWrite(onLed, onLedOn);
+//  pinMode(onLed, OUTPUT);
+//  digitalWrite(onLed, onLedOn);
   #ifdef DEBUG_LOGGING
-  printf("Power LED On\n");
+//  printf("Power LED On\n");
   #endif
 /*
   if (mode == SSTV) {	
