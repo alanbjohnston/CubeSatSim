@@ -409,6 +409,7 @@ if __name__ == "__main__":
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 	print(txLed)
+	print(txLedOn)
 	GPIO.setup(txLed, GPIO.OUT)
 
 	print("Programming FM module!\n");	
@@ -796,6 +797,8 @@ if __name__ == "__main__":
 				
 				if (command_tx == True):		
 					output(txLed, txLedOn)
+					print(txLed)
+					print(txLedOn)
 				sleep(4.2)
 		elif (mode == 'e'):
 			print("Repeater")
@@ -839,6 +842,8 @@ if __name__ == "__main__":
 #				command_control_check()
 				if (command_tx == True):		
 					output(txLed, txLedOn)
+					print(txLed)
+					print(txLedOn)					
 				sleep(4.2)
 	else:
 		print("No Low Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
