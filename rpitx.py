@@ -408,6 +408,7 @@ if __name__ == "__main__":
 	
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
+	print(txLed)
 	GPIO.setup(txLed, GPIO.OUT)
 
 	print("Programming FM module!\n");	
