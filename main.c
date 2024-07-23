@@ -124,7 +124,8 @@ int main(int argc, char * argv[]) {
   }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
-  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
+//  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
+  FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
   pclose(rpitx_stop);
 
 //  FILE * cc_start = popen("/home/pi/CubeSatSim/command &", "r");
