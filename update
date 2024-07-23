@@ -66,6 +66,8 @@ else
   echo "no changes to cubesatsim.service."
 fi
 
+sudo systemctl disable rpitx
+
 if [[ $(diff systemd/rpitx.service /etc/systemd/system/rpitx.service) ]]; then
   echo "changed rpitx.service."
   sudo cp /home/pi/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
