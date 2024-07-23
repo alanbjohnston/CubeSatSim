@@ -93,8 +93,6 @@ else
 			fi
 
 			sleep 5
-	#		sudo killall -9 direwolf
-	#		sudo killall -9 rtl_fm
 		fi
 		rm out.txt
 	else
@@ -115,3 +113,7 @@ else
 	
 	fi	 
 fi
+
+sudo killall -9 direwolf  &>/dev/null
+sudo killall -9 rtl_fm  &>/dev/null
+
