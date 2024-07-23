@@ -1431,8 +1431,9 @@ fi
 if [ "$restart" = "1" ] ; then  
 	if [ "$reboot" = "0" ] ; then 
 		echo "Restarting"
-		sudo systemctl stop rpitx
+#		sudo systemctl stop rpitx
 		sudo systemctl restart cubesatsim
+		sudo systemctl restart rpitx
 	else
 		echo "Restart needed for changes to take effect"
 	fi
