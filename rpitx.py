@@ -437,7 +437,8 @@ if __name__ == "__main__":
 				print("Transmit APRS Commands")
 #			while True:
 #				sleep(0.1)
-			system("touch /home/pi/CubeSatSim/ready")
+			if (mode != 'n'):
+				system("touch /home/pi/CubeSatSim/ready")
 
 			while True:
 				try:
