@@ -45,6 +45,8 @@ int main(int argc, char * argv[]) {
     fprintf(stderr, "Pi Zero 2 detected\n");
     pi_zero_2_offset = 500;
     if (uptime_sec < 30.0) {
+	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+  	pclose(rpitx_stop);   
         fprintf(stderr, "Sleep 5 sec");    
 	sleep(5);  // try sleep at start to help boot
     }
@@ -63,6 +65,8 @@ int main(int argc, char * argv[]) {
 	    }
     }
     if (uptime_sec < 30.0) {
+	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+  	pclose(rpitx_stop);
 	fprintf(stderr,"Sleep 10 sec");    
     	sleep(10);
     }
@@ -124,8 +128,8 @@ int main(int argc, char * argv[]) {
   }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
-  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
-  pclose(rpitx_stop);
+//  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
+
 
 //  FILE * cc_start = popen("/home/pi/CubeSatSim/command &", "r");
 //  pclose(cc_start);	
@@ -340,15 +344,15 @@ int main(int argc, char * argv[]) {
       }
     }
   }
-  pinMode(txLed, OUTPUT);
-  digitalWrite(txLed, txLedOff);
+//  pinMode(txLed, OUTPUT);
+//  digitalWrite(txLed, txLedOff);
   #ifdef DEBUG_LOGGING
-  printf("Tx LED Off\n");
+//  printf("Tx LED Off\n");
   #endif
-  pinMode(onLed, OUTPUT);
-  digitalWrite(onLed, onLedOn);
+//  pinMode(onLed, OUTPUT);
+//  digitalWrite(onLed, onLedOn);
   #ifdef DEBUG_LOGGING
-  printf("Power LED On\n");
+//  printf("Power LED On\n");
   #endif
 /*
   if (mode == SSTV) {	
