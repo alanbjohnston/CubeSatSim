@@ -9,54 +9,7 @@ from time import sleep
 import sys
 from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
-import serial
-
-def command_control_check():
-
-	global command_control
-	global no_command
-	global debug_mode
-	global command_count
-
-	return
-	
-	output(pd, 1)
-	output(ptt, 1)
-	sleep(1)
-	if (no_command == False and GPIO.input(squelch) == False):
-		print("carrier received!")
-		# command_tx = not command_tx
-#			print(command_tx)
-
-		try:
-			command_count += 1
-			filec = open("/home/pi/CubeSatSim/command_count.txt", "w")
-			command_count_string = str(command_count)
-			print(command_count_string)
-			string = filec.write(command_count_string)
-			filec.close()
-		except:
-			if (debug_mode == 1):
-				print("Can't write command_count file!")
-		print("Command_count: ")
-		print(command_count)							
-		
-		increment_mode()
-		
-#			if (command_tx == True):
-#				print("Turning on transmit")
-#				system("echo > command_tx True")
-#							output(txLed, txLedOn)
-#							sleep(0.5)
-#							output(txLed, txLedff)
-#			else:
-#				print("Turning off transmit")
-#				system("echo > command_tx False")
-	else:
-		print("No carrier received!")
-#	output(pd, 0)
-#					sleep(1)
-		
+import serial	
 
 def battery_saver_check():
 	try:
@@ -435,12 +388,14 @@ if __name__ == "__main__":
 	
 	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
 	
-	command_control_check()
+#	command_control_check()
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
 	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True) and (skip == False):	
 #		battery_saver_mode
+		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+		GPIO.setup(txLed, GPIO.OUT)	
 		output(txLed, txLedOn)			
 #		if (txc):
 #			output(pd, 1)
@@ -472,7 +427,7 @@ if __name__ == "__main__":
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
 		if (mode == 'a') or (mode == 'x') or (mode == 'n'):
-			command_control_check()	
+#			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)
 			if (mode == 'a'):
@@ -493,6 +448,8 @@ if __name__ == "__main__":
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")
 					system("cat /home/pi/CubeSatSim/t.txt")
 					if (command_tx == True):
+						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+						GPIO.setup(txLed, GPIO.OUT)	
 						output(txLed, txLedOn)
 #						output(pd, 1)
 #						output (ptt, 0)
@@ -527,13 +484,13 @@ if __name__ == "__main__":
 						
 					sleep(0.5)
 				except:
-					command_control_check()
+#					command_control_check()
 					sleep(1)
 		elif (mode == 'm'):
 			system("touch /home/pi/CubeSatSim/cwready")
 			print("CW")
 			while True:
-				command_control_check()
+#				command_control_check()
 				output (pd, 1)
 				output (ptt, 1)				
 				try:
@@ -547,6 +504,8 @@ if __name__ == "__main__":
 						system(command)
 ##						chan = chan + 1						
 						if (command_tx == True):
+							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+							GPIO.setup(txLed, GPIO.OUT)	
 							output(txLed, txLedOn)					
 	
 							if (txc):
@@ -564,7 +523,7 @@ if __name__ == "__main__":
 									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")					
 							output(txLed, txLedOff)
 							
-						command_control_check()
+#						command_control_check()
 						sleep(2)
 					f.close()
 					sleep(10)
@@ -573,7 +532,7 @@ if __name__ == "__main__":
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
-			command_control_check()	
+#			command_control_check()	
 			output (ptt, 1)
 			output(pd, 1)			
 			try: 
@@ -601,10 +560,12 @@ if __name__ == "__main__":
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					print("First SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg") 
-					command_control_check()	
+#					command_control_check()	
 					
 					if (command_tx == True):
 						print ("Sending SSTV image")
+						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+						GPIO.setup(txLed, GPIO.OUT)	
 						output(txLed, txLedOn)
 #						battery_saver_check()
 
@@ -626,7 +587,7 @@ if __name__ == "__main__":
 				except:
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
-					command_control_check()			
+#					command_control_check()			
 					
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 					print("Photo taken")
@@ -654,16 +615,18 @@ if __name__ == "__main__":
 					draw.text((120, 10), telem_string, font=font2, fill='white')
 					img.save(file)
 					
-					command_control_check()			
+#					command_control_check()			
 					
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
-					command_control_check()			
+#					command_control_check()			
 
 					if (command_tx == True):
 						print ("Sending SSTV image")
 						output(txLed, txLedOn)
+						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+						GPIO.setup(txLed, GPIO.OUT)	
 #						battery_saver_check()
 
 						if (txc):
@@ -686,17 +649,19 @@ if __name__ == "__main__":
 					sleep(10)
 			else:
 				try:
-					command_control_check()			
+	#				command_control_check()			
 					
 					file = open("/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg")
 					print("First SSTV stored image detected")
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg") 
 
-					command_control_check()			
+#					command_control_check()			
 					
 					if (command_tx == True):
 
 						print ("Sending SSTV image")
+						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+						GPIO.setup(txLed, GPIO.OUT)	
 						output(txLed, txLedOn)
 
 #						battery_saver_check()
@@ -720,7 +685,7 @@ if __name__ == "__main__":
 				except:
 					print("image 1 did not load - copy from CubeSatSim/sstv directory")
 				try:
-					command_control_check()			
+#					command_control_check()			
 					
 					file = open("/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 					print("Second SSTV stored image detected")
@@ -728,10 +693,12 @@ if __name__ == "__main__":
 
 					while 1:
 
-						command_control_check()		
+#						command_control_check()		
 	
 						if (command_tx == True):
 							print ("Sending SSTV image")
+							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+							GPIO.setup(txLed, GPIO.OUT)	
 							output(txLed, txLedOn)
 #							battery_saver_check()
 
@@ -758,8 +725,12 @@ if __name__ == "__main__":
 							system("(while true; do (sleep 10 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					while 1:
 						if (command_tx == True):
-							command_control_check()	
+#							command_control_check()	
+							
 							output(txLed, txLedOn)
+							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+							GPIO.setup(txLed, GPIO.OUT)	
+
 #							battery_saver_check()
 						
 							if (txc):
@@ -800,7 +771,7 @@ if __name__ == "__main__":
 #				command_control_check()
 				
 				if (command_tx == True):		
-					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4		
+					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)
 					output(txLed, txLedOn)
 					print(txLed)
@@ -818,6 +789,8 @@ if __name__ == "__main__":
 				sleep(0.5)
 				if (GPIO.input(squelch) == False):
 					print("Carrier detected, starting repeater")
+					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
 #					system("arecord -D hw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					system("arecord -D hw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
@@ -851,7 +824,7 @@ if __name__ == "__main__":
 #					output(txLed, txLedOff)
 #				command_control_check()
 				if (command_tx == True):		
-					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4		
+					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)					
 					output(txLed, txLedOn)
 					print(txLed)
