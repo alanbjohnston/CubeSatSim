@@ -800,6 +800,8 @@ if __name__ == "__main__":
 #				command_control_check()
 				
 				if (command_tx == True):		
+					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4		
+					GPIO.setup(txLed, GPIO.OUT)
 					output(txLed, txLedOn)
 					print(txLed)
 					print(txLedOn)
@@ -849,6 +851,8 @@ if __name__ == "__main__":
 #					output(txLed, txLedOff)
 #				command_control_check()
 				if (command_tx == True):		
+					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4		
+					GPIO.setup(txLed, GPIO.OUT)					
 					output(txLed, txLedOn)
 					print(txLed)
 					print(txLedOn)					
