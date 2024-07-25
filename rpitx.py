@@ -624,9 +624,9 @@ if __name__ == "__main__":
 
 					if (command_tx == True):
 						print ("Sending SSTV image")
-						output(txLed, txLedOn)
 						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 						GPIO.setup(txLed, GPIO.OUT)	
+						output(txLed, txLedOn)
 #						battery_saver_check()
 
 						if (txc):
@@ -727,9 +727,9 @@ if __name__ == "__main__":
 						if (command_tx == True):
 #							command_control_check()	
 							
-							output(txLed, txLedOn)
 							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 							GPIO.setup(txLed, GPIO.OUT)	
+							output(txLed, txLedOn)
 
 #							battery_saver_check()
 						
