@@ -61,7 +61,7 @@
 #define ON 1
 #define CHECK 0
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+//uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
 
