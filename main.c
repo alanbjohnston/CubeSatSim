@@ -474,7 +474,7 @@ int main(int argc, char * argv[]) {
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
-  tx_freq_hz -= tx_channel * 50000;
+  // tx_freq_hz -= tx_channel * 50000;
 
   if (transmit == FALSE) {
 
