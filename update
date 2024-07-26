@@ -18,7 +18,7 @@ if [ "$1" = "u" ]; then
 
   sudo apt-get update && sudo apt-get dist-upgrade -y
 
-  sudo apt-get install -y wiringpi git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev python3-pip minicom
+  sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev python3-pip minicom
 
 fi
 
@@ -169,6 +169,27 @@ else
     git pull
     ./update.sh
     cd
+fi
+
+if [ ! -d "/home/pi/WiringPi" ]; then
+
+  cd
+
+  git clone https://github.com/PinkFreud/WiringPi
+  cd WiringPi
+  ./build debian
+
+  sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+
+  cd
+
+  cd CubeSatSim
+  make debug
+
+  FLAG=1
+
+  cd
+
 fi
 
 cd /home/pi/pi-power-button
