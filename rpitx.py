@@ -775,8 +775,8 @@ if __name__ == "__main__":
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)
 					output(txLed, txLedOn)
-					print(txLed)
-					print(txLedOn)
+#					print(txLed)
+#					print(txLedOn)
 				sleep(4.2)
 		elif (mode == 'e'):
 			print("Repeater")
@@ -828,8 +828,8 @@ if __name__ == "__main__":
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)					
 					output(txLed, txLedOn)
-					print(txLed)
-					print(txLedOn)					
+#					print(txLed)
+#					print(txLedOn)					
 				sleep(4.2)
 	else:
 		print("No Low Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
