@@ -39,10 +39,17 @@ sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev l
 
 cd /tmp
 
-wget https://project-downloads.drogon.net/wiringpi-latest.deb
+# wget https://project-downloads.drogon.net/wiringpi-latest.deb
 
-sudo dpkg -i wiringpi-latest.deb
+# sudo dpkg -i wiringpi-latest.deb
 
+cd
+
+git clone https://github.com/alanbjohnston/WiringPi
+cd WiringPi
+./build debian
+
+sudo dpkg -i debian-template/wiringpi-2.61-1.deb
 
 cd
 
