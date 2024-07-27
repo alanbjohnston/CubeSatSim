@@ -238,13 +238,13 @@ if __name__ == "__main__":
 		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
 		file = open("/home/pi/CubeSatSim/uptime")
 		up = file.read().split(" ")[0]
-#		print(up)
+		print(up)
 		uptime = float(up)
-#		print(uptime)
-		if (uptime < 30):
-			print("Uptime < 30 seconds")
+		print(uptime)
+		if (uptime < 45):
+			print("Uptime < 45 seconds")
 		else:
-			print("Uptime > 30 seconds")
+			print("Uptime > 45 seconds")
 			skip = True
 		file.close() 
 	except:
