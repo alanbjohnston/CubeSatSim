@@ -162,6 +162,14 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
 fi
 
 if [ ! -d "/home/pi/rpitx" ]; then
+
+	cd
+	git clone https://github.com/alanbjohnston/rpitx.git
+	cd rpitx
+	./install.sh
+	cd
+else
+
 	if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
 	    echo "rpitx already updated"
 	else
@@ -171,13 +179,6 @@ if [ ! -d "/home/pi/rpitx" ]; then
 	    ./update.sh
 	    cd
 	fi
-else
-
-	cd
-	git clone https://github.com/alanbjohnston/rpitx.git
-	cd rpitx
-	./install.sh
-	cd
 fi
 
 if [ ! -d "/home/pi/WiringPi" ]; then
