@@ -277,7 +277,7 @@ git checkout reboot-mode-change-beta > .updated_b
     git checkout reboot-mode-change
     script/install
 
-    sudo apt-get update && sudo apt-get dist-upgrade -y
+#    sudo apt-get update && sudo apt-get dist-upgrade -y
     sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 python3-pil
     sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
 
