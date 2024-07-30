@@ -26,7 +26,8 @@
 int main(int argc, char * argv[]) {
 
   char resbuffer[1000];
-  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
+//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
@@ -39,7 +40,7 @@ int main(int argc, char * argv[]) {
   
   fprintf(stderr, " %x ", resbuffer[0]);
   fprintf(stderr, " %x \n", resbuffer[1]);	
-  if ((resbuffer[0] != '9') || (resbuffer[1] != '0')) 
+  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
     // voltageThreshold = 3.7;
     fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
