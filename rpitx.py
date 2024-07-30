@@ -157,30 +157,15 @@ GPIO.setup(green, GPIO.OUT)
 GPIO.output(powerPin, 1)
 
 transmit = False
+txLed = 27
+txLedOn = 1 
+txLedOff = 0
 if GPIO.input(12) == False:
-	print("Version is v1 with UHF BPF")
+	print("Version is v1 with UHF LPF")
 	transmit = True
-	txLed = 27
-	txLedOn = 1
-	txLedOff = 0
-elif GPIO.input(27) == False:
-	print("Version is TFB")
-	transmit = True
-	txLed = 22
-	txLedOn = 0
-	txLedOff = 1
-elif GPIO.input(13) == False:
-	print("Version is v1 with VHF BPF")
-	print("VHF transmit not imemented yet")
-#	transmit = True
-	txLed = 27
-	txLedOn = 1
-	txLedOff = 0
 else:
-	print("No BPF")
-	txLed = 27
-	txLedOn = 1 
-	txLedOff = 0
+	print("No LPF")
+
 
 # GPIO.setup(txLed, GPIO.OUT)
 # output(txLed, txLedOff)
