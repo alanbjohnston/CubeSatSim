@@ -47,20 +47,22 @@ if __name__ == "__main__":
 			change_mode = True
 		if ((line.find("MODE=o")) > 0) or ((line.find("DTMF>APDW15:t10#")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
-			try:
-				fm = open("/home/pi/CubeSatSim/beacon_off")
-				fm.close()
-				system("echo 'Beacon is off, turning it ON'")
-				system("sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1")
-			except:
-				system("echo 'Beacon is on, turning it OFF'")
-				system("touch /home/pi/CubeSatSim/beacon_off")
-
-			system("echo 'Restarting rpitx'")	
-			system("sudo systemctl restart rpitx")
-#			system("echo 'Resuming rpitx'")
-#			system("sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1")
-			change_mode = False
+			mode = 'o'
+			change_mode = True
+#			try:
+#				fm = open("/home/pi/CubeSatSim/beacon_off")
+#				fm.close()
+#				system("echo 'Beacon is off, turning it ON'")
+#				system("sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1")
+#			except:
+#				system("echo 'Beacon is on, turning it OFF'")
+#				system("touch /home/pi/CubeSatSim/beacon_off")
+#
+#			system("echo 'Restarting rpitx'")	
+#			system("sudo systemctl restart rpitx")
+##			system("echo 'Resuming rpitx'")
+##			system("sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1")
+#			change_mode = False
 		if (debug_mode == False)  and (change_mode == True):
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
