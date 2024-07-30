@@ -68,6 +68,7 @@ else
 
 			echo "No RTL-SDR detected.  Command and control is OFF"
 #			sleep 60
+			exit
 
 		else
 
