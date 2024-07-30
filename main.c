@@ -493,7 +493,7 @@ int main(int argc, char * argv[]) {
 
   if (transmit == FALSE) {
 
-    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, "\nNo CubeSatSim Low Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
