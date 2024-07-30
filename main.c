@@ -414,7 +414,7 @@ int main(int argc, char * argv[]) {
   char camera_present[] = "supported=1 detected=1";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
-  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
   pclose(file4);
 
   #ifdef DEBUG_LOGGING
@@ -422,7 +422,7 @@ int main(int argc, char * argv[]) {
   #endif
 		
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
-  file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
+  //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
   if (!ax5043) // don't test for payload if AX5043 is present
