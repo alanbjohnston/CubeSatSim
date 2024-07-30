@@ -12,6 +12,7 @@ if __name__ == "__main__":
 	txLed = 27
 	change_mode = False
 	debug_mode = False
+	counter = 0
 	if (len(sys.argv)) > 1:
 #        	print("There are arguments!")
 		if ('d' == sys.argv[1]):
@@ -63,7 +64,8 @@ if __name__ == "__main__":
 ##			system("echo 'Resuming rpitx'")
 ##			system("sudo python3 -u /home/pi/CubeSatSim/rpitx.py s & > /dev/null 2>&1")
 #			change_mode = False
-		if (debug_mode == False)  and (change_mode == True):
+		counter = (counter + 1) % 2
+		if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other command since Direwolf prints them twice
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
 			GPIO.setup(powerPin, GPIO.OUT)
