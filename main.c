@@ -278,9 +278,15 @@ int main(int argc, char * argv[]) {
     pclose(file);
   }	
 
-  txLed = 0; // defaults for vB3 board without TFB
-  txLedOn = LOW;
-  txLedOff = HIGH;
+          txLed = 2;
+          txLedOn = HIGH;
+          txLedOff = LOW;
+          vB5 = TRUE;
+          onLed = 27;
+          onLedOn = HIGH;
+          onLedOff = LOW;
+          transmit = TRUE;
+/*	
   if (!ax5043) {
     pinMode(2, INPUT);
     pullUpDnControl(2, PUD_UP);
@@ -344,6 +350,7 @@ int main(int argc, char * argv[]) {
       }
     }
   }
+	  */
 //  pinMode(txLed, OUTPUT);
 //  digitalWrite(txLed, txLedOff);
   #ifdef DEBUG_LOGGING
