@@ -817,6 +817,6 @@ if __name__ == "__main__":
 #					print(txLedOn)					
 				sleep(4.2)
 	else:
-		print("No Low Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the BPF.")
+		print("No Low Pass Filter so no telemetry transmit.  See http://cubesatsim.org/wiki for instructions on how to build the LPF.")
 		while 1:
 			sleep(5)
