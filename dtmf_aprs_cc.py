@@ -132,7 +132,7 @@ if __name__ == "__main__":
 				sleep(0.1)
 				GPIO.output(powerPin, 1)
 				sleep(1)
-			elif:
+			elif (mode == 'a'):
 				mode = 'a'
 				GPIO.output(powerPin, 0) # blink one time
 				sleep(0.1)
