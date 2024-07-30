@@ -414,7 +414,7 @@ int main(int argc, char * argv[]) {
   char camera_present[] = "supported=1 detected=1";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
-  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  printf("Camera result:%s camera: %d \n", & cmdbuffer, camera);
   pclose(file4);
 
   #ifdef DEBUG_LOGGING
