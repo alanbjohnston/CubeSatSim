@@ -285,7 +285,15 @@ int main(int argc, char * argv[]) {
           onLed = 27;
           onLedOn = HIGH;
           onLedOff = LOW;
-          transmit = TRUE;
+
+
+	pinMode(26, INPUT);
+        pullUpDnControl(26, PUD_UP);
+
+        if (digitalRead(26) != HIGH) {
+          printf("v1 Present with UHF BPF\n");
+	  transmit = TRUE;
+	}
 /*	
   if (!ax5043) {
     pinMode(2, INPUT);
