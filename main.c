@@ -26,7 +26,8 @@
 int main(int argc, char * argv[]) {
 
   char resbuffer[1000];
-  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
+//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
@@ -39,10 +40,10 @@ int main(int argc, char * argv[]) {
   
   fprintf(stderr, " %x ", resbuffer[0]);
   fprintf(stderr, " %x \n", resbuffer[1]);	
-  if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
+  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
     // voltageThreshold = 3.7;
-    fprintf(stderr, "Pi Zero 2 detected\n");
+    fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
     pi_zero_2_offset = 500;
     if (uptime_sec < 30.0) {
 	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
@@ -278,9 +279,23 @@ int main(int argc, char * argv[]) {
     pclose(file);
   }	
 
-  txLed = 0; // defaults for vB3 board without TFB
-  txLedOn = LOW;
-  txLedOff = HIGH;
+          txLed = 2;
+          txLedOn = HIGH;
+          txLedOff = LOW;
+          vB5 = TRUE;
+          onLed = 27;
+          onLedOn = HIGH;
+          onLedOff = LOW;
+
+
+	pinMode(26, INPUT);
+        pullUpDnControl(26, PUD_UP);
+
+        if (digitalRead(26) != HIGH) {
+          printf("v1 Present with UHF BPF\n");
+	  transmit = TRUE;
+	}
+/*	
   if (!ax5043) {
     pinMode(2, INPUT);
     pullUpDnControl(2, PUD_UP);
@@ -344,6 +359,7 @@ int main(int argc, char * argv[]) {
       }
     }
   }
+	  */
 //  pinMode(txLed, OUTPUT);
 //  digitalWrite(txLed, txLedOff);
   #ifdef DEBUG_LOGGING
@@ -399,7 +415,7 @@ int main(int argc, char * argv[]) {
   char camera_present[] = "supported=1 detected=1";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
-  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  printf("Camera result:%s camera: %d \n", & cmdbuffer, camera);
   pclose(file4);
 
   #ifdef DEBUG_LOGGING
@@ -407,7 +423,7 @@ int main(int argc, char * argv[]) {
   #endif
 		
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
-  file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
+  //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
   if (!ax5043) // don't test for payload if AX5043 is present
@@ -478,7 +494,7 @@ int main(int argc, char * argv[]) {
 
   if (transmit == FALSE) {
 
-    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, "\nNo CubeSatSim Low Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
