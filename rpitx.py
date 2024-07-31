@@ -763,7 +763,7 @@ if __name__ == "__main__":
 #					print(txLed)
 #					print(txLedOn)
 				sleep(4.2)
-		elif (mode == 'e'):
+		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
 			print("Repeater")
 			print("Stopping command and control")
 			system("sudo systemctl stop command")
@@ -791,6 +791,7 @@ if __name__ == "__main__":
 					output(txLed, txLedOff)
 					system("sudo killall -9 arecord")
 					system("sudo killall -9 nc")
+					system("sudo killall -9 rpitx")
 		
 		else:
 			print("FSK") 
