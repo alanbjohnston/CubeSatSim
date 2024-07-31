@@ -25,7 +25,7 @@ function transmit_command_aprs {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to APRS"
+		echo -n "Sending APRS packet to change mode to APRS "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
