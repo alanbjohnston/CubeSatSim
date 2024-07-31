@@ -1126,11 +1126,11 @@ elif [ "$1" = "-F" ]; then
 #		echo 
 #	else
 		echo
-##		echo "Restarting CubeSatSim with new configuration file"
+		echo "Restarting CubeSatSim with new configuration file"
 ##		echo
-		reboot=1
+#		reboot=1
 ##		sudo reboot now
-#		sudo systemctl restart rpitx
+		sudo systemctl restart rpitx
 #	fi
 
 elif [ "$1" = "-o" ]; then
