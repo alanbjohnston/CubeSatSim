@@ -67,6 +67,10 @@ if __name__ == "__main__":
 			mode = 'm'
 			change_mode = True
 			counter = (counter + 1) % 2
+		if ((line.find("DTMF>APDW15:t5#")) > 0):
+			system("echo '\nCW Mode!!\n'")
+			mode = 'm'
+			change_mode = True
 		if ((line.find("MODE=o")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
