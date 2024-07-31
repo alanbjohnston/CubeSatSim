@@ -987,12 +987,12 @@ elif [ "$1" = "-q" ]; then
 	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 ${10} ${11}
 	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
 	echo
-##	echo "Rebooting CubeSatSim with new configuration file"
+	echo "Restarting CubeSatSim with new configuration file"
 ##	echo
 
-	reboot=1
+#	reboot=1
 ##	sudo reboot now
-#	sudo systemctl restart cubesatsim
+	sudo systemctl restart rpitx
 
 elif [ "$1" = "-Q" ]; then
 
