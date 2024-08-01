@@ -784,7 +784,7 @@ if __name__ == "__main__":
 					sleep(1)
 					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					GPIO.output(powerPin, 1)
-					sleep(1)
+					sleep(0.5)
 					GPIO.output(powerPin, 0)
 					while (GPIO.input(squelch) == False):
 						sleep(1)
