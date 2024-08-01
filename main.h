@@ -105,6 +105,8 @@ FILE *telem_file;
 #define BPSK 3
 #define SSTV 4
 #define CW 5
+#define REPEATER 11
+#define TXCOMMAND 12
 
 int rpitxStatus = -1;
 
@@ -132,6 +134,8 @@ char sim_yes[10];
 char hab_yes[10];
 int squelch = 3; // default squelch
 char rx[12], tx[12];
+int tx_pl = 0;
+int rx_pl = 0;
 
 int bitRate, mode, bufLen, rsFrames, payloads, rsFrameLen, dataLen, headerLen, syncBits, syncWord, parityLen, samples, frameCnt, samplePeriod;
 float sleepTime;
@@ -182,10 +186,13 @@ int start_flag_detected = FALSE;
 int start_flag_complete = FALSE;
 int end_flag_detected = FALSE;
 int jpeg_start = 0;
-#define CAMERA_TIMEOUT 2000 // 10000 // 20000  // Payload timeout in milli seconds
+#define CAMERA_TIMEOUT 2000 // 1500 // 2000 // 10000 // 20000  // Payload timeout in milli seconds
 
 void battery_saver(int setting);
-int battery_saver_check(); 
+int battery_saver_check();
+int pi_zero_2_offset = 0;
+
 
 int hab_mode = FALSE; 
 int battery_saver_mode = FALSE;
+long int loopTime;

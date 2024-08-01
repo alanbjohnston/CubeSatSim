@@ -1,16 +1,14 @@
 [Unit]
-Description=CubeSatSim service
+Description=Command service
 
 [Service]
 TimeoutStopSec=5
-ExecStart=/home/pi/CubeSatSim/cubesatsim
+ExecStart=/home/pi/CubeSatSim/command
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
 Restart=always
 User=root
-CPUAccounting=true
-CPUQuota=7%
 
 [Install]
 WantedBy=default.target

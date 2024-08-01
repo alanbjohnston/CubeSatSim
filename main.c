@@ -19,28 +19,58 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
  
-
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
 int main(int argc, char * argv[]) {
 
-
   char resbuffer[1000];
-  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";
+//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi test result: %s\n", resbuffer);
   fclose(file_test);	
+
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  printf("Uptime sec: %f \n", uptime_sec);	  
+  fclose(uptime_file);
   
   fprintf(stderr, " %x ", resbuffer[0]);
   fprintf(stderr, " %x \n", resbuffer[1]);	
-  if ((resbuffer[0] == '9') && (resbuffer[1] == '0')) 
+  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
-    sleep(5);  // try sleep at start to help boot
     // voltageThreshold = 3.7;
-    printf("Pi Zero 2 detected\n");
+    fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
+    pi_zero_2_offset = 500;
+    if (uptime_sec < 30.0) {
+	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+  	pclose(rpitx_stop);   
+        fprintf(stderr, "Sleep 5 sec");    
+	sleep(5);  // try sleep at start to help boot
+    }
+  }
+  else {
+    fprintf(stderr,"Pi Zero detected\n");
+    FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+    if (command_file == NULL) {
+	    pi_zero_2_offset = 500;
+	    fprintf(stderr,"Command and control is OFF\n");
+    } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+		    pi_zero_2_offset = 500;
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
+	    }
+    }
+    if (uptime_sec < 30.0) {
+	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+  	pclose(rpitx_stop);
+	fprintf(stderr,"Sleep 10 sec");    
+    	sleep(10);
+    }
   }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
@@ -59,11 +89,11 @@ int main(int argc, char * argv[]) {
 
 //  char * cfg_buf[100];
 
-  fscanf(config_file, "%s %d %f %f %s %d %s %s %s", 
-	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes);
+  fscanf(config_file, "%s %d %f %f %s %d %s %s %s %d %d", 
+	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes, & rx_pl, & tx_pl);
   fclose(config_file);
-  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s\n", 
-	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes);
+  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d\n", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
 
   fprintf(stderr, "Transmit on %s Receive on %s\n", tx, rx);
 
@@ -99,8 +129,11 @@ int main(int argc, char * argv[]) {
   }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
-  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
-  pclose(rpitx_stop);
+//  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
+
+
+//  FILE * cc_start = popen("/home/pi/CubeSatSim/command &", "r");
+//  pclose(cc_start);	
 	
 //  FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
 //  pclose(file_deletes);	
@@ -176,6 +209,12 @@ int main(int argc, char * argv[]) {
      } else if ( mode_string == 'm') {
         mode = CW;
         printf("Mode is CW\n");
+     } else if ( mode_string == 'e') {
+        mode = REPEATER;
+        printf("Mode is Repeater\n");
+     } else if ( mode_string == 'n') {
+        mode = TXCOMMAND;
+        printf("Mode is Transmit Command\n");	      
       } else {
         printf("Mode is FSK\n");
       }	    
@@ -240,9 +279,23 @@ int main(int argc, char * argv[]) {
     pclose(file);
   }	
 
-  txLed = 0; // defaults for vB3 board without TFB
-  txLedOn = LOW;
-  txLedOff = HIGH;
+          txLed = 2;
+          txLedOn = HIGH;
+          txLedOff = LOW;
+          vB5 = TRUE;
+          onLed = 27;
+          onLedOn = HIGH;
+          onLedOff = LOW;
+
+
+	pinMode(26, INPUT);
+        pullUpDnControl(26, PUD_UP);
+
+        if (digitalRead(26) != HIGH) {
+          printf("v1 Present with UHF BPF\n");
+	  transmit = TRUE;
+	}
+/*	
   if (!ax5043) {
     pinMode(2, INPUT);
     pullUpDnControl(2, PUD_UP);
@@ -306,15 +359,16 @@ int main(int argc, char * argv[]) {
       }
     }
   }
-  pinMode(txLed, OUTPUT);
-  digitalWrite(txLed, txLedOff);
+	  */
+//  pinMode(txLed, OUTPUT);
+//  digitalWrite(txLed, txLedOff);
   #ifdef DEBUG_LOGGING
-  printf("Tx LED Off\n");
+//  printf("Tx LED Off\n");
   #endif
-  pinMode(onLed, OUTPUT);
-  digitalWrite(onLed, onLedOn);
+//  pinMode(onLed, OUTPUT);
+//  digitalWrite(onLed, onLedOn);
   #ifdef DEBUG_LOGGING
-  printf("Power LED On\n");
+//  printf("Power LED On\n");
   #endif
 /*
   if (mode == SSTV) {	
@@ -325,7 +379,7 @@ int main(int argc, char * argv[]) {
   }	
 */
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %d %d", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
@@ -361,7 +415,7 @@ int main(int argc, char * argv[]) {
   char camera_present[] = "supported=1 detected=1";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
-  //  printf("Camera result:%s camera: %d \n", & cmdbuffer1, camera);
+  printf("Camera result:%s camera: %d \n", & cmdbuffer, camera);
   pclose(file4);
 
   #ifdef DEBUG_LOGGING
@@ -369,16 +423,19 @@ int main(int argc, char * argv[]) {
   #endif
 		
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
-  file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
+  //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
   if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
-
+    fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
-      printf("Serial opened to Pico\n");	    
-//      payload = ON;	    
+      fprintf(stderr,"Serial opened to Pico\n");	    
+//      payload = ON;	
+      payload = get_payload_serial(FALSE); 
+      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	    
+	    
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
@@ -433,11 +490,11 @@ int main(int argc, char * argv[]) {
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
   }
 
-  tx_freq_hz -= tx_channel * 50000;
+  // tx_freq_hz -= tx_channel * 50000;
 
   if (transmit == FALSE) {
 
-    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, "\nNo CubeSatSim Low Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
@@ -535,8 +592,7 @@ int main(int argc, char * argv[]) {
     other_min[i] = 1000.0;
     other_max[i] = -1000.0;
   }
-	
-  long int loopTime;
+
   loopTime = millis();	
 	
   while (loop-- != 0) {
@@ -556,20 +612,16 @@ int main(int argc, char * argv[]) {
     uptime = (int) (uptime_sec + 0.5);
 //    printf("Uptime sec: %f \n", uptime_sec);	  
 //    #ifdef DEBUG_LOGGING
-    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+//    printf("INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
 //    #endif
     fclose(uptime_file);
-	  
-    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
-    fflush(stdout);
-    loopTime = millis();
 
    {
       int count1;
       char * token;
       fputc('\n', file1);
       fgets(cmdbuffer, 1000, file1);
-      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
+//      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
 
 //      serialPuts(uart_fd, cmdbuffer);   // write INA data to Pico over serial
 
@@ -613,20 +665,20 @@ int main(int argc, char * argv[]) {
 	payload = get_payload_serial(FALSE);      
         printf("get_payload_status: %d \n", payload);  // not debug
 	fflush(stdout); 
-	printf("String: %s\n", buffer2);       
+//	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
 	strcpy(sensor_payload, buffer2);      
-	printf(" Response from STEM Payload board: %s\n", sensor_payload);
+//	printf(" Response from STEM Payload board: %s\n", sensor_payload);
 
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
-        printf("Writing payload string\n");
+//        printf("Writing payload string\n");
         time_t timeStamp;
         time(&timeStamp);   // get timestamp 
 //      printf("Timestamp: %s\n", ctime(&timeStamp));
 	    
         char timeStampNoNl[31], bat_string[31];    
         snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
-        printf("TimeStamp: %s\n", timeStampNoNl);
+//        printf("TimeStamp: %s\n", timeStampNoNl);
         snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
@@ -643,7 +695,7 @@ int main(int argc, char * argv[]) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
-                printf("sensor: %f ", sensor[count1]);  // print sensor data
+//                printf("sensor: %f ", sensor[count1]);  // print sensor data
 //              #endif
               token = strtok(NULL, space);
             }
@@ -672,8 +724,8 @@ int main(int argc, char * argv[]) {
       if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
      		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
-       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
-	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
+//       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
+//	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
 	  
@@ -773,7 +825,7 @@ int main(int argc, char * argv[]) {
     }   
 	  
     #ifdef DEBUG_LOGGING
-    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
+//    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
     #endif
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
@@ -800,7 +852,11 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Battery voltage too low: %f V - shutting down!\n", batteryVoltage);
       digitalWrite(txLed, txLedOff);
       digitalWrite(onLed, onLedOff);
-      
+
+      FILE * file6;	    
+      file6 = popen("echo 'shutdown due to low battery voltage!' | wall", "r");
+      pclose(file6);   
+      	    
       sleep(1);
       digitalWrite(onLed, onLedOn);
       sleep(1);
@@ -810,7 +866,6 @@ int main(int argc, char * argv[]) {
       sleep(1);
       digitalWrite(onLed, onLedOff);
 
-      FILE * file6; // = popen("/home/pi/CubeSatSim/log > shutdown_log.txt", "r");
       file6 = popen("sudo shutdown -h now > /dev/null 2>&1", "r");
       pclose(file6);
       sleep(10);
@@ -819,7 +874,7 @@ int main(int argc, char * argv[]) {
 	  
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
-    	printf("Writing telem_string.txt\n");
+//    	printf("Writing telem_string.txt\n");
 	if (batteryVoltage != 4.5)    
     		fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	
 	else
@@ -839,17 +894,17 @@ int main(int argc, char * argv[]) {
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
       sleep(25);
-      fprintf(stderr, "INFO: Sleeping for 25 sec\n");	 
+//      fprintf(stderr, "INFO: Sleeping for 25 sec\n");	 
 	    
       int rand_sleep = (int)rnd_float(0.0, 5.0);	    
       sleep(rand_sleep);	    
-      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
+//      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	    
-      fprintf(stderr, "Sleeping\n");
-      sleep(50);	    
+//      fprintf(stderr, "Sleeping\n");
+      sleep(30);	    
     }
 
     #ifdef DEBUG_LOGGING
@@ -862,17 +917,17 @@ int main(int argc, char * argv[]) {
     #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 1\n");
     #endif
-    printf("Sleeping to allow BPSK transmission to finish.\n");
+//    printf("Sleeping to allow BPSK transmission to finish.\n");
     sleep((unsigned int)(loop_count * 5));
-    printf("Done sleeping\n");
+ //   printf("Done sleeping\n");
 //    digitalWrite(txLed, txLedOff);
     #ifdef DEBUG_LOGGING
 //    printf("Tx LED Off\n");
     #endif
   } else if (mode == FSK) {
-    printf("Sleeping to allow FSK transmission to finish.\n");
+//    printf("Sleeping to allow FSK transmission to finish.\n");
     sleep((unsigned int)loop_count);
-    printf("Done sleeping\n");
+//    printf("Done sleeping\n");
   }
 
   return 0;
@@ -1182,19 +1237,23 @@ void get_tlm_fox() {
 /**/
 //      while ((millis() - sampleTime) < (unsigned int)samplePeriod)
      int startSleep = millis();	    
-     if ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100 500 for FSK
+     if ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  // was 250 100 500 for FSK
 //        sleep(2.0); // 0.5);  // 25);  // initial period
         sleep(1.0); // 0.5);  // 25);  // initial period
-     while ((millis() - sampleTime) < ((unsigned int)frameTime - 250))  // was 250 100
+     while ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  // was 250 100
         sleep(0.1); // 25); // 0.5);  // 25);
 //        sleep((unsigned int)sleepTime);
 /**/
-      printf("Sleep period: %d\n", millis() - startSleep);
+      printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, (unsigned int)frameTime - 750 + pi_zero_2_offset);
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
     } else
       printf("first time - no sleep\n");
+
+    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
+    fflush(stdout);
+    loopTime = millis();	  
 	
 //    if (mode == FSK) 
     {  // just moved
@@ -1222,7 +1281,7 @@ void get_tlm_fox() {
       	  if (mode == FSK)
 	  {
 	      if (loop % 32 == 0) {  // was 8
-		printf("Sending MIN frame \n");
+//		printf("Sending MIN frame \n");
 		frm_type = 0x03;
 		for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 		  if (count1 < 3)
@@ -1236,7 +1295,7 @@ void get_tlm_fox() {
 		}
 	      }
 	      if ((loop + 16) % 32 == 0) {  // was 8
-		printf("Sending MAX frame \n");
+//		printf("Sending MAX frame \n");
 		frm_type = 0x02;
 		for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 		  if (count1 < 3)
@@ -1480,7 +1539,7 @@ void get_tlm_fox() {
     } else
 	    printf("Error opening command_count.txt!\n");
     
-    printf("Command count: %d\n", groundCommandCount);	  
+//    printf("Command count: %d\n", groundCommandCount);	  
     
     int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
@@ -1735,14 +1794,14 @@ void get_tlm_fox() {
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
     fflush(stdout);	  
     
     if (sock_ret < (ctr * 2 + 2)) {
   //    printf("Not resending\n");
       sleep(0.5);
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+//      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
 	  
     loop_count++;	  
@@ -1766,7 +1825,7 @@ void get_tlm_fox() {
       {
 	      start = millis();  // send frame until buffer fills
 	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
-	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
+//	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
 	      
 	      if ((millis() - start) > 500) {
 		      printf("Buffer over filled!\n");
@@ -2140,6 +2199,8 @@ if (setting == ON) {
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
 		fprintf(stderr,"Turning Battery saver mode ON\n");  
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
+			pclose(command);
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
@@ -2154,6 +2215,8 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
+			pclose(command);
 			command = popen("sudo reboot now", "r");
 		  	pclose(command);
 			sleep(60);
