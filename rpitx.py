@@ -770,6 +770,10 @@ if __name__ == "__main__":
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
+			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
+			GPIO.setup(txLed, GPIO.OUT)
+			GPIO.setup(powerPin, GPIO.OUT)
+			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
 			GPIO.output(powerPin, 0)
 			while True:
 				sleep(0.5)
