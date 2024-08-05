@@ -386,7 +386,7 @@ if __name__ == "__main__":
 #			output(pd, 1)
 #			output (ptt, 0)
 #			sleep(0.1)
-#			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+#			system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/morse.wav")
 #			sleep(0.1)
 #			output (ptt, 1)
 #			output(pd, 0)
@@ -447,7 +447,7 @@ if __name__ == "__main__":
 							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
 							sleep(0.3)   # add even more time at start
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")							
+							system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/telem.wav")							
 							sleep(0.2)  # add more time at end
 							output (ptt, 1)
 #							output(pd, 0)							
@@ -498,7 +498,7 @@ if __name__ == "__main__":
 #								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
-								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
+								system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/morse.wav")
 								sleep(0.1)
 								output (ptt, 1)
 #								output (pd, 0)
@@ -558,7 +558,7 @@ if __name__ == "__main__":
 						if (txc):
 #							output(pd, 1)
 							output (ptt, 0)
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
 							output (ptt, 1)
 #							output(pd, 0)
 						else:	
@@ -618,7 +618,7 @@ if __name__ == "__main__":
 						if (txc):
 #							output(pd, 1)
 							output (ptt, 0)
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
+							system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
 							output(ptt, 1)
 #							output (pd, 0)
 						else:	
@@ -655,7 +655,7 @@ if __name__ == "__main__":
 						if (txc):
 #							output(pd, 1)
 							output (ptt, 0)
-							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 							output(ptt, 1)
 #							output (pd, 0)
 						else:	
@@ -691,7 +691,7 @@ if __name__ == "__main__":
 							if (txc):
 #								output(pd, 1)
 								output (ptt, 0)
-								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+								system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 								output(ptt, 1)
 #								output (pd, 0)
 							else:
@@ -722,7 +722,7 @@ if __name__ == "__main__":
 							if (txc):
 #								output(pd, 1)
 								output (ptt, 0)		
-								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv.wav")
+								system("aplay -D hw:CARD=Device,DEV=0 /home/pi/CubeSatSim/sstv.wav")
 								output(ptt, 1)
 #								output (pd, 0)		
 							else:
