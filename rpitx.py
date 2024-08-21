@@ -431,7 +431,7 @@ if __name__ == "__main__":
 					f.close()
 					if (debug_mode == 1):
 						print("Packet ready!")
-					system("gen_packets -a 200 -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000")
+					system("gen_packets -a 300 -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000")
 					system("cat /home/pi/CubeSatSim/t.txt")
 					if (command_tx == True):
 						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
@@ -454,9 +454,9 @@ if __name__ == "__main__":
 						else:
 							system("echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt")
 							if (debug_mode == 1):
-								system("gen_packets -a 200 -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+								system("gen_packets -a 300 -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								system("gen_packets -a 200 -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+								system("gen_packets -a 300 -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 					
 						sleep(0.1)  
 #						output (ptt, 1)
