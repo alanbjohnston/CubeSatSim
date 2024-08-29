@@ -1529,6 +1529,10 @@ void get_tlm_fox() {
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
 //    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
+
+    sensor[XS2] = 100.0;	 
+    sensor[XS2] = 1000;	  
+    sensor[XS3] = 500;	
 	  
     encodeB(b, 49 + head_offset, (int)(sensor[XS1]));
     encodeA(b, 0 + head_offset, (int)(sensor[XS2]));
