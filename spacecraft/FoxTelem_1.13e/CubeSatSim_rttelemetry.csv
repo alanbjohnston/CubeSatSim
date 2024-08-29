@@ -21,7 +21,7 @@
 19,RT,PANEL_MINUS_Z_I,12,mA,cubesatsim_current,-Z Panel,12,2,3,Current,INA219 -Z Panel Current
 20,RT,BATT2_V,12,V,cubesatsim_voltage|FLOAT2,PSU,5,1,3,Battery2 Voltage,Battery2 Voltage
 21,RT,SPIN,12,rpm,cubesatsim_rpm,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
-22,RT,Pressure,hPa,cubesatsim_pressure,Experiments,6,3,3,BME280 Pressure,STEM Payload Sensor BME280 Pressure
+22,RT,Pressure,12,hPa,cubesatsim_pressure,Experiments,6,3,3,BME280 Pressure,STEM Payload Sensor BME280 Pressure
 23,RT,Altitude,12,m,cubesatsim_altitude,Experiments,6,4,3,BME280 Altitude,STEM Payload Sensor BME280 Altitude
 24,RT,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
 25,RT,RSSI,12,dBm,cubesatsim_rssi|INT,Radio,1,1,3,RSSI,Received Signal Strength Indication
