@@ -32,7 +32,7 @@
 30,realTime,Humidity,12,%,cubesatsim_temperature,Experiments,6,5,3,BME280 Humidity,BME280 Humidity
 31,realTime,BAT2_I,12,mA,cubesatsim_current,Battery2,5,2,3,Battery2 Current,INA219 Battery2 Current
 32,realTime,DiodeTemp,12,C,cubesatsim_rpm,Experiments,6,6,3,Diode Temp,STEM Payload Diode Temperature
-33,realTime,Sensor1,12,integer,1,6,7,3,Sensor 1,STEM Payload Extra Sensor 1
+33,realTime,Sensor1,12,integer,1,Experiments,6,7,3,Sensor 1,STEM Payload Extra Sensor 1
 34,realTime,STEMPayloadStatus,1,-,17,Experiments,6,1,0,STEM Payload Status, STEM Payload STEM Payload board failure Indicator
 35,realTime,SafeMode,1,-,STATUS_ON_OFF,Computer Software,3,2,0,Safe Mode, Safe Mode (Low Battery Voltage)
 36,realTime,SimulatedTelemetry,1,-,STATUS_ON_OFF,Computer Software,3,4,0,Simulated Telemetry,Simulated Telemetry Indicator
