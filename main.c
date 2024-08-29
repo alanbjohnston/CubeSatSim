@@ -1359,8 +1359,8 @@ void get_tlm_fox() {
 
     // read payload sensor if available
 
-    encodeA(b, 0 + head_offset, batt_a_v);
-    encodeB(b, 1 + head_offset, batt_b_v);
+//    encodeA(b, 0 + head_offset, batt_a_v);  // replaced by XS2 and XS3 below
+//    encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
 
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
@@ -1528,8 +1528,12 @@ void get_tlm_fox() {
 
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
-    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
-
+//    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
+	  
+    encodeB(b, 49 + head_offset, (int)(sensor[XS1]));
+    encodeA(b, 0 + head_offset, (int)(sensor[XS2]));
+    encodeB(b, 1 + head_offset, (int)(sensor[XS3]));
+	  
     FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
     if (command_count_file != NULL) {	
       char count_string[10];	
