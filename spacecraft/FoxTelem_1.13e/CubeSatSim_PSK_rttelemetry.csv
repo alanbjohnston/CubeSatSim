@@ -1,4 +1,4 @@
-60,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+61,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
 0,realTime,Sensor2,12,integer,1,Experiments,6,8,3,Sensor2,STEM Payload Extra Sensor2
 1,realTime,Sensor3,12,integer,1,Experiments,6,9,3,Sensor3,STEM Payload Extra Sensor3
 2,realTime,BATT_V,12,V,cubesatsim_voltage|FLOAT2,Battery,4,1,3,Battery Voltage,INA219 Battery Voltage
@@ -45,17 +45,18 @@
 43,realTime,RxAntenna,1,-,16,Radio,1,3,0,RX Antenna,Receive antenna status
 44,realTime,TxAntenna,1,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
 45,realTime,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control Status, Command & Control Status
-46,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
-47,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
-48,realTime,rf6,12,-,0,NONE,0,0,0,None,None
-49,realTime,rf7,12,-,0,NONE,0,0,0,None,None
-50,realTime,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
-51,realTime,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
-52,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
-53,realTime,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
-54,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
-55,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
-56,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
-57,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
-58,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
-59,realTime,pad2,29,-,0,NONE,0,0,0,NONE,Filler
+46,realTime,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
+47,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
+48,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
+49,realTime,rf6,12,-,0,NONE,0,0,0,None,None
+50,realTime,rf7,12,-,0,NONE,0,0,0,None,None
+51,realTime,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
+52,realTime,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
+53,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
+54,realTime,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
+55,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
+56,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
+57,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
+58,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
+59,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
+60,realTime,pad2,27,-,0,NONE,0,0,0,NONE,Filler
