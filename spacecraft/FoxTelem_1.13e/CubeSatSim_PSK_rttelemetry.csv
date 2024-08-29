@@ -58,4 +58,4 @@
 56,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
 57,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 58,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
-59,realTime,pad2,28,-,0,NONE,0,0,0,NONE,Filler
+59,realTime,pad2,29,-,0,NONE,0,0,0,NONE,Filler
