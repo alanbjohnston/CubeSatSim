@@ -1,6 +1,6 @@
 46,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
-0,RT,Sensor2,12,V,cubesatsim_voltage|FLOAT2,NONE,0,0,3,Sensor2,STEM Payload Extra Sensor2
-1,RT,Sensor3,V,cubesatsim_voltage|FLOAT2,NONE,0,0,3,Sensor23,STEM Payload Extra Sensor3
+0,RT,Sensor2,V,cubesatsim_voltage|FLOAT2,NONE,0,0,3,Sensor2,STEM Payload Extra Sensor2
+1,RT,Sensor3,V,cubesatsim_voltage|FLOAT2,NONE,0,0,3,Sensor3,STEM Payload Extra Sensor3
 2,RT,BATT_V,12,V,cubesatsim_voltage|FLOAT2,Battery,4,1,3,Cell A+B+C Voltage,INA219 Battery A+B+C Voltage
 3,RT,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+X Panel,7,4,3,Acceleration,STEM Payload Board MPU6050 Acceleration around X Axis
 4,RT,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,+Y Panel,8,4,3,Acceleration,STEM Payload Board MPU6050 Acceleration around Y Axis
