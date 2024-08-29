@@ -1,0 +1,61 @@
+60,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+0,MIN,BATT_A_V,12,V,4,NONE,4,1,3,Cell A,Battery pair A voltage (0-2.5V scale)
+1,MIN,BATT_B_V,12,V,4,NONE,4,2,3,Cell A + B,Battery pairs A+B voltage (0-3.3V scale)
+2,MIN,BATT_V,12,V,cubesatsim_voltage|FLOAT2,NONE,4,1,3,Cell A+B+C Voltage,Battery A+B+C voltage (0-5.0V scale)
+3,MIN,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,NONE,7,4,3,Acceleration,Acceleration around X Axis
+4,MIN,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,NONE,8,4,3,Acceleration,Acceleration around Y Axis
+5,MIN,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,NONE,9,4,3,Acceleration,Acceleration around Z Axis
+6,MIN,battCurr,12,mA,cubesatsim_current,NONE,4,2,3,Current,Total Battery DC current
+7,MIN,Temperature,12,C,cubesatsim_temperature,NONE,6,2,3,Temp,STEM Payload Sensor Temperature
+8,MIN,posXv,12,V,cubesatsim_voltage|FLOAT2,NONE,7,1,3,Voltage,+X solar Panel voltage
+9,MIN,posYv,12,V,cubesatsim_voltage|FLOAT2,NONE,8,1,3,Voltage,+Y solar Panel voltage
+10,MIN,posZv,12,V,cubesatsim_voltage|FLOAT2,NONE,9,1,3,Voltage,+Z solar Panel voltage
+11,MIN,negXv,12,V,cubesatsim_voltage|FLOAT2,NONE,10,1,3,Voltage,-X solar Panel voltage
+12,MIN,negYv,12,V,cubesatsim_voltage|FLOAT2,NONE,11,1,3,Voltage,-Y solar Panel voltage
+13,MIN,negZv,12,V,cubesatsim_voltage|FLOAT2,NONE,12,1,3,Voltage,-Z solar Panel voltage
+14,MIN,posXi,12,mA,cubesatsim_current,NONE,7,2,3,Current,+X solar Panel current
+15,MIN,posYi,12,mA,cubesatsim_current,NONE,8,2,3,Current,+Y solar Panel current
+16,MIN,posZi,12,mA,cubesatsim_current,NONE,9,2,3,Current,+Z solar Panel current
+17,MIN,negXi,12,mA,cubesatsim_current,NONE,10,2,3,Current,-X solar Panel current
+18,MIN,negYi,12,mA,cubesatsim_current,NONE,11,2,3,Current,-Y solar Panel current
+19,MIN,negZi,12,mA,cubesatsim_current,NONE,12,2,3,Current,-Z solar Panel current
+20,MIN,PSUVoltage,12,V,cubesatsim_voltage|FLOAT2,NONE,5,1,3,Board Voltage,Power Supply Voltage
+21,MIN,spin,12,rpm,cubesatsim_rpm,NONE,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
+22,MIN,Pressure,12,hPa,cubesatsim_pressure,NONE,6,3,3,Pressure,STEM Payload Sensor Pressure
+23,MIN,Altitude,12,m,cubesatsim_altitude,NONE,6,4,3,Altitude,STEM Payload Sensor Altitude
+24,MIN,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
+25,MIN,rssi,12,dBm,cubesatsim_rssi|INT,NONE,1,1,3,RSSI,Received Signal Strength Indication
+26,MIN,IHUcpuTemp,12,C,cubesatsim_temperature,NONE,2,1,3,Temperature,Internal Temperature of IHU
+27,MIN,SatelliteXAxisAngularVelocity,12,dps,cubesatsim_rotation,NONE,7,3,3,Rotation,Angular Veolcity around X Axis
+28,MIN,SatelliteYAxisAngularVelocity,12,dps,cubesatsim_rotation,NONE,8,3,3,Rotation,Angular Veolcity around Y Axis
+29,MIN,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation,NONE,9,3,3,Rotation,Angular Veolcity around Z Axis
+30,MIN,Humidity,12,%,cubesatsim_temperature,NONE,6,5,3,Humidity,Humidity
+31,MIN,PSUCurrent,12,mA,cubesatsim_current,NONE,5,2,3,Current,Power Supply DC Current
+32,MIN,Sensor1,12,C,cubesatsim_rpm ,NONE,6,6,3,Diode Temperature,STEM Payload Extra Sensor 1 (Diode Temperature)
+33,MIN,Sensor2,12,signed raw,cubesatsim_rpm ,NONE,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
+34,MIN,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
+35,MIN,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
+36,MIN,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
+37,MIN,rf6,12,-,0,NONE,0,0,0,None,None
+38,MIN,rf7,12,-,0,NONE,0,0,0,None,None
+39,MIN,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
+40,MIN,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
+41,MIN,pad,4,-,34,NONE,0,0,0,None,Unused
+42,MIN,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
+43,MIN,STEMPayloadStatus,1,-,17,NONE,6,1,0,STEM Payload Status, STEM Payload STEM Payload Board Failure Indicator
+44,MIN,Nominal Mode,1,-,17,NONE,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
+45,MIN,expFailure2,1,-,17,NONE,6,7,0,Exp 2,Experiment 2 Failure Indicator
+46,MIN,expFailure3,1,-,17,NONE,6,8,0,Exp 3,Experiment 3 Failure Indicator
+47,MIN,I2CfailureBatt,1,-,17,NONE,2,2,0,Battery I2C,Battery I2C Bus failure indicator
+48,MIN,I2CfailurePSU1,1,-,17,NONE,2,3,0,PSU1 I2C,PSU2 I2C Bus failure indicator
+49,MIN,I2CfailurePSU2,1,-,17,NONE,2,4,0,PSU2 I2C,PSU2 I2C Bus failure indicator
+50,MIN,TLMresets,4,-,1,NONE,2,6,0,Ground Resets,Number of times command stations reset stored telemetry
+51,MIN,RxAntDeploy,1,-,16,NONE,1,3,0,RX Antenna,2m Antenna status
+52,MIN,TxAntDeploy,2,-,16,NONE,1,2,0,TX Antenna,70cm Antenna status
+53,MIN,I2CfailureRF,1,-,17,NONE,2,5,0,RF I2C,RF I2C Bus failure indicator
+54,MIN,pad1,1,-,0,NONE,0,0,0,NONE,Filler
+55,MIN,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
+56,MIN,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
+57,MIN,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
+58,MIN,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
+59,MIN,pad2,28,-,0,NONE,0,0,0,NONE,Filler
