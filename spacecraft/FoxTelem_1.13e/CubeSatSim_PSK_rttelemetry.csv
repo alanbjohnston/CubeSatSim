@@ -1,4 +1,4 @@
-61,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+60,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
 0,realTime,Sensor2,12,integer,1,Experiments,6,8,3,Sensor2,STEM Payload Extra Sensor2
 1,realTime,Sensor3,12,integer,1,Experiments,6,9,3,Sensor3,STEM Payload Extra Sensor3
 2,realTime,BATT_V,12,V,cubesatsim_voltage|FLOAT2,Battery,4,1,3,Battery Voltage,INA219 Battery Voltage
@@ -43,8 +43,8 @@
 41,realTime,CameraFailure,1,-,17,Computer Hardware,2,4,0,Camera,Camera failure indicator
 42,realTime,GroundCommands,4,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
 43,realTime,RxAntenna,1,-,16,Radio,1,3,0,RX Antenna,Receive antenna status
-44,realTime,TxAntenna,2,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
-45,realTime,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
+44,realTime,TxAntenna,1,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
+45,realTime,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control Status, Command & Control Status
 46,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
 47,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
 48,realTime,rf6,12,-,0,NONE,0,0,0,None,None
@@ -58,5 +58,4 @@
 56,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
 57,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 58,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
-59,realTime,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control Status, Command & Control Status
-60,realTime,pad2,27,-,0,NONE,0,0,0,NONE,Filler
+59,realTime,pad2,28,-,0,NONE,0,0,0,NONE,Filler
