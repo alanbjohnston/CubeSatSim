@@ -1,4 +1,4 @@
-46,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
+47,TYPE,FIELD,BITS,UNIT,CONVERSION,MODULE,MODULE_NUM,MODULE_LINE,LINE_TYPE,SHORT_NAME,DESCRIPTION
 0,RT,Sensor2,12,integer,1,Experiments,6,8,3,Sensor2,STEM Payload Extra Sensor2
 1,RT,Sensor3,12,integer,1,Experiments,6,9,3,Sensor3,STEM Payload Extra Sensor3
 2,RT,BATT_V,12,V,cubesatsim_voltage|FLOAT2,Battery,4,1,3,Battery Voltage,INA219 Battery Voltage
@@ -45,4 +45,4 @@
 43,RT,RXAntenna,1,-,16,Radio,1,3,0,RX Antenna,Receive antenna status
 44,RT,TXAntenna,1,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
 45,RT,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,2,5,0,Command & Control Status, Command & Control Status
-46,RT,Pad,58,-,0,NONE,0,0,0,NONE,NONE
+46,RT,Pad,57,-,0,NONE,0,0,0,NONE,NONE
