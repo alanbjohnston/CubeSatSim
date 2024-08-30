@@ -52,7 +52,7 @@
 50,MAX,TLMresets,4,-,1,NONE,2,6,0,Ground Resets,Number of times command stations reset stored telemetry
 51,MAX,RxAntDeploy,1,-,16,NONE,1,3,0,RX Antenna,2m Antenna status
 52,MAX,TxAntDeploy,1,-,16,NONE,1,2,0,TX Antenna,70cm Antenna status
-53,realTime,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control Status, Command & Control Status
+53,MAX,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control Status, Command & Control Status
 54,MAX,I2CfailureRF,1,-,17,NONE,2,5,0,RF I2C,RF I2C Bus failure indicator
 55,MAX,pad1,1,-,0,NONE,0,0,0,NONE,Filler
 56,MAX,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
