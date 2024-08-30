@@ -44,8 +44,8 @@
 42,MIN,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
 43,MIN,STEMPayloadStatus,1,-,17,NONE,6,1,0,STEM Payload Status, STEM Payload STEM Payload Board Failure Indicator
 44,MIN,Nominal Mode,1,-,17,NONE,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
-45,MIN,expFailure2,1,-,17,NONE,6,7,0,Exp 2,Experiment 2 Failure Indicator
-46,MIN,expFailure3,1,-,17,NONE,6,8,0,Exp 3,Experiment 3 Failure Indicator
+45,MIN,expFailure2,1,-,17,NONE,7,7,0,Exp 2,Experiment 2 Failure Indicator
+46,MIN,expFailure3,1,-,17,NONE,7,8,0,Exp 3,Experiment 3 Failure Indicator
 47,MIN,I2CfailureBatt,1,-,17,NONE,2,2,0,Battery I2C,Battery I2C Bus failure indicator
 48,MIN,I2CfailurePSU1,1,-,17,NONE,2,3,0,PSU1 I2C,PSU2 I2C Bus failure indicator
 49,MIN,I2CfailurePSU2,1,-,17,NONE,2,4,0,PSU2 I2C,PSU2 I2C Bus failure indicator
