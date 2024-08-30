@@ -44,7 +44,7 @@
 42,realTime,GroundCommands,4,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
 43,realTime,RxAntenna,1,-,16,Radio,1,3,0,RX Antenna,Receive antenna status
 44,realTime,TxAntenna,1,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
-45,realTime,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control Status, Command & Control Status
+45,realTime,C2CStatus,1,-,STATUS_ON_OFF,Computer Software,3,5,0,Command Control, Command & Control Status
 46,realTime,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
 47,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
 48,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
