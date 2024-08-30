@@ -31,8 +31,8 @@
 29,MAX,SatelliteZAxisAngularVelocity,12,dps,cubesatsim_rotation,NONE,9,3,3,Rotation,Angular Veolcity around Z Axis
 30,MAX,Humidity,12,%,cubesatsim_temperature,NONE,6,5,3,Humidity,Humidity
 31,MAX,PSUCurrent,12,mA,cubesatsim_current,NONE,5,2,3,Current,Power Supply DC Current
-32,MAX,DiodeTemp,12,signed raw,cubesatsim_rpm,NONE,6,6,3,Sensor 1,STEM Payload Extra Sensor 1
-33,MAX,Sensor1,12,integer,1,NONE,6,7,3,Sensor 2,STEM Payload Extra Sensor 2
+32,MAX,DiodeTemp,12,signed raw,cubesatsim_rpm,NONE,6,6,3,Sensor 1,STEM Payload Diode Sensor 
+33,MAX,Sensor1,12,integer,1,NONE,6,7,3,Sensor 1,STEM Payload Extra Sensor 1
 34,MAX,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
 35,MAX,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
 36,MAX,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
@@ -44,8 +44,8 @@
 42,MAX,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
 43,MAX,STEMPayloadStatus,1,-,17,NONE,6,1,0,STEM Payload Status, STEM Payload STEM Payload Board Failure Indicator
 44,MAX,Nominal Mode,1,-,17,NONE,3,2,0,Nominal Mode, Nominal Mode (Not Safe Mode)
-45,MAX,expFailure2,1,-,17,NONE,6,7,0,Exp 2,Experiment 2 Failure Indicator
-46,MAX,expFailure3,1,-,17,NONE,6,8,0,Exp 3,Experiment 3 Failure Indicator
+45,MAX,expFailure2,1,-,17,NONE,7,7,0,Exp 2,Experiment 2 Failure Indicator
+46,MAX,expFailure3,1,-,17,NONE,7,8,0,Exp 3,Experiment 3 Failure Indicator
 47,MAX,I2CfailureBatt,1,-,17,NONE,2,2,0,Battery I2C,Battery I2C Bus failure indicator
 48,MAX,I2CfailurePSU1,1,-,17,NONE,2,3,0,PSU1 I2C,PSU2 I2C Bus failure indicator
 49,MAX,I2CfailurePSU2,1,-,17,NONE,2,4,0,PSU2 I2C,PSU2 I2C Bus failure indicator
