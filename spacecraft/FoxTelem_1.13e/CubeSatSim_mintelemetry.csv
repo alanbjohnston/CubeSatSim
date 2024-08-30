@@ -5,7 +5,7 @@
 3,MIN,SatelliteXAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,NONE,7,4,3,Acceleration,Acceleration around X Axis
 4,MIN,SatelliteYAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,NONE,8,4,3,Acceleration,Acceleration around Y Axis
 5,MIN,SatelliteZAxisAcceleration,12,g,cubesatsim_acceleration|FLOAT2,NONE,9,4,3,Acceleration,Acceleration around Z Axis
-6,MIN,TOTAL_BATT_I,12,mA,cubesatsim_current,NONE,4,2,3,Current,Total Battery DC current
+6,MIN,BATT_I,12,mA,cubesatsim_current,NONE,4,2,3,Current,Total Battery DC current
 7,MIN,Temperature,12,C,cubesatsim_temperature,NONE,6,2,3,Temperature,STEM Payload Sensor Temperature
 8,MIN,PANEL_PLUS_X_V,12,V,cubesatsim_voltage|FLOAT2,NONE,7,1,3,Voltage,+X Panel
 9,MIN,PANEL_MINUS_X_V,12,V,cubesatsim_voltage|FLOAT2,NONE,10,1,3,Voltage,-X Panel
