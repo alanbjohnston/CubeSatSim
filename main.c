@@ -1427,7 +1427,7 @@ void get_tlm_fox() {
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 	    
-      if (sensor_min[0] != 1000.0) // make sure values are valid
+      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
       {	        	    
 	      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
 	      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
