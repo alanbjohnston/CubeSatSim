@@ -363,7 +363,8 @@ if __name__ == "__main__":
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
 			ser.write(uhf_string.encode())
 			sleep(0.1)
-		ser.close()	
+		ser.close()
+		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
 	except:
 		print("Error in serial write")
 	output(pd, 0)
