@@ -888,9 +888,9 @@ int main(int argc, char * argv[]) {
 //    	printf("Writing telem_string.txt\n");
 	if (batteryVoltage != 4.5)
 		if (c2cStatus == 0)
-    			fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);
+    			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
 		else
-    			fprintf(fp, "BAT %4.2fV %5.1fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
+    			fprintf(fp, "BAT %4.2fV %4.0fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
 	else
     		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
 		
