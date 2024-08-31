@@ -25,59 +25,6 @@
 
 int main(int argc, char * argv[]) {
 	
-  FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
-  if (command_file == NULL) {
-	    fprintf(stderr,"Command and control is OFF\n");
-	    c2cStatus = 0;
-  } else {
-	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
-	    if (command_file == NULL)  {
-		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
-		    c2cStatus = 1;
-	    } else
-		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
-		    c2cStatus = 2;
-  }	
-  char resbuffer[1000];
-//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
-  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
-  FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
-  fgets(resbuffer, 1000, file_test);
-  fprintf(stderr, "Pi test result: %s\n", resbuffer);
-  fclose(file_test);	
-
-  FILE * uptime_file = fopen("/proc/uptime", "r");
-  fscanf(uptime_file, "%f", & uptime_sec);
-  printf("Uptime sec: %f \n", uptime_sec);	  
-  fclose(uptime_file);
-  
-  fprintf(stderr, " %x ", resbuffer[0]);
-  fprintf(stderr, " %x \n", resbuffer[1]);	
-  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
-  {
-    // voltageThreshold = 3.7;
-    fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
-    pi_zero_2_offset = 500;
-    if (uptime_sec < 30.0) {
-	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-  	pclose(rpitx_stop);   
-        fprintf(stderr, "Sleep 5 sec");    
-	sleep(5);  // try sleep at start to help boot
-    }
-  }
-  else {
-    fprintf(stderr,"Pi Zero detected\n");
-    if ((c2cStatus == 0) || (c2cStatus == 1))  {
-      pi_zero_2_offset = 500;
-    }
-    if (uptime_sec < 30.0) {
-      FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-      pclose(rpitx_stop);
-      fprintf(stderr,"Sleep 10 sec");    
-      sleep(10);
-    }
-  }
-	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
 
   wiringPiSetup();	
@@ -131,6 +78,59 @@ int main(int argc, char * argv[]) {
   if (strcmp(hab_yes, "yes") == 0) {
 	  hab_mode = TRUE;
 	  fprintf(stderr, "HAB mode is ON\n");
+  }	
+	
+  FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+  if (command_file == NULL) {
+	    fprintf(stderr,"Command and control is OFF\n");
+	    c2cStatus = 0;
+  } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
+		    c2cStatus = 1;
+	    } else
+		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
+		    c2cStatus = 2;
+  }	
+  char resbuffer[1000];
+//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
+  FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
+  fgets(resbuffer, 1000, file_test);
+  fprintf(stderr, "Pi test result: %s\n", resbuffer);
+  fclose(file_test);	
+
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  printf("Uptime sec: %f \n", uptime_sec);	  
+  fclose(uptime_file);
+  
+  fprintf(stderr, " %x ", resbuffer[0]);
+  fprintf(stderr, " %x \n", resbuffer[1]);	
+  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
+  {
+    // voltageThreshold = 3.7;
+    fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
+    pi_zero_2_offset = 500;
+    if (uptime_sec < 30.0) {
+	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+  	pclose(rpitx_stop);   
+        fprintf(stderr, "Sleep 5 sec");    
+	sleep(5);  // try sleep at start to help boot
+    }
+  }
+  else {
+    fprintf(stderr,"Pi Zero detected\n");
+    if ((c2cStatus == 0) || (c2cStatus == 1))  {
+      pi_zero_2_offset = 500;
+    }
+    if (uptime_sec < 30.0) {
+      FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+      pclose(rpitx_stop);
+      fprintf(stderr,"Sleep 10 sec");    
+      sleep(10);
+    }
   }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
