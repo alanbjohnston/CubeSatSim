@@ -1,0 +1,57 @@
+#Fox 1 Telemetry Decoder Properties
+#Sat Apr 11 13:20:20 EST 2020
+#File named .dat should be in the logfiles directory and is loaded by FoxTelem
+#File named .MASTER should not be edited and is a backup copy in the installation directory 
+foxId=7
+displayName=CubeSatSim-FSK
+name=CubeSatSim
+model=0
+IHU_SN=7
+catalogNumber=0
+description=CubeSatSim, the AMSAT CubeSat Simulator, is a functional satellite model that generates real telemetry from solar panels, batteries, and temperature sensors.  Use this for DUV FSK telemetry. For more information see http://cubesatsim.org
+BATTERY_CURRENT_ZERO=-1.839
+EXP1=0
+EXP2=0
+EXP3=0
+EXP4=0
+numberOfLayouts=4
+layout0.filename=FOX1A_debug.csv
+layout0.name=DEBUG
+layout1.filename=CubeSatSim_maxtelemetry.csv
+layout1.name=maxtelemetry
+layout2.filename=CubeSatSim_rttelemetry.csv
+layout2.name=rttelemetry
+layout3.filename=CubeSatSim_mintelemetry.csv
+layout3.name=mintelemetry
+#layout4.filename=FOX1A_radtelemetry.csv
+#layout4.name=radtelemetry
+#layout5.filename=FOX1A_radtelemetry2.csv
+#layout5.name=radtelemetry2
+#layout5.parentLayout=radtelemetry
+lookupTable0.filename=FOX1A_rssiFM.tab
+numberOfLookupTables=3
+lookupTable0=RSSI
+lookupTable1.filename=FOX1A_ihuVBattSN7.tab
+lookupTable1=IHU_VBATT
+lookupTable2.filename=FOX1A_ihutempSN7.tab
+lookupTable2=IHU_TEMP
+numberOfStringLookupTables=1
+stringLookupTable0.filename=status_on_off.tab
+stringLookupTable0=STATUS_ON_OFF
+telemetryDownlinkFreqkHz=434900	
+maxFreqBoundkHz=434950
+minFreqBoundkHz=434850
+measurementsFileName=measurements.csv
+memsRestValueX=2087
+memsRestValueY=2101
+memsRestValueZ=2045
+passMeasurementsFileName=passmeasurements.csv
+numberOfSources=1
+source0.name=amsat.cubesat_simulator.ihu.duv
+source0.formatName=FSK 200bps (Fox1)
+#source1.name=amsat.cubesat_simulator.ihu.highspeed
+track=false
+useIHUVBatt=true
+user_format=FSK 200bps (Fox1)
+useConversionCoeffs=true
+conversionCurvesFileName=CubeSatSim_conversion_curves.csv
