@@ -886,8 +886,11 @@ int main(int argc, char * argv[]) {
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
-	if (batteryVoltage != 4.5)    
-    		fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	
+	if (batteryVoltage != 4.5)
+		if (c2cStatus == 0)
+    			fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);
+		else
+    			fprintf(fp, "BAT %4.2fV %5.1fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
 	else
     		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
 		
@@ -902,6 +905,28 @@ int main(int argc, char * argv[]) {
 //    fprintf(stderr, "INFO: Getting TLM Data\n");
     #endif
 
+    FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+    if (command_file == NULL) {
+	    if (c2cStatus != 0) {
+	      fprintf(stderr,"Command and control is OFF\n");
+	      c2cStatus = 0;
+	    }
+    } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+	      if (c2cStatus != 1) {
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
+		    c2cStatus = 1;
+	      }
+	    } else {
+		if (c2cStatus != 2) {
+		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
+		    c2cStatus = 2;
+		}
+	    }
+    }	
+  // printf("c2cStatus: %d \n", c2cStatus);	  
+	  
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
       sleep(25);
@@ -1039,6 +1064,7 @@ void get_tlm(void) {
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi de ";
+    char command_string[] = " C";	  
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
@@ -1118,10 +1144,13 @@ void get_tlm(void) {
     printf(" Response from STEM Payload board:: %s\n", sensor_payload);
 //    printf(" Str so far: %s\n", str);   
 	  
-    if (mode != CW) {
+    if (mode != CW) 
         strcat(str, sensor_payload); // append to telemetry string for transmission
+
+    if (c2cStatus != 0)
+	strcat(str, command_string); // append command and controls string
 //	printf(" Str so far: %s\n", str);    
-    }
+
     if (mode == CW) {
 
 //      char cw_str2[1000];
@@ -1569,27 +1598,6 @@ void get_tlm_fox() {
 
     encodeA(b, 51 + head_offset, status);
 	  
-  FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
-  if (command_file == NULL) {
-	    if (c2cStatus != 0) {
-	      fprintf(stderr,"Command and control is OFF\n");
-	      c2cStatus = 0;
-	    }
-  } else {
-	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
-	    if (command_file == NULL)  {
-	      if (c2cStatus != 1) {
-		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
-		    c2cStatus = 1;
-	      }
-	    } else {
-		if (c2cStatus != 2) {
-		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
-		    c2cStatus = 2;
-		}
-	    }
-  }	
-  // printf("c2cStatus: %d \n", c2cStatus);	  
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
 
     if (txAntennaDeployed == 0) {
