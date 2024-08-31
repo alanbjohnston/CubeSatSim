@@ -89,10 +89,12 @@ int main(int argc, char * argv[]) {
 	    if (command_file == NULL)  {
 		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
 		    c2cStatus = 1;
-	    } else
+	    } else {
 		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
 		    c2cStatus = 2;
+	    }
   }	
+  printf("c2cStatus: %d", c2cStatus);	
   char resbuffer[1000];
 //  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
