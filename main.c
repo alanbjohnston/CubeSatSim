@@ -94,7 +94,7 @@ int main(int argc, char * argv[]) {
 		    c2cStatus = 2;
 	    }
   }	
-  printf("c2cStatus: %d", c2cStatus);
+  printf("c2cStatus: %d \n", c2cStatus);
 	
   char resbuffer[1000];
 //  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
@@ -1589,7 +1589,7 @@ void get_tlm_fox() {
 		}
 	    }
   }	
-  printf("c2cStatus: %d", c2cStatus);	  
+  // printf("c2cStatus: %d \n", c2cStatus);	  
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
 
     if (txAntennaDeployed == 0) {
