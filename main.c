@@ -24,7 +24,20 @@
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
 int main(int argc, char * argv[]) {
-
+	
+  FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+  if (command_file == NULL) {
+	    fprintf(stderr,"Command and control is OFF\n");
+	    c2cStatus = 0;
+  } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
+		    c2cStatus = 1;
+	    } else
+		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
+		    c2cStatus = 2;
+  }	
   char resbuffer[1000];
 //  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
@@ -54,22 +67,14 @@ int main(int argc, char * argv[]) {
   }
   else {
     fprintf(stderr,"Pi Zero detected\n");
-    FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
-    if (command_file == NULL) {
-	    pi_zero_2_offset = 500;
-	    fprintf(stderr,"Command and control is OFF\n");
-    } else {
-	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
-	    if (command_file == NULL)  {
-		    pi_zero_2_offset = 500;
-		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
-	    }
+    if (c2cStatus == 0) || (c2cStatus == 1)  {
+      pi_zero_2_offset = 500;
     }
     if (uptime_sec < 30.0) {
-	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-  	pclose(rpitx_stop);
-	fprintf(stderr,"Sleep 10 sec");    
-    	sleep(10);
+      FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+      pclose(rpitx_stop);
+      fprintf(stderr,"Sleep 10 sec");    
+      sleep(10);
     }
   }
 	
@@ -1560,7 +1565,7 @@ void get_tlm_fox() {
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
-    encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
+    encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
 
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
