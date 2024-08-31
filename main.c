@@ -67,7 +67,7 @@ int main(int argc, char * argv[]) {
   }
   else {
     fprintf(stderr,"Pi Zero detected\n");
-    if (c2cStatus == 0) || (c2cStatus == 1)  {
+    if ((c2cStatus == 0) || (c2cStatus == 1))  {
       pi_zero_2_offset = 500;
     }
     if (uptime_sec < 30.0) {
