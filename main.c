@@ -1565,6 +1565,7 @@ void get_tlm_fox() {
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
+    fprintf("c2cStatus: %d \n", c2cStatus);	  
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
 
     if (txAntennaDeployed == 0) {
