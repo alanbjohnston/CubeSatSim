@@ -1830,7 +1830,9 @@ void get_tlm_fox() {
         printf("\nConnection Failed \n");
         printf("Error: %s \n", strerror(errno));
         error = 1;
- //       sleep(1.0);  // sleep if socket connection refused
+  	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
+  	pclose(rpitx_restartf);	      
+        sleep(5.0);  // sleep if socket connection refused
       }	    
     }
     if (error == 1)
