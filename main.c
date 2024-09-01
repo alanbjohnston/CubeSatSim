@@ -1064,7 +1064,6 @@ void get_tlm(void) {
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi de ";
-    char command_string[] = " C";	  
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
@@ -1135,6 +1134,10 @@ void get_tlm(void) {
         pclose(cw_file);	     
 
     }
+    if (c2cStatus != 0) {	   
+      FILE *file_append = sopen("echo ' C' >> cw6.txt");
+      fclose(file_append);
+    }
   } else {  // APRS
 
       sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
@@ -1146,10 +1149,6 @@ void get_tlm(void) {
 	  
     if (mode != CW) 
         strcat(str, sensor_payload); // append to telemetry string for transmission
-
-    if (c2cStatus != 0)
-	strcat(str, command_string); // append command and controls string
-//	printf(" Str so far: %s\n", str);    
 
     if (mode == CW) {
 
