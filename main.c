@@ -708,9 +708,7 @@ int main(int argc, char * argv[]) {
               token = strtok(NULL, space);
             }
           }
-	  sensor[XS1] = 100;
-		sensor[XS2] = 200;
-		sensor[XS3] = 300;
+
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
 	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
