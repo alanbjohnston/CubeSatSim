@@ -1804,9 +1804,11 @@ void get_tlm_fox() {
 
     if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
       printf("\nConnection Failed \n");
-      printf("Error: %s \n", strerror(errno));
+      printf("Error: %s restarting rpitx\n", strerror(errno));
       error = 1;
-      sleep(2.0);  // sleep if socket connection refused
+  	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
+  	pclose(rpitx_restartf2);	      
+        sleep(5.0);  // sleep if socket connection refused
 
     // try again
       error = 0;
@@ -1828,7 +1830,7 @@ void get_tlm_fox() {
 
       if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
         printf("\nConnection Failed \n");
-        printf("Error: %s \n", strerror(errno));
+        printf("Error: %s restarting rpitx\n", strerror(errno));
         error = 1;
   	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
   	pclose(rpitx_restartf);	      
