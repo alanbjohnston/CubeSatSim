@@ -1596,7 +1596,8 @@ void get_tlm_fox() {
     encodeA(b, 51 + head_offset, status);
 	  
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
-
+    printf("Ant status %d \n", rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
+	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
