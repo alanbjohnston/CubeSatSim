@@ -109,8 +109,7 @@ int main(int argc, char * argv[]) {
   printf("Uptime sec: %f \n", uptime_sec);	  
   fclose(uptime_file);
   
-  fprintf(stderr, " %x ", resbuffer[0]);
-  fprintf(stderr, " %x \n", resbuffer[1]);	
+  fprintf(stderr, "hex:  %x %x %x %x \n", resbuffer[0], resbuffer[1], resbuffer[2], resbuffer[3]);
   if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
     // voltageThreshold = 3.7;
