@@ -114,7 +114,11 @@ int main(int argc, char * argv[]) {
   if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
     // voltageThreshold = 3.7;
-    fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
+    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1')) 	
+      fprintf(stderr, "Pi Zero 2 detected\n");
+    else
+      fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
+	    
     pi_zero_2_offset = 500;
     if (uptime_sec < 30.0) {
 	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
