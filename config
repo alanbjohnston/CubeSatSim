@@ -1370,9 +1370,11 @@ elif [ "$1" = "-g" ]; then
 	echo "Resetting configration back to default settings"
 	echo
 
-	echo "AMSAT 0 0 0 no 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
+	echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
 
-	restart=1
+	sudo echo "f" > /home/pi/CubeSatSim/.mode
+
+	reboot=1
 
 elif [ "$1" = "-h" ]; then
 
