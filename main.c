@@ -99,9 +99,10 @@ int main(int argc, char * argv[]) {
   char resbuffer[1000];
 //  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
   const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
+  const char test2Str[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";	
   FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
   fgets(resbuffer, 1000, file_test);
-  fprintf(stderr, "Pi test result: %s\n", resbuffer);
+  fprintf(stderr, "Pi Zero test result: %s\n", resbuffer);
   fclose(file_test);	
 
   FILE * uptime_file = fopen("/proc/uptime", "r");
@@ -109,12 +110,16 @@ int main(int argc, char * argv[]) {
   printf("Uptime sec: %f \n", uptime_sec);	  
   fclose(uptime_file);
   
-  fprintf(stderr, "hex:  %x %x %x %x \n", resbuffer[0], resbuffer[1], resbuffer[2], resbuffer[3]);
+//  fprintf(stderr, "hex:  %x %x %x %x \n", resbuffer[0], resbuffer[1], resbuffer[2], resbuffer[3]);
   if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
     // voltageThreshold = 3.7;
-//    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1')) 
-    if (strcmp(resbuffer, "902120") == 0) 	
+//    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1'))
+    *file_test = sopen(test2Str);  // see if Pi Zero 2  
+    fgets(resbuffer, 1000, file_test);
+    fprintf(stderr, "Pi Zero 2 test result: %s\n", resbuffer);
+    fclose(file_test);	  
+    if (strlen(resbuffer) > 5) 	
       fprintf(stderr, "Pi Zero 2 detected\n");
     else
       fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
