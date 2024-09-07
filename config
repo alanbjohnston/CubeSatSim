@@ -1381,13 +1381,13 @@ elif [ "$1" = "-g" ]; then
 	
 		sudo echo "f" > /home/pi/CubeSatSim/.mode
 	
-		sudo rm /home/pi/CubeSatSim/battery_saver
+		sudo rm /home/pi/CubeSatSim/battery_saver > /dev/null 2>&1
 	
-		sudo rm /home/pi/CubeSatSim/command_control
+		sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
 	
-		sudo rm /home/pi/CubeSatSim/command_control_direwolf
+		sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
 	
-		sydi rm /home/pi/CubeSatSim/beacon_off
+		sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
 	
 	        sudo echo "0" > /home/pi/CubeSatSim/command_count.txt
 	
