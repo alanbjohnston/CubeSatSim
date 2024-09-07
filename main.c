@@ -113,7 +113,8 @@ int main(int argc, char * argv[]) {
   if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
   {
     // voltageThreshold = 3.7;
-    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1')) 	
+//    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1')) 
+    if (strcmp(resbuffer, "902120") == 0) 	
       fprintf(stderr, "Pi Zero 2 detected\n");
     else
       fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
