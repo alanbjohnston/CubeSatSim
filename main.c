@@ -115,10 +115,10 @@ int main(int argc, char * argv[]) {
   {
     // voltageThreshold = 3.7;
 //    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1'))
-    *file_test = sopen(test2Str);  // see if Pi Zero 2  
-    fgets(resbuffer, 1000, file_test);
+    FILE *file2_test = sopen(test2Str);  // see if Pi Zero 2  
+    fgets(resbuffer, 1000, file2_test);
     fprintf(stderr, "Pi Zero 2 test result: %s\n", resbuffer);
-    fclose(file_test);	  
+    fclose(file2_test);	  
     if (strlen(resbuffer) > 5) 	
       fprintf(stderr, "Pi Zero 2 detected\n");
     else
