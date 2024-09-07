@@ -1364,6 +1364,16 @@ elif [ "$1" = "-L" ]; then
 		echo "Not updating mic level"
 	fi
 
+elif [ "$1" = "-g" ]; then
+
+	echo	
+	echo "Resetting configration back to default settings"
+	echo
+
+	echo "AMSAT 0 0 0 no 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
+
+	restart=1
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1399,6 +1409,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -D     Change Transmit Commands state APRS or DTMF"
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
+	echo "   -g     Reset configration back to default settings"
+
 	echo
 	exit
 
