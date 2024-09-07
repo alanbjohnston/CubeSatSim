@@ -1367,14 +1367,36 @@ elif [ "$1" = "-L" ]; then
 elif [ "$1" = "-g" ]; then
 
 	echo	
-	echo "Resetting configration back to default settings"
+	echo "Are you sure you want to reset the CubeSatSim configration back to the default settings?"
 	echo
 
-	echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
+	read rset
+	echo
+	
+	if [ "$rset" = "y" ] || [ "$rset" = "yes" ]  ; then
 
-	sudo echo "f" > /home/pi/CubeSatSim/.mode
+		echo "Resetting"
 
-	reboot=1
+		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
+	
+		sudo echo "f" > /home/pi/CubeSatSim/.mode
+	
+		sudo rm /home/pi/CubeSatSim/battery_saver
+	
+		sudo rm /home/pi/CubeSatSim/command_control
+	
+		sudo rm /home/pi/CubeSatSim/command_control_direwolf
+	
+		sydi rm /home/pi/CubeSatSim/beacon_off
+	
+	        sudo echo "0" > /home/pi/CubeSatSim/command_count.txt
+	
+		reboot=1
+	else
+
+		echo "Not resetting"
+
+	fi
 
 elif [ "$1" = "-h" ]; then
 
