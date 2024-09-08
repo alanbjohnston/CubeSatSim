@@ -47,7 +47,7 @@ int main(int argc, char * argv[]) {
   fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d\n", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
 
-  fprintf(stderr, "Transmit on %s Receive on %s\n", tx, rx);
+  fprintf(stderr, "Transmit on %s MHz Receive on %s MHz\n", tx, rx);
 
 //  program_radio();  // do in rpitx instead
 	
@@ -1822,7 +1822,7 @@ void get_tlm_fox() {
       error = 1;
   	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
   	pclose(rpitx_restartf2);	      
-        sleep(5.0);  // sleep if socket connection refused
+        sleep(5);  // sleep if socket connection refused
 
     // try again
       error = 0;
@@ -1848,7 +1848,7 @@ void get_tlm_fox() {
         error = 1;
   	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
   	pclose(rpitx_restartf);	      
-        sleep(5.0);  // sleep if socket connection refused
+        sleep(5);  // sleep if socket connection refused
       }	    
     }
     if (error == 1)
