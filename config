@@ -1366,7 +1366,6 @@ elif [ "$1" = "-L" ]; then
 
 elif [ "$1" = "-g" ]; then
 
-	echo	
 	echo "Are you sure you want to reset the CubeSatSim configration back to the default settings?"
 	echo
 
