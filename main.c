@@ -24,54 +24,6 @@
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
 int main(int argc, char * argv[]) {
-
-  char resbuffer[1000];
-//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
-  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
-  FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
-  fgets(resbuffer, 1000, file_test);
-  fprintf(stderr, "Pi test result: %s\n", resbuffer);
-  fclose(file_test);	
-
-  FILE * uptime_file = fopen("/proc/uptime", "r");
-  fscanf(uptime_file, "%f", & uptime_sec);
-  printf("Uptime sec: %f \n", uptime_sec);	  
-  fclose(uptime_file);
-  
-  fprintf(stderr, " %x ", resbuffer[0]);
-  fprintf(stderr, " %x \n", resbuffer[1]);	
-  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
-  {
-    // voltageThreshold = 3.7;
-    fprintf(stderr, "Pi Zero not detected (could be Pi Zero 2)\n");
-    pi_zero_2_offset = 500;
-    if (uptime_sec < 30.0) {
-	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-  	pclose(rpitx_stop);   
-        fprintf(stderr, "Sleep 5 sec");    
-	sleep(5);  // try sleep at start to help boot
-    }
-  }
-  else {
-    fprintf(stderr,"Pi Zero detected\n");
-    FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
-    if (command_file == NULL) {
-	    pi_zero_2_offset = 500;
-	    fprintf(stderr,"Command and control is OFF\n");
-    } else {
-	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
-	    if (command_file == NULL)  {
-		    pi_zero_2_offset = 500;
-		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
-	    }
-    }
-    if (uptime_sec < 30.0) {
-	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-  	pclose(rpitx_stop);
-	fprintf(stderr,"Sleep 10 sec");    
-    	sleep(10);
-    }
-  }
 	
   printf("\n\nCubeSatSim v1.3.2 starting...\n\n");
 
@@ -95,7 +47,7 @@ int main(int argc, char * argv[]) {
   fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d\n", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
 
-  fprintf(stderr, "Transmit on %s Receive on %s\n", tx, rx);
+  fprintf(stderr, "Transmit on %s MHz Receive on %s MHz\n", tx, rx);
 
 //  program_radio();  // do in rpitx instead
 	
@@ -126,6 +78,71 @@ int main(int argc, char * argv[]) {
   if (strcmp(hab_yes, "yes") == 0) {
 	  hab_mode = TRUE;
 	  fprintf(stderr, "HAB mode is ON\n");
+  }	
+	
+  FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+  if (command_file == NULL) {	  	
+	    fprintf(stderr,"Command and control is OFF\n");
+	    c2cStatus = 0;
+  } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
+		    c2cStatus = 1;
+	    } else {
+		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
+		    c2cStatus = 2;
+	    }
+  }	
+  printf("c2cStatus: %d \n", c2cStatus);
+	
+  char resbuffer[1000];
+//  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
+  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//'";
+  const char test2Str[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '902120'";	
+  FILE *file_test = sopen(testStr);  // see if Pi Zero 2  
+  fgets(resbuffer, 1000, file_test);
+  fprintf(stderr, "Pi Zero test result: %s\n", resbuffer);
+  fclose(file_test);	
+
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  printf("Uptime sec: %f \n", uptime_sec);	  
+  fclose(uptime_file);
+  
+//  fprintf(stderr, "hex:  %x %x %x %x \n", resbuffer[0], resbuffer[1], resbuffer[2], resbuffer[3]);
+  if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
+  {
+    // voltageThreshold = 3.7;
+//    if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '2') || (resbuffer[3] != '1'))
+    FILE *file2_test = sopen(test2Str);  // see if Pi Zero 2  
+    fgets(resbuffer, 1000, file2_test);
+    fprintf(stderr, "Pi Zero 2 test result: %s\n", resbuffer);
+    fclose(file2_test);	  
+    if (strlen(resbuffer) > 5) 	
+      fprintf(stderr, "Pi Zero 2 detected\n");
+    else
+      fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
+	    
+    pi_zero_2_offset = 500;
+    if (uptime_sec < 30.0) {
+	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+  	pclose(rpitx_stop);   
+        fprintf(stderr, "Sleep 5 sec");    
+	sleep(5);  // try sleep at start to help boot
+    }
+  }
+  else {
+    fprintf(stderr,"Pi Zero detected\n");
+    if ((c2cStatus == 0) || (c2cStatus == 1))  {
+      pi_zero_2_offset = 500;
+    }
+    if (uptime_sec < 30.0) {
+      FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
+      pclose(rpitx_stop);
+      fprintf(stderr,"Sleep 10 sec");    
+      sleep(10);
+    }
   }
 	
 //  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
@@ -700,6 +717,7 @@ int main(int argc, char * argv[]) {
               token = strtok(NULL, space);
             }
           }
+
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
 	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
@@ -875,8 +893,11 @@ int main(int argc, char * argv[]) {
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
-	if (batteryVoltage != 4.5)    
-    		fprintf(fp, "BAT %4.2fV %5.1fmA\n", batteryVoltage, batteryCurrent);	
+	if (batteryVoltage != 4.5)
+		if (c2cStatus == 0)
+    			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
+		else
+    			fprintf(fp, "BAT %4.2fV %4.0fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
 	else
     		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
 		
@@ -891,6 +912,28 @@ int main(int argc, char * argv[]) {
 //    fprintf(stderr, "INFO: Getting TLM Data\n");
     #endif
 
+    FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
+    if (command_file == NULL) {
+	    if (c2cStatus != 0) {
+	      fprintf(stderr,"Command and control is OFF\n");
+	      c2cStatus = 0;
+	    }
+    } else {
+	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
+	    if (command_file == NULL)  {
+	      if (c2cStatus != 1) {
+		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
+		    c2cStatus = 1;
+	      }
+	    } else {
+		if (c2cStatus != 2) {
+		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
+		    c2cStatus = 2;
+		}
+	    }
+    }	
+  // printf("c2cStatus: %d \n", c2cStatus);	  
+	  
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
       sleep(25);
@@ -1084,7 +1127,7 @@ void get_tlm(void) {
    if (mode == CW) {
     int channel;
     for (channel = 1; channel < 7; channel++) {
-      sprintf(tlm_str, "echo ' %d%d%d %d%d%d %d%d%d %d%d%d ' > cw%1d.txt",
+      sprintf(tlm_str, "echo -n ' %d%d%d %d%d%d %d%d%d %d%d%d ' > cw%1d.txt",
         channel, upper_digit(tlm[channel][1]), lower_digit(tlm[channel][1]),
         channel, upper_digit(tlm[channel][2]), lower_digit(tlm[channel][2]),
         channel, upper_digit(tlm[channel][3]), lower_digit(tlm[channel][3]),
@@ -1098,6 +1141,10 @@ void get_tlm(void) {
         pclose(cw_file);	     
 
     }
+    if (c2cStatus != 0) {	   
+      FILE *file_append = sopen("echo 'C' >> cw6.txt");
+      fclose(file_append);
+    }
   } else {  // APRS
 
       sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
@@ -1107,10 +1154,9 @@ void get_tlm(void) {
     printf(" Response from STEM Payload board:: %s\n", sensor_payload);
 //    printf(" Str so far: %s\n", str);   
 	  
-    if (mode != CW) {
+    if (mode != CW) 
         strcat(str, sensor_payload); // append to telemetry string for transmission
-//	printf(" Str so far: %s\n", str);    
-    }
+
     if (mode == CW) {
 
 //      char cw_str2[1000];
@@ -1359,8 +1405,8 @@ void get_tlm_fox() {
 
     // read payload sensor if available
 
-    encodeA(b, 0 + head_offset, batt_a_v);
-    encodeB(b, 1 + head_offset, batt_b_v);
+//    encodeA(b, 0 + head_offset, batt_a_v);  // replaced by XS2 and XS3 below
+//    encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
 
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
@@ -1423,8 +1469,8 @@ void get_tlm_fox() {
       encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
-	    
-      if (sensor_min[0] != 1000.0) // make sure values are valid
+
+      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
       {	        	    
 	      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
 	      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
@@ -1437,9 +1483,13 @@ void get_tlm_fox() {
 	      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 
 	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[DTEMP] * 10 + 0.5) + 2048);
-	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
+//	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
 	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
 	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
+
+	      encodeB(b_max, 49 + head_offset, (int)(sensor[XS1]));
+	      encodeA(b_max, 0 + head_offset, (int)(sensor[XS2]));
+	      encodeB(b_max, 1 + head_offset, (int)(sensor[XS3]));
       }	  
       else
       {	        	    
@@ -1452,7 +1502,7 @@ void get_tlm_fox() {
 	      encodeB(b_max, 43 + head_offset, 2048);
 
 	      encodeA(b_max, 48 + head_offset, 2048);
-	      encodeB(b_max, 49 + head_offset, 2048);
+//	      encodeB(b_max, 49 + head_offset, 2048);
       }	  	      
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
@@ -1477,7 +1527,7 @@ void get_tlm_fox() {
       encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
 	    
-      if (sensor_min[0] != 1000.0) // make sure values are valid
+      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
       {	        
 	      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
 	      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
@@ -1490,9 +1540,13 @@ void get_tlm_fox() {
 	      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
 
 	      encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);
-	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
+//	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
 	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
 	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
+
+	      encodeB(b_min, 49 + head_offset, (int)(sensor[XS1]));
+	      encodeA(b_min, 0 + head_offset, (int)(sensor[XS2]));
+	      encodeB(b_min, 1 + head_offset, (int)(sensor[XS3]));	      	      	      
     }      
       else
       {	        	    
@@ -1505,7 +1559,7 @@ void get_tlm_fox() {
 	      encodeB(b_min, 43 + head_offset, 2048);
 
 	      encodeA(b_min, 48 + head_offset, 2048);
-	      encodeB(b_min, 49 + head_offset, 2048);
+//	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
     }    
     encodeA(b, 30 + head_offset, PSUVoltage);
@@ -1528,8 +1582,12 @@ void get_tlm_fox() {
 
     encodeB(b, 46 + head_offset, PSUCurrent);
     encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
-    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
-
+//    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
+	  
+    encodeB(b, 49 + head_offset, (int)(sensor[XS1]));
+    encodeA(b, 0 + head_offset, (int)(sensor[XS2]));
+    encodeB(b, 1 + head_offset, (int)(sensor[XS3]));
+	  
     FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
     if (command_count_file != NULL) {	
       char count_string[10];	
@@ -1545,8 +1603,14 @@ void get_tlm_fox() {
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
-    encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2);
-
+    encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
+    if (mode == BPSK) {	  
+      encodeA(b_max, 51 + head_offset, status);
+      encodeA(b_min, 51 + head_offset, status);
+      encodeB(b_max, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
+      encodeB(b_min, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
+    }
+	  
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
@@ -1754,9 +1818,11 @@ void get_tlm_fox() {
 
     if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
       printf("\nConnection Failed \n");
-      printf("Error: %s \n", strerror(errno));
+      printf("Error: %s restarting rpitx\n", strerror(errno));
       error = 1;
-      sleep(2.0);  // sleep if socket connection refused
+  	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
+  	pclose(rpitx_restartf2);	      
+        sleep(5);  // sleep if socket connection refused
 
     // try again
       error = 0;
@@ -1778,9 +1844,11 @@ void get_tlm_fox() {
 
       if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
         printf("\nConnection Failed \n");
-        printf("Error: %s \n", strerror(errno));
+        printf("Error: %s restarting rpitx\n", strerror(errno));
         error = 1;
- //       sleep(1.0);  // sleep if socket connection refused
+  	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
+  	pclose(rpitx_restartf);	      
+        sleep(5);  // sleep if socket connection refused
       }	    
     }
     if (error == 1)
