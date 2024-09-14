@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  printf("CubeSatSim v1.3 INA219 Voltage and Current Telemetry\n");  
+  printf("CubeSatSim v2.0 INA219 Voltage and Current Telemetry\n");  
   map[MINUS_X] = MINUS_Y;
   map[PLUS_Z] = MINUS_X;	
   map[MINUS_Y] = PLUS_Z;			
@@ -72,14 +72,14 @@ int main(int argc, char *argv[]) {
     }	
   printf("\n");
 	
-  printf("+X  | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_X]], current[map[PLUS_X]]);
-  printf("+Y  | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_Y]], current[map[PLUS_Y]]);
-  printf("+Z  | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_Z]], current[map[PLUS_Z]]);
-  printf("-X  | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_X]], current[map[MINUS_X]]);
-  printf("-Y  | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_Y]], current[map[MINUS_Y]]);
-  printf("-Z  | % 4.2f V % 5.0f mA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
-  printf("Bat | % 4.2f V % 5.0f mA \n", voltage[map[BAT]], current[map[BAT]]);
-  printf("Bus | % 4.2f V % 5.0f mA \n\n", voltage[map[BUS]], current[map[BUS]]);
+  printf("+X   | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_X]], current[map[PLUS_X]]);
+  printf("+Y   | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_Y]], current[map[PLUS_Y]]);
+  printf("+Z   | % 4.2f V % 5.0f mA \n", voltage[map[PLUS_Z]], current[map[PLUS_Z]]);
+  printf("-X   | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_X]], current[map[MINUS_X]]);
+  printf("-Y   | % 4.2f V % 5.0f mA \n", voltage[map[MINUS_Y]], current[map[MINUS_Y]]);
+  printf("-Z   | % 4.2f V % 5.0f mA \n",  voltage[map[MINUS_Z]], current[map[MINUS_Z]]);
+  printf("Bat  | % 4.2f V % 5.0f mA \n", voltage[map[BAT]], current[map[BAT]]);
+  printf("Bat2 | % 4.2f V % 5.0f mA \n\n", voltage[map[BUS]], current[map[BUS]]);
   fclose(file1);
 
   return 0;
