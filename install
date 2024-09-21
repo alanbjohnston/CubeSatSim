@@ -71,7 +71,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
     echo "creating $FILE"
-    echo "f" > .mode
+    echo "b" > .mode
 fi
 
 cd
