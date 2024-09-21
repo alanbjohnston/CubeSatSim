@@ -91,7 +91,7 @@ int main(int argc, char * argv[]) {
 		    c2cStatus = CARRIER;
 	    } else {
 		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
-		    c2cStatus = DTMF-APRS;
+		    c2cStatus = DTMF_APRS;
 	    }
   }	
   printf("c2cStatus: %d \n", c2cStatus);
@@ -931,9 +931,9 @@ int main(int argc, char * argv[]) {
 		    c2cStatus = CARRIER;
 	      }
 	    } else {
-		if (c2cStatus != DTMF-APRS) {
+		if (c2cStatus != DTMF_APRS) {
 		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
-		    c2cStatus = DTMF-APRS;
+		    c2cStatus = DTMF_APRS;
 		}
 	    }
     }	
