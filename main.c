@@ -174,22 +174,22 @@ int main(int argc, char * argv[]) {
 //  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
 //  pclose(rpitx_restart);
 	
-  mode = FSK;
+  mode = BPSK;
   frameCnt = 1;
 
   if (argc > 1) {
     //	  strcpy(src_addr, argv[1]);
     if ( * argv[1] == 'b') {
       mode = BPSK;
-      printf("Mode BPSK\n");
+      printf("Mode is BPSK\n");
     } else if ( * argv[1] == 'a') {
       mode = AFSK;
-      printf("Mode AFSK\n");
+      printf("Mode is AFSK\n");
     } else if ( * argv[1] == 'm') {
       mode = CW;
-      printf("Mode CW\n");
+      printf("Mode is CW\n");
     } else {
-      printf("Mode FSK\n");
+      printf("Mode is BPSK\n");
     }
 
     if (argc > 2) {
@@ -214,9 +214,9 @@ int main(int argc, char * argv[]) {
       fclose(mode_file);
       printf("Mode file /home/pi/CubeSatSim/.mode contains %c\n", mode_string);
 
-      if ( mode_string == 'b') {
-        mode = BPSK;
-        printf("Mode is BPSK\n");
+      if ( mode_string == 'f') {
+        mode = FSK;
+        printf("Mode is FSK\n");
       } else if ( mode_string == 'a') {
         mode = AFSK;
         printf("Mode is AFSK\n");
@@ -233,7 +233,7 @@ int main(int argc, char * argv[]) {
         mode = TXCOMMAND;
         printf("Mode is Transmit Command\n");	      
       } else {
-        printf("Mode is FSK\n");
+        printf("Mode is BPSK\n");
       }	    
     }
   } 
