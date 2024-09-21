@@ -1820,9 +1820,9 @@ void get_tlm_fox() {
       printf("\nConnection Failed \n");
       printf("Error: %s restarting rpitx\n", strerror(errno));
       error = 1;
-  	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
-  	pclose(rpitx_restartf2);	      
-        sleep(5);  // sleep if socket connection refused
+//  	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
+//  	pclose(rpitx_restartf2);	      
+//        sleep(10);  // was 5 // sleep if socket connection refused
 
     // try again
       error = 0;
@@ -1846,9 +1846,9 @@ void get_tlm_fox() {
         printf("\nConnection Failed \n");
         printf("Error: %s restarting rpitx\n", strerror(errno));
         error = 1;
-  	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
-  	pclose(rpitx_restartf);	      
-        sleep(5);  // sleep if socket connection refused
+//  	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
+//  	pclose(rpitx_restartf);	      
+//        sleep(10);  // was 5 // sleep if socket connection refused
       }	    
     }
     if (error == 1)
