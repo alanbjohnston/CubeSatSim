@@ -350,9 +350,6 @@ if __name__ == "__main__":
 	print(txLedOn)
 	GPIO.setup(txLed, GPIO.OUT)
 
-	card = "Headphones"  # default using pcm audio output of Pi Zero
-#	card = "Device" # using USB sound card for audio output	
-
 	print("Programming FM module!\n");	
 	output(pd, 1)
 	output (ptt, 1)
@@ -390,7 +387,7 @@ if __name__ == "__main__":
 #			output(pd, 1)
 #			output (ptt, 0)
 #			sleep(0.1)
-#			system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
+#			system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
 #			sleep(0.1)
 #			output (ptt, 1)
 #			output(pd, 0)
@@ -451,7 +448,7 @@ if __name__ == "__main__":
 							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
 							sleep(0.3)   # add even more time at start
-							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/telem.wav")							
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/telem.wav")							
 							sleep(0.2)  # add more time at end
 							output (ptt, 1)
 #							output(pd, 0)							
@@ -502,7 +499,7 @@ if __name__ == "__main__":
 #								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
-								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
+								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/morse.wav")
 								sleep(0.1)
 								output (ptt, 1)
 #								output (pd, 0)
@@ -562,7 +559,7 @@ if __name__ == "__main__":
 						if (txc):
 #							output(pd, 1)
 							output (ptt, 0)
-							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
 							output (ptt, 1)
 #							output(pd, 0)
 						else:	
@@ -622,7 +619,7 @@ if __name__ == "__main__":
 						if (txc):
 #							output(pd, 1)
 							output (ptt, 0)
-							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
 							output(ptt, 1)
 #							output (pd, 0)
 						else:	
@@ -659,7 +656,7 @@ if __name__ == "__main__":
 						if (txc):
 #							output(pd, 1)
 							output (ptt, 0)
-							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+							system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 							output(ptt, 1)
 #							output (pd, 0)
 						else:	
@@ -695,7 +692,7 @@ if __name__ == "__main__":
 							if (txc):
 #								output(pd, 1)
 								output (ptt, 0)
-								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
+								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
 								output(ptt, 1)
 #								output (pd, 0)
 							else:
@@ -726,7 +723,7 @@ if __name__ == "__main__":
 							if (txc):
 #								output(pd, 1)
 								output (ptt, 0)		
-								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv.wav")
+								system("aplay -D hw:CARD=Headphones,DEV=0 /home/pi/CubeSatSim/sstv.wav")
 								output(ptt, 1)
 #								output (pd, 0)		
 							else:
@@ -786,11 +783,11 @@ if __name__ == "__main__":
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
-#					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+#					system("arecord -D hw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+##					system("arecord -D hw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					sleep(1)
-					system("sudo arecord -D plugplughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					GPIO.output(powerPin, 1)
 					sleep(0.5)
 					GPIO.output(powerPin, 0)
