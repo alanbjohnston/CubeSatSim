@@ -83,15 +83,15 @@ int main(int argc, char * argv[]) {
   FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
   if (command_file == NULL) {	  	
 	    fprintf(stderr,"Command and control is OFF\n");
-	    c2cStatus = 0;
+	    c2cStatus = DISABLED;
   } else {
 	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
 	    if (command_file == NULL)  {
 		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
-		    c2cStatus = 1;
+		    c2cStatus = CARRIER;
 	    } else {
 		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
-		    c2cStatus = 2;
+		    c2cStatus = DTMF-APRS;
 	    }
   }	
   printf("c2cStatus: %d \n", c2cStatus);
@@ -134,7 +134,7 @@ int main(int argc, char * argv[]) {
   }
   else {
     fprintf(stderr,"Pi Zero detected\n");
-    if ((c2cStatus == 0) || (c2cStatus == 1))  {
+    if ((c2cStatus == DISABLED) || (c2cStatus == CARRIER))  {
       pi_zero_2_offset = 500;
     }
     if (uptime_sec < 30.0) {
@@ -696,7 +696,12 @@ int main(int argc, char * argv[]) {
         char timeStampNoNl[31], bat_string[31];    
         snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
 //        printf("TimeStamp: %s\n", timeStampNoNl);
-        snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	     
+
+	if (c2cStatus == DISABLED)      
+		snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	
+	else
+		snprintf(bat_string, 30, "BAT %4.2f %5.1f C", batteryVoltage, batteryCurrent);	
+		
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
       
@@ -894,7 +899,7 @@ int main(int argc, char * argv[]) {
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
 	if (batteryVoltage != 4.5)
-		if (c2cStatus == 0)
+		if (c2cStatus == DISABLED)
     			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
 		else
     			fprintf(fp, "BAT %4.2fV %4.0fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
@@ -914,21 +919,21 @@ int main(int argc, char * argv[]) {
 
     FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
     if (command_file == NULL) {
-	    if (c2cStatus != 0) {
+	    if (c2cStatus != DISABLED) {
 	      fprintf(stderr,"Command and control is OFF\n");
-	      c2cStatus = 0;
+	      c2cStatus = DISABLED;
 	    }
     } else {
 	    command_file = fopen("/home/pi/CubeSatSim/command_control_direwolf", "r");
 	    if (command_file == NULL)  {
-	      if (c2cStatus != 1) {
+	      if (c2cStatus != CARRIER) {
 		    fprintf(stderr,"Command and control Carrier (squelch) is ON\n");
-		    c2cStatus = 1;
+		    c2cStatus = CARRIER;
 	      }
 	    } else {
-		if (c2cStatus != 2) {
+		if (c2cStatus != DTMF-APRS) {
 		    fprintf(stderr,"Command and control DTMF or APRS is ON\n");
-		    c2cStatus = 2;
+		    c2cStatus = DTMF-APRS;
 		}
 	    }
     }	
@@ -1141,13 +1146,17 @@ void get_tlm(void) {
         pclose(cw_file);	     
 
     }
-    if (c2cStatus != 0) {	   
+    if (c2cStatus != DISABLED) {	   
       FILE *file_append = sopen("echo 'C' >> cw6.txt");
       fclose(file_append);
     }
   } else {  // APRS
 
-      sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
+      if (c2cStatus == 0)	   
+        sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
+      else
+        sprintf(tlm_str, "BAT %4.2f %5.1f C ", voltage[map[BAT]] , current[map[BAT]] ); 
+	      
       strcat(str, tlm_str);
   }  
     strcpy(sensor_payload, buffer2);      	  
