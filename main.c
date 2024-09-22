@@ -1827,7 +1827,7 @@ void get_tlm_fox() {
 
     if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
       printf("\nConnection Failed \n");
-      printf("Error: %s restarting rpitx\n", strerror(errno));
+      printf("Error: %s\n", strerror(errno));
       error = 1;
 //  	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
 //  	pclose(rpitx_restartf2);	      
@@ -1853,17 +1853,27 @@ void get_tlm_fox() {
 
       if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
         printf("\nConnection Failed \n");
-        printf("Error: %s restarting rpitx\n", strerror(errno));
+        printf("Error: %s\n", strerror(errno));
         error = 1;
-//  	FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
-//  	pclose(rpitx_restartf);	      
-//        sleep(10);  // was 5 // sleep if socket connection refused
+//  	  FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
+//  	  pclose(rpitx_restartf);	      
+//          sleep(10);  // was 5 // sleep if socket connection refused
       }	    
     }
-    if (error == 1)
-    ; //rpitxStatus = -1;
-    else
+    if (error == 1) {
+      printf("Socket error count: %d\n", error_count);  	    
+//    ; //rpitxStatus = -1;
+      if (error_count++ > 5) { 
+	  printf("Restarting rpitx\n");    
+  	  FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
+  	  pclose(rpitx_restartf);	      
+          sleep(10);  // was 5 // sleep if socket connection refused
+      }	    
+    }
+    else {
       socket_open = 1;
+      error_count = 0;	    
+    }
   }
 
   if (!error && transmit) {
