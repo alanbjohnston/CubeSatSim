@@ -85,11 +85,11 @@ else
 			
 				echo "debug mode"
 			
-				direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 			
 			else
 			
-				direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 			
 			fi
 
