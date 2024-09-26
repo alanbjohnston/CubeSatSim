@@ -1266,7 +1266,7 @@ void get_tlm_fox() {
   short int rs_frame[rsFrames][223];
   unsigned char parities[rsFrames][parityLen], inputByte;
 
-  int id, frm_type = 0x01, NormalModeFailure = 0, groundCommandCount = 0;
+  int id, frm_type = 0x01, NormalModeFailure = 0;
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
   int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
@@ -1602,9 +1602,10 @@ void get_tlm_fox() {
       char count_string[10];	
       if ( (fgets(count_string, 10, command_count_file)) != NULL)
 	   groundCommandCount = atoi(count_string); 
-      fclose(command_count_file);	    
-    } else
+//      fclose(command_count_file);	    
+    } else 
 	    printf("Error opening command_count.txt!\n");
+    fclose(command_count_file);
     
 //    printf("Command count: %d\n", groundCommandCount);	  
     
