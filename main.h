@@ -202,3 +202,4 @@ int battery_saver_mode = FALSE;
 long int loopTime;
 
 int error_count = 0;
+int groundCommandCount = 0;
