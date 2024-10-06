@@ -1263,8 +1263,8 @@ elif [ "$1" = "-n" ]; then
 
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Command and Control mode OFF"
-		echo "Switching to FSK mode"
-		sudo echo "f" > /home/pi/CubeSatSim/.mode
+		echo "Switching to BPSK mode"
+		sudo echo "b" > /home/pi/CubeSatSim/.mode
 		reboot=1
 	else
 		echo "Turning Transmit Command and Control mode ON"
