@@ -71,6 +71,16 @@ if __name__ == "__main__":
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
+		if ((line.find("MODE=n")) > 0):
+			system("echo '\nTransmit Commands Mode!!\n'")
+			mode = 'n'
+			change_mode = True
+			counter = (counter + 1) % 2			
+		if ((line.find("DTMF>APDW15:t11#")) > 0):
+			system("echo '\nTransmit Commands Mode!!\n'")
+			mode = 'n'
+			change_mode = True
+# Currently, C2C does not support Repeater mode e			
 		if ((line.find("MODE=o")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
