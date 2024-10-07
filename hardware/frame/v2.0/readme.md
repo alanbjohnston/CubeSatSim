@@ -1,5 +1,7 @@
 These are the STL files for printing the frame.
 
+![CubeSatSim Frame v2.0](https://github.com/user-attachments/assets/bbcedd26-cc1b-488d-86fa-b6e12f46bd6a)
+
 You will need to print two of the top/bottom, and one of each side
 
 The source is availale at:
