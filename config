@@ -1366,7 +1366,7 @@ elif [ "$1" = "-L" ]; then
 
 elif [ "$1" = "-g" ]; then
 
-	echo "Are you sure you want to reset the CubeSatSim configration back to the default settings?"
+	echo "Are you sure you want to reset the CubeSatSim configuration back to the default settings?"
 	echo
 
 	read rset
@@ -1441,7 +1441,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -D     Change Transmit Commands state APRS or DTMF"
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
-	echo "   -g     Reset configration back to default settings"
+	echo "   -g     Reset configuration back to default settings"
 
 	echo
 	exit
