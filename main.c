@@ -298,105 +298,22 @@ int main(int argc, char * argv[]) {
     pclose(file);
   }	
 
-          txLed = 2;
-          txLedOn = HIGH;
-          txLedOff = LOW;
-          vB5 = TRUE;
-          onLed = 27;
-          onLedOn = HIGH;
-          onLedOff = LOW;
+  txLed = 2;
+  txLedOn = HIGH;
+  txLedOff = LOW;
+  vB5 = TRUE;
+  onLed = 27;
+  onLedOn = HIGH;
+  onLedOff = LOW;
 
+  pinMode(26, INPUT);
+  pullUpDnControl(26, PUD_UP);
 
-	pinMode(26, INPUT);
-        pullUpDnControl(26, PUD_UP);
-
-        if (digitalRead(26) != HIGH) {
-          printf("v1 Present with UHF BPF\n");
-	  transmit = TRUE;
-	}
-/*	
-  if (!ax5043) {
-    pinMode(2, INPUT);
-    pullUpDnControl(2, PUD_UP);
-
-    if (digitalRead(2) != HIGH) {
-      printf("vB3 with TFB Present\n");
-      vB3 = TRUE;
-      txLed = 3;
-      txLedOn = LOW;
-      txLedOff = HIGH;
-      onLed = 0;
-      onLedOn = LOW;
-      onLedOff = HIGH;
-      transmit = TRUE;
-    } else {
-      pinMode(3, INPUT);
-      pullUpDnControl(3, PUD_UP);
-
-      if (digitalRead(3) != HIGH) {
-        printf("vB4 Present with UHF BPF\n");
-        txLed = 2;
-        txLedOn = HIGH;
-        txLedOff = LOW;
-        vB4 = TRUE;
-        onLed = 0;
-        onLedOn = HIGH;
-        onLedOff = LOW;
-        transmit = TRUE;
-      } else {
-        pinMode(26, INPUT);
-        pullUpDnControl(26, PUD_UP);
-
-        if (digitalRead(26) != HIGH) {
-          printf("v1 Present with UHF BPF\n");
-          txLed = 2;
-          txLedOn = HIGH;
-          txLedOff = LOW;
-          vB5 = TRUE;
-          onLed = 27;
-          onLedOn = HIGH;
-          onLedOff = LOW;
-          transmit = TRUE;
-        }
-	else {
-          pinMode(23, INPUT);
-          pullUpDnControl(23, PUD_UP);
-		
-          if (digitalRead(23) != HIGH) {
-            printf("v1 Present with VHF BPF\n");
-            txLed = 2;
-            txLedOn = HIGH;
-            txLedOff = LOW;
-            vB5 = TRUE;
-            onLed = 27;
-            onLedOn = HIGH;
-            onLedOff = LOW;
-            printf("VHF BPF not yet supported so no transmit\n");
-	    transmit = FALSE;
-          }		
-	}
-      }
-    }
+  if (digitalRead(26) != HIGH) {
+    printf("v1 Present with UHF BPF\n");
+    transmit = TRUE;
   }
-	  */
-//  pinMode(txLed, OUTPUT);
-//  digitalWrite(txLed, txLedOff);
-  #ifdef DEBUG_LOGGING
-//  printf("Tx LED Off\n");
-  #endif
-//  pinMode(onLed, OUTPUT);
-//  digitalWrite(onLed, onLedOn);
-  #ifdef DEBUG_LOGGING
-//  printf("Power LED On\n");
-  #endif
-/*
-  if (mode == SSTV) {	
-    pinMode(29, OUTPUT);  // make SR_FRS transmit
-    digitalWrite(29, HIGH);
-    pinMode(28, OUTPUT);
-    digitalWrite(28, LOW);
-  }	
-*/
+
   config_file = fopen("sim.cfg", "w");
   fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %d %d", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
   //    fprintf(config_file, "%s %d", call, reset_count);
