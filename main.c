@@ -50,8 +50,10 @@ int main(int argc, char * argv[]) {
   fprintf(stderr, "Transmit on %s MHz Receive on %s MHz\n", tx, rx);
 
 //  program_radio();  // do in rpitx instead
-  if (uptime_sec < 30.0)	
+  if (uptime_sec < 30.0) {	
   	reset_count = (reset_count + 1) % 0xffff;  // only increment uptime if just rebooted
+	fprintf(stderr,"INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+  }
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
     fprintf(stderr, "Valid latitude and longitude in config file\n");
