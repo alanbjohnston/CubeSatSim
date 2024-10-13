@@ -130,7 +130,7 @@ int main(int argc, char * argv[]) {
     if (uptime_sec < 30.0) {
 	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
   	pclose(rpitx_stop);   
-        fprintf(stderr, "Sleep 5 sec");    
+        fprintf(stderr, "Sleep 5 sec\n");    
 	sleep(5);  // try sleep at start to help boot
     }
   }
@@ -142,7 +142,7 @@ int main(int argc, char * argv[]) {
     if (uptime_sec < 30.0) {
       FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
       pclose(rpitx_stop);
-      fprintf(stderr,"Sleep 10 sec");    
+      fprintf(stderr,"Sleep 10 sec\n");    
       sleep(10);
     }
   }
