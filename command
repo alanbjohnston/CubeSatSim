@@ -78,8 +78,15 @@ else
 			value=`aplay -l | grep "Loopback"`
 			echo "$value" > /dev/null
 			set -- $value
+
+			value=`cat /home/pi/CubeSatSim/sim.cfg`
+			echo "$value" > /dev/null
+			set -- $value
+		
+			echo "Current value of rx is"	
+			echo $8
 	
-			rtl_fm -M fm -f 435M -s 48k | aplay -D plughw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+			rtl_fm -M fm -f $8M -s 48k | aplay -D plughw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
 	
 			if [ "$debug" = "1" ]; then
 			
