@@ -404,8 +404,8 @@ int main(int argc, char * argv[]) {
   config_file = fopen("sim.cfg", "r");
 
   if (vB4) {
-    map[BAT] = BUS;
-    map[BUS] = BAT;
+    map[BAT] = BAT2;
+    map[BAT2] = BAT;
     snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
   } else if (vB5) {
     map[MINUS_X] = MINUS_Y;
@@ -419,8 +419,8 @@ int main(int argc, char * argv[]) {
       snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
     }
   } else {
-    map[BUS] = MINUS_Z;
-    map[BAT] = BUS;
+    map[BAT2] = MINUS_Z;
+    map[BAT] = BAT2;
     map[PLUS_Z] = BAT;
     map[MINUS_Z] = PLUS_Z;
     snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
@@ -805,15 +805,15 @@ int main(int argc, char * argv[]) {
       //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-      voltage[map[BUS]] = 0.0; // rnd_float(5.0, 5.005);
-      current[map[BUS]] = 0.0; // rnd_float(158, 171);
+      voltage[map[BAT2]] = 0.0; // rnd_float(5.0, 5.005);
+      current[map[BAT2]] = 0.0; // rnd_float(158, 171);
 
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BUS]] * voltage[map[BUS]]) / batt) - charging;
+      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
 
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BUS]], batt, voltage[map[BUS]]);
+      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
       batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
       if (batt < 3.0) {
@@ -1034,7 +1034,7 @@ void get_tlm(void) {
     int tlm[7][5];
     memset(tlm, 0, sizeof tlm);
 	  
-    tlm[1][A] = (int)(voltage[map[BUS]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
+    tlm[1][A] = (int)(voltage[map[BAT2]] / 15.0 + 0.5) % 100; // Current of 5V supply to Pi
     tlm[1][B] = (int)(99.5 - current[map[PLUS_X]] / 10.0) % 100; // +X current [4]
     tlm[1][C] = (int)(99.5 - current[map[MINUS_X]] / 10.0) % 100; // X- current [10] 
     tlm[1][D] = (int)(99.5 - current[map[PLUS_Y]] / 10.0) % 100; // +Y current [7]
@@ -1050,7 +1050,7 @@ void get_tlm(void) {
     else
     	tlm[3][A] = (int)((voltage[map[BAT]] * 10.0) + 44.5) % 100;  // 0 - 4.5 V for new 3 cell battery
 	    
-    tlm[3][B] = (int)(voltage[map[BUS]] * 10.0) % 100; // 5V supply to Pi
+    tlm[3][B] = (int)(voltage[map[BAT2]] * 10.0) % 100; // 5V supply to Pi
 
     tlm[4][A] = (int)((95.8 - other[IHU_TEMP]) / 1.48 + 0.5) % 100;  // was [B] but didn't display in online TLM spreadsheet
 		
@@ -1270,7 +1270,7 @@ void get_tlm_fox() {
 
   int id, frm_type = 0x01, NormalModeFailure = 0;
   int PayloadFailure1 = 0, PayloadFailure2 = 0;
-  int PSUVoltage = 0, PSUCurrent = 0, Resets = 0, Rssi = 2048;
+  int BAT2Voltage = 0, BAT2Current = 0, Resets = 0, Rssi = 2048;
   int batt_a_v = 0, batt_b_v = 0, batt_c_v = 0, battCurr = 0;
   int posXv = 0, negXv = 0, posYv = 0, negYv = 0, posZv = 0, negZv = 0;
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
@@ -1408,8 +1408,8 @@ void get_tlm_fox() {
 
     batt_c_v = (int)(voltage[map[BAT]] * 100);
     battCurr = (int)(current[map[BAT]] + 0.5) + 2048;
-    PSUVoltage = (int)(voltage[map[BUS]] * 100);
-    PSUCurrent = (int)(current[map[BUS]] + 0.5) + 2048;
+    BAT2Voltage = (int)(voltage[map[BAT2]] * 100);
+    BAT2Current = (int)(current[map[BAT2]] + 0.5) + 2048;
 
     if (payload == ON)
       STEMBoardFailure = 0;
@@ -1474,8 +1474,8 @@ void get_tlm_fox() {
 
       encodeA(b_max, 9 + head_offset, (int)(current_max[map[BAT]] + 0.5) + 2048);
       encodeA(b_max, 3 + head_offset, (int)(voltage_max[map[BAT]] * 100));
-      encodeA(b_max, 30 + head_offset, (int)(voltage_max[map[BUS]] * 100));
-      encodeB(b_max, 46 + head_offset, (int)(current_max[map[BUS]] + 0.5) + 2048);
+      encodeA(b_max, 30 + head_offset, (int)(voltage_max[map[BAT2]] * 100));
+      encodeB(b_max, 46 + head_offset, (int)(current_max[map[BAT2]] + 0.5) + 2048);
 	    
       encodeB(b_max, 37 + head_offset, (int)(other_max[RSSI] + 0.5) + 2048);	    
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
@@ -1531,8 +1531,8 @@ void get_tlm_fox() {
 	    
       encodeA(b_min, 9 + head_offset, (int)(current_min[map[BAT]] + 0.5) + 2048);
       encodeA(b_min, 3 + head_offset, (int)(voltage_min[map[BAT]] * 100));
-      encodeA(b_min, 30 + head_offset, (int)(voltage_min[map[BUS]] * 100));
-      encodeB(b_min, 46 + head_offset, (int)(current_min[map[BUS]] + 0.5) + 2048);
+      encodeA(b_min, 30 + head_offset, (int)(voltage_min[map[BAT2]] * 100));
+      encodeB(b_min, 46 + head_offset, (int)(current_min[map[BAT2]] + 0.5) + 2048);
 	    
       encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
       encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
@@ -1573,7 +1573,7 @@ void get_tlm_fox() {
 //	      encodeB(b_min, 49 + head_offset, 2048);
       }	 
     }    
-    encodeA(b, 30 + head_offset, PSUVoltage);
+    encodeA(b, 30 + head_offset, BAT2Voltage);
 
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
@@ -1591,7 +1591,7 @@ void get_tlm_fox() {
 
     encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
 
-    encodeB(b, 46 + head_offset, PSUCurrent);
+    encodeB(b, 46 + head_offset, BAT2Current);
     encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
 //    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
 	  
