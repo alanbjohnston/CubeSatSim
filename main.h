@@ -29,7 +29,7 @@
 #define PLUS_X 0
 #define PLUS_Y 1
 #define BAT 2
-#define BUS 3
+#define BAT2 3
 #define MINUS_X 4
 #define MINUS_Y 5
 #define PLUS_Z 6
