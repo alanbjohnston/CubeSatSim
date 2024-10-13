@@ -49,10 +49,15 @@ int main(int argc, char * argv[]) {
 
   fprintf(stderr, "Transmit on %s MHz Receive on %s MHz\n", tx, rx);
 
+  FILE * uptime_file = fopen("/proc/uptime", "r");
+  fscanf(uptime_file, "%f", & uptime_sec);
+  printf("Uptime sec: %f \n", uptime_sec);	  
+  fclose(uptime_file);	
+
 //  program_radio();  // do in rpitx instead
   if (uptime_sec < 30.0) {	
   	reset_count = (reset_count + 1) % 0xffff;  // only increment uptime if just rebooted
-	fprintf(stderr,"INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime);
+	fprintf(stderr,"INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime_sec);
   }
 
   if ((fabs(lat_file) > 0) && (fabs(lat_file) < 90.0) && (fabs(long_file) > 0) && (fabs(long_file) < 180.0)) {
@@ -106,11 +111,6 @@ int main(int argc, char * argv[]) {
   fgets(resbuffer, 1000, file_test);
   fprintf(stderr, "Pi Zero test result: %s\n", resbuffer);
   fclose(file_test);	
-
-  FILE * uptime_file = fopen("/proc/uptime", "r");
-  fscanf(uptime_file, "%f", & uptime_sec);
-  printf("Uptime sec: %f \n", uptime_sec);	  
-  fclose(uptime_file);
   
 //  fprintf(stderr, "hex:  %x %x %x %x \n", resbuffer[0], resbuffer[1], resbuffer[2], resbuffer[3]);
   if ((resbuffer[0] != '9') || (resbuffer[1] != '0') || (resbuffer[2] != '0') || (resbuffer[3] != '0')) 
