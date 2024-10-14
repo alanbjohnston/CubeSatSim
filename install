@@ -131,7 +131,7 @@ sudo systemctl enable cubesatsim
 
 sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
 
-sudo systemctl enable rpitx
+# sudo systemctl enable rpitx
 
 sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
 
