@@ -67,8 +67,6 @@ else
   echo "no changes to cubesatsim.service."
 fi
 
-sudo systemctl disable rpitx
-
 FILE=/etc/systemd/system/rpitx.service
 if [ -f "$FILE" ]; then
   sudo systemctl disable rpitx
@@ -184,7 +182,7 @@ if [ ! -d "/home/pi/rpitx" ]; then
 else
 
 	if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
-	    echo "rpitx already updated"
+	    echo "rpitx library already updated"
 	else
 	    echo "updating rpitx"
 	    cd  /home/pi/rpitx
