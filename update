@@ -69,15 +69,26 @@ fi
 
 sudo systemctl disable rpitx
 
-if [[ $(diff systemd/rpitx.service /etc/systemd/system/rpitx.service) ]]; then
-  echo "changed rpitx.service."
-  sudo cp /home/pi/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
-  FLAG=1
-else
-  echo "no changes to rpitx.service."
+FILE=/etc/systemd/system/rpitx.service
+if [ -f "$FILE" ]; then
+  sudo systemctl disable rpitx
+  sudo rm /etc/systemd/system/rpitx.service
 fi
 
-sudo systemctl disable rpitx
+FILE=/etc/systemd/system/transmit.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff systemd/transmit.service /etc/systemd/system/transmit.service) ]]; then
+    echo "changed transmit.service."
+    sudo cp /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
+    FLAG=1
+  else
+    echo "no change to transmit.service."
+  fi
+else
+  echo "creating transmit.service."
+  sudo cp /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
+  FLAG=1
+fi
 
 FILE=/etc/systemd/system/command.service
 if [ -f "$FILE" ]; then
