@@ -90,7 +90,7 @@ else
 			echo "Current value of rx is"	
 			echo $freq
 	
-			rtl_fm -M fm -f $freqM -s 48k | aplay -D plughw:$card,0,0 -r 48000 -t raw -f S16_LE -c 1 &
+			rtl_fm -M fm -f ${freq}M -s 48k | aplay -D plughw:${card},0,0 -r 48000 -t raw -f S16_LE -c 1 &
 	
 			if [ "$debug" = "1" ]; then
 			
