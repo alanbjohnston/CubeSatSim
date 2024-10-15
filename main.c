@@ -54,7 +54,7 @@ int main(int argc, char * argv[]) {
   printf("Uptime sec: %f \n", uptime_sec);	  
   fclose(uptime_file);	
 
-//  program_radio();  // do in rpitx instead
+//  program_radio();  // do in transmit instead
   if (uptime_sec < 30.0) {	
   	reset_count = (reset_count + 1) % 0xffff;  // only increment uptime if just rebooted
 	fprintf(stderr,"INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime_sec);
@@ -128,8 +128,8 @@ int main(int argc, char * argv[]) {
 	    
     pi_zero_2_offset = 500;
     if (uptime_sec < 30.0) {
-	FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-  	pclose(rpitx_stop);   
+	FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
+  	pclose(transmit_stop);   
         fprintf(stderr, "Sleep 5 sec\n");    
 	sleep(5);  // try sleep at start to help boot
     }
@@ -140,15 +140,15 @@ int main(int argc, char * argv[]) {
       pi_zero_2_offset = 500;
     }
     if (uptime_sec < 30.0) {
-      FILE * rpitx_stop = popen("sudo systemctl start rpitx", "r");
-      pclose(rpitx_stop);
+      FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
+      pclose(transmit_stop);
       fprintf(stderr,"Sleep 10 sec\n");    
       sleep(10);
     }
   }
 	
-//  FILE * rpitx_stop = popen("sudo systemctl stop rpitx", "r");
-//  FILE * rpitx_stop = popen("sudo systemctl restart rpitx", "r");
+//  FILE * transmit_stop = popen("sudo systemctl stop transmit", "r");
+//  FILE * transmit_stop = popen("sudo systemctl restart transmit", "r");
 
 
 //  FILE * cc_start = popen("/home/pi/CubeSatSim/command &", "r");
@@ -173,8 +173,8 @@ int main(int argc, char * argv[]) {
   	fprintf(stderr, "HAB mode enabled - in APRS balloon icon and no battery saver or low voltage shutdown\n");
 //#endif
 	
-//  FILE * rpitx_restart = popen("sudo systemctl restart rpitx", "r");
-//  pclose(rpitx_restart);
+//  FILE * transmit_restart = popen("sudo systemctl restart transmit", "r");
+//  pclose(transmit_restart);
 	
   mode = BPSK;
   frameCnt = 1;
@@ -997,8 +997,8 @@ void get_tlm(void) {
     char header_str4[] = "hi hi de ";
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
-//    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
-    char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by rpitx.py
+//    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by transmit.py
+    char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by transmit.py
     char footer_str2[] = " && touch /home/pi/CubeSatSim/ready"; 
 	  
     if (ax5043) {
@@ -1089,16 +1089,16 @@ void get_tlm(void) {
 
 //      char cw_str2[1000];
 //      char cw_header2[] = "echo '";
-//      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.897e3";
-      char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by rpitx.py
-      char cwready[] = "touch /home/pi/CubeSatSim/cwready";  // cw frame is complete. transmit is done by rpitx.py
+//      char cw_footer2[] = "' > id.txt && gen_packets -M 20 id.txt -o morse.wav -r 48000 > /dev/null 2>&1 && cat morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/transmit/transmit -i- -m RF -f 434.897e3";
+      char cw_footer3[] = "' > cw.txt && touch /home/pi/CubeSatSim/cwready";  // transmit is done by transmit.py
+      char cwready[] = "touch /home/pi/CubeSatSim/cwready";  // cw frame is complete. transmit is done by transmit.py
 	    
       FILE * cw_file = popen(cwready, "r");
       pclose(cw_file);	    
 	    
-      while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for rpitx  to be done
+      while ((cw_file = fopen("/home/pi/CubeSatSim/cwready", "r")) != NULL) {  // wait for transmit  to be done
         fclose(cw_file); 
-//	printf("Sleeping while waiting for rpitx \n");
+//	printf("Sleeping while waiting for transmit \n");
 //	fflush(stdout);      
         sleep(5);	      
       }    
@@ -1126,12 +1126,12 @@ void get_tlm(void) {
       }
       sleep(4);  // was 2
 	    
-    } else {  // APRS using rpitx
+    } else {  // APRS using transmit
 	    
       strcat(str, footer_str1);
 //      strcat(str, call);
       if (battery_saver_mode  == ON)	    
-      	strcat(str, footer_str);  // add extra packet for rpitx transmission
+      	strcat(str, footer_str);  // add extra packet for transmit transmission
       else
       	strcat(str, footer_str2);
 	    
@@ -1749,8 +1749,8 @@ void get_tlm_fox() {
       printf("\nConnection Failed \n");
       printf("Error: %s\n", strerror(errno));
       error = 1;
-//  	FILE * rpitx_restartf2 = popen("sudo systemctl restart rpitx", "r");
-//  	pclose(rpitx_restartf2);	      
+//  	FILE * transmit_restartf2 = popen("sudo systemctl restart transmit", "r");
+//  	pclose(transmit_restartf2);	      
 //        sleep(10);  // was 5 // sleep if socket connection refused
 
     // try again
@@ -1775,18 +1775,18 @@ void get_tlm_fox() {
         printf("\nConnection Failed \n");
         printf("Error: %s\n", strerror(errno));
         error = 1;
-//  	  FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
-//  	  pclose(rpitx_restartf);	      
+//  	  FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
+//  	  pclose(transmit_restartf);	      
 //          sleep(10);  // was 5 // sleep if socket connection refused
       }	    
     }
     if (error == 1) {
       printf("Socket error count: %d\n", error_count);  	    
-//    ; //rpitxStatus = -1;
+//    ; //transmitStatus = -1;
       if (error_count++ > 5) { 
-	  printf("Restarting rpitx\n");    
-  	  FILE * rpitx_restartf = popen("sudo systemctl restart rpitx", "r");
-  	  pclose(rpitx_restartf);	      
+	  printf("Restarting transmit\n");    
+  	  FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
+  	  pclose(transmit_restartf);	      
           sleep(10);  // was 5 // sleep if socket connection refused
       }	    
     }
@@ -1855,7 +1855,7 @@ void get_tlm_fox() {
     if (sock_ret == -1) {
       printf("Error: %s \n", strerror(errno));
       socket_open = 0;
-      //rpitxStatus = -1;
+      //transmitStatus = -1;
     }
   }
   if (!transmit) {
