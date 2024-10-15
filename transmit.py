@@ -136,7 +136,7 @@ def increment_mode():
 		print("can't write to .mode file")
 		
 
-print("CubeSatSim v2.0 rpitx.py starting...")
+print("CubeSatSim v2.0 transmit.py starting...")
 
 pd = 21
 ptt = 20
@@ -199,7 +199,7 @@ print(txLed)
 # GPIO.setup(27, GPIO.OUT)
 # GPIO.output(27, 0)
 
-debug_mode = 0  #no debugging rpitx
+debug_mode = 0  #no debugging transmit
 
 skip = False
 
