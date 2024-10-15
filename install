@@ -131,9 +131,9 @@ sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.s
 
 sudo systemctl enable cubesatsim
 
-sudo cp ~/CubeSatSim/systemd/rpitx.service /etc/systemd/system/rpitx.service
+sudo cp ~/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
 
-# sudo systemctl enable rpitx
+# sudo systemctl enable transmit
 
 sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
 
