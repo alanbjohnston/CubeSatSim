@@ -111,7 +111,7 @@ FILE *telem_file;
 #define REPEATER 11
 #define TXCOMMAND 12
 
-int rpitxStatus = -1;
+int transmitStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
 float freq_Hz = 3000; // 1200
