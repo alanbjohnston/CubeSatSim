@@ -1,9 +1,4 @@
-<img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-battery-v2.0.1_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-STEM-b1.3.2b_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-solar-b1.3.2._top.png">
-
-![cubesatsim-solar-v2 0_top](https://github.com/user-attachments/assets/90db1c55-d9d3-4d21-af9b-591f7c2f48d6)
-<img width="673" alt="cubesatsim-main-v2 0_top" src="https://github.com/user-attachments/assets/4419cf0f-0064-4a2f-9641-463235dfd75a">
-
-![cubesatsim-solar-v2 0_top](https://github.com/user-attachments/assets/7e51edda-4f7e-435a-a0b8-a35463093ad5)
+<img width="200" alt="cubesatsim-battery-v2 0 1_top" src="https://github.com/user-attachments/assets/32657557-761d-4806-84e0-3d16d3128b69"> <img width="200" alt="cubesatsim-main-v2 0_top" src="https://github.com/user-attachments/assets/4419cf0f-0064-4a2f-9641-463235dfd75a"> <img width="200" alt="cubesatsim-solar-v2 0_top" src="https://github.com/user-attachments/assets/7e51edda-4f7e-435a-a0b8-a35463093ad5">
 
 Here is information about the CubeSatSim PCBs, version v2.0
 
