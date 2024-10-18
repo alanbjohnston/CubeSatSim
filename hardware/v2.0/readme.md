@@ -26,6 +26,6 @@ Here's what the files are:
 
 I use PCBWay to fabricate PCBs https://pcbway.com
 
-Here is a very draft bill of materials: https://docs.google.com/spreadsheets/d/1Ta5UaJcinGozcheROrkfwXdGSDUZrXvQ1_nbIBdIIOY/edit?usp=sharing
+Here is a very draft bill of materials: https://CubeSatSim.org/bom-v2
 
-Draft wiki instructions: https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home
+Wiki instructions: https://github.com/alanbjohnston/CubeSatSim/wiki/
