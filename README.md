@@ -32,6 +32,8 @@ CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or
 
 To get the software follow these steps:
 
+`sudo apt-get update`
+
 `sudo apt-get install -y git`
 
 `git clone http://github.com/alanbjohnston/CubeSatSim.git`
