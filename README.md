@@ -38,7 +38,7 @@ To get the software follow these steps:
 
 `cd CubeSatSim`
 
-`git checkout beta`
+`git checkout master`
 
 `# You are now ready to install the software using this script in the CubeSatSim directory:`
 
