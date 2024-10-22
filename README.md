@@ -1,21 +1,5 @@
 # CubeSatSim
 
-This is the beta release for the new CubeSatSim hardware.  
-
-### The hardware files are here: 
-https://CubeSatSim.org/hardware-beta 
-
-<img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/7bdc7b40408baa588a83d360d2112190a803403d/hardware/beta-v1.3.2/cubesatsim-battery-b1.3.2.1b_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-STEM-b1.3.2.1_top.png"><img height=200 width=200 src="https://github.com/alanbjohnston/CubeSatSim/blob/beta/hardware/beta-v1.3.2/cubesatsim-solar-b1.3.2._top.png">
-
-### The wiki instructions are here: 
-https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.  
-
-### The Bill of Materials (BOM) is here: 
-https://CubeSatSim.org/bom-beta.
-
-### Information about the latest beta software release is here:
-https://github.com/alanbjohnston/CubeSatSim/releases
-
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
 There are several hardware versions and software branches to go with them - see below for information.
@@ -33,7 +17,7 @@ The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or
 - pi-power-button
 - Direwolf
 - rpitx
-- python3-pip 
+- python3-pip
 - python3-smbus
 
 ## Disk Image Option Steps
@@ -42,7 +26,9 @@ See the Wiki Software Install page for details: [https://github.com/alanbjohnsto
 
 ## Installation Script Option Steps
 
-CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.  
+CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.
+
+*Note:* CubeSatSim expects to be installed as the `pi` user and references many paths in `/home/pi/*`. Installing as a different user will result in configuration files not saving along with many other issues.
 
 To get the software follow these steps:
 

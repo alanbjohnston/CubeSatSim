@@ -95,7 +95,7 @@ git clone https://github.com/alanbjohnston/pi-power-button.git
 
 cd pi-power-button
 
-git checkout v2.0
+git checkout master
 
 ./script/install
 
