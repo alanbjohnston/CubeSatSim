@@ -73,36 +73,37 @@ else
 		else
 
 			echo "RTL-SDR detected."
-			sudo modprobe snd-aloop
+			echo "Command and control is OFF"
+#			sudo modprobe snd-aloop
 	
-			value=`aplay -l | grep "Loopback"`
-			echo "$value" > /dev/null
-			set -- $value
+#			value=`aplay -l | grep "Loopback"`
+#			echo "$value" > /dev/null
+#			set -- $value
 
-			card=${2:0:1}
+#			card=${2:0:1}
 
-			value=`cat /home/pi/CubeSatSim/sim.cfg`
-			echo "$value" > /dev/null
-			set -- $value
+#			value=`cat /home/pi/CubeSatSim/sim.cfg`
+#			echo "$value" > /dev/null
+#			set -- $value
 
-			freq=$8
+#			freq=$8
 		
-			echo "Current value of rx is"	
-			echo $freq
+#			echo "Current value of rx is"	
+#			echo $freq
 	
-			rtl_fm -M fm -f ${freq}M -s 48k | aplay -D plughw:${card},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+#			rtl_fm -M fm -f ${freq}M -s 48k | aplay -D plughw:${card},0,0 -r 48000 -t raw -f S16_LE -c 1 &
 	
-			if [ "$debug" = "1" ]; then
+#			if [ "$debug" = "1" ]; then
 			
-				echo "debug mode"
+#				echo "debug mode"
 			
-				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 			
-			else
+#			else
 			
-				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 			
-			fi
+#			fi
 
 			sleep 5
 		fi
