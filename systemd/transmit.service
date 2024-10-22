@@ -1,0 +1,14 @@
+[Unit]
+Description=CubeSatSim transmit service
+
+[Service]
+TimeoutStopSec=5
+ExecStart=python3 -u /home/pi/CubeSatSim/transmit.py
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=default.target

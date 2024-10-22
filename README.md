@@ -1,19 +1,5 @@
 # CubeSatSim
 
-There is beta release for the new CubeSatSim hardware and software in the beta branch.
-
-### The beta hardware files are here:
-https://CubeSatSim.org/hardware-beta
-
-### The beta wiki instructions are here:
-https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home.
-
-### The beta Bill of Materials (BOM) is here:
-https://CubeSatSim.org/bom-beta.
-
-### Information about the latest beta software release is here:
-https://github.com/alanbjohnston/CubeSatSim/releases
-
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
 There are several hardware versions and software branches to go with them - see below for information.
@@ -36,7 +22,7 @@ The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or
 
 ## Disk Image Option Steps
 
-See the Wiki Software Install page for details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install.
+See the Wiki Software Install page for details: [https://github.com/alanbjohnston/CubeSatSim/wiki/V1.3.2-2.-Software-Install](https://github.com/alanbjohnston/CubeSatSim/wiki/V1.3.2-2.-Software-Install#disk-image-option-steps).
 
 ## Installation Script Option Steps
 
@@ -52,15 +38,15 @@ To get the software follow these steps:
 
 `cd CubeSatSim`
 
-`git checkout master`
+`git checkout beta`
 
-You are now ready to install the software using this script in the CubeSatSim directory:
+`# You are now ready to install the software using this script in the CubeSatSim directory:`
 
 `./install`
 
 The installation script will run for quite a while.  You will get prompted for your amateur radio callsign in all capitals, if you have one.  If you don't you can put some other word which will be transmitted as a CW ID.  You will also be prompted for your latitude and longitude for APRS packets. The script will prompt you if you want to modify /boot/config.txt file.  Type a `y` and the script will complete.  You will need to reboot.
 
-See the Wiki for more details about the CubeSatSim https://github.com/alanbjohnston/CubeSatSim/wiki
+See the Wiki for more details about the CubeSatSim [https://github.com/alanbjohnston/CubeSatSim/wiki](https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home)
 
 Older Versions
 

@@ -7,6 +7,12 @@ import busio
 from adafruit_extended_bus import ExtendedI2C as I2C
 from adafruit_ina219 import INA219
 from adafruit_ina219 import ADCResolution, BusVoltageRange
+import signal
+
+# Don't turn these signal into exceptions, just die. 
+# https://stackoverflow.com/questions/26692284/how-to-prevent-brokenpipeerror-when-doing-a-flush-in-python
+signal.signal(signal.SIGINT, signal.SIG_DFL)
+signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
 if __name__ == "__main__":
 #	    print 'Length: ', len(sys.argv)
@@ -346,8 +352,11 @@ if __name__ == "__main__":
       print("Python Error Recovered!")
       
     if not single:
-      inp = input()
-#      print(inp)    
+      try:
+        inp = input()
+#        print(inp)
+      except:
+        print("Python error getting input!")
     else:
       break
 

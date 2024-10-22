@@ -1,0 +1,18 @@
+"Qty";"Value";"Device";"Package";"Parts";"Description";"";
+"2";"";"CONN_01PTH_NO_SILK_YES_STOP";"1X01_NO_SILK";"JP16, JP19";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"6";"0.1µF";"CAP_CERAMIC0603";"0603";"C2, C3, C4, C5, C6, C7";"Ceramic Capacitors";"";
+"6";"1A/23V/620mV";"DIODE-SCHOTTKY-BAT20J";"SOD-323";"D7, D8, D9, D10, D11, D12";"Schottky diode";"";
+"6";"1N5817";"DIODE-D-2.5";"D-2.5";"D1, D2, D3, D4, D5, D6";"DIODE";"";
+"2";"4.7k";"RESISTORPTH-1/4W-VERT-KIT";"AXIAL-0.1EZ";"R3, R4";"Resistor";"";
+"1";"CONN_20X2";"CONN_20X2";"2X20";"J1";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"2";"DNI-4.7k";"R-US_R0603";"R0603";"R11, R12";"RESISTOR, American symbol";"";
+"2";"DNI-4.7k";"RESISTORPTH-1/4W-VERT-KIT";"AXIAL-0.1EZ";"R7, R8";"Resistor";"";
+"1";"DNI/Sparkfun QWIIC Breakout";"CONN_041X04_NO_SILK";"1X04_NO_SILK";"J5";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"1";"Female socket 1x4";"CONN_06NO_SILK_NO_POP";"1X06_NO_SILK";"J4";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"6";"INA219 purple board";"INA219";"INA219";"U3, U4, U5, U6, U7, U8";"";"";
+"6";"INA219AIDR";"INA219AIDR";"D0008A_N";"U2, U10, U11, U12, U13, U14";"";"";
+"1";"JUMPER-SMT_2_NO_SILK";"JUMPER-SMT_2_NO_SILK";"SMT-JUMPER_2_NO_SILK";"JP18";"Normally open jumper";"";
+"1";"Micro JST";"CONN_021X02_NO_SILK";"1X02_NO_SILK";"JP8";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";
+"14";"Micro JST";"M02JST-PTH-VERT";"JST-2-PTH-VERT";"JP1, JP2, JP3, JP4, JP5, JP6, JP7, JP10, JP11, JP12, JP13, JP14, JP15, JP17";"Standard 2-pin 0.1" header. Use with";"";
+"6";"R100";"R-US_R0805";"R0805";"R1, R2, R5, R6, R9, R10";"RESISTOR, American symbol";"";
+"1";"VDD-EN";"JUMPER-SMT_2_NC_TRACE_SILK";"SMT-JUMPER_2_NC_TRACE_SILK";"JP9";"Normally closed trace jumper";"";

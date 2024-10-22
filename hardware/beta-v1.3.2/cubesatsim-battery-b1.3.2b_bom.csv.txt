@@ -1,0 +1,16 @@
+"Part";"Value";"Device";"Package";"Description";"COPYRIGHT";"DESCRIPTION";"DIGI-KEY_PART_NUMBER";"DIGI-KEY_PART_NUMBER_1";"DIGI-KEY_PART_NUMBER_2";"DIGI-KEY_PART_NUMBER_3";"DIGI-KEY_PART_NUMBER_4";"MANUFACTURER_PART_NUMBER";"MF";"MFR_NAME";"MP";"PACKAGE";"PURCHASE-URL";"REFDES";"TYPE";
+"BT2";"AA battery holder BH3AA-PC";"BH3AA-PC";"BAT_BH3AA-PC";"Holder Batt 3-Aa Cells Pc Mount";"";" Battery Holder (Open) AA 3 Cell PC Pin ";"BH3AA-PC-ND";"";"";"";"";"";"MPD";"";"BH3AAPC";"None";"https://pricing.snapeda.com/search/part/BH3AAPC/?ref=eda";"";"";
+"C1";"DNI/0.1µF";"CAP_CERAMIC0603";"0603";"Ceramic Capacitors";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"F1";"PTC";"PTCPTH";"PTC";"Resettable Fuse PTC";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"J1";"CONN_20X2";"CONN_20X2";"2X20";"Multi connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP1";"Micro JST";"M02JST-PTH-VERT";"JST-2-PTH-VERT";"Standard 2-pin 0.1" header. Use with";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP2";"";"CONN_01";"1X01";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP3";"";"CONN_01";"1X01";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP4";"JUMPER-SMT_2_NO_SILK";"JUMPER-SMT_2_NO_SILK";"SMT-JUMPER_2_NO_SILK";"Normally open jumper";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP5";"JUMPER-SMT_2_NC_TRACE_SILK";"JUMPER-SMT_2_NC_TRACE_SILK";"SMT-JUMPER_2_NC_TRACE_SILK";"Normally closed trace jumper";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP6";"JUMPER-SMT_2_NO_SILK";"JUMPER-SMT_2_NO_SILK";"SMT-JUMPER_2_NO_SILK";"Normally open jumper";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP7";"";"CONN_01";"1X01";"Single connection point. Often used as Generic Header-pin footprint for 0.1 inch spaced/style header connections";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"JP8";"Micro JST";"M02JST-PTH-VERT";"JST-2-PTH-VERT";"Standard 2-pin 0.1" header. Use with";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"R1";"DNI/R100";"R-US_R0805";"R0805";"RESISTOR, American symbol";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"U1";"INA219 purple board";"INA219";"INA219";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";"";
+"U2";"INA219AIDR";"INA219AIDR";"D0008A_N";"";"Copyright (C) 2022 Ultra Librarian. All rights reserved.";"";"";"296-23978-1-ND";"296-23978-2-ND";"296-23978-6-ND";"2156-INA219AIDR-ND";"INA219AIDR";"";"Texas Instruments";"";"";"";"RefDes";"TYPE";

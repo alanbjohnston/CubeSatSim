@@ -2,10 +2,14 @@
 
 echo -e "\nLog file script for CubeSatSim\n"
 
-if [ "$1" = "-r" ]; then
-  sudo journalctl -a -u rpitx > /home/pi/CubeSatSim/logr.txt 
-  cat /home/pi/CubeSatSim/logr.txt
-  echo -e "\nLog file also saved as /home/pi/CubeSatSim/logr.txt"
+if [ "$1" = "-r" ] || [ "$1" = "-t" ] ; then
+  sudo journalctl -a -u transmit > /home/pi/CubeSatSim/logt.txt 
+  cat /home/pi/CubeSatSim/logt.txt
+  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
+elif [ "$1" = "-c" ]; then
+  sudo journalctl -a -u command > /home/pi/CubeSatSim/logc.txt 
+  cat /home/pi/CubeSatSim/logc.txt
+  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
 else
   sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
   cat /home/pi/CubeSatSim/log.txt
