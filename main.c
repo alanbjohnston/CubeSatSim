@@ -310,7 +310,7 @@ int main(int argc, char * argv[]) {
   pullUpDnControl(26, PUD_UP);
 
   if (digitalRead(26) != HIGH) {
-    printf("v1 Present with UHF BPF\n");
+    printf("LPF present\n");
     transmit = TRUE;
   }
 
