@@ -250,17 +250,17 @@ if [ -z "$6" ] ; then n6="3" ; changed=1 ; else n6=$6 ; fi # squelch
 if [ -z "$7" ] ; then n7="434.9000" ; changed=1 ; else n7=$7 ; fi # transmit frequency
 if [ -z "$8" ] ; then n8="435.0000" ; changed=1 ; else n8=$8 ; fi # receive frequency
 if [ -z "$9" ] ; then n9="no" ; changed=1 ; else n9=$9 ; fi # hab mode
-if [ -z "$10" ] ; then n10="0" ; changed=1 ; else n10=$10 ; fi # rx pl code 
-if [ -z "$11" ] ; then n11="0" ; changed=1 ; else n11=$11 ; fi # tx pl code
+if [ -z "${10}" ] ; then n10="0" ; changed=1 ; else n10=${10} ; fi # rx pl code 
+if [ -z "${11}" ] ; then n11="0" ; changed=1 ; else n11=${11} ; fi # tx pl code
 
 if [ $changed -eq 1 ]; then
 	echo -e "Current sim.cfg configuration file:"	
 	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $10 $11
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
 	echo
-	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $10 $11
-	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $10 $11 > /home/pi/CubeSatSim/sim.cfg
+	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11
+	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11 > /home/pi/CubeSatSim/sim.cfg
 	echo
 fi
 
