@@ -161,7 +161,7 @@ txLed = 27
 txLedOn = 1 
 txLedOff = 0
 if GPIO.input(12) == False:
-	print("Version is v1 with UHF LPF")
+	print("LPF present")
 	transmit = True
 else:
 	print("No LPF")
