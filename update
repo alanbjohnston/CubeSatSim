@@ -215,21 +215,8 @@ fi
 
 cd /home/pi/pi-power-button
 
-git checkout reboot-mode-change-beta > .updated_b
+git checkout master
 
-  grep 'error' /home/pi/pi-power-button/.updated_b
-  if [[ $(grep 'error' /home/pi/pi-power-button/.updated_b) ]]; then
-  
-    echo "pi-power-button switching to beta branch"
-
-    git pull
-
-    git checkout reboot-mode-change-beta
-    
-    script/install
-
-    FLAG=1
-  fi
 
   git pull --no-rebase > .updated_p
 
@@ -241,20 +228,7 @@ git checkout reboot-mode-change-beta > .updated_b
     script/install
 
     FLAG=1
-    
-#    echo "You need to reboot to complete this update.  Reboot now (y/n)?"
 
-#    read -r ANS
-
- #   if [ "$ANS" = "y" ]; then
-
- #     sudo reboot now
-
- #   else
-
-  #    echo "The CubeSatSim software may not work correctly until you reboot."
-
- # fi  
 
   else
     echo "nothing to do for pi-power-button."
