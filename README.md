@@ -2,6 +2,10 @@
 
 The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
 
+The three custom PCBs are the Main, Battery and Solar boards.  Information including schematics and gerbers is in https://CubeSatSim.org/hardware
+
+<img width="200" alt="cubesatsim-main-v2 0 1_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-main-v2.0_top.png"> <img width="200" alt="cubesatsim-battery-v2 0_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-battery-v2.0.1_top.png"> <img width="200" alt="cubesatsim-solar-v2 0_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-solar-v2.0.1_top.png">
+
 There are several hardware versions and software branches to go with them - see below for information.
 
 See the Wiki Software Install page for more details: https://github.com/alanbjohnston/CubeSatSim/wiki/2.-Software-Install. The software runs on any Raspberry Pi including the Raspberry Pi 4B, 3B, 3B+, Pi Zero, Pi Zero W, or Pi Zero 2 W.
