@@ -1,4 +1,4 @@
-<img width="200" alt="cubesatsim-battery-v2 0 1_top" src="https://github.com/user-attachments/assets/32657557-761d-4806-84e0-3d16d3128b69"> <img width="200" alt="cubesatsim-main-v2 0_top" src="https://github.com/user-attachments/assets/4419cf0f-0064-4a2f-9641-463235dfd75a"> <img width="200" alt="cubesatsim-solar-v2 0_top" src="https://github.com/user-attachments/assets/7e51edda-4f7e-435a-a0b8-a35463093ad5">
+<img width="200" alt="cubesatsim-battery-v2 0 1_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-main-v2.0_top.png"> <img width="200" alt="cubesatsim-main-v2 0_top" src="https://github.com/user-attachments/assets/4419cf0f-0064-4a2f-9641-463235dfd75a"> <img width="200" alt="cubesatsim-solar-v2 0_top" src="https://github.com/user-attachments/assets/7e51edda-4f7e-435a-a0b8-a35463093ad5">
 
 Here is information about the CubeSatSim PCBs, version v2.0
 
@@ -26,6 +26,6 @@ Here's what the files are:
 
 I use PCBWay to fabricate PCBs https://pcbway.com
 
-Here is a very draft bill of materials: https://CubeSatSim.org/bom-v2
+Here is the bill of materials: https://CubeSatSim.org/bom
 
 Wiki instructions: https://github.com/alanbjohnston/CubeSatSim/wiki/
