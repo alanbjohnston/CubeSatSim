@@ -14,7 +14,7 @@ Blink  The usual Arduino "Hello World" application that blinks the LED for each 
 
 i2c_scanner  A handy utility for scanning the I2C bus that displays the results in the Serial Monitor at 9600 baud.  If the sensors are installed, the two sensors should be displayed.
 
-STEM_Payload_Test  Blinks the Blue and Green LEDs on the Main Board and also reads the Temperature and Voltage sensors.
+STEM_Payload_Test  Blinks the White and Yellow LEDs on the Main Board and also reads the Temperature and Voltage sensors (Was the Green and Blue LEDs on the STEM Payload board).
 
 bme280test Displays the results of reading the BME280 sensor: Temperature, Pressure, Altitude, and Humidity and displays on Serial Monitor 9600 baud.  Requires the following libraries: Adadruit Unified Sensor (specify version 1.0.3), Adafruit_BME280 (specify version 1.1.0)
 
