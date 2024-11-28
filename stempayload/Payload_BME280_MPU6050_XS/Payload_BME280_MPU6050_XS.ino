@@ -352,7 +352,7 @@ void loop() {
     else
         led_set(whiteLED, LOW);
         
-    if (rotation > 10)
+    if (rotation > 20)
         led_set(yellowLED, HIGH);
     else
         led_set(yellowLED, LOW);
