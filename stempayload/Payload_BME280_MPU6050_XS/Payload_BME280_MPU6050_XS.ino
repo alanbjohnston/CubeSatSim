@@ -343,12 +343,12 @@ void loop() {
       rest = acceleration;
     }
  
-    if (acceleration > 1.2 * rest)
+    if (acceleration > 1.8 * rest)
         led_set(whiteLED, HIGH);
     else
         led_set(whiteLED, LOW);
         
-    if (rotation > 5)
+    if (rotation > 10)
         led_set(yellowLED, HIGH);
     else
         led_set(yellowLED, LOW);
@@ -486,8 +486,8 @@ void blink_setup()
 
 #if defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
   pinMode(LED_BUILTIN, OUTPUT);     
-  pinMode(18, OUTPUT);  // blue LED on STEM Payload Board v1.3.2
-  pinMode(19, OUTPUT);  // green LED on STEM Payload Board v1.3.2	   
+  pinMode(18, OUTPUT);  // yellow LED (was blue LED on STEM Payload Board v1.3.2)
+  pinMode(19, OUTPUT);  // white LED (was green LED on STEM Payload Board v1.3.2)	   
 #endif
 
 #if !defined(ARDUINO_ARCH_MBED_RP2040) && defined(ARDUINO_ARCH_RP2040)
