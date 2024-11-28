@@ -1327,7 +1327,7 @@ elif [ "$1" = "-A" ]; then
 				echo "Unknown mode"
 #				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=?"
 				;;
-#		esac
+		esac
 #		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 #		echo $STRING > /home/pi/CubeSatSim/t.txt
 #		echo
