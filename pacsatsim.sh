@@ -175,7 +175,7 @@ else
 
   echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf -t 0 &
+  direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim.conf -t 0 &
 
 fi
 
@@ -185,8 +185,7 @@ value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
 set -- $value
 
-#rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
-rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
+#rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
 
 /home/pi/pi_pacsat/Debug/pi_pacsat -c /home/pi/pi_pacsat/Debug/pacsat.config -d /home/pi/PacSat
 
