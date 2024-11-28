@@ -1285,7 +1285,7 @@ elif [ "$1" = "-A" ]; then
 		sudo systemctl stop transmit
 	#	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 	
-		sudo python3 -u /home/pi/CubeSatSim/transmit.py x > /dev/null 2>&1 &  # Force APRS mode
+#		sudo python3 -u /home/pi/CubeSatSim/transmit.py x > /dev/null 2>&1 &  # Force APRS mode
 	fi
 
 	sim="y"
