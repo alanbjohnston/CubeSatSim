@@ -334,6 +334,7 @@ void loop() {
      
     float rotation = sqrt(mpu6050.getGyroX()*mpu6050.getGyroX() + mpu6050.getGyroY()*mpu6050.getGyroY() + mpu6050.getGyroZ()*mpu6050.getGyroZ()); 
     float acceleration = sqrt(mpu6050.getAccX()*mpu6050.getAccX() + mpu6050.getAccY()*mpu6050.getAccY() + mpu6050.getAccZ()*mpu6050.getAccZ()); 
+//    Serial.println(" ");	    
 //    Serial.print(rotation);
 //    Serial.print(" ");
 //    Serial.println(acceleration);
@@ -341,9 +342,12 @@ void loop() {
     if (first_read == true) {
       first_read = false;
       rest = acceleration;
+      Serial.println(" ");
+      Serial.print("rest acceleration: ");
+      Serial.println(rest);	    
     }
  
-    if (acceleration > 1.8 * rest)
+    if (acceleration > 1.1 * rest)
         led_set(whiteLED, HIGH);
     else
         led_set(whiteLED, LOW);
