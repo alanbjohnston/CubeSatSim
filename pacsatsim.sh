@@ -4,11 +4,11 @@
 
 sudo modprobe snd-aloop
 
-sudo systemctl stop openwebrx
+#sudo systemctl stop openwebrx
 
 sudo systemctl stop rtl_tcp
 
-pkill -o chromium &>/dev/null
+#pkill -o chromium &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
@@ -16,44 +16,44 @@ sudo killall -9 direwolf &>/dev/null
 
 sudo killall -9 aplay &>/dev/null
 
-sudo killall -9 qsstv &>/dev/null
+#sudo killall -9 qsstv &>/dev/null
 
-sudo killall -9 rtl_tcp &>/dev/null
+#sudo killall -9 rtl_tcp &>/dev/null
 
-sudo killall -9 java &>/dev/null
+#sudo killall -9 java &>/dev/null
 
-sudo killall -9 CubicSDR &>/dev/null
+#sudo killall -9 CubicSDR &>/dev/null
 
-sudo killall -9 zenity &>/dev/null
+#sudo killall -9 zenity &>/dev/null
 
 echo
 
-frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
+#frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
 
 #echo $frequency
 
-if [ -z "$frequency" ]; then 
+#if [ -z "$frequency" ]; then 
 
-echo "No choice made.  Exiting."
+#echo "No choice made.  Exiting."
 
-sleep 3
+#sleep 3
 
-exit
+#exit
 
-#echo "Choose the number for the packet decoding option:"
-#echo
-#echo "1. APRS US 2m (144390 kHz)"
-#echo "2. CubeSatSim (434900 kHz)"
-#echo "3. APRS European 2m (144800 kHz)"
-#echo "4. APRS Australian 2m (145175 kHz)"
-#echo "5. APRS on another frequency"
-#echo "6. APRS on ISS (145825 kHz)"
-#echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
-#echo "8. Test Serenity CubeSat decoding with WAV file"
-#echo "9. Test APRS decoding with CubeSatSim WAV file"
-#echo
+echo "Choose the number for the packet decoding option:"
+echo
+echo "1. APRS US 2m (144390 kHz)"
+echo "2. CubeSatSim (434900 kHz)"
+echo "3. APRS European 2m (144800 kHz)"
+echo "4. APRS Australian 2m (145175 kHz)"
+echo "5. APRS on another frequency"
+echo "6. APRS on ISS (145825 kHz)"
+echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
+echo "8. Test Serenity CubeSat decoding with WAV file"
+echo "9. Test APRS decoding with CubeSatSim WAV file"
+echo
 
-#read -r choice
+read -r choice
 
 fi
 
