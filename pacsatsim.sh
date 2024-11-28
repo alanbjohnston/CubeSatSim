@@ -55,7 +55,7 @@ echo
 
 read -r choice
 
-fi
+#fi
 
 if [ "$choice" = "1" ] || [ "$frequency" = "144390" ]; then
 
