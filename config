@@ -9,11 +9,11 @@ function transmit_command_aprs {
 		sudo systemctl stop command
 
 		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
+#		gpio write 28 0 # ptt
 		gpio write 2 1 # tx LED
 		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf  -t 0l 
 		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
+#		gpio write 28 1 #ptt
 		echo "Transmit stop"
 
 	 	echo "Resuming command and control"
