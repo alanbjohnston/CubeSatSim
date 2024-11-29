@@ -2,6 +2,8 @@
 
 # script to auto decode packet using rtl_fm and Direwolf and run Pacsat
 
+export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+
 sudo modprobe snd-aloop
 
 #sudo systemctl stop openwebrx
