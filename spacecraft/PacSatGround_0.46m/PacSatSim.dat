@@ -1,0 +1,15 @@
+Pacsat Telemetry Decoder Properties
+#Sat Nov 26 18:12:20 EST 2016
+numberOfLookupTables=0
+measurementsFileName=measurements.csv
+model=1
+layout0.filename=PACSATSIM_rttelemetry.csv
+layout0.name=TLMI_LAYOUT
+passMeasurementsFileName=passmeasurements.csv
+name=Pacsat
+description=PacSatSim 
+numberOfLayouts=1
+satId=3
+catalogNumber=0
+conversionCoefficients=pacsat-coef.csv
+layoutsUseBits=True
