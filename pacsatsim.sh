@@ -4,6 +4,10 @@
 
 export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
 
+sudo systemctl stop cubesatsim
+
+sudo systemctl stop transmit
+
 sudo modprobe snd-aloop
 
 #sudo systemctl stop openwebrx
