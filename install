@@ -82,6 +82,8 @@ git clone https://github.com/alanbjohnston/direwolf.git
 
 cd direwolf
 
+git checkout invert
+
 make -j
 
 sudo make install
