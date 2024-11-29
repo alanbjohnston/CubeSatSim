@@ -190,6 +190,6 @@ rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t r
 
 cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
-sudo setsid java -Xmx512M -jar  PacSatGround.jar
+sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSat" &
 
 sleep 5
