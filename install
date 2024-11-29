@@ -122,8 +122,29 @@ cd rpitx
 
 ./install.sh
 
+cd
+
+git clone https://github.com/ac2cz/iors_common.git
+
+cd iors_common/Debug/
+
+make all
+
+sudo ./install.sh
 
 cd
+
+git clone https://github.com/ac2cz/pi_pacsat.git
+
+cd pi_pacsat/Debug
+
+make all
+
+mkdir /home/pi/PacSat
+mkdir /home/pi/PacSat/pacsat
+mkdir /home/pi/PacSat/pacsat/dir
+
+export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
 
 cd
 
