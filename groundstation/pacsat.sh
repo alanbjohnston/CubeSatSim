@@ -173,23 +173,33 @@ if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ] 
 
 else
 
-  echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
+  if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
 
-  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf -t 0 &
+	  echo -e "Direwolf using USB Sound Card (FM Transceiver) on $frequency Hz"
 
-fi
+    direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat.conf -t 0 &
 
-sleep 5
+  else
 
-value=`aplay -l | grep "Loopback"`
-echo "$value" > /dev/null
-set -- $value
+    echo -e "Direwolf using RTL-SDR on $frequency Hz"
+  
+    direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf -t 0 &
+
+    sleep 5
+
+    value=`aplay -l | grep "Loopback"`
+    echo "$value" > /dev/null
+    set -- $value
 
 #rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
-rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
+    rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
+
+  fi
 
 cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
 sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSat" &
 
 sleep 5
+
+fi
