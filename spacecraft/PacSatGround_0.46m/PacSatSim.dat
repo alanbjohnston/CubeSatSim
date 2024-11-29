@@ -3,10 +3,10 @@ Pacsat Telemetry Decoder Properties
 numberOfLookupTables=0
 measurementsFileName=measurements.csv
 model=1
-layout0.filename=PACSATSIM_rttelemetry.csv
+layout0.filename=PACSAT_rttelemetry.csv
 layout0.name=TLMI_LAYOUT
 passMeasurementsFileName=passmeasurements.csv
-name=Pacsat
+name=PacSatSim
 description=PacSatSim 
 numberOfLayouts=1
 satId=3
