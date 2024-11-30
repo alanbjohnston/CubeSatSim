@@ -175,6 +175,8 @@ tar -xzf PacSatGround_0.46m_linux.tar.gz -C /home/pi/Desktop
 
 rm PacSatGround_0.46m_linux.tar.gz
 
+cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacSatGround_0.46m_linux/spacecraft/
+
 mkdir /home/pi/PacSatGround
 
 sudo apt-get install default-jdk -y
