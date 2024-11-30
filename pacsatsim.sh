@@ -46,20 +46,22 @@ echo
 
 #exit
 
-echo "Choose the number for the packet decoding option:"
-echo
-echo "1. APRS US 2m (144390 kHz)"
-echo "2. CubeSatSim (434900 kHz)"
-echo "3. APRS European 2m (144800 kHz)"
-echo "4. APRS Australian 2m (145175 kHz)"
-echo "5. APRS on another frequency"
-echo "6. APRS on ISS (145825 kHz)"
-echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
-echo "8. Test Serenity CubeSat decoding with WAV file"
-echo "9. Test APRS decoding with CubeSatSim WAV file"
-echo
+#echo "Choose the number for the packet decoding option:"
+#echo
+#echo "1. APRS US 2m (144390 kHz)"
+#echo "2. CubeSatSim (434900 kHz)"
+#echo "3. APRS European 2m (144800 kHz)"
+#echo "4. APRS Australian 2m (145175 kHz)"
+#echo "5. APRS on another frequency"
+#echo "6. APRS on ISS (145825 kHz)"
+#echo "7. Serenity CubeSat 4800 bps (437.1 MHz)"
+#echo "8. Test Serenity CubeSat decoding with WAV file"
+#echo "9. Test APRS decoding with CubeSatSim WAV file"
+#echo
 
-read -r choice
+#read -r choice
+
+choice=2
 
 #fi
 
@@ -193,6 +195,8 @@ set -- $value
 
 #rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
 
-/home/pi/pi_pacsat/Debug/pi_pacsat -c /home/pi/pi_pacsat/Debug/pacsat.config -d /home/pi/PacSat
+cd /home/pi/pi_pacsat/Debug
+
+./pi_pacsat -c pacsat.config -d /home/pi/PacSat
 
 sleep 5
