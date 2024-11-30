@@ -170,6 +170,8 @@ unzip PacSatGround_0.46m_linux.tar.gz -d /home/pi/Desktop
 
 rm PacSatGround_0.46m_linux.tar.gz
 
+mkdir /home/pi/PacSatGround
+
 cd
 
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
