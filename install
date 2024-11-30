@@ -177,6 +177,8 @@ rm PacSatGround_0.46m_linux.tar.gz
 
 mkdir /home/pi/PacSatGround
 
+sudo apt-get install default-jdk -y
+
 cd
 
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
