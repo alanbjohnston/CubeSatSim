@@ -152,10 +152,14 @@ cd
 
 cd PacSat
 
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
 echo "bit_rate=9600" > pacsat.config
-echo "bbs_callsign=XY2ZZ-12" >> pacsat.config
-echo "broadcast_callsign=XY2ZZ-11" >> pacsat.config
-echo "digi_callsign=XY2ZZ-1" >> pacsat.config
+echo "bbs_callsign=$1" >> pacsat.config
+echo "broadcast_callsign=$1-11" >> pacsat.config
+echo "digi_callsign=$1-1" >> pacsat.config
 echo "max_frames_in_tx_buffer=5" >> pacsat.config
 echo "pb_open=1" >> pacsat.config
 echo "uplink_open=1" >> pacsat.config
