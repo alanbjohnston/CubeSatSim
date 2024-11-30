@@ -1409,6 +1409,15 @@ elif [ "$1" = "-g" ]; then
 
 	fi
 
+elif [ "$1" = "-G" ]; then
+
+	echo "Changing to Pacsat mode"
+	echo
+	sudo systemctl stop cubesatsim
+	sudo systemctl stop transmit
+
+	/home/pi/CubeSatSim/pacsat.sh
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1445,6 +1454,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
+	echo "   -G     Change to Pacsat mode"
 
 	echo
 	exit
