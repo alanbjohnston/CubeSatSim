@@ -148,10 +148,6 @@ mkdir /home/pi/PacSat/pacsat/dir
 
 export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
 
-cd
-
-cd PacSat
-
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
 set -- $value
@@ -165,8 +161,6 @@ echo "max_frames_in_tx_buffer=5" >> pacsat.config
 echo "pb_open=1" > pacsat.state
 echo "uplink_open=1" >> pacsat.state
 
-cd
-
 sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
 sudo sed -i 's/#hdmi_mode=1/hdmi_mode=16/g' /boot/config.txt
 sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
@@ -177,7 +171,7 @@ cd /tmp
 
 wget https://www.g0kla.com/pacsat/downloads/test/PacSatGround_0.46m_linux.tar.gz
 
-unzip PacSatGround_0.46m_linux.tar.gz -d /home/pi/Desktop
+tar -xzf PacSatGround_0.46m_linux.tar.gz -C /home/pi/Desktop
 
 rm PacSatGround_0.46m_linux.tar.gz
 
