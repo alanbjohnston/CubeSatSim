@@ -162,6 +162,16 @@ echo "uplink_open=1" >> pacsat.config
 
 cd
 
+cd /tmp
+
+wget https://www.g0kla.com/pacsat/downloads/test/PacSatGround_0.46m_linux.tar.gz
+
+unzip PacSatGround_0.46m_linux.tar.gz -d /home/pi/Desktop
+
+rm PacSatGround_0.46m_linux.tar.gz
+
+cd
+
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
 
 sudo systemctl enable cubesatsim
