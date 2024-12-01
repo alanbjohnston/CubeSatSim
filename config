@@ -259,6 +259,8 @@ if [ "$1" = "" ]; then
 		fi
 	elif [ "$1" = "p" ]; then
 		echo "Mode is Pacsat"	
+	elif [ "$1" = "P" ]; then
+		echo "Mode is Pacsat Ground Station"	
 	else
 		echo 
 	fi
