@@ -363,7 +363,7 @@ cd
 
 fi
 
-cd direwolf
+cd /home/pi/direwolf
 
 if [[ ! $(git status | grep 'invert') ]]; then
 
