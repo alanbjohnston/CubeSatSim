@@ -1435,6 +1435,28 @@ elif [ "$1" = "-G" ]; then
 		restart=1
 	fi	
 
+elif [ "$1" = "-H" ]; then
+
+	echo "Changing to Pacsat Ground Station mode"
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+	echo "changing CubeSatSim to Pacsat mode"
+	sudo echo "P" > /home/pi/CubeSatSim/.mode	
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			restart=1
+		else 
+			reboot=1
+		fi	
+	else
+		restart=1
+	fi	
+
+
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
