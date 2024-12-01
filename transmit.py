@@ -423,7 +423,7 @@ if __name__ == "__main__":
 				print("AFSK")
 			elif (mode == 'p'):
 				print("Pacsat")
-				system('/home/pi/CubeSatSim/pacsat.sh')
+				system('/home/pi/CubeSatSim/pacsatsim.sh')
 			else:
 				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
