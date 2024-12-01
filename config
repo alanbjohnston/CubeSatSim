@@ -210,7 +210,7 @@ function transmit_command_beacon {
 	exit
 }
 
-echo "CubeSatSim v2.0 configuration tool"
+echo "CubeSatSim v2.1 configuration tool"
 echo
 # echo $1
 # echo $2
