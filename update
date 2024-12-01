@@ -363,14 +363,18 @@ cd
 
 fi
 
-cd rpitx
+cd direwolf
 
 if [[ ! $(git status | grep 'invert') ]]; then
 
-	echo "updating rpitx to ptt invert branch"
+	echo "updating direwolf to ptt invert version"
+
 	git pull
 	git checkout invert
-	./update.sh
+	make clean	
+	make -j	
+	sudo make install
+	make install-rpi
 	cd
 
 fi
