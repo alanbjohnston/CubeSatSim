@@ -111,6 +111,7 @@ FILE *telem_file;
 #define PACSAT 6
 #define REPEATER 11
 #define TXCOMMAND 12
+#define PACSATGND 13
 
 int transmitStatus = -1;
 
