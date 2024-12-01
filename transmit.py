@@ -415,7 +415,7 @@ if __name__ == "__main__":
     
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-		if (mode == 'a') or (mode == 'x') or (mode == 'n') or (mode == 'p'):
+		if (mode == 'a') or (mode == 'x') or (mode == 'n') or (mode == 'p') or (mode == 'P':
 #			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)
@@ -424,6 +424,10 @@ if __name__ == "__main__":
 			elif (mode == 'p'):
 				print("Pacsat")
 				system('/home/pi/CubeSatSim/pacsatsim.sh')
+			elif (mode == 'p'):
+				print("Pacsat Ground Station")
+				while True:
+					sleep(30)
 			else:
 				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
