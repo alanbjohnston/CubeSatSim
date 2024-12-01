@@ -1435,7 +1435,7 @@ elif [ "$1" = "-G" ]; then
 		restart=1
 	fi	
 
-elif [ "$1" = "-H" ]; then
+elif [ "$1" = "-I" ]; then
 
 	echo "Changing to Pacsat Ground Station mode"
 	value=`cat /home/pi/CubeSatSim/.mode`
@@ -1494,6 +1494,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
 	echo "   -G     Change to Pacsat mode"
+	echo "   -I     Changing to Pacsat Ground Station mode"
 
 	echo
 	exit
