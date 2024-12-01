@@ -381,7 +381,7 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True) and (skip == False):	
+	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'p')) and (command_tx == True) and (skip == False):	
 #		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
@@ -415,12 +415,15 @@ if __name__ == "__main__":
     
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-		if (mode == 'a') or (mode == 'x') or (mode == 'n'):
+		if (mode == 'a') or (mode == 'x') or (mode == 'n') or (mode == 'p'):
 #			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)
 			if (mode == 'a'):
 				print("AFSK")
+			elif (mode == 'p'):
+				print("Pacsat")
+				system('/home/pi/CubeSatSim/pacsat.sh')
 			else:
 				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
