@@ -365,11 +365,15 @@ fi
 
 cd /home/pi/direwolf
 
+git status
+
+git status | grep 'invert'
+
 if [[ ! $(git status | grep 'invert') ]]; then
 
 	echo "updating direwolf to ptt invert version"
 
-	git pull
+	git pull --no-rebase
 	git checkout invert
 	make clean	
 	make -j	
