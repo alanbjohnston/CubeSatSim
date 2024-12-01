@@ -4,6 +4,11 @@
 
 sudo modprobe snd-aloop
 
+
+sudo systemctl stop cubesatsim &>/dev/null
+
+sudo systemctl stop transmit &>/dev/null
+
 sudo systemctl stop openwebrx &>/dev/null
 
 sudo systemctl stop rtl_tcp &>/dev/null
