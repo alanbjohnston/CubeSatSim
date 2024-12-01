@@ -1416,11 +1416,22 @@ elif [ "$1" = "-g" ]; then
 elif [ "$1" = "-G" ]; then
 
 	echo "Changing to Pacsat mode"
-	echo
-	sudo systemctl stop cubesatsim
-	sudo systemctl stop transmit
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
-	/home/pi/CubeSatSim/pacsat.sh
+	echo "changing CubeSatSim to Pacsat mode"
+	sudo echo "p" > /home/pi/CubeSatSim/.mode	
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			restart=1
+		else 
+			reboot=1
+		fi	
+	else
+		restart=1
+	fi	
 
 elif [ "$1" = "-h" ]; then
 
