@@ -525,8 +525,10 @@ elif [ "$1" = "-c" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
+	oldcallsign="$1"
+
 	echo "Current value of CALLSIGN is"	
-	echo $1
+	echo $oldcallsign
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
@@ -545,6 +547,8 @@ elif [ "$1" = "-c" ]; then
 
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+
+		sudo sed -i 's/$oldcallsign/$callsign/g' /home/pi/pi_pacsat/Debug/pacsat.config > /dev/null 2>&1
 	fi
 	
 	if [ "$norestart" = "1" ]; then
@@ -1409,6 +1413,15 @@ elif [ "$1" = "-g" ]; then
 
 	fi
 
+elif [ "$1" = "-G" ]; then
+
+	echo "Changing to Pacsat mode"
+	echo
+	sudo systemctl stop cubesatsim
+	sudo systemctl stop transmit
+
+	/home/pi/CubeSatSim/pacsat.sh
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1445,6 +1458,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
+	echo "   -G     Change to Pacsat mode"
 
 	echo
 	exit

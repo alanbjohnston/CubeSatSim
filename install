@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v2.0\n"
+echo -e "\ninstallation script for CubeSatSim v2.1\n"
 
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
@@ -148,17 +148,38 @@ mkdir /home/pi/PacSat/pacsat/dir
 
 export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
 
-cd
-
-cd PacSat
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
 
 echo "bit_rate=9600" > pacsat.config
-echo "bbs_callsign=XY2ZZ-12" >> pacsat.config
-echo "broadcast_callsign=XY2ZZ-11" >> pacsat.config
-echo "digi_callsign=XY2ZZ-1" >> pacsat.config
+echo "bbs_callsign=$1" >> pacsat.config
+echo "broadcast_callsign=$1-11" >> pacsat.config
+echo "digi_callsign=$1-1" >> pacsat.config
 echo "max_frames_in_tx_buffer=5" >> pacsat.config
-echo "pb_open=1" >> pacsat.config
-echo "uplink_open=1" >> pacsat.config
+
+echo "pb_open=1" > pacsat.state
+echo "uplink_open=1" >> pacsat.state
+
+sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
+sudo sed -i 's/#hdmi_mode=1/hdmi_mode=16/g' /boot/config.txt
+sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
+
+sudo raspi-config nonint do_vnc 0
+
+cd /tmp
+
+wget https://www.g0kla.com/pacsat/downloads/test/PacSatGround_0.46m_linux.tar.gz
+
+tar -xzf PacSatGround_0.46m_linux.tar.gz -C /home/pi/Desktop
+
+rm PacSatGround_0.46m_linux.tar.gz
+
+cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacSatGround_0.46m_linux/spacecraft/
+
+mkdir /home/pi/PacSatGround
+
+sudo apt-get install default-jdk -y
 
 cd
 
@@ -190,11 +211,10 @@ sudo raspi-config nonint do_legacy 0
 
 ##  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
   
-
   sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 
-  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
-
+  #sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+  
   sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
   
   if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
