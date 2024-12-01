@@ -25,7 +25,7 @@
 
 int main(int argc, char * argv[]) {
 	
-  printf("\n\nCubeSatSim v2.0 starting...\n\n");
+  printf("\n\nCubeSatSim v2.1 starting...\n\n");
 
   wiringPiSetup();	
 		
