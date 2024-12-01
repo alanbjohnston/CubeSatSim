@@ -206,7 +206,7 @@ else
 
 cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
-sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" &
+sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
 
 sleep 5
 
