@@ -302,6 +302,8 @@ git checkout master
 #fi
 
 if [ ! -d "/home/pi/pi_pacsat" ]; then
+
+	FLAG=1
 	
 	cd
 	
