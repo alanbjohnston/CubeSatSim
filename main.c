@@ -237,7 +237,10 @@ int main(int argc, char * argv[]) {
      } else if ( mode_string == 'p') {
         mode = PACSAT;
         printf("Mode is Pacsat\n");	 	      
-      } else {
+     } else if ( mode_string == 'P') {
+        mode = PACSATGND;
+        printf("Mode is Pacsat Ground Station\n");	
+     } else {
         printf("Mode is BPSK\n");
       }	    
     }
@@ -872,7 +875,7 @@ int main(int argc, char * argv[]) {
 	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
-    } else {  				// SSTV	 or PACSAT
+    } else {  				// SSTV	 or PACSAT or PACSATGND
 //      fprintf(stderr, "Sleeping\n");
       sleep(30);	    
     }
