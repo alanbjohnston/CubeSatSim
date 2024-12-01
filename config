@@ -257,6 +257,8 @@ if [ "$1" = "" ]; then
 		else	
 			echo -n "APRS"
 		fi
+	elif [ "$1" = "p" ]; then
+		echo "Mode is Pacsat"	
 	else
 		echo 
 	fi
