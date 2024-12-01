@@ -136,7 +136,7 @@ def increment_mode():
 		print("can't write to .mode file")
 		
 
-print("CubeSatSim v2.0 transmit.py starting...")
+print("CubeSatSim v2.1 transmit.py starting...")
 
 pd = 21
 ptt = 20
