@@ -52,7 +52,7 @@ if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
 
 	echo -e "Direwolf using USB Sound Card (FM Transceiver) on $frequency Hz"
 	
-	direwolf -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat.conf -t 0 &
+	direwolf -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14.conf -t 0 &
 
 else
 
