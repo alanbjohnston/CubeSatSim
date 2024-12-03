@@ -179,6 +179,8 @@ cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacSatGr
 
 mkdir /home/pi/PacSatGround
 
+sudo usermod -a -G gpio pi
+
 sudo apt-get install default-jdk -y
 
 cd
