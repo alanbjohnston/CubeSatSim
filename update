@@ -359,6 +359,8 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacSatGround_0.46m_linux/spacecraft/
 	
 	mkdir /home/pi/PacSatGround
+
+	sudo usermod -a -G gpio pi
 	
 	sudo apt-get install default-jdk -y
 
