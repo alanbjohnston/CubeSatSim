@@ -426,7 +426,7 @@ if __name__ == "__main__":
 			elif (mode == 'p'):
 				print("Pacsat")
 #				system('/home/pi/CubeSatSim/pacsatsim.sh')
-				system('sudo systectl start pacsatsim')
+				system('sudo systemctl start pacsatsim')
 				while True:
 					sleep(30)
 			elif (mode == 'p'):
