@@ -1,0 +1,14 @@
+[Unit]
+Description=PacsatSim
+
+[Service]
+TimeoutStopSec=5
+ExecStart=/home/pi/CubeSatSim/pacsatsim.sh
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=root
+
+[Install]
+WantedBy=default.target
