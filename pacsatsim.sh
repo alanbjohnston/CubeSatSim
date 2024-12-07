@@ -75,7 +75,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
 
   frequency=434900000
   echo
-  echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
+  echo "If your Pacsat Ground Station is transmitting packets, you will see them here"
   echo
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ]; then
@@ -169,9 +169,9 @@ elif [ "$choice" = "8" ] || [ "$frequency" = "APRS" ] ; then
 
 fi
 
-echo
+#echo
 
-echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
+#echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
 
 echo
 
@@ -179,13 +179,13 @@ if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ] 
 
   echo -e "Auto decoding 4800 bps AX.25 packets on $frequency Hz"
 
-  direwolf -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -t 0 &
+  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -t 0 &
 
 else
 
   echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -qd -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
+  direwolf -P+ -D3 -qd -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
 
 fi
 
