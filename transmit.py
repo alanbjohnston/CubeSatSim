@@ -285,6 +285,8 @@ if __name__ == "__main__":
 		callsign = config[0]
 		if len(config) > 5:
 			sq = config[5]
+			if (mode == 'p') or (mode == 'P'): 
+				sq = 0 # turn off squelch for Pacsat			
 			print(sq)
 		if len(config) > 6:
                         txf = float(config[6])
