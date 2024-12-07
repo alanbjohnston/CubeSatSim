@@ -274,7 +274,7 @@ if __name__ == "__main__":
 
 	tx_value = '0'
 	rx_value = '0'
-	sq = '0'
+	 '0'
 	tx = '434.9000'	
 	rx = '435.0000'	
 	
@@ -283,11 +283,10 @@ if __name__ == "__main__":
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split()		
 		callsign = config[0]
-		if len(config) > 5:
-			sq = config[5]
-			if (mode == 'p') or (mode == 'P'): 
-				sq = 0 # turn off squelch for Pacsat			
-			print(sq)
+		if len(config) > 5:		
+			if (mode != 'p') and (mode != 'P'): # squelch off for Pacsat	
+				sq = config[5] 		
+			print(f'squelch: {sq}')
 		if len(config) > 6:
                         txf = float(config[6])
 #                        print(txf)
