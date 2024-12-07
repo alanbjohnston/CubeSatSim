@@ -44,21 +44,21 @@ echo
 
 frequency="$8e6"
 
-echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
+#echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
 
-echo
+#echo
 
 if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
 
 	echo -e "Direwolf using USB Sound Card (FM Transceiver) on $frequency Hz"
 	
-	direwolf -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14.conf -t 0 &
+	direwolf -P+ -D3 -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14.conf -t 0 &
 
 else
 
 	echo -e "Direwolf using RTL-SDR on $frequency Hz"
 	
-	direwolf -r 48000 -qd -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf -t 0 &
+	direwolf -P+ -D3 -r 48000 -qd -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf -t 0 &
 	
 	sleep 5
 	
