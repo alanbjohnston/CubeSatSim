@@ -10,6 +10,10 @@ elif [ "$1" = "-c" ]; then
   sudo journalctl -a -u command > /home/pi/CubeSatSim/logc.txt 
   cat /home/pi/CubeSatSim/logc.txt
   echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
+elif [ "$1" = "-p" ]; then
+  sudo journalctl -a -u pacsatsim > /home/pi/CubeSatSim/logp.txt 
+  cat /home/pi/CubeSatSim/logp.txt
+  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
 else
   sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
   cat /home/pi/CubeSatSim/log.txt
