@@ -425,7 +425,10 @@ if __name__ == "__main__":
 				print("AFSK")
 			elif (mode == 'p'):
 				print("Pacsat")
-				system('/home/pi/CubeSatSim/pacsatsim.sh')
+#				system('/home/pi/CubeSatSim/pacsatsim.sh')
+				system('sudo systectl start pacsatsim')
+				While True:
+					sleep(30)
 			elif (mode == 'p'):
 				print("Pacsat Ground Station")
 				while True:
