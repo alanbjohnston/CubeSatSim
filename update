@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v2.0\n"
+echo -e "\nupdate script for CubeSatSim v2.1\n"
 
 if [ "$1" = "n" ] ; then
 # if [ -z "$2" ] ; then
@@ -33,7 +33,8 @@ sudo sed -i 's/more information/more\ninformation/g' /etc/motd
 
 sudo sed -i 's/update to/update\nto/g' /etc/motd
 
-sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+#sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/cmdline.txt # remove single core 
 
 cd /home/pi/CubeSatSim
 
@@ -299,6 +300,93 @@ git checkout master
 #  sudo pip3 install pillow
 
 #fi
+
+if [ ! -d "/home/pi/pi_pacsat" ]; then
+
+	FLAG=1
+	
+	cd
+	
+	git clone https://github.com/ac2cz/iors_common.git
+	
+	cd iors_common/Debug/
+	
+	make all
+	
+	sudo ./install.sh
+	
+	cd
+	
+	git clone https://github.com/ac2cz/pi_pacsat.git
+	
+	cd pi_pacsat/Debug
+	
+	make all
+	
+	mkdir /home/pi/PacSat
+	mkdir /home/pi/PacSat/pacsat
+	mkdir /home/pi/PacSat/pacsat/dir
+	
+	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	
+	echo "bit_rate=9600" > pacsat.config
+	echo "bbs_callsign=$1" >> pacsat.config
+	echo "broadcast_callsign=$1-11" >> pacsat.config
+	echo "digi_callsign=$1-1" >> pacsat.config
+	echo "max_frames_in_tx_buffer=5" >> pacsat.config
+	
+	echo "pb_open=1" > pacsat.state
+	echo "uplink_open=1" >> pacsat.state
+	
+	sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
+	sudo sed -i 's/#hdmi_mode=1/hdmi_mode=16/g' /boot/config.txt
+	sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
+	
+	sudo raspi-config nonint do_vnc 0
+	
+	cd /tmp
+	
+	wget https://www.g0kla.com/pacsat/downloads/test/PacSatGround_0.46m_linux.tar.gz
+	
+	tar -xzf PacSatGround_0.46m_linux.tar.gz -C /home/pi/Desktop
+	
+	rm PacSatGround_0.46m_linux.tar.gz
+	
+	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacSatGround_0.46m_linux/spacecraft/
+	
+	mkdir /home/pi/PacSatGround
+
+	sudo usermod -a -G gpio pi
+	
+	sudo apt-get install default-jdk -y
+
+cd
+
+fi
+
+cd /home/pi/direwolf
+
+#git status
+
+#git status | grep 'invert'
+
+if [[ ! $(git status | grep 'invert') ]]; then
+
+	echo "updating direwolf to ptt invert version"
+
+	git pull --no-rebase
+	git checkout invert
+	make clean	
+	make -j	
+	sudo make install
+	make install-rpi
+	cd
+
+fi
 
 changed=0
 value=`cat /home/pi/CubeSatSim/sim.cfg`

@@ -4,15 +4,17 @@
 
 export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
 
-sudo systemctl stop cubesatsim
+#sudo systemctl stop cubesatsim
 
-sudo systemctl stop transmit
+#sudo systemctl stop transmit
+
+sudo systemctl stop command &>/dev/null
 
 sudo modprobe snd-aloop
 
 #sudo systemctl stop openwebrx
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp &>/dev/null
 
 #pkill -o chromium &>/dev/null
 
@@ -183,7 +185,7 @@ else
 
   echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -qd -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim.conf -t 0 &
+  direwolf -qd -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
 
 fi
 

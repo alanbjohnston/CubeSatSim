@@ -48,11 +48,11 @@ if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 	
 		echo "debug mode"
 	
-		direwolf -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 	
 	else
 	
-		direwolf -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 	
 	fi
 else

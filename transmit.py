@@ -136,7 +136,7 @@ def increment_mode():
 		print("can't write to .mode file")
 		
 
-print("CubeSatSim v2.0 transmit.py starting...")
+print("CubeSatSim v2.1 transmit.py starting...")
 
 pd = 21
 ptt = 20
@@ -285,6 +285,8 @@ if __name__ == "__main__":
 		callsign = config[0]
 		if len(config) > 5:
 			sq = config[5]
+			if (mode == 'p') or (mode == 'P'): 
+				sq = 0 # turn off squelch for Pacsat			
 			print(sq)
 		if len(config) > 6:
                         txf = float(config[6])
@@ -326,23 +328,24 @@ if __name__ == "__main__":
 			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")	
 	file.close()
 
-	try:
-		f = open("/home/pi/CubeSatSim/command_control", "r")
-		f.close()
-		GPIO.setmode(GPIO.BCM)
-		GPIO.setwarnings(False)
-		GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
-		if GPIO.input(squelch) == False:
-			print("squelch not set correctly, no command input!")
+	if (mode != 'p') and (mode != 'P'):
+		try:
+			f = open("/home/pi/CubeSatSim/command_control", "r")
+			f.close()
+			GPIO.setmode(GPIO.BCM)
+			GPIO.setwarnings(False)
+			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
+			if GPIO.input(squelch) == False:
+				print("squelch not set correctly, no command input!")
+				no_command = True
+			else:
+				print("command and control is activated")
+				no_command = False
+	#			system("/home/pi/CubeSatSim/command &")
+				system("sudo systemctl start command")
+		except:
+			print("command and control not activated")
 			no_command = True
-		else:
-			print("command and control is activated")
-			no_command = False
-#			system("/home/pi/CubeSatSim/command &")
-			system("sudo systemctl start command")
-	except:
-		print("command and control not activated")
-		no_command = True
 	
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
@@ -350,8 +353,8 @@ if __name__ == "__main__":
 	print(txLedOn)
 	GPIO.setup(txLed, GPIO.OUT)
 
-	card = "Headphones"  # default using pcm audio output of Pi Zero
-#	card = "Device" # using USB sound card for audio output	
+#	card = "Headphones"  # default using pcm audio output of Pi Zero
+	card = "Device" # using USB sound card for audio output	
 
 	print("Programming FM module!\n");	
 	output(pd, 1)
@@ -381,7 +384,7 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True) and (skip == False):	
+	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'p') or (mode == 'P')) and (command_tx == True) and (skip == False):	
 #		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
@@ -415,12 +418,19 @@ if __name__ == "__main__":
     
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-		if (mode == 'a') or (mode == 'x') or (mode == 'n'):
+		if (mode == 'a') or (mode == 'x') or (mode == 'n') or (mode == 'p') or (mode == 'P'):
 #			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)
 			if (mode == 'a'):
 				print("AFSK")
+			elif (mode == 'p'):
+				print("Pacsat")
+				system('/home/pi/CubeSatSim/pacsatsim.sh')
+			elif (mode == 'p'):
+				print("Pacsat Ground Station")
+				while True:
+					sleep(30)
 			else:
 				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")

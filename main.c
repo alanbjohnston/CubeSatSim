@@ -25,7 +25,7 @@
 
 int main(int argc, char * argv[]) {
 	
-  printf("\n\nCubeSatSim v2.0 starting...\n\n");
+  printf("\n\nCubeSatSim v2.1 starting...\n\n");
 
   wiringPiSetup();	
 		
@@ -233,8 +233,14 @@ int main(int argc, char * argv[]) {
         printf("Mode is Repeater\n");
      } else if ( mode_string == 'n') {
         mode = TXCOMMAND;
-        printf("Mode is Transmit Command\n");	      
-      } else {
+        printf("Mode is Transmit Command\n");	    
+     } else if ( mode_string == 'p') {
+        mode = PACSAT;
+        printf("Mode is Pacsat\n");	 	      
+     } else if ( mode_string == 'P') {
+        mode = PACSATGND;
+        printf("Mode is Pacsat Ground Station\n");	
+     } else {
         printf("Mode is BPSK\n");
       }	    
     }
@@ -869,7 +875,7 @@ int main(int argc, char * argv[]) {
 	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
-    } else {  				// SSTV	    
+    } else {  				// SSTV	 or PACSAT or PACSATGND
 //      fprintf(stderr, "Sleeping\n");
       sleep(30);	    
     }
@@ -2205,7 +2211,7 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
 		fprintf(stderr,"Turning Battery saver mode ON\n");  
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
 			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");
@@ -2221,7 +2227,7 @@ if (setting == ON) {
 		FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");

@@ -108,8 +108,10 @@ FILE *telem_file;
 #define BPSK 3
 #define SSTV 4
 #define CW 5
+#define PACSAT 6
 #define REPEATER 11
 #define TXCOMMAND 12
+#define PACSATGND 13
 
 int transmitStatus = -1;
 
