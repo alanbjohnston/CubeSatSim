@@ -197,6 +197,8 @@ sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
 
 sudo systemctl enable command
 
+sudo cp ~/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
+
 sudo cp /boot/config.txt /boot/config.txt.0
 
 sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
