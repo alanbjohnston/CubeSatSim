@@ -153,7 +153,7 @@ echo "$value" > /dev/null
 set -- $value
 
 echo "bit_rate=9600" > pacsat.config
-echo "bbs_callsign=$1" >> pacsat.config
+echo "bbs_callsign=$1-12" >> pacsat.config
 echo "broadcast_callsign=$1-11" >> pacsat.config
 echo "digi_callsign=$1-1" >> pacsat.config
 echo "max_frames_in_tx_buffer=5" >> pacsat.config
