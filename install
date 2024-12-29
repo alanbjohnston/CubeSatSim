@@ -153,13 +153,15 @@ echo "$value" > /dev/null
 set -- $value
 
 echo "bit_rate=9600" > pacsat.config
-echo "bbs_callsign=$1" >> pacsat.config
+echo "bbs_callsign=$1-12" >> pacsat.config
 echo "broadcast_callsign=$1-11" >> pacsat.config
 echo "digi_callsign=$1-1" >> pacsat.config
 echo "max_frames_in_tx_buffer=5" >> pacsat.config
 
 echo "pb_open=1" > pacsat.state
 echo "uplink_open=1" >> pacsat.state
+echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
+echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
 
 sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
 sudo sed -i 's/#hdmi_mode=1/hdmi_mode=16/g' /boot/config.txt
