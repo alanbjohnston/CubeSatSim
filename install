@@ -136,7 +136,7 @@ sudo ./install.sh
 
 cd
 
-git clone https://github.com/ac2cz/pi_pacsat.git
+git clone https://github.com/alanbjohnston/pi_pacsat.git
 
 cd pi_pacsat
 
