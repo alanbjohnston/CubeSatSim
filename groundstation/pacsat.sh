@@ -32,6 +32,8 @@ sudo killall -9 zenity &>/dev/null
 
 echo
 
+sudo systemctl restart pacsatsim
+
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
 set -- $value
