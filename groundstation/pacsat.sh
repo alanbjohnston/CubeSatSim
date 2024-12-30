@@ -4,6 +4,12 @@
 
 sudo modprobe snd-aloop
 
+sudo systemctl stop cubesatsim
+
+sudo systemctl stop transmit
+
+sudo systemctl stop command
+
 /home/pi/CubeSatSim/config -I
 
 sudo systemctl stop command &>/dev/null
