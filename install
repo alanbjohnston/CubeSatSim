@@ -138,7 +138,11 @@ cd
 
 git clone https://github.com/ac2cz/pi_pacsat.git
 
-cd pi_pacsat/Debug
+cd pi_pacsat
+
+git checkout master-debug
+
+cd Debug
 
 make all
 
