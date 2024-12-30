@@ -10,7 +10,7 @@ sudo systemctl stop transmit
 
 sudo systemctl stop command
 
-/home/pi/CubeSatSim/config -I
+#/home/pi/CubeSatSim/config -I
 
 sudo systemctl stop command &>/dev/null
 
