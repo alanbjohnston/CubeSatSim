@@ -802,7 +802,7 @@ if __name__ == "__main__":
 ##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					sleep(1)
-					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+					system("sudo arecord -D plughw:CARD -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					GPIO.output(powerPin, 1)
 					sleep(0.5)
 					GPIO.output(powerPin, 0)
@@ -810,9 +810,9 @@ if __name__ == "__main__":
 						sleep(1)
 					print("No carrier detected, stopping repeater")
 					output(txLed, txLedOff)
-					system("sudo killall -9 arecord")
-					system("sudo killall -9 nc")
-					system("sudo killall -9 rpitx")
+					system("sudo killall -9 arecord > /dev/null 2>&1")
+					system("sudo killall -9 nc > /dev/null 2>&1")
+					system("sudo killall -9 rpitx > /dev/null 2>&1")
 		
 		else:
 			print("FSK") 
