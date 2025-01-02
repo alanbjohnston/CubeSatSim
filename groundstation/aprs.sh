@@ -3,11 +3,13 @@
 
 sudo modprobe snd-aloop
 
-sudo systemctl stop openwebrx
+sudo systemctl stop openwebrx &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp &>/dev/null
 
 pkill -o chromium &>/dev/null
+
+sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
