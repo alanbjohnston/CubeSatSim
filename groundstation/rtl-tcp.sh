@@ -23,13 +23,15 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
-sudo systemctl stop openwebrx
+sudo systemctl stop openwebrx &>/dev/null
 
 sleep 2
 
 pkill -o chromium &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp &>/dev/null
+
+sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 java &>/dev/null
 
