@@ -50,7 +50,7 @@ sudo systemctl restart openwebrx &>/dev/null
 
 sleep 10
 
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://localhost:8073 &>/dev/null & 
+setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars --app=http://localhost:8073 &>/dev/null & 
 
 sleep 10
 
