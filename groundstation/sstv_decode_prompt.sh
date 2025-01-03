@@ -30,6 +30,9 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
+
 #echo "s" >> .mode
 
 frequency=$(zenity --list 2>/dev/null --width=410 --height=220 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
