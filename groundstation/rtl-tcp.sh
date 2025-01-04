@@ -49,9 +49,10 @@ sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-
 #sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
 sudo systemctl start rtl_tcp &>/dev/null
+
+sudo journalctl -af -u rtl_tcp
 
 sleep 5
 
