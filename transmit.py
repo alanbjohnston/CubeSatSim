@@ -803,7 +803,8 @@ if __name__ == "__main__":
 					system("sudo killall -9 arecord")
 					system("sudo killall -9 nc")
 					system("sudo killall -9 rpitx")
-		
+					system("sudo /etc/init.d/alsa-utils stop")
+					system("sudo /etc/init.d/alsa-utils start")
 		else:
 			print("FSK") 
 			print("turn on FM rx")
