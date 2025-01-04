@@ -52,7 +52,7 @@ sudo killall -9 zenity &>/dev/null
 #sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
 sudo systemctl start rtl_tcp &>/dev/null
 
-while [[ sudo systemctl status rtl_tcp | grep "Active: active (running)" ]]
+while [[ $(sudo systemctl status rtl_tcp | grep "Active: active (running)") ]]
 do
   sleep 5
 done  
