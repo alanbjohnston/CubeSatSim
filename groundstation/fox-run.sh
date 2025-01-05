@@ -1,7 +1,7 @@
 #!/bin/bash
 # script to run FoxTelem 
 
-echo "Startup script to run FoxTelem for FIAB v3"
+echo "Startup script to run FoxTelem for FIAB v4"
 
 echo 
 
