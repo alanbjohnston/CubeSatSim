@@ -14,7 +14,7 @@ sudo killall -9 zenity &>/dev/null
 FILE=/home/pi/FoxTelemetryData/.foxprofile  
 if [ ! -f "$FILE" ]; then
 
-   profile=$(zenity --text="Choose your default FoxTelem profile:" --list 2>/dev/null --width=410 --height=120 --title="Set FoxTelem Profile" --column="Profile" --column="Receive and decode telemetry from" Fox-in-a-Box "AMSAT Fox satellites" "CubeSatSim" "AMSAT CubeSat Simulator")
+   profile=$(zenity --text="Choose your default FoxTelem profile:" --list 2>/dev/null --width=410 --height=120 --title="Set FoxTelem Profile" --column="Profile" --column="Receive and decode telemetry from" Fox-in-a-Box "AMSAT Satellites" "CubeSatSim" "AMSAT CubeSat Simulator")
 
    echo $profile
 
