@@ -2,7 +2,7 @@
 Type=Application
 Exec=/home/pi/CubeSatSim/groundstation/fox-run.sh
 Name=FoxTelem
-Comment=FIAB-v3
+Comment=FIAB-v4
 Icon=/home/pi/Downloads/foxtelem.png
 Path=/home/pi
 Terminal=true
