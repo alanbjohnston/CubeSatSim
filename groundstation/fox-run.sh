@@ -5,6 +5,8 @@ echo "Startup script to run FoxTelem for FIAB v4"
 
 echo 
 
+source /home/pi/venv/bin/activate
+
 sudo killall -9 FoxTelem &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
