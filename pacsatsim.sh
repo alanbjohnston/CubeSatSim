@@ -14,15 +14,15 @@ sudo modprobe snd-aloop
 
 #sudo systemctl stop openwebrx
 
-sudo systemctl stop rtl_tcp &>/dev/null
+#sudo systemctl stop rtl_tcp &>/dev/null
 
 #pkill -o chromium &>/dev/null
 
-sudo killall -9 rtl_fm &>/dev/null
+#sudo killall -9 rtl_fm &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#udo killall -9 aplay &>/dev/null
 
 #sudo killall -9 qsstv &>/dev/null
 
