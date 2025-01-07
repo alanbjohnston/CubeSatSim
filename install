@@ -158,9 +158,9 @@ export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LI
 #set -- $value
 
 echo "bit_rate=9600" > pacsat.config
-echo "bbs_callsign=W3ZM-12" >> pacsat.config
-echo "broadcast_callsign=W3ZM-11" >> pacsat.config
-echo "digi_callsign=W3ZM-1" >> pacsat.config
+echo "bbs_callsign=AMSAT-12" >> pacsat.config
+echo "broadcast_callsign=AMSAT-11" >> pacsat.config
+echo "digi_callsign=AMSAT-1" >> pacsat.config
 echo "max_frames_in_tx_buffer=5" >> pacsat.config
 
 echo "pb_open=1" > pacsat.state
