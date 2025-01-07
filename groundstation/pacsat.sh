@@ -56,7 +56,7 @@ sudo systemctl restart pacsatsim
 
 #echo
 
-#direwolf -P+ -D1 -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  &
+direwolf -P+ -D1 -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  &
 
 echo 
 echo "The Pacsat and Pacsat Ground Station are running on this Pi using audio loopback."
