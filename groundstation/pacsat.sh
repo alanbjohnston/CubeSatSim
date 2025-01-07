@@ -41,9 +41,9 @@ echo
 sudo systemctl restart pacsatsim
 
 
-echo "Waiting 30 seconds for Pacsatsim to start"
+echo "Waiting 10 seconds for Pacsatsim to start"
 
-sleep 30
+sleep 10
 
 #value=`cat /home/pi/CubeSatSim/sim.cfg`
 #echo "$value" > /dev/null
