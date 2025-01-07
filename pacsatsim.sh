@@ -185,7 +185,7 @@ else
 
   echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -P+ -D1 -qd -du -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
+  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
 
 fi
 
