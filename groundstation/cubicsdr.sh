@@ -23,7 +23,7 @@ sudo killall -9 rtl_fm &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -39,9 +39,10 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
+
 zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen click on a signal in the watefall to listen." &
-
-
 
 sleep 5
 
