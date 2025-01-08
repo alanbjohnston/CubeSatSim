@@ -4,19 +4,19 @@
 
 sudo modprobe snd-aloop
 
-sudo systemctl stop cubesatsim
+sudo systemctl stop cubesatsim >/dev/null 2>&1
 
-sudo systemctl stop transmit
+sudo systemctl stop transmit >/dev/null 2>&1
 
-sudo systemctl stop command
+sudo systemctl stop command >/dev/null 2>&1
 
 #/home/pi/CubeSatSim/config -I
 
-sudo systemctl stop command &>/dev/null
+sudo systemctl stop command >/dev/null 2>&1
 
-sudo systemctl stop openwebrx &>/dev/null
+sudo systemctl stop openwebrx >/dev/null 2>&1
 
-sudo systemctl stop rtl_tcp &>/dev/null
+sudo systemctl stop rtl_tcp >/dev/null 2>&1
 
 pkill -o chromium &>/dev/null
 
@@ -75,7 +75,7 @@ cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
 sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
 
-sudo systemctl stop pacsatsim
+sudo systemctl stop pacsatsim 
 
 sleep 10
 
