@@ -75,11 +75,13 @@ cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
 sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
 
-sudo systemctl stop pacsatsim 
+cd
+
+#sudo systemctl stop pacsatsim 
 
 sleep 10
 
-echo "Stopping Pacsatsim"
+#echo "Stopping Pacsatsim"
 
 $SHELL
 
