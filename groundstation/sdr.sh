@@ -38,13 +38,16 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
 sudo systemctl stop rtl_tcp &>/dev/null
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
 sudo systemctl restart openwebrx &>/dev/null
 
