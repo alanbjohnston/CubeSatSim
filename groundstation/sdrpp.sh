@@ -19,7 +19,7 @@ sudo killall -9 rtl_fm &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -34,6 +34,9 @@ sudo killall -9 CubicSDR &>/dev/null
 #sudo kill `ps -aux | grep sstv_decode_prompt| grep -v grep | awk '{ print $2 }'` &>/dev/null && killall inotifywait &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
 sleep 5
 
