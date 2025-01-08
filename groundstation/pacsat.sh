@@ -84,7 +84,7 @@ sleep 10
 
 #echo "Stopping Pacsatsim"
 
-$SHELL
+#$SHELL
 
 
 
