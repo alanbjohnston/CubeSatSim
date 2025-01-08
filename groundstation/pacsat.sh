@@ -79,5 +79,7 @@ sudo systemctl stop pacsatsim
 
 sleep 10
 
+echo "Stopping Pacsatsim"
+
 
 
