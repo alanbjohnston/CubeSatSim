@@ -40,7 +40,7 @@ sudo /etc/init.d/alsa-utils start
 
 sleep 5
 
-setsid sdrpp
+setsid sdrpp &
 
 sleep 10
 
