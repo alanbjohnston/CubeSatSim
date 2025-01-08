@@ -555,9 +555,9 @@ elif [ "$1" = "-c" ]; then
 		sudo systemctl stop pacsatsim
 		sudo killall -9 java &>/dev/null
 
-		sudo sed -i 's/$oldcallsign/$callsign/g' /home/pi/pi_pacsat/Debug/pacsat.config 
-		sudo sed -i 's/callsign=$oldcallsign/callsign=$callsign/g' /home/pi/PacSatGround/PacSatGround.properties
-		sudo sed -i 's/$oldcallsign/$callsign/g' /home/pi/PacSatGround/spacecraft/PacSatSim.properties
+		sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/pi_pacsat/Debug/pacsat.config 
+		sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
+		sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
 	fi
 	
 	if [ "$norestart" = "1" ]; then
