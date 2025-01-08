@@ -24,7 +24,7 @@ sudo killall -9 rtl_fm &>/dev/null
 
 #sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -39,6 +39,9 @@ sudo killall -9 zenity &>/dev/null
 echo
 
 sudo systemctl restart pacsatsim
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
 
 echo "Waiting 10 seconds for Pacsatsim to start"
