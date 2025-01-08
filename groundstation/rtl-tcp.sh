@@ -45,9 +45,12 @@ sudo killall -9 qsstv &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
 #sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
 sudo systemctl start rtl_tcp &>/dev/null
