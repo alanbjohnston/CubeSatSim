@@ -553,6 +553,8 @@ elif [ "$1" = "-c" ]; then
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
 
 		sudo sed -i 's/$oldcallsign/$callsign/g' /home/pi/pi_pacsat/Debug/pacsat.config > /dev/null 2>&1
+		sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g' /home/pi/PacSatGround/PacSatGround.properties'
+		sudo sed -i "s/$oldcallsign/$callsign/g' /home/pi/PacSatGround/spacecraft/PacSatSim.properties'
 	fi
 	
 	if [ "$norestart" = "1" ]; then
