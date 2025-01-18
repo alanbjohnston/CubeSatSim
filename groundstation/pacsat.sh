@@ -46,7 +46,7 @@ echo "$value" > /dev/null
 set -- $value
 
 if [ "$1" =  "l" ]; then
-		echo
+    echo
     sudo systemctl restart pacsatsim
     echo 
     echo "The Pacsat and Pacsat Ground Station are running on this Pi using audio loopback"
@@ -56,10 +56,11 @@ if [ "$1" =  "l" ]; then
     CONFIG=direwolf-pacsat-loopback.conf
     
 elif [ "$1" = "c" ]; then
-		echo "Pacsat from USB Card Device"
+    echo "Pacsat from USB Card Device"
     CONFIG=direwolf-pacsat-soundcard.conf
+    
 else
-		echo "Pacsat from Radio through USB Sound Card Device"
+    echo "Pacsat from Radio through USB Sound Card Device"
     CONFIG=direwolf-pacsat.conf
 fi
 
@@ -91,7 +92,7 @@ setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" &
 /usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/$CONFIG -t 0"
 
 
-echo "Don't close the direwolf-pacsat-loopback window or the Pacsatsim will stop running."
+echo "Don't close the direwolf window or the Pacsat will stop working."
 
 #cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
