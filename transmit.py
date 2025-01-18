@@ -429,7 +429,7 @@ if __name__ == "__main__":
 				system('sudo systemctl restart pacsatsim')
 				while True:
 					sleep(30)
-			elif (mode == 'p'):
+			elif (mode == 'P'):
 				print("Pacsat Ground Station")
 				while True:
 					sleep(30)
