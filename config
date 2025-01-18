@@ -399,12 +399,12 @@ elif [ "$1" = "-m" ]; then
 		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
 			FILE=/home/pi/CubeSatSim/battery_saver
 			if [ -f "$FILE" ]; then
-				restart=1
+				=1
 			else 
 		    		reboot=1
 			fi	
 		else
-			restart=1
+			=1
 		fi
 	fi
  
@@ -422,7 +422,7 @@ elif [ "$1" = "-f" ]; then
 
 		echo "changing CubeSatSim to FSK mode"
 		sudo echo "f" > /home/pi/CubeSatSim/.mode
-		restart=1
+		=1
 	fi
 
 elif [ "$1" = "-b" ]; then
@@ -439,7 +439,7 @@ elif [ "$1" = "-b" ]; then
 
 		echo "changing CubeSatSim to BPSK mode"
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
-		restart=1
+		=1
 	fi
 
 elif [ "$1" = "-s" ]; then
@@ -460,12 +460,12 @@ elif [ "$1" = "-s" ]; then
 
 			FILE=/home/pi/CubeSatSim/battery_saver
 			if [ -f "$FILE" ]; then
-				restart=1
+				=1
 			else 
 		    		reboot=1
 			fi		
 		else
-			restart=1
+			=1
 		fi
 	fi
 
@@ -513,7 +513,7 @@ elif [ "$1" = "-t" ]; then
 
 	reboot=1
 ##	sudo reboot now
-#	sudo  restart cubesatsim
+#	sudo   cubesatsim
 	
 elif [ "$1" = "-c" ]; then
 
@@ -544,7 +544,7 @@ elif [ "$1" = "-c" ]; then
 
 		callsign="$1"
 		echo "Keeping value of" $callsign
-		norestart=1
+		no=1
 	else
 	
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
@@ -1537,6 +1537,9 @@ if [ "$restart" = "1" ] ; then
 	if [ "$reboot" = "0" ] ; then 
 		echo "Restarting"
 #		sudo systemctl stop transmit
+		sudo /etc/init.d/alsa-utils stop
+
+		sudo /etc/init.d/alsa-utils start
 		sudo systemctl restart cubesatsim
 		sudo systemctl restart transmit
 	else
