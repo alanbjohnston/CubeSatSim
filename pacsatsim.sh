@@ -42,12 +42,12 @@ set -- $value
 
 if [ "$1" =  "l" ]; then
     echo
-    sudo systemctl restart pacsatsim
-    echo 
+#    sudo systemctl restart pacsatsim
+#    echo 
     echo "The Pacsat and Pacsat Ground Station are running on this Pi using audio loopback"
     echo
-    echo "Waiting 10 seconds for Pacsatsim to start"
-    sleep 10
+#    echo "Waiting 10 seconds for Pacsatsim to start"
+#    sleep 10
     CONFIG=direwolf-pacsatsim-loopback.conf
     
 elif [ "$1" = "c" ]; then
