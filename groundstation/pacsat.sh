@@ -38,17 +38,31 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-echo
-
-sudo systemctl restart pacsatsim
-
 sudo /etc/init.d/alsa-utils stop
 sudo /etc/init.d/alsa-utils start
 
+value=`cat /home/pi/CubeSatSim/pacsat.cfg`
+echo "$value" > /dev/null
+set -- $value
 
-echo "Waiting 10 seconds for Pacsatsim to start"
+if [ "$1" =  "l" ]; then
+		echo
+    sudo systemctl restart pacsatsim
+    echo 
+    echo "The Pacsat and Pacsat Ground Station are running on this Pi using audio loopback"
+    echo
+    echo "Waiting 10 seconds for Pacsatsim to start"
+    sleep 10
+    CONFIG=direwolf-pacsat-loopback.conf
+    
+elif [ "$1" = "c" ]; then
+		echo "Pacsat from USB Card Device"
+    CONFIG=direwolf-pacsat-soundcard.conf
+else
+		echo "Pacsat from Radio through USB Sound Card Device"
+    CONFIG=direwolf-pacsat.conf
+fi
 
-sleep 10
 
 #value=`cat /home/pi/CubeSatSim/sim.cfg`
 #echo "$value" > /dev/null
@@ -66,16 +80,15 @@ sleep 10
 
 #echo
 
-echo 
-echo "The Pacsat and Pacsat Ground Station are running on this Pi using audio loopback"
-echo
+
 
 cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
 setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" &
 
 #direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  # &
-/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
+#/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
+/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/$CONFIG -t 0"
 
 
 echo "Don't close the direwolf-pacsat-loopback window or the Pacsatsim will stop running."
