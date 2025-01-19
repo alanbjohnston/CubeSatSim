@@ -1708,7 +1708,7 @@ void get_tlm_fox() {
         val = sync;
         data = val & 1 << (bit - 1);
         //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-        //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+        //  		 ctr/, i, frames, bit, (data > 0) );
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //		printf("Sending a %d\n", phase);
@@ -1736,7 +1736,7 @@ void get_tlm_fox() {
         val = data10[symbol];
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+        //	    		 ctr/, i, frames, symbol, val, bit, (data > 0) );
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
@@ -2338,8 +2338,8 @@ void get_tlm_fc() {
         int bit = syncBits - i / samples + 1;
         val = syncWord;
         data = val & 1 << (bit - 1);
-           	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-          		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+           	printf ("%d i: %d sync bit %d = %d \n",
+          		 ctr, i, bit, (data > 0) );
         
         if (data == 0) {
             phase *= -1;
