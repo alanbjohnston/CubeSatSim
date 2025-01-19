@@ -383,7 +383,7 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True) and (skip == False):	
+	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
 #		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
@@ -739,9 +739,12 @@ if __name__ == "__main__":
 #							output(pd, 0)
 						sleep(10)
 						
-		elif (mode == 'b'):
+		elif (mode == 'b') or (mode == 'j'):
 #			command_control_check()	
-			print("BPSK")
+			if (mode == 'b'):
+				print("BPSK")
+			else
+				print("FunCube")
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
@@ -768,7 +771,10 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					print(txLed)
 #					print(txLedOn)
-				sleep(4.2)
+				if (mode == 'b'):
+					sleep(4.2)
+				else
+					sleep(4.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
 			print("Repeater")
 			print("Stopping command and control")
