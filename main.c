@@ -2309,7 +2309,7 @@ void get_tlm_fc() {
 //	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
 
 //	CCodecAO40 ao40;
-	unsigned char* encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
+	const unsigned char* encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
 
 	printf("\nencoded_bytes\n");
 	for (int i=0; i<650; i++)
