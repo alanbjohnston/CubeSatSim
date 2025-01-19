@@ -2293,14 +2293,16 @@ void get_tlm_fc() {
 	int byte_count = 256;
         smaller = (int) (S_RATE / (2 * freq_Hz));
 
-	printf("\n\n");
-	for (int i=0; i<256; i++)
-		printf("%d ", source_bytes[i]);
-	printf("\n\n");
 	/* write telemetry into data buffer */
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
+
+	printf("\nsource_bytes\n");
+	for (int i=0; i<256; i++)
+		printf("%d ", source_bytes[i]);
+	printf("\n\n");
+
 
 	/* convert data buffer into stream buffer */
 
@@ -2309,7 +2311,7 @@ void get_tlm_fc() {
 //	CCodecAO40 ao40;
 	unsigned char* encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
 
-	printf("\n\n");
+	printf("\nencoded_bytes\n");
 	for (int i=0; i<650; i++)
 		printf("%d ", encoded_bytes[i]);
 	printf("\n\n");
