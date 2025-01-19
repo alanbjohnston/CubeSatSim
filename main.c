@@ -2295,6 +2295,8 @@ void get_tlm_fc() {
 
 	/* write telemetry into data buffer */
 
+	printf("\nBLOCKSIZE = %d\n", BLOCKSIZE);
+
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
 
@@ -2344,8 +2346,8 @@ void get_tlm_fc() {
         int bit = syncBits - i / samples + 1;
         val = syncWord;
         data = val & 1 << (bit - 1);
-           	printf ("%d i: %d sync bit %d = %d \n",
-          		 ctr, i, bit, (data > 0) );
+//           	printf ("%d i: %d sync bit %d = %d \n",
+  //        		 ctr, i, bit, (data > 0) );
         
         if (data == 0) {
             phase *= -1;
