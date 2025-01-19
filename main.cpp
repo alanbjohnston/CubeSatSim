@@ -928,6 +928,7 @@ int upper_digit(int number) {
   return digit;
 }
 
+/*
 static int init_rf() {
   int ret;
   fprintf(stderr, "Initializing AX5043\n");
@@ -941,6 +942,7 @@ static int init_rf() {
   }
   return (1);
 }
+*/
 
 void get_tlm(void) {
 
