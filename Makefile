@@ -42,7 +42,8 @@ cubesatsim: afsk/ax25.o
 cubesatsim: afsk/ax5043.o
 cubesatsim: TelemEncoding.o
 cubesatsim: main.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o TelemEncoding.o main.o -lwiringPi -lax5043 -lm
+cubesatsim: codecAO40.o
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o TelemEncoding.o codecAO40.o main.o -lwiringPi -lax5043 -lm
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
@@ -50,6 +51,11 @@ telem: telem.o
 TelemEncoding.o: TelemEncoding.c
 TelemEncoding.o: TelemEncoding.h
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
+
+codecAO40.o: codecAO40.cpp
+codecAO40.o: codecAO40.h
+codecAO40.o: fecConstants.h
+	gcc -std=dnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.cpp
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
