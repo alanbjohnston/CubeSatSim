@@ -26,6 +26,12 @@
 
 extern const unsigned char ALPHA_TO[];
 
+extern unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
+extern     unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
+extern     int m_encoded_bytes;               /* Byte counter for encode_data() */
+extern     int m_ileaver_index;               /* Byte counter for interleaver */
+extern     unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
+
 //class CCodecAO40
 //{
 //public:
