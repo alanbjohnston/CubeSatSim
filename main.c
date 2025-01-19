@@ -2371,7 +2371,7 @@ void get_tlm_fc() {
 //       data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-        symbol = i / samples;
+        int symbol = i / samples;
 	data = encoded_bytes[symbol];      
 	if (data == 0) {
 	   phase *= -1;
