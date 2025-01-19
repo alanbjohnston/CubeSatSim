@@ -2291,10 +2291,12 @@ void get_tlm_fc() {
   	unsigned char source_bytes[256];
 //  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
-	
+        smaller = (int) (S_RATE / (2 * freq_Hz));
+
 	/* write telemetry into data buffer */
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
+	source_byte[10] = (uint8_t) rnd_float(0,255);
 
 	/* convert data buffer into stream buffer */
 
@@ -2304,10 +2306,10 @@ void get_tlm_fc() {
 	unsigned char* encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
 
 	printf("\n\n");
-	for (int i=0; i<100; i++)
+	for (int i=0; i<650; i++)
 		printf("%x", encoded_bytes[i]);
 	printf("\n\n");
-	printf("size of encoded_bytes: %d\n\n", sizeof(encoded_bytes));
+//	printf("size of encoded_bytes: %d\n\n", sizeof(encoded_bytes));
 	
 	/* convert to waveform buffer */
 
@@ -2336,8 +2338,8 @@ void get_tlm_fc() {
         int bit = syncBits - i / samples + 1;
         val = syncWord;
         data = val & 1 << (bit - 1);
-        //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-        //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+           	printf ("%d i: %d new frame %d sync bit %d = %d \n",
+          		 ctr/SAMPLES, i, frames, bit, (data > 0) );
         
         if (data == 0) {
             phase *= -1;
