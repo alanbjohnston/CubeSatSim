@@ -1108,7 +1108,7 @@ void get_tlm(void) {
         sleep(5);	      
       }    
     } 
-    else if (ax5043) {
+ /*   else if (ax5043) {
       digitalWrite(txLed, txLedOn);
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
@@ -1131,7 +1131,8 @@ void get_tlm(void) {
       }
       sleep(4);  // was 2
 	    
-    } else {  // APRS using transmit
+    } */
+    else {  // APRS using transmit
 	    
       strcat(str, footer_str1);
 //      strcat(str, call);
