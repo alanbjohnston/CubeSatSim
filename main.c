@@ -2244,7 +2244,7 @@ void get_tlm_fc() {
 	/* create data, stream, and waveform buffers */
 
   	unsigned char source_bytes[256];
-  	unsigned char encoded_bytes[650];
+//  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
 
 	memset(source_bytes, 0xa5, sizeof(source_bytes));
@@ -2256,7 +2256,7 @@ void get_tlm_fc() {
 //	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
 
 //	CCodecAO40 ao40;
-	encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
+	unsigned char* encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
 	
 	/* convert to waveform buffer */
 
