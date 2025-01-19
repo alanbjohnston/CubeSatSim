@@ -261,7 +261,8 @@ int main(int argc, char * argv[]) {
 /**/	
 
   fflush(stderr);
-  
+
+/*	
   if (mode == AFSK)
   {
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -294,9 +295,11 @@ int main(int argc, char * argv[]) {
           printf("AX5043 not present!\n");
           pclose(file2);	    
       }
+	    
     }
     pclose(file);
-  }	
+  }
+*/
 
   txLed = 2;
   txLedOn = HIGH;
