@@ -2238,3 +2238,27 @@ if (setting == ON) {
   }
   return;
 }
+
+void get_tlm_fc() {  
+
+	/* create data, stream, and waveform buffers */
+
+  	unsigned char source_bytes[256];
+  	unsigned char encoded_bytes[650];
+	int byte_count = 256;
+
+	memset(source_bytes, 0xa5, sizeof(source_bytes));
+
+	/* write telemetry into data buffer */
+
+	/* convert data buffer into stream buffer */
+
+//	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
+	encoded_bytes = CCodecAO40::encode(*source_bytes, byte_count);
+	/* convert to waveform buffer */
+
+	/* open socket */
+
+	/* write waveform buffer over socket */
+
+}
