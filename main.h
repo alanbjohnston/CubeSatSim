@@ -76,6 +76,7 @@ float toAprsFormat(float input);
 float rnd_float(double min, double max);
 void get_tlm();
 void get_tlm_fox();
+void get_tlm_fc();
 int encodeA(short int * b, int index, int val);
 int encodeB(short int * b, int index, int val);
 void config_x25();
@@ -86,6 +87,7 @@ void update_rs(unsigned char parity[32], unsigned char c);
 void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
 static int init_rf();
 extern int Encode_8b10b[][256];
+const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count);
 void program_radio();
 
 int socket_open = 0;
