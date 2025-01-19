@@ -190,6 +190,9 @@ int main(int argc, char * argv[]) {
     } else if ( * argv[1] == 'm') {
       mode = CW;
       printf("Mode is CW\n");
+    } else if ( * argv[1] == 'j') {
+      mode = FC;
+      printf("Mode is FunCube\n");
     } else {
       printf("Mode is BPSK\n");
     }
@@ -228,6 +231,9 @@ int main(int argc, char * argv[]) {
      } else if ( mode_string == 'm') {
         mode = CW;
         printf("Mode is CW\n");
+     } else if ( mode_string == 'j') {
+        mode = FC;
+        printf("Mode is FunCube\n");
      } else if ( mode_string == 'e') {
         mode = REPEATER;
         printf("Mode is Repeater\n");
@@ -487,6 +493,36 @@ int main(int argc, char * argv[]) {
 //	printf(" %d", sin_map[j]);	 		
       }	 		
       printf("\n");
+    } else if (mode == FC) {  // for now copy BPSK settings
+      bitRate = 1200;
+      rsFrames = 3;
+      payloads = 6;
+      rsFrameLen = 159;
+      headerLen = 8;
+      dataLen = 78;
+      syncBits = 31;
+      syncWord = 0b1000111110011010010000101011101;
+      parityLen = 32;
+      amplitude = 32767;
+      samples = S_RATE / bitRate;
+      bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+
+         samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+      //    samplePeriod = 3000;
+      //    sleepTime = 3.0;
+      //samplePeriod = 2200; // reduce dut to python and sensor querying delays
+      sleepTime = 2.2f;
+	   
+      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+
+      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+        bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	   
+      sin_samples = S_RATE/freq_Hz;	 		
+      for (int j = 0; j < sin_samples; j++) {	 		
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
+      }	 		
+      printf("\n");
    }
 	
   memset(voltage, 0, sizeof(voltage));
@@ -496,6 +532,9 @@ int main(int argc, char * argv[]) {
 	
   if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
+  else if (((mode == FC))) // && !sim_mode)
+      get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
+	
   firstTime = 1;
 	  
 //  if (!sim_mode)  // always read sensors, even in sim mode
@@ -869,6 +908,8 @@ int main(int argc, char * argv[]) {
 	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
+    } else if ((mode == FC)) {
+      get_tlm_fc();
     } else {  				// SSTV	    
 //      fprintf(stderr, "Sleeping\n");
       sleep(30);	    
@@ -879,7 +920,7 @@ int main(int argc, char * argv[]) {
     #endif
   }
 
-  if (mode == BPSK) {
+  if ((mode == BPSK) || (mode == FC)) {
 //    digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 1\n");
@@ -2257,6 +2298,11 @@ void get_tlm_fc() {
 
 //	CCodecAO40 ao40;
 	unsigned char* encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
+
+	printf("\n\n");
+	for (int i=0; i<100; i++)
+		printf("%x", encoded_bytes[i];
+	printf("\n\n");
 	
 	/* convert to waveform buffer */
 
@@ -2272,5 +2318,8 @@ void get_tlm_fc() {
 	CCodecAO40 ao40;
 	const U8* encoded = ao40.encode((unsigned char*)sourceBytes, BLOCK_SIZE);
 		*/
-
+	
+	mode = BPSK;
+	get_tlm_fox();  // for now, do same as BPSK
+	mode = FC;
 }
