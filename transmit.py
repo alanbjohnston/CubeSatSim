@@ -773,7 +773,7 @@ if __name__ == "__main__":
 #					print(txLedOn)
 				if (mode == 'b'):
 					sleep(4.2)
-				else
+				else:
 					sleep(4.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
 			print("Repeater")
