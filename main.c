@@ -2255,8 +2255,8 @@ void get_tlm_fc() {
 
 //	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
 
-	CCodecAO40 ao40;
-	encoded_bytes = ao40.encode((unsigned char*)source_bytes, byte_count);
+//	CCodecAO40 ao40;
+	encoded_bytes = encode((unsigned char*)source_bytes, byte_count);
 	
 	/* convert to waveform buffer */
 
