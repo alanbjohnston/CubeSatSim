@@ -207,3 +207,9 @@ long int loopTime;
 
 int error_count = 0;
 int groundCommandCount = 0;
+
+    unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
+    unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
+    int m_encoded_bytes;               /* Byte counter for encode_data() */
+    int m_ileaver_index;               /* Byte counter for interleaver */
+    unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
