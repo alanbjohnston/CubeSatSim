@@ -55,7 +55,7 @@ TelemEncoding.o: TelemEncoding.h
 codecAO40.o: codecAO40.cpp
 codecAO40.o: codecAO40.h
 codecAO40.o: fecConstants.h
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.cpp
+	g++ -std=c++14 $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.cpp
 
 ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 ax5043/generated/configcommon.o: ax5043/generated/configrx.h
