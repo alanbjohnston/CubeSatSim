@@ -2294,7 +2294,7 @@ void get_tlm_fc() {
 	
 	/* write telemetry into data buffer */
 
-	memset(source_bytes, 0x5a, sizeof(source_bytes));
+	memset(source_bytes, 0x00, sizeof(source_bytes));
 
 	/* convert data buffer into stream buffer */
 
@@ -2307,6 +2307,7 @@ void get_tlm_fc() {
 	for (int i=0; i<100; i++)
 		printf("%x", encoded_bytes[i]);
 	printf("\n\n");
+	printf("size of encoded_bytes: %d\n\n", sizeof(encoded_bytes));
 	
 	/* convert to waveform buffer */
 
@@ -2314,7 +2315,8 @@ void get_tlm_fc() {
     int val;
     int i;	
     //int offset = 0;
-
+    ctr = 0;
+	
     for (i = 1; i <= headerLen * samples; i++) {
       write_wave(ctr, buffer);	
       if ((i % samples) == 0) {
