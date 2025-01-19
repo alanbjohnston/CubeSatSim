@@ -2296,7 +2296,7 @@ void get_tlm_fc() {
 	/* write telemetry into data buffer */
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_byte[10] = (uint8_t) rnd_float(0,255);
+	source_bytes[10] = (uint8_t) rnd_float(0,255);
 
 	/* convert data buffer into stream buffer */
 
