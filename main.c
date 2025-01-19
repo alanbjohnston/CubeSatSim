@@ -2254,11 +2254,23 @@ void get_tlm_fc() {
 	/* convert data buffer into stream buffer */
 
 //	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
-	encoded_bytes = CCodecAO40::encode(*source_bytes, byte_count);
+
+	CCodecAO40 ao40;
+	encoded_bytes = ao40.encode((unsigned char*)source_bytes, byte_count);
+	
 	/* convert to waveform buffer */
 
 	/* open socket */
 
 	/* write waveform buffer over socket */
+
+	/* from funcubeLib/common/testFec.cpp
+ 
+	U8 sourceBytes[BLOCK_SIZE];	
+	memset(sourceBytes, 42, BLOCK_SIZE);
+
+	CCodecAO40 ao40;
+	const U8* encoded = ao40.encode((unsigned char*)sourceBytes, BLOCK_SIZE);
+		*/
 
 }
