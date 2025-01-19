@@ -2301,7 +2301,7 @@ void get_tlm_fc() {
 
 	printf("\n\n");
 	for (int i=0; i<100; i++)
-		printf("%x", encoded_bytes[i];
+		printf("%x", encoded_bytes[i]);
 	printf("\n\n");
 	
 	/* convert to waveform buffer */
