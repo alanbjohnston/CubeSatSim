@@ -37,6 +37,7 @@ libax5043.a: ax5043/spi/ax5043spi.o
 	ar rcsv libax5043.a ax5043/generated/configcommon.o ax5043/generated/configtx.o ax5043/generated/configrx.o ax5043/generated/config.o ax5043/axradio/axradioinit.o ax5043/axradio/axradiomode.o ax5043/axradio/axradiotx.o ax5043/axradio/axradiorx.o ax5043/crc/crc.o ax5043/spi/ax5043spi.o ax5043/ax5043support/ax5043tx.o ax5043/ax5043support/ax5043init.o ax5043/ax5043support/ax5043rx.o
 
 cubesatsim: main.h
+cubesatsim: TelemEncoding.h
 cubesatsim: libax5043.a
 cubesatsim: afsk/ax25.o
 cubesatsim: afsk/ax5043.o
