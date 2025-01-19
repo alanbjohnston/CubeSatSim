@@ -2291,10 +2291,10 @@ void get_tlm_fc() {
   	unsigned char source_bytes[256];
 //  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
+	
+	/* write telemetry into data buffer */
 
 	memset(source_bytes, 0x5a, sizeof(source_bytes));
-
-	/* write telemetry into data buffer */
 
 	/* convert data buffer into stream buffer */
 
