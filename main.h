@@ -13,6 +13,7 @@
 #include <time.h>
 #include <math.h>
 //#include "TelemEncoding.h"
+#include "codecAO40.h"
 #include <sys/socket.h>
 #include <stdlib.h>
 #include <netinet/in.h>
