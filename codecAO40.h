@@ -24,6 +24,44 @@
 
 //#include "fecConstants.h"
 
+
+/*
+	Amsat P3 FEC Encoder/decoder system. Look-up tables
+	Created by Phil Karn KA9Q and James Miller G3RUH
+	Last modified 2003 Jun 20  
+*/
+
+/* Defines for Viterbi Decoder for r=1/2 k=7  (to CCSDS convention) */
+#define K 7                      /* Constraint length */
+#define N 2                      /* Number of symbols per data bit */
+#define CPOLYA 0x4f              /* First  convolutional encoder polynomial */
+#define CPOLYB 0x6d              /* Second convolutional encoder polynomial */
+
+#define SYNC_POLY   0x48         /* Sync vector PN polynomial */
+
+#define NN        255
+#define KK        223
+#define NROOTS     32            /* NN-KK */
+#define A0        (NN)
+#define FCR       112
+#define PRIM       11
+#define IPRIM     116
+#define BLOCKSIZE 256            /* Data bytes per frame */
+#define RSBLOCKS    2            /* Number of RS decoder blocks */
+#define RSPAD      95            /* Unused bytes in block  (KK-BLOCKSIZE/RSBLOCKS) */
+
+/* Defines for Interleaver */
+#define ROWS       80            /* Block interleaver rows */
+#define COLUMNS    65            /* Block interleaver columns */
+#define SYMPBLOCK (ROWS*COLUMNS) /* Encoded symbols per block */
+
+/* Number of symbols in an FEC block that are */
+/* passed to the Viterbi decoder  (320*8 + 6) */
+#define NBITS ((BLOCKSIZE+NROOTS*RSBLOCKS)*8+K-1)
+/* Number of bits obtained from Viterbi decoder */
+#define NBITS_OUT (BLOCKSIZE+NROOTS*RSBLOCKS)
+
+
 extern unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
 extern     unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
 extern     int m_encoded_bytes;               /* Byte counter for encode_data() */
