@@ -2315,8 +2315,8 @@ void get_tlm_fc() {
 	const unsigned char* encoded_bytes = encode(source_bytes, byte_count);
 
 	printf("\nencoded_bytes\n");
-	for (int i=0; i<650; i++)
-		printf("%d ", encoded_bytes[i]);
+	for (int i=0; i<5200; i++)
+		printf("%d", encoded_bytes[i]);
 	printf("\n\n");
 //	printf("size of encoded_bytes: %d\n\n", sizeof(encoded_bytes));
 	
@@ -2365,13 +2365,14 @@ void get_tlm_fc() {
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
-        int symbol = (int)((i - 1) / (samples * 8));
-        int bit = 8 - (i - symbol * samples * 8) / samples + 1;
-        val = encoded_bytes[symbol];
-        data = val & 1 << (bit - 1);
+ //       int symbol = (int)((i - 1) / (samples * 8));
+ //       int bit = 8 - (i - symbol * samples * 8) / samples + 1;
+//        val = encoded_bytes[symbol];
+//       data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-        
+        symbol = i / samples;
+	data = encoded_bytes[symbol];      
 	if (data == 0) {
 	   phase *= -1;
 	   if ((ctr - smaller) > 0) {
