@@ -24,11 +24,11 @@
 
 #include "fecConstants.h"
 
-class CCodecAO40
-{
-public:
-	CCodecAO40(void);
-    virtual ~CCodecAO40(void);
+//class CCodecAO40
+//{
+//public:
+//	CCodecAO40(void);
+//    virtual ~CCodecAO40(void);
 
     int decode(unsigned char viterbi_decoded[NBITS_OUT], unsigned char *decoded_data);
 
@@ -40,7 +40,7 @@ public:
     /* Compares raw input symbols to current buffer of encoded symbols and counts the errors */            
     int count_errors( unsigned char *raw_symbols);        
 
-private:
+//private:
     int mod255(int x);
     int decode_rs_8(char *data, int *eras_pos, int no_eras);
     void scramble_and_encode(unsigned char c);
@@ -62,4 +62,4 @@ private:
 
     unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
     unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
-};
+//};
