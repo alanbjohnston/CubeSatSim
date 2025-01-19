@@ -743,7 +743,7 @@ if __name__ == "__main__":
 #			command_control_check()	
 			if (mode == 'b'):
 				print("BPSK")
-			else
+			else:
 				print("FunCube")
 			print("turn on FM rx")
 			output(pd, 1)
