@@ -24,6 +24,8 @@
 
 #include "fecConstants.h"
 
+extern const unsigned char ALPHA_TO[];
+
 //class CCodecAO40
 //{
 //public:
