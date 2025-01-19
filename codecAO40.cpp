@@ -46,6 +46,7 @@
 #define min(a,b)        ((a) < (b) ? (a) : (b))
 #endif
 
+/*
 CCodecAO40::CCodecAO40(void)
 {
 }
@@ -55,8 +56,9 @@ CCodecAO40::~CCodecAO40(void)
 {
 }
 
-
-int CCodecAO40::mod255(int x) {
+*/
+//int CCodecAO40::mod255(int x) {
+int mod255(int x) {
     while (x >= 255) {
         x -= 255;
         x = (x >> 8) + (x & 255);
@@ -64,7 +66,8 @@ int CCodecAO40::mod255(int x) {
     return x;
 }
 
-int CCodecAO40::decode_rs_8(char *data, int *eras_pos, int no_eras){
+//int CCodecAO40::decode_rs_8(char *data, int *eras_pos, int no_eras){
+int decode_rs_8(char *data, int *eras_pos, int no_eras){
 
     int deg_lambda, el, deg_omega;
     int i, j, r,k;
@@ -268,7 +271,8 @@ finish:
 
 
 /* Write one binary channel symbol into the interleaver frame and update the pointers */
-void CCodecAO40::interleave_symbol(int c)
+//void CCodecAO40::interleave_symbol(int c)
+void interleave_symbol(int c)
 {
     int row,col;
     col=m_ileaver_index/COLUMNS;
@@ -281,7 +285,8 @@ void CCodecAO40::interleave_symbol(int c)
 }
 
 /* Convolutionally encode and interleave one byte */
-void CCodecAO40::encode_and_interleave(unsigned char c,int cnt){
+//void CCodecAO40::encode_and_interleave(unsigned char c,int cnt){
+void encode_and_interleave(unsigned char c,int cnt){
     while(cnt-- != 0)
     {
         m_conv_sr = (m_conv_sr << 1) | (c >> 7);
@@ -292,7 +297,8 @@ void CCodecAO40::encode_and_interleave(unsigned char c,int cnt){
 }
 
 /* Scramble a byte, convolutionally encode and interleave into frame */
-void CCodecAO40::scramble_and_encode(unsigned char c){
+//void CCodecAO40::scramble_and_encode(unsigned char c){
+void scramble_and_encode(unsigned char c){
     c ^= Scrambler[m_encoded_bytes]; /* Scramble byte */
     encode_and_interleave(c,8); /* RS encode and place into reencode buffer */
 }
@@ -301,7 +307,8 @@ void CCodecAO40::scramble_and_encode(unsigned char c){
 *  results stored in m_encoded.
 *  On success encoded buffer is returned, an zeroed buffer on failure
 */
-const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
+//const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
+const unsigned char *encode(unsigned char *source_bytes, int byte_count)
 {
     if(BLOCKSIZE != byte_count || NULL == source_bytes )
     {
@@ -333,7 +340,8 @@ encode_parity()                  Called 64 times to finish off
 */
 
 /* This function initializes the encoder. */
-void CCodecAO40::init_encoder(void){
+//void CCodecAO40::init_encoder(void){
+void init_encoder(void){
     int i,j,sr;
 
     m_encoded_bytes  = 0;
@@ -370,7 +378,8 @@ void CCodecAO40::init_encoder(void){
 * current frame. It should be called in sequence 256 times per frame, followed
 * by 64 calls to encode_parity().
 */
-void CCodecAO40::encode_byte(unsigned char c){
+//void CCodecAO40::encode_byte(unsigned char c){
+void encode_byte(unsigned char c){
     unsigned char *rp;                /* RS block pointer */
     int i;
     unsigned char feedback;
@@ -417,7 +426,8 @@ void CCodecAO40::encode_byte(unsigned char c){
 * have been passed to update_encoder. Each call scrambles, encodes and
 * interleaves one byte of Reed-Solomon parity.
 */
-void CCodecAO40::encode_parity(void) {
+//void CCodecAO40::encode_parity(void) {
+void encode_parity(void) {
     unsigned char c;
 
     c =  m_RS_block[m_encoded_bytes & 1][(m_encoded_bytes-256)>>1];
@@ -430,7 +440,8 @@ void CCodecAO40::encode_parity(void) {
 
 
 
-void CCodecAO40::descramble_to_rsblocks(unsigned char viterbi_decoded[NBITS_OUT],    char rsblocks[RSBLOCKS][NN])
+//void CCodecAO40::descramble_to_rsblocks(unsigned char viterbi_decoded[NBITS_OUT],    char rsblocks[RSBLOCKS][NN])
+void descramble_to_rsblocks(unsigned char viterbi_decoded[NBITS_OUT],    char rsblocks[RSBLOCKS][NN])
 {
     /* interleave into Reed Solomon codeblocks */
     memset(rsblocks,0,RSBLOCKS*NN);  /* Zero rsblocks array */
@@ -465,7 +476,8 @@ void CCodecAO40::descramble_to_rsblocks(unsigned char viterbi_decoded[NBITS_OUT]
     *   rserrs[x] contains -1
     *   Data output should not be used.
     */
-int CCodecAO40::decode(unsigned char vitdecdata[NBITS_OUT], unsigned char *decoded_data)
+//int CCodecAO40::decode(unsigned char vitdecdata[NBITS_OUT], unsigned char *decoded_data)
+int decode(unsigned char vitdecdata[NBITS_OUT], unsigned char *decoded_data)
 {    
     int row, col, row_errors, total_errors;    
     char rsblocks[RSBLOCKS][NN];
@@ -502,7 +514,8 @@ int CCodecAO40::decode(unsigned char vitdecdata[NBITS_OUT], unsigned char *decod
 }
 
 /* Compairs raw input symbols to current buffer of encoded symbols and counts the errors */            
-int CCodecAO40::count_errors(unsigned char *raw_symbols)       
+//int CCodecAO40::count_errors(unsigned char *raw_symbols)       
+int count_errors(unsigned char *raw_symbols)       
 {  
     int error_count = 0;
     for(int i=0;i<SYMPBLOCK;i++)
