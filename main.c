@@ -2288,7 +2288,7 @@ void get_tlm_fc() {
 //  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
 
-	memset(source_bytes, 0xa5, sizeof(source_bytes));
+	memset(source_bytes, 0x5a, sizeof(source_bytes));
 
 	/* write telemetry into data buffer */
 
