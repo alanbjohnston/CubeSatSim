@@ -21,6 +21,7 @@
 #include <arpa/inet.h>
 #include <errno.h>
 #include <cstdint>
+#include <linux/types.h>
 
 #define PORT 8080
 
