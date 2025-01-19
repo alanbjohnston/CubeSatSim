@@ -2293,6 +2293,10 @@ void get_tlm_fc() {
 	int byte_count = 256;
         smaller = (int) (S_RATE / (2 * freq_Hz));
 
+	printf("\n\n");
+	for (int i=0; i<256; i++)
+		printf("%d ", source_bytes[i]);
+	printf("\n\n");
 	/* write telemetry into data buffer */
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
@@ -2307,7 +2311,7 @@ void get_tlm_fc() {
 
 	printf("\n\n");
 	for (int i=0; i<650; i++)
-		printf("%x", encoded_bytes[i]);
+		printf("%d ", encoded_bytes[i]);
 	printf("\n\n");
 //	printf("size of encoded_bytes: %d\n\n", sizeof(encoded_bytes));
 	
@@ -2373,6 +2377,8 @@ void get_tlm_fc() {
 	}
       }
     }
+ printf("\nctr = %d\n\n", ctr);
+
 
 /* open socket */
 
