@@ -182,6 +182,7 @@ main.o: afsk/status.h
 main.o: afsk/ax5043.h
 main.o: afsk/ax25.h
 main.o: ax5043/spi/ax5043spi.h
+main.o: TelemEncoding.h
 	g++ -std=c++14 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.cpp; 	
 
 telem.o: telem.c
