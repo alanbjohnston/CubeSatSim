@@ -2312,6 +2312,7 @@ void get_tlm_fc() {
 
     int data;
     int val;
+    int i;	
     //int offset = 0;
 
     for (i = 1; i <= headerLen * samples; i++) {
@@ -2450,7 +2451,7 @@ void get_tlm_fc() {
 
 /* write waveform buffer over socket */
 
-  int length = (headerLen + syncBits + frameLen) * samples	
+  int length = (headerLen + syncBits + dataLen) * samples	
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
