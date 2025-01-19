@@ -22,15 +22,19 @@
 
 #pragma once
 
-#include "fecConstants.h"
-
-extern const unsigned char ALPHA_TO[];
+//#include "fecConstants.h"
 
 extern unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
 extern     unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
 extern     int m_encoded_bytes;               /* Byte counter for encode_data() */
 extern     int m_ileaver_index;               /* Byte counter for interleaver */
 extern     unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
+
+extern const unsigned char RS_poly[];
+extern const unsigned char ALPHA_TO[];
+extern const unsigned char INDEX_OF[];
+extern const unsigned char Partab[];
+extern const unsigned char Scrambler[];
 
 //class CCodecAO40
 //{
