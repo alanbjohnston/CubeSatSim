@@ -177,12 +177,12 @@ afsk/ax5043.o: ax5043/spi/ax5043spi.h
 	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c ax5043.c; cd ..
 
 main.o: main.h
-main.o: main.c
+main.o: main.cpp
 main.o: afsk/status.h
 main.o: afsk/ax5043.h
 main.o: afsk/ax25.h
 main.o: ax5043/spi/ax5043spi.h
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.c; 	
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.cpp; 	
 
 telem.o: telem.c
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c telem.c; 
