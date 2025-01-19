@@ -461,6 +461,7 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	   
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
@@ -493,30 +494,33 @@ int main(int argc, char * argv[]) {
 //	printf(" %d", sin_map[j]);	 		
       }	 		
       printf("\n");
+	   
     } else if (mode == FC) {  // for now copy BPSK settings
       bitRate = 1200;
-      rsFrames = 3;
-      payloads = 6;
-      rsFrameLen = 159;
-      headerLen = 8;
-      dataLen = 78;
-      syncBits = 31;
-      syncWord = 0b1000111110011010010000101011101;
-      parityLen = 32;
+//      rsFrames = 3;
+//      payloads = 6;
+//      rsFrameLen = 159;
+      headerLen = 768; // 8;
+      dataLen = 5200; // 78;
+      syncBits = 32;  // 31;
+      syncWord = 0x1acffc1d; // 0b1000111110011010010000101011101;
+//      parityLen = 32;
       amplitude = 32767;
       samples = S_RATE / bitRate;
-      bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+ //     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+      bufLen = (headerLen + syncBits + dataLen)/8;
 
-         samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+ //        samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+	 samplePeriod = 5000;  
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
       //samplePeriod = 2200; // reduce dut to python and sensor querying delays
-      sleepTime = 2.2f;
+//      sleepTime = 2.2f;
 	   
       frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
-      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
-        bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+      printf("\n FC Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+        bufLen, bufLen / samples, bitRate, frameTime, samplePeriod);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
       for (int j = 0; j < sin_samples; j++) {	 		
@@ -2306,9 +2310,180 @@ void get_tlm_fc() {
 	
 	/* convert to waveform buffer */
 
-	/* open socket */
+    int data;
+    int val;
+    //int offset = 0;
 
-	/* write waveform buffer over socket */
+    for (i = 1; i <= headerLen * samples; i++) {
+      write_wave(ctr, buffer);	
+      if ((i % samples) == 0) {
+	phase *= -1;
+        if ((ctr - smaller) > 0) {
+        	for (int j = 1; j <= smaller; j++)
+                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+        }
+        flip_ctr = ctr;
+      }
+    }
+	
+    for (i = 1; i <= syncBits * samples; i++) {
+      write_wave(ctr, buffer);
+      //		printf("%d ",ctr);
+      if ((i % samples) == 0) {
+        int bit = syncBits - i / samples + 1;
+        val = syncWord;
+        data = val & 1 << (bit - 1);
+        //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
+        //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+        
+        if (data == 0) {
+            phase *= -1;
+            if ((ctr - smaller) > 0) {
+              for (int j = 1; j <= smaller; j++)
+                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+            }
+            flip_ctr = ctr;
+        }
+      }
+    }
+	
+    for (i = 1; i <= (dataLen * samples); i++) // 572   
+    {
+      write_wave(ctr, buffer);
+      if ((i % samples) == 0) {
+        int symbol = (int)((i - 1) / (samples * 8));
+        int bit = 8 - (i - symbol * samples * 8) / samples + 1;
+        val = encoded_bytes[symbol];
+        data = val & 1 << (bit - 1);
+        //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
+        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+        
+	if (data == 0) {
+	   phase *= -1;
+	   if ((ctr - smaller) > 0) {
+	     for (int j = 1; j <= smaller; j++)
+		buffer[ctr - j] = buffer[ctr - j] * 0.4;
+           }
+	   flip_ctr = ctr;
+	}
+      }
+    }
+
+/* open socket */
+
+  int error = 0;
+  // int count;
+  //  for (count = 0; count < dataLen; count++) {
+  //      printf("%02X", b[count]);
+  //  }
+  //  printf("\n");
+
+  // socket write
+
+  if (!socket_open && transmit) {
+    printf("Opening socket!\n");
+ //   struct sockaddr_in address;
+ //   int valread;
+    struct sockaddr_in serv_addr;
+    //    char *hello = "Hello from client"; 
+    //    char buffer[1024] = {0}; 
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+      printf("\n Socket creation error \n");
+      error = 1;
+    }
+
+    memset( & serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+
+    // Convert IPv4 and IPv6 addresses from text to binary form 
+    if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+      printf("\nInvalid address/ Address not supported \n");
+      error = 1;
+    }
+
+    if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+      printf("\nConnection Failed \n");
+      printf("Error: %s\n", strerror(errno));
+      error = 1;
+
+    // try again
+      error = 0;
+      if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("\n Socket creation error \n");
+        error = 1;
+      }
+
+      memset( & serv_addr, '0', sizeof(serv_addr));
+
+      serv_addr.sin_family = AF_INET;
+      serv_addr.sin_port = htons(PORT);
+
+      // Convert IPv4 and IPv6 addresses from text to binary form 
+      if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+        printf("\nInvalid address/ Address not supported \n");
+        error = 1;
+      }
+
+      if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+        printf("\nConnection Failed \n");
+        printf("Error: %s\n", strerror(errno));
+        error = 1;
+      }	    
+    }
+    if (error == 1) {
+      printf("Socket error count: %d\n", error_count);  	    
+//    ; //transmitStatus = -1;
+      if (error_count++ > 5) { 
+	  printf("Restarting transmit\n");    
+  	  FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
+  	  pclose(transmit_restartf);	      
+          sleep(10);  // was 5 // sleep if socket connection refused
+      }	    
+    }
+    else {
+      socket_open = 1;
+      error_count = 0;	    
+    }
+  }
+
+/* write waveform buffer over socket */
+
+  int length = (headerLen + syncBits + frameLen) * samples	
+
+  if (!error && transmit) {
+    //	digitalWrite (0, LOW);
+ //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
+    start = millis();
+    int sock_ret = send(sock, buffer, length, 0);
+//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
+    
+    if (sock_ret < length) {
+  //    printf("Not resending\n");
+      sleep(0.5);
+      sock_ret = send(sock, &buffer[sock_ret], length - sock_ret, 0);
+//      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+    }
+	  
+    loop_count++;	  
+
+    if (sock_ret == -1) {
+      printf("Error: %s \n", strerror(errno));
+      socket_open = 0;
+    }
+  }
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
+
+  if (socket_open == 1)	
+    firstTime = 0;
+
+  return;
+}
 
 	/* from funcubeLib/common/testFec.cpp
  
@@ -2319,7 +2494,7 @@ void get_tlm_fc() {
 	const U8* encoded = ao40.encode((unsigned char*)sourceBytes, BLOCK_SIZE);
 		*/
 	
-	mode = BPSK;
-	get_tlm_fox();  // for now, do same as BPSK
-	mode = FC;
-}
+//	mode = BPSK;
+//	get_tlm_fox();  // for now, do same as BPSK
+//	mode = FC;
+// }
