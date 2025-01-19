@@ -20,6 +20,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <errno.h>
+#include <cstdint>
 
 #define PORT 8080
 
