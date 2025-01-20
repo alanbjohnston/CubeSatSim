@@ -2492,11 +2492,11 @@ void get_tlm_fc() {
   }
 
   int startSleep = millis();	    
-  if ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  
+  if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
         sleep(1.0); 
-  while ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
         sleep(0.1); 
-  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, (unsigned int)frameTime - 750 + pi_zero_2_offset);
+  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
   sampleTime = (unsigned int) millis(); // resetting time for sleeping
   fflush(stdout);
 	
