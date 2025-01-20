@@ -190,6 +190,9 @@ int main(int argc, char * argv[]) {
     } else if ( * argv[1] == 'm') {
       mode = CW;
       printf("Mode is CW\n");
+    } else if ( * argv[1] == 'j') {
+      mode = FC;
+      printf("Mode is FunCube\n");
     } else {
       printf("Mode is BPSK\n");
     }
@@ -228,6 +231,9 @@ int main(int argc, char * argv[]) {
      } else if ( mode_string == 'm') {
         mode = CW;
         printf("Mode is CW\n");
+     } else if ( mode_string == 'j') {
+        mode = FC;
+        printf("Mode is FunCube\n");
      } else if ( mode_string == 'e') {
         mode = REPEATER;
         printf("Mode is Repeater\n");
@@ -455,6 +461,7 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	   
     } else if (mode == BPSK) {
       bitRate = 1200;
       rsFrames = 3;
@@ -487,6 +494,40 @@ int main(int argc, char * argv[]) {
 //	printf(" %d", sin_map[j]);	 		
       }	 		
       printf("\n");
+	   
+    } else if (mode == FC) {  // for now copy BPSK settings
+      bitRate = 1200;
+//      rsFrames = 3;
+//      payloads = 6;
+//      rsFrameLen = 159;
+      headerLen = 768; // 8;
+      dataLen = 5200; // 78;
+      syncBits = 32;  // 31;
+      syncWord = 0x1acffc1d; // 0b1000111110011010010000101011101;
+//      parityLen = 32;
+      amplitude = 32767;
+      samples = S_RATE / bitRate;
+ //     bufLen = (frameCnt * (syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))) * samples);
+      bufLen = (headerLen + syncBits + dataLen)/8;
+
+ //        samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
+      samplePeriod = 5000;  
+      //    samplePeriod = 3000;
+      //    sleepTime = 3.0;
+      //samplePeriod = 2200; // reduce dut to python and sensor querying delays
+//      sleepTime = 2.2f;
+	   
+//      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+      frameTime = 5000;
+	   
+      printf("\n FC Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+      bufLen, bufLen / samples, bitRate, frameTime, samplePeriod);
+	   
+      sin_samples = S_RATE/freq_Hz;	 		
+      for (int j = 0; j < sin_samples; j++) {	 		
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
+      }	 		
+      printf("\n");
    }
 	
   memset(voltage, 0, sizeof(voltage));
@@ -496,6 +537,9 @@ int main(int argc, char * argv[]) {
 	
   if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
+  else if (((mode == FC))) // && !sim_mode)
+      get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
+	
   firstTime = 1;
 	  
 //  if (!sim_mode)  // always read sensors, even in sim mode
@@ -869,6 +913,8 @@ int main(int argc, char * argv[]) {
 	    
     } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
       get_tlm_fox();
+    } else if ((mode == FC)) {
+      get_tlm_fc();
     } else {  				// SSTV	    
 //      fprintf(stderr, "Sleeping\n");
       sleep(30);	    
@@ -879,7 +925,7 @@ int main(int argc, char * argv[]) {
     #endif
   }
 
-  if (mode == BPSK) {
+  if ((mode == BPSK) || (mode == FC)) {
 //    digitalWrite(txLed, txLedOn);
     #ifdef DEBUG_LOGGING
 //    printf("Tx LED On 1\n");
@@ -1663,7 +1709,7 @@ void get_tlm_fox() {
         val = sync;
         data = val & 1 << (bit - 1);
         //   	printf ("%d i: %d new frame %d sync bit %d = %d \n",
-        //  		 ctr/SAMPLES, i, frames, bit, (data > 0) );
+        //  		 ctr/, i, frames, bit, (data > 0) );
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //		printf("Sending a %d\n", phase);
@@ -1691,7 +1737,7 @@ void get_tlm_fox() {
         val = data10[symbol];
         data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+        //	    		 ctr/, i, frames, symbol, val, bit, (data > 0) );
         if (mode == FSK) {
           phase = ((data != 0) * 2) - 1;
           //			printf("Sending a %d\n", phase);
@@ -1928,13 +1974,16 @@ void write_wave(int i, short int *buffer)
 		}
 		else
 		{
-			if ((ctr - flip_ctr) < smaller)
-//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
+			if ((ctr - flip_ctr) < smaller) {
+//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
+//				if (ctr < 1000) printf("*");
+			}
 		else
-//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
-//		printf("%d %d \n", i, buffer[ctr - 1]);
+//  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));
+  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 
+		} 			
+//		if (ctr < 1000) printf("%d %d %d \n", ctr, i, buffer[ctr - 1]);
 
 }
 
@@ -2244,33 +2293,226 @@ void get_tlm_fc() {
 	/* create data, stream, and waveform buffers */
 
   	unsigned char source_bytes[256];
-  	unsigned char encoded_bytes[650];
+//  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
-
-	memset(source_bytes, 0xa5, sizeof(source_bytes));
 
 	/* write telemetry into data buffer */
 
+//	printf("\nBLOCKSIZE = %d\n", BLOCKSIZE);
+//	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
+
+	memset(source_bytes, 0x00, sizeof(source_bytes));
+	source_bytes[10] = (uint8_t) rnd_float(0,255);
+/*
+	printf("\nsource_bytes\n");
+	for (int i=0; i<256; i++)
+		printf("%d ", source_bytes[i]);
+	printf("\n\n");
+*/
+
 	/* convert data buffer into stream buffer */
 
-//	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
-
-	CCodecAO40 ao40;
-	encoded_bytes = ao40.encode((unsigned char*)source_bytes, byte_count);
-	
+	const unsigned char* encoded_bytes = encode(source_bytes, byte_count);
+/*
+	printf("\nencoded_bytes\n");
+	for (int i=0; i<5200; i++)
+		printf("%d", encoded_bytes[i]);
+	printf("\n\n");
+*/	
 	/* convert to waveform buffer */
 
-	/* open socket */
+    int data;
+    int val;
+    int i;	
+    ctr = 0;
+    smaller = (int) (S_RATE / (2 * freq_Hz));
+//    printf("\n\nsmaller = %d \n\n",smaller);	
+	
+    for (i = 1; i <= headerLen * samples; i++) {
+      write_wave(ctr, buffer);	
+      if ((i % samples) == 0) {
+	phase *= -1;
+        if ((ctr - smaller) > 0) {
+		int j;
+        	for (j = 1; j <= smaller; j++) {
+                	buffer[ctr - j] = buffer[ctr - j] * 0.5;
+//			if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
+		}
+        }
+        flip_ctr = ctr;
+      }
+    }
+	
+    for (i = 1; i <= syncBits * samples; i++) {
+      write_wave(ctr, buffer);
+      //		printf("%d ",ctr);
+      if ((i % samples) == 0) {
+        int bit = syncBits - i / samples + 1;
+        val = syncWord;
+        data = val & 1 << (bit - 1);
+//           	printf ("%d i: %d sync bit %d = %d \n",
+  //        		 ctr, i, bit, (data > 0) );        
+        if (data == 0) {
+            phase *= -1;
+            if ((ctr - smaller) > 0) {
+	      int j;
+              for (j = 1; j <= smaller; j++)
+                buffer[ctr - j] = buffer[ctr - j] * 0.5;
+            }
+            flip_ctr = ctr;
+        }
+      }
+    }
+	
+    for (i = 1; i <= (dataLen * samples); i++) // 5200   
+    {
+      write_wave(ctr, buffer);
+      if ((i % samples) == 0) {
+ //       int symbol = (int)((i - 1) / (samples * 8));
+ //       int bit = 8 - (i - symbol * samples * 8) / samples + 1;
+//        val = encoded_bytes[symbol];
+//       data = val & 1 << (bit - 1);
+        //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
+        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
+        int symbol = i / samples;
+	data = encoded_bytes[symbol];      
+	if (data == 0) {
+	   phase *= -1;
+	   if ((ctr - smaller) > 0) {
+	     int j;   
+	     for (j = 1; j <= smaller; j++) {
+		buffer[ctr - j] = buffer[ctr - j] * 0.5;
+//		if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
+	     }
+           }
+	   flip_ctr = ctr;
+	}
+      }
+    }
+ printf("\nctr = %d\n\n", ctr);
 
-	/* write waveform buffer over socket */
 
-	/* from funcubeLib/common/testFec.cpp
- 
-	U8 sourceBytes[BLOCK_SIZE];	
-	memset(sourceBytes, 42, BLOCK_SIZE);
+/* open socket */
 
-	CCodecAO40 ao40;
-	const U8* encoded = ao40.encode((unsigned char*)sourceBytes, BLOCK_SIZE);
-		*/
+  int error = 0;
+  // int count;
+  //  for (count = 0; count < dataLen; count++) {
+  //      printf("%02X", b[count]);
+  //  }
+  //  printf("\n");
 
+  // socket write
+
+  if (!socket_open && transmit) {
+    printf("Opening socket!\n");
+ //   struct sockaddr_in address;
+ //   int valread;
+    struct sockaddr_in serv_addr;
+    //    char *hello = "Hello from client"; 
+    //    char buffer[1024] = {0}; 
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+      printf("\n Socket creation error \n");
+      error = 1;
+    }
+
+    memset( & serv_addr, '0', sizeof(serv_addr));
+
+    serv_addr.sin_family = AF_INET;
+    serv_addr.sin_port = htons(PORT);
+
+    // Convert IPv4 and IPv6 addresses from text to binary form 
+    if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+      printf("\nInvalid address/ Address not supported \n");
+      error = 1;
+    }
+
+    if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+      printf("\nConnection Failed \n");
+      printf("Error: %s\n", strerror(errno));
+      error = 1;
+
+    // try again
+      error = 0;
+      if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        printf("\n Socket creation error \n");
+        error = 1;
+      }
+
+      memset( & serv_addr, '0', sizeof(serv_addr));
+
+      serv_addr.sin_family = AF_INET;
+      serv_addr.sin_port = htons(PORT);
+
+      // Convert IPv4 and IPv6 addresses from text to binary form 
+      if (inet_pton(AF_INET, "127.0.0.1", & serv_addr.sin_addr) <= 0) {
+        printf("\nInvalid address/ Address not supported \n");
+        error = 1;
+      }
+
+      if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
+        printf("\nConnection Failed \n");
+        printf("Error: %s\n", strerror(errno));
+        error = 1;
+      }	    
+    }
+    if (error == 1) {
+      printf("Socket error count: %d\n", error_count);  	    
+//    ; //transmitStatus = -1;
+      if (error_count++ > 5) { 
+	  printf("Restarting transmit\n");    
+  	  FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
+  	  pclose(transmit_restartf);	      
+          sleep(10);  // was 5 // sleep if socket connection refused
+      }	    
+    }
+    else {
+      socket_open = 1;
+      error_count = 0;	    
+    }
+  }
+
+/* write waveform buffer over socket */
+
+  int length = (headerLen + syncBits + dataLen) * samples;	
+
+  if (!error && transmit) {
+    //	digitalWrite (0, LOW);
+ //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
+    start = millis();
+    int sock_ret = send(sock, buffer, length, 0);
+//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+//    fflush(stdout);	  
+    
+    if (sock_ret < length) {
+  //    printf("Not resending\n");
+      sleep(0.5);
+      sock_ret = send(sock, &buffer[sock_ret], length - sock_ret, 0);
+//      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+    }
+	  
+    loop_count++;	  
+
+    if (sock_ret == -1) {
+      printf("Error: %s \n", strerror(errno));
+      socket_open = 0;
+    }
+  }
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
+
+  int startSleep = millis();	    
+  if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(1.0); 
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(0.1); 
+  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
+  sampleTime = (unsigned int) millis(); // resetting time for sleeping
+  fflush(stdout);
+	
+  if (socket_open == 1)	
+    firstTime = 0;
+
+  return;
 }

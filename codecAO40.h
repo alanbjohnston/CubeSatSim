@@ -22,13 +22,63 @@
 
 #pragma once
 
-#include "fecConstants.h"
+//#include "fecConstants.h"
 
-class CCodecAO40
-{
-public:
-	CCodecAO40(void);
-    virtual ~CCodecAO40(void);
+
+/*
+	Amsat P3 FEC Encoder/decoder system. Look-up tables
+	Created by Phil Karn KA9Q and James Miller G3RUH
+	Last modified 2003 Jun 20  
+*/
+
+/* Defines for Viterbi Decoder for r=1/2 k=7  (to CCSDS convention) */
+#define K 7                      /* Constraint length */
+#define N 2                      /* Number of symbols per data bit */
+#define CPOLYA 0x4f              /* First  convolutional encoder polynomial */
+#define CPOLYB 0x6d              /* Second convolutional encoder polynomial */
+
+#define SYNC_POLY   0x48         /* Sync vector PN polynomial */
+
+#define NN        255
+#define KK        223
+#define NROOTS     32            /* NN-KK */
+#define A0        (NN)
+#define FCR       112
+#define PRIM       11
+#define IPRIM     116
+#define BLOCKSIZE 256            /* Data bytes per frame */
+#define RSBLOCKS    2            /* Number of RS decoder blocks */
+#define RSPAD      95            /* Unused bytes in block  (KK-BLOCKSIZE/RSBLOCKS) */
+
+/* Defines for Interleaver */
+#define ROWS       80            /* Block interleaver rows */
+#define COLUMNS    65            /* Block interleaver columns */
+#define SYMPBLOCK (ROWS*COLUMNS) /* Encoded symbols per block */
+
+/* Number of symbols in an FEC block that are */
+/* passed to the Viterbi decoder  (320*8 + 6) */
+#define NBITS ((BLOCKSIZE+NROOTS*RSBLOCKS)*8+K-1)
+/* Number of bits obtained from Viterbi decoder */
+#define NBITS_OUT (BLOCKSIZE+NROOTS*RSBLOCKS)
+
+
+extern unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
+extern     unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
+extern     int m_encoded_bytes;               /* Byte counter for encode_data() */
+extern     int m_ileaver_index;               /* Byte counter for interleaver */
+extern     unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
+
+extern const unsigned char RS_poly[];
+extern const unsigned char ALPHA_TO[];
+extern const unsigned char INDEX_OF[];
+extern const unsigned char Partab[];
+extern const unsigned char Scrambler[];
+
+//class CCodecAO40
+//{
+//public:
+//	CCodecAO40(void);
+//    virtual ~CCodecAO40(void);
 
     int decode(unsigned char viterbi_decoded[NBITS_OUT], unsigned char *decoded_data);
 
@@ -40,7 +90,7 @@ public:
     /* Compares raw input symbols to current buffer of encoded symbols and counts the errors */            
     int count_errors( unsigned char *raw_symbols);        
 
-private:
+//private:
     int mod255(int x);
     int decode_rs_8(char *data, int *eras_pos, int no_eras);
     void scramble_and_encode(unsigned char c);
@@ -56,10 +106,5 @@ private:
     
     void interleave_symbol(int c);
 
-    int m_encoded_bytes;               /* Byte counter for encode_data() */
-    int m_ileaver_index;               /* Byte counter for interleaver */
-    unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
 
-    unsigned char m_RS_block[RSBLOCKS][NROOTS]; /* RS parity blocks */
-    unsigned char m_encoded[SYMPBLOCK] ;       /* encoded symbols */
-};
+//};

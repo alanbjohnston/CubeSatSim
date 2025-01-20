@@ -249,6 +249,8 @@ if [ "$1" = "" ]; then
 		echo "Mode is SSTV"
 	elif [ "$1" = "e" ]; then
 		echo "Mode is Repeater"	
+	elif [ "$1" = "j" ]; then
+		echo "Mode is FunCube"	
 	elif [ "$1" = "n" ]; then
 		echo -n "Mode is Transmit Commands with "
 		FILE=/home/pi/CubeSatSim/transmit_dtmf
@@ -1403,6 +1405,22 @@ elif [ "$1" = "-g" ]; then
 		echo "Not resetting"
 
 	fi
+elif [ "$1" = "-j" ]; then
+
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+#	if [ "$1" == "n" ]; then
+
+#		transmit_command_bpsk
+
+#	else
+
+		echo "changing CubeSatSim to FunCube mode"
+		sudo echo "j" > /home/pi/CubeSatSim/.mode
+		restart=1
+#	fi
 
 elif [ "$1" = "-h" ]; then
 
@@ -1416,7 +1434,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -f     Change to FSK/DUV mode"
 	echo "   -b     Change to BPSK mode"
 	echo "   -s     Change to SSTV mode"
-	echo "   -n     Change to Transmit Commands mode"
+	echo "   -j     Change to FunCube mode"
+  	echo "   -n     Change to Transmit Commands mode"
 	echo "   -e     Change to Repeater mode"
 	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
