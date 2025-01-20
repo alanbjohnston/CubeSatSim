@@ -1974,10 +1974,10 @@ void write_wave(int i, short int *buffer)
 		}
 		else
 		{
-			if ((ctr - flip_ctr) < smaller)
+///			if ((ctr - flip_ctr) < smaller)
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
-		else
+///  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
+///		else
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
 //		printf("%d %d \n", i, buffer[ctr - 1]);
@@ -2328,10 +2328,10 @@ void get_tlm_fc() {
       write_wave(ctr, buffer);	
       if ((i % samples) == 0) {
 	phase *= -1;
-        if ((ctr - smaller) > 0) {
-        	for (int j = 1; j <= smaller; j++)
-                buffer[ctr - j] = buffer[ctr - j] * 0.4;
-        }
+//        if ((ctr - smaller) > 0) {
+//        	for (int j = 1; j <= smaller; j++)
+//                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+//        }
         flip_ctr = ctr;
       }
     }
@@ -2347,10 +2347,10 @@ void get_tlm_fc() {
   //        		 ctr, i, bit, (data > 0) );        
         if (data == 0) {
             phase *= -1;
-            if ((ctr - smaller) > 0) {
-              for (int j = 1; j <= smaller; j++)
-                buffer[ctr - j] = buffer[ctr - j] * 0.4;
-            }
+//            if ((ctr - smaller) > 0) {
+//              for (int j = 1; j <= smaller; j++)
+//                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+//            }
             flip_ctr = ctr;
         }
       }
@@ -2370,10 +2370,10 @@ void get_tlm_fc() {
 	data = encoded_bytes[symbol];      
 	if (data == 0) {
 	   phase *= -1;
-	   if ((ctr - smaller) > 0) {
-	     for (int j = 1; j <= smaller; j++)
-		buffer[ctr - j] = buffer[ctr - j] * 0.4;
-           }
+//	   if ((ctr - smaller) > 0) {
+//	     for (int j = 1; j <= smaller; j++)
+//		buffer[ctr - j] = buffer[ctr - j] * 0.4;
+ //          }
 	   flip_ctr = ctr;
 	}
       }
