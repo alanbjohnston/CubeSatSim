@@ -1977,13 +1977,13 @@ void write_wave(int i, short int *buffer)
 			if ((ctr - flip_ctr) < smaller) {
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
-				if (ctr < 1000) printf("*");
+//				if (ctr < 1000) printf("*");
 			}
 		else
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 
 		} 			
-		if (ctr < 1000) printf("%d %d %d \n", ctr, i, buffer[ctr - 1]);
+//		if (ctr < 1000) printf("%d %d %d \n", ctr, i, buffer[ctr - 1]);
 
 }
 
@@ -2335,8 +2335,8 @@ void get_tlm_fc() {
         if ((ctr - smaller) > 0) {
 		int j;
         	for (j = 1; j <= smaller; j++) {
-                	buffer[ctr - j] = buffer[ctr - j] * 0.4;
-			if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
+                	buffer[ctr - j] = buffer[ctr - j] * 0.5;
+//			if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
 		}
         }
         flip_ctr = ctr;
@@ -2355,8 +2355,9 @@ void get_tlm_fc() {
         if (data == 0) {
             phase *= -1;
             if ((ctr - smaller) > 0) {
-              for (int j = 1; j <= smaller; j++)
-                buffer[ctr - j] = buffer[ctr - j] * 0.4;
+	      int j;
+              for (j = 1; j <= smaller; j++)
+                buffer[ctr - j] = buffer[ctr - j] * 0.5;
             }
             flip_ctr = ctr;
         }
@@ -2380,8 +2381,8 @@ void get_tlm_fc() {
 	   if ((ctr - smaller) > 0) {
 	     int j;   
 	     for (j = 1; j <= smaller; j++) {
-		buffer[ctr - j] = buffer[ctr - j] * 0.4;
-		if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
+		buffer[ctr - j] = buffer[ctr - j] * 0.5;
+//		if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
 	     }
            }
 	   flip_ctr = ctr;
