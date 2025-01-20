@@ -2323,6 +2323,7 @@ void get_tlm_fc() {
     int i;	
     ctr = 0;
     smaller = (int) (S_RATE / (2 * freq_Hz));
+    printf("\n\nsmaller = %d \n\n",smaller);	
 	
     for (i = 1; i <= headerLen * samples; i++) {
       write_wave(ctr, buffer);	
