@@ -2327,6 +2327,7 @@ void get_tlm_fc() {
     int val;
     int i;	
     ctr = 0;
+    int symbol = 0;
     smaller = (int) (S_RATE / (2 * freq_Hz));
 //    printf("\n\nsmaller = %d \n\n",smaller);	
 	
@@ -2376,7 +2377,7 @@ void get_tlm_fc() {
 //       data = val & 1 << (bit - 1);
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-        int symbol = i / samples;
+        symbol = i / samples - 1;
 	if (i < 100) printf("symbol = %d\n",symbol);      
 	data = encoded_bytes[symbol];      
 	if (data == 0) {
@@ -2392,6 +2393,7 @@ void get_tlm_fc() {
 	}
       }
     }
+ printf("symbol = %d\n",symbol);
  printf("\nctr = %d\n\n", ctr);
 
 
