@@ -1977,12 +1977,13 @@ void write_wave(int i, short int *buffer)
 			if ((ctr - flip_ctr) < smaller) {
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	  		 	buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples] / 2);
-				printf("*");
+				if (ctr < 1000) printf("*");
 			}
 		else
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
-  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
-		printf("%d %d \n", i, buffer[ctr - 1]);
+  		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 
+		} 			
+		if (ctr < 1000) printf("%d %d \n", i, buffer[ctr - 1]);
 
 }
 
