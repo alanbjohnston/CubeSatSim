@@ -2377,6 +2377,7 @@ void get_tlm_fc() {
 	   if ((ctr - smaller) > 0) {
 	     for (int j = 1; j <= smaller; j++)
 		buffer[ctr - j] = buffer[ctr - j] * 0.4;
+		if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
            }
 	   flip_ctr = ctr;
 	}
