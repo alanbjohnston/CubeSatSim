@@ -2302,8 +2302,8 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b10000001;   // 10100000
-	source_bytes[1] = 0b10000001;
+	source_bytes[0] = 0b01000001;   // 10100000 10000001
+	source_bytes[1] = 0b01000001;
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
 /*
 	printf("\nsource_bytes\n");
@@ -2377,6 +2377,7 @@ void get_tlm_fc() {
         //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
         //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
         int symbol = i / samples;
+	if (i < 100) printf("symbol = %d\n",symbol);      
 	data = encoded_bytes[symbol];      
 	if (data == 0) {
 	   phase *= -1;
