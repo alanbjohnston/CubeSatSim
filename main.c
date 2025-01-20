@@ -1980,7 +1980,7 @@ void write_wave(int i, short int *buffer)
 		else
 //  		 		buffer[ctr++] = (short int)(amplitude * 0.4 * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	 	 		 	buffer[ctr++] = (short int)(amplitude * phase * sin((float)(2*M_PI*i*freq_Hz/S_RATE)));	
   		 		buffer[ctr++] = (short int)(phase * sin_map[ctr % sin_samples]); 		 } 			
-//		printf("%d %d \n", i, buffer[ctr - 1]);
+		printf("%d %d \n", i, buffer[ctr - 1]);
 
 }
 
