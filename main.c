@@ -2302,8 +2302,8 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b10000001 ;   //  10100000 10000001 01000001 10000001 
-	source_bytes[1] = 0b10000001 ;
+	source_bytes[0] = 0b10000010 ;   //  10100000 10000001 01000001 10000001 10000001
+	source_bytes[1] = 0b10000010 ;
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
 	source_bytes[50] = 0xff;  // Sequence number
 	source_bytes[51] = 0xff;
