@@ -2302,8 +2302,8 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b10000001 ;   //  10100000
-	source_bytes[1] = 0b10000001 ;
+	source_bytes[0] = 0b01000001 ;   //  10100000 10000001
+	source_bytes[1] = 0b01000001 ;
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
 /*
 	printf("\nsource_bytes\n");
@@ -2353,8 +2353,8 @@ void get_tlm_fc() {
         int bit = syncBits - i / samples + 1;
         val = syncWord;
         data = val & 1 << (bit - 1);
-           	printf ("--- %d i: %d sync bit %d = %d \n",
-          		 ctr, i, bit, (data > 0) );        
+//           	printf ("--- %d i: %d sync bit %d = %d \n",
+//          		 ctr, i, bit, (data > 0) );        
         if (data == 0) {
             phase *= -1;
             if ((ctr - smaller) > 0) {
