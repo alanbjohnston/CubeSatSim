@@ -2353,8 +2353,8 @@ void get_tlm_fc() {
         int bit = syncBits - i / samples + 1;
         val = syncWord;
         data = val & 1 << (bit - 1);
-//           	printf ("%d i: %d sync bit %d = %d \n",
-  //        		 ctr, i, bit, (data > 0) );        
+           	printf ("--- %d i: %d sync bit %d = %d \n",
+          		 ctr, i, bit, (data > 0) );        
         if (data == 0) {
             phase *= -1;
             if ((ctr - smaller) > 0) {
