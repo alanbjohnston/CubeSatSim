@@ -2302,15 +2302,15 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b01000001 ;   //  10100000 10000001
-	source_bytes[1] = 0b01000001 ;
+	source_bytes[0] = 0b10000001 ;   //  10100000 10000001 01000001
+	source_bytes[1] = 0b10000001 ;
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
-/*
+/**/
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
 		printf("%d ", source_bytes[i]);
 	printf("\n\n");
-*/
+/**/
 
 	/* convert data buffer into stream buffer */
 
