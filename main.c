@@ -511,16 +511,17 @@ int main(int argc, char * argv[]) {
       bufLen = (headerLen + syncBits + dataLen)/8;
 
  //        samplePeriod = ((float)((syncBits + 10 * (headerLen + rsFrames * (rsFrameLen + parityLen))))/(float)bitRate) * 1000 - 1800;
-	 samplePeriod = 5000;  
+      samplePeriod = 5000;  
       //    samplePeriod = 3000;
       //    sleepTime = 3.0;
       //samplePeriod = 2200; // reduce dut to python and sensor querying delays
 //      sleepTime = 2.2f;
 	   
-      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
-
+//      frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
+      frameTime = 5000;
+	   
       printf("\n FC Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
-        bufLen, bufLen / samples, bitRate, frameTime, samplePeriod);
+      bufLen, bufLen / samples, bitRate, frameTime, samplePeriod);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
       for (int j = 0; j < sin_samples; j++) {	 		
@@ -2291,42 +2292,37 @@ void get_tlm_fc() {
   	unsigned char source_bytes[256];
 //  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
-        smaller = (int) (S_RATE / (2 * freq_Hz));
 
 	/* write telemetry into data buffer */
 
-	printf("\nBLOCKSIZE = %d\n", BLOCKSIZE);
-	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
+//	printf("\nBLOCKSIZE = %d\n", BLOCKSIZE);
+//	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
-
+/*
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
 		printf("%d ", source_bytes[i]);
 	printf("\n\n");
-
+*/
 
 	/* convert data buffer into stream buffer */
 
-//	const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count)
-
-//	CCodecAO40 ao40;
 	const unsigned char* encoded_bytes = encode(source_bytes, byte_count);
-
+/*
 	printf("\nencoded_bytes\n");
 	for (int i=0; i<5200; i++)
 		printf("%d", encoded_bytes[i]);
 	printf("\n\n");
-//	printf("size of encoded_bytes: %d\n\n", sizeof(encoded_bytes));
-	
+*/	
 	/* convert to waveform buffer */
 
     int data;
     int val;
     int i;	
-    //int offset = 0;
     ctr = 0;
+    smaller = (int) (S_RATE / (2 * freq_Hz));
 	
     for (i = 1; i <= headerLen * samples; i++) {
       write_wave(ctr, buffer);	
@@ -2348,8 +2344,7 @@ void get_tlm_fc() {
         val = syncWord;
         data = val & 1 << (bit - 1);
 //           	printf ("%d i: %d sync bit %d = %d \n",
-  //        		 ctr, i, bit, (data > 0) );
-        
+  //        		 ctr, i, bit, (data > 0) );        
         if (data == 0) {
             phase *= -1;
             if ((ctr - smaller) > 0) {
@@ -2361,7 +2356,7 @@ void get_tlm_fc() {
       }
     }
 	
-    for (i = 1; i <= (dataLen * samples); i++) // 572   
+    for (i = 1; i <= (dataLen * samples); i++) // 5200   
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
@@ -2475,7 +2470,7 @@ void get_tlm_fc() {
     start = millis();
     int sock_ret = send(sock, buffer, length, 0);
 //    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-    fflush(stdout);	  
+//    fflush(stdout);	  
     
     if (sock_ret < length) {
   //    printf("Not resending\n");
@@ -2496,22 +2491,17 @@ void get_tlm_fc() {
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
+  int startSleep = millis();	    
+  if ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  
+        sleep(1.0); 
+  while ((millis() - sampleTime) < ((unsigned int)frameTime - 750 + pi_zero_2_offset))  
+        sleep(0.1); 
+  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, (unsigned int)frameTime - 750 + pi_zero_2_offset);
+  sampleTime = (unsigned int) millis(); // resetting time for sleeping
+  fflush(stdout);
+	
   if (socket_open == 1)	
     firstTime = 0;
 
   return;
 }
-
-	/* from funcubeLib/common/testFec.cpp
- 
-	U8 sourceBytes[BLOCK_SIZE];	
-	memset(sourceBytes, 42, BLOCK_SIZE);
-
-	CCodecAO40 ao40;
-	const U8* encoded = ao40.encode((unsigned char*)sourceBytes, BLOCK_SIZE);
-		*/
-	
-//	mode = BPSK;
-//	get_tlm_fox();  // for now, do same as BPSK
-//	mode = FC;
-// }
