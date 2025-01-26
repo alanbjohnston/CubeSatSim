@@ -181,7 +181,7 @@ main.o: afsk/status.h
 main.o: afsk/ax5043.h
 main.o: afsk/ax25.h
 main.o: ax5043/spi/ax5043spi.h
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.c; 	
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I /usr/local/include/funcubelib -I ../ax5043 -c main.c; 	
 
 telem.o: telem.c
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c telem.c; 
@@ -248,4 +248,4 @@ afsktx/main.o: afsktx/status.h
 afsktx/main.o: afsktx/ax5043.h
 afsktx/main.o: afsktx/ax25.h
 afsktx/main.o: ax5043/spi/ax5043spi.h
-	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c main.c; cd ..
+	cd afsktx; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I /usr/local/include/funcubelib -I ../ax5043 -c main.c; cd ..
