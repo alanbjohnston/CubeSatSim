@@ -56,6 +56,21 @@ codecAO40.o: codecAO40.c
 codecAO40.o: codecAO40.h
 	gcc -std=gnu99  $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.c
 
+main.o: main.h
+main.o: main.c
+#main.o: afsk/status.h
+#main.o: afsk/ax5043.h
+#main.o: afsk/ax25.h
+#main.o: ax5043/spi/ax5043spi.h
+	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -c main.c -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  -lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0; 	
+#	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  
+#TelemEncoding.o codecAO40.o main.o 
+#-lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0
+
+telem.o: telem.c
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -c telem.c; 
+
+
 #ax5043/generated/configcommon.o: ax5043/generated/configcommon.c
 #ax5043/generated/configcommon.o: ax5043/generated/configrx.h
 #ax5043/generated/configcommon.o: ax5043/generated/configtx.h
@@ -174,17 +189,6 @@ codecAO40.o: codecAO40.h
 #afsk/ax5043.o: afsk/utils.h
 #afsk/ax5043.o: ax5043/spi/ax5043spi.h
 #	cd afsk; gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I ../ax5043 -c ax5043.c; cd ..
-
-main.o: main.h
-main.o: main.c
-#main.o: afsk/status.h
-#main.o: afsk/ax5043.h
-#main.o: afsk/ax25.h
-#main.o: ax5043/spi/ax5043spi.h
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -I /usr/local/include/funcubelib -c main.c; 	
-
-telem.o: telem.c
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -c telem.c; 
 
 #receive/receive_main.o: receive/receive_main.c
 #receive/receive_main.o: ax5043/axradio/axradioinit.h
