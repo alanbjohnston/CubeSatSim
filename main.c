@@ -27,7 +27,9 @@ int main(int argc, char * argv[]) {
 	
   printf("\n\nCubeSatSim v2.0 starting...\n\n");
 
-  wiringPiSetup();	
+  wiringPiSetup();
+
+  Encode_Initialize();
 		
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
