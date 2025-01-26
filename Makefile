@@ -43,7 +43,7 @@ cubesatsim: main.h
 cubesatsim: TelemEncoding.o
 cubesatsim: main.o
 cubesatsim: codecAO40.o
-	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  TelemEncoding.o codecAO40.o main.o -lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0
+	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  TelemEncoding.o codecAO40.o main.o -lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
@@ -64,7 +64,7 @@ main.o: main.c
 #main.o: afsk/ax5043.h
 #main.o: afsk/ax25.h
 #main.o: ax5043/spi/ax5043spi.h
-	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -c main.c -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  -lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0; 	
+	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -c main.c -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  -lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0; 	
 #	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/lib/ -I /usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  
 #TelemEncoding.o codecAO40.o main.o 
 #-lwiringPi -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0
