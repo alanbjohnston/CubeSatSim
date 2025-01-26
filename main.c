@@ -269,7 +269,7 @@ int main(int argc, char * argv[]) {
 /**/	
 
   fflush(stderr);
-  
+/*  
   if (mode == AFSK)
   {
   // Check for SPI and AX-5043 Digital Transceiver Board	
@@ -304,7 +304,8 @@ int main(int argc, char * argv[]) {
       }
     }
     pclose(file);
-  }	
+  }
+*/
 
   txLed = 2;
   txLedOn = HIGH;
@@ -972,7 +973,7 @@ int upper_digit(int number) {
     fprintf(stderr, "ERROR: Not a digit in upper_digit!\n");
   return digit;
 }
-
+/*
 static int init_rf() {
   int ret;
   fprintf(stderr, "Initializing AX5043\n");
@@ -986,6 +987,7 @@ static int init_rf() {
   }
   return (1);
 }
+*/
 
 void get_tlm(void) {
 
@@ -1151,7 +1153,7 @@ void get_tlm(void) {
         sleep(5);	      
       }    
     } 
-    else if (ax5043) {
+/*    else if (ax5043) {
       digitalWrite(txLed, txLedOn);
       fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
       memcpy(data, str, strnlen(str, 256));
@@ -1175,7 +1177,8 @@ void get_tlm(void) {
       sleep(4);  // was 2
 	    
     } else {  // APRS using transmit
-	    
+*/	    
+    else {	    
       strcat(str, footer_str1);
 //      strcat(str, call);
       if (battery_saver_mode  == ON)	    
