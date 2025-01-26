@@ -176,7 +176,7 @@ const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/ina219.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
-char dest_addr[5] = "APCSS";
+char dest_addr[6] = "APCSS";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[SENSOR_FIELDS], sensor_min[SENSOR_FIELDS], other_max[3], other_min[3];
 
 int get_payload_serial(int debug_camera);
