@@ -43,8 +43,7 @@ cubesatsim: afsk/ax5043.o
 cubesatsim: TelemEncoding.o
 cubesatsim: main.o
 cubesatsim: codecAO40.o
-	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/lib/ -I/usr/local/includ
-e/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  afsk/ax25.o afsk/ax5043.o TelemEncoding.o codecAO40.o main.o -lwiringPi -lax5043 -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0
+	g++ -std=c++14 -O3 -DLINUX -D_LINUX $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/lib/ -I/usr/local/include/funcubelib -I/usr/local/include/ -I/usr/include/libusb-1.0  afsk/ax25.o afsk/ax5043.o TelemEncoding.o codecAO40.o main.o -lwiringPi -lax5043 -lm -lfuncube -lpthread -lrt -fPIC -lfuncube -lpthread -lrt -fPIC -lasound -ljack -lportaudio -lfftw3 -lfftw3f -lusb-1.0
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
