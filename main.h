@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <string.h>
-#include "afsk/status.h"
-#include "afsk/ax5043.h"
-#include "afsk/ax25.h"
-#include "ax5043/spi/ax5043spi.h"
+//#include "afsk/status.h"
+//#include "afsk/ax5043.h"
+//#include "afsk/ax25.h"
+//#include "ax5043/spi/ax5043spi.h"
 #include <wiringPiI2C.h>
 #include <wiringPi.h>
 #include <wiringSerial.h>
@@ -70,8 +70,8 @@ uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
 
-ax5043_conf_t hax5043;
-ax25_conf_t hax25;
+//ax5043_conf_t hax5043;
+//ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
 float toAprsFormat(float input);
@@ -87,7 +87,7 @@ int upper_digit(int number);
 int lower_digit(int number);
 void update_rs(unsigned char parity[32], unsigned char c);
 void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
-static int init_rf();
+//static int init_rf();
 extern int Encode_8b10b[][256];
 extern const unsigned char ALPHA_TO[];
 // const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count);
