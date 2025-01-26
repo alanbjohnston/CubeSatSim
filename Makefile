@@ -43,7 +43,7 @@ cubesatsim: afsk/ax5043.o
 cubesatsim: TelemEncoding.o
 cubesatsim: main.o
 cubesatsim: codecAO40.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/local/lib/ -I/usr/local/include/ afsk/ax25.o afsk/ax5043.o TelemEncoding.o codecAO40.o main.o -lwiringPi -lax5043 -lm -lfuncube
+	g++ -std=c++14 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ -L/usr/local/lib/ -I/usr/local/include/ afsk/ax25.o afsk/ax5043.o TelemEncoding.o codecAO40.o main.o -lwiringPi -lax5043 -lm -lfuncube
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
