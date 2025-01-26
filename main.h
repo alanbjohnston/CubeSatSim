@@ -20,7 +20,7 @@
 #include <string.h>
 #include <arpa/inet.h>
 #include <errno.h>
-#include "/usr/local/include/funcubelib/funcubeLib.h"
+#include "funcubeLib.h"
 
 #define PORT 8080
 
