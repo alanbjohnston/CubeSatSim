@@ -66,9 +66,9 @@
 #define CARRIER 1
 #define DTMF_APRS 2
 
-uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
+//uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
-uint32_t tx_channel = 0;
+//uint32_t tx_channel = 0;
 
 //ax5043_conf_t hax5043;
 //ax25_conf_t hax25;
