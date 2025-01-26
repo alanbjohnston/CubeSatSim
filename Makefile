@@ -50,11 +50,13 @@ telem: telem.o
 
 TelemEncoding.o: TelemEncoding.c
 TelemEncoding.o: TelemEncoding.h
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
+#	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
+	g++ -std=c++14 -O3 -DLINUX -D_LINUX  $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
 
 codecAO40.o: codecAO40.c
 codecAO40.o: codecAO40.h
-	gcc -std=gnu99  $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.c
+#	gcc -std=gnu99  $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.c
+	g++ -std=c++14 -O3 -DLINUX -D_LINUX   $(DEBUG_BEHAVIOR) -Wall -Wextra -c codecAO40.c
 
 main.o: main.h
 main.o: main.c
