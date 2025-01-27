@@ -2322,18 +2322,18 @@ void get_tlm_fc() {
 
 	int result = Encode_Initialize();
 	printf("Encode_Initialize result: %d\n", result);
-	flush(stdout);
+	fflush(stdout);
 	
 	result = Encode_PushData(&source_bytes[0], 256);
 	printf("Encode_PushData result: %d\n", result);
-	flush(stdout);
+	fflush(stdout);
 	
 	ULONG bpsk_size;
 	unsigned char bpsk_buffer[bpsk_size];
 	ctr = 0;
 	long int start_timer = (long int)millis();
 	printf("Starting Encode Loop\n");
-	flush(stdout);
+	fflush(stdout);
 	
 	while (!Encode_AllDataCollected() && ((millis() - start_timer) > 1000))
 	{
