@@ -2335,7 +2335,7 @@ void get_tlm_fc() {
 	printf("Starting Encode Loop\n");
 	fflush(stdout);
 	
-	while (!Encode_AllDataCollected() && ((millis() - start_timer) > 1000))
+	while (!Encode_AllDataCollected() && ((millis() - start_timer) < 1000))
 	{
 		if (Encode_CanCollect()) 
 		{
