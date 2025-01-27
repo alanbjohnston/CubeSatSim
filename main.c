@@ -2328,7 +2328,7 @@ void get_tlm_fc() {
 	printf("Encode_PushData result: %d\n", result);
 	fflush(stdout);
 	
-	ULONG bpsk_size;
+	ULONG bpsk_size = 1280;
 	unsigned char bpsk_buffer[bpsk_size];
 	ctr = 0;
 	long int start_timer = (long int)millis();
