@@ -2326,7 +2326,7 @@ void get_tlm_fc() {
 	result = Encode_PushData(&source_bytes[0], 256);
 	printf("Encode_PushData result: %d\n", result);
 
-	ULONG* bpsk_size;
+	ULONG bpsk_size;
 	unsigned char bpsk_buffer[bpsk_size];
 	ctr = 0;
 	long int start_timer = (long int)millis();
@@ -2335,7 +2335,7 @@ void get_tlm_fc() {
 		if (Encode_CanCollect()) 
 		{
 			bpsk_size = 1280;
-			Encode_CollectSamples(&bpsk_buffer[0], bpsk_size);
+			Encode_CollectSamples(&bpsk_buffer[0], &bpsk_size);
 			printf("~");
 			// copy to main buffer
 		}
