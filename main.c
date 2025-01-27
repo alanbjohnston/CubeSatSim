@@ -2322,7 +2322,7 @@ void get_tlm_fc() {
 
 	/* convert data buffer into stream buffer */
 
-	const unsigned char* encoded_bytes = encode(source_bytes, byte_count);
+////	const unsigned char *encoded_bytes = encode(source_bytes, byte_count);  // remove due to liner error
 /*
 	printf("\nencoded_bytes\n");
 	for (int i=0; i<5200; i++)
