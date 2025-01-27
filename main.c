@@ -2347,13 +2347,15 @@ void get_tlm_fc() {
 		}
 		int count = 0;
 		while (count < bpsk_size) {
-//			printf("bpsk_buffer %f or %d, count = %d = ctr = %d\n", (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
+			if ((ctr % 10000) == 0) 
+				printf("bpsk_buffer %f or %d, count = %d = ctr = %d\n", (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
 			buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
 			count += 4;
  		}
 //		printf("\n");
 	}
 	printf("Encode collected time: %d\n", millis() - start_timer);
+	fflush(stdout);
 
 	// convert float to 
 
