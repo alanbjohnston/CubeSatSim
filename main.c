@@ -2320,26 +2320,27 @@ void get_tlm_fc() {
 
 	/* convert data buffer into stream buffer */
 
-	int result = Encode_Intialize();
+	int result = Encode_Initialize();
 	printf("Encode_Initialize result: %d\n", result);
 
 	result = Encode_PushData(&source_bytes[0], 256);
 	printf("Encode_PushData result: %d\n", result);
-	
+
+	ULONG* bpsk_size;
+	unsigned char bpsk_buffer[bpsk_size];
 	ctr = 0;
 	long int start_timer = (long int)millis();
 	while (!Encode_AllDataCollected() && ((millis() - start_timer) > 1000))
 	{
 		if (Encode_CanCollect()) 
 		{
-			unsigned long bpsk_size = 1280;
-			unsigned char bpsk_buffer[bpsk_size];
+			bpsk_size = 1280;
 			Encode_CollectSamples(&bpsk_buffer[0], bpsk_size);
 			printf("~");
 			// copy to main buffer
 		}
 		int count = 0;
-		while (count < bpsk_size) {,
+		while (count < bpsk_size) {
 			printf("bpsk_buffer %f or %d, count = %d = ctr = %d\n", (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
 			buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
  		}
