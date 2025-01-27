@@ -2325,7 +2325,8 @@ void get_tlm_fc() {
 
 	result = Encode_PushData(&source_bytes[0], 256);
 	printf("Encode_PushData result: %d\n", result);
-
+	
+	ctr = 0;
 	long int start_timer = (long int)millis();
 	while (!Encode_AllDataCollected() && ((millis() - start_timer) > 1000))
 	{
@@ -2337,7 +2338,12 @@ void get_tlm_fc() {
 			printf("~");
 			// copy to main buffer
 		}
-
+		int count = 0;
+		while (count < bpsk_size) {,
+			printf("bpsk_buffer %f or %d, count = %d = ctr = %d\n", (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
+			buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
+ 		}
+		printf("\n");
 	}
 	printf("Encode collected time: %d\n", millis() - start_timer);
 
