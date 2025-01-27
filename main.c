@@ -30,7 +30,15 @@ int main(int argc, char * argv[]) {
   wiringPiSetup();
 
   Encode_Initialize();
-		
+  Encode_Shutdown();
+  Encode_CanCollect();
+  Encode_AllDataCollected();
+/*
+  BYTE* buffer3[256];
+  ULONG* bufferSize = 256;
+  Encode_CollectSamples(BYTE* buffer3, ULONG* bufferSize);
+  Encode_PushData(const BYTE* buffer, const ULONG bufferSize);	
+*/		
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   if (config_file == NULL) {
