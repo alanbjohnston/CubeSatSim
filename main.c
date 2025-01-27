@@ -2342,6 +2342,7 @@ void get_tlm_fc() {
 			bpsk_size = 1280;
 			Encode_CollectSamples(&bpsk_buffer[0], &bpsk_size);
 			printf("~");
+			fflush(stdout);
 			// copy to main buffer
 		}
 		int count = 0;
