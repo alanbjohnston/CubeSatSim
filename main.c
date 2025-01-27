@@ -2350,7 +2350,7 @@ void get_tlm_fc() {
 			buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
 			count += 4;
  		}
-		printf("\n");
+//		printf("\n");
 	}
 	printf("Encode collected time: %d\n", millis() - start_timer);
 
