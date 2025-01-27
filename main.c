@@ -28,17 +28,7 @@ int main(int argc, char * argv[]) {
   printf("\n\nCubeSatSim v2.0 starting...\n\n");
 
   wiringPiSetup();
-
-  Encode_Initialize();
-  Encode_Shutdown();
-  Encode_CanCollect();
-  Encode_AllDataCollected();
-/*
-  BYTE *buffer3[256];
-  ULONG *bufferSize;
-  Encode_CollectSamples(BYTE *buffer3, ULONG *bufferSize);
-  Encode_PushData(const BYTE *buffer3, const ULONG bufferSize);	
-*/		
+		
   // Open configuration file with callsign and reset count	
   FILE * config_file = fopen("/home/pi/CubeSatSim/sim.cfg", "r");
   if (config_file == NULL) {
@@ -2330,8 +2320,30 @@ void get_tlm_fc() {
 
 	/* convert data buffer into stream buffer */
 
-////	const unsigned char *encoded_bytes = encode(source_bytes, byte_count);  // remove due to liner error
-	const unsigned char *encoded_bytes;
+	int result = Encode_Intialize();
+	printf("Encode_Initialize result: %d\n", result);
+
+	result = Encode_PushData(&source_bytes[0], 256);
+	printf("Encode_PushData result: %d\n", result);
+
+	long int start_timer = (long int)millis();
+	while (!Encode_AllDataCollected() && ((millis() - start_timer) > 1000))
+	{
+		if (Encode_CanCollect()) 
+		{
+			unsigned long bpsk_size = 1280;
+			unsigned char bpsk_buffer[bpsk_size];
+			Encode_CollectSamples(&bpsk_buffer[0], bpsk_size);
+			printf("~");
+			// copy to main buffer
+		}
+
+	}
+	printf("Encode collected time: %d\n", millis() - start_timer);
+
+	// convert float to 
+
+//	const unsigned char *encoded_bytes;
 /*
 	printf("\nencoded_bytes\n");
 	for (int i=0; i<5200; i++)
@@ -2339,7 +2351,7 @@ void get_tlm_fc() {
 	printf("\n\n");
 */	
 	/* convert to waveform buffer */
-
+/*
     int data;
     int val;
     int i;	
@@ -2412,7 +2424,7 @@ void get_tlm_fc() {
     }
 // printf("symbol = %d\n",symbol);
 // printf("\nctr = %d\n\n", ctr);
-
+*/
 
 /* open socket */
 
