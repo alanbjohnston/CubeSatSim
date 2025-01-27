@@ -73,6 +73,9 @@ uint8_t data[1024];
 //ax5043_conf_t hax5043;
 //ax25_conf_t hax25;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 int twosToInt(int val, int len);
 float toAprsFormat(float input);
 float rnd_float(double min, double max);
@@ -94,6 +97,17 @@ extern const unsigned char ALPHA_TO[];
 extern const unsigned char *encode(unsigned char *source_bytes, int byte_count);
 extern void update_rs(unsigned char parity[32], unsigned char c);
 void program_radio();
+FILE *sopen(const char *program);
+void write_to_buffer(int i, int symbol, int val);
+void write_wave(int i, short int * buffer);
+int test_i2c_bus(int bus);
+int get_payload_serial(int debug_camera);
+void battery_saver(int setting);
+int battery_saver_check();
+
+#ifdef __cplusplus
+}
+#endif
 
 int socket_open = 0;
 int sock = 0;
@@ -105,7 +119,6 @@ long time_start;
 char cmdbuffer[1000];
 FILE * file1;
 short int buffer[2336400]; // max size for 10 frames count of BPSK
-FILE *sopen(const char *program);
 FILE *telem_file;	
 
 #define S_RATE	(48000) // (44100)
@@ -133,8 +146,6 @@ int phase = 1;
 int ctr = 0;
 int rd = 0;
 int nrd;
-void write_to_buffer(int i, int symbol, int val);
-void write_wave(int i, short int * buffer);
 int uart_fd;
 
 int reset_count = 0;
@@ -171,8 +182,6 @@ double eclipse_time;
 float voltage[9], current[9], sensor[SENSOR_FIELDS], other[3];
 char sensor_payload[500];
 
-int test_i2c_bus(int bus);
-
 //const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py ";
 const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/ina219.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
@@ -180,8 +189,6 @@ int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";
 char dest_addr[6] = "APCSS";
 float voltage_min[9], current_min[9], voltage_max[9], current_max[9], sensor_max[SENSOR_FIELDS], sensor_min[SENSOR_FIELDS], other_max[3], other_min[3];
-
-int get_payload_serial(int debug_camera);
 int finished = FALSE;
 
 //char buffer2[100001];
@@ -200,8 +207,6 @@ int end_flag_detected = FALSE;
 int jpeg_start = 0;
 #define CAMERA_TIMEOUT 2000 // 1500 // 2000 // 10000 // 20000  // Payload timeout in milli seconds
 
-void battery_saver(int setting);
-int battery_saver_check();
 int pi_zero_2_offset = 0;
 
 
