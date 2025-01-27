@@ -2348,6 +2348,7 @@ void get_tlm_fc() {
 		while (count < bpsk_size) {
 			printf("bpsk_buffer %f or %d, count = %d = ctr = %d\n", (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
 			buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
+			count += 4;
  		}
 		printf("\n");
 	}
