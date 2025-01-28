@@ -2368,90 +2368,24 @@ void get_tlm_fc() {
 	printf("Encode collected time: %d ctr = %d\n", millis() - start_timer, ctr);
 	fflush(stdout);
 
-	// convert float to 
+  socket_send();
 
-//	const unsigned char *encoded_bytes;
-/*
-	printf("\nencoded_bytes\n");
-	for (int i=0; i<5200; i++)
-		printf("%d", encoded_bytes[i]);
-	printf("\n\n");
-*/	
-	/* convert to waveform buffer */
-/*
-    int data;
-    int val;
-    int i;	
-    ctr = 0;
-    int symbol = 0;
-    smaller = (int) (S_RATE / (2 * freq_Hz));
-//    printf("\n\nsmaller = %d \n\n",smaller);	
+  int startSleep = millis();	    
+  if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(1.0); 
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(0.1); 
+  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
+  sampleTime = (unsigned int) millis(); // resetting time for sleeping
+  fflush(stdout);
 	
-    for (i = 1; i <= headerLen * samples; i++) {
-      write_wave(ctr, buffer);	
-      if ((i % samples) == 0) {
-	phase *= -1;
-        if ((ctr - smaller) > 0) {
-		int j;
-        	for (j = 1; j <= smaller; j++) {
-                	buffer[ctr - j] = buffer[ctr - j] * 0.5;
-//			if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
-		}
-        }
-        flip_ctr = ctr;
-      }
-    }
-	
-    for (i = 1; i <= syncBits * samples; i++) {
-      write_wave(ctr, buffer);
-      //		printf("%d ",ctr);
-      if ((i % samples) == 0) {
-        int bit = syncBits - i / samples + 1;
-        val = syncWord;
-        data = val & 1 << (bit - 1);
-//           	printf ("--- %d i: %d sync bit %d = %d \n",
-//          		 ctr, i, bit, (data > 0) );        
-        if (data == 0) {
-            phase *= -1;
-            if ((ctr - smaller) > 0) {
-	      int j;
-              for (j = 1; j <= smaller; j++)
-                buffer[ctr - j] = buffer[ctr - j] * 0.5;
-            }
-            flip_ctr = ctr;
-        }
-      }
-    }
-	
-    for (i = 1; i <= (dataLen * samples); i++) // 5200   
-    {
-      write_wave(ctr, buffer);
-      if ((i % samples) == 0) {
- //       int symbol = (int)((i - 1) / (samples * 8));
- //       int bit = 8 - (i - symbol * samples * 8) / samples + 1;
-//        val = encoded_bytes[symbol];
-//       data = val & 1 << (bit - 1);
-        //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
-        symbol = i / samples - 1;
-//	if (i < 100) printf("symbol = %d\n",symbol);      
-	data = encoded_bytes[symbol];      
-	if (data == 0) {
-	   phase *= -1;
-	   if ((ctr - smaller) > 0) {
-	     int j;   
-	     for (j = 1; j <= smaller; j++) {
-		buffer[ctr - j] = buffer[ctr - j] * 0.5;
-//		if (ctr < 1000) printf("# %d %d\n", ctr - j, buffer[ctr - j]);
-	     }
-           }
-	   flip_ctr = ctr;
-	}
-      }
-    }
-// printf("symbol = %d\n",symbol);
-// printf("\nctr = %d\n\n", ctr);
-*/
+  if (socket_open == 1)	
+    firstTime = 0;
+
+  return;
+}
+
+void socket_send() {
 
 /* open socket */
 
@@ -2561,19 +2495,6 @@ void get_tlm_fc() {
   if (!transmit) {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-  }
+  }	
 
-  int startSleep = millis();	    
-  if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
-        sleep(1.0); 
-  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
-        sleep(0.1); 
-  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
-  sampleTime = (unsigned int) millis(); // resetting time for sleeping
-  fflush(stdout);
-	
-  if (socket_open == 1)	
-    firstTime = 0;
-
-  return;
 }
