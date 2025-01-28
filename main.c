@@ -2359,6 +2359,8 @@ void get_tlm_fc() {
 					buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
 					count += 4;
 				}
+				socket_send(bpsk_size);
+				ctr = 0;
 			}
  		}
 		if (bpsk_size == 0)
@@ -2368,7 +2370,7 @@ void get_tlm_fc() {
 	printf("Encode collected time: %d ctr = %d\n", millis() - start_timer, ctr);
 	fflush(stdout);
 
-  socket_send();
+//  socket_send();
 
   int startSleep = millis();	    
   if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
@@ -2385,7 +2387,7 @@ void get_tlm_fc() {
   return;
 }
 
-void socket_send() {
+void socket_send(int length) {
 
 /* open socket */
 
@@ -2468,7 +2470,7 @@ void socket_send() {
 
 /* write waveform buffer over socket */
 
-  int length = (headerLen + syncBits + dataLen) * samples;	
+//  int length = (headerLen + syncBits + dataLen) * samples;	
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
