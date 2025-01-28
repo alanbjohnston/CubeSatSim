@@ -2305,8 +2305,8 @@ void get_tlm_fc() {
 	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
 	source_bytes[1] = 0b10000010 ;
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
-	source_bytes[50] = 0xff & ((unsigned long int)sequence >> 16) // Sequence number
-	source_bytes[51] = 0xff & ((unsigned long int)sequence >> 8)
+	source_bytes[50] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
+	source_bytes[51] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[52] = 0xff & (unsigned long int)sequence++;
 /**/
 	printf("\nsource_bytes\n");
