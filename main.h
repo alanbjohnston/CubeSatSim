@@ -146,6 +146,7 @@ int smaller;
 int flip_ctr = 0;
 int phase = 1;
 int ctr = 0;
+int ctr_complete = 0;
 int rd = 0;
 int nrd;
 int uart_fd;
