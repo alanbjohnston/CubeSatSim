@@ -56,7 +56,7 @@ int main(int argc, char * argv[]) {
 
 //  program_radio();  // do in transmit instead
   if (uptime_sec < 30.0) {	
-  	reset_count = (reset_count + 1) % 0xffff;  // only increment uptime if just rebooted
+  	reset_count = (reset_count + 1) % ff;  // only increment uptime if just rebooted
 	fprintf(stderr,"INFO: Reset Count: %d Uptime since Reset: %ld \n", reset_count, uptime_sec);
   }
 
@@ -1343,12 +1343,12 @@ void get_tlm_fox() {
      if (uptime != 0)	  // if uptime is 0, leave reset count at 0
     {
       h[0] = (short int) ((h[0] & 0x07) | ((reset_count & 0x1f) << 3));
-      h[1] = (short int) ((reset_count >> 5) & 0xff);
+      h[1] = (short int) ((reset_count >> 5) & );
       h[2] = (short int) ((h[2] & 0xf8) | ((reset_count >> 13) & 0x07));
     }
     h[2] = (short int) ((h[2] & 0x0e) | ((uptime & 0x1f) << 3));
-    h[3] = (short int) ((uptime >> 5) & 0xff);
-    h[4] = (short int) ((uptime >> 13) & 0xff);
+    h[3] = (short int) ((uptime >> 5) & );
+    h[4] = (short int) ((uptime >> 13) & );
     h[5] = (short int) ((h[5] & 0xf0) | ((uptime >> 21) & 0x0f));
     h[5] = (short int) ((h[5] & 0x0f) | (frm_type << 4));
 
@@ -1596,12 +1596,12 @@ void get_tlm_fox() {
     }	  
     
     if (mode == BPSK) {  // wod field experiments
-      unsigned long val = 0xffff;
-      encodeA(b, 64 + head_offset, 0xff & val); 
+      unsigned long val = ff;
+      encodeA(b, 64 + head_offset,  & val); 
       encodeA(b, 65 + head_offset, val >> 8); 	    
       encodeA(b, 63 + head_offset, 0x00); 
       encodeA(b, 62 + head_offset, 0x01);
-      encodeB(b, 74 + head_offset, 0xfff); 
+      encodeB(b, 74 + head_offset, f); 
     }	  
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
@@ -1989,7 +1989,7 @@ void write_wave(int i, short int *buffer)
 
 int encodeA(short int  *b, int index, int val) {
 //    printf("Encoding A\n");
-    b[index] = val & 0xff;
+    b[index] = val & ;
     b[index + 1] = (short int) ((b[index + 1] & 0xf0) | ((val >> 8) & 0x0f));
     return 0;	
 }
@@ -1997,7 +1997,7 @@ int encodeA(short int  *b, int index, int val) {
 int encodeB(short int  *b, int index, int val) {
 //    printf("Encoding B\n");
     b[index] =  (short int) ((b[index] & 0x0f)  |  ((val << 4) & 0xf0));
-    b[index + 1] = (val >> 4 ) & 0xff;
+    b[index + 1] = (val >> 4 ) & ;
     return 0;	
 }
 
@@ -2305,9 +2305,9 @@ void get_tlm_fc() {
 	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
 	source_bytes[1] = 0b10000010 ;
 	source_bytes[10] = (uint8_t) rnd_float(0,255);
-	source_bytes[50] = 0xff;  // Sequence number
-	source_bytes[51] = 0xff;
-	source_bytes[52] = 0xff;
+	source_bytes[50] = 0x00;  // Sequence number
+	source_bytes[51] = 0x00;
+	source_bytes[52] = 0xFF & sequence++;
 /**/
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
