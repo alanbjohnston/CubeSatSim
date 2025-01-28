@@ -2360,7 +2360,7 @@ void get_tlm_fc() {
 					buffer_complete[ctr_complete++] = buffer[ctr - 1];
 					count += 4;
 				}
-				socket_send(bpsk_size);
+				socket_send(bpsk_size);  // should be ctr? if send in one block, comment out
 				ctr = 0;
 			}
  		}
@@ -2371,7 +2371,7 @@ void get_tlm_fc() {
 	printf("Encode collected time: %d ctr_complete = %d\n", millis() - start_timer, ctr_complete);
 	fflush(stdout);
 
-//  socket_send();
+//  socket_send(ctr_complete);  // uncomment if sending as a block.  Might send 3x
 
   int startSleep = millis();	    
   if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
