@@ -2309,12 +2309,12 @@ void get_tlm_fc() {
 	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
 	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 100)); 
 	
-	source_bytes[10] = 0xff & (((unsigned int)(voltage[map[BAT]] * 1000) >> 8));
-	source_bytes[11] = 0xff & ((unsigned int)(voltage[map[BAT]] * 1000));
-	source_bytes[12] = 0xff & (((unsigned int)(current[map[BAT]] * 100) >> 8));
-	source_bytes[13] = 0xff & ((unsigned int)(current[map[BAT]] * 100));
-	source_bytes[14] = 0xff & (((unsigned long int)reset_count >> 8));
-	source_bytes[15] = 0xff & ((unsigned long int)reset_count);
+	source_bytes[9] = 0xff & (((unsigned int)(voltage[map[BAT]] * 1000) >> 8));
+	source_bytes[10] = 0xff & ((unsigned int)(voltage[map[BAT]] * 1000));
+	source_bytes[11] = 0xff & (((unsigned int)(current[map[BAT]] * 100) >> 8));
+	source_bytes[12] = 0xff & ((unsigned int)(current[map[BAT]] * 100));
+	source_bytes[13] = 0xff & (((unsigned long int)reset_count >> 8));
+	source_bytes[14] = 0xff & ((unsigned long int)reset_count);
 	source_bytes[50] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
 	source_bytes[51] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[52] = 0xff & (unsigned long int)sequence++;
