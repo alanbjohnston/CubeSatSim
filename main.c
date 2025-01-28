@@ -2337,21 +2337,32 @@ void get_tlm_fc() {
 	
 	while (!Encode_AllDataCollected() && ((millis() - start_timer) < 2000))
 	{
+		bpsk_size = 0;
 		if (Encode_CanCollect()) 
 		{
 			bpsk_size = 1280;
 			Encode_CollectSamples(&bpsk_buffer[0], &bpsk_size);
-			printf("~");
-			fflush(stdout);
-			// copy to main buffer
-		}
-		int count = 0;
-		while (count < bpsk_size) {
-			if ((ctr % 24000) == 0) 
-				printf("size: %d bpsk_buffer %f or %d, count = %d = ctr = %d\n",bpsk_size, (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
-			buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
-			count += 4;
+			if (bpsk_size == 0) {
+				start_timer = 0; // exit while loop
+				printf("0");
+				fflush(stdout);
+			}
+			else
+			{
+				printf("~");
+				fflush(stdout);
+				// copy to main buffer
+				int count = 0;
+				while (count < bpsk_size) {
+					if ((ctr % 24000) == 0) 
+						printf("size: %d bpsk_buffer %f or %d, count = %d = ctr = %d\n",bpsk_size, (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
+					buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
+					count += 4;
+				}
+			}
  		}
+		if (bpsk_size == 0)
+			sleep(0.01);
 //		printf("\n");
 	}
 	printf("Encode collected time: %d\n", millis() - start_timer);
