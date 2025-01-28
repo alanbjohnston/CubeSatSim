@@ -122,7 +122,7 @@ FILE * file1;
 short int buffer[5000000]; // 2336400]; // max size for 10 frames count of BPSK
 short int buffer_complete[5000000];
 FILE *telem_file;	
-
+long int sequence = 0;
 #define S_RATE	(48000) // (44100)
 
 #define AFSK 1
