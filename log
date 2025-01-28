@@ -3,13 +3,13 @@
 echo -e "\nLog file script for CubeSatSim\n"
 
 if [ "$1" = "-r" ] || [ "$1" = "-t" ] ; then
-  sudo journalctl -a -u transmit > /home/pi/CubeSatSim/logt.txt 
-  cat /home/pi/CubeSatSim/logt.txt
-  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
+  sudo journalctl -af -u transmit  # > /home/pi/CubeSatSim/logt.txt 
+#  cat /home/pi/CubeSatSim/logt.txt
+#  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
 elif [ "$1" = "-c" ]; then
-  sudo journalctl -a -u command > /home/pi/CubeSatSim/logc.txt 
-  cat /home/pi/CubeSatSim/logc.txt
-  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
+  sudo journalctl -a -u command  # > /home/pi/CubeSatSim/logc.txt 
+#  cat /home/pi/CubeSatSim/logc.txt
+#  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
 else
 #  sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
   sudo journalctl -af -u cubesatsim
