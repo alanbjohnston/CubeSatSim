@@ -2335,7 +2335,7 @@ void get_tlm_fc() {
 	printf("Starting Encode Loop\n");
 	fflush(stdout);
 	
-	while (!Encode_AllDataCollected() && ((millis() - start_timer) < 2000))
+	while (!Encode_AllDataCollected() && ((millis() - start_timer) < 6000))
 	{
 		bpsk_size = 0;
 		if (Encode_CanCollect()) 
@@ -2354,8 +2354,8 @@ void get_tlm_fc() {
 				// copy to main buffer
 				int count = 0;
 				while (count < bpsk_size) {
-					if ((ctr % 24000) == 0) 
-						printf("size: %d bpsk_buffer %f or %d, count = %d = ctr = %d\n",bpsk_size, (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
+//					if ((ctr % 24000) == 0) 
+//						printf("size: %d bpsk_buffer %f or %d, count = %d = ctr = %d\n",bpsk_size, (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
 					buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
 					count += 4;
 				}
