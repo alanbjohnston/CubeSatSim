@@ -120,6 +120,7 @@ long time_start;
 char cmdbuffer[1000];
 FILE * file1;
 short int buffer[5000000]; // 2336400]; // max size for 10 frames count of BPSK
+short int buffer_complete[5000000];
 FILE *telem_file;	
 
 #define S_RATE	(48000) // (44100)
