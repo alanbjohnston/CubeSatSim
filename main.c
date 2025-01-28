@@ -2330,6 +2330,7 @@ void get_tlm_fc() {
 	ULONG bpsk_size = 1280*8;
 	unsigned char bpsk_buffer[bpsk_size];
 	ctr = 0;
+	ctr_complete = 0;
 	long int start_timer = (long int)millis();
 	printf("Starting Encode Loop\n");
 	fflush(stdout);
@@ -2356,6 +2357,7 @@ void get_tlm_fc() {
 //					if ((ctr % 24000) == 0) 
 //						printf("size: %d bpsk_buffer %f or %d, count = %d = ctr = %d\n",bpsk_size, (float)bpsk_buffer[count], (int)( (float)bpsk_buffer[count] ), count, ctr);
 					buffer[ctr++] = (int)( (float)bpsk_buffer[count] );
+					buffer_complete[ctr_complete++] = buffer[ctr - 1];
 					count += 4;
 				}
 				socket_send(bpsk_size);
@@ -2366,7 +2368,7 @@ void get_tlm_fc() {
 			sleep(0.01);
 //		printf("\n");
 	}
-	printf("Encode collected time: %d ctr = %d\n", millis() - start_timer, ctr);
+	printf("Encode collected time: %d ctr_complete = %d\n", millis() - start_timer, ctr_complete);
 	fflush(stdout);
 
 //  socket_send();
