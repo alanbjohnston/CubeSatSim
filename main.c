@@ -2305,8 +2305,8 @@ void get_tlm_fc() {
 	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
 	source_bytes[1] = 0b10000010 ;
 
-	print("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
-	print("Volt: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 100)); 
+	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
+	printf("Volt: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 100)); 
 	
 	source_bytes[10] = 0xff & ((unsigned int)(voltage[map[BAT]] * 1000) >> 8);
 	source_bytes[11] = 0xff & (unsigned int)(voltage[map[BAT]] * 1000);
