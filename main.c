@@ -2365,7 +2365,7 @@ void get_tlm_fc() {
 			sleep(0.01);
 //		printf("\n");
 	}
-	printf("Encode collected time: %d\n", millis() - start_timer);
+	printf("Encode collected time: %d ctr = %d\n", millis() - start_timer, ctr);
 	fflush(stdout);
 
 	// convert float to 
@@ -2538,17 +2538,17 @@ void get_tlm_fc() {
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
- //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
+    printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, length, 0);
-//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-//    fflush(stdout);	  
+    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
     
     if (sock_ret < length) {
   //    printf("Not resending\n");
       sleep(0.5);
       sock_ret = send(sock, &buffer[sock_ret], length - sock_ret, 0);
-//      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
+      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
 	  
     loop_count++;	  
