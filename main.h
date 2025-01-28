@@ -90,6 +90,7 @@ int upper_digit(int number);
 int lower_digit(int number);
 void update_rs(unsigned char parity[32], unsigned char c);
 void write_little_endian(unsigned int word, int num_bytes, FILE *wav_file);
+void socket_send();
 //static int init_rf();
 extern int Encode_8b10b[][256];
 //const unsigned char ALPHA_TO[];
