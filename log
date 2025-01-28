@@ -11,7 +11,8 @@ elif [ "$1" = "-c" ]; then
   cat /home/pi/CubeSatSim/logc.txt
   echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
 else
-  sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
-  cat /home/pi/CubeSatSim/log.txt
-  echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
+#  sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
+  sudo journalctl -af -u cubesatsim
+#  cat /home/pi/CubeSatSim/log.txt
+#  echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
 fi
