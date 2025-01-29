@@ -743,7 +743,7 @@ int main(int argc, char * argv[]) {
       double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
-      // printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+   //    printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
       current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
@@ -759,7 +759,7 @@ int main(int argc, char * argv[]) {
       voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
       voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
 
-      // printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
+       printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
       tempS += +rnd_float(-1.0, 1.0);
@@ -772,9 +772,10 @@ int main(int argc, char * argv[]) {
       //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
       float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
-      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
+//      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
+      current[map[BAT]] = rnd_float(285, 410) - current[map[PLUS_X]] - current[map[MINUS_X]] - current[map[PLUS_Y]] - current[map[MINUS_Y]] - current[map[PLUS_Z]] - current[map[MINUS_Z]];
 
-      //  printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
+        printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
       batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
       if (batt < 3.0) {
@@ -2302,12 +2303,21 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b10000010 ;   //  10100000 10000001 01000001 10000001 10000001
+	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
 	source_bytes[1] = 0b10000010 ;
-	source_bytes[10] = (uint8_t) rnd_float(0,255);
-	source_bytes[50] = 0xff;  // Sequence number
-	source_bytes[51] = 0xff;
-	source_bytes[52] = 0xff;
+
+//	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
+//	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
+	
+	source_bytes[9] = 0xff & (((unsigned int)(voltage[map[BAT]] * 1000) >> 8));  // mV
+	source_bytes[10] = 0xff & ((unsigned int)(voltage[map[BAT]] * 1000));
+	source_bytes[11] = 0xff & (((unsigned int)(current[map[BAT]] * 1) >> 8));  // mA
+	source_bytes[12] = 0xff & ((unsigned int)(current[map[BAT]] * 1));
+	source_bytes[13] = 0xff & (((unsigned long int)reset_count >> 8));
+	source_bytes[14] = 0xff & ((unsigned long int)reset_count);
+	source_bytes[50] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
+	source_bytes[51] = 0xff & ((unsigned long int)sequence >> 8);
+	source_bytes[52] = 0xff & (unsigned long int)sequence++;
 /**/
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
@@ -2481,7 +2491,8 @@ void get_tlm_fc() {
 
 /* write waveform buffer over socket */
 
-  int length = (headerLen + syncBits + dataLen) * samples;	
+  int length = (((headerLen + syncBits + dataLen) * samples) * 2) + 2;	// ctr * 2 + 2 like bpsk due to 2 bytes per sample.
+  printf("length: %d ctr: %d\n", length, ctr);	
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);

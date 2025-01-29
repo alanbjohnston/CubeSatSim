@@ -104,6 +104,7 @@ FILE * file1;
 short int buffer[2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 FILE *telem_file;	
+long int sequence = 131328;
 
 #define S_RATE	(48000) // (44100)
 
