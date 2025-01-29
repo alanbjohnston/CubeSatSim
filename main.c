@@ -2309,23 +2309,23 @@ void get_tlm_fc() {
 //	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
 //	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
 
-	source_bytes[EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
-	source_bytes[EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
-	source_bytes[EPS + 2] = 0xff & (((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) >> 8));  // mV
-	source_bytes[EPS + 3] = 0xff & ((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000));
-	source_bytes[EPS + 4] = 0xff & (((unsigned int)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000) >> 8));  // mV
-	source_bytes[EPS + 5] = 0xff & ((unsigned int)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000));
+	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
+	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
+	source_bytes[FC_EPS + 2] = 0xff & (((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) >> 8));  // mV
+	source_bytes[FC_EPS + 3] = 0xff & ((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000));
+	source_bytes[FC_EPS + 4] = 0xff & (((unsigned int)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000) >> 8));  // mV
+	source_bytes[FC_EPS + 5] = 0xff & ((unsigned int)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000));
 	unsigned int total_solar_current = (unsigned int) (current[map[PLUS_X]] + current[map[MINUS_X]] 
 				+ current[map[PLUS_Y]] + current[map[MINUS_Y]] 
 				+ current[map[PLUS_Z]] + current[map[MINUS_Z]]);
-	source_bytes[EPS + 6] = 0xff & total_solar_current >> 8;
-	source_bytes[EPS + 7] = 0xff & total_solar_current;		
-	source_bytes[EPS + 8] = 0xff & (((unsigned int)(voltage[map[BAT]] * 1000) >> 8));  // mV
-	source_bytes[EPS + 9] = 0xff & ((unsigned int)(voltage[map[BAT]] * 1000));
-	source_bytes[EPS + 10] = 0xff & (((unsigned int)(current[map[BAT]] * 1) >> 8));  // mA
-	source_bytes[EPS + 11] = 0xff & ((unsigned int)(current[map[BAT]] * 1));
-	source_bytes[EPS + 12] = 0xff & (((unsigned long int)reset_count >> 8));
-	source_bytes[EPS + 13] = 0xff & ((unsigned long int)reset_count);
+	source_bytes[FC_EPS + 6] = 0xff & total_solar_current >> 8;
+	source_bytes[FC_EPS + 7] = 0xff & total_solar_current;		
+	source_bytes[FC_EPS + 8] = 0xff & (((unsigned int)(voltage[map[BAT]] * 1000) >> 8));  // mV
+	source_bytes[FC_EPS + 9] = 0xff & ((unsigned int)(voltage[map[BAT]] * 1000));
+	source_bytes[FC_EPS + 10] = 0xff & (((unsigned int)(current[map[BAT]] * 1) >> 8));  // mA
+	source_bytes[FC_EPS + 11] = 0xff & ((unsigned int)(current[map[BAT]] * 1));
+	source_bytes[FC_EPS + 12] = 0xff & (((unsigned long int)reset_count >> 8));
+	source_bytes[FC_EPS + 13] = 0xff & ((unsigned long int)reset_count);
 	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
 	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
