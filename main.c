@@ -2360,7 +2360,7 @@ void get_tlm_fc() {
 					buffer_complete[ctr_complete++] = buffer[ctr - 1];
 					count += 4;
 				}
-				socket_send(bpsk_size);  // should be ctr? if send in one block, comment out
+				socket_send(2 * ctr + 2);  // should be ctr? if send in one block, comment out
 				ctr = 0;
 			}
  		}
