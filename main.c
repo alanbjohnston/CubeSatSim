@@ -769,11 +769,11 @@ int main(int argc, char * argv[]) {
       voltage[map[BAT2]] = 0.0; // rnd_float(5.0, 5.005);
       current[map[BAT2]] = 0.0; // rnd_float(158, 171);
 
-      //  float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+      float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
+//      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
 //      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
-      current[map[BAT]] = rnd_float(285, 410) - current[map[PLUS_X]] - current[map[MINUS_X]] - current[map[PLUS_Y]] - current[map[MINUS_Y]] - current[map[PLUS_Z]] - current[map[MINUS_Z]];
+      current[map[BAT]] = rnd_float(285, 305) - charging;
 
         printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
