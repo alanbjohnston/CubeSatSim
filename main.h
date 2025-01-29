@@ -53,6 +53,9 @@
 #define XS2 21  
 #define XS3 22
 #define SENSOR_FIELDS 26
+#define FC_EPS 1
+#define FC_BOB 25
+#define FC_SW 50
 
 #define RSSI 0
 #define IHU_TEMP 2
@@ -104,7 +107,7 @@ FILE * file1;
 short int buffer[2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 FILE *telem_file;	
-long int sequence = 131328;
+long int sequence = 0;
 
 #define S_RATE	(48000) // (44100)
 
