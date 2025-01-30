@@ -2319,7 +2319,7 @@ void get_tlm_fc() {
 	uint16_t iy = (uint16_t)((current[map[PLUS_Y]] + current[map[MINUS_Y]]) * 1000) && 0x3ff;
 	uint16_t iz = (uint16_t)((current[map[PLUS_Z]] + current[map[MINUS_Z]]) * 1000) && 0x3ff;
 
-	uint16_t ic = 0, 
+	uint16_t ic = 0; 
 	uint16_t ib = 0;
 	
 	if (current[map[BAT]] < 0 ) 
