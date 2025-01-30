@@ -2303,7 +2303,10 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b11000001 ;    // 0b00000001 ;
+//	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
+	source_bytes[0] = 0b11000001 ;    // Sat Id is extended
+	source_bytes[1] = 0x08 ; // extended Nayif
+	int extended = 1;
 	
 //	source_bytes[1] = 0b10000010 ;
 
@@ -2334,42 +2337,42 @@ void get_tlm_fc() {
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 	
-	source_bytes[FC_EPS + 0] = 0xff & (x >> 10);  // mV
-	source_bytes[FC_EPS + 1] = 0xfc & (x << 2);
+	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 10);  // mV
+	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
 
-        source_bytes[FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 12));
-	source_bytes[FC_EPS + 2] = 0xff & (y >> 4);  // mV
-	source_bytes[FC_EPS + 3] = 0xf0 & (y << 0);
+        source_bytes[extended + FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 12));
+	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 4);  // mV
+	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 0);
 
-	source_bytes[FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 10));
-	source_bytes[FC_EPS + 4] = 0xff & (z >> 2);  // mV
-	source_bytes[FC_EPS + 5] = 0xc0 & (z << 0);
+	source_bytes[extended + FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 10));
+	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // mV
+	source_bytes[extended + FC_EPS + 5] = 0xc0 & (z << 0);
 	
-	source_bytes[FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 8));  
-	source_bytes[FC_EPS + 6] = 0xff & (b >> 0);
+	source_bytes[extended + FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 8));  
+	source_bytes[extended + FC_EPS + 6] = 0xff & (b >> 0);
 
-	source_bytes[FC_EPS + 7] = 0xff & (ix >> 2);  
-	source_bytes[FC_EPS + 8] = 0xc0 & (iy << 6);  	
+	source_bytes[extended + FC_EPS + 7] = 0xff & (ix >> 2);  
+	source_bytes[extended + FC_EPS + 8] = 0xc0 & (iy << 6);  	
 
-	source_bytes[FC_EPS + 8] = source_bytes[FC_EPS + 8] | (0x3f & (iy >> 4));  
-	source_bytes[FC_EPS + 9] = 0xf0 & (iy << 4);	
+	source_bytes[extended + FC_EPS + 8] = source_bytes[FC_EPS + 8] | (0x3f & (iy >> 4));  
+	source_bytes[extended + FC_EPS + 9] = 0xf0 & (iy << 4);	
 
-	source_bytes[FC_EPS + 9] = source_bytes[FC_EPS + 9] | (0x0f & (iz >> 6));  
-	source_bytes[FC_EPS + 10] = 0x3f & (iz << 2);
+	source_bytes[extended + FC_EPS + 9] = source_bytes[FC_EPS + 9] | (0x0f & (iz >> 6));  
+	source_bytes[extended + FC_EPS + 10] = 0x3f & (iz << 2);
 
-	source_bytes[FC_EPS + 10] = source_bytes[FC_EPS + 10] | (0x03 & (ic >> 8));  
-	source_bytes[FC_EPS + 11] = 0xff & (ic << 0);	
+	source_bytes[extended + FC_EPS + 10] = source_bytes[FC_EPS + 10] | (0x03 & (ic >> 8));  
+	source_bytes[extended + FC_EPS + 11] = 0xff & (ic << 0);	
 
-	source_bytes[FC_EPS + 12] = 0xff & (ib >> 2);  
-	source_bytes[FC_EPS + 13] = 0xc0 & (ib << 6);  
+	source_bytes[extended + FC_EPS + 12] = 0xff & (ib >> 2);  
+	source_bytes[extended + FC_EPS + 13] = 0xc0 & (ib << 6);  
 
-	source_bytes[FC_EPS + 13] = source_bytes[FC_EPS + 13] | 0x3f & (((unsigned long int)reset_count) >> 2);
-	source_bytes[FC_EPS + 14] = 0xff & (((unsigned long int)reset_count) << 6);
+	source_bytes[extended + FC_EPS + 13] = source_bytes[FC_EPS + 13] | 0x3f & (((unsigned long int)reset_count) >> 2);
+	source_bytes[extended + FC_EPS + 14] = 0xff & (((unsigned long int)reset_count) << 6);
 
 	uint8_t temp = (int)(other[IHU_TEMP] + 0.5);
 
-	source_bytes[FC_EPS + 17] = source_bytes[FC_EPS + 17] | 0x3f & (temp >> 2);
-	source_bytes[FC_EPS + 18] = 0xff & (temp << 6);
+	source_bytes[extended + FC_EPS + 17] = source_bytes[FC_EPS + 17] | 0x3f & (temp >> 2);
+	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
 /*
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
@@ -2394,9 +2397,9 @@ void get_tlm_fc() {
 //	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
 //	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
 
-	source_bytes[46] = 0xff & ((unsigned long int)sequence >> 16);
-	source_bytes[47] = 0xff & ((unsigned long int)sequence >> 8);
-	source_bytes[48] = 0xff & (unsigned long int)sequence++;
+	source_bytes[extended + 46] = 0xff & ((unsigned long int)sequence >> 16);
+	source_bytes[extended + 47] = 0xff & ((unsigned long int)sequence >> 8);
+	source_bytes[extended + 48] = 0xff & (unsigned long int)sequence++;
 
 /**/
 	printf("\nsource_bytes\n");
