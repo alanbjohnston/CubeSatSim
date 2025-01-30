@@ -2307,13 +2307,15 @@ void get_tlm_fc() {
 	
 //	source_bytes[1] = 0b10000010 ;
 
-	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
-	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
+//	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
+//	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
 
 	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000);
 	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000);
 	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000);
 	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000);
+
+	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 	
 	source_bytes[FC_EPS + 0] = 0xff & (x >> 8);  // mV
 	source_bytes[FC_EPS + 1] = 0xfd & (x << 0);
