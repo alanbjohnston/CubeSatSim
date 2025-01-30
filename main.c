@@ -2303,12 +2303,32 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
+	source_bytes[0] = 0b11000001 ;    // 0b00000001 ;
+	
 //	source_bytes[1] = 0b10000010 ;
 
-//	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
-//	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
+	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
+	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
 
+	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000);
+	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000);
+	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000);
+	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000);
+	
+	source_bytes[FC_EPS + 0] = 0xff & (x >> 8);  // mV
+	source_bytes[FC_EPS + 1] = 0xfd & (x << 0);
+
+        source_bytes[FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 14));
+	source_bytes[FC_EPS + 2] = 0xff & (y >> 6);  // mV
+	source_bytes[FC_EPS + 3] = 0xf0 & (y << 2);
+
+	source_bytes[FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 12));
+	source_bytes[FC_EPS + 4] = 0xff & (z >> 4);  // mV
+	source_bytes[FC_EPS + 5] = 0xc0 & (z << 4);
+	
+	source_bytes[FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x0d & (b >> 8));  // mV
+	source_bytes[FC_EPS + 6] = 0xff & (b << 6);
+/*
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
 	source_bytes[FC_EPS + 2] = 0xff & (((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) >> 8));  // mV
@@ -2326,13 +2346,14 @@ void get_tlm_fc() {
 	source_bytes[FC_EPS + 11] = 0xff & ((unsigned int)(current[map[BAT]] * 1));
 	source_bytes[FC_EPS + 12] = 0xff & (((unsigned long int)reset_count >> 8));
 	source_bytes[FC_EPS + 13] = 0xff & ((unsigned long int)reset_count);
+*/	
 	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
 	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
 /**/
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
-		printf("%d ", source_bytes[i]);
+		printf("%x ", source_bytes[i]);
 	printf("\n\n");
 /**/
 
