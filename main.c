@@ -2315,10 +2315,10 @@ void get_tlm_fc() {
 	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000);
 	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000);
 
-	x = 0xfffc; // 0xffff;
-	y = 0x0; // 0x0000;
-	z = 0xfffc; // 0xffff;
-	b = 0x000c;
+//	x = 0xfffc; // 0xffff;
+//	y = 0x0; // 0x0000;
+//	z = 0xfffc; // 0xffff;
+//	b = 0x000c;
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 	
