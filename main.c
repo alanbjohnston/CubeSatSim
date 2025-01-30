@@ -2310,10 +2310,10 @@ void get_tlm_fc() {
 //	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
 //	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
 
-	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000);
-	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000);
-	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000);
-	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000);
+	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) && 0x3fff;  // 14 bits
+	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) && 0x3fff;
+	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000) && 0x3fff;
+	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000) && 0x3fff;
 
 //	x = 0xfffc; // 0xffff;
 //	y = 0x0; // 0x0000;
@@ -2322,19 +2322,19 @@ void get_tlm_fc() {
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 	
-	source_bytes[FC_EPS + 0] = 0xff & (x >> 8);  // mV
-	source_bytes[FC_EPS + 1] = 0xfc & (x << 0);
+	source_bytes[FC_EPS + 0] = 0xff & (x >> 10);  // mV
+	source_bytes[FC_EPS + 1] = 0xfc & (x << 2);
 
-        source_bytes[FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 14));
-	source_bytes[FC_EPS + 2] = 0xff & (y >> 6);  // mV
-	source_bytes[FC_EPS + 3] = 0xf0 & (y << 2);
+        source_bytes[FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 12));
+	source_bytes[FC_EPS + 2] = 0xff & (y >> 4);  // mV
+	source_bytes[FC_EPS + 3] = 0xf0 & (y << 0);
 
-	source_bytes[FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 12));
-	source_bytes[FC_EPS + 4] = 0xff & (z >> 4);  // mV
-	source_bytes[FC_EPS + 5] = 0xc0 & (z << 4);
+	source_bytes[FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 10));
+	source_bytes[FC_EPS + 4] = 0xff & (z >> 2);  // mV
+	source_bytes[FC_EPS + 5] = 0xc0 & (z << 0);
 	
-	source_bytes[FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 10));  // mV
-	source_bytes[FC_EPS + 6] = 0xff & (b >> 2);
+	source_bytes[FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 8));  // mV
+	source_bytes[FC_EPS + 6] = 0xff & (b >> 0);
 /*
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
