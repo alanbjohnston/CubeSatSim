@@ -2389,9 +2389,15 @@ void get_tlm_fc() {
 	source_bytes[FC_EPS + 12] = 0xff & (((unsigned long int)reset_count >> 8));
 	source_bytes[FC_EPS + 13] = 0xff & ((unsigned long int)reset_count);
 */	
-	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
-	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
-	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
+	
+//	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
+//	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
+//	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
+
+	source_bytes[46] = 0xff & ((unsigned long int)sequence >> 16);
+	source_bytes[47] = 0xff & ((unsigned long int)sequence >> 8);
+	source_bytes[48] = 0xff & (unsigned long int)sequence++;
+
 /**/
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
