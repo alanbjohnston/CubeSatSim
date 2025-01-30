@@ -2305,7 +2305,8 @@ void get_tlm_fc() {
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 //	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
 	source_bytes[0] = 0b11000001 ;    // Sat Id is extended
-	source_bytes[1] = 0x08 ; // extended Nayif
+//	source_bytes[1] = 0x08 ; // extended Nayify
+	source_bytes[1] = 0x00 ; // extended JY-1
 	int extended = 1;
 	
 //	source_bytes[1] = 0b10000010 ;
@@ -2326,7 +2327,7 @@ void get_tlm_fc() {
 	uint16_t ib = 0;
 	
 	if (current[map[BAT]] < 0 ) 
-		ic = (uint16_t)(current[map[BAT]] * -1000) && 0x3ff;  // charging current
+		ic = (uint16_t)(current[map[BAT]] * (-1000)) && 0x3ff;  // charging current
 	else 
 		ib = (uint16_t)(current[map[BAT]] * 1000) && 0x3ff;  // supplying current
 	
@@ -2397,9 +2398,9 @@ void get_tlm_fc() {
 //	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
 //	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
 
-	source_bytes[extended + 46] = 0xff & ((unsigned long int)sequence >> 16);
-	source_bytes[extended + 47] = 0xff & ((unsigned long int)sequence >> 8);
-	source_bytes[extended + 48] = 0xff & (unsigned long int)sequence++;
+	source_bytes[extended + 45] = 0xff & ((unsigned long int)sequence >> 16);  // was 46
+	source_bytes[extended + 46] = 0xff & ((unsigned long int)sequence >> 8);
+	source_bytes[extended + 47] = 0xff & (unsigned long int)sequence++;
 
 /**/
 	printf("\nsource_bytes\n");
