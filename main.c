@@ -2315,15 +2315,15 @@ void get_tlm_fc() {
 	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000);
 	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000);
 
-	x = 0xffff;
-	y = 0x0000;
-	z = 0xffff;
-	b = 0xa5a5;
+	x = 0x00; // 0xffff;
+	y = 0xffff; // 0x0000;
+	z = 0x00; // 0xffff;
+	b = 0xffff;
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 	
 	source_bytes[FC_EPS + 0] = 0xff & (x >> 8);  // mV
-	source_bytes[FC_EPS + 1] = 0xfd & (x << 0);
+	source_bytes[FC_EPS + 1] = 0xfc & (x << 0);
 
         source_bytes[FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 14));
 	source_bytes[FC_EPS + 2] = 0xff & (y >> 6);  // mV
