@@ -2333,8 +2333,8 @@ void get_tlm_fc() {
 	source_bytes[FC_EPS + 4] = 0xff & (z >> 4);  // mV
 	source_bytes[FC_EPS + 5] = 0xc0 & (z << 4);
 	
-	source_bytes[FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x0d & (b >> 8));  // mV
-	source_bytes[FC_EPS + 6] = 0xff & (b << 6);
+	source_bytes[FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 10));  // mV
+	source_bytes[FC_EPS + 6] = 0xff & (b << 2);
 /*
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
