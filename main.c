@@ -2303,7 +2303,8 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
+//	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
+	source_bytes[0] = 0b11000001 ;   //  10100000 10000001 01000001 10000001 10000001
 //	source_bytes[1] = 0b10000010 ;
 
 //	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
