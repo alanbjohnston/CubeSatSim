@@ -2305,8 +2305,8 @@ void get_tlm_fc() {
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 //	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
 	source_bytes[0] = 0b11000001 ;    // Sat Id is extended
-//	source_bytes[1] = 0x08 ; // extended Nayify
-	source_bytes[1] = 0x00 ; // extended JY-1
+	source_bytes[1] = 0x08 ; // extended Nayify - works
+//	source_bytes[1] = 0x00 ; // extended JY-1 - didn't work
 	int extended = 1;
 	
 //	source_bytes[1] = 0b10000010 ;
