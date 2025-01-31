@@ -2350,6 +2350,8 @@ void get_tlm_fc() {
 //	b = 0x000c;
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
+	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
+	
 #ifdef JY_1	
 	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 10);  // mV
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
