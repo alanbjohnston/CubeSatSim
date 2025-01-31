@@ -413,8 +413,8 @@ int main(int argc, char * argv[]) {
 
     batt = rnd_float(3.8, 4.3);
     speed = rnd_float(1.0, 2.5);
-//    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
-    eclipse = 1;	  
+    eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
+//    eclipse = 1;	  
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
     temp_max = rnd_float(50, 70);
@@ -729,13 +729,12 @@ int main(int argc, char * argv[]) {
     if (sim_mode) { // simulated telemetry 
 
       double time = ((long int)millis() - time_start) / 1000.0;
-/*
+
       if ((time - eclipse_time) > period) {
         eclipse = (eclipse == 1) ? 0 : 1;
         eclipse_time = time;
         printf("\n\nSwitching eclipse mode! \n\n");
       }
-*/
 
       double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
       double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
