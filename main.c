@@ -2318,7 +2318,8 @@ void get_tlm_fc() {
 #endif	
 
 	printf("Volts: %f %f %f %f \n", voltage[map[BAT]], voltage[map[PLUS_X]] , voltage[map[PLUS_Y]], voltage[map[PLUS_Z]]); 
-	printf("Amps: %f %f %f %f \n", current[map[BAT]], current[map[PLUS_X]] , current[map[PLUS_Y]], current[map[PLUS_Z]]); 
+	printf("AmpsPlus: %f %f %f %f \n", current[map[BAT]], current[map[PLUS_X]] , current[map[PLUS_Y]], current[map[PLUS_Z]]); 
+	printf("AmpsMinus: %f %f %f %f \n", current[map[BAT2]], current[map[MINUS_X]] , current[map[MINUS_Y]], current[map[MINUS_Z]]); 
 
 	float xmax = (voltage[map[PLUS_X]] > voltage[map[MINUS_X]]) ? voltage[map[PLUS_X]] : voltage[map[MINUS_X]];
 	float ymax = (voltage[map[PLUS_Y]] > voltage[map[MINUS_Y]]) ? voltage[map[PLUS_Y]] : voltage[map[MINUS_Y]];
