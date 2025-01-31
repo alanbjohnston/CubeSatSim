@@ -2381,7 +2381,7 @@ void get_tlm_fc() {
 	source_bytes[extended + FC_EPS + 17] = source_bytes[FC_EPS + 17] | 0x3f & (temp >> 2);
 	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
 
-	source_bytes[extended + 49 = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
+	source_bytes[extended + 49] = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
 	source_bytes[extended + 50] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[extended + 51] = 0xff & (unsigned long int)sequence++;
 
