@@ -2353,16 +2353,21 @@ void get_tlm_fc() {
 	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
 	
 #ifdef JY_1	
-	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 10);  // mV
+	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // 10
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
 
+	printf("1: %x\n", source_bytes[extended + FC_EPS + 1]);
+
         source_bytes[extended + FC_EPS + 1] = source_bytes[FC_EPS + 1] | (0x03 & (y >> 12));
-	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 4);  // mV
-	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 0);
+
+	printf("1: %x\n", source_bytes[extended + FC_EPS + 1]);
+	
+	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // mV
+	source_bytes[extended + FC_EPS + 3] = 0f0 & (y << 4);
 
 	source_bytes[extended + FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 10));
 	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // mV
-	source_bytes[extended + FC_EPS + 5] = 0xc0 & (z << 0);
+	source_bytes[extended + FC_EPS + 5] = 0xc0 & (z << 6);
 	
 	source_bytes[extended + FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 8));  
 	source_bytes[extended + FC_EPS + 6] = 0xff & (b >> 0);
