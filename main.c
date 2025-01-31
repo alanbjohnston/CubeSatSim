@@ -2368,34 +2368,34 @@ void get_tlm_fc() {
 	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // mV
 	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 4);
 
-	source_bytes[extended + FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 10));
+	source_bytes[extended + FC_EPS + 3] = source_bytes[extended + FC_EPS + 3] | (0x0f & (z >> 10));
 	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // mV
 	source_bytes[extended + FC_EPS + 5] = 0xc0 & (z << 6);
 	
-	source_bytes[extended + FC_EPS + 5] = source_bytes[FC_EPS + 5] | (0x3f & (b >> 8));  
+	source_bytes[extended + FC_EPS + 5] = source_bytes[extended + FC_EPS + 5] | (0x3f & (b >> 8));  
 	source_bytes[extended + FC_EPS + 6] = 0xff & (b >> 0);
 
 	source_bytes[extended + FC_EPS + 7] = 0xff & (ix >> 2);  
 	source_bytes[extended + FC_EPS + 8] = 0xc0 & (iy << 6);  	
 
-	source_bytes[extended + FC_EPS + 8] = source_bytes[FC_EPS + 8] | (0x3f & (iy >> 4));  
+	source_bytes[extended + FC_EPS + 8] = source_bytes[extended + FC_EPS + 8] | (0x3f & (iy >> 4));  
 	source_bytes[extended + FC_EPS + 9] = 0xf0 & (iy << 4);	
 
-	source_bytes[extended + FC_EPS + 9] = source_bytes[FC_EPS + 9] | (0x0f & (iz >> 6));  
+	source_bytes[extended + FC_EPS + 9] = source_bytes[extended + FC_EPS + 9] | (0x0f & (iz >> 6));  
 	source_bytes[extended + FC_EPS + 10] = 0x3f & (iz << 2);
 
-	source_bytes[extended + FC_EPS + 10] = source_bytes[FC_EPS + 10] | (0x03 & (ic >> 8));  
+	source_bytes[extended + FC_EPS + 10] = source_bytes[extended + FC_EPS + 10] | (0x03 & (ic >> 8));  
 	source_bytes[extended + FC_EPS + 11] = 0xff & (ic << 0);	
 
 	source_bytes[extended + FC_EPS + 12] = 0xff & (ib >> 2);  
 	source_bytes[extended + FC_EPS + 13] = 0xc0 & (ib << 6);  
 
-	source_bytes[extended + FC_EPS + 13] = source_bytes[FC_EPS + 13] | 0x3f & (((unsigned long int)reset_count) >> 2);
+	source_bytes[extended + FC_EPS + 13] = source_bytes[extended + FC_EPS + 13] | 0x3f & (((unsigned long int)reset_count) >> 2);
 	source_bytes[extended + FC_EPS + 14] = 0xff & (((unsigned long int)reset_count) << 6);
 
 	uint8_t temp = (int)(other[IHU_TEMP] + 0.5);
 
-	source_bytes[extended + FC_EPS + 17] = source_bytes[FC_EPS + 17] | 0x3f & (temp >> 2);
+	source_bytes[extended + FC_EPS + 17] = source_bytes[extended + FC_EPS + 17] | 0x3f & (temp >> 2);
 	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
 
 	source_bytes[extended + 49] = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
