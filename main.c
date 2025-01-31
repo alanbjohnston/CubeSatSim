@@ -2293,10 +2293,12 @@ if (setting == ON) {
 
 void get_tlm_fc() {  
 
+//# define FC-EM
+#define JY-1	
+	
 	/* create data, stream, and waveform buffers */
 
   	unsigned char source_bytes[256];
-//  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
 
 	/* write telemetry into data buffer */
@@ -2305,13 +2307,15 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-//	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
+#ifdef FC-EM	
+	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
+#endif
+#ifdef JY-1	
 	source_bytes[0] = 0b11000001 ;    // Sat Id is extended
 //	source_bytes[1] = 0x08 ; // extended Nayify - works
 	source_bytes[1] = 0x10 ; // extended JY-1 - 0x00 didn't work
 	int extended = 1;
-	
-//	source_bytes[1] = 0b10000010 ;
+#endif	
 
 //	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
 //	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
@@ -2339,7 +2343,7 @@ void get_tlm_fc() {
 //	b = 0x000c;
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
-	
+#ifdef JY-1	
 	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 10);  // mV
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
 
@@ -2376,7 +2380,22 @@ void get_tlm_fc() {
 
 	source_bytes[extended + FC_EPS + 17] = source_bytes[FC_EPS + 17] | 0x3f & (temp >> 2);
 	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
-/*
+
+//	source_bytes[extended + 46] = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
+//	source_bytes[extended + 47] = 0xff & ((unsigned long int)sequence >> 8);
+//	source_bytes[extended + 48] = 0xff & (unsigned long int)sequence++;
+
+	source_bytes[extended + 46] = 0x01;
+	source_bytes[extended + 47] = 0x02;
+	source_bytes[extended + 48] = 0x03;
+	source_bytes[extended + 49] = 0x04;
+	source_bytes[extended + 50] = 0x05;
+	source_bytes[extended + 51] = 0x06;
+	source_bytes[extended + 52] = 0x07;
+	
+#endif
+	
+#ifdef FC-EM
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
 	source_bytes[FC_EPS + 2] = 0xff & (((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) >> 8));  // mV
@@ -2394,15 +2413,11 @@ void get_tlm_fc() {
 	source_bytes[FC_EPS + 11] = 0xff & ((unsigned int)(current[map[BAT]] * 1));
 	source_bytes[FC_EPS + 12] = 0xff & (((unsigned long int)reset_count >> 8));
 	source_bytes[FC_EPS + 13] = 0xff & ((unsigned long int)reset_count);
-*/	
 	
-//	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
-//	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
-//	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
-
-	source_bytes[extended + 46] = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
-	source_bytes[extended + 47] = 0xff & ((unsigned long int)sequence >> 8);
-	source_bytes[extended + 48] = 0xff & (unsigned long int)sequence++;
+	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
+	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
+	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
+#endif
 
 /**/
 	printf("\nsource_bytes\n");
