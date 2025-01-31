@@ -2323,24 +2323,24 @@ void get_tlm_fc() {
 	printf(" %f\n", (voltage[map[PLUS_X]] + voltage[map[MINUS_X]]));
 	printf(" %f\n", (voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000);
 	printf(" %d\n", (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
-	printf(" %d\n", (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) && 0x3fff);
+	printf(" %d\n", (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) & 0x3fff);
 
-	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) && 0x3fff;  // 14 bits
-	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) && 0x3fff;
-	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000) && 0x3fff;
-	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000) && 0x3fff;
+	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) & 0x3fff;  // 14 bits
+	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) & 0x3fff;
+	uint16_t z = (uint16_t)((voltage[map[PLUS_Z]] + voltage[map[MINUS_Z]]) * 1000) & 0x3fff;
+	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000) & 0x3fff;
 
-	uint16_t ix = (uint16_t)((current[map[PLUS_X]] + current[map[MINUS_X]]) * 1000) && 0x3ff;  // 10 bits
-	uint16_t iy = (uint16_t)((current[map[PLUS_Y]] + current[map[MINUS_Y]]) * 1000) && 0x3ff;
-	uint16_t iz = (uint16_t)((current[map[PLUS_Z]] + current[map[MINUS_Z]]) * 1000) && 0x3ff;
+	uint16_t ix = (uint16_t)((current[map[PLUS_X]] + current[map[MINUS_X]]) * 1000) & 0x3ff;  // 10 bits
+	uint16_t iy = (uint16_t)((current[map[PLUS_Y]] + current[map[MINUS_Y]]) * 1000) & 0x3ff;
+	uint16_t iz = (uint16_t)((current[map[PLUS_Z]] + current[map[MINUS_Z]]) * 1000) & 0x3ff;
 
 	uint16_t ic = 0; 
 	uint16_t ib = 0;
 	
 	if (current[map[BAT]] < 0 ) 
-		ic = (uint16_t)(current[map[BAT]] * (-1000)) && 0x3ff;  // charging current
+		ic = (uint16_t)(current[map[BAT]] * (-1000)) & 0x3ff;  // charging current
 	else 
-		ib = (uint16_t)(current[map[BAT]] * 1000) && 0x3ff;  // supplying current
+		ib = (uint16_t)(current[map[BAT]] * 1000) & 0x3ff;  // supplying current
 	
 //	x = 0xfffc; // 0xffff;
 //	y = 0x0; // 0x0000;
