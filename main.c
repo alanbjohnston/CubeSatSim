@@ -2317,8 +2317,8 @@ void get_tlm_fc() {
 	int extended = 1;
 #endif	
 
-//	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
-//	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
+	printf("Volts: %f %f %f %f \n", voltage[map[BAT]], voltage[map[PLUS_X]] , voltage[map[PLUS_Y]], voltage[map[PLUS_Z]]); 
+	printf("Amps: %f %f %f %f \n", current[map[BAT]], current[map[PLUS_X]] , current[map[PLUS_Y]], current[map[PLUS_Z]]); 
 
 	uint16_t x = (uint16_t)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) && 0x3fff;  // 14 bits
 	uint16_t y = (uint16_t)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) && 0x3fff;
