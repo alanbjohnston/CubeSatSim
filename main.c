@@ -2293,8 +2293,8 @@ if (setting == ON) {
 
 void get_tlm_fc() {  
 
-//# define FC-EM
-#define JY-1	
+//# define FC_EM
+#define JY_1	
 	
 	/* create data, stream, and waveform buffers */
 
@@ -2307,13 +2307,13 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-#ifdef FC-EM	
+#ifdef FC_EM	
 	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
 #endif
-#ifdef JY-1	
+#ifdef JY_1	
 	source_bytes[0] = 0b11000001 ;    // Sat Id is extended
-//	source_bytes[1] = 0x08 ; // extended Nayify - works
-	source_bytes[1] = 0x10 ; // extended JY-1 - 0x00 didn't work
+//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
+	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	int extended = 1;
 #endif	
 
@@ -2343,7 +2343,7 @@ void get_tlm_fc() {
 //	b = 0x000c;
 
 	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
-#ifdef JY-1	
+#ifdef JY_1	
 	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 10);  // mV
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
 
@@ -2395,7 +2395,7 @@ void get_tlm_fc() {
 	
 #endif
 	
-#ifdef FC-EM
+#ifdef FC_EM
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
 	source_bytes[FC_EPS + 2] = 0xff & (((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) >> 8));  // mV
