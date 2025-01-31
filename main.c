@@ -18,7 +18,6 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#define DEBUG_LOGGING
 
 #include "main.h"
 
@@ -421,11 +420,11 @@ int main(int argc, char * argv[]) {
     temp_max = rnd_float(50, 70);
     temp_min = rnd_float(10, 20);
 
-    #ifdef DEBUG_LOGGING
+//    #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
     printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
-    #endif
+//    #endif
 
     time_start = (long int) millis();
 
@@ -736,7 +735,7 @@ int main(int argc, char * argv[]) {
         eclipse_time = time;
         printf("\n\nSwitching eclipse mode! \n\n");
       }
-	    */
+*/
 
       double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
       double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
@@ -746,7 +745,7 @@ int main(int argc, char * argv[]) {
       double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
-   //    printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+       printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
       current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
