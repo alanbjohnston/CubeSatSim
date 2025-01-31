@@ -2316,15 +2316,15 @@ void get_tlm_fc() {
 	int extended = 1;
 #endif	
 
-	printf("Volts: %f %f %f %f \n", voltage[map[BAT]], voltage[map[PLUS_X]] , voltage[map[PLUS_Y]], voltage[map[PLUS_Z]]); 
-	printf("AmpsPlus: %f %f %f %f \n", current[map[BAT]], current[map[PLUS_X]] , current[map[PLUS_Y]], current[map[PLUS_Z]]); 
-	printf("AmpsMinus: %f %f %f %f \n", current[map[BAT2]], current[map[MINUS_X]] , current[map[MINUS_Y]], current[map[MINUS_Z]]); 
+//	printf("Volts: %f %f %f %f \n", voltage[map[BAT]], voltage[map[PLUS_X]] , voltage[map[PLUS_Y]], voltage[map[PLUS_Z]]); 
+//	printf("AmpsPlus: %f %f %f %f \n", current[map[BAT]], current[map[PLUS_X]] , current[map[PLUS_Y]], current[map[PLUS_Z]]); 
+//	printf("AmpsMinus: %f %f %f %f \n", current[map[BAT2]], current[map[MINUS_X]] , current[map[MINUS_Y]], current[map[MINUS_Z]]); 
 
 	float xmax = (voltage[map[PLUS_X]] > voltage[map[MINUS_X]]) ? voltage[map[PLUS_X]] : voltage[map[MINUS_X]];
 	float ymax = (voltage[map[PLUS_Y]] > voltage[map[MINUS_Y]]) ? voltage[map[PLUS_Y]] : voltage[map[MINUS_Y]];
 	float zmax = (voltage[map[PLUS_Z]] > voltage[map[MINUS_Z]]) ? voltage[map[PLUS_Z]] : voltage[map[MINUS_Z]];
 
-	printf("Vmax: %f %f %f \n", xmax, ymax, zmax);
+//	printf("Vmax: %f %f %f \n", xmax, ymax, zmax);
 	
 	uint16_t x = (uint16_t)(xmax * 1000) & 0x3fff;  // 14 bits
 	uint16_t y = (uint16_t)(ymax * 1000) & 0x3fff;
@@ -2348,22 +2348,13 @@ void get_tlm_fc() {
 //	z = 0xfffc; // 0xffff;
 //	b = 0x000c;
 
-	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
-	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
+//	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
+//	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
 	
 #ifdef JY_1	
 	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // 10
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
-
-	printf("1: %x\n", source_bytes[extended + FC_EPS + 1]);
-	printf("1: %x\n", (0x03 & (y >> 12)));
-	printf("1: %x\n", source_bytes[extended + FC_EPS + 1] + (0x03 & (y >> 12)));
-	printf("1: %x\n", source_bytes[extended + FC_EPS + 1] | (0x03 & (y >> 12)));
-
         source_bytes[extended + FC_EPS + 1] = source_bytes[extended + FC_EPS + 1] | (0x03 & (y >> 12));
-
-	printf("1: %x\n", source_bytes[extended + FC_EPS + 1]);
-	
 	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // mV
 	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 4);
 
