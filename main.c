@@ -2363,7 +2363,7 @@ void get_tlm_fc() {
 	printf("1: %x\n", source_bytes[extended + FC_EPS + 1]);
 	
 	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // mV
-	source_bytes[extended + FC_EPS + 3] = 0f0 & (y << 4);
+	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 4);
 
 	source_bytes[extended + FC_EPS + 3] = source_bytes[FC_EPS + 3] | (0x0f & (z >> 10));
 	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // mV
