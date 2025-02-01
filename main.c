@@ -2411,7 +2411,7 @@ void get_tlm_fc() {
 	source_bytes[extended + 53] = 0x0f;  // SW valid 
 	source_bytes[extended + 54] = 0xe8;  // SW valid
 
-	if (ix + iy + iz) < 4))
+	if ((ix + iy + iz) < 4)
 		source_bytes[extended + 54] = source_bytes[extended + 54] | 0x10;  // eclipse
 	if (SafeMode == 1)
 		source_bytes[extended + 54] = source_bytes[extended + 54] | 0x08;  // safe mode
