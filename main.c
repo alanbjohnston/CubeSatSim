@@ -2409,7 +2409,7 @@ void get_tlm_fc() {
 //	source_bytes[extended + 53] = 0x40 & (SafeMode == 1);  // doesn't work
 
 	source_bytes[extended + 53] = 0x0f;  // SW valid 
-	source_bytes[extended + 54] = 0xf0;
+	source_bytes[extended + 54] = 0xe8;  // SW valid and safe mode
 
 #endif
 	
