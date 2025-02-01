@@ -2389,18 +2389,18 @@ void get_tlm_fc() {
 	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
 
 //	source_bytes[extended + FC_EPS + 45] = 0x0a;		
-	source_bytes[extended + FC_EPS + 48] = 0x0a;
+	source_bytes[extended + 48] = 0x0a;
 	
 	source_bytes[extended + 49] = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
 	source_bytes[extended + 50] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[extended + 51] = 0xff & (unsigned long int)sequence++;
 
-	uint8_t groundCommandCount = 0;
+	uint16_t groundCommandCount = 0;
 	FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
 	if (command_count_file != NULL) {	
 		char count_string[10];	
 		if ( (fgets(count_string, 10, command_count_file)) != NULL)
-			groundCommandCount = (uint8_t) atoi(count_string);     
+			groundCommandCount = (uint16_t) atoi(count_string);     
 	} else 
 		printf("Error opening command_count.txt!\n");
 	fclose(command_count_file);
