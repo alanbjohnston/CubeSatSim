@@ -1761,7 +1761,7 @@ void get_tlm_fox() {
   //	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
   #endif
 
-  int error = 0;
+  //int error = 0;
   // int count;
   //  for (count = 0; count < dataLen; count++) {
   //      printf("%02X", b[count]);
@@ -1770,7 +1770,7 @@ void get_tlm_fox() {
 
   // socket write
 
-socket_send(ctr);
+//socket_send(ctr);
 /*	
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
@@ -1881,41 +1881,42 @@ socket_send(ctr);
 	    
       for (int times = 0; times < max; times++) 	    
       {
-	      start = millis();  // send frame until buffer fills
-	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+///	      start = millis();  // send frame until buffer fills
+	      socket_send(ctr);
+///	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
 //	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
 	      
-	      if ((millis() - start) > 500) {
-		      printf("Buffer over filled!\n");
-		      break;
-	      }
+///	      if ((millis() - start) > 500) {
+///		      printf("Buffer over filled!\n");
+///		      break;
+///	      }
 
-	      if (sock_ret < (ctr * 2 + 2)) {
+///	      if (sock_ret < (ctr * 2 + 2)) {
 	  //    printf("Not resending\n");
-		sleep(0.5);
-		sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
-	      }
+///		sleep(0.5);
+///		sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+///		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
+///	      }
       }
       sampleTime = (unsigned int) millis(); // resetting time for sleeping
-      fflush(stdout);
+ //     fflush(stdout);
 //      if (firstTime == 1)
 //	      max -= 1;
     }
 
-    if (sock_ret == -1) {
-      printf("Error: %s \n", strerror(errno));
-      socket_open = 0;
+///    if (sock_ret == -1) {
+///      printf("Error: %s \n", strerror(errno));
+///      socket_open = 0;
       //transmitStatus = -1;
-    }
-  }
-  if (!transmit) {
-    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-  }
+///    }
+///  }
+///  if (!transmit) {
+///    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+///    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+///  }
 
-  if (socket_open == 1)	
-    firstTime = 0;
+///  if (socket_open == 1)	
+///    firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
 
@@ -2620,7 +2621,7 @@ void socket_send(int length) {
 //      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
 	  
-    loop_count++;	  
+//    loop_count++;	  
 
     if (sock_ret == -1) {
       printf("Error: %s \n", strerror(errno));
