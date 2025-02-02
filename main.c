@@ -2312,6 +2312,10 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 #ifdef FC_EM	
 	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
+	loop_count++;
+	uint8_t frame = loop_count % 5;
+	if (loop_count > 10)
+		source_bytes[0] = source_bytes[0] | frame;
 #endif
 #ifdef JY_1	
 	source_bytes[0] = 0b11000001 ;    // Sat Id is extended
