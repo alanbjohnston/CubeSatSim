@@ -2611,8 +2611,8 @@ void socket_send(int length) {
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, length, 0);
-//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-//    fflush(stdout);	  
+    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
     
     if (sock_ret < length) {
   //    printf("Not resending\n");
