@@ -2336,7 +2336,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 			source_bytes[pos++] = value;
 			printf("%2x ", value);
 		}
-		if (val == EOF) {
+		if (value == EOF) {
 			image_file = NULL;
 			printf("End of file reached!");
 		}
