@@ -2314,6 +2314,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
 	loop_count++;
 	uint8_t frame = loop_count % 5;
+	print ("frame: %x\n", frame);
 	if (loop_count > 10)
 		source_bytes[0] = source_bytes[0] | frame;
 #endif
