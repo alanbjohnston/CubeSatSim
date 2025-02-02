@@ -1770,7 +1770,7 @@ void get_tlm_fox() {
 
   // socket write
 
-//socket_send(ctr);
+  socket_send(ctr);
 /*	
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
