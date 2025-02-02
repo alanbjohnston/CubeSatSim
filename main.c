@@ -2321,10 +2321,12 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	int extended = 1;
 
-	if (image_file == NULL) {
-		image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
-		image_id++;
-		printf("Opening file image_file.bin for image_id: %d\n", image_id);
+	if (sequence > 10) {
+		if (image_file == NULL)  {
+			image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
+			image_id++;
+			printf("Opening file image_file.bin for image_id: %d\n", image_id);
+		}
 	}
 	int pos = 56;	  // 56
 	source_bytes[pos++] = 0x55;
