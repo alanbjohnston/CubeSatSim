@@ -1770,6 +1770,8 @@ void get_tlm_fox() {
 
   // socket write
 
+socket_send(ctr);
+/*	
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
  //   struct sockaddr_in address;
@@ -1858,6 +1860,7 @@ void get_tlm_fox() {
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
 //      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
+*/	  
 	  
     loop_count++;	  
     if ((firstTime == 1) || (((loop_count % 180) == 0) && (mode == FSK)) || (((loop_count % 80) == 0) && (mode == BPSK))) // do first time and was every 180 samples
@@ -2546,6 +2549,12 @@ void get_tlm_fc() {
 
   // socket write
 
+//  socket_send((((headerLen + syncBits + dataLen) * samples) * 2) + 2);
+  socket_send(ctr);
+	
+}
+void socket_send(int length)
+
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
  //   struct sockaddr_in address;
@@ -2616,8 +2625,9 @@ void get_tlm_fc() {
 
 /* write waveform buffer over socket */
 
-  int length = (((headerLen + syncBits + dataLen) * samples) * 2) + 2;	// ctr * 2 + 2 like bpsk due to 2 bytes per sample.
-  printf("length: %d ctr: %d\n", length, ctr);	
+//  int length = (((headerLen + syncBits + dataLen) * samples) * 2) + 2;	// ctr * 2 + 2 like bpsk due to 2 bytes per sample.
+  length = length * 2 + 2;  // convert from samples to bytes
+//  printf("length in bytes: %d\n", length);	
 
   if (!error && transmit) {
     //	digitalWrite (0, LOW);
