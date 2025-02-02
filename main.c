@@ -2315,7 +2315,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 #endif
 #ifdef JY_1	
 //	source_bytes[0] = 0b11000001 ;    // Sat Id is extended, Frame 2 (RT2 + WO2)
-	source_bytes[0] = 0xE0 | 0x20 | 0x01;    // Sat Id is extended, Frame 34 (RT2 + IMG2)
+	source_bytes[0] = 0xE0 | 0x20 | 0x00; // 1;    // Sat Id is extended, Frame 34 (RT2 + IMG2)
 
 	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
