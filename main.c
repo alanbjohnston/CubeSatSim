@@ -2318,7 +2318,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 //	source_bytes[1] = 0x08 ; // extended Nayify - works per code
 	loop_count++;
 	uint8_t frame = loop_count % 5;
-	print ("frame: %x\n", frame);
+	printf("frame: %x\n", frame);
 	if (loop_count > 10)
 		source_bytes[0] = source_bytes[0] | frame;
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
