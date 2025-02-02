@@ -1910,10 +1910,10 @@ void get_tlm_fox() {
       //transmitStatus = -1;
 ///    }
 ///  }
-///  if (!transmit) {
-///    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-///    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-///  }
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
 
 ///  if (socket_open == 1)	
 ///    firstTime = 0;
@@ -2527,6 +2527,19 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 //  socket_send((((headerLen + syncBits + dataLen) * samples) * 2) + 2);
   socket_send(ctr);
 	
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
+
+  int startSleep = millis();	    
+  if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(1.0); 
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(0.1); 
+  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
+  sampleTime = (unsigned int) millis(); // resetting time for sleeping
+  fflush(stdout);
 }
 
 void socket_send(int length) {
@@ -2629,6 +2642,8 @@ void socket_send(int length) {
       socket_open = 0;
     }
   }
+
+/*	
   if (!transmit) {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
@@ -2642,6 +2657,7 @@ void socket_send(int length) {
   printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
   sampleTime = (unsigned int) millis(); // resetting time for sleeping
   fflush(stdout);
+	*/
 	
   if (socket_open == 1)	
     firstTime = 0;
