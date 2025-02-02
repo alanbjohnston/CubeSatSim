@@ -2320,6 +2320,28 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	int extended = 1;
+
+	if (image_file == NULL) {
+		file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
+		image_id++;
+		printf("Opening file image_file.bin for image_id: %d\n", image_id);
+	}
+	int pos = 56;	
+	source_bytes[pos++] = 0x55;
+	source_bytes[pos++] = 0x68;
+	int val;
+	if (image_file == NULL) {
+		printf("Writing image data to payload\n");
+		while (((val = getc(image_file)) != EOF) && (pos < 256)) {
+			source_bytes[pos++] = val;
+			printf("%2x ", val);
+		}
+		if (val == EOF) {
+			image_file = NULL;
+			printf("End of file reached!");
+		}
+	}
+	
 #endif	
 
 //	printf("Volts: %f %f %f %f \n", voltage[map[BAT]], voltage[map[PLUS_X]] , voltage[map[PLUS_Y]], voltage[map[PLUS_Z]]); 
