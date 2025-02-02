@@ -2531,6 +2531,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 
 void socket_send(int length) {
 
+  printf("Socket_send!\n");	
   int error = 0;
 
   if (!socket_open && transmit) { // open socket if not open
