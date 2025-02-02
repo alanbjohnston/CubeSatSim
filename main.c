@@ -2322,7 +2322,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	int extended = 1;
 
 	if (image_file == NULL) {
-		file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
+		image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
 		image_id++;
 		printf("Opening file image_file.bin for image_id: %d\n", image_id);
 	}
@@ -2330,7 +2330,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	source_bytes[pos++] = 0x55;
 	source_bytes[pos++] = 0x68;
 	int val;
-	if (image_file == NULL) {
+	if (image_file != NULL) {
 		printf("Writing image data to payload\n");
 		while (((val = getc(image_file)) != EOF) && (pos < 256)) {
 			source_bytes[pos++] = val;
