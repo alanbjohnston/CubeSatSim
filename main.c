@@ -2293,7 +2293,7 @@ if (setting == ON) {
   return;
 }
 
-void get_tlm_fc() {  
+void get_tlm_fc() {  // FunCube Mode telemetry generation
 
 //# define FC_EM
 #define JY_1	
@@ -2345,55 +2345,50 @@ void get_tlm_fc() {
 		ic = (uint16_t)(current[map[BAT]] * (-1)) & 0x3ff;  // charging current
 	else 
 		ib = (uint16_t)(current[map[BAT]]) & 0x3ff;  // supplying current
-	
-//	x = 0xfffc; // 0xffff;
-//	y = 0x0; // 0x0000;
-//	z = 0xfffc; // 0xffff;
-//	b = 0x000c;
 
 //	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 //	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
 	
 #ifdef JY_1	
-	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // 10
+	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // Vx
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
         source_bytes[extended + FC_EPS + 1] = source_bytes[extended + FC_EPS + 1] | (0x03 & (y >> 12));
-	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // mV
+	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // Vy
 	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 4);
 
 	source_bytes[extended + FC_EPS + 3] = source_bytes[extended + FC_EPS + 3] | (0x0f & (z >> 10));
-	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // mV
+	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // Vz
 	source_bytes[extended + FC_EPS + 5] = 0xc0 & (z << 6);
 	
 	source_bytes[extended + FC_EPS + 5] = source_bytes[extended + FC_EPS + 5] | (0x3f & (b >> 8));  
-	source_bytes[extended + FC_EPS + 6] = 0xff & (b >> 0);
+	source_bytes[extended + FC_EPS + 6] = 0xff & (b >> 0);  // Vb
 
-	source_bytes[extended + FC_EPS + 7] = 0xff & (ix >> 2);  
-	source_bytes[extended + FC_EPS + 8] = 0xc0 & (iy << 6);  	
+	source_bytes[extended + FC_EPS + 7] = 0xff & (ix >> 2);   // ix
+	source_bytes[extended + FC_EPS + 8] = 0xc0 & (iy << 6);   // iy
 
 	source_bytes[extended + FC_EPS + 8] = source_bytes[extended + FC_EPS + 8] | (0x3f & (iy >> 4));  
 	source_bytes[extended + FC_EPS + 9] = 0xf0 & (iy << 4);	
 
 	source_bytes[extended + FC_EPS + 9] = source_bytes[extended + FC_EPS + 9] | (0x0f & (iz >> 6));  
-	source_bytes[extended + FC_EPS + 10] = 0x3f & (iz << 2);
+	source_bytes[extended + FC_EPS + 10] = 0x3f & (iz << 2);  // iz
 
 	source_bytes[extended + FC_EPS + 10] = source_bytes[extended + FC_EPS + 10] | (0x03 & (ic >> 8));  
-	source_bytes[extended + FC_EPS + 11] = 0xff & (ic << 0);	
+	source_bytes[extended + FC_EPS + 11] = 0xff & (ic << 0);  // ic battery charging curent	
 
-	source_bytes[extended + FC_EPS + 12] = 0xff & (ib >> 2);  
+	source_bytes[extended + FC_EPS + 12] = 0xff & (ib >> 2);  // ib battery discharging current
 	source_bytes[extended + FC_EPS + 13] = 0xc0 & (ib << 6);  
 
 	source_bytes[extended + FC_EPS + 13] = source_bytes[extended + FC_EPS + 13] | 0x3f & (((unsigned long int)reset_count) >> 2);
-	source_bytes[extended + FC_EPS + 14] = 0xff & (((unsigned long int)reset_count) << 6);
+	source_bytes[extended + FC_EPS + 14] = 0xff & (((unsigned long int)reset_count) << 6); // reset count
 
 	uint8_t temp = (int)(other[IHU_TEMP] + 0.5);
 
-	source_bytes[extended + FC_EPS + 17] = source_bytes[extended + FC_EPS + 17] | 0x3f & (temp >> 2);
+	source_bytes[extended + FC_EPS + 17] = source_bytes[extended + FC_EPS + 17] | 0x3f & (temp >> 2);  // cpu temp
 	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
 
 	source_bytes[extended + 48] = 0x0c;  // Antenna 1 and 2 deployed
 	
-	source_bytes[extended + 49] = 0xff & ((unsigned long int)sequence >> 16);  // was 45 46
+	source_bytes[extended + 49] = 0xff & ((unsigned long int)sequence >> 16);  // sequence number
 	source_bytes[extended + 50] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[extended + 51] = 0xff & (unsigned long int)sequence++;
 
@@ -2407,9 +2402,7 @@ void get_tlm_fc() {
 		printf("Error opening command_count.txt!\n");
 	fclose(command_count_file);
 
-//	source_bytes[extended + 52] = 0xfc & (groundCommandCount << 2);  // doesn't work
-
-//	source_bytes[extended + 53] = 0x40 & (SafeMode == 1);  // doesn't work
+//	source_bytes[extended + 52] = 0xfc & (groundCommandCount << 2);  // command doesn't work
 
 	source_bytes[extended + 53] = 0x0f;  // SW valid 
 	source_bytes[extended + 54] = 0xe0;  // SW valid
@@ -2418,7 +2411,6 @@ void get_tlm_fc() {
 		source_bytes[extended + 54] = source_bytes[extended + 54] | 0x10;  // eclipse
 	if (SafeMode == 1)
 		source_bytes[extended + 54] = source_bytes[extended + 54] | 0x08;  // safe mode
-
 #endif
 	
 #ifdef FC_EM
@@ -2512,12 +2504,6 @@ void get_tlm_fc() {
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
- //       int symbol = (int)((i - 1) / (samples * 8));
- //       int bit = 8 - (i - symbol * samples * 8) / samples + 1;
-//        val = encoded_bytes[symbol];
-//       data = val & 1 << (bit - 1);
-        //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
         symbol = i / samples - 1;
 //	if (i < 100) printf("symbol = %d\n",symbol);      
 	data = encoded_bytes[symbol];      
@@ -2537,25 +2523,16 @@ void get_tlm_fc() {
 // printf("symbol = %d\n",symbol);
 // printf("\nctr = %d\n\n", ctr);
 
-
-/* open socket */
-
-  int error = 0;
-  // int count;
-  //  for (count = 0; count < dataLen; count++) {
-  //      printf("%02X", b[count]);
-  //  }
-  //  printf("\n");
-
-  // socket write
-
 //  socket_send((((headerLen + syncBits + dataLen) * samples) * 2) + 2);
   socket_send(ctr);
 	
 }
-void socket_send(int length)
 
-  if (!socket_open && transmit) {
+void socket_send(int length) {
+
+  int error = 0;
+
+  if (!socket_open && transmit) { // open socket if not open
     printf("Opening socket!\n");
  //   struct sockaddr_in address;
  //   int valread;
@@ -2630,7 +2607,6 @@ void socket_send(int length)
 //  printf("length in bytes: %d\n", length);	
 
   if (!error && transmit) {
-    //	digitalWrite (0, LOW);
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, length, 0);
@@ -2667,6 +2643,4 @@ void socket_send(int length)
 	
   if (socket_open == 1)	
     firstTime = 0;
-
-  return;
 }
