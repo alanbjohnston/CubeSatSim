@@ -786,7 +786,7 @@ if __name__ == "__main__":
 					if (image_present == False):
 						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 						print("Photo taken")
-						system("/home/pi/ssdv/ssdv -e -c CALLSIGN -i " + image_index + " -q 3 -J camera_out.jpg image_file.bin")
+						system("/home/pi/ssdv/ssdv -e -c CALLSIGN -i " + str(image_index) + " -q 3 -J camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 						print("image_index " + image_index + "\n")
 						image_index = ( index_image + 1 ) % 256
 						sleep(2)
