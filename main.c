@@ -526,7 +526,10 @@ int main(int argc, char * argv[]) {
 	   
       sin_samples = S_RATE/freq_Hz;	 		
       for (int j = 0; j < sin_samples; j++) {	 		
-        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 
+
+      FILE * delete_image = popen("sudo rm /home/pi/CubeSatSim/image_file.bin", "r");  // delete any previous camera images
+      pclose(delete_image); 	      
       }	 		
       printf("\n");
    }
@@ -2323,13 +2326,13 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	int extended = 1;
 
-	if (sequence > 10) {
+//	if (sequence > 10) {
 		if (image_file == NULL)  {
 			image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
 			image_id++;
 			printf("Opening file image_file.bin for image_id: %d\n", image_id);
 		}
-	}
+//	}
 	int pos = 56;	  // 56
 //	source_bytes[pos++] = 0x55;
 //	source_bytes[pos++] = 0x68;
@@ -2338,7 +2341,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 		printf("Writing image data to payload\n");
 		while ((pos < 256) && ((value = getc(image_file)) != EOF)) {
 			source_bytes[pos++] = value;
-			printf("%2x ", value);
+//			printf("%2x ", value);
 		}
 		if (value == EOF) {
 			image_file = NULL;
