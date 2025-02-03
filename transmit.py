@@ -783,7 +783,7 @@ if __name__ == "__main__":
 					except:
 						image_present = False
 					
-					if (!image_present):
+					if (image_present == False):
 						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 						print("Photo taken")
 						system("/home/pi/ssdv/ssdv -e -c CALLSIGN -i " + image_index + " -q 3 -J camera_out.jpg image_file.bin")
