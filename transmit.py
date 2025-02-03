@@ -756,7 +756,7 @@ if __name__ == "__main__":
 #				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
 ##				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f " + tx + "e6 -t float &")
 			print("Turning LED on/off and listening for carrier")
-			image_index = 0;
+			image_index = 1;
 			while 1:
 				print ("LED on")
 				output(txLed, txLedOff)
@@ -788,7 +788,7 @@ if __name__ == "__main__":
 					if (image_present == False):
 						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 						print("Photo taken")
-						system("/home/pi/ssdv/ssdv -e -c CALLSIGN -i " + str(image_index) + " -q 3 -J camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
+						system("/home/pi/ssdv/ssdv -e -c CALL -i " + str(image_index) + " -q 3 -J camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 						print("image_index " + str(image_index) + "\n")
 						image_index = ( image_index + 1 ) % 256
 						sleep(2)
