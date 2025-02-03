@@ -2336,7 +2336,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	int value;
 	if (image_file != NULL) {
 		printf("Writing image data to payload\n");
-		while (((value = getc(image_file)) != EOF) && (pos < 256)) {
+		while ((pos < 256) && ((value = getc(image_file)) != EOF)) {
 			source_bytes[pos++] = value;
 			printf("%2x ", value);
 		}
