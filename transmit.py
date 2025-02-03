@@ -788,7 +788,7 @@ if __name__ == "__main__":
 						print("Photo taken")
 						system("/home/pi/ssdv/ssdv -e -c CALLSIGN -i " + str(image_index) + " -q 3 -J camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 						print("image_index " + str(image_index) + "\n")
-						image_index = ( index_image + 1 ) % 256
+						image_index = ( image_index + 1 ) % 256
 						sleep(2)
 					else:	
 						sleep(4.6)
