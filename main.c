@@ -2340,7 +2340,9 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 		}
 		if (value == EOF) {
 			image_file = NULL;
-			printf("End of file reached!");
+			printf("End of file reached! Delete image_file.bin");
+			FILE * delete_image = popen("sudo rm /home/pi/CubeSatSim/image_file.bin", "r");
+  			pclose(delete_image); 
 		}
 	}
 	
