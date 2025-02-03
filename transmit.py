@@ -758,6 +758,7 @@ if __name__ == "__main__":
 			print("Turning LED on/off and listening for carrier")
 			image_index = 0;
 			while 1:
+				print ("LED on")
 				output(txLed, txLedOff)
 				sleep(0.4)
 #				if (command_tx == False):
@@ -776,6 +777,7 @@ if __name__ == "__main__":
 				if (mode == 'b'):
 					sleep(4.2)	
 				else:  # FunCube mode image
+					print("Checking image_file.bin")
 					try:
 						file = open("/home/pi/CubeSatSim/image_file.bin")
 						file.close()
