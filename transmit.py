@@ -135,6 +135,33 @@ def increment_mode():
 	except:
 		print("can't write to .mode file")
 		
+def camera_photo():
+	
+	system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+	print("Photo taken")
+
+	file='/home/pi/CubeSatSim/camera_out.jpg'
+	font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
+	font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
+
+	try:
+		filep = open("/home/pi/CubeSatSim/telem_string.txt")
+		telem_string = filep.readline()
+	except:
+		telem_string = ""
+		if (debug_mode == 1):
+			print("Can't read telem_string.txt")		
+	print(telem_string)
+	
+	img = Image.open(file)
+	draw = ImageDraw.Draw(img) 
+#					draw.text((10, 10), callsign, font=font2, fill='white')
+#					draw.text((120, 10), telem_string, font=font2, fill='white')					
+	draw.text((12, 12), callsign, font=font1, fill='black')
+	draw.text((10, 10), callsign, font=font1, fill='white')
+	draw.text((122, 12), telem_string, font=font2, fill='black')
+	draw.text((120, 10), telem_string, font=font2, fill='white')
+	img.save(file)
 
 print("CubeSatSim v2.0 transmit.py starting...")
 
@@ -580,32 +607,32 @@ if __name__ == "__main__":
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 #					command_control_check()			
-					
-					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-					print("Photo taken")
-
-					file='/home/pi/CubeSatSim/camera_out.jpg'
-					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
-					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
-
-					try:
-						filep = open("/home/pi/CubeSatSim/telem_string.txt")
-						telem_string = filep.readline()
-					except:
-						telem_string = ""
-						if (debug_mode == 1):
-							print("Can't read telem_string.txt")		
-					print(telem_string)
-					
-					img = Image.open(file)
-					draw = ImageDraw.Draw(img) 
+					camera_photo()
+##					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+##					print("Photo taken")
+##
+##					file='/home/pi/CubeSatSim/camera_out.jpg'
+##					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
+##					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
+##
+##					try:
+##						filep = open("/home/pi/CubeSatSim/telem_string.txt")
+##						telem_string = filep.readline()
+##					except:
+##						telem_string = ""
+##						if (debug_mode == 1):
+##							print("Can't read telem_string.txt")		
+##					print(telem_string)
+##					
+##					img = Image.open(file)
+##					draw = ImageDraw.Draw(img) 
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
-					draw.text((12, 12), callsign, font=font1, fill='black')
-					draw.text((10, 10), callsign, font=font1, fill='white')
-					draw.text((122, 12), telem_string, font=font2, fill='black')
-					draw.text((120, 10), telem_string, font=font2, fill='white')
-					img.save(file)
+##					draw.text((12, 12), callsign, font=font1, fill='black')
+##					draw.text((10, 10), callsign, font=font1, fill='white')
+##					draw.text((122, 12), telem_string, font=font2, fill='black')
+##					draw.text((120, 10), telem_string, font=font2, fill='white')
+##					img.save(file)
 					
 #					command_control_check()			
 					
@@ -786,9 +813,10 @@ if __name__ == "__main__":
 						image_present = False
 					
 					if (image_present == False):
-						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-						print("Photo taken")
-						system("/home/pi/ssdv/ssdv -e -n -i " + str(image_index) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
+						camera_photo()
+##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+##						print("Photo taken")
+						system("/home/pi/ssdv/ssdv -e -n -i " + str(image_index) + " -q 2 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 						print("image_index " + str(image_index) + "\n")
 						image_index = ( image_index + 1 ) % 256
 						sleep(2)
