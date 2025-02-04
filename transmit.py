@@ -135,7 +135,8 @@ def increment_mode():
 	except:
 		print("can't write to .mode file")
 		
-def camera_photo():	
+def camera_photo():
+	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
 		system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
@@ -792,7 +793,7 @@ if __name__ == "__main__":
 			print("Turning LED on/off and listening for carrier")
 			image_index = 1;
 			while 1:
-				print ("LED on")
+#				print ("LED on")
 				output(txLed, txLedOff)
 				sleep(0.4)
 #				if (command_tx == False):
@@ -811,7 +812,7 @@ if __name__ == "__main__":
 				if (mode == 'b'):
 					sleep(4.2)	
 				else:  # FunCube mode image
-					print("Checking image_file.bin")
+#					print("Checking image_file.bin")
 					try:
 						file = open("/home/pi/CubeSatSim/image_file.bin")
 						file.close()
