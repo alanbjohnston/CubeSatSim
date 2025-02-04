@@ -56,6 +56,7 @@
 #define FC_EPS 1
 #define FC_BOB 25
 #define FC_SW 50
+#define FC_PAYLOAD 45
 
 #define RSSI 0
 #define IHU_TEMP 2
