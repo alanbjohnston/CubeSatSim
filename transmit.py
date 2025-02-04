@@ -824,7 +824,7 @@ if __name__ == "__main__":
 						camera_photo()
 ##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 ##						print("Photo taken")
-						system("/home/pi/ssdv/ssdv -e -n -i " + str(image_index) + " -q 4 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
+						system("/home/pi/ssdv/ssdv -e -n -i " + str(image_index) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 						print("image_index " + str(image_index) + "\n")
 						image_index = ( image_index + 1 ) % 256
 						sleep(2)
