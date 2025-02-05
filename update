@@ -1,9 +1,20 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v2.0\n"
+echo -e "\nupdate script for CubeSatSim v2.1\n"
+
+FLAG=0
+checkout=0
+
+if [ -z "$1" ] ; then
+	checkout=0
+else
+	checkout=1
+	branch="$1"
+	echo $branch
+	FLAG=1
+fi
 
 if [ "$1" = "n" ] ; then
-# if [ -z "$2" ] ; then
 	noreboot=1
 else
 	noreboot=0
@@ -39,6 +50,10 @@ cd /home/pi/CubeSatSim
 
 git pull --no-rebase > .updated
 
+if [ $checkout -eq 1 ]; then
+	git checkout $branch
+fi
+
 make debug
 
 FILE=/home/pi/CubeSatSim/command_tx
@@ -56,8 +71,6 @@ else
     echo "creating $FILE"
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
-
-FLAG=0
 
 if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
   echo "changed cubesatsim.service."
@@ -115,7 +128,7 @@ if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 2."
     cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 fi
-      
+
 grep 'update' /home/pi/CubeSatSim/.updated
 if [[ $(grep 'update' /home/pi/CubeSatSim/.updated) ]]; then
   echo "update script updated, running again"
@@ -358,7 +371,7 @@ if [ "$noreboot" = "0" ] ; then
 	fi
 else
 	if [ $FLAG -eq 1 ]; then
-		echo "reboot needed for changes to take effect"
+		echo "reboot needed for changes to take effect" | wall
 	fi
 fi
 
