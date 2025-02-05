@@ -213,6 +213,16 @@ if [ ! -d "/home/pi/WiringPi" ]; then
 
 fi
 
+if [ ! -d "/home/pi/ssdv" ]; then
+
+	cd
+	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
+	cd ssdv
+	make
+	cd
+	FLAG=1
+fi
+
 cd /home/pi/pi-power-button
 
 git checkout master
