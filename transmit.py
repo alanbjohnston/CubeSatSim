@@ -172,7 +172,7 @@ def camera_photo():
 		draw.text((120, 10), telem_string, font=font2, fill='white')
 		img.save(file)
 
-print("CubeSatSim v2.0 transmit.py starting...")
+print("CubeSatSim v2.1 transmit.py starting...")
 
 pd = 21
 ptt = 20
