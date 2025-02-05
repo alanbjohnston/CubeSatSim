@@ -18,7 +18,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
@@ -414,16 +414,17 @@ int main(int argc, char * argv[]) {
     batt = rnd_float(3.8, 4.3);
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
+//    eclipse = 1;	  
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
     temp_max = rnd_float(50, 70);
     temp_min = rnd_float(10, 20);
 
-    #ifdef DEBUG_LOGGING
+//    #ifdef DEBUG_LOGGING
     for (int i = 0; i < 3; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
     printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
-    #endif
+//    #endif
 
     time_start = (long int) millis();
 
@@ -525,7 +526,10 @@ int main(int argc, char * argv[]) {
 	   
       sin_samples = S_RATE/freq_Hz;	 		
       for (int j = 0; j < sin_samples; j++) {	 		
-        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 		
+        sin_map[j] = (short int)(amplitude * sin((float)(2 * M_PI * j / sin_samples)));	 
+
+      FILE * delete_image = popen("sudo rm /home/pi/CubeSatSim/image_file.bin", "r");  // delete any previous camera images
+      pclose(delete_image); 	      
       }	 		
       printf("\n");
    }
@@ -743,7 +747,7 @@ int main(int argc, char * argv[]) {
       double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
       double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
 
-   //    printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
+       printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
       current[map[PLUS_X]] = (Xi >= 0) ? Xi : 0;
       current[map[MINUS_X]] = (Xi >= 0) ? 0 : ((-1.0f) * Xi);
@@ -1760,7 +1764,7 @@ void get_tlm_fox() {
   //	printf("\ctr/samples = %d ctr/(samples*10) = %d\n\n", ctr/samples, ctr/(samples*10));
   #endif
 
-  int error = 0;
+  //int error = 0;
   // int count;
   //  for (count = 0; count < dataLen; count++) {
   //      printf("%02X", b[count]);
@@ -1769,6 +1773,8 @@ void get_tlm_fox() {
 
   // socket write
 
+  socket_send(ctr);
+/*	
   if (!socket_open && transmit) {
     printf("Opening socket!\n");
  //   struct sockaddr_in address;
@@ -1857,6 +1863,7 @@ void get_tlm_fox() {
       sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
 //      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
+*/	  
 	  
     loop_count++;	  
     if ((firstTime == 1) || (((loop_count % 180) == 0) && (mode == FSK)) || (((loop_count % 80) == 0) && (mode == BPSK))) // do first time and was every 180 samples
@@ -1877,41 +1884,42 @@ void get_tlm_fox() {
 	    
       for (int times = 0; times < max; times++) 	    
       {
-	      start = millis();  // send frame until buffer fills
-	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
+///	      start = millis();  // send frame until buffer fills
+	      socket_send(ctr);
+///	      sock_ret = send(sock, buffer, (unsigned int)(ctr * 2 + 2), 0);
 //	      printf("socket send %d in %d ms bytes: %d \n\n",times + 2, (unsigned int)millis() - start, sock_ret);
 	      
-	      if ((millis() - start) > 500) {
-		      printf("Buffer over filled!\n");
-		      break;
-	      }
+///	      if ((millis() - start) > 500) {
+///		      printf("Buffer over filled!\n");
+///		      break;
+///	      }
 
-	      if (sock_ret < (ctr * 2 + 2)) {
+///	      if (sock_ret < (ctr * 2 + 2)) {
 	  //    printf("Not resending\n");
-		sleep(0.5);
-		sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
-		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
-	      }
+///		sleep(0.5);
+///		sock_ret = send(sock, &buffer[sock_ret], (unsigned int)(ctr * 2 + 2 - sock_ret), 0);
+///		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
+///	      }
       }
       sampleTime = (unsigned int) millis(); // resetting time for sleeping
-      fflush(stdout);
+ //     fflush(stdout);
 //      if (firstTime == 1)
 //	      max -= 1;
     }
 
-    if (sock_ret == -1) {
-      printf("Error: %s \n", strerror(errno));
-      socket_open = 0;
+///    if (sock_ret == -1) {
+///      printf("Error: %s \n", strerror(errno));
+///      socket_open = 0;
       //transmitStatus = -1;
-    }
-  }
+///    }
+///  }
   if (!transmit) {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
-  if (socket_open == 1)	
-    firstTime = 0;
+///  if (socket_open == 1)	
+///    firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
 
@@ -2289,12 +2297,14 @@ if (setting == ON) {
   return;
 }
 
-void get_tlm_fc() {  
+void get_tlm_fc() {  // FunCube Mode telemetry generation
 
+//# define FC_EM
+#define JY_1	
+	
 	/* create data, stream, and waveform buffers */
 
   	unsigned char source_bytes[256];
-//  	unsigned char encoded_bytes[650];
 	int byte_count = 256;
 
 	/* write telemetry into data buffer */
@@ -2303,12 +2313,139 @@ void get_tlm_fc() {
 //	printf("\nSYMPBLOCK = %d\n", SYMPBLOCK);
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
-	source_bytes[0] = 0b00000001 ;   //  10100000 10000001 01000001 10000001 10000001
-//	source_bytes[1] = 0b10000010 ;
+#ifdef FC_EM	
+	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
+#endif
+#ifdef JY_1	
+//	source_bytes[0] = 0b11000001 ;    // Sat Id is extended, Frame 2 (RT2 + WO2)
+	source_bytes[0] = 0xE0 | 0x20 | 0x00; // 1;    // Sat Id is extended, Frame 34 (RT2 + IMG2)
 
-//	printf("Volt: %f  Int: %d \n", voltage[map[BAT]], (unsigned int)(voltage[map[BAT]] * 1000)); 
-//	printf("Amps: %f  Int: %d \n", current[map[BAT]], (unsigned int)(current[map[BAT]] * 1)); 
+	source_bytes[0] = source_bytes[0] | ( 0x01 & (uint8_t)(sequence % 2));  // alternate last bit for RT1, RT2.
 
+	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
+	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
+	int extended = 1;
+
+//	if (sequence > 10) {
+		if (image_file == NULL)  {
+			image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
+			image_id++;
+			printf("Opening file image_file.bin for image_id: %d\n", image_id);
+		}
+//	}
+	int pos = FC_PAYLOAD + extended;	  
+	int value;
+	if (image_file != NULL) {
+		printf("Writing image data to payload\n");
+		while ((pos < 256) && ((value = getc(image_file)) != EOF)) {
+			source_bytes[pos++] = value;
+//			printf("%2x ", value);
+		}
+		if (value == EOF) {
+			image_file = NULL;
+			printf("End of file reached! Delete image_file.bin");
+			FILE * delete_image = popen("sudo rm /home/pi/CubeSatSim/image_file.bin", "r");
+  			pclose(delete_image); 
+		}
+	}
+	
+#endif	
+
+//	printf("Volts: %f %f %f %f \n", voltage[map[BAT]], voltage[map[PLUS_X]] , voltage[map[PLUS_Y]], voltage[map[PLUS_Z]]); 
+//	printf("AmpsPlus: %f %f %f %f \n", current[map[BAT]], current[map[PLUS_X]] , current[map[PLUS_Y]], current[map[PLUS_Z]]); 
+//	printf("AmpsMinus: %f %f %f %f \n", current[map[BAT2]], current[map[MINUS_X]] , current[map[MINUS_Y]], current[map[MINUS_Z]]); 
+
+	float xmax = (voltage[map[PLUS_X]] > voltage[map[MINUS_X]]) ? voltage[map[PLUS_X]] : voltage[map[MINUS_X]];
+	float ymax = (voltage[map[PLUS_Y]] > voltage[map[MINUS_Y]]) ? voltage[map[PLUS_Y]] : voltage[map[MINUS_Y]];
+	float zmax = (voltage[map[PLUS_Z]] > voltage[map[MINUS_Z]]) ? voltage[map[PLUS_Z]] : voltage[map[MINUS_Z]];
+
+//	printf("Vmax: %f %f %f \n", xmax, ymax, zmax);
+	
+	uint16_t x = (uint16_t)(xmax * 1000) & 0x3fff;  // 14 bits
+	uint16_t y = (uint16_t)(ymax * 1000) & 0x3fff;
+	uint16_t z = (uint16_t)(zmax * 1000) & 0x3fff;
+	uint16_t b = (uint16_t)(voltage[map[BAT]] * 1000) & 0x3fff;
+
+	uint16_t ix = (uint16_t)((current[map[PLUS_X]] + current[map[MINUS_X]])) & 0x3ff;  // 10 bits
+	uint16_t iy = (uint16_t)((current[map[PLUS_Y]] + current[map[MINUS_Y]])) & 0x3ff;
+	uint16_t iz = (uint16_t)((current[map[PLUS_Z]] + current[map[MINUS_Z]])) & 0x3ff;
+
+	uint16_t ic = 0; 
+	uint16_t ib = 0;
+	
+	if (current[map[BAT]] < 0 ) 
+		ic = (uint16_t)(current[map[BAT]] * (-1)) & 0x3ff;  // charging current
+	else 
+		ib = (uint16_t)(current[map[BAT]]) & 0x3ff;  // supplying current
+
+//	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
+//	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
+	
+#ifdef JY_1	
+	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // Vx
+	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
+        source_bytes[extended + FC_EPS + 1] = source_bytes[extended + FC_EPS + 1] | (0x03 & (y >> 12));
+	source_bytes[extended + FC_EPS + 2] = 0xff & (y >> 2);  // Vy
+	source_bytes[extended + FC_EPS + 3] = 0xf0 & (y << 4);
+
+	source_bytes[extended + FC_EPS + 3] = source_bytes[extended + FC_EPS + 3] | (0x0f & (z >> 10));
+	source_bytes[extended + FC_EPS + 4] = 0xff & (z >> 2);  // Vz
+	source_bytes[extended + FC_EPS + 5] = 0xc0 & (z << 6);
+	
+	source_bytes[extended + FC_EPS + 5] = source_bytes[extended + FC_EPS + 5] | (0x3f & (b >> 8));  
+	source_bytes[extended + FC_EPS + 6] = 0xff & (b >> 0);  // Vb
+
+	source_bytes[extended + FC_EPS + 7] = 0xff & (ix >> 2);   // ix
+	source_bytes[extended + FC_EPS + 8] = 0xc0 & (iy << 6);   // iy
+
+	source_bytes[extended + FC_EPS + 8] = source_bytes[extended + FC_EPS + 8] | (0x3f & (iy >> 4));  
+	source_bytes[extended + FC_EPS + 9] = 0xf0 & (iy << 4);	
+
+	source_bytes[extended + FC_EPS + 9] = source_bytes[extended + FC_EPS + 9] | (0x0f & (iz >> 6));  
+	source_bytes[extended + FC_EPS + 10] = 0x3f & (iz << 2);  // iz
+
+	source_bytes[extended + FC_EPS + 10] = source_bytes[extended + FC_EPS + 10] | (0x03 & (ic >> 8));  
+	source_bytes[extended + FC_EPS + 11] = 0xff & (ic << 0);  // ic battery charging curent	
+
+	source_bytes[extended + FC_EPS + 12] = 0xff & (ib >> 2);  // ib battery discharging current
+	source_bytes[extended + FC_EPS + 13] = 0xc0 & (ib << 6);  
+
+	source_bytes[extended + FC_EPS + 13] = source_bytes[extended + FC_EPS + 13] | 0x3f & (((unsigned long int)reset_count) >> 2);
+	source_bytes[extended + FC_EPS + 14] = 0xff & (((unsigned long int)reset_count) << 6); // reset count
+
+	uint8_t temp = (int)(other[IHU_TEMP] + 0.5);
+
+	source_bytes[extended + FC_EPS + 17] = source_bytes[extended + FC_EPS + 17] | 0x3f & (temp >> 2);  // cpu temp
+	source_bytes[extended + FC_EPS + 18] = 0xff & (temp << 6);
+
+	source_bytes[extended + 48] = 0x0c;  // Antenna 1 and 2 deployed
+	
+	source_bytes[extended + 49] = 0xff & ((unsigned long int)sequence >> 16);  // sequence number
+	source_bytes[extended + 50] = 0xff & ((unsigned long int)sequence >> 8);
+	source_bytes[extended + 51] = 0xff & (unsigned long int)sequence++;
+
+	uint16_t groundCommandCount = 0;
+	FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
+	if (command_count_file != NULL) {	
+		char count_string[10];	
+		if ( (fgets(count_string, 10, command_count_file)) != NULL)
+			groundCommandCount = (uint16_t) atoi(count_string);     
+	} else 
+		printf("Error opening command_count.txt!\n");
+	fclose(command_count_file);
+
+//	source_bytes[extended + 52] = 0xfc & (groundCommandCount << 2);  // command doesn't work
+
+	source_bytes[extended + 53] = 0x0f;  // SW valid 
+	source_bytes[extended + 54] = 0xe0;  // SW valid
+
+	if ((ix + iy + iz) < 4)
+		source_bytes[extended + 54] = source_bytes[extended + 54] | 0x10;  // eclipse
+	if (SafeMode == 1)
+		source_bytes[extended + 54] = source_bytes[extended + 54] | 0x08;  // safe mode
+#endif
+	
+#ifdef FC_EM
 	source_bytes[FC_EPS + 0] = 0xff & (((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000) >> 8));  // mV
 	source_bytes[FC_EPS + 1] = 0xff & ((unsigned int)((voltage[map[PLUS_X]] + voltage[map[MINUS_X]]) * 1000));
 	source_bytes[FC_EPS + 2] = 0xff & (((unsigned int)((voltage[map[PLUS_Y]] + voltage[map[MINUS_Y]]) * 1000) >> 8));  // mV
@@ -2326,13 +2463,17 @@ void get_tlm_fc() {
 	source_bytes[FC_EPS + 11] = 0xff & ((unsigned int)(current[map[BAT]] * 1));
 	source_bytes[FC_EPS + 12] = 0xff & (((unsigned long int)reset_count >> 8));
 	source_bytes[FC_EPS + 13] = 0xff & ((unsigned long int)reset_count);
+	
 	source_bytes[FC_SW + 0] = 0xff & ((unsigned long int)sequence >> 16); // Sequence number
 	source_bytes[FC_SW + 1] = 0xff & ((unsigned long int)sequence >> 8);
 	source_bytes[FC_SW + 2] = 0xff & (unsigned long int)sequence++;
+		
+#endif
+
 /**/
 	printf("\nsource_bytes\n");
 	for (int i=0; i<256; i++)
-		printf("%d ", source_bytes[i]);
+		printf("%x ", source_bytes[i]);
 	printf("\n\n");
 /**/
 
@@ -2395,12 +2536,6 @@ void get_tlm_fc() {
     {
       write_wave(ctr, buffer);
       if ((i % samples) == 0) {
- //       int symbol = (int)((i - 1) / (samples * 8));
- //       int bit = 8 - (i - symbol * samples * 8) / samples + 1;
-//        val = encoded_bytes[symbol];
-//       data = val & 1 << (bit - 1);
-        //		printf ("%d i: %d new frame %d data10[%d] = %x bit %d = %d \n",
-        //	    		 ctr/SAMPLES, i, frames, symbol, val, bit, (data > 0) );
         symbol = i / samples - 1;
 //	if (i < 100) printf("symbol = %d\n",symbol);      
 	data = encoded_bytes[symbol];      
@@ -2420,19 +2555,30 @@ void get_tlm_fc() {
 // printf("symbol = %d\n",symbol);
 // printf("\nctr = %d\n\n", ctr);
 
+//  socket_send((((headerLen + syncBits + dataLen) * samples) * 2) + 2);
+  socket_send(ctr);
+	
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
 
-/* open socket */
+  int startSleep = millis();	    
+  if ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(1.0); 
+  while ((millis() - sampleTime) < ((unsigned int)frameTime)) // - 750 + pi_zero_2_offset))  
+        sleep(0.1); 
+  printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
+  sampleTime = (unsigned int) millis(); // resetting time for sleeping
+  fflush(stdout);
+}
 
+void socket_send(int length) {
+
+  printf("Socket_send!\n");	
   int error = 0;
-  // int count;
-  //  for (count = 0; count < dataLen; count++) {
-  //      printf("%02X", b[count]);
-  //  }
-  //  printf("\n");
 
-  // socket write
-
-  if (!socket_open && transmit) {
+  if (!socket_open && transmit) { // open socket if not open
     printf("Opening socket!\n");
  //   struct sockaddr_in address;
  //   int valread;
@@ -2502,16 +2648,16 @@ void get_tlm_fc() {
 
 /* write waveform buffer over socket */
 
-  int length = (((headerLen + syncBits + dataLen) * samples) * 2) + 2;	// ctr * 2 + 2 like bpsk due to 2 bytes per sample.
-  printf("length: %d ctr: %d\n", length, ctr);	
+//  int length = (((headerLen + syncBits + dataLen) * samples) * 2) + 2;	// ctr * 2 + 2 like bpsk due to 2 bytes per sample.
+  length = length * 2 + 2;  // convert from samples to bytes
+//  printf("length in bytes: %d\n", length);	
 
   if (!error && transmit) {
-    //	digitalWrite (0, LOW);
  //   printf("Sending %d buffer bytes over socket after %d ms!\n", ctr, (long unsigned int)millis() - start);
     start = millis();
     int sock_ret = send(sock, buffer, length, 0);
-//    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
-//    fflush(stdout);	  
+    printf("socket send 1 %d ms bytes: %d \n\n", (unsigned int)millis() - start, sock_ret);
+    fflush(stdout);	  
     
     if (sock_ret < length) {
   //    printf("Not resending\n");
@@ -2520,13 +2666,15 @@ void get_tlm_fc() {
 //      printf("socket send 2 %d ms bytes: %d \n\n", millis() - start, sock_ret);
     }
 	  
-    loop_count++;	  
+//    loop_count++;	  
 
     if (sock_ret == -1) {
       printf("Error: %s \n", strerror(errno));
       socket_open = 0;
     }
   }
+
+/*	
   if (!transmit) {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
@@ -2540,9 +2688,8 @@ void get_tlm_fc() {
   printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, millis() - sampleTime);
   sampleTime = (unsigned int) millis(); // resetting time for sleeping
   fflush(stdout);
+	*/
 	
   if (socket_open == 1)	
     firstTime = 0;
-
-  return;
 }

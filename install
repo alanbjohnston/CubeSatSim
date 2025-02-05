@@ -125,6 +125,10 @@ cd rpitx
 
 cd
 
+git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
+cd ssdv
+make
+
 cd
 
 sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service

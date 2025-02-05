@@ -56,6 +56,7 @@
 #define FC_EPS 1
 #define FC_BOB 25
 #define FC_SW 50
+#define FC_PAYLOAD 55
 
 #define RSSI 0
 #define IHU_TEMP 2
@@ -94,6 +95,7 @@ extern int Encode_8b10b[][256];
 extern const unsigned char ALPHA_TO[];
 // const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count);
 void program_radio();
+void socket_send(int length);
 
 int socket_open = 0;
 int sock = 0;
@@ -108,6 +110,8 @@ short int buffer[2336400]; // max size for 10 frames count of BPSK
 FILE *sopen(const char *program);
 FILE *telem_file;	
 long int sequence = 0;
+int image_id = 0;
+FILE *image_file;
 
 #define S_RATE	(48000) // (44100)
 

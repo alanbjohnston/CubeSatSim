@@ -135,6 +135,41 @@ def increment_mode():
 	except:
 		print("can't write to .mode file")
 		
+def camera_photo():
+	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
+	stored_image = False
+	try:
+		system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+		f = open("/home/pi/CubeSatSim/camera_out.jpg")
+		f.close()
+		print("Photo taken")
+	except:
+		system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
+		print("Using stored image")
+		stored_image = True
+	if (stored_image == False):	
+		file='/home/pi/CubeSatSim/camera_out.jpg'
+		font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
+		font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
+	
+		try:
+			filep = open("/home/pi/CubeSatSim/telem_string.txt")
+			telem_string = filep.readline()
+		except:
+			telem_string = ""
+			if (debug_mode == 1):
+				print("Can't read telem_string.txt")		
+		print(telem_string)
+		
+		img = Image.open(file)
+		draw = ImageDraw.Draw(img) 
+	#					draw.text((10, 10), callsign, font=font2, fill='white')
+	#					draw.text((120, 10), telem_string, font=font2, fill='white')					
+		draw.text((12, 12), callsign, font=font1, fill='black')
+		draw.text((10, 10), callsign, font=font1, fill='white')
+		draw.text((122, 12), telem_string, font=font2, fill='black')
+		draw.text((120, 10), telem_string, font=font2, fill='white')
+		img.save(file)
 
 print("CubeSatSim v2.0 transmit.py starting...")
 
@@ -580,32 +615,32 @@ if __name__ == "__main__":
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 #					command_control_check()			
-					
-					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-					print("Photo taken")
-
-					file='/home/pi/CubeSatSim/camera_out.jpg'
-					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
-					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
-
-					try:
-						filep = open("/home/pi/CubeSatSim/telem_string.txt")
-						telem_string = filep.readline()
-					except:
-						telem_string = ""
-						if (debug_mode == 1):
-							print("Can't read telem_string.txt")		
-					print(telem_string)
-					
-					img = Image.open(file)
-					draw = ImageDraw.Draw(img) 
+					camera_photo()
+##					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+##					print("Photo taken")
+##
+##					file='/home/pi/CubeSatSim/camera_out.jpg'
+##					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
+##					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
+##
+##					try:
+##						filep = open("/home/pi/CubeSatSim/telem_string.txt")
+##						telem_string = filep.readline()
+##					except:
+##						telem_string = ""
+##						if (debug_mode == 1):
+##							print("Can't read telem_string.txt")		
+##					print(telem_string)
+##					
+##					img = Image.open(file)
+##					draw = ImageDraw.Draw(img) 
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
-					draw.text((12, 12), callsign, font=font1, fill='black')
-					draw.text((10, 10), callsign, font=font1, fill='white')
-					draw.text((122, 12), telem_string, font=font2, fill='black')
-					draw.text((120, 10), telem_string, font=font2, fill='white')
-					img.save(file)
+##					draw.text((12, 12), callsign, font=font1, fill='black')
+##					draw.text((10, 10), callsign, font=font1, fill='white')
+##					draw.text((122, 12), telem_string, font=font2, fill='black')
+##					draw.text((120, 10), telem_string, font=font2, fill='white')
+##					img.save(file)
 					
 #					command_control_check()			
 					
@@ -756,7 +791,9 @@ if __name__ == "__main__":
 #				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
 				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f " + tx + "e6 -t float &")
 			print("Turning LED on/off and listening for carrier")
+			image_index = 1;
 			while 1:
+#				print ("LED on")
 				output(txLed, txLedOff)
 				sleep(0.4)
 #				if (command_tx == False):
@@ -771,10 +808,28 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					print(txLed)
 #					print(txLedOn)
+
 				if (mode == 'b'):
-					sleep(4.2)
-				else:
-					sleep(4.6)
+					sleep(4.2)	
+				else:  # FunCube mode image
+#					print("Checking image_file.bin")
+					try:
+						file = open("/home/pi/CubeSatSim/image_file.bin")
+						file.close()
+						image_present = True
+					except:
+						image_present = False
+					
+					if (image_present == False):
+						camera_photo()
+##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+##						print("Photo taken")
+						system("/home/pi/ssdv/ssdv -e -n -i " + str(image_index) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
+						print("image_index " + str(image_index) + "\n")
+						image_index = ( image_index + 1 ) % 256
+						sleep(2)
+					else:	
+						sleep(4.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
 			print("Repeater")
 			print("Stopping command and control")
