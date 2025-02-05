@@ -10,6 +10,7 @@ if [ -z "$1" ] ; then
 else
 	checkout=1
 	branch="$1"
+	echo -n "changing to branch "
 	echo $branch
 	FLAG=1
 fi
@@ -51,7 +52,8 @@ cd /home/pi/CubeSatSim
 git pull --no-rebase > .updated
 
 if [ $checkout -eq 1 ]; then
-	git checkout $branch
+	git checkout $branch	
+	git pull --no-rebase
 fi
 
 make debug
