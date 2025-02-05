@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nCommand and Control script for CubeSatSim v2.0\n"
+echo -e "\nCommand and Control script for CubeSatSim v2.1\n"
 
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
