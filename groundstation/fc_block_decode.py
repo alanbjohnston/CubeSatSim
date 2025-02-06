@@ -63,6 +63,7 @@ if __name__ == "__main__":
 					print("End of image")
 					system("sudo mv image_file image_file" + str(image_count))
 					print("Image count: ")
-					print(image_count++)						
+					print(image_count)
+					image_count = (image_count + 1) % 256
 			else:
 				print("Unknown Sat Id or Frame")
