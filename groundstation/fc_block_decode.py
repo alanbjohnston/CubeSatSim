@@ -20,5 +20,9 @@ if __name__ == "__main__":
 			
 		if ((line.find("data: ")) > 0):
 			print("\ndata block found!\n")
-			data_block = line.split()
+			data_block_string = line.split()
+			print(data_block_string)
+			data_block = [int(number_string,16) for number_string in data_block_string]
+			print("\n")
 			print(data_block)
+			print("\n")
