@@ -11,6 +11,8 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
+image_count = 0
+
 if __name__ == "__main__":
 	debug_mode = False
 	counter = 1
@@ -57,5 +59,10 @@ if __name__ == "__main__":
 						sleep(60)
 					except:
 						print("File error")
+				else:
+					print("End of image")
+					system("sudo mv image_file image_file" + str(image_count))
+					print("Image count: ")
+					print(image_count++)						
 			else:
 				print("Unknown Sat Id or Frame")
