@@ -38,7 +38,7 @@ if __name__ == "__main__":
 				if (data_block[0] == 0xE1):
 					print("CubeSatSim Frametype RT2+IMG2")	
 				print("Sequence number: ")
-				print(data_block[51] * data_block[51] * 2^16 + data_block[51] * 2^32)
+				print(data_block[extended + 51] + data_block[extended + 50] * 2^16 + data_block[extended + 49] * 2^32)
 				print("Vx (mV): ")
 				print((data_block[extended + FC_EPS + 0] << 2) + (0xfc & data_block[extended + FC_EPS + 1]))
 				print(" ")
