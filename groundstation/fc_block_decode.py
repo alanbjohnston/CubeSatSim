@@ -2,6 +2,7 @@ import sys
 from os import system
 from time import sleep
 import logging
+import random
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
 
@@ -11,7 +12,7 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-image_count = 0
+image_count = random.randint(0, 255)
 
 if __name__ == "__main__":
 	debug_mode = False
