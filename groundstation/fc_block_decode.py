@@ -55,8 +55,8 @@ if __name__ == "__main__":
 						print(immutable_payload)
 						with open("image_file", "ab") as binary_file:
     							binary_file.write(immutable_payload)
-						binary_file.close()
-						sleep(60)
+#						binary_file.close()
+#						sleep(60)
 					except:
 						print("File error")
 				else:
