@@ -48,7 +48,8 @@ if __name__ == "__main__":
 						print("Writing payload to file")
 						f = open('image_file','a')
 						print("File opened")
-						data_block[FC_PAYLOAD + extended:].tofile(f)
+						payload = data_block[(FC_PAYLOAD + extended):]
+						payload.tofile(f)
 						f.close()
 						sleep(60)
 					except:
