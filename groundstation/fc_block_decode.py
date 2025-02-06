@@ -61,9 +61,10 @@ if __name__ == "__main__":
 						print("File error")
 				else:
 					print("End of image")
-#					system("sudo mv image_file image_file" + str(image_count))
-					system("home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + ".jpeg")
-					system("sudo rm image_file")
+
+					system("/home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + ".jpeg")
+#					system("sudo rm image_file")
+					system("sudo mv image_file image_file" + str(image_count))					
 					print("Image count: ")
 					print(image_count)
 					image_count = (image_count + 1) % 256
