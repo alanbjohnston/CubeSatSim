@@ -51,6 +51,6 @@ if __name__ == "__main__":
 						f.close()
 						sleep(60)
 					except:
-						print("File error)
+						print("File error")
 			else:
 				print("Unknown Sat Id or Frame")
