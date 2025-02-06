@@ -46,12 +46,14 @@ if __name__ == "__main__":
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
 					try:
 						print("Writing payload to file")
-						f = open('image_file','a')
-						print("File opened")
-						payload = data_block[(FC_PAYLOAD + extended):]
+#						f = open('image_file','a')
+#						print("File opened")
+						payload = bytearray(data_block[(FC_PAYLOAD + extended):])						
 						print(payload)
-						payload.tofile(f)
-						f.close()
+						immutable_payload = bytes(payload)
+						with open("image_file", "wb") as binary_file:
+    							binary_file.write(immutable_payload)
+#						f.close()
 						sleep(60)
 					except:
 						print("File error")
