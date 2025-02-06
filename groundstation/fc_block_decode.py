@@ -41,7 +41,7 @@ if __name__ == "__main__":
 				print(data_block[extended + 51] + data_block[extended + 50] * 2^16 + data_block[extended + 49] * 2^32)
 				print("Vx (mV): ")
 				print((data_block[extended + FC_EPS + 0] << 2) + (0xfc & data_block[extended + FC_EPS + 1]))
-				print('Payload 0:{:x}, Payload 1:{:x}'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1])
+				print('Payload 0:{:x}, Payload 1:{:x}'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				print(" ")
 				
 			else:
