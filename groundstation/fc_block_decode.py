@@ -22,7 +22,7 @@ if __name__ == "__main__":
 			print("\ndata block found!\n")
 			data_block_string = line.split()
 			print(data_block_string)
-			data_block = [int(number_string,16) for number_string in data_block_string]
+			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
 			print("\n")
 			print(data_block)
 			print("\n")
