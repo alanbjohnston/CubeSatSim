@@ -49,6 +49,7 @@ if __name__ == "__main__":
 						f = open('image_file','a')
 						print("File opened")
 						payload = data_block[(FC_PAYLOAD + extended):]
+						print(payload)
 						payload.tofile(f)
 						f.close()
 						sleep(60)
