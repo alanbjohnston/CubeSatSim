@@ -49,7 +49,7 @@ if __name__ == "__main__":
 						f = open('image_file','a')
 						data_block[FC_PAYLOAD + extended].tofile(f)
 						f.close()
-						sleep 60
+						sleep(60)
 					except:
 						print("File error)
 			else:
