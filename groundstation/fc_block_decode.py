@@ -51,9 +51,9 @@ if __name__ == "__main__":
 #						payload = bytearray(data_block[(FC_PAYLOAD + extended):])						
 						immutable_payload = bytes(bytearray(data_block[(FC_PAYLOAD + extended):]))   # payload)
 						print(immutable_payload)
-						with open("image_file", "ab") as binary_file:
+						with (f = open("image_file", "ab")) as binary_file:
     							binary_file.write(immutable_payload)
-#						f.close()
+						f.close()
 						sleep(60)
 					except:
 						print("File error")
