@@ -5,6 +5,12 @@ import logging
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
 
+FC_EPS = 1
+FC_BOB = 25
+FC_SW = 50
+FC_PAYLOAD = 55
+extended = 1
+
 if __name__ == "__main__":
 	debug_mode = False
 	counter = 1
@@ -26,3 +32,16 @@ if __name__ == "__main__":
 			print("\n")
 			print(data_block)
 			print("\n")
+			if (data_block[0] == 0xE0) or (data_block[0] == 0xE1):
+				if (data_block[0] == 0xE0):
+					print("CubeSatSim Frametype RT1+IMG1")
+				if (data_block[0] == 0xE1):
+					print("CubeSatSim Frametype RT2+IMG2")	
+				print("Sequence number: ")
+				print(data_block[51] * data_block[51] * 2^16 + data_block[51] * 2^32)
+				print("Vx (mV): ")
+				print((data_block[extended + FC_EPS + 0] << 2) + (0xfc & data_block[extended + FC_EPS + 1]))
+				print(" ")
+				
+			else:
+				print("Unknown Sat Id or Frame")
