@@ -43,6 +43,14 @@ if __name__ == "__main__":
 				print((data_block[extended + FC_EPS + 0] << 2) + (0xfc & data_block[extended + FC_EPS + 1]))
 				print('Payload 0:{:x}, Payload 1:{:x}'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				print(" ")
-				
+				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
+					try:
+						print("Writing payload to file")
+						f = open('image_file','a')
+						data_block[FC_PAYLOAD + extended].tofile(f)
+						f.close()
+						sleep 60
+					except:
+						print("File error)
 			else:
 				print("Unknown Sat Id or Frame")
