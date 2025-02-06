@@ -20,3 +20,5 @@ if __name__ == "__main__":
 			
 		if ((line.find("data: ")) > 0):
 			print("\ndata block found!\n")
+			data_block = line.split()
+			print(data_block)
