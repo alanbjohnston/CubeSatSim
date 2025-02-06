@@ -13,7 +13,7 @@ if __name__ == "__main__":
 		if ('d' == sys.argv[1]):
 			debug_mode = True
 
-  print(debug_mode)
+  	print(debug_mode)
 	for line in sys.stdin:
 		if (debug_mode):
 			print(line, end =" ")
