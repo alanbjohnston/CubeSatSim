@@ -15,6 +15,7 @@ FC_PAYLOAD = 55
 extended = 1
 
 image_count = random.randint(0, 255)
+image_index = 0;
 
 if __name__ == "__main__":
 	debug_mode = False
@@ -55,13 +56,21 @@ if __name__ == "__main__":
 						print(immutable_payload)
 						with open("image_file", "ab") as binary_file:
     							binary_file.write(immutable_payload)
+
 					except:
 						print("File error")
+					try:
+						system("/home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
+						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
+						image.show()
+					except:
+						print("Image display error")
+					image_index += 1	
 				else:
 					print("End of image")
 
 					system("/home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + ".jpeg")
-					image = Image.open(image_file" + str(image_count) + ".jpeg")
+					image = Image.open("image_file" + str(image_count) + ".jpeg")
 					image.show()
 #					system("sudo rm image_file")
 					system("sudo mv image_file image_file" + str(image_count))					
