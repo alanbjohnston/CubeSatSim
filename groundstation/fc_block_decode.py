@@ -5,6 +5,7 @@ import logging
 import random
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import subprocess
+import io
 
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
@@ -67,8 +68,8 @@ if __name__ == "__main__":
 					process_output = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 					print("\n\n RESULT: \n")
 					print(process_output)
-
-					for line in process_output:
+					s = io.StringIO(process_output)
+					for line in s:
 						if ((line.find("Image ID:")) > 0):
 							print("\nImage ID found!\n")
 							image_id_string = line.split()
