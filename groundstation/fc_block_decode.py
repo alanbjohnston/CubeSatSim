@@ -73,7 +73,7 @@ if __name__ == "__main__":
 #					s = io.StringIO(process.stdout)
 #					for line in s:
 					ssdv_output_file = open("ssdv_output", "r")
-					for line in ssdv_output_file
+					for line in ssdv_output_file:
 						print("line:")
 						print(line)
 						if ((line.find("Image ID:")) > 0):
