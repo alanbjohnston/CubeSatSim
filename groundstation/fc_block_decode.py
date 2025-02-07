@@ -64,7 +64,7 @@ if __name__ == "__main__":
 #					try:
 					filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
 #						system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
-					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", image_file, filename], text=True)
+					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 					print("\n\n RESULT: \n")
 					print(process)
 					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
