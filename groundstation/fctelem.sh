@@ -24,6 +24,8 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
+sudo killall -9 fctelem &>/dev/null
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
