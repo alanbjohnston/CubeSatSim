@@ -64,27 +64,37 @@ if __name__ == "__main__":
 #					try:
 					filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
 #						system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
-					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
+					process_output = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 					print("\n\n RESULT: \n")
-					print(process)
+					print(process_output)
+
+					for line in process_output:
+						if ((line.find("Image ID:")) > 0):
+							print("\nImage ID found!\n")
+							image_id_string = line.split()
+							print(image_id_string)
+							new_image_count = int(image_id_string[1])
+							if (new_image_count != image_count):
+								image_count = new_image_coount
+								print("End of image")
+								filename = "image_file" + str(image_count) + ".jpeg"
+								system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
+								system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+								system("sudo mv image_file image_file" + str(image_count))					
+								print("Image count: ")
+								print(image_count)
+#								image_count = (image_count + 1) % 256
+								image_index = 0								
+							else:
+								image_index += 1
+
 					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 #						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
 #						image.show()
 #					except:
 #						print("Image display error")
-					image_index += 1	
+						
 				else:
-					print("End of image")
-					filename = "image_file" + str(image_count) + ".jpeg"
-					system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
-					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-#					image = Image.open("image_file" + str(image_count) + ".jpeg")
-#					image.show()
-#					system("sudo rm image_file")
-					system("sudo mv image_file image_file" + str(image_count))					
-					print("Image count: ")
-					print(image_count)
-					image_count = (image_count + 1) % 256
-					image_index = 0
+					print("Payload not an image!")
 			else:
 				print("Unknown Sat Id or Frame")
