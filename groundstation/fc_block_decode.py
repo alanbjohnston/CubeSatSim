@@ -64,14 +64,18 @@ if __name__ == "__main__":
 						print("File error")
 #					try:
 					filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
-#						system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
-					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
-					print("\n\n RESULT: \n")
-					print(process)
-					print("\n\n process.stdout: \n")
-					print(process.stdout)
-					s = io.StringIO(process.stdout)
-					for line in s:
+					system("/home/pi/ssdv/ssdv -d -J image_file " + filename + " > ssdv_output")
+#					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
+#					print("\n\n RESULT: \n")
+#					print(process)
+#					print("\n\n process.stdout: \n")
+#					print(process.stdout)
+#					s = io.StringIO(process.stdout)
+#					for line in s:
+					ssdv_output_file = open("ssdv_output", "r")
+					for line in ssdv_output_file
+						print("line:")
+						print(line)
 						if ((line.find("Image ID:")) > 0):
 							print("\nImage ID found!\n")
 							image_id_string = line.split()
