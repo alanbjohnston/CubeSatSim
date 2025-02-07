@@ -3,6 +3,8 @@ from os import system
 from time import sleep
 import logging
 import random
+from PIL import Image, ImageDraw, ImageFont, ImageColor
+
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
 
@@ -49,21 +51,18 @@ if __name__ == "__main__":
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
 					try:
 						print("Writing payload to file")
-#						f = open('image_file','a')
-#						print("File opened")
-#						payload = bytearray(data_block[(FC_PAYLOAD + extended):])						
 						immutable_payload = bytes(bytearray(data_block[(FC_PAYLOAD + extended):]))   # payload)
 						print(immutable_payload)
 						with open("image_file", "ab") as binary_file:
     							binary_file.write(immutable_payload)
-#						binary_file.close()
-#						sleep(60)
 					except:
 						print("File error")
 				else:
 					print("End of image")
 
 					system("/home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + ".jpeg")
+					image = Image.open(image_file" + str(image_count) + ".jpeg")
+					image.show()
 #					system("sudo rm image_file")
 					system("sudo mv image_file image_file" + str(image_count))					
 					print("Image count: ")
