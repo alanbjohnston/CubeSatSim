@@ -26,6 +26,8 @@ echo
 
 sudo killall -9 fctelem &>/dev/null
 
+sudo killall -9 python3 &>/dev/null
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
@@ -72,7 +74,7 @@ read val
 
 sudo killall -9 fctelem &>/dev/null
 
-sudo killall -9 fctelem
+sudo killall -9 python3 &>/dev/null
 
 sleep 10
 
