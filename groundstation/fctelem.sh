@@ -58,6 +58,10 @@ cp /home/pi/CubeSatSim/groundstation/index.html .
 
 python3 -m http.server &
 
+cd /home/pi/fctelem
+
+./fctelem | python3 /home/pi/CubeSatSim/groundstation/fc_block_decode.py &
+
 # sleep 10
 
 setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
