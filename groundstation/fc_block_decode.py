@@ -72,28 +72,28 @@ if __name__ == "__main__":
 #					print(process.stdout)
 #					s = io.StringIO(process.stdout)
 #					for line in s:
-					ssdv_output_file = open("ssdv_output", "r")
-					for line in ssdv_output_file:
-						print("line:")
-						print(line)
-						if ((line.find("Image ID:")) > 0):
-							print("\nImage ID found!\n")
-							image_id_string = line.split()
-							print(image_id_string)
-							new_image_count = int(image_id_string[1])
-							if (new_image_count != image_count):
-								image_count = new_image_coount
-								print("End of image")
-								filename = "image_file" + str(image_count) + ".jpeg"
-								system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
-								system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-								system("sudo mv image_file image_file" + str(image_count))					
-								print("Image count: ")
-								print(image_count)
-#								image_count = (image_count + 1) % 256
-								image_index = 0								
-							else:
-								image_index += 1
+					with open("ssdv_output", "r") as file:
+						for line in file:
+							print("line:")
+							print(line)
+							if ((line.find("Image ID:")) > 0):
+								print("\nImage ID found!\n")
+								image_id_string = line.split()
+								print(image_id_string)
+								new_image_count = int(image_id_string[1])
+								if (new_image_count != image_count):
+									image_count = new_image_coount
+									print("End of image")
+									filename = "image_file" + str(image_count) + ".jpeg"
+									system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
+									system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+									system("sudo mv image_file image_file" + str(image_count))					
+									print("Image count: ")
+									print(image_count)
+	#								image_count = (image_count + 1) % 256
+									image_index = 0								
+								else:
+									image_index += 1
 
 					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 #						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
