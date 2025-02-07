@@ -68,6 +68,12 @@ cd /home/pi/fctelem
 
 setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
 
+read val
+
+sudo killall -9 fctelem &>/dev/null
+
+sudo killall -9 fctelem
+
 sleep 10
 
 #$SHELL
