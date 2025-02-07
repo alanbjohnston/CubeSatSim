@@ -16,6 +16,7 @@ extended = 1
 
 image_count = random.randint(0, 255)
 image_index = 0;
+system("sudo rm image_file")
 
 if __name__ == "__main__":
 	debug_mode = False
