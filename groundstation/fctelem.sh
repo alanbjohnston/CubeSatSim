@@ -46,6 +46,11 @@ sudo systemctl stop rtl_tcp
 
 sudo systemctl stop openwebrx
 
+FILE=/home/pi/CubeSatSim/groundstation/public_html
+if [ ! -f "$FILE" ]; then
+    echo "Making public_html directory"
+    mkdir /home/pi/CubeSatSim/groundstation/public_html
+fi
 
 cd /home/pi/CubeSatSim/groundstation/public_html
 
