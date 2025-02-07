@@ -77,5 +77,6 @@ if __name__ == "__main__":
 					print("Image count: ")
 					print(image_count)
 					image_count = (image_count + 1) % 256
+					image_index = 0
 			else:
 				print("Unknown Sat Id or Frame")
