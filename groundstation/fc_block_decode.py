@@ -61,18 +61,21 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 					try:
-						system("/home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
-						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
-						image.show()
+						filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
+						system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
+						system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+#						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
+#						image.show()
 					except:
 						print("Image display error")
 					image_index += 1	
 				else:
 					print("End of image")
-
-					system("/home/pi/ssdv/ssdv -d -J image_file image_file" + str(image_count) + ".jpeg")
-					image = Image.open("image_file" + str(image_count) + ".jpeg")
-					image.show()
+					filename = "image_file" + str(image_count) + ".jpeg"
+					system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
+					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+#					image = Image.open("image_file" + str(image_count) + ".jpeg")
+#					image.show()
 #					system("sudo rm image_file")
 					system("sudo mv image_file image_file" + str(image_count))					
 					print("Image count: ")
