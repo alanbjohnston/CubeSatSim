@@ -56,9 +56,9 @@ cd /home/pi/CubeSatSim/groundstation/public_html
 
 cp /home/pi/CubeSatSim/groundstation/index.html .
 
-python3 -m http.server 
+python3 -m http.server &
 
-sleep 10
+# sleep 10
 
 setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
 
