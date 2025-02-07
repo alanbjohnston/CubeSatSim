@@ -4,6 +4,7 @@ from time import sleep
 import logging
 import random
 from PIL import Image, ImageDraw, ImageFont, ImageColor
+import subprocess
 
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
@@ -60,17 +61,17 @@ if __name__ == "__main__":
 
 					except:
 						print("File error")
-					try:
-						filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
+#					try:
+					filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
 #						system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
-						process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", image_file, filename], text=True)
-						print("\n\n RESULT: \n")
-						print(process)
-						system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", image_file, filename], text=True)
+					print("\n\n RESULT: \n")
+					print(process)
+					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 #						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
 #						image.show()
-					except:
-						print("Image display error")
+#					except:
+#						print("Image display error")
 					image_index += 1	
 				else:
 					print("End of image")
