@@ -83,7 +83,7 @@ if __name__ == "__main__":
 								print("\nImage ID found!\n")
 								image_id_string = line.split()
 								print(image_id_string)
-								new_image_count = int(image_id_string[3], 16)
+								new_image_count = int(image_id_string[2], 16)
 								if (new_image_count != image_count):
 									image_count = new_image_coount
 									print("End of image")
