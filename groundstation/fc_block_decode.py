@@ -100,7 +100,7 @@ if __name__ == "__main__":
 								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
 								foot_string = "</p>\n</HTML>"
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
-									html_file.write(heat_string)
+									html_file.write(head_string)
 									html_file.write(telem_string)
 									html_file.write(foot_string)
 				else:
