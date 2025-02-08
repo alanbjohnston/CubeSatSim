@@ -16,7 +16,7 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-image_id = random.randint(0, 255)
+image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
 image_count = 0;
 system("sudo rm image_file")
 
@@ -78,27 +78,25 @@ if __name__ == "__main__":
 								if (new_image_id != image_id):
 									image_id = new_image_id
 									print("End of image")
-									newfilename = "/home/pi/fctelem/image_file" + str(image_id) + ".jpeg"
-#									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
-									system("sudo mv " + filename + " " + newfilename)
-									system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
+									if (image_id != 256):
+										newfilename = "/home/pi/fctelem/image_file" + str(image_id) + ".jpeg"
+	#									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
+										system("sudo mv " + filename + " " + newfilename)
+										system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
+									else:
+										system("sudo rm /home/pi/fctelem/image_file")
 									print("New Image ID: ")
 									print(image_id)
 	#								image_count = (image_count + 1) % 256
 									image_count = 0								
 								else:
 									image_count += 1
-									print("image_count:")
+									print("new image_count:")
 									print(image_count)
 								with open("image_file", "ab") as binary_file:
     									binary_file.write(immutable_payload)	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-#						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
-#						image.show()
-#					except:
-#						print("Image display error")
-						
 				else:
 					print("Payload not an image!")
 					image_id = 256 # set illegal image_id to force new image
