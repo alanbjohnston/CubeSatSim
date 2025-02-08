@@ -85,7 +85,7 @@ if __name__ == "__main__":
 								print(image_id_string)
 								new_image_count = int(image_id_string[2], 16)
 								if (new_image_count != image_count):
-									image_count = new_image_coount
+									image_count = new_image_count
 									print("End of image")
 									filename = "/home/pi/fctelem/image_file" + str(image_count) + ".jpeg"
 									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
