@@ -63,8 +63,8 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					filename = "image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
-					system("/home/pi/ssdv/ssdv -d -J image_file " + filename + " &> ssdv_output")
+					filename = "/home/pi/fctelem/image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
+					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " &> ssdv_output")
 #					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 #					print("\n\n RESULT: \n")
 #					print(process)
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 #					print(process.stdout)
 #					s = io.StringIO(process.stdout)
 #					for line in s:
-					with open("ssdv_output", "r") as file:
+					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
 							print("line:")
 							print(line)
@@ -84,10 +84,10 @@ if __name__ == "__main__":
 								if (new_image_count != image_count):
 									image_count = new_image_coount
 									print("End of image")
-									filename = "image_file" + str(image_count) + ".jpeg"
-									system("/home/pi/ssdv/ssdv -d -J image_file " + filename)
+									filename = "/home/pi/fctelem/image_file" + str(image_count) + ".jpeg"
+									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
 									system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-									system("sudo mv image_file image_file" + str(image_count))					
+									system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_count))					
 									print("Image count: ")
 									print(image_count)
 	#								image_count = (image_count + 1) % 256
