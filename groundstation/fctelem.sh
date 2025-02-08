@@ -68,7 +68,7 @@ setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update
 
 cd /home/pi/fctelem
 
-./fctelem | python3 /home/pi/CubeSatSim/groundstation/fc_block_decode.py &
+sudo ./fctelem | python3 /home/pi/CubeSatSim/groundstation/fc_block_decode.py &
 
 # sleep 10
 
