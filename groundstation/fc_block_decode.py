@@ -98,7 +98,7 @@ if __name__ == "__main__":
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 								head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img src="image_file.jpeg"><p>'
 #								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
-								telem_string = "\nSequence number: {sequence} Image ID: {image_id} count: {image_count}\nVx: {Vx} mV"
+								telem_string = f"\nSequence number: {sequence} Image ID: {image_id} count: {image_count}\nVx: {Vx} mV"
 								foot_string = "</p>\n</HTML>"
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
