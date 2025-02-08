@@ -49,7 +49,7 @@ if __name__ == "__main__":
 				sequence = data_block[extended + 51] + data_block[extended + 50] * 2^16 + data_block[extended + 49] * 2^32	
 				print("Sequence number: {:d}".format(sequence))
 				Vx = (data_block[extended + FC_EPS + 0] << 2) + (0x03 & data_block[extended + FC_EPS + 1])
-				print("Vx: {%d} mV".format(Vx))
+				print("Vx: {:d} mV".format(Vx))
 				print('Payload {:x} {:x} \n'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
 					try:
