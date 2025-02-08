@@ -96,7 +96,7 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-								head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img src="image_file.jpeg">'
+								head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img src="image_file.jpeg"><p>'
 								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
 								foot_string = "</p>\n</HTML>"
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
