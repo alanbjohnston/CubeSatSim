@@ -23,8 +23,8 @@ Vx = 0
 Vy = 0
 Vz = 0
 
-head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img height="256" width="320" src="image_file.jpeg"><p>'
-foot_string = "</p>\n</HTML>"
+head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img height="256" width="320" src="image_file.jpeg"><p><pre>'
+foot_string = "</pre></p>\n</HTML>"
 telem_string = f"\nSequence number: {sequence: >5d} Image ID: {image_id: >3d} count: {image_count: >2d}<p>Vx: {Vx: >5d} mV Vy: {Vy: >5d} mV Vz: {Vz: >5d} mV"
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 	html_file.write(head_string)
