@@ -44,7 +44,7 @@ if __name__ == "__main__":
 			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
 #			print("\n")
 #			print(data_block)
-			print("\n")
+#			print("\n")
 			if (data_block[0] == 0xE0) or (data_block[0] == 0xE1):
 				if (data_block[0] == 0xE0):
 					print("CubeSatSim Frametype RT1+IMG1")
@@ -102,10 +102,8 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-								head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img src="image_file.jpeg"><p>'
 #								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
-								telem_string = f"\nSequence number: {sequence} Image ID: {image_id} count: {image_count}<p>Vx: {Vx} mV Vy: {Vy} mV Vz: {Vz} mV"
-								foot_string = "</p>\n</HTML>"
+								telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>Vx: {Vx:5d} mV Vy: {Vy:5d} mV Vz: {Vz:5d} mV"
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
