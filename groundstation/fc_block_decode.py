@@ -114,8 +114,7 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-#								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
-#								telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>Vx: {Vx:5d} mV Vy: {Vy:5d} mV Vz: {Vz:5d} mV"
+								telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>Vx: {Vx:5d} mV Vy: {Vy:5d} mV Vz: {Vz:5d} mV"
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
