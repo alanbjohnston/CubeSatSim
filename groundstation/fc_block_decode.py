@@ -57,25 +57,15 @@ if __name__ == "__main__":
 						print("Writing payload to file")
 						immutable_payload = bytes(bytearray(data_block[(FC_PAYLOAD + extended):]))   # payload)
 						print(immutable_payload)
-						with open("image_file", "ab") as binary_file:
+						with open("image_file_payload", "wb") as binary_file:
     							binary_file.write(immutable_payload)
 
 					except:
 						print("File error")
 #					try:
 					filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"
-					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " 2>&1 | tee /home/pi/fctelem/ssdv_output")
-#					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
-#					print("\n\n RESULT: \n")
-#					print(process)
-#					print("\n\n process.stdout: \n")
-#					print(process.stdout)
-#					s = io.StringIO(process.stdout)
-#					for line in s:
-		#			print("After ssdv")
-		#			system("cat /home/pi/fctelem/ssdv_output")
+					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file_payload /home/pi/fctelem/image_file_payload.jpeg 2>&1 | tee /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
-		#				print("Starting with")
 						for line in file:
 #							print("line:")
 #							print(line)
@@ -90,9 +80,9 @@ if __name__ == "__main__":
 									print("End of image")
 									newfilename = "/home/pi/fctelem/image_file" + str(image_id) + ".jpeg"
 #									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
-									system("sudo cp " + filename + " " + newfilename)
+									system("sudo mv " + filename + " " + newfilename)
 									system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
-									print("Image ID: ")
+									print("New Image ID: ")
 									print(image_id)
 	#								image_count = (image_count + 1) % 256
 									image_count = 0								
@@ -100,8 +90,10 @@ if __name__ == "__main__":
 									image_count += 1
 									print("image_count:")
 									print(image_count)
-
-					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+								with open("image_file", "ab") as binary_file:
+    									binary_file.write(immutable_payload)	
+								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
+								system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 #						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
 #						image.show()
 #					except:
