@@ -63,7 +63,6 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"
 					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file_payload /home/pi/fctelem/image_file_payload.jpeg 2>&1 | tee /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
@@ -76,17 +75,17 @@ if __name__ == "__main__":
 								new_image_id = int(image_id_string[2], 16)
 								print(new_image_id)
 								if (new_image_id != image_id):
-									image_id = new_image_id
 									print("End of image")
 									if (image_id != 256):
-										newfilename = "/home/pi/fctelem/image_file" + str(image_id) + ".jpeg"
+										newfilename = "/home/pi/fctelem/image_file" + str(new_image_id) + ".jpeg"
 	#									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
 										system("sudo mv " + filename + " " + newfilename)
 										system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
 									else:
 										system("sudo rm /home/pi/fctelem/image_file")
 									print("New Image ID: ")
-									print(image_id)
+									print(new_image_id)
+									image_id = new_image_id
 	#								image_count = (image_count + 1) % 256
 									image_count = 0								
 								else:
@@ -94,7 +93,8 @@ if __name__ == "__main__":
 									print("new image_count:")
 									print(image_count)
 								with open("image_file", "ab") as binary_file:
-    									binary_file.write(immutable_payload)	
+    									binary_file.write(immutable_payload)
+								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 				else:
