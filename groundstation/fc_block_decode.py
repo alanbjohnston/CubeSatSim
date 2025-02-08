@@ -96,10 +96,13 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-								telem_string = "\nSequence number: " + str(sequence)
-								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "a") as html_file:
-    									html_file.write(telem_string)
-
+								head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img src="image_file.jpeg">'
+								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
+								foot_string = "</p>\n</HTML>"
+								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
+    									html_file.write(heat_string)
+									html_file.write(telem_string)
+									html_file.write(foot_string)
 				else:
 					print("Payload not an image!")
 					image_id = 256 # set illegal image_id to force new image
