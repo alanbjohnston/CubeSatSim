@@ -46,12 +46,11 @@ if __name__ == "__main__":
 					print("CubeSatSim Frametype RT1+IMG1")
 				if (data_block[0] == 0xE1):
 					print("CubeSatSim Frametype RT2+IMG2")	
-				print("Sequence number: ")
-				print(data_block[extended + 51] + data_block[extended + 50] * 2^16 + data_block[extended + 49] * 2^32)
-				print("Vx (mV): ")
-				print((data_block[extended + FC_EPS + 0] << 2) + (0xfc & data_block[extended + FC_EPS + 1]))
-				print('Payload 0:{:x}, Payload 1:{:x}'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
-				print(" ")
+				sequence = data_block[extended + 51] + data_block[extended + 50] * 2^16 + data_block[extended + 49] * 2^32	
+				print("Sequence number: {:d}".format(sequence))
+				Vx = (data_block[extended + FC_EPS + 0] << 2) + (0x03 & data_block[extended + FC_EPS + 1])
+				print("Vx: {%d} mV".format(Vx))
+				print('Payload {:x} {:x} \n'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
 					try:
 						print("Writing payload to file")
@@ -63,7 +62,7 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file_payload /home/pi/fctelem/image_file_payload.jpeg 2>&1 | tee /home/pi/fctelem/ssdv_output")
+					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file_payload /home/pi/fctelem/image_file_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
 #							print("line:")
@@ -97,6 +96,10 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+								telem_string = "\nSequence number: " + str(sequence)
+								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "a") as html_file:
+    									html_file.write(telem_string)
+
 				else:
 					print("Payload not an image!")
 					image_id = 256 # set illegal image_id to force new image
