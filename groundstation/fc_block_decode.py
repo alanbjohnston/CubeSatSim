@@ -16,6 +16,10 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
+head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img height="256" width="320" src="image_file.jpeg"><p>'
+foot_string = "</p>\n</HTML>"
+
+
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
 image_count = 0;
 system("sudo rm image_file")
