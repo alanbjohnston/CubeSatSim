@@ -16,8 +16,8 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-image_count = random.randint(0, 255)
-image_index = 0;
+image_id = random.randint(0, 255)
+image_count = 0;
 system("sudo rm image_file")
 
 if __name__ == "__main__":
@@ -63,7 +63,7 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					filename = "/home/pi/fctelem/image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
+					filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"
 					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " 2>&1 | tee /home/pi/fctelem/ssdv_output")
 #					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 #					print("\n\n RESULT: \n")
@@ -72,10 +72,10 @@ if __name__ == "__main__":
 #					print(process.stdout)
 #					s = io.StringIO(process.stdout)
 #					for line in s:
-					print("After ssdv")
-					system("cat /home/pi/fctelem/ssdv_output")
+		#			print("After ssdv")
+		#			system("cat /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
-						print("Starting with")
+		#				print("Starting with")
 						for line in file:
 #							print("line:")
 #							print(line)
@@ -83,23 +83,23 @@ if __name__ == "__main__":
 								print("\nImage ID found!\n")
 								image_id_string = line.split()
 								print(image_id_string)
-								new_image_count = int(image_id_string[2], 16)
-								print(new_image_count)
-								if (new_image_count != image_count):
-									image_count = new_image_count
+								new_image_id = int(image_id_string[2], 16)
+								print(new_image_id)
+								if (new_image_id != image_id):
+									image_id = new_image_id
 									print("End of image")
-									filename = "/home/pi/fctelem/image_file" + str(image_count) + ".jpeg"
-									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
-									system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-									system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_count))					
-									print("Image count: ")
-									print(image_count)
+									newfilename = "/home/pi/fctelem/image_file" + str(image_id) + ".jpeg"
+#									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
+									system("sudo cp " + newfilename + filename)
+									system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
+									print("Image ID: ")
+									print(image_id)
 	#								image_count = (image_count + 1) % 256
-									image_index = 0								
+									image_count = 0								
 								else:
-									image_index += 1
-									print("image_index:")
-									print(image_index)
+									image_count += 1
+									print("image_count:")
+									print(image_count)
 
 					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 #						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
