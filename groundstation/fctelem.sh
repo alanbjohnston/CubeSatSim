@@ -72,11 +72,11 @@ sudo ./fctelem | python3 /home/pi/CubeSatSim/groundstation/fc_block_decode.py &
 
 # sleep 10
 
-read val
+#read val
 
-sudo killall -9 fctelem &>/dev/null
+#sudo killall -9 fctelem &>/dev/null
 
-sudo killall -9 python3 &>/dev/null
+#sudo killall -9 python3 &>/dev/null
 
 sleep 10
 
