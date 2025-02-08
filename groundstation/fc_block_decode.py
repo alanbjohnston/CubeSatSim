@@ -64,7 +64,7 @@ if __name__ == "__main__":
 						print("File error")
 #					try:
 					filename = "/home/pi/fctelem/image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
-					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " &> ssdv_output")
+					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " &> /home/pi/fctelem/ssdv_output")
 #					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 #					print("\n\n RESULT: \n")
 #					print(process)
@@ -72,7 +72,10 @@ if __name__ == "__main__":
 #					print(process.stdout)
 #					s = io.StringIO(process.stdout)
 #					for line in s:
+					print("After ssdv")
+					system("cat /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
+						print("Starting with")
 						for line in file:
 							print("line:")
 							print(line)
