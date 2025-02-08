@@ -77,13 +77,14 @@ if __name__ == "__main__":
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						print("Starting with")
 						for line in file:
-							print("line:")
-							print(line)
+#							print("line:")
+#							print(line)
 							if ((line.find("mage ID:")) > 0):
 								print("\nImage ID found!\n")
 								image_id_string = line.split()
 								print(image_id_string)
 								new_image_count = int(image_id_string[2], 16)
+								print(new_image_count)
 								if (new_image_count != image_count):
 									image_count = new_image_count
 									print("End of image")
@@ -97,6 +98,8 @@ if __name__ == "__main__":
 									image_index = 0								
 								else:
 									image_index += 1
+									print("image_index:")
+									print(image_index)
 
 					system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 #						image = Image.open("image_file" + str(image_count) + "." + str(image_index) + ".jpeg")
