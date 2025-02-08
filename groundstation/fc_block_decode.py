@@ -16,7 +16,7 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-sequence = 0
+sequence = 0.0
 image_id = 0
 image_count = 0
 Vx = 0
@@ -25,7 +25,7 @@ Vz = 0
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img height="256" width="320" src="image_file.jpeg"><p>'
 foot_string = "</p>\n</HTML>"
-telem_string = f"\nSequence number: {sequence:5.0d} Image ID: {image_id:3.0d} count: {image_count:2.0d}<p>Vx: {Vx:5.0d} mV Vy: {Vy:5.0d} mV Vz: {Vz:5.0d} mV"
+telem_string = f"\nSequence number: {sequence:5.0f} Image ID: {image_id:3d} count: {image_count:2d}<p>Vx: {Vx:5d} mV Vy: {Vy:5d} mV Vz: {Vz:5d} mV"
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
