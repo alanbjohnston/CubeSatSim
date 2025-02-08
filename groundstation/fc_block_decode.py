@@ -36,10 +36,10 @@ if __name__ == "__main__":
 		if ((line.find("data: ")) > 0):
 			print("\ndata block found!\n")
 			data_block_string = line.split()
-			print(data_block_string)
+#			print(data_block_string)
 			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
-			print("\n")
-			print(data_block)
+#			print("\n")
+#			print(data_block)
 			print("\n")
 			if (data_block[0] == 0xE0) or (data_block[0] == 0xE1):
 				if (data_block[0] == 0xE0):
@@ -68,11 +68,11 @@ if __name__ == "__main__":
 #							print("line:")
 #							print(line)
 							if ((line.find("mage ID:")) > 0):
-								print("\nImage ID found!\n")
+#								print("\nImage ID found!\n")
 								image_id_string = line.split()
-								print(image_id_string)
+#								print(image_id_string)
 								new_image_id = int(image_id_string[2], 16)
-								print(new_image_id)
+#								print(new_image_id)
 								if (new_image_id != image_id):
 									print("End of image")
 									if (image_id != 256):
@@ -97,7 +97,8 @@ if __name__ == "__main__":
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 								head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\nFunCube CubeSatSim Telemetry\n<p>\n<img src="image_file.jpeg"><p>'
-								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
+#								telem_string = "\nSequence number: " + str(sequence) + "\nImage ID: " + str(image_id) + " count: " + str(image_count)
+								telem_string = "\nSequence number: {sequence} Image ID: {image_id} count: {image_count}\nVx: {Vx} mV"
 								foot_string = "</p>\n</HTML>"
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
