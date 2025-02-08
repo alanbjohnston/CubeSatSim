@@ -50,6 +50,7 @@ if __name__ == "__main__":
 					print("CubeSatSim Frametype RT1+IMG1")
 				if (data_block[0] == 0xE1):
 					print("CubeSatSim Frametype RT2+IMG2")	
+				print(data_block[extended + 51], data_block[extended + 50], data_block[extended + 49])
 				sequence = data_block[extended + 51] + data_block[extended + 50] * 2**16 + data_block[extended + 49] * 2**32	
 				print("Sequence number: {:d}".format(sequence))
 				Vx = (data_block[extended + FC_EPS + 0] * 2**6) + (data_block[extended + FC_EPS + 1] >> 2)
