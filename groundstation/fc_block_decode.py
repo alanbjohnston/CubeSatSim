@@ -90,7 +90,7 @@ if __name__ == "__main__":
 									print("End of image")
 									newfilename = "/home/pi/fctelem/image_file" + str(image_id) + ".jpeg"
 #									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
-									system("sudo cp " + newfilename + " " + filename)
+									system("sudo cp " + filename + " " + newfilename)
 									system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
 									print("Image ID: ")
 									print(image_id)
@@ -109,5 +109,6 @@ if __name__ == "__main__":
 						
 				else:
 					print("Payload not an image!")
+					image_id = 256 # set illegal image_id to force new image
 			else:
 				print("Unknown Sat Id or Frame")
