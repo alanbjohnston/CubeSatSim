@@ -60,15 +60,17 @@ cd /home/pi/CubeSatSim/groundstation/public_html
 
 cp /home/pi/CubeSatSim/groundstation/index.html .
 
+cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/groundstation/image_file.jpeg
+
 python3 -m http.server &
+
+setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
 
 cd /home/pi/fctelem
 
 ./fctelem | python3 /home/pi/CubeSatSim/groundstation/fc_block_decode.py &
 
 # sleep 10
-
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
 
 read val
 
