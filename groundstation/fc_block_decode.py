@@ -79,8 +79,8 @@ if __name__ == "__main__":
 									if (image_id != 256):
 										newfilename = "/home/pi/fctelem/image_file" + str(new_image_id) + ".jpeg"
 	#									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
-										system("sudo mv " + filename + " " + newfilename)
-										system("sudo mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
+										system("mv " + filename + " " + newfilename)
+										system("mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
 									else:
 										system("sudo rm /home/pi/fctelem/image_file")
 									print("New Image ID: ")
@@ -96,7 +96,7 @@ if __name__ == "__main__":
     									binary_file.write(immutable_payload)
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
-								system("sudo cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 				else:
 					print("Payload not an image!")
 					image_id = 256 # set illegal image_id to force new image
