@@ -64,7 +64,7 @@ if __name__ == "__main__":
 						print("File error")
 #					try:
 					filename = "/home/pi/fctelem/image_file" + str(image_count) + "." + str(image_index) + ".jpeg"
-					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " &> /home/pi/fctelem/ssdv_output")
+					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename + " 2>&1 | tee -a /home/pi/fctelem/ssdv_output")
 #					process = subprocess.run(["/home/pi/ssdv/ssdv","-d","-J", "image_file", filename], text=True)
 #					print("\n\n RESULT: \n")
 #					print(process)
