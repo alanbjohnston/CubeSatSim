@@ -50,18 +50,18 @@ if __name__ == "__main__":
 					print("CubeSatSim Frametype RT1+IMG1")
 				if (data_block[0] == 0xE1):
 					print("CubeSatSim Frametype RT2+IMG2")	
-				sequence = data_block[extended + 51] + data_block[extended + 50] * 2^16 + data_block[extended + 49] * 2^32	
+				sequence = data_block[extended + 51] + data_block[extended + 50] * 2**16 + data_block[extended + 49] * 2**32	
 				print("Sequence number: {:d}".format(sequence))
-				Vx = (data_block[extended + FC_EPS + 0] * 2^6) + (data_block[extended + FC_EPS + 1] >> 2)
-				Vy = (0x03 & data_block[extended + FC_EPS + 1]) * 2^12 + data_block[extended + FC_EPS + 2] * 2^4 + (data_block[extended + FC_EPS + 3] >> 4)
-				Vz = (0x0f & data_block[extended + FC_EPS + 3]) * 2^10 + data_block[extended + FC_EPS + 4] * 2^2 + (data_block[extended + FC_EPS + 5] >> 6)
+				Vx = (data_block[extended + FC_EPS + 0] * 2**6) + (data_block[extended + FC_EPS + 1] >> 2)
+				Vy = (0x03 & data_block[extended + FC_EPS + 1]) * 2**12 + data_block[extended + FC_EPS + 2] * 2**4 + (data_block[extended + FC_EPS + 3] >> 4)
+				Vz = (0x0f & data_block[extended + FC_EPS + 3]) * 2**10 + data_block[extended + FC_EPS + 4] * 2**2 + (data_block[extended + FC_EPS + 5] >> 6)
 				print("Vx: {:d} mV Vy: {:d} mV Vz: {:d} mV".format(Vx, Vy, Vz))
 				print('Payload {:x} {:x} \n'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
 					try:
 						print("Writing payload to file")
 						immutable_payload = bytes(bytearray(data_block[(FC_PAYLOAD + extended):]))   # payload)
-						print(immutable_payload)
+#						print(immutable_payload)
 						with open("image_file_payload", "wb") as binary_file:
     							binary_file.write(immutable_payload)
 
