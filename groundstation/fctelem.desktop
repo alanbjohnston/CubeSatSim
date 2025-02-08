@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/CubeSatSim/groundstation/fctelem.sh
+Name=FunCube Telem
+Comment=FunCube Telemetry Web App 
+Icon=/home/pi/Downloads/fctelem.png
+Path=/home/pi
+Terminal=true
+Categories=HamRadio
+Keywords=Ham Radio;SDR
