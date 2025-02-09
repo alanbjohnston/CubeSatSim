@@ -81,7 +81,7 @@ if __name__ == "__main__":
 				Iy = (0x3f & data_block[extended + FC_EPS + 8]) * 2**4 + (data_block[extended + FC_EPS + 9] >> 4)
 				Iz = (0x0f & data_block[extended + FC_EPS + 9]) * 2**6 + (data_block[extended + FC_EPS + 10] >> 2)
 				Ic = (0x03 & data_block[extended + FC_EPS + 10]) * 2**8 + data_block[extended + FC_EPS + 11] * 2**2 + (data_block[extended + FC_EPS + 12] >> 6)
-				Ib = data_block[extended + FC_EPS + 12] * 2**4 + ((data_block[extended + FC_EPS + 13] >> 4)
+				Ib = data_block[extended + FC_EPS + 12] * 2**4 + (data_block[extended + FC_EPS + 13] >> 4)
 				if (Ib == 0):
 					Ib = (-1) * Ic					
 				print("Vx: {:d} mV Vy: {:d} mV Vz: {:d} mV".format(Vx, Vy, Vz))
