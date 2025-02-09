@@ -25,6 +25,10 @@ Vx, Vy, Vz, Vb = 0, 0, 0, 0
 Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
 frame_count, frame_type = 0, " "
 
+html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
+image_file = "/home/pi/fctelem/image_file"
+ssdv = "/home/pi/ssdv/ssdv"
+
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
 foot_string = "</HTML>"
@@ -34,7 +38,7 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p>" + \
     		"           </pre>Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
 telem_string = fstr(telem_string_format)
-with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
+with open(html_dir + "index.html", "w") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
 	html_file.write(foot_string)
