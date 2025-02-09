@@ -25,7 +25,8 @@ Vx, Vy, Vz, Vb = 0, 0, 0, 0
 Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
 frame_count, frame_type = 0, " "
 
-html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
+# html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
+html_dir = "/home/pi/fctelem/public_html/"
 image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
@@ -137,6 +138,7 @@ if __name__ == "__main__":
 								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system(ssdv + image_dir + image + " " + filename)	
 								system("cp " + filename + " " + html_dir + "image_file.jpeg")
+								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + "." + ".jpeg")
 								telem_string = fstr(telem_string_format)
 								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
