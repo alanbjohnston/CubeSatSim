@@ -28,20 +28,24 @@ Iy = 0
 Iz = 0
 Ic = 0
 Ib = 0
+frame_count = 0
+frame_type = " "
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
-foot_string = "</pre></p>\n</HTML>"
-telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>" + \
+foot_string = "</HTML>"
+telem_string = f"      Image: {image_id:3d} count: {image_count:2d}<p>" + \
 		f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-		f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>    Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}"
+		f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p> + \
+  		f"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
+    		f" Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
 	html_file.write(foot_string)
 
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
-image_count = 0;
+image_count = 1;
 system("sudo rm image_file")
 
 if __name__ == "__main__":
@@ -59,6 +63,7 @@ if __name__ == "__main__":
 			
 		if ((line.find("data: ")) > 0):
 			print("\ndata block found!\n")
+			frame_count += 1
 			data_block_string = line.split()
 #			print(data_block_string)
 			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
@@ -67,9 +72,10 @@ if __name__ == "__main__":
 #			print("\n")
 			if (data_block[0] == 0xE0) or (data_block[0] == 0xE1):
 				if (data_block[0] == 0xE0):
-					print("CubeSatSim Frametype RT1+IMG1")
+					frame_type = "RT1+IMG1"
 				if (data_block[0] == 0xE1):
-					print("CubeSatSim Frametype RT2+IMG2")	
+					frame_type = "RT2+IMG2"
+				print(frame_type)	
 				print(data_block[extended + 51], data_block[extended + 50], data_block[extended + 49])
 				sequence = data_block[extended + 51] + data_block[extended + 50] * 2**8 + data_block[extended + 49] * 2**16	
 				print("Sequence number: {:d}".format(sequence))
@@ -80,8 +86,8 @@ if __name__ == "__main__":
 				Ix = data_block[extended + FC_EPS + 7] * 2**2 + (data_block[extended + FC_EPS + 8] >> 6)
 				Iy = (0x3f & data_block[extended + FC_EPS + 8]) * 2**4 + (data_block[extended + FC_EPS + 9] >> 4)
 				Iz = (0x0f & data_block[extended + FC_EPS + 9]) * 2**6 + (data_block[extended + FC_EPS + 10] >> 2)
-				Ic = (0x03 & data_block[extended + FC_EPS + 10]) * 2**8 + data_block[extended + FC_EPS + 11] * 2**2 + (data_block[extended + FC_EPS + 12] >> 6)
-				Ib = data_block[extended + FC_EPS + 12] * 2**4 + (data_block[extended + FC_EPS + 13] >> 4)
+				Ic = (0x03 & data_block[extended + FC_EPS + 10]) * 2**8 + data_block[extended + FC_EPS + 11] 
+				Ib = data_block[extended + FC_EPS + 12] * 2**2 + ((0xc0 & data_block[extended + FC_EPS + 13]) >> 6)
 				if (Ib == 0):
 					Ib = 0 - Ic					
 				print("Vx: {:d} mV Vy: {:d} mV Vz: {:d} mV".format(Vx, Vy, Vz))
@@ -93,7 +99,6 @@ if __name__ == "__main__":
 #						print(immutable_payload)
 						with open("image_file_payload", "wb") as binary_file:
     							binary_file.write(immutable_payload)
-
 					except:
 						print("File error")
 #					try:
@@ -122,7 +127,7 @@ if __name__ == "__main__":
 									print(new_image_id)
 									image_id = new_image_id
 	#								image_count = (image_count + 1) % 256
-									image_count = 0								
+									image_count = 1								
 								else:
 									image_count += 1
 									print("new image_count:")
@@ -132,10 +137,12 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-								telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>" + \
-									f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-									f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>    Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}"
-								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
+								telem_string = f"      Image: {image_id:3d} count: {image_count:2d}<p>" + \
+										f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
+										f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p> + \
+  										f"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
+    										f" Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+      								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
 									html_file.write(foot_string)
