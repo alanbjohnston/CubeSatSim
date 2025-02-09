@@ -36,7 +36,7 @@ head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2
 foot_string = "</HTML>"
 telem_string = f"      Image: {image_id:3d} count: {image_count:2d}<p>" + \
 		f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-		f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p> + \
+		f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		f"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     		f" Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
@@ -139,7 +139,7 @@ if __name__ == "__main__":
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 								telem_string = f"      Image: {image_id:3d} count: {image_count:2d}<p>" + \
 										f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-										f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p> + \
+										f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   										f"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     										f" Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
       								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
