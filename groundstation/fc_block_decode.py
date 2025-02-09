@@ -28,7 +28,7 @@ Iy = 0
 Iz = 0
 Ib = 0
 
-head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>\"' +
+head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>\"' + \
 		'n<p>\n<pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
 foot_string = "</pre></p>\n</HTML>"
 telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>Vx: {Vx:5d} mV  Vy: {Vy:5d} mV  Vz: {Vz:5d} mV<p>Ix: {Ix:5d} mA  Iy: {Iy:5d} mA  Iz: {Iz:5d} mA<p>Vb: {Vb:5d} mV  Ib: {Ib:5d} mA"
