@@ -134,8 +134,8 @@ if __name__ == "__main__":
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
 								telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>" + \
 									f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-									f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>  Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}"								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
-								open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
+									f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>  Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}"
+								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
 									html_file.write(foot_string)
