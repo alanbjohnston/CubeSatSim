@@ -50,17 +50,19 @@ sudo systemctl stop rtl_tcp
 
 sudo systemctl stop openwebrx
 
-FILE=/home/pi/CubeSatSim/groundstation/public_html
+# FILE=/home/pi/CubeSatSim/groundstation/public_html
+FILE=/home/pi/CubeSatSim/fctelem/public_html
 if [ -f "$FILE" ]; then
     echo "Making public_html directory"
-    mkdir /home/pi/CubeSatSim/groundstation/public_html
+    mkdir /home/pi/fctelem/public_html
+    mkdir /home/pi/fctelem/public_html/images
 fi
 
-cd /home/pi/CubeSatSim/groundstation/public_html
+cd /home/pi/fctelem/public_html
 
 cp /home/pi/CubeSatSim/groundstation/index.html .
 
-cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg
+cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg ./image_file.jpeg
 
 python3 -m http.server &
 
