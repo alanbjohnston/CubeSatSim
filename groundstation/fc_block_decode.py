@@ -83,7 +83,7 @@ if __name__ == "__main__":
 				Ic = (0x03 & data_block[extended + FC_EPS + 10]) * 2**8 + data_block[extended + FC_EPS + 11] * 2**2 + (data_block[extended + FC_EPS + 12] >> 6)
 				Ib = data_block[extended + FC_EPS + 12] * 2**4 + (data_block[extended + FC_EPS + 13] >> 4)
 				if (Ib == 0):
-					Ib = 0 = Ic					
+					Ib = 0 - Ic					
 				print("Vx: {:d} mV Vy: {:d} mV Vz: {:d} mV".format(Vx, Vy, Vz))
 				print('Payload {:x} {:x} \n'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
