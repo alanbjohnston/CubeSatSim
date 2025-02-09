@@ -34,11 +34,12 @@ frame_type = " "
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
 foot_string = "</HTML>"
-telem_string = f"           Image: {image_id:3d} count: {image_count:2d}<p>" + \
-		f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-		f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
-  		f"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p>" + \
-    		f"           </pre>Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p>" + \
+		" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
+		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
+  		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p>" + \
+    		"           </pre>Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+telem_string = f"{telem_string_format}"
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
