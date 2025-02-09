@@ -33,7 +33,7 @@ ssdv = "/home/pi/ssdv/ssdv -d -J "
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>'
-foot_string = "<A HREF="images" target="_blank"> All images </a></HTML>"
+foot_string = '<A HREF="images" target="_blank"> All images </a></HTML>'
 telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p>" + \
 		" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
