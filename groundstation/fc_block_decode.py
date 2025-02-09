@@ -20,20 +20,10 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-sequence = 0
-image_id = 0
-image_count = 0
-Vx = 0
-Vy = 0
-Vz = 0
-Vb = 0
-Ix = 0
-Iy = 0
-Iz = 0
-Ic = 0
-Ib = 0
-frame_count = 0
-frame_type = " "
+sequence, image_id, image_count  = 0, 0, 0
+Vx, Vy, Vz, Vb = 0, 0, 0, 0
+Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
+frame_count, frame_type = 0, " "
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
@@ -142,11 +132,7 @@ if __name__ == "__main__":
 								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
 								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
-								telem_string = f"           Image: {image_id:3d} count: {image_count:2d}<p>" + \
-										f" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
-										f" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
-									  	f"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p>" + \
-									    	f"           </pre>Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+								telem_string = fstr(telem_string_format)
 								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
