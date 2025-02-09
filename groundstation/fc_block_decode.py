@@ -26,7 +26,7 @@ Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
 frame_count, frame_type = 0, " "
 
 html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
-image_dir = "/home/pi/fctelem"
+image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
