@@ -10,6 +10,10 @@ import io
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
 
+
+def fstr(template):
+    return eval(f"f'{template}'")
+	
 FC_EPS = 1
 FC_BOB = 25
 FC_SW = 50
@@ -39,7 +43,7 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p>" + \
     		"           </pre>Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
-telem_string = f"{telem_string_format}"
+telem_string = fstr(telem_string_format)
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
