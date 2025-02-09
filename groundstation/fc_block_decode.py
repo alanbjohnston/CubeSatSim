@@ -26,12 +26,15 @@ Vb = 0
 Ix = 0
 Iy = 0
 Iz = 0
+Ic = 0
 Ib = 0
 
-head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>\"' + \
-		'<p>\n<pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
+head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
+		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
 foot_string = "</pre></p>\n</HTML>"
-telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>Vx: {Vx:5d} mV  Vy: {Vy:5d} mV  Vz: {Vz:5d} mV<p>Ix: {Ix:5d} mA  Iy: {Iy:5d} mA  Iz: {Iz:5d} mA<p>Vb: {Vb:5d} mV  Ib: {Ib:5d} mA"
+telem_string = f"\nSequence number: {sequence:5d} Image ID: {image_id:3d} count: {image_count:2d}<p>" + \
+		f"Vx: {Vx:5d} mV  Vy: {Vy:5d} mV  Vz: {Vz:5d} mV<p>" + \
+		f"Ix: {Ix:5d} mA  Iy: {Iy:5d} mA  Iz: {Iz:5d} mA<p>Vb: {Vb:5d} mV  Ib: {Ib:5d} mA"
 with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
@@ -74,10 +77,13 @@ if __name__ == "__main__":
 				Vy = (0x03 & data_block[extended + FC_EPS + 1]) * 2**12 + data_block[extended + FC_EPS + 2] * 2**4 + (data_block[extended + FC_EPS + 3] >> 4)
 				Vz = (0x0f & data_block[extended + FC_EPS + 3]) * 2**10 + data_block[extended + FC_EPS + 4] * 2**2 + (data_block[extended + FC_EPS + 5] >> 6)
 				Vb = (0x3f & data_block[extended + FC_EPS + 5]) * 2**8 + data_block[extended + FC_EPS + 6]
-				Ix = data_block[extended + FC_EPS + 7] * 2**2 + data_block[extended + FC_EPS + 8] >> 6
-				Iy = (0x3f & data_block[extended + FC_EPS + 8]) * 2**4 + data_block[extended + FC_EPS + 9] >> 4
-				Iz = (0x0f & data_block[extended + FC_EPS + 9]) * 2**6 + data_block[extended + FC_EPS + 10] >> 2
-				
+				Ix = data_block[extended + FC_EPS + 7] * 2**2 + (data_block[extended + FC_EPS + 8] >> 6)
+				Iy = (0x3f & data_block[extended + FC_EPS + 8]) * 2**4 + (data_block[extended + FC_EPS + 9] >> 4)
+				Iz = (0x0f & data_block[extended + FC_EPS + 9]) * 2**6 + (data_block[extended + FC_EPS + 10] >> 2)
+				Ic = (0x03 & data_block[extended + FC_EPS + 10]) * 2**8 + data_block[extended + FC_EPS + 11] * 2**2 + (data_block[extended + FC_EPS + 12] >> 6)
+				Ib = data_block[extended + FC_EPS + 12] * 2**4 + ((data_block[extended + FC_EPS + 13] >> 4)
+				if (Ib == 0):
+					Ib = (-1) * Ic					
 				print("Vx: {:d} mV Vy: {:d} mV Vz: {:d} mV".format(Vx, Vy, Vz))
 				print('Payload {:x} {:x} \n'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
