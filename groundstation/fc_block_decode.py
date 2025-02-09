@@ -27,7 +27,7 @@ frame_count, frame_type = 0, " "
 
 html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
 image_file = "/home/pi/fctelem/image_file"
-ssdv = "/home/pi/ssdv/ssdv"
+ssdv = "/home/pi/ssdv/ssdv -d -J "
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
@@ -101,8 +101,8 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file_payload " + 
-					       "/home/pi/fctelem/image_file_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
+					system(ssdv + image_file + "_payload " + 
+					       image_file + "_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
 #							print("line:")
@@ -116,12 +116,12 @@ if __name__ == "__main__":
 								if (new_image_id != image_id):
 									print("End of image")
 									if (image_id != 256):
-										newfilename = "/home/pi/fctelem/image_file" + str(new_image_id) + ".jpeg"
-	#									system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)
+										newfilename = image_file + str(new_image_id) + ".jpeg"
+	#									system(ssdv + image_file + " " + filename)
 										system("mv " + filename + " " + newfilename)
-										system("mv /home/pi/fctelem/image_file /home/pi/fctelem/image_file" + str(image_id))					
+										system("mv " + image_file + " " + image_file + str(image_id))					
 									else:
-										system("sudo rm /home/pi/fctelem/image_file")
+										system("sudo rm " + image_file)
 									print("New Image ID: ")
 									print(new_image_id)
 									image_id = new_image_id
@@ -133,11 +133,11 @@ if __name__ == "__main__":
 									print(image_count)
 								with open("image_file", "ab") as binary_file:
     									binary_file.write(immutable_payload)
-								filename = "/home/pi/fctelem/image_file" + str(image_id) + "." + str(image_count) + ".jpeg"	
-								system("/home/pi/ssdv/ssdv -d -J /home/pi/fctelem/image_file " + filename)	
-								system("cp " + filename + " /home/pi/CubeSatSim/groundstation/public_html/image_file.jpeg")
+								filename = image_file + str(image_id) + "." + str(image_count) + ".jpeg"	
+								system(ssdv + image_file + " " + filename)	
+								system("cp " + filename + " " + html_dir + "image_file.jpeg")
 								telem_string = fstr(telem_string_format)
-								with open("/home/pi/CubeSatSim/groundstation/public_html/index.html", "w") as html_file:
+								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
 									html_file.write(foot_string)
