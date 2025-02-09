@@ -138,7 +138,7 @@ if __name__ == "__main__":
 								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system(ssdv + image_dir + image + " " + filename)	
 								system("cp " + filename + " " + html_dir + "image_file.jpeg")
-								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + "." + ".jpeg")
+								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
 								telem_string = fstr(telem_string_format)
 								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
