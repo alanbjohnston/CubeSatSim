@@ -52,7 +52,7 @@ sudo systemctl stop openwebrx
 
 # FILE=/home/pi/CubeSatSim/groundstation/public_html
 FILE=/home/pi/CubeSatSim/fctelem/public_html
-if [ -f "$FILE" ]; then
+if [ ! -d "$FILE" ]; then
     echo "Making public_html directory"
     mkdir /home/pi/fctelem/public_html
     mkdir /home/pi/fctelem/public_html/images
