@@ -26,11 +26,12 @@ Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
 frame_count, frame_type = 0, " "
 
 html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
-image_file = "/home/pi/fctelem/image_file"
+image_dir = "/home/pi/fctelem"
+image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
-		'<p><pre>  <img height="256" width="320" src="image_file.jpeg"><br>'
+		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>'
 foot_string = "</HTML>"
 telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p>" + \
 		" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
@@ -96,13 +97,13 @@ if __name__ == "__main__":
 						print("Writing payload to file")
 						immutable_payload = bytes(bytearray(data_block[(FC_PAYLOAD + extended):]))   # payload)
 #						print(immutable_payload)
-						with open("image_file_payload", "wb") as binary_file:
+						with open(image_dir + image + "_payload", "wb") as binary_file:
     							binary_file.write(immutable_payload)
 					except:
 						print("File error")
 #					try:
-					system(ssdv + image_file + "_payload " + 
-					       image_file + "_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
+					system(ssdv + image_dir + image + "_payload " + 
+					       image_dir + image + "_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
 #							print("line:")
@@ -116,12 +117,12 @@ if __name__ == "__main__":
 								if (new_image_id != image_id):
 									print("End of image")
 									if (image_id != 256):
-										newfilename = image_file + str(new_image_id) + ".jpeg"
-	#									system(ssdv + image_file + " " + filename)
+										newfilename = image_dir + image + str(new_image_id) + ".jpeg"
+	#									system(ssdv + image_dir + image + " " + filename)
 										system("mv " + filename + " " + newfilename)
-										system("mv " + image_file + " " + image_file + str(image_id))					
+										system("mv " + image_dir + image + " " + image_dir + image + str(image_id))					
 									else:
-										system("sudo rm " + image_file)
+										system("sudo rm " + image_dir + image)
 									print("New Image ID: ")
 									print(new_image_id)
 									image_id = new_image_id
@@ -131,10 +132,10 @@ if __name__ == "__main__":
 									image_count += 1
 									print("new image_count:")
 									print(image_count)
-								with open("image_file", "ab") as binary_file:
+								with open(image_dir + image, "ab") as binary_file:
     									binary_file.write(immutable_payload)
-								filename = image_file + str(image_id) + "." + str(image_count) + ".jpeg"	
-								system(ssdv + image_file + " " + filename)	
+								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
+								system(ssdv + image_dir + image + " " + filename)	
 								system("cp " + filename + " " + html_dir + "image_file.jpeg")
 								telem_string = fstr(telem_string_format)
 								with open(html_dir + "index.html", "w") as html_file:
