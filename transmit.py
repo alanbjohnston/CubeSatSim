@@ -814,25 +814,27 @@ if __name__ == "__main__":
 				if (mode == 'b'):
 					sleep(4.2)	
 				else:  # FunCube mode image
-#					print("Checking image_file.bin")
-					try:
-						file = open("/home/pi/CubeSatSim/image_file.bin")
-						file.close()
-						image_present = True
-					except:
-						image_present = False
-					
-					if (image_present == False):
-						camera_photo()
-##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-##						print("Photo taken")
-						system("/home/pi/ssdv/ssdv -e -n -i " + str(image_id) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
-						print("image_id: " + str(image_id) + "\n")
-						image_id = ( image_id + 1 ) % 256
-						print("new image_id: " + str(image_id) + "\n")
-						sleep(2)
-					else:	
-						sleep(4.6)
+					for i in range(4):
+						print("Checking image_file.bin")
+						try:
+							file = open("/home/pi/CubeSatSim/image_file.bin")
+							file.close()
+	#						image_present = True
+							sleep(1.0)
+						except:
+	#						image_present = False
+						
+	#					if (image_present == False):
+							camera_photo()
+	##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+	##						print("Photo taken")
+							system("/home/pi/ssdv/ssdv -e -n -i " + str(image_id) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
+							print("image_id: " + str(image_id) + "\n")
+							image_id = ( image_id + 1 ) % 256
+							print("new image_id: " + str(image_id) + "\n")
+							sleep(0.5)
+	#					else:	
+					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
 			print("Repeater")
 			print("Stopping command and control")
