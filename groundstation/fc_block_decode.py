@@ -58,6 +58,7 @@ with open(html_dir + "index.html", "w+") as html_file:
 
 with open(html_dir + "/images/telem.csv.txt", "w+") as csv_file:
 	csv_file.write(csv_format)
+	csv_file.write("\n")
 
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
 image_count = 1;
