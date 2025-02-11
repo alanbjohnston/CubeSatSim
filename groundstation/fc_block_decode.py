@@ -24,6 +24,7 @@ sequence, image_id, image_count  = 0, 0, 0
 Vx, Vy, Vz, Vb = 0, 0, 0, 0
 Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
 frame_count, frame_type = 0, " "
+frequency, errors = 0, 0
 
 # html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
 html_dir = "/home/pi/fctelem/public_html/"
@@ -38,7 +39,9 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
-    		" &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSeq: {sequence:d} {frame_type} frames: {frame_count:d}"
+#    		" &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbspSeq: {sequence:d} {frame_type} frames: {frame_count:d}"
+    		" Freq: {frequency} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+
 telem_string = fstr(telem_string_format)
 with open(html_dir + "index.html", "w") as html_file:
 	html_file.write(head_string)
@@ -67,6 +70,8 @@ if __name__ == "__main__":
 			frame_count += 1
 			data_block_string = line.split()
 #			print(data_block_string)
+			frequency = int(data_block_string[2])
+			errors = int(data_block_string[5])
 			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
 #			print("\n")
 #			print(data_block)
@@ -149,6 +154,5 @@ if __name__ == "__main__":
 					image_id = 256 # set illegal image_id to force new image
 			else:
 				print("Unknown Sat Id or Frame")
-		if ((line.find("ecoded Frequency:")) > 0):
-			print("\nFrequency found!\n")
-			print(line)
+
+						
