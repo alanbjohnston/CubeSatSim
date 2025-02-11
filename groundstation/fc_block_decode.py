@@ -172,7 +172,7 @@ if __name__ == "__main__":
 				
 			tlm_string = fstr(csv_format)	
 			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
-    				csv_file.write(tlm_string)
+				csv_file.write(tlm_string)
 				csv_file.write("\n")
 
 						
