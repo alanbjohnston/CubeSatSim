@@ -36,7 +36,7 @@ image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
-system("sudo rm " image_dir + image)
+system("sudo rm " + image_dir + image)
 system("sudo rm " + html_dir + "*")
 system("sudo rm " + html_dir + "/images/*")
 
