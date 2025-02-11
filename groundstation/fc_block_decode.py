@@ -63,7 +63,7 @@ with open(html_dir + "/images/telem.csv.txt", "w+") as csv_file:
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
 image_count = 1;
 
-sys.exit()
+# sys.exit()
 
 if __name__ == "__main__":
 	debug_mode = False
