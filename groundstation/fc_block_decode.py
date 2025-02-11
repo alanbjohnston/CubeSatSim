@@ -56,7 +56,7 @@ with open(html_dir + "index.html", "w+") as html_file:
 	html_file.write(telem_string)
 	html_file.write(foot_string)
 
-with open(html_dir + "telem.csv.txt", "w+") as csv_file:
+with open(html_dir + "/images/telem.csv.txt", "w+") as csv_file:
 	csv_file.write(csv_format)
 
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
@@ -169,7 +169,7 @@ if __name__ == "__main__":
 				frequency_string, errors = " ", 0
 				
 			tlm_string = fstr(csv_format)	
-			with open(html_dir + "telem.csv.txt", "a") as csv_file:
+			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
     				csv_file.write(tlm_string)
 
 						
