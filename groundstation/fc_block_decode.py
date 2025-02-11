@@ -149,3 +149,6 @@ if __name__ == "__main__":
 					image_id = 256 # set illegal image_id to force new image
 			else:
 				print("Unknown Sat Id or Frame")
+		if ((line.find("ecoded Frequency:")) > 0):
+			print("\nFrequency found!\n")
+			print(line)
