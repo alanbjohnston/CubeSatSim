@@ -49,12 +49,12 @@ csv_format = "{frame_count:4d}, {frequency_string:7s}, {errors:3d}, {first_byte:
 
 
 telem_string = fstr(telem_string_format)
-with open(html_dir + "index.html", "w") as html_file:
+with open(html_dir + "index.html", "w+") as html_file:
 	html_file.write(head_string)
 	html_file.write(telem_string)
 	html_file.write(foot_string)
 
-with open(html_dir + "telem.csv.txt", "w") as csv_file:
+with open(html_dir + "telem.csv.txt", "w+") as csv_file:
 	csv_file.write(csv_format)
 
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
