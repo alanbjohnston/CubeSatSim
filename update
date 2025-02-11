@@ -241,6 +241,8 @@ fi
 if [ ! -d "/home/pi/fctelem" ]; then
 
 	cd
+	mkdir /home/pi/fctelem
+	cd fctelem
 	wget https://github.com/alanbjohnston/go/releases/download/v0.1/fctelem.zip
 	unzip fctelem.zip
 	FLAG=1
