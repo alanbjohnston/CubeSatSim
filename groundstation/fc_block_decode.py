@@ -13,6 +13,14 @@ logging.basicConfig(format='%(message)s')
 
 def fstr(template):
     return eval(f"f'{template}'")
+
+
+def clear_tlm():
+	sequence, image_id, image_count  = 0, 0, 0
+	Vx, Vy, Vz, Vb = 0, 0, 0, 0
+	Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
+	frame_count, frame_type = 0, " "
+	frequency_string, errors = " ", 0
 	
 FC_EPS = 1
 FC_BOB = 25
@@ -20,17 +28,17 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-sequence, image_id, image_count  = 0, 0, 0
-Vx, Vy, Vz, Vb = 0, 0, 0, 0
-Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
-frame_count, frame_type = 0, " "
-frequency_string, errors = " ", 0
+clear_tlm()
 
 # html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
 html_dir = "/home/pi/fctelem/public_html/"
 image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
+
+system("sudo rm " image_dir + image)
+system("sudo rm " + html_dir + "*")
+system("sudo rm " + html_dir + "/images/*")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>'
@@ -40,6 +48,9 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     		" Freq: {frequency_string} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+csv_format = "{frame_count:4d}, {frequency_string:7s}, {errors:3d}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
+		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
+
 
 telem_string = fstr(telem_string_format)
 with open(html_dir + "index.html", "w") as html_file:
@@ -47,9 +58,11 @@ with open(html_dir + "index.html", "w") as html_file:
 	html_file.write(telem_string)
 	html_file.write(foot_string)
 
+with open(html_dir + "telem.csv.txt", "w") as csv_file:
+	csv_file.write(csv_format)
+
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
 image_count = 1;
-system("sudo rm image_file")
 
 if __name__ == "__main__":
 	debug_mode = False
@@ -153,5 +166,9 @@ if __name__ == "__main__":
 					image_id = 256 # set illegal image_id to force new image
 			else:
 				print("Unknown Sat Id or Frame")
+				clear_tlm()
+			tlm_string = fstr(csv_format)	
+			with open(html_dir + "telem.csv.txt", "a") as csv_file:
+    				csv_file.write(tlm_string)
 
 						
