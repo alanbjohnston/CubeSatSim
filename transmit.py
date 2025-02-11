@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
 #import subprocess
-#import time
+import time
 from time import sleep
 #import os
 import sys
@@ -137,6 +137,7 @@ def increment_mode():
 		print("can't write to .mode file")
 		
 def camera_photo():
+	start = time.perf_counter()
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
@@ -144,18 +145,21 @@ def camera_photo():
 		f = open("/home/pi/CubeSatSim/camera_out.jpg")
 		f.close()
 		print("Photo taken")
+		print(time.perf_counter() - start)
 	except:
 		system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
 		print("Using stored image")
 		stored_image = True
-	if (stored_image == False):	
+	if (stored_image == False):
+		print(time.perf_counter() - start)
 		file='/home/pi/CubeSatSim/camera_out.jpg'
 		font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
 		font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
-	
+		print(time.perf_counter() - start)
 		try:
 			filep = open("/home/pi/CubeSatSim/telem_string.txt")
 			telem_string = filep.readline()
+			print(time.perf_counter() - start)
 		except:
 			telem_string = ""
 			if (debug_mode == 1):
@@ -163,15 +167,21 @@ def camera_photo():
 		print(telem_string)
 		
 		img = Image.open(file)
+		print(time.perf_counter() - start)
 		draw = ImageDraw.Draw(img) 
 	#					draw.text((10, 10), callsign, font=font2, fill='white')
-	#					draw.text((120, 10), telem_string, font=font2, fill='white')					
+	#					draw.text((120, 10), telem_string, font=font2, fill='white')
+		print(time.perf_counter() - start)
 		draw.text((12, 12), callsign, font=font1, fill='black')
+		print(time.perf_counter() - start)
 		draw.text((10, 10), callsign, font=font1, fill='white')
+		print(time.perf_counter() - start)
 		draw.text((122, 12), telem_string, font=font2, fill='black')
+		print(time.perf_counter() - start)
 		draw.text((120, 10), telem_string, font=font2, fill='white')
+		print(time.perf_counter() - start)
 		img.save(file)
-
+		print(time.perf_counter() - start)
 print("CubeSatSim v2.1 transmit.py starting...")
 
 pd = 21
@@ -825,14 +835,19 @@ if __name__ == "__main__":
 	#						image_present = False
 						
 	#					if (image_present == False):
+							start = time.perf_counter()
 							camera_photo()
+							print(time.perf_counter() - start)
 	##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 	##						print("Photo taken")
+							print(time.perf_counter() - start)
 							system("/home/pi/ssdv/ssdv -e -n -i " + str(image_id) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 							print("image_id: " + str(image_id) + "\n")
 							image_id = ( image_id + 1 ) % 256
 							print("new image_id: " + str(image_id) + "\n")
-							sleep(0.5)
+							print("Elapsed time: ")
+							print(time.perf_counter() - start)
+#							sleep(0.5)
 	#					else:	
 					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
