@@ -827,17 +827,15 @@ if __name__ == "__main__":
 	#					if (image_present == False):
 							start = time.perf_counter()
 							camera_photo()
-							print(time.perf_counter() - start)
-	##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-	##						print("Photo taken")
-							print(time.perf_counter() - start)
 							system("/home/pi/ssdv/ssdv -e -n -i " + str(image_id) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
 							print("image_id: " + str(image_id) + "\n")
 							image_id = ( image_id + 1 ) % 256
 							print("new image_id: " + str(image_id) + "\n")
+							elapsed_time = time.perf_counter() - start
 							print("Elapsed time: ")
-							print(time.perf_counter() - start)
-#							sleep(0.5)
+							print(elapsed_time)
+							if (elapsed_time < 9):
+								sleep(9 - time.perf_counter() + start)
 	#					else:	
 					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
