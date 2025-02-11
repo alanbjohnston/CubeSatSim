@@ -238,9 +238,18 @@ if [ ! -d "/home/pi/ssdv" ]; then
 	FLAG=1
 fi
 
+if [ ! -d "/home/pi/fctelem" ]; then
+
+	cd
+	wget https://github.com/alanbjohnston/go/releases/download/v0.1/fctelem.zip
+	unzip fctelem.zip
+	FLAG=1
+fi
+
 cd /home/pi/pi-power-button
 
 git checkout master
+
 
 
   git pull --no-rebase > .updated_p
