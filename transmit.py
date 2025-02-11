@@ -3,7 +3,7 @@
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
 #import subprocess
-#import time
+import time
 from time import sleep
 #import os
 import sys
@@ -825,6 +825,7 @@ if __name__ == "__main__":
 	#						image_present = False
 						
 	#					if (image_present == False):
+							start = time.perf_counter()
 							camera_photo()
 	##						system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
 	##						print("Photo taken")
@@ -832,6 +833,8 @@ if __name__ == "__main__":
 							print("image_id: " + str(image_id) + "\n")
 							image_id = ( image_id + 1 ) % 256
 							print("new image_id: " + str(image_id) + "\n")
+							print("Elapsed time: ")
+							print(time.perf_counter() - start)
 							sleep(0.5)
 	#					else:	
 					sleep(0.6)
