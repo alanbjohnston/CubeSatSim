@@ -171,9 +171,9 @@ if __name__ == "__main__":
 				frame_count, frame_type = 0, " "
 				frequency_string, errors = " ", 0
 				
-			tlm_string = fstr(csv_format)	
-			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
-				csv_file.write(tlm_string)
-				csv_file.write("\n")
+#			tlm_string = fstr(csv_format)	
+#			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
+#				csv_file.write(tlm_string)
+#				csv_file.write("\n")
 
 						
