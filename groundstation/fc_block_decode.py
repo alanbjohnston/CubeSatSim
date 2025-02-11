@@ -13,14 +13,6 @@ logging.basicConfig(format='%(message)s')
 
 def fstr(template):
     return eval(f"f'{template}'")
-
-
-def clear_tlm():
-	sequence, image_id, image_count  = 0, 0, 0
-	Vx, Vy, Vz, Vb = 0, 0, 0, 0
-	Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
-	frame_count, frame_type = 0, " "
-	frequency_string, errors = " ", 0
 	
 FC_EPS = 1
 FC_BOB = 25
@@ -28,7 +20,11 @@ FC_SW = 50
 FC_PAYLOAD = 55
 extended = 1
 
-clear_tlm()
+sequence, image_id, image_count  = 0, 0, 0
+Vx, Vy, Vz, Vb = 0, 0, 0, 0
+Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
+frame_count, frame_type = 0, " "
+frequency_string, errors, first_byte = " ", 0, 0
 
 # html_dir = "/home/pi/CubeSatSim/groundstation/public_html/"
 html_dir = "/home/pi/fctelem/public_html/"
@@ -48,7 +44,7 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     		" Freq: {frequency_string} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
-csv_format = "{frame_count:4d}, {frequency_string:7s}, {errors:3d}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
+csv_format = "{frame_count:4d}, {frequency_string:7s}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
 		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
 
 
@@ -85,10 +81,8 @@ if __name__ == "__main__":
 			frequency_string = data_block_string[2]
 			errors = int(data_block_string[5])
 			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
-#			print("\n")
-#			print(data_block)
-#			print("\n")
-			if (data_block[0] == 0xE0) or (data_block[0] == 0xE1):
+			first_byte = data_block[0]
+			if (first_byte == 0xE0) or (first_byte == 0xE1):
 				if (data_block[0] == 0xE0):
 					frame_type = "RT1+IMG1"
 				if (data_block[0] == 0xE1):
@@ -166,7 +160,12 @@ if __name__ == "__main__":
 					image_id = 256 # set illegal image_id to force new image
 			else:
 				print("Unknown Sat Id or Frame")
-				clear_tlm()
+				sequence, image_id, image_count  = 0, 0, 0
+				Vx, Vy, Vz, Vb = 0, 0, 0, 0
+				Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
+				frame_count, frame_type = 0, " "
+				frequency_string, errors = " ", 0
+				
 			tlm_string = fstr(csv_format)	
 			with open(html_dir + "telem.csv.txt", "a") as csv_file:
     				csv_file.write(tlm_string)
