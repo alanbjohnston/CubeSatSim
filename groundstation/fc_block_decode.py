@@ -36,6 +36,8 @@ system("sudo rm " + image_dir + image)
 system("sudo rm " + html_dir + "*")
 system("sudo rm " + html_dir + "/images/*")
 
+system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
+
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>'
 foot_string = '<A HREF="images" target="_blank"> All images </a></HTML>'
@@ -45,7 +47,7 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     		" Freq: {frequency_string} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
 csv_format = "{frame_count:4d}, {frequency_string:7s}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
-		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
+		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d} \n"
 
 
 telem_string = fstr(telem_string_format)
