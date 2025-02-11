@@ -62,6 +62,8 @@ with open(html_dir + "/images/telem.csv.txt", "w+") as csv_file:
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
 image_count = 1;
 
+return
+
 if __name__ == "__main__":
 	debug_mode = False
 	counter = 1
@@ -171,5 +173,6 @@ if __name__ == "__main__":
 			tlm_string = fstr(csv_format)	
 			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
     				csv_file.write(tlm_string)
+				csv_file.write("\n")
 
 						
