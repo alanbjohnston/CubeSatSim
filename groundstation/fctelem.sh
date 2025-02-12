@@ -58,13 +58,13 @@ if [ ! -d "$FILE" ]; then
     mkdir /home/pi/fctelem/public_html/images
 fi
 
-#cd /home/pi/fctelem/public_html
+cd /home/pi/fctelem/public_html
 
-#cp /home/pi/CubeSatSim/groundstation/index.html .
+cp /home/pi/CubeSatSim/groundstation/index.html .
 
-#cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg ./image_file.jpeg
+cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg ./image_file.jpeg
 
-# python3 -m http.server &
+python3 -m http.server &
 
 setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
 
