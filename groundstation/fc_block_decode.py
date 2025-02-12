@@ -33,10 +33,10 @@ image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
 system("sudo rm " + image_dir + image)
-system("sudo rm " + html_dir + "*")
-system("sudo rm " + html_dir + "/images/*")
+#system("sudo rm " + html_dir + "*")
+#system("sudo rm " + html_dir + "/images/*")
 
-system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
+#system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>'
@@ -171,9 +171,9 @@ if __name__ == "__main__":
 				frame_count, frame_type = 0, " "
 				frequency_string, errors = " ", 0
 				
-#			tlm_string = fstr(csv_format)	
-#			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
-#				csv_file.write(tlm_string)
-#				csv_file.write("\n")
+			tlm_string = fstr(csv_format)	
+			with open(html_dir + "/images/telem.csv.txt", "a") as csv_file:
+				csv_file.write(tlm_string)
+				csv_file.write("\n")
 
 						
