@@ -85,7 +85,7 @@ if __name__ == "__main__":
 #			print(data_block_string)
 			frequency_string = data_block_string[2]
 			print(frequency_string)
-			frequency = int(frequency_string[:len(frequency_string) - 2]
+			frequency = float(frequency_string[:len(frequency_string) - 2])
 			errors = int(data_block_string[5])
 			data_block = [int(number_string,16) for number_string in data_block_string[7:]]
 			first_byte = data_block[0]
