@@ -162,6 +162,11 @@ if __name__ == "__main__":
 								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
+									with open(html_dir + "/images/telem.csv.txt", "r") as csv_file:
+										csv_file.read(old_tlm_string)
+									html_file.write(old_tlm_string)	
+									html_file.write(tlm_string)
+									html_file.write("\n")
 									html_file.write(foot_string)
 				else:
 					print("Payload not an image!")
