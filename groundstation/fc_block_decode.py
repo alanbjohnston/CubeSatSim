@@ -167,6 +167,7 @@ if __name__ == "__main__":
 										for line in csv_file:
 											html_file.write(line)
 											html_file.write("<br>")
+									tlm_string = fstr(csv_format)		
 									html_file.write(tlm_string)
 									html_file.write("<br>")
 									html_file.write(foot_string)
