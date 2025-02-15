@@ -28,27 +28,27 @@ sudo killall -9 fctelem &>/dev/null
 
 sudo killall -9 python3 &>/dev/null
 
-sudo killall -9 java &>/dev/null
+#sudo killall -9 java &>/dev/null
 
-sudo killall -9 rtl_fm &>/dev/null
+#sudo killall -9 rtl_fm &>/dev/null
 
 pkill -o chromium &>/dev/null
 
-sudo killall -9 rtl_tcp &>/dev/null
+#sudo killall -9 rtl_tcp &>/dev/null
 
-sudo killall -9 CubicSDR &>/dev/null
+#sudo killall -9 CubicSDR &>/dev/null
 
-sudo killall -9 qsstv &>/dev/null
+#sudo killall -9 qsstv &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 zenity &>/dev/null
+#sudo killall -9 zenity &>/dev/null
 
-sudo systemctl stop rtl_tcp
+#sudo systemctl stop rtl_tcp
 
-sudo systemctl stop openwebrx
+#sudo systemctl stop openwebrx
 
 # FILE=/home/pi/CubeSatSim/groundstation/public_html
 FILE=/home/pi/CubeSatSim/fctelem/public_html
