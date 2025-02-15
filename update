@@ -230,6 +230,7 @@ fi
 
 if [ ! -d "/home/pi/ssdv" ]; then
 
+	echo "Installing SSDV for FunCube mode"
 	cd
 	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
 	cd ssdv
@@ -239,11 +240,20 @@ if [ ! -d "/home/pi/ssdv" ]; then
 fi
 
 if [ ! -d "/home/pi/fctelem" ]; then
-
+	echo "Installing fctelem binary v0.2 for FunCube mode"
 	cd
 	mkdir /home/pi/fctelem
 	cd fctelem
-	wget https://github.com/alanbjohnston/go/releases/download/v0.1/fctelem.zip
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip fctelem.zip
+	FLAG=1
+elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
+	echo "Updating fctelem binary to version v0.2 for FunCube mode"
+	cd
+	cd /home/pi/fctelem
+	sudo mv fctelem fctelem.bk
+	sudo mv fcdecode.conf fcdecode.conf.bk
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
 	unzip fctelem.zip
 	FLAG=1
 fi
@@ -251,8 +261,6 @@ fi
 cd /home/pi/pi-power-button
 
 git checkout master
-
-
 
   git pull --no-rebase > .updated_p
 
