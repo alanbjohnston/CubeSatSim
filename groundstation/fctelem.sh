@@ -26,13 +26,13 @@ echo
 
 sudo killall -9 fctelem &>/dev/null
 
-sudo killall -9 python3 &>/dev/null
+#sudo killall -9 python3 &>/dev/null
 
 #sudo killall -9 java &>/dev/null
 
 #sudo killall -9 rtl_fm &>/dev/null
 
-pkill -o chromium &>/dev/null
+#pkill -o chromium &>/dev/null
 
 #sudo killall -9 rtl_tcp &>/dev/null
 
