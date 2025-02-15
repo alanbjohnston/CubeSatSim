@@ -173,8 +173,8 @@
     "upper_bound": 440000000,
     "frequencies": {
       "packet": 434900000,
-      "pocsag": 439987500
-      "sstv": { "frequency": 434900000, "underlying": "nfm" },
+      "pocsag": 439987500,
+      "sstv": { "frequency": 434900000, "underlying": "nfm" }
     }
   },
   {
