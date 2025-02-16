@@ -26,17 +26,17 @@ Ix, Iy, Iz, Ic, Ib = 0, 0, 0, 0, 0
 frame_count, frame_type = 0, " "
 frequency_string, frequency, errors, first_byte = " ", 0, 0, 0
 
-#  = "/home/pi/CubeSatSim/groundstation/public_html/"
- = "/home/pi/fctelem/public_html/"
+#html_dir  = "/home/pi/CubeSatSim/groundstation/public_html/"
+html_dir = "/home/pi/fctelem/public_html/"
 image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
 system("sudo rm " + image_dir + image)
-#system("sudo rm " +  + "*")
-system("sudo rm " +  + "/images/*")
+#system("sudo rm " + html_dir + "*")
+system("sudo rm " + html_dir + "/images/*")
 
-#system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " +  + "image_file.jpeg")
+#system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"><title>FunCube CubeSatSim Telemetry</title></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>                 <A HREF="images" target="_blank">All images</a><br>'
