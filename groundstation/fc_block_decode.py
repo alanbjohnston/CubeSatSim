@@ -34,7 +34,7 @@ ssdv = "/home/pi/ssdv/ssdv -d -J "
 
 system("sudo rm " + image_dir + image)
 #system("sudo rm " + html_dir + "*")
-#system("sudo rm " + html_dir + "/images/*")
+system("sudo rm " + html_dir + "/images/*")
 
 #system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
@@ -160,7 +160,8 @@ if __name__ == "__main__":
 								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
 								system(ssdv + image_dir + image + " " + filename)	
 								system("cp " + filename + " " + html_dir + "image_file.jpeg")
-								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
+#								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
+								system("cp " + filename + " " + html_dir + "images/")
 								telem_string = fstr(telem_string_format)
 								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
