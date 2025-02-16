@@ -39,14 +39,14 @@ system("sudo rm " + image_dir + image)
 #system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
-		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>'
-foot_string = '<A HREF="images" target="_blank"> All images </a></HTML>'
+		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>                 <A HREF="images" target="_blank"> All images </a>'
+foot_string = '</HTML>'
 telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p>" + \
 		" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     		" Freq: {frequency:10.1f} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
-label_string = "frm,  freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
+label_string = " frm,   freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
 label_string_html = label_string.replace(" ","&nbsp;")
 csv_format = "{frame_count:4d}, {frequency:10.1f}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
 		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
