@@ -12,7 +12,7 @@ logging.basicConfig(format='%(message)s')
 
 
 def fstr(template):
-    return eval(f"f'{template}'")
+    return eval(f"f'{template}'")	
 	
 FC_EPS = 1
 FC_BOB = 25
@@ -46,6 +46,8 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<p></pre>" + \
     		" Freq: {frequency:10.1f} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
+label_string = "frm,  freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
+label_string_html = label_string.replace(" ","&nbsp")
 csv_format = "{frame_count:4d}, {frequency:10.1f}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
 		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
 
@@ -57,7 +59,8 @@ with open(html_dir + "index.html", "w+") as html_file:
 	html_file.write(foot_string)
 
 with open(html_dir + "/images/telem.csv.txt", "w+") as csv_file:
-	csv_file.write(csv_format)
+#	csv_file.write(csv_format)
+	csv_file.write(label_string_html)
 	csv_file.write("\n")
 
 image_id = 256 		# set illegal image ID for null # random.randint(0, 255)
