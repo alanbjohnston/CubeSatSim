@@ -75,10 +75,10 @@ cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" &
 
 #direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  # &
-/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
+#/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
 
 
-echo "Don't close the direwolf-pacsat-loopback window or the Pacsatsim will stop running."
+#echo "Don't close the direwolf-pacsat-loopback window or the Pacsatsim will stop running."
 
 #cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
