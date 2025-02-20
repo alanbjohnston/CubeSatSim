@@ -183,10 +183,10 @@ if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ] 
 
 else
 
-  echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
+#  echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
-
+#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
+  echo
 fi
 
 sleep 5
