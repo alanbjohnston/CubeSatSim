@@ -40,15 +40,15 @@ sudo killall -9 zenity &>/dev/null
 
 echo
 
-sudo systemctl restart pacsatsim
+#sudo systemctl restart pacsatsim
 
-sudo /etc/init.d/alsa-utils stop
-sudo /etc/init.d/alsa-utils start
+#sudo /etc/init.d/alsa-utils stop
+#sudo /etc/init.d/alsa-utils start
 
 
-echo "Waiting 10 seconds for Pacsatsim to start"
+#echo "Waiting 10 seconds for Pacsatsim to start"
 
-sleep 10
+#sleep 10
 
 #value=`cat /home/pi/CubeSatSim/sim.cfg`
 #echo "$value" > /dev/null
