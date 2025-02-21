@@ -14,7 +14,7 @@ logging.basicConfig(format='%(message)s')
 def fstr(template):
 	return eval(f"f'{template}'")	
 
-def system_and_print(string)
+def system_and_print(string):
 	print(string)
 	system(string)
 	
