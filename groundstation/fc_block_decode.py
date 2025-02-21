@@ -149,17 +149,11 @@ if __name__ == "__main__":
 										print("Saving complete image")
 										system_and_print("cp " + html_dir + "image_file.jpeg " + html_dir + "images/" + image + str(image_id) + "." + str(image_count) + ".jpeg")
 										system_and_print("sudo rm " + image_dir + image)
-								#		newfilename = image_dir + image + str(new_image_id) + ".jpeg"
-	#									system_and_print(ssdv + image_dir + image + " " + filename)
-	#									system_and_print("mv " + filename + " " + newfilename)
-	#									system_and_print("mv " + image_dir + image + " " + image_dir + image + str(image_id))
-		#								system_and_print("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
 									else:
 										system_and_print("sudo rm " + image_dir + image)
 									print("New Image ID: ")
 									print(new_image_id)
 									image_id = new_image_id
-	#								image_count = (image_count + 1) % 256
 									image_count = 1								
 								else:
 									image_count += 1
@@ -168,12 +162,8 @@ if __name__ == "__main__":
 								print("Appending block to file " + image)	
 								with open(image_dir + image, "ab") as binary_file:
     									binary_file.write(immutable_payload)
-#								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
 								print("Running ssdv with all blocks in file " + image + " saving as " + html_dir + "image_file.jpeg")
-#								system_and_print(ssdv + image_dir + image + " " + filename)	
 								system_and_print(ssdv + image_dir + image + " " + html_dir + "image_file.jpeg")
-#								system_and_print("cp " + filename + " " + html_dir + "image_file.jpeg")
-#								system_and_print("cp " + filename + " " + html_dir + "image_file.jpeg")
 								telem_string = fstr(telem_string_format)
 								print("Writing index.html file")
 								with open(html_dir + "index.html", "w") as html_file:
