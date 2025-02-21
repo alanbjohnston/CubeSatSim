@@ -245,7 +245,7 @@ if [ ! -d "/home/pi/fctelem" ]; then
 	mkdir /home/pi/fctelem
 	cd fctelem
 	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
-	unzip fctelem.zip
+	sudo unzip fctelem.zip
 	FLAG=1
 elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	echo "Updating fctelem binary to version v0.2 for FunCube mode"
