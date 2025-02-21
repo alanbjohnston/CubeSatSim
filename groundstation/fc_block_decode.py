@@ -171,7 +171,8 @@ if __name__ == "__main__":
 #								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
 								print("Running ssdv with all blocks in file " + image + " saving as " + html_dir + "image_file.jpeg")
 #								system_and_print(ssdv + image_dir + image + " " + filename)	
-								system_and_print(ssdv + image_dir + image + " " + html_dir + "image_file.jpeg")									system_and_print("cp " + filename + " " + html_dir + "image_file.jpeg")
+								system_and_print(ssdv + image_dir + image + " " + html_dir + "image_file.jpeg")
+#								system_and_print("cp " + filename + " " + html_dir + "image_file.jpeg")
 #								system_and_print("cp " + filename + " " + html_dir + "image_file.jpeg")
 								telem_string = fstr(telem_string_format)
 								print("Writing index.html file")
