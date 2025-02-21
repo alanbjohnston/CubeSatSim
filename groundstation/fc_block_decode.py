@@ -141,12 +141,12 @@ if __name__ == "__main__":
 									print("End of image")
 									if (image_id != 256):
 										print("Saving complete image")
+										system("cp " + filename + " " + html_dir + "images/")
 										newfilename = image_dir + image + str(new_image_id) + ".jpeg"
 	#									system(ssdv + image_dir + image + " " + filename)
 										system("mv " + filename + " " + newfilename)
 										system("mv " + image_dir + image + " " + image_dir + image + str(image_id))
 		#								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
-										system("cp " + filename + " " + html_dir + "images/")
 									else:
 										system("sudo rm " + image_dir + image)
 									print("New Image ID: ")
