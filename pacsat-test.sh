@@ -1,10 +1,10 @@
 #!/bin/bash
 
-/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/pacsatsim-d.sh"
+/usr/bin/x-terminal-emulator --geometry=120x40 -e "bash /home/pi/CubeSatSim/pacsatsim-d.sh"
 
 sleep 1
 
-/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/pacsatsim.sh"
+/usr/bin/x-terminal-emulator --geometry=120x40 -e "bash /home/pi/CubeSatSim/pacsatsim.sh"
 
 sleep 1
 
@@ -12,6 +12,6 @@ sleep 1
 
 sleep 1
 
-/usr/bin/x-terminal-emulator --geometry=120x40 -e /home/pi/CubeSatSim/groundstation/pacsat.sh"
+/usr/bin/x-terminal-emulator --geometry=120x40 -e "bash /home/pi/CubeSatSim/groundstation/pacsat.sh"
 
 
