@@ -178,7 +178,7 @@ if __name__ == "__main__":
 									html_file.write(foot_string)
 				else:
 					print("Payload not an image!")
-					image_id = 256 # set illegal image_id to force new image
+		#			image_id = 256 # set illegal image_id to force new image
 			else:
 				print("Unknown Sat Id or Frame")
 				sequence, image_id, image_count  = 0, 0, 0
