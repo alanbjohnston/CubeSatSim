@@ -12,7 +12,11 @@ logging.basicConfig(format='%(message)s')
 
 
 def fstr(template):
-    return eval(f"f'{template}'")	
+	return eval(f"f'{template}'")	
+
+def system_and_print(string)
+	print(string)
+	system(string)
 	
 FC_EPS = 1
 FC_BOB = 25
@@ -32,11 +36,11 @@ image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
-system("sudo rm " + image_dir + image)
-#system("sudo rm " + html_dir + "*")
-system("sudo rm " + html_dir + "/images/*")
+system_and_print("sudo rm " + image_dir + image)
+#system_and_print("sudo rm " + html_dir + "*")
+system_and_print("sudo rm " + html_dir + "/images/*")
 
-#system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
+#system_and_print("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"><title>FunCube CubeSatSim Telemetry</title></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>                 <A HREF="images" target="_blank">All images</a><br>'
@@ -125,7 +129,7 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					system(ssdv + image_dir + image + "_payload " + 
+					system_and_print(ssdv + image_dir + image + "_payload " + 
 					       image_dir + image + "_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
@@ -141,14 +145,14 @@ if __name__ == "__main__":
 									print("End of image")
 									if (image_id != 256):
 										print("Saving complete image")
-										system("cp " + filename + " " + html_dir + "images/")
+										system_and_print("cp " + filename + " " + html_dir + "images/")
 										newfilename = image_dir + image + str(new_image_id) + ".jpeg"
-	#									system(ssdv + image_dir + image + " " + filename)
-										system("mv " + filename + " " + newfilename)
-										system("mv " + image_dir + image + " " + image_dir + image + str(image_id))
-		#								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
+	#									system_and_print(ssdv + image_dir + image + " " + filename)
+										system_and_print("mv " + filename + " " + newfilename)
+										system_and_print("mv " + image_dir + image + " " + image_dir + image + str(image_id))
+		#								system_and_print("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
 									else:
-										system("sudo rm " + image_dir + image)
+										system_and_print("sudo rm " + image_dir + image)
 									print("New Image ID: ")
 									print(new_image_id)
 									image_id = new_image_id
@@ -161,8 +165,8 @@ if __name__ == "__main__":
 								with open(image_dir + image, "ab") as binary_file:
     									binary_file.write(immutable_payload)
 								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
-								system(ssdv + image_dir + image + " " + filename)	
-								system("cp " + filename + " " + html_dir + "image_file.jpeg")
+								system_and_print(ssdv + image_dir + image + " " + filename)	
+								system_and_print("cp " + filename + " " + html_dir + "image_file.jpeg")
 								telem_string = fstr(telem_string_format)
 								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
