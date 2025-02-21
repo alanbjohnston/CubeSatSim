@@ -22,7 +22,7 @@ pkill -o chromium &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
 sudo killall -9 sdrpp &>/dev/null
 
@@ -40,15 +40,15 @@ sudo killall -9 zenity &>/dev/null
 
 echo
 
-sudo systemctl restart pacsatsim
+#sudo systemctl restart pacsatsim
 
-sudo /etc/init.d/alsa-utils stop
-sudo /etc/init.d/alsa-utils start
+#sudo /etc/init.d/alsa-utils stop
+#sudo /etc/init.d/alsa-utils start
 
 
-echo "Waiting 10 seconds for Pacsatsim to start"
+#echo "Waiting 10 seconds for Pacsatsim to start"
 
-sleep 10
+#sleep 10
 
 #value=`cat /home/pi/CubeSatSim/sim.cfg`
 #echo "$value" > /dev/null
@@ -72,13 +72,13 @@ echo
 
 cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
-setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" &
+setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
 #direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  # &
-/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
+#/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
 
 
-echo "Don't close the direwolf-pacsat-loopback window or the Pacsatsim will stop running."
+#echo "Don't close the direwolf-pacsat-loopback window or the Pacsatsim will stop running."
 
 #cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
