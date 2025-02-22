@@ -773,7 +773,7 @@ if __name__ == "__main__":
 					sleep(4.2)	
 				else:  # FunCube mode image
 					for i in range(4):
-						print("Checking image_file.bin")
+#						print("Checking image_file.bin")
 						try:
 							file = open("/home/pi/CubeSatSim/image_file.bin")
 							file.close()
