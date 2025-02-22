@@ -811,7 +811,7 @@ if __name__ == "__main__":
 			txf = float(tx) - 289.9
 			print("Transmit frequency: ",txf)
 			while True:
-				sleep(0.5)
+				sleep(1)
 				if (GPIO.input(squelch) == False):
 					print("Carrier detected, starting repeater")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
