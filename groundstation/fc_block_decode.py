@@ -6,6 +6,7 @@ import random
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import subprocess
 import io
+import datetime
 
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
@@ -35,6 +36,8 @@ html_dir = "/home/pi/fctelem/public_html/"
 image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
+
+print(datetime.now())
 
 system_and_print("sudo rm " + image_dir + image)
 #system_and_print("sudo rm " + html_dir + "*")
