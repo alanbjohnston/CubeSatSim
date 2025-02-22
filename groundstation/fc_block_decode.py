@@ -41,7 +41,7 @@ print(datetime.datetime.now())
 
 system_and_print("sudo rm " + image_dir + image)
 #system_and_print("sudo rm " + html_dir + "*")
-system_and_print("sudo rm " + html_dir + "/images/*")
+system_and_print("sudo rm " + html_dir + "images/*")
 
 #system_and_print("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
@@ -65,7 +65,7 @@ with open(html_dir + "index.html", "w+") as html_file:
 	html_file.write(telem_string)
 	html_file.write(foot_string)
 
-with open(html_dir + "/images/telem.csv.txt", "w+") as csv_file:
+with open(html_dir + "images/telem.csv.txt", "w+") as csv_file:
 #	csv_file.write(csv_format)
 	csv_file.write(label_string)
 	csv_file.write("\n")
