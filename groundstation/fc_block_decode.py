@@ -37,7 +37,7 @@ image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
-print(datetime.now())
+print(datetime.datetime)
 
 system_and_print("sudo rm " + image_dir + image)
 #system_and_print("sudo rm " + html_dir + "*")
