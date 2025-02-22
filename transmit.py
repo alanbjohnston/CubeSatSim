@@ -23,6 +23,14 @@ def battery_saver_check():
 	except:
 		print("battery saver not activated")
 #		txc = True
+
+def blink(times):
+	powerPin = 16
+	for i in range(times):
+		GPIO.output(powerPin, 0) # blink two times
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(0.1)
 		
 def increment_mode():
 	print("increment mode")
@@ -39,76 +47,26 @@ def increment_mode():
 	print(mode)
 	if (mode == 'a'):
 		mode = 'f'
-		GPIO.output(powerPin, 0) # blink two times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(2)
 		sleep(2.5)
 
 	elif (mode == 'f'):
 		mode = 'b'
-		GPIO.output(powerPin, 0) # blink three times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(3)
 		sleep(2.5)
 	
 	elif (mode == 'b'):
 		mode = 's'
-		GPIO.output(powerPin, 0) # blink four times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(4)
 		sleep(2.5)
 
 	elif (mode == 's'):
 		mode = 'm'
-		GPIO.output(powerPin, 0) # blink five times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1);
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(5)
 		sleep(2.5)
 	else:
 		mode = 'a'
-		GPIO.output(powerPin, 0) # blink one time
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(1)
 		sleep(2.5)
 
 	try:	
