@@ -808,7 +808,7 @@ if __name__ == "__main__":
 #			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
 #			GPIO.output(powerPin, 1)  # was 0
-			tx = rx - 290
+			txf = float(rx) - 290.0
 			print("Transmit frequency: ",tx)
 			while True:
 				sleep(0.5)
@@ -819,7 +819,7 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 ##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + str(txf) + "e3 &")
 					sleep(1)
 					print("Sleeping 2")
 					sleep(1)
