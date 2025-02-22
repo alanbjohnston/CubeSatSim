@@ -23,6 +23,14 @@ def battery_saver_check():
 	except:
 		print("battery saver not activated")
 #		txc = True
+
+def blink(times):
+	powerPin = 16
+	for i in range(times):
+		GPIO.output(powerPin, 0) # blink two times
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(0.1)
 		
 def increment_mode():
 	print("increment mode")
@@ -39,76 +47,26 @@ def increment_mode():
 	print(mode)
 	if (mode == 'a'):
 		mode = 'f'
-		GPIO.output(powerPin, 0) # blink two times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(2)
 		sleep(2.5)
 
 	elif (mode == 'f'):
 		mode = 'b'
-		GPIO.output(powerPin, 0) # blink three times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(3)
 		sleep(2.5)
 	
 	elif (mode == 'b'):
 		mode = 's'
-		GPIO.output(powerPin, 0) # blink four times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(4)
 		sleep(2.5)
 
 	elif (mode == 's'):
 		mode = 'm'
-		GPIO.output(powerPin, 0) # blink five times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1);
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(5)
 		sleep(2.5)
 	else:
 		mode = 'a'
-		GPIO.output(powerPin, 0) # blink one time
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(1)
 		sleep(2.5)
 
 	try:	
@@ -815,7 +773,7 @@ if __name__ == "__main__":
 					sleep(4.2)	
 				else:  # FunCube mode image
 					for i in range(4):
-						print("Checking image_file.bin")
+#						print("Checking image_file.bin")
 						try:
 							file = open("/home/pi/CubeSatSim/image_file.bin")
 							file.close()
@@ -839,7 +797,7 @@ if __name__ == "__main__":
 	#					else:	
 					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
-			print("Repeater")
+			print("Cross Band Repeater")
 			print("Stopping command and control")
 			system("sudo systemctl stop command")
 			print("turn on FM rx")
@@ -847,11 +805,13 @@ if __name__ == "__main__":
 			output(ptt, 1)
 			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 			GPIO.setup(txLed, GPIO.OUT)
-			GPIO.setup(powerPin, GPIO.OUT)
+#			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
-			GPIO.output(powerPin, 0)
+#			GPIO.output(powerPin, 1)  # was 0
+			txf = float(tx) - 288.9
+			print("Transmit frequency: ",txf)
 			while True:
-				sleep(0.5)
+				sleep(1)
 				if (GPIO.input(squelch) == False):
 					print("Carrier detected, starting repeater")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
@@ -859,12 +819,13 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 ##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-					sleep(1)
-					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
-					GPIO.output(powerPin, 1)
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + str(txf) + "e3 &")
 					sleep(0.5)
-					GPIO.output(powerPin, 0)
+#					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+#					GPIO.output(powerPin, 1)
+#					sleep(0.5)
+#					GPIO.output(powerPin, 0)
 					while (GPIO.input(squelch) == False):
 						sleep(1)
 					print("No carrier detected, stopping repeater")

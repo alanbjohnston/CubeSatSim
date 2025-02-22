@@ -12,7 +12,11 @@ logging.basicConfig(format='%(message)s')
 
 
 def fstr(template):
-    return eval(f"f'{template}'")	
+	return eval(f"f'{template}'")	
+
+def system_and_print(string):
+	print(string)
+	system(string)
 	
 FC_EPS = 1
 FC_BOB = 25
@@ -32,11 +36,11 @@ image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
-system("sudo rm " + image_dir + image)
-#system("sudo rm " + html_dir + "*")
-system("sudo rm " + html_dir + "/images/*")
+system_and_print("sudo rm " + image_dir + image)
+#system_and_print("sudo rm " + html_dir + "*")
+system_and_print("sudo rm " + html_dir + "/images/*")
 
-#system("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
+#system_and_print("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"><title>FunCube CubeSatSim Telemetry</title></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
 		'<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>                 <A HREF="images" target="_blank">All images</a><br>'
@@ -117,7 +121,7 @@ if __name__ == "__main__":
 				print('Payload {:x} {:x} \n'.format(data_block[FC_PAYLOAD + extended], data_block[FC_PAYLOAD + extended + 1]))
 				if (data_block[FC_PAYLOAD + extended] == 0x55) and (data_block[FC_PAYLOAD + extended + 1] == 0x68):
 					try:
-						print("Writing payload to file")
+						print("Writing this image payload block to file " + image + "_payload")
 						immutable_payload = bytes(bytearray(data_block[(FC_PAYLOAD + extended):]))   # payload)
 #						print(immutable_payload)
 						with open(image_dir + image + "_payload", "wb") as binary_file:
@@ -125,8 +129,10 @@ if __name__ == "__main__":
 					except:
 						print("File error")
 #					try:
-					system(ssdv + image_dir + image + "_payload " + 
+					print("Processing payload with ssdv, saving image to " + image + "_paylad.jpeg and log to ssdv_output")
+					system_and_print(ssdv + image_dir + image + "_payload " + 
 					       image_dir + image + "_payload.jpeg 2>&1 | sudo tee /home/pi/fctelem/ssdv_output")
+					print("Parsing ssdv_output")
 					with open("/home/pi/fctelem/ssdv_output", "r") as file:
 						for line in file:
 #							print("line:")
@@ -141,29 +147,25 @@ if __name__ == "__main__":
 									print("End of image")
 									if (image_id != 256):
 										print("Saving complete image")
-										system("cp " + filename + " " + html_dir + "images/")
-										newfilename = image_dir + image + str(new_image_id) + ".jpeg"
-	#									system(ssdv + image_dir + image + " " + filename)
-										system("mv " + filename + " " + newfilename)
-										system("mv " + image_dir + image + " " + image_dir + image + str(image_id))
-		#								system("cp " + filename + " " + html_dir + "images/" + image + str(image_id) + ".jpeg")
+										system_and_print("cp " + html_dir + "image_file.jpeg " + html_dir + "images/" + image + str(image_id) + "." + str(image_count) + ".jpeg")
+										system_and_print("sudo rm " + image_dir + image)
 									else:
-										system("sudo rm " + image_dir + image)
+										system_and_print("sudo rm " + image_dir + image)
 									print("New Image ID: ")
 									print(new_image_id)
 									image_id = new_image_id
-	#								image_count = (image_count + 1) % 256
 									image_count = 1								
 								else:
 									image_count += 1
 									print("new image_count:")
 									print(image_count)
+								print("Appending block to file " + image)	
 								with open(image_dir + image, "ab") as binary_file:
     									binary_file.write(immutable_payload)
-								filename = image_dir + image + str(image_id) + "." + str(image_count) + ".jpeg"	
-								system(ssdv + image_dir + image + " " + filename)	
-								system("cp " + filename + " " + html_dir + "image_file.jpeg")
+								print("Running ssdv with all blocks in file " + image + " saving as " + html_dir + "image_file.jpeg")
+								system_and_print(ssdv + image_dir + image + " " + html_dir + "image_file.jpeg")
 								telem_string = fstr(telem_string_format)
+								print("Writing index.html file")
 								with open(html_dir + "index.html", "w") as html_file:
 									html_file.write(head_string)
 									html_file.write(telem_string)
