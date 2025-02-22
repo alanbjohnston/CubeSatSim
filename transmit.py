@@ -807,7 +807,7 @@ if __name__ == "__main__":
 			GPIO.setup(txLed, GPIO.OUT)
 			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
-			GPIO.output(powerPin, 0)
+			GPIO.output(powerPin, 1)  # was 0
 			while True:
 				sleep(0.5)
 				if (GPIO.input(squelch) == False):
@@ -821,9 +821,9 @@ if __name__ == "__main__":
 					sleep(1)
 #					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
-					GPIO.output(powerPin, 1)
-					sleep(0.5)
-					GPIO.output(powerPin, 0)
+#					GPIO.output(powerPin, 1)
+#					sleep(0.5)
+#					GPIO.output(powerPin, 0)
 					while (GPIO.input(squelch) == False):
 						sleep(1)
 					print("No carrier detected, stopping repeater")
