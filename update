@@ -243,6 +243,7 @@ if [ ! -d "/home/pi/fctelem" ]; then
 	echo "Installing fctelem binary v0.2 for FunCube mode"
 	cd
 	mkdir /home/pi/fctelem
+	mkdir /home/pi/fctelem/public_html
 	cd fctelem
 	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
 	unzip fctelem.zip
