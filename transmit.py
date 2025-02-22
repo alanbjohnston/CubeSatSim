@@ -808,7 +808,7 @@ if __name__ == "__main__":
 #			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
 #			GPIO.output(powerPin, 1)  # was 0
-			txf = float(tx) - 290.9
+			txf = float(tx) - 288.9
 			print("Transmit frequency: ",txf)
 			while True:
 				sleep(1)
