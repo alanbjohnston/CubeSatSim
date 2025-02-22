@@ -37,7 +37,7 @@ image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
-date_time = datetime.datetime.now()
+date_time = str(datetime.datetime.now())
 
 system_and_print("sudo rm " + image_dir + image)
 #system_and_print("sudo rm " + html_dir + "*")
@@ -177,7 +177,7 @@ if __name__ == "__main__":
 										for line in csv_file:
 											html_file.write(line)
 											html_file.write("<br>")
-									date_time = datetime.datetime.now()		
+									date_time = str(datetime.datetime.now())		
 									tlm_string = fstr(csv_format)		
 									html_file.write(tlm_string)
 									html_file.write("</pre><br>")
