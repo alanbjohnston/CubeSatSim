@@ -54,7 +54,7 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<br><br></pre>" + \
     		" Freq: {frequency:10.1f} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
-label_string = "      date time      , frm,   freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
+label_string = "date time            ,  frm,   freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
 label_string_html = label_string.replace(" ","&nbsp;")
 csv_format = "{date_time:21s}, {frame_count:4d}, {frequency:10.1f}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
 		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
