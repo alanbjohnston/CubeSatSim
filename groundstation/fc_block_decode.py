@@ -37,7 +37,7 @@ image_dir = "/home/pi/fctelem/"
 image = "image_file"
 ssdv = "/home/pi/ssdv/ssdv -d -J "
 
-print(datetime.datetime.now())
+date_time = datetime.datetime.now()
 
 system_and_print("sudo rm " + image_dir + image)
 #system_and_print("sudo rm " + html_dir + "*")
@@ -53,9 +53,9 @@ telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p
 		" Ix(mA): {Ix:5d}   Iy(mA): {Iy:5d}   Iz(mA): {Iz:5d}<p>" + \
   		"     Vbat(mV): {Vb:5d}   Ibat(mA): {Ib:5d}<br><br></pre>" + \
     		" Freq: {frequency:10.1f} errors: {errors} Seq: {sequence:d} {frame_type} frames: {frame_count:d}"
-label_string = " frm,   freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
+label_string = "      date time      , frm,   freq off, err,   h,   seq,     frame, img,  c,    Vx,    Vy,    Vz,    Ix,    Iy,    Iz,    Vb,    Ib "
 label_string_html = label_string.replace(" ","&nbsp;")
-csv_format = "{frame_count:4d}, {frequency:10.1f}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
+csv_format = "{date_time:21s}, {frame_count:4d}, {frequency:10.1f}, {errors:3d}, {first_byte: 2x}, {sequence:5d}, {frame_type:9s}, {image_id:3d}, {image_count:2d}, " + \
 		"{Vx:5d}, {Vy:5d}, {Vz:5d}, {Ix:5d}, {Iy:5d}, {Iz:5d}, {Vb:5d}, {Ib:5d}"
 
 
@@ -177,6 +177,7 @@ if __name__ == "__main__":
 										for line in csv_file:
 											html_file.write(line)
 											html_file.write("<br>")
+									date_time = datetime.datetime.now()		
 									tlm_string = fstr(csv_format)		
 									html_file.write(tlm_string)
 									html_file.write("</pre><br>")
