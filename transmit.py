@@ -797,7 +797,7 @@ if __name__ == "__main__":
 	#					else:	
 					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
-			print("Repeater")
+			print("Cross Band Repeater")
 			print("Stopping command and control")
 			system("sudo systemctl stop command")
 			print("turn on FM rx")
@@ -808,6 +808,8 @@ if __name__ == "__main__":
 #			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
 #			GPIO.output(powerPin, 1)  # was 0
+			tx = rx - 290
+			print("Transmit frequency: ",tx)
 			while True:
 				sleep(0.5)
 				if (GPIO.input(squelch) == False):
