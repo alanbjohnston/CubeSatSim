@@ -361,17 +361,17 @@ if __name__ == "__main__":
 	try:
 		ser = serial.Serial("/dev/ttyAMA0", 9600)
 		print(ser.portstr)
-		uhf_string1 = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
+#		uhf_string1 = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
 		uhf_string2 = "AT+DMOSETGROUP=0," + tx + "," + rx + ",0000," + sq + ",0000\r\n"			
 		connect_string = "AT+DMOCONNECT\r\n"
 		
 		print(uhf_string2)
 		for i in range(6):
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
-			ser.write(uhf_string1.encode())
+#			ser.write(uhf_string1.encode())
 			sleep(0.1)
 			ser.write(connect_string.encode())
-			sleep(0.1)
+			sleep(0.2)
 			ser.write(uhf_string2.encode())
 			sleep(0.1)
 		ser.close()
