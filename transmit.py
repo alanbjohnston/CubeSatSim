@@ -375,7 +375,7 @@ if __name__ == "__main__":
 			ser.write(uhf_string2.encode())
 			sleep(0.1)
 		ser.close()
-		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
+#		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
 	except:
 		print("Error in serial write")
 	output(pd, 0)
