@@ -370,7 +370,7 @@ if __name__ == "__main__":
 		for i in range(6):
 #			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
 			ser.write(uhf_string1.encode())
-			sleep(0.1)
+			sleep(0.3)
 			ser.write(connect_string.encode())
 #			ser.write(b"AT+DMOCONNECT\r\n")
 			sleep(0.2)
