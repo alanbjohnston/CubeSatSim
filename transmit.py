@@ -363,7 +363,7 @@ if __name__ == "__main__":
 		print(ser.portstr)
 #		uhf_string1 = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
 #		uhf_string2 = "AT+DMOSETGROUP=0," + tx + "," + rx + ",0000," + sq + ",0000\r\n"
-		uhf_string2 = "AT+DMOSETGROUP=0,434.9000,435.0000,0000,3,0000,0\r\n
+		uhf_string2 = "AT+DMOSETGROUP=0,434.9000,435.0000,0000,3,0000,0\r\n"
 		connect_string = "AT+DMOCONNECT\r\n"
 		
 		print(uhf_string2)
