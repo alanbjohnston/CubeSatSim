@@ -365,6 +365,7 @@ int main(int argc, char * argv[]) {
   if (!ax5043) // don't test for payload if AX5043 is present
   {
     payload = OFF;
+	  /*
     fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
       fprintf(stderr,"Serial opened to Pico\n");	    
@@ -375,6 +376,7 @@ int main(int argc, char * argv[]) {
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
+	 */ 
   }
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
@@ -598,7 +600,8 @@ int main(int argc, char * argv[]) {
       if (!ax5043) {	      
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
 //        STEMBoardFailure = 0;
-	payload = get_payload_serial(FALSE);      
+//	payload = get_payload_serial(FALSE);   
+	palyload = FALSE;      
         printf("get_payload_status: %d \n", payload);  // not debug
 	fflush(stdout); 
 //	printf("String: %s\n", buffer2);       
