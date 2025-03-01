@@ -601,7 +601,7 @@ int main(int argc, char * argv[]) {
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
 //        STEMBoardFailure = 0;
 //	payload = get_payload_serial(FALSE);   
-	palyload = FALSE;      
+	payload = FALSE;      
         printf("get_payload_status: %d \n", payload);  // not debug
 	fflush(stdout); 
 //	printf("String: %s\n", buffer2);       
