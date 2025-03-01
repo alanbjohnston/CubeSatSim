@@ -381,7 +381,7 @@ if __name__ == "__main__":
 #		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
 	except:
 		print("Error in serial write")
-	output(pd, 0)
+	output(pd, 1)
 
 #	if (mode != 'x') and (skip == False):
 #		sleep(10)  # delay so cubesatsim code catches up
