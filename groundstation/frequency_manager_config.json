@@ -1,0 +1,171 @@
+{
+    "bookmarkDisplayMode": 1,
+    "lists": {
+        "General": {
+            "bookmarks": {
+                "AO-73": {
+                    "bandwidth": 5000.0,
+                    "frequency": 145935000.0,
+                    "mode": 4
+                },
+                "APRS Packet": {
+                    "bandwidth": 12500.0,
+                    "frequency": 144390000.0,
+                    "mode": 0
+                },
+                "ATC Clearance Delivery": {
+                    "bandwidth": 12500.0,
+                    "frequency": 118850000.0,
+                    "mode": 2
+                },
+                "ATC Ground East": {
+                    "bandwidth": 12500.0,
+                    "frequency": 121900000.0,
+                    "mode": 2
+                },
+                "ATC Ground West": {
+                    "bandwidth": 12500.0,
+                    "frequency": 121650000.0,
+                    "mode": 2
+                },
+                "ATC Local East": {
+                    "bandwidth": 12500.0,
+                    "frequency": 118500000.0,
+                    "mode": 2
+                },
+                "ATC Local West": {
+                    "bandwidth": 12500.0,
+                    "frequency": 135100000.0,
+                    "mode": 2
+                },
+                "CAS-4A": {
+                    "bandwidth": 5000.0,
+                    "frequency": 145836000.0,
+                    "mode": 4
+                },
+                "CAS-4B": {
+                    "bandwidth": 5000.0,
+                    "frequency": 145893000.0,
+                    "mode": 4
+                },
+                "CubeSatSim": {
+                    "bandwidth": 12500.0,
+                    "frequency": 434900000.0,
+                    "mode": 0
+                },
+                "Ham APRS": {
+                    "bandwidth": 12500.0,
+                    "frequency": 144390000.0,
+                    "mode": 2
+                },
+                "Ham Beacon PHL": {
+                    "bandwidth": 3000.0,
+                    "frequency": 144272000.0,
+                    "mode": 4
+                },
+                "Ham Cherry Hill": {
+                    "bandwidth": 201869.15625,
+                    "frequency": 145370000.0,
+                    "mode": 0
+                },
+                "Ham Munroe": {
+                    "bandwidth": 12500.0,
+                    "frequency": 145390000.0,
+                    "mode": 0
+                },
+                "Ham Newtown": {
+                    "bandwidth": 12500.0,
+                    "frequency": 147060000.0,
+                    "mode": 0
+                },
+                "Ham Paoli": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 145130000.0,
+                    "mode": 0
+                },
+                "ISS": {
+                    "bandwidth": 5000.0,
+                    "frequency": 437800000.0,
+                    "mode": 0
+                },
+                "ISS-SSTV": {
+                    "bandwidth": 5000.0,
+                    "frequency": 145800000.0,
+                    "mode": 0
+                },
+                "NOAA Allentown": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 162400000.0,
+                    "mode": 0
+                },
+                "NOAA Harrisburg": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 162550000.0,
+                    "mode": 0
+                },
+                "NOAA Hiburnia Park": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 162425000.0,
+                    "mode": 0
+                },
+                "NOAA PHL": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 162475000.0,
+                    "mode": 0
+                },
+                "NOAA Sudlersville": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 162500000.0,
+                    "mode": 0
+                },
+                "PHL": {
+                    "bandwidth": 12500.0,
+                    "frequency": 133275000.0,
+                    "mode": 2
+                },
+                "PHL 2": {
+                    "bandwidth": 12500.0,
+                    "frequency": 133475000.0,
+                    "mode": 2
+                },
+                "PHL 3": {
+                    "bandwidth": 12500.0,
+                    "frequency": 133500000.0,
+                    "mode": 2
+                },
+                "PHL 5": {
+                    "bandwidth": 12500.0,
+                    "frequency": 133575000.0,
+                    "mode": 2
+                },
+                "PHL 6": {
+                    "bandwidth": 12500.0,
+                    "frequency": 134600000.0,
+                    "mode": 2
+                },
+                "PHL 7": {
+                    "bandwidth": 12500.0,
+                    "frequency": 135450000.0,
+                    "mode": 2
+                },
+                "PHL 8": {
+                    "bandwidth": 12500.0,
+                    "frequency": 128795000.0,
+                    "mode": 2
+                },
+                "PHL Automated": {
+                    "bandwidth": 18495.533203125,
+                    "frequency": 133400000.0,
+                    "mode": 0
+                },
+                "The Roar WXVL": {
+                    "bandwidth": 201869.15625,
+                    "frequency": 89100000.0,
+                    "mode": 1
+                }
+            },
+            "showOnWaterfall": true
+        }
+    },
+    "selectedList": "General"
+}
