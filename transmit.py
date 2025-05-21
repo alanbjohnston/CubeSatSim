@@ -798,8 +798,8 @@ if __name__ == "__main__":
 					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
 			print("Cross Band Repeater")
-			print("Stopping command and control")
-			system("sudo systemctl stop command")
+#			print("Stopping command and control")
+#			system("sudo systemctl stop command")
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
