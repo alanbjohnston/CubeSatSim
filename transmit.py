@@ -810,9 +810,11 @@ if __name__ == "__main__":
 #			GPIO.output(powerPin, 1)  # was 0
 			txf = float(tx) - 288.9
 			print("Transmit frequency: ",txf)
+			if (command_tx != True):
+				print("Beacon mode off so no repeater transmission")
 			while True:
 				sleep(1)
-				if (GPIO.input(squelch) == False):
+				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
