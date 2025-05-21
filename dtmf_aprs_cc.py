@@ -71,6 +71,25 @@ if __name__ == "__main__":
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
+
+		if ((line.find("MODE=e")) > 0):
+			system("echo '\nRepeater Mode!!\n'")
+			mode = 'e'
+			change_mode = True
+			counter = (counter + 1) % 2
+		if ((line.find("DTMF>APDW15:t6#")) > 0):
+			system("echo '\nRepeater Mode!!\n'")
+			mode = 'e'
+			change_mode = True
+		if ((line.find("MODE=j")) > 0):
+			system("echo '\nFunCube Mode!!\n'")
+			mode = 'j'
+			change_mode = True
+			counter = (counter + 1) % 2
+		if ((line.find("DTMF>APDW15:t7#")) > 0):
+			system("echo '\nFunCube Mode!!\n'")
+			mode = 'j'
+			change_mode = True				
 		if ((line.find("MODE=n")) > 0):
 			system("echo '\nTransmit Commands Mode!!\n'")
 			mode = 'n'
@@ -80,7 +99,6 @@ if __name__ == "__main__":
 			system("echo '\nTransmit Commands Mode!!\n'")
 			mode = 'n'
 			change_mode = True
-# Currently, C2C does not support Repeater mode e			
 		if ((line.find("MODE=o")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
@@ -160,6 +178,63 @@ if __name__ == "__main__":
 				sleep(0.1)
 				GPIO.output(powerPin, 1)
 				sleep(1)
+
+			elif (mode == 'e'):
+				GPIO.output(powerPin, 0) # blink six times
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1);
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)
+
+			elif (mode == 'j'):
+				GPIO.output(powerPin, 0) # blink seven times
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1);
+				GPIO.output(powerPin, 1)	
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(0.1)
+				GPIO.output(powerPin, 0)
+				sleep(0.1)
+				GPIO.output(powerPin, 1)
+				sleep(1)			
+			
 			elif (mode == 'a'):
 				mode = 'a'
 				GPIO.output(powerPin, 0) # blink one time
