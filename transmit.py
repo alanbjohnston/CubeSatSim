@@ -270,7 +270,8 @@ if __name__ == "__main__":
 	rx_value = '0'
 	sq = '0'
 	tx = '434.9000'	
-	rx = '435.0000'	
+	rx = '435.0000'
+	txr = '146.0000'
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -286,8 +287,13 @@ if __name__ == "__main__":
                         txf = float(config[6])
 #                        print(txf)
 #                        print( "{:.4f}".format(txf))
-                        tx = "{:.4f}".format(txf)
-                        print(tx)
+                        
+			if (mode == 'e'):
+				txr = txf - 288.9 # Cross Band Repeater mode transmit frequency in 2m band
+				tx = "{:.4f}".format(txr)
+			else:
+				tx = "{:.4f}".format(txf)
+	                print("Transmit frequency: ",tx)
 		if len(config) > 7:
                         rxf = float(config[7])
 #                        print(rxf)
@@ -377,7 +383,8 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
+##	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
+	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 'e') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
 #		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
@@ -797,7 +804,7 @@ if __name__ == "__main__":
 	#					else:	
 					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
-			print("Cross Band Repeater")
+			print("Cross Band Repeater Mode")
 #			print("Stopping command and control")
 #			system("sudo systemctl stop command")
 			print("turn on FM rx")
@@ -808,8 +815,8 @@ if __name__ == "__main__":
 #			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
 #			GPIO.output(powerPin, 1)  # was 0
-			txf = float(tx) - 288.9
-			print("Transmit frequency: ",txf)
+#			txf = float(tx) - 288.9
+#			print("Transmit frequency: ",txf)
 			if (command_tx != True):
 				print("Beacon mode off so no repeater transmission")
 			
@@ -826,7 +833,7 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 ##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + str(txf) + "e3 &")
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					sleep(0.5)
 #					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
