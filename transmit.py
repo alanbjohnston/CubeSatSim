@@ -822,7 +822,9 @@ if __name__ == "__main__":
 				print("Beacon mode off so no repeater transmission")
 			
 			while True:
-				sleep(3) # wait 3 seconds for a C2C command
+				print("Waiting for C2C")
+				sleep(4) # wait 4 seconds for a C2C command
+				print("Ready to detect carrier")
 				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					if (no_command == False):
