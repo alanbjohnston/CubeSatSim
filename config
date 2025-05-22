@@ -745,6 +745,8 @@ elif [ "$1" = "-T" ]; then
 #			reboot=1
 			echo "restarting command and control"
 			sudo systemctl restart command
+			echo "restarting transmit"
+			sudo systemctl restart transmit
 ##			sudo reboot now	
 		fi
 
@@ -761,6 +763,8 @@ elif [ "$1" = "-T" ]; then
 			echo "restarting command and control"
 #			reboot=1
 			sudo systemctl restart command
+			echo "restarting transmit"
+			sudo systemctl restart transmit
 ##			sudo reboot now	
 		fi
 
