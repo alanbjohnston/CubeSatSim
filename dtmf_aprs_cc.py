@@ -32,81 +32,81 @@ if __name__ == "__main__":
 			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t1#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t1#")) > 0):
 			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
 			change_mode = True
-		if ((line.find("MODE=f")) > 0):
+		elif ((line.find("MODE=f")) > 0):
 			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t2#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t2#")) > 0):
 			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
 			change_mode = True
-		if ((line.find("MODE=b")) > 0):
+		elif ((line.find("MODE=b")) > 0):
 			system("echo '\nBPSK Mode!!\n'")
 			mode = 'b'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t3#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t3#")) > 0):
 			system("echo '\nBPSK Mode!!\n'")
 			mode = 'b'
 			change_mode = True
-		if ((line.find("MODE=s")) > 0):
+		elif ((line.find("MODE=s")) > 0):
 			system("echo '\nSSTV Mode!!\n'")
 			mode = 's'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t4#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t4#")) > 0):
 			system("echo '\nSSTV Mode!!\n'")
 			mode = 's'
 			change_mode = True
-		if ((line.find("MODE=m")) > 0):
+		elif ((line.find("MODE=m")) > 0):
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t5#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t5#")) > 0):
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
 
-		if ((line.find("MODE=e")) > 0):
+		elif ((line.find("MODE=e")) > 0):
 			system("echo '\nRepeater Mode!!\n'")
 			mode = 'e'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t6#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t6#")) > 0):
 			system("echo '\nRepeater Mode!!\n'")
 			mode = 'e'
 			change_mode = True
-		if ((line.find("MODE=j")) > 0):
+		elif ((line.find("MODE=j")) > 0):
 			system("echo '\nFunCube Mode!!\n'")
 			mode = 'j'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t7#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t7#")) > 0):
 			system("echo '\nFunCube Mode!!\n'")
 			mode = 'j'
 			change_mode = True				
-		if ((line.find("MODE=n")) > 0):
+		elif ((line.find("MODE=n")) > 0):
 			system("echo '\nTransmit Commands Mode!!\n'")
 			mode = 'n'
 			change_mode = True
-			counter = (counter + 1) % 2			
-		if ((line.find("DTMF>APDW15:t11#")) > 0):
+#			counter = (counter + 1) % 2			
+		elif ((line.find("DTMF>APDW15:t11#")) > 0):
 			system("echo '\nTransmit Commands Mode!!\n'")
 			mode = 'n'
 			change_mode = True
-		if ((line.find("MODE=o")) > 0):
+		elif ((line.find("MODE=o")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
 			change_mode = True
-			counter = (counter + 1) % 2
-		if ((line.find("DTMF>APDW15:t10#")) > 0):
+#			counter = (counter + 1) % 2
+		elif ((line.find("DTMF>APDW15:t10#")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
 			change_mode = True
