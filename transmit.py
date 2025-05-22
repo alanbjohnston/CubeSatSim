@@ -818,9 +818,9 @@ if __name__ == "__main__":
 				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					if (no_command == False):
-						system("sudo systemctl stop command")
-						print("stopping C2C")
 						sleep(2)
+						print("stopping C2C")
+						system("sudo systemctl stop command")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
