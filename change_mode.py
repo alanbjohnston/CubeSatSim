@@ -8,6 +8,9 @@ import RPi.GPIO as GPIO
 from RPi.GPIO import output
 from subprocess import call
 
+powerPin = 16
+txLed = 27
+
 if __name__ == "__main__":
 	mode = 'b'
 	if (len(sys.argv)) > 1:
