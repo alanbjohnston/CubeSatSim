@@ -284,7 +284,7 @@ if __name__ == "__main__":
 				sq = 0 # turn off squelch for Pacsat
 			print(sq)
 		if len(config) > 6:
-                        txf = float(config[6])
+			txf = float(config[6])
 #                        print(txf)
 #                        print( "{:.4f}".format(txf))
                         
@@ -293,7 +293,7 @@ if __name__ == "__main__":
 				tx = "{:.4f}".format(txr)
 			else:
 				tx = "{:.4f}".format(txf)
-	                print("Transmit frequency: ",tx)
+			print("Transmit frequency: ",tx)
 		if len(config) > 7:
                         rxf = float(config[7])
 #                        print(rxf)
