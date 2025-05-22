@@ -40,7 +40,8 @@ if __name__ == "__main__":
 		elif ((line.find("MODE=f")) > 0):
 			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
-			change_mode = True
+			change_mode = False # True
+			call("python3 /home/pi/CubeSatSim/change_mode.py f", shell=True)
 #			counter = (counter + 1) % 2
 		elif ((line.find("DTMF>APDW15:t2#")) > 0):
 			system("echo '\nFSK Mode!!\n'")
