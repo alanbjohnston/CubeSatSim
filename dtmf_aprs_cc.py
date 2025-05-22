@@ -4,6 +4,8 @@ import RPi.GPIO as GPIO
 from RPi.GPIO import output
 from time import sleep
 import logging
+from subprocess import call
+
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
 
@@ -261,11 +263,11 @@ if __name__ == "__main__":
 			
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
-			system("sudo systemctl stop rpitx")
+			call("sudo systemctl stop rpitx", shell=True)
 #			system("sudo systemctl stop cubesatsim")
 			
 			print("\n/home/pi/CubeSatSim/config -" + mode)
-			system("/home/pi/CubeSatSim/config -" + mode)
+			call("/home/pi/CubeSatSim/config -" + mode, shell=True)
 
 			
 			change_mode = False
