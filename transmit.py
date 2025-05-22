@@ -826,7 +826,7 @@ if __name__ == "__main__":
 				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					if (no_command == False):
-						sleep(4)  # wait 3 seconds before repeater mode in case it is C2C command
+						sleep(3)  # wait 3 seconds before repeater mode in case it is C2C command
 						print("stopping C2C")
 						system("sudo systemctl stop command")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
@@ -845,9 +845,9 @@ if __name__ == "__main__":
 						sleep(1)
 					print("No carrier detected, stopping repeater")
 					output(txLed, txLedOff)
-					system("sudo killall -9 arecord")
-					system("sudo killall -9 nc")
-					system("sudo killall -9 rpitx")
+					system("sudo killall -9 arecord > /dev/null 2>&1")
+					system("sudo killall -9 nc > /dev/null 2>&1")
+					system("sudo killall -9 rpitx > /dev/null 2>&1")
 					print("Resetting audio")
 					system("sudo /etc/init.d/alsa-utils stop")
 					system("sudo /etc/init.d/alsa-utils start")
