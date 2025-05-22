@@ -271,7 +271,7 @@ if __name__ == "__main__":
 	sq = '0'
 	tx = '434.9000'	
 	rx = '435.0000'
-	txr = '146.0000'
+	txr = '144.9000'
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -289,7 +289,7 @@ if __name__ == "__main__":
 #                        print( "{:.4f}".format(txf))
                         
 			if (mode == 'e'):
-				txr = txf - 289.9 # Cross Band Repeater mode transmit frequency in 2m band
+				txr = txf - 290.0 # Cross Band Repeater mode transmit frequency in 2m band
 				tx = "{:.4f}".format(txr)
 			else:
 				tx = "{:.4f}".format(txf)
