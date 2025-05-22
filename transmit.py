@@ -820,6 +820,7 @@ if __name__ == "__main__":
 					if (no_command == False):
 						system("sudo systemctl stop command")
 						print("stopping C2C")
+						sleep(2)
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
