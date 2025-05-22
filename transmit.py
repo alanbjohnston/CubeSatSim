@@ -355,24 +355,25 @@ if __name__ == "__main__":
 	card = "Headphones"  # default using pcm audio output of Pi Zero
 #	card = "Device" # using USB sound card for audio output	
 
-	print("Programming FM module!\n");	
-	output(pd, 1)
-	output (ptt, 1)
-	try:
-		ser = serial.Serial("/dev/ttyAMA0", 9600)
-		print(ser.portstr)
-#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
-		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
-		print(uhf_string)
-		for i in range(6):
-#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
-			ser.write(uhf_string.encode())
-			sleep(0.1)
-		ser.close()
-		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
-	except:
-		print("Error in serial write")
-	output(pd, 0)
+	if (mode != 'e'):
+		print("Programming FM module!\n");	
+		output(pd, 1)
+		output (ptt, 1)
+		try:
+			ser = serial.Serial("/dev/ttyAMA0", 9600)
+			print(ser.portstr)
+	#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+			uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
+			print(uhf_string)
+			for i in range(6):
+	#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
+				ser.write(uhf_string.encode())
+				sleep(0.1)
+			ser.close()
+			ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
+		except:
+			print("Error in serial write")
+		output(pd, 0)
 
 #	if (mode != 'x') and (skip == False):
 #		sleep(10)  # delay so cubesatsim code catches up
@@ -384,7 +385,7 @@ if __name__ == "__main__":
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
 ##	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
-	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or (mode == 'e'):	
+	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	
 #		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
