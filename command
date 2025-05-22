@@ -38,7 +38,7 @@ fi
 uptime=`cat /proc/uptime | awk '{printf "%0.f", $1}'`
 
 echo -n "Uptime since boot is "
-echo $value
+echo $uptime
 
 if [[ "$uptime" -lt  "60" ]]; then
 
