@@ -820,11 +820,9 @@ if __name__ == "__main__":
 #			print("Transmit frequency: ",txf)
 			if (command_tx != True):
 				print("Beacon mode off so no repeater transmission")
-			
+
+			print("Ready to detect carrier")
 			while True:
-				print("Waiting for C2C")
-				sleep(4) # wait 4 seconds for a C2C command
-				print("Ready to detect carrier")
 				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					if (no_command == False):
@@ -836,7 +834,7 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 ##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
 					sleep(0.5)
 #					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
@@ -856,7 +854,11 @@ if __name__ == "__main__":
 					print("Finished resetting audio")
 					if (no_command == False):
 						system("sudo systemctl restart command")
-						print("restarting C2C")					
+						print("restarting C2C")	
+						print("Waiting for C2C")
+						sleep(4) # wait 4 seconds for a C2C command
+						print("Ready to detect carrier")
+	
 		else:
 			print("FSK") 
 			print("turn on FM rx")
