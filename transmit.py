@@ -812,10 +812,14 @@ if __name__ == "__main__":
 			print("Transmit frequency: ",txf)
 			if (command_tx != True):
 				print("Beacon mode off so no repeater transmission")
+			
 			while True:
 				sleep(1)
 				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
+					if (no_command == False):
+						system("sudo systemctl stop command")
+						print("stopping C2C")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
@@ -839,6 +843,9 @@ if __name__ == "__main__":
 					system("sudo /etc/init.d/alsa-utils stop")
 					system("sudo /etc/init.d/alsa-utils start")
 					print("Finished resetting audio")
+					if (no_command == False):
+						system("sudo systemctl restart command")
+						print("restarting C2C")					
 		else:
 			print("FSK") 
 			print("turn on FM rx")
