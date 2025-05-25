@@ -825,10 +825,6 @@ if __name__ == "__main__":
 			while True:
 				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
-					if (no_command == False):
-						sleep(3)  # wait 3 seconds before repeater mode in case it is C2C command
-						print("stopping C2C")
-						system("sudo systemctl stop command")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
@@ -837,7 +833,7 @@ if __name__ == "__main__":
 					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
 					sleep(0.5)
 #					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
-					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+					system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 #					GPIO.output(powerPin, 1)
 #					sleep(0.5)
 #					GPIO.output(powerPin, 0)
@@ -852,12 +848,7 @@ if __name__ == "__main__":
 					system("sudo /etc/init.d/alsa-utils stop")
 					system("sudo /etc/init.d/alsa-utils start")
 					print("Finished resetting audio")
-					if (no_command == False):
-						system("sudo systemctl restart command")
-						print("restarting C2C")	
-#						print("Waiting for C2C")
-#						sleep(4) # wait 4 seconds for a C2C command
-						print("Ready to detect carrier")
+					print("Ready to detect carrier")
 	
 		else:
 			print("FSK") 
