@@ -119,22 +119,20 @@ else
   FLAG=1
 fi
 
-sudo su
-FILE=/root/.asoundrc
+FILE=/etc/asound.conf
 if [ -f "$FILE" ]; then
-  if [[ $(diff /home/pi/CubeSatSim/asoundrc /root/.asoundrc) ]]; then
-    echo "changed .asoundrc for root user."
-    sudo cp /home/pi/CubeSatSim/asoundrc /root/.asoundrc
+  if [[ $(diff /home/pi/CubeSatSim/asoundrc /etc/asound.conf) ]]; then
+    echo "changed /etc/asound.conf."
+    sudo cp /home/pi/CubeSatSim/asoundrc /etc/asound.conf
     FLAG=1
   else
-    echo "no change to .asoundrc for root user."
+    echo "no change to /etc/asound.conf."
   fi
 else
-  echo "creating .asoundrc for root user."
-  sudo cp /home/pi/CubeSatSim/asoundrc /root/.asoundrc
+  echo "creating /etc/asound.conf."
+  sudo cp /home/pi/CubeSatSim/asoundrc /etc/asound.conf
   FLAG=1
 fi
-su pi
 
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
