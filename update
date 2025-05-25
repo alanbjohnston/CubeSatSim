@@ -121,16 +121,16 @@ fi
 
 FILE=/etc/asound.conf
 if [ -f "$FILE" ]; then
-  if [[ $(diff /home/pi/CubeSatSim/asoundrc /etc/asound.conf) ]]; then
+  if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
     echo "changed /etc/asound.conf."
-    sudo cp /home/pi/CubeSatSim/asoundrc /etc/asound.conf
+    sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
     FLAG=1
   else
     echo "no change to /etc/asound.conf."
   fi
 else
   echo "creating /etc/asound.conf."
-  sudo cp /home/pi/CubeSatSim/asoundrc /etc/asound.conf
+  sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
   FLAG=1
 fi
 
