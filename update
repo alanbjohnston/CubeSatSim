@@ -277,6 +277,7 @@ fi
 
 if [ ! -d "/home/pi/fcdctl" ]; then
 	echo "Installing fcdctl to set FunCubeDongle Pro gain"
+	cd
 	git clone https://github.com/csete/fcdctl.git
 	cd fcdctl
 	make fcdpp
