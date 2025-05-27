@@ -35,7 +35,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo apt-get install -y python3-smbus libusb-1.0
+# sudo apt-get install -y python3-smbus libusb-1.0
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
@@ -277,6 +277,9 @@ fi
 
 if [ ! -d "/home/pi/fcdctl" ]; then
 	echo "Installing fcdctl to set FunCubeDongle Pro gain"
+	sudo rm /var/lib/dpkg/info/python3-pip.list
+	sudo apt install python3-pip --reinstall
+	sudo apt-get install -y python3-smbus libusb-1.0
 	cd
 	git clone https://github.com/csete/fcdctl.git
 	cd fcdctl
@@ -285,7 +288,7 @@ fi
 
 cd /home/pi/pi-power-button
 
-git checkout master
+# git checkout master
 
   git pull --no-rebase > .updated_p
 
@@ -293,11 +296,12 @@ git checkout master
   if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
   
     echo "updating pi-power-button."
+
+    git checkout 7-modes
     
     script/install
 
     FLAG=1
-
 
   else
     echo "nothing to do for pi-power-button."
