@@ -275,7 +275,7 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	FLAG=1
 fi
 
-if [ ! -d "/home/pi/fcdctl" ]; then
+if [ ! -d "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FunCubeDongle Pro gain"
 	sudo rm /var/lib/dpkg/info/python3-pip.list
 	sudo apt install python3-pip --reinstall
