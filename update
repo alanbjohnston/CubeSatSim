@@ -35,7 +35,8 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo apt-get install -y python3-smbus libusb-1.0
+#sudo apt-get install -y python3-smbus libusb-1.0
+sudo apt-get install -y python3-smbus libusb*
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
