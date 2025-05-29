@@ -2,6 +2,8 @@
 
 echo -e "\nCommand and Control script for CubeSatSim v2.1\n"
 
+sudo modprobe snd-aloop
+
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
     		echo "Radio command and control is ON"

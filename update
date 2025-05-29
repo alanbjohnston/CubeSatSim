@@ -35,7 +35,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo apt-get install -y python3-smbus libusb-1.0
+# sudo apt-get install -y python3-smbus libusb-1.0
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
@@ -116,6 +116,21 @@ else
   echo "creating command.service."
   sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
   sudo systemctl enable command
+  FLAG=1
+fi
+
+FILE=/etc/asound.conf
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
+    echo "changed /etc/asound.conf."
+    sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+    FLAG=1
+  else
+    echo "no change to /etc/asound.conf."
+  fi
+else
+  echo "creating /etc/asound.conf."
+  sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
   FLAG=1
 fi
 
@@ -260,8 +275,12 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	FLAG=1
 fi
 
-if [ ! -d "/home/pi/fcdctl" ]; then
+if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FunCubeDongle Pro gain"
+	sudo rm /var/lib/dpkg/info/python3-pip.list
+	sudo apt install python3-pip --reinstall
+	sudo apt-get install -y python3-smbus libusb-1.0
+	cd
 	git clone https://github.com/csete/fcdctl.git
 	cd fcdctl
 	make fcdpp
@@ -269,7 +288,7 @@ fi
 
 cd /home/pi/pi-power-button
 
-git checkout master
+# git checkout master
 
   git pull --no-rebase > .updated_p
 
@@ -277,11 +296,12 @@ git checkout master
   if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
   
     echo "updating pi-power-button."
+
+    git checkout 7-modes
     
     script/install
 
     FLAG=1
-
 
   else
     echo "nothing to do for pi-power-button."
