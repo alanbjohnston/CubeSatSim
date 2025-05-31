@@ -629,16 +629,24 @@ int main(int argc, char * argv[]) {
             token = strtok(NULL, space);
           }
         }
-        if (voltage[map[BAT]] == 0.0)
-		batteryVoltage = 4.5;
+        if (voltage[map[BAT]] == 0.0)  // No BAT Board
+		if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
+			batteryVoltage = 4.5;
+		else:
+			batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
+			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
+				sim_mode = FALSE; 
+				fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+			}
+		}
 	else  {
-		batteryVoltage = voltage[map[BAT]];
+		batteryVoltage = voltage[map[BAT]];  // BAT Board present
 		if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 			sim_mode = FALSE; 
 			fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
 		}
 	}
-        batteryCurrent = current[map[BAT]];
+        batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
 	   
    }
 
