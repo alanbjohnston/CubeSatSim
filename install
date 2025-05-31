@@ -56,7 +56,7 @@ sudo dpkg -i debian-template/wiringpi-2.61-1.deb
 cd
 
 #changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial libusb-1.0
 
 sudo pip3 install --upgrade setuptools
 
@@ -95,12 +95,34 @@ git clone https://github.com/alanbjohnston/pi-power-button.git
 
 cd pi-power-button
 
-git checkout master
+git checkout 7-modes
 
 ./script/install
 
+cd
+
+echo "Installing SSDV for FunCube mode"
+git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
+cd ssdv
+make
+cd
+
+echo "Installing fctelem binary v0.2 for FunCube mode"
+mkdir /home/pi/fctelem
+mkdir /home/pi/fctelem/public_html
+cd fctelem
+wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+unzip fctelem.zip
 
 cd
+echo "Installing fcdctl to set FunCubeDongle Pro gain"
+# sudo rm /var/lib/dpkg/info/python3-pip.list
+# sudo apt install python3-pip --reinstall
+# sudo apt-get install -y python3-smbus libusb-1.0
+cd
+git clone https://github.com/csete/fcdctl.git
+cd fcdctl
+make fcdpp
 
 git clone https://github.com/alanbjohnston/PiSSTVpp.git
 
@@ -142,6 +164,8 @@ sudo cp ~/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.servi
 sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
 
 sudo systemctl enable command
+
+sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
 
 sudo cp /boot/config.txt /boot/config.txt.0
 
