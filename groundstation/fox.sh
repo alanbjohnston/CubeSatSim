@@ -19,6 +19,8 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
+sudo killall -9 sdrpp &>/dev/null
+
 sudo killall -9 direwolf &>/dev/null
 
 sudo killall -9 aplay &>/dev/null
