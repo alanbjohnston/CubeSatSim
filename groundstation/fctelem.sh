@@ -58,7 +58,23 @@ if [[ $(/home/pi/fcdctl/fcdctl -l | grep "No FCD found") ]]; then
     exit
 else
     echo "FCD Found!  Setting Gain"
-    /home/pi/fcdctl/fcdctl -g 1 -m 1 -i 0
+
+    FILE=/home/pi/fctelem/fctelem.cfg
+	if [ -f "$FILE" ]; then
+    
+#        config_string=$(</home/pi/fctelem/fctelem.cfg)
+        config_string=$(<$FILE)
+
+    else
+        echo "No fctelem.cfg file"
+        echo "Creating it"
+        config_string="-g 1 -m 1 -i 0"
+        echo $config_string >> FILE
+    fi    
+    
+    /home/pi/fcdctl/fcdctl $config_string
+    
+ #   /home/pi/fcdctl/fcdctl -g 1 -m 1 -i 0
     echo
 fi
 
