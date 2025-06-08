@@ -58,7 +58,8 @@ if [[ $(/home/pi/fcdctl/fcdctl -l | grep "No FCD found") ]]; then
     exit
 else
     echo "FCD Found!  Setting Gain"
-    /home/pi/fcdctl/fcdctl -g 0 -m 1 -i 0
+    /home/pi/fcdctl/fcdctl -g 1 -m 1 -i 0
+    echo
 fi
 
 # FILE=/home/pi/CubeSatSim/groundstation/public_html
