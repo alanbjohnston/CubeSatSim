@@ -78,6 +78,43 @@ else
     echo
 fi
 
+
+requency=$(zenity --list 2>/dev/null --width=410 --height=220 --title="FunCube Telem Decoding" --text="Choose the frequency for FunCube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
+
+echo $frequency
+
+if [ -z "$frequency" ]; then 
+
+	echo "No choice made.  Exiting."
+	sleep 3
+	exit
+
+fi
+
+if [ "$frequency" = "434900" ]; then
+
+frequency=434900000
+echo "Frequency is" $frequency
+echo
+echo "If your CubeSatSim is transmitting in SSTV mode (mode 5) you should get images."
+echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
+
+elif [ "$frequency" = "Other" ]; then
+
+echo
+
+echo "Enter the frequency in kiloHertz"
+
+echo
+
+read -r frequency
+
+frequency=$frequency"000"
+
+fi
+
+
+
 # FILE=/home/pi/CubeSatSim/groundstation/public_html
 FILE=/home/pi/CubeSatSim/fctelem/public_html
 if [ ! -d "$FILE" ]; then
