@@ -79,7 +79,7 @@ else
 fi
 
 
-frequency=$(zenity --list 2>/dev/null --width=410 --height=200 --title="FunCube Telem Decoding" --text="Choose the frequency for FunCube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
+frequency=$(zenity --list 2>/dev/null --width=410 --height=180 --title="FunCube Telem Decoding" --text="Choose the frequency for FunCube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
 
 echo $frequency
 
