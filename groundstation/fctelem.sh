@@ -50,6 +50,17 @@ sudo killall -9 python3 &>/dev/null
 
 #sudo systemctl stop openwebrx
 
+
+if [[ $(/home/pi/fcdctl/fcdctl -l | grep "No FCD found") ]]; then
+    echo "No FunCube Dongle Found!"
+    echo "Plug in FCD and try running again"
+    sleep 30
+    exit
+else
+    echo "FCD Found!  Setting Gain"
+    /home/pi/fcdctl/fcdctl -g 0 -m 1 -i 0
+fi
+
 # FILE=/home/pi/CubeSatSim/groundstation/public_html
 FILE=/home/pi/CubeSatSim/fctelem/public_html
 if [ ! -d "$FILE" ]; then
