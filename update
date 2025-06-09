@@ -297,7 +297,7 @@ cd /home/pi/pi-power-button
   
     echo "updating pi-power-button."
 
-    git checkout 7-modes
+    git checkout master
     
     script/install
 
