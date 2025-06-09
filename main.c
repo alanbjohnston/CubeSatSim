@@ -629,16 +629,24 @@ int main(int argc, char * argv[]) {
             token = strtok(NULL, space);
           }
         }
-        if (voltage[map[BAT]] == 0.0)
-		batteryVoltage = 4.5;
+        if (voltage[map[BAT]] == 0.0)  // No BAT Board
+		if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
+			batteryVoltage = 4.5;
+		else {
+			batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
+			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
+				sim_mode = FALSE; 
+				fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+			}
+		}
 	else  {
-		batteryVoltage = voltage[map[BAT]];
+		batteryVoltage = voltage[map[BAT]];  // BAT Board present
 		if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 			sim_mode = FALSE; 
 			fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
 		}
 	}
-        batteryCurrent = current[map[BAT]];
+        batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
 	   
    }
 
@@ -815,9 +823,9 @@ int main(int argc, char * argv[]) {
       fclose(cpuTempSensor);
     }   
 	  
-    #ifdef DEBUG_LOGGING
-//    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
-    #endif
+//    #ifdef DEBUG_LOGGING
+    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
+//    #endif
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
@@ -2262,7 +2270,8 @@ if (setting == ON) {
 		FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
-		fprintf(stderr,"Turning Battery saver mode ON\n");  
+		fprintf(stderr,"Turning Battery saver mode ON\n"); 
+		battery_saver_mode = ON;
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
 			pclose(command);
@@ -2279,6 +2288,7 @@ if (setting == ON) {
 		FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+		battery_saver_mode = OFF;
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
