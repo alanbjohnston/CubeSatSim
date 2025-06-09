@@ -823,9 +823,9 @@ int main(int argc, char * argv[]) {
       fclose(cpuTempSensor);
     }   
 	  
-    #ifdef DEBUG_LOGGING
-//    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
-    #endif
+//    #ifdef DEBUG_LOGGING
+    fprintf(stderr, "INFO: Battery voltage: %5.2f V  Threshold %5.2f V Current: %6.1f mA Threshold: %6.1f mA\n", batteryVoltage, voltageThreshold, batteryCurrent, currentThreshold);
+//    #endif
 	  
     if ((batteryCurrent > currentThreshold) && (batteryVoltage < (voltageThreshold + 0.15)) && !sim_mode && !hab_mode)
     {
