@@ -116,6 +116,7 @@ echo
 
 sleep 3
 
+echo "connectport=64516 connectaddress='localhost' autotuneoffset=100000 outdir='/home/pi/go/app/fctelem/data' frequency=$frequency" > fcdecode.conf
 
 # FILE=/home/pi/CubeSatSim/groundstation/public_html
 FILE=/home/pi/CubeSatSim/fctelem/public_html
