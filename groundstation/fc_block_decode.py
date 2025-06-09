@@ -45,11 +45,11 @@ system_and_print("sudo rm " + image_dir + image)
 system_and_print("sudo rm " + html_dir + "images/*")
 
 try:
-with open('/home/pi/fctelem/fctelem.cfg', 'r') as config:
-    config_string = config.read()
-    print(config_string)
-catch:
-    print("Error loading fctelem.cfg")
+	with open('/home/pi/fctelem/fctelem.cfg', 'r') as config:
+		config_string = config.read()
+		print(config_string)
+except:
+	print("Error loading fctelem.cfg")
 
 #system_and_print("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
