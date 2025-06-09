@@ -54,7 +54,8 @@ except:
 #system_and_print("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
 head_string = '<HEAD><meta http-equiv="refresh" content="5"><title>FunCube CubeSatSim Telemetry</title></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
-		config_string + '<p><pre>  <img height="256" width="320" src="' + image + '.jpeg"><br>                 <A HREF="images" target="_blank">All images</a><br>'
+		'fcdctl ' + config_string + '<p><pre>  <img height="256" width="320" src="' + image + \
+		'.jpeg"><br>                 <A HREF="images" target="_blank">All images</a><br>'
 foot_string = '</HTML>'
 telem_string_format = "           Image: {image_id:3d} count: {image_count:2d}<p>" + \
 		" Vx(mV): {Vx:5d}   Vy(mV): {Vy:5d}   Vz(mV): {Vz:5d}<p>" + \
