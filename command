@@ -1,6 +1,8 @@
 #!/bin/bash
 
-echo -e "\nCommand and Control script for CubeSatSim v2.0\n"
+echo -e "\nCommand and Control script for CubeSatSim v2.1\n"
+
+sudo modprobe snd-aloop
 
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
@@ -35,9 +37,17 @@ else
 
 fi
 
-echo "Waiting 20 seconds for USB"
+uptime=`cat /proc/uptime | awk '{printf "%0.f", $1}'`
 
-sleep 20
+echo -n "Uptime since boot is "
+echo $uptime
+
+if [[ "$uptime" -lt  "60" ]]; then
+
+	echo "Waiting 20 seconds for USB"
+
+	sleep 20
+fi
 
 FILE=/home/pi/CubeSatSim/command_control_direwolf
 if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then

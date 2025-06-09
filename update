@@ -1,9 +1,21 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v2.0\n"
+echo -e "\nupdate script for CubeSatSim v2.1\n"
+
+FLAG=0
+checkout=0
+
+if [ -z "$1" ] ; then
+	checkout=0
+else
+	checkout=1
+	branch="$1"
+	echo -n "changing to branch "
+	echo $branch
+	FLAG=1
+fi
 
 if [ "$1" = "n" ] ; then
-# if [ -z "$2" ] ; then
 	noreboot=1
 else
 	noreboot=0
@@ -23,7 +35,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo apt-get install -y python3-smbus
+# sudo apt-get install -y python3-smbus libusb-1.0
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
@@ -38,6 +50,11 @@ sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # si
 cd /home/pi/CubeSatSim
 
 git pull --no-rebase > .updated
+
+if [ $checkout -eq 1 ]; then
+	git checkout $branch	
+	git pull --no-rebase
+fi
 
 make debug
 
@@ -56,8 +73,6 @@ else
     echo "creating $FILE"
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
-
-FLAG=0
 
 if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
   echo "changed cubesatsim.service."
@@ -104,6 +119,21 @@ else
   FLAG=1
 fi
 
+FILE=/etc/asound.conf
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
+    echo "changed /etc/asound.conf."
+    sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+    FLAG=1
+  else
+    echo "no change to /etc/asound.conf."
+  fi
+else
+  echo "creating /etc/asound.conf."
+  sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+  FLAG=1
+fi
+
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 1."
@@ -115,7 +145,7 @@ if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 2."
     cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
 fi
-      
+
 grep 'update' /home/pi/CubeSatSim/.updated
 if [[ $(grep 'update' /home/pi/CubeSatSim/.updated) ]]; then
   echo "update script updated, running again"
@@ -213,10 +243,52 @@ if [ ! -d "/home/pi/WiringPi" ]; then
 
 fi
 
+if [ ! -d "/home/pi/ssdv" ]; then
+
+	echo "Installing SSDV for FunCube mode"
+	cd
+	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
+	cd ssdv
+	make
+	cd
+	FLAG=1
+fi
+
+if [ ! -d "/home/pi/fctelem" ]; then
+	echo "Installing fctelem binary v0.2 for FunCube mode"
+	cd
+	mkdir /home/pi/fctelem
+	mkdir /home/pi/fctelem/public_html
+	cd fctelem
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip fctelem.zip
+	FLAG=1
+elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
+	echo "Updating fctelem binary to version v0.2 for FunCube mode"
+	cd
+	cd /home/pi/fctelem
+	sudo mv fctelem fctelem.bk
+	sudo mv fcdecode.conf fcdecode.conf.bk
+	sudo mv fctelem.zip fctelem.zip.1
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip fctelem.zip
+	FLAG=1
+fi
+
+if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
+	echo "Installing fcdctl to set FunCubeDongle Pro gain"
+	sudo rm /var/lib/dpkg/info/python3-pip.list
+	sudo apt install python3-pip --reinstall
+	sudo apt-get install -y python3-smbus libusb-1.0
+	cd
+	git clone https://github.com/csete/fcdctl.git
+	cd fcdctl
+	make fcdpp
+fi
+
 cd /home/pi/pi-power-button
 
-git checkout master
-
+# git checkout master
 
   git pull --no-rebase > .updated_p
 
@@ -224,11 +296,12 @@ git checkout master
   if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
   
     echo "updating pi-power-button."
+
+    git checkout 7-modes
     
     script/install
 
     FLAG=1
-
 
   else
     echo "nothing to do for pi-power-button."
@@ -348,7 +421,7 @@ if [ "$noreboot" = "0" ] ; then
 	fi
 else
 	if [ $FLAG -eq 1 ]; then
-		echo "reboot needed for changes to take effect"
+		echo "reboot needed for changes to take effect" | wall
 	fi
 fi
 

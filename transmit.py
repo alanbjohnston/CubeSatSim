@@ -3,13 +3,14 @@
 import RPi.GPIO as GPIO
 from RPi.GPIO import output
 #import subprocess
-#import time
+import time
 from time import sleep
 #import os
 import sys
 from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial	
+import random
 
 def battery_saver_check():
 	try:
@@ -22,6 +23,14 @@ def battery_saver_check():
 	except:
 		print("battery saver not activated")
 #		txc = True
+
+def blink(times):
+	powerPin = 16
+	for i in range(times):
+		GPIO.output(powerPin, 0) # blink two times
+		sleep(0.1)
+		GPIO.output(powerPin, 1)
+		sleep(0.1)
 		
 def increment_mode():
 	print("increment mode")
@@ -38,76 +47,26 @@ def increment_mode():
 	print(mode)
 	if (mode == 'a'):
 		mode = 'f'
-		GPIO.output(powerPin, 0) # blink two times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(2)
 		sleep(2.5)
 
 	elif (mode == 'f'):
 		mode = 'b'
-		GPIO.output(powerPin, 0) # blink three times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(3)
 		sleep(2.5)
 	
 	elif (mode == 'b'):
 		mode = 's'
-		GPIO.output(powerPin, 0) # blink four times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(4)
 		sleep(2.5)
 
 	elif (mode == 's'):
 		mode = 'm'
-		GPIO.output(powerPin, 0) # blink five times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1);
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(5)
 		sleep(2.5)
 	else:
 		mode = 'a'
-		GPIO.output(powerPin, 0) # blink one time
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
+		blink(1)
 		sleep(2.5)
 
 	try:	
@@ -135,8 +94,43 @@ def increment_mode():
 	except:
 		print("can't write to .mode file")
 		
+def camera_photo():
+	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
+	stored_image = False
+	try:
+		system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+		f = open("/home/pi/CubeSatSim/camera_out.jpg")
+		f.close()
+		print("Photo taken")
+	except:
+		system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
+		print("Using stored image")
+		stored_image = True
+	if (stored_image == False):	
+		file='/home/pi/CubeSatSim/camera_out.jpg'
+		font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
+		font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
+	
+		try:
+			filep = open("/home/pi/CubeSatSim/telem_string.txt")
+			telem_string = filep.readline()
+		except:
+			telem_string = ""
+			if (debug_mode == 1):
+				print("Can't read telem_string.txt")		
+		print(telem_string)
+		
+		img = Image.open(file)
+		draw = ImageDraw.Draw(img) 
+	#					draw.text((10, 10), callsign, font=font2, fill='white')
+	#					draw.text((120, 10), telem_string, font=font2, fill='white')					
+		draw.text((12, 12), callsign, font=font1, fill='black')
+		draw.text((10, 10), callsign, font=font1, fill='white')
+		draw.text((122, 12), telem_string, font=font2, fill='black')
+		draw.text((120, 10), telem_string, font=font2, fill='white')
+		img.save(file)
 
-print("CubeSatSim v2.0 transmit.py starting...")
+print("CubeSatSim v2.1 transmit.py starting...")
 
 pd = 21
 ptt = 20
@@ -276,7 +270,8 @@ if __name__ == "__main__":
 	rx_value = '0'
 	sq = '0'
 	tx = '434.9000'	
-	rx = '435.0000'	
+	rx = '435.0000'
+	txr = '144.9000'
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -289,11 +284,16 @@ if __name__ == "__main__":
 				sq = 0 # turn off squelch for Pacsat
 			print(sq)
 		if len(config) > 6:
-                        txf = float(config[6])
+			txf = float(config[6])
 #                        print(txf)
 #                        print( "{:.4f}".format(txf))
-                        tx = "{:.4f}".format(txf)
-                        print(tx)
+                        
+			if (mode == 'e'):
+				txr = txf - 290.0 # Cross Band Repeater mode transmit frequency in 2m band
+				tx = "{:.4f}".format(txr)
+			else:
+				tx = "{:.4f}".format(txf)
+			print("Transmit frequency: ",tx)
 		if len(config) > 7:
                         rxf = float(config[7])
 #                        print(rxf)
@@ -316,11 +316,11 @@ if __name__ == "__main__":
 		print
 #		print(callsign)
 		print(sq)
-		if sq == '8':
-			print("squelch set to 8, no command input!")
-			no_command = True
-		else:
-			no_command = False		
+#		if sq == '8':
+#			print("squelch set to 8, no command input!")
+#			no_command = True
+#		else:
+		no_command = False		
 		print(no_command)
 	except:
 		callsign = "AMSAT"
@@ -355,24 +355,25 @@ if __name__ == "__main__":
 	card = "Headphones"  # default using pcm audio output of Pi Zero
 #	card = "Device" # using USB sound card for audio output	
 
-	print("Programming FM module!\n");	
-	output(pd, 1)
-	output (ptt, 1)
-	try:
-		ser = serial.Serial("/dev/ttyAMA0", 9600)
-		print(ser.portstr)
-#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
-		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
-		print(uhf_string)
-		for i in range(6):
-#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
-			ser.write(uhf_string.encode())
-			sleep(0.1)
-		ser.close()
-		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
-	except:
-		print("Error in serial write")
-	output(pd, 0)
+	if (mode != 'e'):
+		print("Programming FM module!\n");	
+		output(pd, 1)
+		output (ptt, 1)
+		try:
+			ser = serial.Serial("/dev/ttyAMA0", 9600)
+			print(ser.portstr)
+	#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+			uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
+			print(uhf_string)
+			for i in range(6):
+	#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
+				ser.write(uhf_string.encode())
+				sleep(0.1)
+			ser.close()
+			ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
+		except:
+			print("Error in serial write")
+		output(pd, 0)
 
 #	if (mode != 'x') and (skip == False):
 #		sleep(10)  # delay so cubesatsim code catches up
@@ -383,7 +384,8 @@ if __name__ == "__main__":
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
-	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's')) and (command_tx == True) and (skip == False):	
+##	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
+	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	
 #		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
@@ -397,14 +399,18 @@ if __name__ == "__main__":
 #			output (ptt, 1)
 #			output(pd, 0)
 #		else:	
-		if (True):
+		if (no_command):
 			if (debug_mode == 1):
-#				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3")
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 			else:
-#				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3 > /dev/null 2>&1")
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-		
+		else:
+			if (debug_mode == 1):
+				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+			else:
+				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+
+			
 		output(txLed, txLedOff)
 
 		sleep(1)
@@ -580,32 +586,32 @@ if __name__ == "__main__":
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 #					command_control_check()			
-					
-					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-					print("Photo taken")
-
-					file='/home/pi/CubeSatSim/camera_out.jpg'
-					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
-					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
-
-					try:
-						filep = open("/home/pi/CubeSatSim/telem_string.txt")
-						telem_string = filep.readline()
-					except:
-						telem_string = ""
-						if (debug_mode == 1):
-							print("Can't read telem_string.txt")		
-					print(telem_string)
-					
-					img = Image.open(file)
-					draw = ImageDraw.Draw(img) 
+					camera_photo()
+##					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+##					print("Photo taken")
+##
+##					file='/home/pi/CubeSatSim/camera_out.jpg'
+##					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
+##					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
+##
+##					try:
+##						filep = open("/home/pi/CubeSatSim/telem_string.txt")
+##						telem_string = filep.readline()
+##					except:
+##						telem_string = ""
+##						if (debug_mode == 1):
+##							print("Can't read telem_string.txt")		
+##					print(telem_string)
+##					
+##					img = Image.open(file)
+##					draw = ImageDraw.Draw(img) 
 #					draw.text((10, 10), callsign, font=font2, fill='white')
 #					draw.text((120, 10), telem_string, font=font2, fill='white')					
-					draw.text((12, 12), callsign, font=font1, fill='black')
-					draw.text((10, 10), callsign, font=font1, fill='white')
-					draw.text((122, 12), telem_string, font=font2, fill='black')
-					draw.text((120, 10), telem_string, font=font2, fill='white')
-					img.save(file)
+##					draw.text((12, 12), callsign, font=font1, fill='black')
+##					draw.text((10, 10), callsign, font=font1, fill='white')
+##					draw.text((122, 12), telem_string, font=font2, fill='black')
+##					draw.text((120, 10), telem_string, font=font2, fill='white')
+##					img.save(file)
 					
 #					command_control_check()			
 					
@@ -739,9 +745,12 @@ if __name__ == "__main__":
 #							output(pd, 0)
 						sleep(10)
 						
-		elif (mode == 'b'):
+		elif (mode == 'b') or (mode == 'j'):
 #			command_control_check()	
-			print("BPSK")
+			if (mode == 'b'):
+				print("BPSK")
+			else:
+				print("FunCube")
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
@@ -753,7 +762,10 @@ if __name__ == "__main__":
 #				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
 				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f " + tx + "e6 -t float &")
 			print("Turning LED on/off and listening for carrier")
+			image_id = random.randint(0, 255)
+			print("Initial image_id: " + str(image_id) + "\n")
 			while 1:
+#				print ("LED on")
 				output(txLed, txLedOff)
 				sleep(0.4)
 #				if (command_tx == False):
@@ -768,45 +780,83 @@ if __name__ == "__main__":
 					output(txLed, txLedOn)
 #					print(txLed)
 #					print(txLedOn)
-				sleep(4.2)
+
+				if (mode == 'b'):
+					sleep(4.2)	
+				else:  # FunCube mode image
+					for i in range(4):
+#						print("Checking image_file.bin")
+						try:
+							file = open("/home/pi/CubeSatSim/image_file.bin")
+							file.close()
+	#						image_present = True
+							sleep(1.0)
+						except:
+	#						image_present = False
+						
+	#					if (image_present == False):
+							start = time.perf_counter()
+							camera_photo()
+							system("/home/pi/ssdv/ssdv -e -n -i " + str(image_id) + " -q 3 -J /home/pi/CubeSatSim/camera_out.jpg /home/pi/CubeSatSim/image_file.bin")
+							print("image_id: " + str(image_id) + "\n")
+							image_id = ( image_id + 1 ) % 256
+							print("new image_id: " + str(image_id) + "\n")
+							elapsed_time = time.perf_counter() - start
+							print("Elapsed time: ")
+							print(elapsed_time)
+							if (elapsed_time < 9):
+								sleep(9 - time.perf_counter() + start)
+	#					else:	
+					sleep(0.6)
 		elif (mode == 'e'):  # code based on https://zr6aic.blogspot.com/2016/11/creating-2m-fm-repeater-with-raspberry.html
-			print("Repeater")
-			print("Stopping command and control")
-			system("sudo systemctl stop command")
+			print("Cross Band Repeater Mode")
+#			print("Stopping command and control")
+#			system("sudo systemctl stop command")
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
 			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 			GPIO.setup(txLed, GPIO.OUT)
-			GPIO.setup(powerPin, GPIO.OUT)
+#			GPIO.setup(powerPin, GPIO.OUT)
 			GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected	
-			GPIO.output(powerPin, 0)
+#			GPIO.output(powerPin, 1)  # was 0
+#			txf = float(tx) - 288.9
+#			print("Transmit frequency: ",txf)
+			if (command_tx != True):
+				print("Beacon mode off so no repeater transmission")
+
+			print("Ready to detect carrier")
 			while True:
-				sleep(0.5)
-				if (GPIO.input(squelch) == False):
+				if (GPIO.input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
 #					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 ##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
 					sleep(1)
 					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					GPIO.output(powerPin, 1)
 					sleep(0.5)
-					GPIO.output(powerPin, 0)
+#					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+					system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+#					GPIO.output(powerPin, 1)
+#					sleep(0.5)
+#					GPIO.output(powerPin, 0)
 					while (GPIO.input(squelch) == False):
 						sleep(1)
 					print("No carrier detected, stopping repeater")
 					output(txLed, txLedOff)
-					system("sudo killall -9 arecord")
-					system("sudo killall -9 nc")
-					system("sudo killall -9 rpitx")
+					system("sudo killall -9 arecord > /dev/null 2>&1")
+					system("sudo killall -9 nc > /dev/null 2>&1")
+					system("sudo killall -9 rpitx > /dev/null 2>&1")
 					print("Resetting audio")
 					system("sudo /etc/init.d/alsa-utils stop")
 					system("sudo /etc/init.d/alsa-utils start")
 					print("Finished resetting audio")
+					print("Ready to detect carrier")
+	
 		else:
 			print("FSK") 
 			print("turn on FM rx")
