@@ -2270,7 +2270,8 @@ if (setting == ON) {
 		FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
-		fprintf(stderr,"Turning Battery saver mode ON\n");  
+		fprintf(stderr,"Turning Battery saver mode ON\n"); 
+		battery_saver_mode = ON;
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
 			pclose(command);
@@ -2287,6 +2288,7 @@ if (setting == ON) {
 		FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
+		battery_saver_mode = OFF;
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
