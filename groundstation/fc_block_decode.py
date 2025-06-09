@@ -44,7 +44,7 @@ system_and_print("sudo rm " + image_dir + image)
 #system_and_print("sudo rm " + html_dir + "*")
 system_and_print("sudo rm " + html_dir + "images/*")
 
-with open('/home/pi/fctelem/fcdecode.conf', 'r') as config:
+with open('/home/pi/fctelem/fctelem.conf', 'r') as config:
     config_string = config.read()
     print(config_string)
 
