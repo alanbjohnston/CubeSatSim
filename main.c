@@ -632,7 +632,7 @@ int main(int argc, char * argv[]) {
         if (voltage[map[BAT]] == 0.0)  // No BAT Board
 		if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
 			batteryVoltage = 4.5;
-		else:
+		else {
 			batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
 			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 				sim_mode = FALSE; 
