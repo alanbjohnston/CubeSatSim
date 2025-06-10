@@ -1099,7 +1099,7 @@ void get_tlm(void) {
       } else {  // CW mode
         strcat(str, header_str4);
 	strcat(str, call);
-	if (c2cStatus == ENABLED) {
+	if (c2cStatus != DISABLED) {
 		strcat(str, header_c2c);
 	}
 
