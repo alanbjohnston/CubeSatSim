@@ -1128,10 +1128,10 @@ void get_tlm(void) {
         pclose(cw_file);	     
 
     }
-    if (c2cStatus != DISABLED) {	   
-      FILE *file_append = sopen("echo 'C' >> cw6.txt");
-      fclose(file_append);
-    }
+//    if (c2cStatus != DISABLED) {	   
+//      FILE *file_append = sopen("echo 'C' >> cw6.txt");
+//      fclose(file_append);
+//    }
   } else {  // APRS
 
       if (c2cStatus == 0)	   
