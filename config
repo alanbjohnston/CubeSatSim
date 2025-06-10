@@ -1402,6 +1402,10 @@ elif [ "$1" = "-g" ]; then
 	
 		sudo journalctl --rotate
 		sudo journalctl --vacuum-time=1s
+
+		rm -rf ~/.config/chromium/Singleton*
+
+		cat /dev/null > ~/.bash_history && history -c
 	
 		reboot=1
 	else
