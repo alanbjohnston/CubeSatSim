@@ -377,17 +377,17 @@ if __name__ == "__main__":
 
 #	if (mode != 'x') and (skip == False):
 #		sleep(10)  # delay so cubesatsim code catches up
-	
-	system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
-	
+	if (no_command):
+		system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
+	else:
+		system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
+		
 #	command_control_check()
 	
 #	if (mode != ) and (command_tx == True):	
 #	if (command_tx == True):	
 ##	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
-###	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	
-	if ((command_tx == True) and (mode != 'a')):	
-#		battery_saver_mode
+	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
 		output(txLed, txLedOn)			
@@ -416,7 +416,7 @@ if __name__ == "__main__":
 
 		sleep(1)
 	else:
-		print("Don't transmit CW ID since command_tx is False or APRS mode")
+		print("Don't transmit CW ID since command_tx is False or APRS mode or change of mode")
 
 	if (transmit):
 	
