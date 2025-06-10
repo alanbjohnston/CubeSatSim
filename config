@@ -1388,7 +1388,7 @@ elif [ "$1" = "-g" ]; then
 	
 		sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
 	
-		touch /home/pi/CubeSatSim/command_control_direwolf 
+		sudo touch /home/pi/CubeSatSim/command_control_direwolf 
 	
 		sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
 	
