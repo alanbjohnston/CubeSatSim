@@ -375,31 +375,10 @@ if __name__ == "__main__":
 			print("Error in serial write")
 		output(pd, 0)
 
-#	if (mode != 'x') and (skip == False):
-#		sleep(10)  # delay so cubesatsim code catches up
-	if (no_command):
-		system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
-	else:
-		system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1")
-		
-#	command_control_check()
-	
-#	if (mode != ) and (command_tx == True):	
-#	if (command_tx == True):	
-##	if ((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False):	
 	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
 		output(txLed, txLedOn)			
-#		if (txc):
-#			output(pd, 1)
-#			output (ptt, 0)
-#			sleep(0.1)
-#			system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
-#			sleep(0.1)
-#			output (ptt, 1)
-#			output(pd, 0)
-#		else:	
 		if (no_command):
 			if (debug_mode == 1):
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
