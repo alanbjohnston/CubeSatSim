@@ -76,6 +76,8 @@ else
     
  #   /home/pi/fcdctl/fcdctl -g 1 -m 1 -i 0
     echo
+    echo "You can adjust the FCD settings by running the command fcdctl/fcdctl"
+    echo
 fi
 
 
