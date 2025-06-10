@@ -1054,6 +1054,7 @@ void get_tlm(void) {
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi de ";
+    char header_c2c[] = "  C";
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by transmit.py
@@ -1097,7 +1098,10 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {  // CW mode
         strcat(str, header_str4);
-	strcat(str, call); 
+	strcat(str, call);
+	if (c2cStatus == ENABLED) {
+		strcat(str, header_c2c);
+	}
 
 	sprintf(tlm_str, "%s' > cw0.txt", &str);   
 	printf("CW string to execute: %s\n", &tlm_str);     
