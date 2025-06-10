@@ -832,18 +832,9 @@ if __name__ == "__main__":
 					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 					GPIO.setup(txLed, GPIO.OUT)						
 					output(txLed, txLedOn)
-#					system("arecord -D plughw:CARD=Device,DEV=0  | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
-##					system("arecord -D plughw:CARD=Device,DEV=0 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
-					sleep(1)
-#					system("sudo arecord -D plughw:CARD=Device,DEV=0 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
-					GPIO.output(powerPin, 1)
 					sleep(0.5)
-#					system("sudo arecord -D plughw:1 -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
-#					GPIO.output(powerPin, 1)
-#					sleep(0.5)
-#					GPIO.output(powerPin, 0)
 					while (GPIO.input(squelch) == False):
 						sleep(1)
 					print("No carrier detected, stopping repeater")
