@@ -220,10 +220,10 @@ if __name__ == "__main__":
 		print(up)
 		uptime = float(up)
 		print(uptime)
-		if (uptime < 45):
-			print("Uptime < 45 seconds")
+		if (uptime < 20):
+			print("Uptime < 20 seconds")
 		else:
-			print("Uptime > 45 seconds")
+			print("Uptime > 20 seconds")
 			skip = True
 		file.close() 
 	except:
