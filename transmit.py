@@ -212,6 +212,14 @@ if __name__ == "__main__":
 			
 	print(transmit)
 
+	uptime_time = 45  #  45 second boot time if Pi Zero 
+	try:
+		f = open("/home/pi/CubeSatSim/pi_zero2", "r")
+		f.close()
+		print("Pi Zero 2 detected!")
+		uptime_time = 20  # 20 second boot time if Pi Zero 2
+	except:
+		print("Pi Zero 2 not detected")
 
 	try:
 		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
@@ -220,10 +228,11 @@ if __name__ == "__main__":
 		print(up)
 		uptime = float(up)
 		print(uptime)
-		if (uptime < 20):
-			print("Uptime < 20 seconds")
+		if (uptime < uptime_time):
+			print("Uptime < threshold seconds")
 		else:
-			print("Uptime > 20 seconds")
+			print("Uptime > threshold seconds")
+			print("Skip CW ID")
 			skip = True
 		file.close() 
 	except:
