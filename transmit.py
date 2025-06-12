@@ -193,7 +193,7 @@ print(txLed)
 # GPIO.setup(27, GPIO.OUT)
 # GPIO.output(27, 0)
 
-debug_mode = 1  #no debugging transmit
+debug_mode = 0  # change to 1 to debug transmit
 
 skip = False
 
