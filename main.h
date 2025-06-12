@@ -120,8 +120,8 @@ FILE *image_file;
 #define BPSK 3
 #define SSTV 4
 #define CW 5
-#define FC 7
-#define REPEATER 11
+#define FC 6
+#define REPEATER 7
 #define TXCOMMAND 12
 
 int transmitStatus = -1;
