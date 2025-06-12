@@ -121,8 +121,11 @@ int main(int argc, char * argv[]) {
     fgets(resbuffer, 1000, file2_test);
     fprintf(stderr, "Pi Zero 2 test result: %s\n", resbuffer);
     fclose(file2_test);	  
-    if (strlen(resbuffer) > 5) 	
+    if (strlen(resbuffer) > 5) 	{
       fprintf(stderr, "Pi Zero 2 detected\n");
+      FILE * pi_zero2 = popen("touch /home/pi/CubeSatSim/pi_zero2", "r"); // store Pi Zero 2 flag
+      pclose(pi_zero2); 
+    }
     else
       fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
 	    
@@ -136,6 +139,8 @@ int main(int argc, char * argv[]) {
   }
   else {
     fprintf(stderr,"Pi Zero detected\n");
+    FILE * pi_zero2 = popen("sudo rm /home/pi/CubeSatSim/pi_zero2 &>/dev/null", "r");  // remove Pi Zero 2 flag if present
+    pclose(pi_zero2); 	  
     if ((c2cStatus == DISABLED) || (c2cStatus == CARRIER))  {
       pi_zero_2_offset = 500;
     }
