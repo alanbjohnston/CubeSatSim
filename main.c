@@ -2343,8 +2343,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	source_bytes[0] = source_bytes[0] | ( 0x01 & (uint8_t)(sequence % 2));  // alternate last bit for RT1, RT2.
 
 	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
-//	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
-	source_bytes[1] = 0x13 ; // JY-1 EM 
+	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	
 	int extended = 1;
 #endif
