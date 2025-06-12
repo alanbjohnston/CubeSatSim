@@ -2314,8 +2314,8 @@ if (setting == ON) {
 void get_tlm_fc() {  // FunCube Mode telemetry generation
 
 //# define FC_EM
-#define JY_1
-//#define FC_SIM	
+//#define JY_1
+#define FC_SIM	
 	
 	/* create data, stream, and waveform buffers */
 
