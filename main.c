@@ -2351,7 +2351,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	int extended = 1;
 #endif	
-#if defined FC_SIM || JY_1	
+#if defined(FC_SIM) || defined(JY_1)	
 //	if (sequence > 10) {
 		if (image_file == NULL)  {
 			image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
@@ -2407,7 +2407,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 //	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 //	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
 	
-#if defined JY_1 || FC_SIM
+#if defined(FC_SIM) || defined(JY_1)
 	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // Vx
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
         source_bytes[extended + FC_EPS + 1] = source_bytes[extended + FC_EPS + 1] | (0x03 & (y >> 12));
