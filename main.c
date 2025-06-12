@@ -1054,6 +1054,7 @@ void get_tlm(void) {
     char header_lat[10];
     char header_long[10];
     char header_str4[] = "hi hi de ";
+    char header_c2c[] = "  C";
 //    char footer_str1[] = "\' > t.txt && echo \'";
     char footer_str1[] = "\' > t.txt";
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by transmit.py
@@ -1097,7 +1098,10 @@ void get_tlm(void) {
         strcat(str, header_str2b);
       } else {  // CW mode
         strcat(str, header_str4);
-	strcat(str, call); 
+	strcat(str, call);
+	if (c2cStatus != DISABLED) {
+		strcat(str, header_c2c);
+	}
 
 	sprintf(tlm_str, "%s' > cw0.txt", &str);   
 	printf("CW string to execute: %s\n", &tlm_str);     
@@ -1124,16 +1128,16 @@ void get_tlm(void) {
         pclose(cw_file);	     
 
     }
-    if (c2cStatus != DISABLED) {	   
-      FILE *file_append = sopen("echo 'C' >> cw6.txt");
-      fclose(file_append);
-    }
+//    if (c2cStatus != DISABLED) {	   
+//      FILE *file_append = sopen("echo 'C' >> cw6.txt");
+//      fclose(file_append);
+//    }
   } else {  // APRS
 
       if (c2cStatus == 0)	   
-        sprintf(tlm_str, "BAT %4.2f %5.1f ", voltage[map[BAT]] , current[map[BAT]] ); 
+        sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent); 
       else
-        sprintf(tlm_str, "BAT %4.2f %5.1f C ", voltage[map[BAT]] , current[map[BAT]] ); 
+        sprintf(tlm_str, "BAT %4.2f %5.1f C ", batteryVoltage, batteryCurrent); 
 	      
       strcat(str, tlm_str);
   }  
@@ -2310,7 +2314,8 @@ if (setting == ON) {
 void get_tlm_fc() {  // FunCube Mode telemetry generation
 
 //# define FC_EM
-#define JY_1	
+//#define JY_1
+#define FC_SIM	
 	
 	/* create data, stream, and waveform buffers */
 
@@ -2335,7 +2340,18 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
 	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
 	int extended = 1;
+#endif
+#ifdef FC_SIM
+//	source_bytes[0] = 0b11000001 ;    // Sat Id is extended, Frame 2 (RT2 + WO2)
+	source_bytes[0] = 0xE0 | 0x20 | 0x00; // 1;    // Sat Id is extended, Frame 34 (RT2 + IMG2)
 
+	source_bytes[0] = source_bytes[0] | ( 0x01 & (uint8_t)(sequence % 2));  // alternate last bit for RT1, RT2.
+
+	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
+	source_bytes[1] = 0xfb ; // funcube sim sat id per AMSAT-UK allocation
+	int extended = 1;
+#endif	
+#if defined(FC_SIM) || defined(JY_1)	
 //	if (sequence > 10) {
 		if (image_file == NULL)  {
 			image_file = fopen("/home/pi/CubeSatSim/image_file.bin", "r");
@@ -2391,7 +2407,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 //	printf("X %x Y %x Z %x B %x\n", x, y, z, b);
 //	printf("iX %x iY %x iZ %x iB %x iC\n", ix, iy, iz, ib, ic);
 	
-#ifdef JY_1	
+#if defined(FC_SIM) || defined(JY_1)
 	source_bytes[extended + FC_EPS + 0] = 0xff & (x >> 6);  // Vx
 	source_bytes[extended + FC_EPS + 1] = 0xfc & (x << 2);
         source_bytes[extended + FC_EPS + 1] = source_bytes[extended + FC_EPS + 1] | (0x03 & (y >> 12));
