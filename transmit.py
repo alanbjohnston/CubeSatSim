@@ -237,6 +237,7 @@ if __name__ == "__main__":
 		file.close() 
 	except:
 		print("Can't open /proc/uptime") 
+	print(skip)	
 
 	if ( mode == "y"):
 		try:
