@@ -893,7 +893,7 @@ elif [ "$1" = "-R" ]; then
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 		sudo rm /home/pi/CubeSatSim/command_count.txt > /dev/null 2>&1
 		echo "Commands count reset to 0"
-		echo "0\n" > /home/pi/CubeSatSim/command_count.txt
+		echo "0" > /home/pi/CubeSatSim/command_count.txt
 	else
 		echo "Commands count not reset"
 	fi
