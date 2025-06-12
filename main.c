@@ -2344,7 +2344,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 
 	//	source_bytes[1] = 0x08 ; // extended Nayify - works per code
 //	source_bytes[1] = 0x10 ; // extended JY-1 - works, no documentation
-	source_bytes[1] = 0x0F ; // JY-1 EM 
+	source_bytes[1] = 0x13 ; // JY-1 EM 
 	
 	int extended = 1;
 #endif
