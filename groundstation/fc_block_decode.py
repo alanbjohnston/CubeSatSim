@@ -114,7 +114,9 @@ if __name__ == "__main__":
 					frame_type = "RT1+IMG1"
 				if (data_block[0] == 0xE1):
 					frame_type = "RT2+IMG2"
-				print(frame_type)	
+#				print(frame_type)
+				print("Frame Type: {:02X}".format(data_block[0]))
+				print("Sat Id: {:02X}".format(data_block[1]))
 				print(data_block[extended + 51], data_block[extended + 50], data_block[extended + 49])
 				sequence = data_block[extended + 51] + data_block[extended + 50] * 2**8 + data_block[extended + 49] * 2**16	
 				print("Sequence number: {:d}".format(sequence))
