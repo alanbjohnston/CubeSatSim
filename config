@@ -1407,7 +1407,7 @@ elif [ "$1" = "-g" ]; then
 
 		cat /dev/null > ~/.bash_history && history -c
 	
-		reboot=1
+#		reboot=1
 	else
 
 		echo "Not resetting"
