@@ -830,6 +830,7 @@ if __name__ == "__main__":
 						sleep(1)
 					print("No carrier detected, stopping repeater")
 					output(txLed, txLedOff)
+					system("sudo rpitx -i null > /dev/null 2>&1")
 					system("sudo killall -9 arecord > /dev/null 2>&1")
 					system("sudo killall -9 nc > /dev/null 2>&1")
 					system("sudo killall -9 rpitx > /dev/null 2>&1")
