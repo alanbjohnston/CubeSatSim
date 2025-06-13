@@ -840,7 +840,7 @@ if __name__ == "__main__":
 					print("Finished resetting audio")
 					print("Ready to detect carrier")
 					txf = float(tx)
-					tx = "{:.4f".format(tx - 0.05)  # shift tx frequency down by 50kHz
+					tx = "{:.4f".format(txf - 0.05)  # shift tx frequency down by 50kHz
 					print(tx)
 		else:
 			print("FSK") 
