@@ -839,8 +839,9 @@ if __name__ == "__main__":
 					system("sudo /etc/init.d/alsa-utils start")
 					print("Finished resetting audio")
 					print("Ready to detect carrier")
-					tx = tx - 0.05  # shift tx frequency down by 50kHz
-	
+					txf = float(tx)
+					tx = "{:.4f".format(tx - 0.05)  # shift tx frequency down by 50kHz
+					print(tx)
 		else:
 			print("FSK") 
 			print("turn on FM rx")
