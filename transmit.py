@@ -299,7 +299,7 @@ if __name__ == "__main__":
 #                        print( "{:.4f}".format(txf))
                         
 			if (mode == 'e'):
-				txr = (txf - 290.0) - 0.25 # Cross Band Repeater mode transmit frequency in 2m band
+				txr = (txf - 290.0) # Cross Band Repeater mode transmit frequency in 2m band
 				tx = "{:.4f}".format(txr)
 			else:
 				tx = "{:.4f}".format(txf)
@@ -839,6 +839,7 @@ if __name__ == "__main__":
 					system("sudo /etc/init.d/alsa-utils start")
 					print("Finished resetting audio")
 					print("Ready to detect carrier")
+					tx = tx - 0.05  # shift tx frequency down by 50kHz
 	
 		else:
 			print("FSK") 
