@@ -299,7 +299,7 @@ if __name__ == "__main__":
 #                        print( "{:.4f}".format(txf))
                         
 			if (mode == 'e'):
-				txr = (txf - 290.0) - 0.05 # Cross Band Repeater mode transmit frequency in 2m band
+				txr = (txf - 290.0) - 0.25 # Cross Band Repeater mode transmit frequency in 2m band
 				tx = "{:.4f}".format(txr)
 			else:
 				tx = "{:.4f}".format(txf)
