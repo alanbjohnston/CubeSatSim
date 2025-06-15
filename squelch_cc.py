@@ -114,6 +114,7 @@ def increment_mode():
 			
 			system("/home/pi/CubeSatSim/config -" + mode)
 			print("Changing mode now")
+			os.system("echo 'changing mode due to C2C!' | wall")
 
 
 #		file = open("/home/pi/CubeSatSim/.mode", "w")
