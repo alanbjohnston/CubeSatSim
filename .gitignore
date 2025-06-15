@@ -42,4 +42,6 @@ uptime
 beacon_off
 battery_saver
 pi_zero2
-
+image_file.bin
+logt.txt
+telem.txt.bk
