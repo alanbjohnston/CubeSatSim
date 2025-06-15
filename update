@@ -307,6 +307,28 @@ cd /home/pi/pi-power-button
     echo "nothing to do for pi-power-button."
   fi 
 
+cd /home/pi/ssdv
+
+  git checkout master
+
+  git pull --no-rebase > .updated_p
+
+  grep 'changed' /home/pi/ssdv/.updated_p
+  if [[ $(grep 'changed' /home/pi/ssdv/.updated_p) ]]; then
+  
+    echo "updating ssdv."
+
+#    git checkout master
+    
+    script/install
+
+    FLAG=1
+
+  else
+    echo "nothing to do for ssdv."
+  fi 
+
+
   if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
     echo "dtparam=audio=on already in /boot/config.txt"
   else
