@@ -28,6 +28,8 @@ sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo killall -9 python3 &>/dev/null
+
 echo
 
 frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
