@@ -4,6 +4,16 @@ from time import sleep
 from os import system
 import sys
 
+def blink(times):
+	blink_time = 0.1
+	powerPin = 16
+	for i in range(times):	# blink times
+		GPIO.output(powerPin, 0) 
+		sleep(blink_time)
+		GPIO.output(powerPin, 1)
+		sleep(blink_time)
+	sleep(0.65)
+
 def command_control_check():
 
 #	global command_control
@@ -71,77 +81,27 @@ def increment_mode():
 	print(mode)
 	if (mode == 'a'):
 		mode = 'f'
-		GPIO.output(powerPin, 0) # blink two times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(1)
+		blink(2)
 
 	elif (mode == 'f'):
 		mode = 'b'
-		GPIO.output(powerPin, 0) # blink three times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(1)
+		blink(3)
 	
 	elif (mode == 'b'):
 		mode = 's'
-		GPIO.output(powerPin, 0) # blink four times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(1)
-
+		blink(4)
 	elif (mode == 's'):
 		mode = 'm'
-		GPIO.output(powerPin, 0) # blink five times
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1);
-		GPIO.output(powerPin, 1)	
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(0.1)
-		GPIO.output(powerPin, 0)
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(1)
+		blink(5)
+	elif (mode == 'm'):
+		mode = 'e'
+		blink(6)
+	elif (mode == 'e'):
+		mode = 'j'
+		blink(7)
 	else:
 		mode = 'a'
-		GPIO.output(powerPin, 0) # blink one time
-		sleep(0.1)
-		GPIO.output(powerPin, 1)
-		sleep(1)
+		blink(1)
 
 	try:	
 		print("/home/pi/CubeSatSim/config -" + mode)
