@@ -105,7 +105,9 @@ def increment_mode():
 
 	try:	
 		print("/home/pi/CubeSatSim/config -" + mode)
-		if (debug_mode == False):		
+		if (debug_mode == False):
+			print("Changing mode now")
+			os.system("echo 'changing mode due to C2C!' | wall")
 			GPIO.setwarnings(False)
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
@@ -113,8 +115,6 @@ def increment_mode():
 			system("sudo systemctl stop cubesatsim")
 			
 			system("/home/pi/CubeSatSim/config -" + mode)
-			print("Changing mode now")
-			os.system("echo 'changing mode due to C2C!' | wall")
 
 
 #		file = open("/home/pi/CubeSatSim/.mode", "w")
