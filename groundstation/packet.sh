@@ -28,7 +28,7 @@ sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-sudo killall -9 fctelem &>/dev/null
+#sudo killall -9 fctelem &>/dev/null
 
 echo
 
