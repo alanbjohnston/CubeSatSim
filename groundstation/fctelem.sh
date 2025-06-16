@@ -42,7 +42,7 @@ sudo killall -9 python3 &>/dev/null
 
 #sudo killall -9 aplay &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
 #sudo killall -9 zenity &>/dev/null
 
