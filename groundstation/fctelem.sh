@@ -14,7 +14,7 @@ echo
 
 ip=$(hostname -I|cut -f1 -d ' ')
 
-echo "IP Address to use in web browser is: $ip:8000"
+echo "IP Address to use in web browser is: $ip:8002"
 
 echo
 
@@ -136,7 +136,7 @@ cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg ./image_file.jpeg
 
 python3 -m http.server &
 
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8000 &>/dev/null & 
+setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8002 &>/dev/null & 
 
 cd /home/pi/fctelem
 
