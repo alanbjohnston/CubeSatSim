@@ -54,6 +54,8 @@ The installation script will run for quite a while.  You will get prompted for y
 
 See the Wiki for more details about the CubeSatSim [https://github.com/alanbjohnston/CubeSatSim/wiki](https://github.com/alanbjohnston/CubeSatSim/wiki/v1.3.2-0.-Home)
 
+Here are some Quick Start Guides for operating the CubeSatSim: https://CubeSatSim.org/qsg
+
 Older Versions
 
 There are several versions of the hardware and software to go with them:
