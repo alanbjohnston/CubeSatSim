@@ -81,15 +81,14 @@ else
 fi
 
 
-frequency=$(zenity --list 2>/dev/null --width=410 --height=180 --title="FUNcube Telem Decoding" --text="Choose the frequency for FUNcube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=180 --title="FUNcube Telem Decoding" --text="Choose the frequency for FUNcube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
 
 echo $frequency
 
 if [ -z "$frequency" ]; then 
 
-	echo "No choice made.  Exiting."
-	sleep 3
-	exit
+	echo "No choice made."
+	frequency=434900
 
 fi
 
