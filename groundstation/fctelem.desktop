@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
 Exec=/home/pi/CubeSatSim/groundstation/fctelem.sh
-Name=FunCube Telem
-Comment=FunCube Telemetry Web App 
+Name=FUNcube Telem
+Comment=FUNcube Telemetry Web App 
 Icon=/home/pi/Icons/fc-icon.png
 Path=/home/pi
 Terminal=true
