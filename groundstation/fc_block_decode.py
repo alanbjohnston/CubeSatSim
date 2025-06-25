@@ -53,7 +53,7 @@ except:
 
 #system_and_print("cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg " + html_dir + "image_file.jpeg")
 
-head_string = '<HEAD><meta http-equiv="refresh" content="5"><title>FunCube CubeSatSim Telemetry</title></HEAD>\n<HTML>\n<H2>FunCube CubeSatSim Telemetry</H2>' + \
+head_string = '<HEAD><meta http-equiv="refresh" content="5"><title>FUNcube CubeSatSim Telemetry</title></HEAD>\n<HTML>\n<H2>FUNcube CubeSatSim Telemetry</H2>' + \
 		'fcdctl ' + config_string + '<p><pre>  <img height="256" width="320" src="' + image + \
 		'.jpeg"><br>                 <A HREF="images" target="_blank">All images</a><br>'
 foot_string = '</HTML>'
