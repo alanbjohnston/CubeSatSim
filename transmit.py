@@ -741,7 +741,7 @@ if __name__ == "__main__":
 			if (mode == 'b'):
 				print("BPSK")
 			else:
-				print("FunCube")
+				print("FUNcube")
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
@@ -774,7 +774,7 @@ if __name__ == "__main__":
 
 				if (mode == 'b'):
 					sleep(4.2)	
-				else:  # FunCube mode image
+				else:  # FUNcube mode image
 					for i in range(4):
 #						print("Checking image_file.bin")
 						try:
