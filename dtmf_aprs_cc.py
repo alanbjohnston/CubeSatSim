@@ -82,12 +82,12 @@ if __name__ == "__main__":
 			mode = 'e'
 			change_mode = True
 		if ((line.find("MODE=j")) > 0):
-			system("echo '\nFunCube Mode!!\n'")
+			system("echo '\nFUNcube Mode!!\n'")
 			mode = 'j'
 			change_mode = True
 			counter = (counter + 1) % 2
 		if ((line.find("DTMF>APDW15:t7#")) > 0):
-			system("echo '\nFunCube Mode!!\n'")
+			system("echo '\nFUNcube Mode!!\n'")
 			mode = 'j'
 			change_mode = True				
 		if ((line.find("MODE=n")) > 0):
