@@ -101,13 +101,13 @@ git checkout master
 
 cd
 
-echo "Installing SSDV for FunCube mode"
-git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
+echo "Installing SSDV for FUNcube mode"
+git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FUNcube images
 cd ssdv
 make
 cd
 
-echo "Installing fctelem binary v0.2 for FunCube mode"
+echo "Installing fctelem binary v0.2 for FUNcube mode"
 mkdir /home/pi/fctelem
 mkdir /home/pi/fctelem/public_html
 cd fctelem
@@ -115,7 +115,7 @@ wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
 unzip fctelem.zip
 
 cd
-echo "Installing fcdctl to set FunCubeDongle Pro gain"
+echo "Installing fcdctl to set FUNcubeDongle Pro gain"
 # sudo rm /var/lib/dpkg/info/python3-pip.list
 # sudo apt install python3-pip --reinstall
 # sudo apt-get install -y python3-smbus libusb-1.0
