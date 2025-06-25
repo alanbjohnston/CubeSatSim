@@ -32,17 +32,15 @@ sudo killall -9 zenity &>/dev/null
 
 #echo "s" >> .mode
 
-frequency=$(zenity --list 2>/dev/null --width=410 --height=220 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=220 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
 
 echo $frequency
 
 if [ -z "$frequency" ]; then 
 
-echo "No choice made.  Exiting."
+echo "No choice made."
 
-sleep 3
-
-exit
+frequency=434900
 
 #echo "Choose the number for the frequency for SSTV decoding:"
 #echo "1. ISS (145800Hz)"
