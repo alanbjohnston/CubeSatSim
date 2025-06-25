@@ -197,7 +197,7 @@ int main(int argc, char * argv[]) {
       printf("Mode is CW\n");
     } else if ( * argv[1] == 'j') {
       mode = FC;
-      printf("Mode is FunCube\n");
+      printf("Mode is FUNcube\n");
     } else {
       printf("Mode is BPSK\n");
     }
@@ -238,7 +238,7 @@ int main(int argc, char * argv[]) {
         printf("Mode is CW\n");
      } else if ( mode_string == 'j') {
         mode = FC;
-        printf("Mode is FunCube\n");
+        printf("Mode is FUNcube\n");
      } else if ( mode_string == 'e') {
         mode = REPEATER;
         printf("Mode is Repeater\n");
@@ -2316,7 +2316,7 @@ if (setting == ON) {
   return;
 }
 
-void get_tlm_fc() {  // FunCube Mode telemetry generation
+void get_tlm_fc() {  // FUNcube Mode telemetry generation
 
 //# define FC_EM
 //#define JY_1
@@ -2334,7 +2334,7 @@ void get_tlm_fc() {  // FunCube Mode telemetry generation
 
 	memset(source_bytes, 0x00, sizeof(source_bytes));
 #ifdef FC_EM	
-	source_bytes[0] = 0b00000001 ;	// Sat Id is FunCube-EM
+	source_bytes[0] = 0b00000001 ;	// Sat Id is FUNcube-EM
 #endif
 #ifdef JY_1	
 //	source_bytes[0] = 0b11000001 ;    // Sat Id is extended, Frame 2 (RT2 + WO2)
