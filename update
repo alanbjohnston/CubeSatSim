@@ -245,9 +245,9 @@ fi
 
 if [ ! -d "/home/pi/ssdv" ]; then
 
-	echo "Installing SSDV for FunCube mode"
+	echo "Installing SSDV for FUNcube mode"
 	cd
-	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FunCube images
+	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FUNcube images
 	cd ssdv
 	make
 	cd
@@ -255,7 +255,7 @@ if [ ! -d "/home/pi/ssdv" ]; then
 fi
 
 if [ ! -d "/home/pi/fctelem" ]; then
-	echo "Installing fctelem binary v0.2 for FunCube mode"
+	echo "Installing fctelem binary v0.2 for FUNcube mode"
 	cd
 	mkdir /home/pi/fctelem
 	mkdir /home/pi/fctelem/public_html
@@ -264,7 +264,7 @@ if [ ! -d "/home/pi/fctelem" ]; then
 	unzip fctelem.zip
 	FLAG=1
 elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
-	echo "Updating fctelem binary to version v0.2 for FunCube mode"
+	echo "Updating fctelem binary to version v0.2 for FUNcube mode"
 	cd
 	cd /home/pi/fctelem
 	sudo mv fctelem fctelem.bk
@@ -276,7 +276,7 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 fi
 
 if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
-	echo "Installing fcdctl to set FunCubeDongle Pro gain"
+	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
 	sudo rm /var/lib/dpkg/info/python3-pip.list
 	sudo apt install python3-pip --reinstall
 	sudo apt-get install -y python3-smbus libusb-1.0
