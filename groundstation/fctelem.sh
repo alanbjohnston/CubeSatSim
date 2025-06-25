@@ -1,7 +1,7 @@
 #!/bin/bash
-# script to run FunCube Pi Telemetry App
+# script to run FUNcube Pi Telemetry App
 
-echo "Script to run FunCube CubeSatSim Telemetry"
+echo "Script to run FUNcube CubeSatSim Telemetry"
 
 echo 
 
@@ -52,7 +52,7 @@ sudo killall -9 python3 &>/dev/null
 
 
 if [[ $(/home/pi/fcdctl/fcdctl -l | grep "No FCD found") ]]; then
-    echo "No FunCube Dongle Found!"
+    echo "No FUNcube Dongle Found!"
     echo "Plug in FCD and try running again"
     sleep 30
     exit
@@ -81,7 +81,7 @@ else
 fi
 
 
-frequency=$(zenity --list 2>/dev/null --width=410 --height=180 --title="FunCube Telem Decoding" --text="Choose the frequency for FunCube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
+frequency=$(zenity --list 2>/dev/null --width=410 --height=180 --title="FUNcube Telem Decoding" --text="Choose the frequency for FUNcube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
 
 echo $frequency
 
@@ -113,7 +113,7 @@ fi
 
 echo "Frequency is" $frequency
 echo
-echo "If your CubeSatSim is transmitting in FunCube mode (mode 7) you should get some frames after 30 seconds"
+echo "If your CubeSatSim is transmitting in FUNcube mode (mode 7) you should get some frames after 30 seconds"
 echo
 
 sleep 3
