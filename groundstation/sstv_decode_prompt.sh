@@ -65,7 +65,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ]; then
 frequency=434900000
 echo "Frequency is" $frequency
 echo
-echo "If your CubeSatSim is transmitting in SSTV mode (mode 5) you should get images."
+echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
 echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "Other" ]; then
