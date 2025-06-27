@@ -279,7 +279,7 @@ if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
 	sudo rm /var/lib/dpkg/info/python3-pip.list
 	sudo apt install python3-pip --reinstall
-	sudo apt-get install -y python3-smbus libusb-1.0
+	sudo apt-get install -y python3-smbus libusb-1.0 -y
 	cd
 	git clone https://github.com/csete/fcdctl.git
 	cd fcdctl
