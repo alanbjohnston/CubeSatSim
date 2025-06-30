@@ -49,6 +49,7 @@ sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
 
 sudo /bin/sh -c 'rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
 
