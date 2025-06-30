@@ -29,6 +29,8 @@ sudo killall -9 qsstv &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sleep 5
 
 #/home/pi/FoxTelem/FoxTelem /home/pi/FoxTelemetryData-CubeSatSim
