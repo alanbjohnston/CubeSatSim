@@ -39,6 +39,8 @@ sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 zenity --info --width=650 --height=140 --title="Instructions" --text="When CubicSDR opens, select <i>Generic RTL2832U</i> device then click <b>Start</b> to begin.\n\nThen click on a signal in the watefall to listen." &
 
 
