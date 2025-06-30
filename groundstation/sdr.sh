@@ -46,6 +46,8 @@ sudo killall -9 zenity &>/dev/null
 
 sudo systemctl stop rtl_tcp
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sudo systemctl restart openwebrx
 
 sleep 10
