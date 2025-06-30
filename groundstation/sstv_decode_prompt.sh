@@ -117,7 +117,7 @@ echo -e "Auto decoding SSTV on $frequency Hz"
 
 sleep 2
 
-qsstv &
+setsid qsstv &
 
 sleep 5
 
