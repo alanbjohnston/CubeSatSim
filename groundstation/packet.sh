@@ -137,20 +137,20 @@ echo "Note that the 'Tuned to' frequency will be different from the chosen frequ
 
 echo
 
-if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ]  || [ "$frequency" = "437100000" ] ; then
+#if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ]  || [ "$frequency" = "437100000" ] ; then
 
-  echo -e "Auto decoding 4800 bps AX.25 packets on $frequency Hz"
+#  echo -e "Auto decoding 4800 bps AX.25 packets on $frequency Hz"
 
-  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -t 0 &
+#  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-4800.conf -t 0 &
 
-else
+#else
 
   echo -e "Auto decoding APRS packets on $frequency Hz"
 
  # direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
-  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf  &
+  setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf  &
 
-fi
+#fi
 
 sleep 5
 
