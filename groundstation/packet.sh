@@ -4,6 +4,8 @@
 
 sudo modprobe snd-aloop
 
+sudo killall -9 CubicSDR &>/dev/null
+
 sudo systemctl stop openwebrx
 
 sudo systemctl stop rtl_tcp
@@ -21,8 +23,6 @@ sudo killall -9 qsstv &>/dev/null
 sudo killall -9 rtl_tcp &>/dev/null
 
 sudo killall -9 java &>/dev/null
-
-sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 sdrpp &>/dev/null
 
