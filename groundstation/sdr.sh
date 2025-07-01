@@ -28,7 +28,7 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
-pkill -o chromium &>/dev/null
+pkill -o firefox &>/dev/null
 
 sudo killall -9 rtl_tcp &>/dev/null
 
@@ -52,7 +52,7 @@ sudo systemctl restart openwebrx
 
 sleep 10
 
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
+setsid firefox --kiosk http://localhost:8073 &>/dev/null & 
 
 sleep 10
 
