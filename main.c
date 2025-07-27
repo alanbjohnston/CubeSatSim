@@ -2103,13 +2103,15 @@ int get_payload_serial(int debug_camera)  {
   jpeg_start = 0;
 	
 //  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
-
+  int discard = 0;
   while (serialDataAvail(uart_fd)) {
 	      (void) serialGetchar(uart_fd);
+	      discard++;
 //              printf("%c", octet);
 //              fflush(stdout);	
   }
- 
+ printf("\ndiscard: %d \n\n", discard);
+	
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
   printf("Received from Payload:\n");
