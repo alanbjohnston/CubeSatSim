@@ -1483,9 +1483,9 @@ void get_tlm_fox() {
 	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
 	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
 
-	      encodeB(b_max, 49 + head_offset, (int)(sensor[XS1]));
-	      encodeA(b_max, 0 + head_offset, (int)(sensor[XS2]));
-	      encodeB(b_max, 1 + head_offset, (int)(sensor[XS3]));
+	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1]));
+	      encodeA(b_max, 0 + head_offset, (int)(sensor_max[XS2]));
+	      encodeB(b_max, 1 + head_offset, (int)(sensor_max[XS3]));
       }	  
       else
       {	        	    
@@ -1540,9 +1540,9 @@ void get_tlm_fox() {
 	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
 	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
 
-	      encodeB(b_min, 49 + head_offset, (int)(sensor[XS1]));
-	      encodeA(b_min, 0 + head_offset, (int)(sensor[XS2]));
-	      encodeB(b_min, 1 + head_offset, (int)(sensor[XS3]));	      	      	      
+	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1]));
+	      encodeA(b_min, 0 + head_offset, (int)(sensor_min[XS2]));
+	      encodeB(b_min, 1 + head_offset, (int)(sensor_min[XS3]));	      	      	      
     }      
       else
       {	        	    
