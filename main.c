@@ -2102,7 +2102,13 @@ int get_payload_serial(int debug_camera)  {
   end_flag_detected = FALSE;
   jpeg_start = 0;
 	
-  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
+//  serialFlush (uart_fd);  // flush serial buffer so latest payload is read
+
+  while (serialDataAvail(uart_fd)) {
+	      (void) serialGetchar(uart_fd);
+//              printf("%c", octet);
+//              fflush(stdout);	
+  }
  
 // #ifdef GET_IMAGE_DEBUG
  if (debug_camera)
