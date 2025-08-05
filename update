@@ -47,6 +47,8 @@ sudo sed -i 's/update to/update\nto/g' /etc/motd
 
 sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
 
+sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+
 cd /home/pi/CubeSatSim
 
 git pull --no-rebase > .updated
