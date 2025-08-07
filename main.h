@@ -131,7 +131,7 @@ FILE *image_file;
 #define FAIL_I2C1 4
 #define FAIL_I2C3 5
 #define FAIL_CAMERA 6
-#define FAIL_EXPERIMENTS 7
+#define FAIL_PAYLOAD 7
 #define FAIL_BME 8
 #define FAIL_MPU 9
 
