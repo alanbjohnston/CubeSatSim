@@ -1294,6 +1294,7 @@ void get_tlm_fox() {
 	  voltage[MINUS_Y] = 0.0;
 	  printf("-Y Solar SC Simulated Failure!\n");	  
   }
+	
   if (mode == FSK)
     id = 7;
   else
@@ -1627,7 +1628,7 @@ void get_tlm_fox() {
 	int simulated; 
 	simulated = sim_mode;  
 	if (failureMode != OFF)  {
-		simulated == TRUE;
+		simulated = TRUE;
 		printf("Showing Simulted in FoxTelem\n");
 	}
 //  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
