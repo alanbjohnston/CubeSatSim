@@ -1269,11 +1269,12 @@ void get_tlm_fox() {
   FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
   if (failure_mode_file != NULL) {	
     char failure_string[10];	
-    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)
+    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)  {
      failureMode = atoi(failure_string); 
+	 fclose(failure_mode_file);	
+	}
   } else 
 	printf("No simulated failures!\n");
-  fclose(failure_mode_file);	
 
   if (failureMode == 0) {
 	  failureMode = (int) rnd_float(1, FAIL_COUNT);
