@@ -1283,7 +1283,7 @@ void get_tlm_fox() {
   }
   if (failureMode == FAIL_SOLAR) {
 	  voltage[MINUS_X] = voltage[MINUS_X] * 0.5;
-	  current[MINUS_X] = currente[MINUS_X] * 0.5;
+	  current[MINUS_X] = current[MINUS_X] * 0.5;
   }
   if (failureMode == FAIL_SHORT) {
 	  voltage[MINUS_Y] = 0.0;
