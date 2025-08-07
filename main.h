@@ -124,10 +124,13 @@ FILE *image_file;
 #define REPEATER 7
 #define TXCOMMAND 12
 
-#define FAIL_COUNT 3
+#define FAIL_COUNT 5
 #define FAIL_SOLAR 1
 #define FAIL_DEGRADE 2
 #define FAIL_SHORT 3
+#define FAIL_I2C1 4
+#define FAIL_I2C3 5
+#define FAIL_CAMERA 6
 
 int transmitStatus = -1;
 
