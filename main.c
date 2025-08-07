@@ -1264,7 +1264,30 @@ void get_tlm_fox() {
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
-	
+
+  int failureMode = OFF;
+  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
+  if (failure_mode_file != NULL) {	
+    char failure_string[10];	
+    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)
+     failureMode = atoi(failure_string); 
+  } else 
+	printf("No simulated failures!\n");
+  fclose(failure_mode_file);	
+
+  if (failureMode == 0) {
+	  failureMode = (int) rnd_float(1, FAIL_COUNT);
+  if (failureMode == FAIL_SOLAR) {
+	  voltage[PLUS_X] = 0.0;
+	  current[PLUS_X] = 0.0;
+  }
+  if (failureMode == FAIL_SOLAR) {
+	  voltage[MINUS_X] = voltage[MINUS_X] * 0.5;
+	  current[MINUS_X] = currente[MINUS_X] * 0.5;
+  }
+  if (failureMode == FAIL_SHORT) {
+	  voltage[MINUS_Y] = 0.0;
+  }
   if (mode == FSK)
     id = 7;
   else
