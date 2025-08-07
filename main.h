@@ -124,7 +124,7 @@ FILE *image_file;
 #define REPEATER 7
 #define TXCOMMAND 12
 
-#define FAIL_COUNT 2
+#define FAIL_COUNT 3
 #define FAIL_SOLAR 1
 #define FAIL_DEGRADE 2
 #define FAIL_SHORT 3
