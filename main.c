@@ -1662,8 +1662,10 @@ void get_tlm_fox() {
 	i2c_3 = i2c_bus3;    
 	if (failureMode == FAIL_I2C1)  {
 		i2c_1 = FALSE;
+		printf("I2C Bus 1 Simulated Failure\n");
 	} else 	if (failureMode == FAIL_I2C3)  {
 		i2c_3 = FALSE;
+		printf("I2C Bus 3 Simulated Failure\n");
 	}		  
 //  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
 //      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
