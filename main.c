@@ -1483,7 +1483,7 @@ void get_tlm_fox() {
 
     encodeA(b, 9 + head_offset, battCurr);
 
-	if (failureMode != FAIL_PAYLOAD)	  
+	if ((failureMode != FAIL_PAYLOAD) && (failureMode != FAIL_BME)) 	  
       encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
 
     if (mode == FSK) {
@@ -1689,7 +1689,7 @@ void get_tlm_fox() {
 		    encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
 		    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
 		    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
-		    encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
+		    encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
 		}  
 	    encodeA(b, 36 + head_offset, Resets);
 	    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
@@ -1725,7 +1725,8 @@ void get_tlm_fox() {
 //	      encodeB(b_min, 49 + head_offset, 2048);
 	}	
     encodeB(b, 46 + head_offset, BAT2Current);
-    
+    encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
+	  
 //    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
 	  
     FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
