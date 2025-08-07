@@ -1261,6 +1261,8 @@ void get_tlm_fox() {
   int posXi = 0, negXi = 0, posYi = 0, negYi = 0, posZi = 0, negZi = 0;
   int head_offset = 0;
 
+  STEMBoardFailure = 1;
+
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
@@ -1466,7 +1468,7 @@ void get_tlm_fox() {
     encodeA(b, 3 + head_offset, batt_c_v);
 
 
-	if ((failureMode != FAIL_MPU) || (failureMode != FAIL_PAYLOAD)) {
+	if ((failureMode != FAIL_MPU) && (failureMode != FAIL_PAYLOAD)) {
       encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
       encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
       encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
