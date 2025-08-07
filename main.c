@@ -1655,18 +1655,18 @@ void get_tlm_fox() {
 	simulated = sim_mode;  
 	if (failureMode != OFF)  {
 		simulated = TRUE;
-		printf("Showing Simulted in FoxTelem\n");
+//		printf("Showing Simulted in FoxTelem\n");
 	}
 	int i2c_1, i2c_3; 
 	i2c_1 = i2c_bus1;  
 	i2c_3 = i2c_bus3; 
 	printf("Bus1: %d Bus2: %d  \n", i2c_1, i2c_3);
 	if (failureMode == FAIL_I2C1)  {
-		i2c_1 = FALSE;
-		printf("I2C Bus 1 Simulated Failure\n");
+		i2c_1 = OFF;
+//		printf("I2C Bus 1 Simulated Failure\n");
 	} else 	if (failureMode == FAIL_I2C3)  {
-		i2c_3 = FALSE;
-		printf("I2C Bus 3 Simulated Failure\n");
+		i2c_3 = OFF;
+//		printf("I2C Bus 3 Simulated Failure\n");
 	}		  
 //  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
 //      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
