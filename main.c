@@ -1659,7 +1659,7 @@ void get_tlm_fox() {
 	}
 	int i2c_1, i2c_3; 
 	i2c_1 = i2c_bus1;  
-	i2c_2 = i2c_bus2;    
+	i2c_3 = i2c_bus3;    
 	if (failureMode == FAIL_I2C1)  {
 		i2c_1 = FALSE;
 	} else 	if (failureMode == FAIL_I2C3)  {
