@@ -1281,17 +1281,17 @@ void get_tlm_fox() {
 	  printf("Random Failure\n");
   }
   if (failureMode == FAIL_SOLAR) {
-	  voltage[PLUS_X] = 0.0;
-	  current[PLUS_X] = 0.0;
+	  voltage[map[PLUS_X]] = 0.0;
+	  current[map[PLUS_X]] = 0.0;
 	  printf("+X Solar Simulated Failure\n");
   }
   if (failureMode == FAIL_DEGRADE) {
-	  voltage[PLUS_X] = voltage[PLUS_X] * 0.5;
-	  current[PLUS_X] = current[PLUS_X] * 0.5;
-	  printf("+X Solar Deg Simulated Failure\n");	  
+	  voltage[map[MINUS_X]] = voltage[MINUS_X] * 0.5;
+	  current[mapa[MINUS_X]] = current[MINUS_X] * 0.5;
+	  printf("-X Solar Deg Simulated Failure\n");	  
   }
   if (failureMode == FAIL_SHORT) {
-	  voltage[MINUS_Y] = 0.0;
+	  voltage[map[MINUS_Y]] = 0.0;
 	  printf("-Y Solar SC Simulated Failure!\n");	  
   }
 	
