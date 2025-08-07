@@ -1584,6 +1584,15 @@ void get_tlm_fox() {
 	//	      encodeB(b_max, 49 + head_offset, 2048);
 	      }	  	
 	  }
+	  else
+	  {
+		      encodeB(b_max, 4 + head_offset, 2048); // 0
+		      encodeA(b_max, 6 + head_offset, 2048); // 0
+		      encodeB(b_max, 7 + head_offset, 2048); // 0	    
+		      encodeB(b_max, 40 + head_offset, 2048);
+		      encodeA(b_max, 42 + head_offset, 2048);
+		      encodeB(b_max, 43 + head_offset, 2048);
+	  }
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
       encodeA(b_min, 15 + head_offset, (int)(voltage_min[map[PLUS_Z]] * 100));
