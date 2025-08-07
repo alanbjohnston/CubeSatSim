@@ -1623,9 +1623,13 @@ void get_tlm_fox() {
 	    printf("Error opening command_count.txt!\n");
     fclose(command_count_file);
     
-//    printf("Command count: %d\n", groundCommandCount);	  
-    
-    int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +
+//    printf("Command count: %d\n", groundCommandCount);
+	int simulated; 
+	simulted = sim_mode;  
+	if (failureMode != OFF)  
+		simulated == TRUE;
+//  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
+    int status = STEMBoardFailure + SafeMode * 2 + simulated * 4 + PayloadFailure1 * 8 +
       (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
