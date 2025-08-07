@@ -1292,7 +1292,7 @@ void get_tlm_fox() {
   }
   if (failureMode == FAIL_SHORT) {
 	  voltage[MINUS_Y] = 0.0;
-	  printf("-Y Solar SC Simulated Failure\n");	  
+	  printf("-Y Solar SC Simulated Failure!\n");	  
   }
   if (mode == FSK)
     id = 7;
