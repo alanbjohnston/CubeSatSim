@@ -1468,16 +1468,17 @@ void get_tlm_fox() {
     encodeA(b, 3 + head_offset, batt_c_v);
 
 
-	if ((failureMode != FAIL_MPU) && (failureMode != FAIL_PAYLOAD)) {
-      encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-      encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-      encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
-	}
-	else
+	if ((failureMode == FAIL_MPU) || (failureMode == FAIL_PAYLOAD)) 
 	{
       encodeB(b, 4 + head_offset, 2048); // 0
       encodeA(b, 6 + head_offset, 2048); // 0
-      encodeB(b, 7 + head_offset, 2048); // 0
+      encodeB(b, 7 + head_offset, 2048); // 0		
+	}
+	else
+	{
+      encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+      encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+      encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
 	}
 
     encodeA(b, 9 + head_offset, battCurr);
@@ -1669,35 +1670,50 @@ void get_tlm_fox() {
     encodeA(b, 30 + head_offset, BAT2Voltage);
 
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
-	if (failureMode != FAIL_BME) {
-	    encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
-	    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
-	    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
-	    encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
-	}  
-    encodeA(b, 36 + head_offset, Resets);
-    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
 
-
-	if (failureMode != FAIL_MPU) {
-	    encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
-	    encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
-	    encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
-	}
+	if (failureMode != FAIL_PAYLOAD) {  
+		if (failureMode != FAIL_BME) {
+		    encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
+		    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
+		    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
+		    encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
+		}  
+	    encodeA(b, 36 + head_offset, Resets);
+	    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
+	
+	
+		if (failureMode != FAIL_MPU) {
+		    encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
+		    encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
+		    encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
+		}
+		else
+		{
+		    encodeB(b, 40 + head_offset, 2048);
+		    encodeA(b, 42 + head_offset, 2048);
+		    encodeB(b, 43 + head_offset, 2048);
+		}
+		encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
+		encodeB(b, 49 + head_offset, (int)(sensor[XS1]));
+    	encodeA(b, 0 + head_offset, (int)(sensor[XS2]));
+    	encodeB(b, 1 + head_offset, (int)(sensor[XS3]));
+	}      
 	else
-	{
-	    encodeB(b, 40 + head_offset, 2048);
-	    encodeA(b, 42 + head_offset, 2048);
-	    encodeB(b, 43 + head_offset, 2048);
-	}
+	{	        	    
+		  encodeB(b_min, 4 + head_offset, 2048); // 0
+		  encodeA(b_min, 6 + head_offset, 2048); // 0
+		  encodeB(b_min, 7 + head_offset, 2048); // 0	    
 
+		  encodeB(b_min, 40 + head_offset, 2048);
+		  encodeA(b_min, 42 + head_offset, 2048);
+		  encodeB(b_min, 43 + head_offset, 2048);
+
+		  encodeA(b_min, 48 + head_offset, 2048);
+//	      encodeB(b_min, 49 + head_offset, 2048);
+	}	
     encodeB(b, 46 + head_offset, BAT2Current);
-    encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
+    
 //    encodeB(b, 49 + head_offset, (int)(sensor[XS1] * 10 + 0.5) + 2048);
-	  
-    encodeB(b, 49 + head_offset, (int)(sensor[XS1]));
-    encodeA(b, 0 + head_offset, (int)(sensor[XS2]));
-    encodeB(b, 1 + head_offset, (int)(sensor[XS3]));
 	  
     FILE * command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
     if (command_count_file != NULL) {	
