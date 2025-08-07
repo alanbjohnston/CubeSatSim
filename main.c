@@ -1667,6 +1667,18 @@ void get_tlm_fox() {
 	//	      encodeB(b_min, 49 + head_offset, 2048);
 	    }	
 	  }
+	  else
+	  {
+		      encodeB(b_min, 4 + head_offset, 2048); // 0
+		      encodeA(b_min, 6 + head_offset, 2048); // 0
+		      encodeB(b_min, 7 + head_offset, 2048); // 0	    
+	
+		      encodeB(b_min, 40 + head_offset, 2048);
+		      encodeA(b_min, 42 + head_offset, 2048);
+		      encodeB(b_min, 43 + head_offset, 2048);
+	
+		      encodeA(b_min, 48 + head_offset, 2048);
+	  }
     }    
     encodeA(b, 30 + head_offset, BAT2Voltage);
 
