@@ -124,6 +124,11 @@ FILE *image_file;
 #define REPEATER 7
 #define TXCOMMAND 12
 
+#define FAIL_COUNT = 2
+#define FAIL_SOLAR = 1
+#define FAIL_DEGRADE = 2
+#define FAIL_SHORT = 3
+
 int transmitStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)
