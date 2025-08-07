@@ -1294,6 +1294,32 @@ void get_tlm_fox() {
 	  voltage[map[MINUS_Y]] = 0.0;
 	  printf("-Y Solar SC Simulated Failure!\n");	  
   }
+  if (failureMode == FAIL_I2C1)  {
+	  voltage[map[PLUS_X]] = 0.0;
+	  current[map[PLUS_X]] = 0.0;
+	  voltage[map[PLUS_Y]] = 0.0;
+	  current[map[PLUS_Y]] = 0.0;
+	  voltage[map[BAT]] = 0.0;
+	  current[map[BAT]] = 0.0;
+	  voltage[map[BAT2]] = 0.0;
+	  current[map[BAT2]] = 0.0;	  
+	  printf("I2C Bus 1 Simulated Failure!\n");	
+  } 
+  if (failureMode == FAIL_I2C3)  {
+	  voltage[map[MINUS_X]] = 0.0;
+	  current[map[MINUS_X]] = 0.0;
+	  voltage[map[MINUS_Y]] = 0.0;
+	  current[map[MINUS_Y]] = 0.0;
+	  voltage[map[MINUS_Z]] = 0.0;
+	  current[map[MINUS_Z]] = 0.0;	  
+	  voltage[map[PLUS_Z]] = 0.0;
+	  current[map[PLUS_Z]] = 0.0;	  
+	  printf("I2C Bus 3 Simulated Failure!\n");	
+  }		
+  if (failureMode == FAIL_CAMERA) {
+	  camera = OFF;
+	  printf("Camera Simulated Failure!\n");	  
+  }
 	
   if (mode == FSK)
     id = 7;
@@ -1631,9 +1657,18 @@ void get_tlm_fox() {
 		simulated = TRUE;
 		printf("Showing Simulted in FoxTelem\n");
 	}
+	int i2c_1, i2c_3; 
+	i2c_1 = i2c_bus1;  
+	i2c_2 = i2c_bus2;    
+	if (failureMode == FAIL_I2C1)  {
+		i2c_1 = FALSE;
+	} else 	if (failureMode == FAIL_I2C3)  {
+		i2c_3 = FALSE;
+	}		  
 //  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
+//      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     int status = STEMBoardFailure + SafeMode * 2 + simulated * 4 + PayloadFailure1 * 8 +
-      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
+      (i2c_bus0 == OFF) * 16 + (i2c_1 == OFF) * 32 + (i2c_3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
