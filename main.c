@@ -1278,21 +1278,21 @@ void get_tlm_fox() {
 
   if (failureMode == 0) {
 	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-	  printf("Random Failure");
+	  printf("Random Failure\n");
   }
   if (failureMode == FAIL_SOLAR) {
 	  voltage[PLUS_X] = 0.0;
 	  current[PLUS_X] = 0.0;
-	  printf("+X Solar Panel Simulated Failure");
+	  printf("+X Solar Panel Simulated Failure\n");
   }
   if (failureMode == FAIL_DEGRADE) {
 	  voltage[MINUS_X] = voltage[MINUS_X] * 0.5;
 	  current[MINUS_X] = current[MINUS_X] * 0.5;
-	  printf("-X Solar Panel Degredation Simulated Failure");	  
+	  printf("-X Solar Panel Degredation Simulated Failure\n");	  
   }
   if (failureMode == FAIL_SHORT) {
 	  voltage[MINUS_Y] = 0.0;
-	  printf("-Y Solar Panel Short Circuit Simulated Failure");	  
+	  printf("-Y Solar Panel Short Circuit Simulated Failure\n");	  
   }
   if (mode == FSK)
     id = 7;
