@@ -288,34 +288,34 @@ if [ "$1" = "" ]; then
 			case $fail in
 	
 				1)
-					echo "+X Solar Panel Failure."
+					echo "+X Solar Panel Failure"
 					;;
 				2)
-					echo "-X Solar Panel Degredation."
+					echo "-X Solar Panel Degredation"
 					;;
 				3)
-					echo "-Y Solar Panel Short Circuit."
+					echo "-Y Solar Panel Short Circuit"
 					;;
 				4)
-					echo "Failed I2C Bus 1."
+					echo "Failed I2C Bus 1"
 					;;
 				5)
-					echo "Failed I2C Bus 3."
+					echo "Failed I2C Bus 3"
 					;;
 				6)
-					echo "Failed Camera."
+					echo "Failed Camera"
 					;;
 				7)
-					echo "Failed Payload."
+					echo "Failed Payload"
 					;;
 				8)
-					echo "Failed BME Sensor."
+					echo "Failed BME Sensor"
 					;;
 				9)
-					echo "Failed MPU Sensor."
+					echo "Failed MPU Sensor"
 					;;
 				*)
-					echo "Unknown Failure."
+					echo "Unknown Failure"
 					;;
 			esac
 #			echo $fail
@@ -1485,7 +1485,18 @@ elif [ "$1" = "-M" ]; then
 	echo "Set simulated failure mode"
 	echo
 
-	echo "Enter the failure number to change: 0 - 10"
+	echo "1  +X Solar Panel Failure"
+	echo "2  -X Solar Panel Degredation"
+	echo "3  -Y Solar Panel Short Circuit"
+	echo "4  Failed I2C Bus 1"
+	echo "5  Failed I2C Bus 3"
+	echo "6  Failed Camera"
+	echo "7  Failed Payload"
+	echo "8  Failed BME Sensor"
+	echo "9  Failed MPU Sensor"
+	echo
+
+	echo "Enter the failure number to change: 0 - 9"
 	read MODE
 
 	echo
