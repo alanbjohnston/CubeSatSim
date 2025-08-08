@@ -274,7 +274,7 @@ if [ "$1" = "" ]; then
 #		sim="no"
 		echo "Simulated Telemetry is OFF"
 	fi
-	echo
+#	echo
 
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
@@ -282,14 +282,48 @@ if [ "$1" = "" ]; then
 			echo "No simulated failures."
 		else
 			fail=$(<$FILE)
-			echo -n "Simulated failure mode is: "
+			echo -n "Simulated "
 #			cat $FILE
-			echo $fail
+
+			case $fail in
+	
+				1)
+					echo "+X Solar Panel Failure."
+					;;
+				2)
+					echo "-X Solar Panel Degredation."
+					;;
+				3)
+					echo "-Y Solar Panel Short Circuit."
+					;;
+				4)
+					echo "Failed I2C Bus 1."
+					;;
+				5)
+					echo "Failed I2C Bus 3."
+					;;
+				6)
+					echo "Failed Camera."
+					;;
+				7)
+					echo "Failed Payload."
+					;;
+				8)
+					echo "Failed BME Sensor."
+					;;
+				9)
+					echo "Failed MPU Sensor."
+					;;
+				*)
+					echo "Unknown Failure."
+					;;
+			esac
+#			echo $fail
 		fi
 	else
 		echo "No simulated failures."
 	fi
-	echo
+#	echo
 
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
 		echo "Balloon mode is ON"
@@ -297,10 +331,10 @@ if [ "$1" = "" ]; then
 		echo "Balloon mode is OFF"
 	fi
 
-	echo
+#	echo
 	echo -n "Current command count is: "
 	cat /home/pi/CubeSatSim/command_count.txt
-	echo
+#	echo
 #	echo
 #	echo "Current beacon transmit mode is:"
 #	cat /home/pi/CubeSatSim/command_tx
@@ -308,7 +342,7 @@ if [ "$1" = "" ]; then
 
 	echo -n "Squelch level is: "
 	echo $6
-	echo
+#	echo
 
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
@@ -327,14 +361,14 @@ if [ "$1" = "" ]; then
     		echo "Radio command and control is OFF"
 	fi
 
-	echo
+#	echo
 
 	echo -n "RX PL code is: "
 	echo -n ${10}
 #	echo
 	echo -n " TX PL code is: "
 	echo ${11}
-	echo
+#	echo
 
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
@@ -343,7 +377,7 @@ if [ "$1" = "" ]; then
     		echo "Battery saver mode is OFF"
 	fi
 
-	echo
+#	echo
 	FILE=/home/pi/CubeSatSim/beacon_off
 	if [ -f "$FILE" ]; then
     		echo "Transmit beacon telemetry is OFF"
