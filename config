@@ -276,7 +276,6 @@ if [ "$1" = "" ]; then
 	fi
 	echo
 
-	echo
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
 		if [[ $(grep '0' $FILE) ]]; then
