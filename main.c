@@ -718,6 +718,7 @@ int main(int argc, char * argv[]) {
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
+		  printf("Valid Payload!!\n");  	
           int count1;
           char * token;
  
