@@ -276,6 +276,20 @@ if [ "$1" = "" ]; then
 	fi
 	echo
 
+	echo
+	FILE=/home/pi/CubeSatSim/failure_mode.txt
+	if [ -f "$FILE" ]; then
+		if [[ $(grep '0' $FILE) ]]; then
+			echo "No simulated failures."
+		else
+			echo -n "Simulated failure mode is: "
+			cat $FILE
+		fi
+	else
+		echo "No simulated failures."
+	fi
+	echo
+
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
 		echo "Balloon mode is ON"
 	else
@@ -335,11 +349,6 @@ if [ "$1" = "" ]; then
 	else
   		echo "Transmit beacon telemetry is ON"
 	fi
-
-	echo
-	echo -n "Simulated failure mode is: "
-	cat /home/pi/CubeSatSim/failure_mode.txt
-	echo
 
 	echo
 	echo -e "Current sim.cfg configuration file:"	
