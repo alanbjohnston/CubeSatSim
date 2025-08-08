@@ -1752,10 +1752,10 @@ void get_tlm_fox() {
 	i2c_1 = i2c_bus1;  
 	i2c_3 = i2c_bus3; 
 	printf("Bus1: %d Bus2: %d  \n", i2c_1, i2c_3);
-	if (failure_mode == FAIL_I2C1)  {
+	if (failureMode == FAIL_I2C1)  {
 		i2c_1 = OFF;
 //		printf("I2C Bus 1 Simulated Failure\n");
-	} else 	if (failure_mode == FAIL_I2C3)  {
+	} else 	if (failureMode == FAIL_I2C3)  {
 		i2c_3 = OFF;
 //		printf("I2C Bus 3 Simulated Failure\n");
 	}		  
