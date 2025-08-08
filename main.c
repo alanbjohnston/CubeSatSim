@@ -686,7 +686,7 @@ int main(int argc, char * argv[]) {
         fclose(telem_file);
 
 		if (failureMode == FAIL_PAYLOAD)
-			sensor_payload[0] = 'X');  // This will cause the payload to not be processed.
+			sensor_payload[0] = 'X';  // This will cause the payload to not be processed.
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
