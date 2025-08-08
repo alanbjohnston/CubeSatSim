@@ -279,7 +279,7 @@ if [ "$1" = "" ]; then
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
 		if [[ $(grep '0' $FILE) ]]; then
-			echo "No simulated failures."
+			echo "No simulated failure."
 		else
 			fail=$(<$FILE)
 			echo -n "Simulated "
@@ -321,7 +321,7 @@ if [ "$1" = "" ]; then
 #			echo $fail
 		fi
 	else
-		echo "No simulated failures."
+		echo "No simulated failure."
 	fi
 #	echo
 
