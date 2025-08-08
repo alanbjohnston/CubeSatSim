@@ -1481,7 +1481,7 @@ elif [ "$1" = "-j" ]; then
 
 elif [ "$1" = "-M" ]; then
 
-	echo
+#	echo
 	echo "Set simulated failure mode"
 	echo
 
