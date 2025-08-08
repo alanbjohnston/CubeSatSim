@@ -1277,7 +1277,11 @@ void get_tlm_fox() {
 	}
   } else 
 	failureMode = FAIL_NONE;
-  
+
+  if (sim_mode && (loop % 10 == 0) { 	
+  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
+	  printf("Sim Mode Random Failure Change\n");
+	  
   if (failureMode == FAIL_NONE) 
 	  printf("No Simulated Failure\n");	
   if (failureMode == -1) {
