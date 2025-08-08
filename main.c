@@ -1744,7 +1744,7 @@ void get_tlm_fox() {
 //    printf("Command count: %d\n", groundCommandCount);
 	int simulated; 
 	simulated = sim_mode;  
-	if (failureMode != OFF)  {
+	if (failureMode != FAIL_NONE)  {
 		simulated = TRUE;
 //		printf("Showing Simulted in FoxTelem\n");
 	}
@@ -1752,10 +1752,10 @@ void get_tlm_fox() {
 	i2c_1 = i2c_bus1;  
 	i2c_3 = i2c_bus3; 
 	printf("Bus1: %d Bus2: %d  \n", i2c_1, i2c_3);
-	if (FAIL_I2C1)  {
+	if (failure_mode == FAIL_I2C1)  {
 		i2c_1 = OFF;
 //		printf("I2C Bus 1 Simulated Failure\n");
-	} else 	if (FAIL_I2C3)  {
+	} else 	if (failure_mode == FAIL_I2C3)  {
 		i2c_3 = OFF;
 //		printf("I2C Bus 3 Simulated Failure\n");
 	}		  
