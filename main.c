@@ -1267,21 +1267,29 @@ void get_tlm_fox() {
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
 
-  int failureMode = OFF;
-  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
-  if (failure_mode_file != NULL) {	
-    char failure_string[10];	
-    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)  {
-     failureMode = atoi(failure_string); 
-	 fclose(failure_mode_file);	
-	}
-  } else 
-	failureMode = FAIL_NONE;
-
-  if (sim_mode && (loop % 10 == 0)) { 	
+  if (sim_mode) {
+	if (loop % 10 == 0) { 	
   	  failureMode = (int) rnd_float(1, FAIL_COUNT);
 	  printf("Sim Mode Random Failure Change\n");
+	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
+	  fprintf(failure_mode_file, "%d", failureMode);	
+	  fclose(failure_mode_file);	
+    }
   }
+  else
+  {
+	  failureMode = OFF;
+	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
+	  if (failure_mode_file != NULL) {	
+	    char failure_string[10];	
+	    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)  {
+	     failureMode = atoi(failure_string); 
+		 fclose(failure_mode_file);	
+		}
+	  } else 
+		failureMode = FAIL_NONE;
+  }
+
 	
   if (failureMode == FAIL_NONE) 
 	  printf("No Simulated Failure\n");	
@@ -1756,7 +1764,7 @@ void get_tlm_fox() {
 	int i2c_1, i2c_3; 
 	i2c_1 = i2c_bus1;  
 	i2c_3 = i2c_bus3; 
-	printf("Bus1: %d Bus2: %d  \n", i2c_1, i2c_3);
+//	printf("Bus1: %d Bus2: %d  \n", i2c_1, i2c_3);
 	if (failureMode == FAIL_I2C1)  {
 		i2c_1 = OFF;
 //		printf("I2C Bus 1 Simulated Failure\n");
