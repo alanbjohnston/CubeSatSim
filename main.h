@@ -136,6 +136,7 @@ FILE *image_file;
 #define FAIL_BME 8
 #define FAIL_MPU 9
 #define FAIL_AUDIO 10
+int failureMode = FAIL_NONE;
 
 int transmitStatus = -1;
 
