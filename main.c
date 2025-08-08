@@ -623,9 +623,12 @@ int main(int argc, char * argv[]) {
 	    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)  {
 	     failureMode = atoi(failure_string); 
 		 fclose(failure_mode_file);	
+		 printf("Failure mode: %d\n", failureMode);	
 		}
-	  } else 
+	  } else {
 		failureMode = FAIL_NONE;
+		printf("No simulated failure.");
+	  }
   }	  
 
    {
@@ -708,8 +711,10 @@ int main(int argc, char * argv[]) {
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
 
-		if (failureMode == FAIL_PAYLOAD)
+		if (failureMode == FAIL_PAYLOAD) {
 			sensor_payload[0] = 'X';  // This will cause the payload to not be processed.
+			printf("Simulated Payload Failure.\n");
+		}
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
@@ -762,7 +767,8 @@ int main(int argc, char * argv[]) {
 			sensor[TEMP] = 0.0;
 			sensor[PRES] = 0.0;		  
 			sensor[HUMI] = 0.0;
-			sensor[ALT] = 0.0;		  
+			sensor[ALT] = 0.0;	
+		    printf("Simulated BME Failure.\n");
 	  }
 
 	  if (failureMode == FAIL_MPU) {
@@ -772,6 +778,7 @@ int main(int argc, char * argv[]) {
 			sensor[GYRO_X] = 0.0;
 			sensor[GYRO_Y] = 0.0;
 			sensor[GYRO_Z] = 0.0;		  
+		    printf("Simulated MPU Failure.\n");
 	  }
 
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
