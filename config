@@ -337,6 +337,11 @@ if [ "$1" = "" ]; then
 	fi
 
 	echo
+	echo -n "Simulated failure mode is: "
+	cat /home/pi/CubeSatSim/failure_mode.txt
+	echo
+
+	echo
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
@@ -1430,6 +1435,21 @@ elif [ "$1" = "-j" ]; then
 		restart=1
 #	fi
 
+elif [ "$1" = "-M" ]; then
+
+	echo
+	echo "Set simulated failure mode"
+	echo
+
+	echo "Enter the failure number to change: 0 - 10"
+	read MODE
+
+	echo
+	echo -n "Setting simulated failure mode: " 
+	echo $MODE
+	echo
+	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1467,6 +1487,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
+	echo "   -M     Set simulated failure mode"
 
 	echo
 	exit
