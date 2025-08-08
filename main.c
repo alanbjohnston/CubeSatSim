@@ -684,6 +684,9 @@ int main(int argc, char * argv[]) {
 		
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
+
+		if (failureMode == FAIL_PAYLOAD)
+			sensor_payload[0] = 'X');  // This will cause the payload to not be processed.
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
@@ -701,7 +704,7 @@ int main(int argc, char * argv[]) {
 //              #endif
               token = strtok(NULL, space);
             }
-          }
+          } 	
 
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
@@ -731,7 +734,23 @@ int main(int argc, char * argv[]) {
 //	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
-	  
+
+	  if (failureMode == FAIL_BME) {
+			sensor[TEMP] = 0.0;
+			sensor[PRES] = 0.0;		  
+			sensor[HUMI] = 0.0;
+			sensor[ALT] = 0.0;		  
+	  }
+
+	  if (failureMode == FAIL_MPU) {
+			sensor[ACCEL_X] = 0.0;
+			sensor[ACCEL_Y] = 0.0;		  
+			sensor[ACCEL_Z] = 0.0;
+			sensor[GYRO_X] = 0.0;
+			sensor[GYRO_Y] = 0.0;
+			sensor[GYRO_Z] = 0.0;		  
+	  }
+
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
         for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
           if (sensor[count1] < sensor_min[count1])
