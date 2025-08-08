@@ -281,8 +281,10 @@ if [ "$1" = "" ]; then
 		if [[ $(grep '0' $FILE) ]]; then
 			echo "No simulated failures."
 		else
+			fail=$(<$FILE)
 			echo -n "Simulated failure mode is: "
-			cat $FILE
+#			cat $FILE
+			echo $fail
 		fi
 	else
 		echo "No simulated failures."
