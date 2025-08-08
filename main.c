@@ -768,7 +768,7 @@ int main(int argc, char * argv[]) {
 			sensor[PRES] = 0.0;		  
 			sensor[HUMI] = 0.0;
 			sensor[ALT] = 0.0;	
-		    printf("Simulated BME Failure.\n");
+		    printf("Simulated BME Failure!\n");
 	  }
 
 	  if (failureMode == FAIL_MPU) {
@@ -778,10 +778,11 @@ int main(int argc, char * argv[]) {
 			sensor[GYRO_X] = 0.0;
 			sensor[GYRO_Y] = 0.0;
 			sensor[GYRO_Z] = 0.0;		  
-		    printf("Simulated MPU Failure.\n");
+		    printf("Simulated MPU Failure!\n");
 	  }
 
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
+		printf("Valid Payload!!\n");  
         for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
