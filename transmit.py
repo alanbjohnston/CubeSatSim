@@ -472,6 +472,16 @@ if __name__ == "__main__":
 						print("Ready for next packet!")
 						
 					sleep(0.5)
+					try:
+						file = open("/home/pi/CubeSatSim/failure_mode.txt")
+						fail_mode = file.read(2)
+						if (fail_mode == "10"):
+							card = "Device"  # Change audio so no FM audio plays
+							print("Failure mode no FM audio")
+						else:
+							print("Other failure mode")
+					except:
+						print("No failure mode")
 				except:
 #					command_control_check()
 					sleep(1)
