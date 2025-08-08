@@ -1298,7 +1298,7 @@ void get_tlm_fox() {
 	  voltage[map[MINUS_Y]] = 0.0;
 	  printf("-Y Solar SC Simulated Failure!\n");	  
   }
-  if (FAIL_I2C1)  {
+  if (failureMode == FAIL_I2C1)  {
 	  voltage[map[PLUS_X]] = 0.0;
 	  current[map[PLUS_X]] = 0.0;
 	  voltage[map[PLUS_Y]] = 0.0;
@@ -1309,7 +1309,7 @@ void get_tlm_fox() {
 	  current[map[BAT2]] = 0.0;	  
 	  printf("I2C Bus 1 Simulated Failure!\n");	
   } 
-  if (FAIL_I2C3)  {
+  if (failureMode == FAIL_I2C3)  {
 	  voltage[map[MINUS_X]] = 0.0;
 	  current[map[MINUS_X]] = 0.0;
 	  voltage[map[MINUS_Y]] = 0.0;
@@ -1320,11 +1320,11 @@ void get_tlm_fox() {
 	  current[map[PLUS_Z]] = 0.0;	  
 	  printf("I2C Bus 3 Simulated Failure!\n");	
   }		
-  if (FAIL_CAMERA) {
+  if (failureMode == FAIL_CAMERA) {
 	  camera = OFF;
 	  printf("Camera Simulated Failure!\n");	  
   }
-  if (FAIL_PAYLOAD) {
+  if (failureMode == FAIL_PAYLOAD) {
 	  payload = OFF;
 	  printf("Payload Simulated Failure!\n");	  
   }
@@ -1470,7 +1470,7 @@ void get_tlm_fox() {
     encodeA(b, 3 + head_offset, batt_c_v);
 
 
-	if ((FAIL_MPU) || (FAIL_PAYLOAD)) 
+	if ((failureMode == FAIL_MPU) || (failureMode == FAIL_PAYLOAD)) 
 	{
       encodeB(b, 4 + head_offset, 2048); // 0
       encodeA(b, 6 + head_offset, 2048); // 0
