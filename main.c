@@ -605,6 +605,29 @@ int main(int argc, char * argv[]) {
 //    #endif
     fclose(uptime_file);
 
+  if (sim_mode) {
+	if (loop % 10 == 0) { 	
+  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
+	  printf("Sim Mode Random Failure Change\n");
+	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
+	  fprintf(failure_mode_file, "%d", failureMode);	
+	  fclose(failure_mode_file);	
+    }
+  }
+  else
+  {
+	  failureMode = OFF;
+	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
+	  if (failure_mode_file != NULL) {	
+	    char failure_string[10];	
+	    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)  {
+	     failureMode = atoi(failure_string); 
+		 fclose(failure_mode_file);	
+		}
+	  } else 
+		failureMode = FAIL_NONE;
+  }	  
+
    {
       int count1;
       char * token;
@@ -1285,30 +1308,6 @@ void get_tlm_fox() {
   short int buffer_test[bufLen];
   int buffSize;
   buffSize = (int) sizeof(buffer_test);
-
-  if (sim_mode) {
-	if (loop % 10 == 0) { 	
-  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-	  printf("Sim Mode Random Failure Change\n");
-	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
-	  fprintf(failure_mode_file, "%d", failureMode);	
-	  fclose(failure_mode_file);	
-    }
-  }
-  else
-  {
-	  failureMode = OFF;
-	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
-	  if (failure_mode_file != NULL) {	
-	    char failure_string[10];	
-	    if ( (fgets(failure_string, 10, failure_mode_file)) != NULL)  {
-	     failureMode = atoi(failure_string); 
-		 fclose(failure_mode_file);	
-		}
-	  } else 
-		failureMode = FAIL_NONE;
-  }
-
 	
   if (failureMode == FAIL_NONE) 
 	  printf("No Simulated Failure\n");	
