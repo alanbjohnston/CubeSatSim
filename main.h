@@ -124,7 +124,7 @@ FILE *image_file;
 #define REPEATER 7
 #define TXCOMMAND 12
 
-#define FAIL_COUNT 9
+#define FAIL_COUNT 10
 #define FAIL_SOLAR 1
 #define FAIL_DEGRADE 2
 #define FAIL_SHORT 3
@@ -134,6 +134,7 @@ FILE *image_file;
 #define FAIL_PAYLOAD 7
 #define FAIL_BME 8
 #define FAIL_MPU 9
+#define FAIL_AUDIO 10
 
 int transmitStatus = -1;
 
