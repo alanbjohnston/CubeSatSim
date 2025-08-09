@@ -1529,7 +1529,6 @@ elif [ "$1" = "-M" ]; then
 		echo "Currently, no simulated failure"
 	fi
 
-	MODE=0
 	echo "Set simulated failure mode"
 	echo
 
@@ -1551,40 +1550,39 @@ elif [ "$1" = "-M" ]; then
 	echo
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
-	else
-		echo -n "Setting Simulated " 
-	
+	else	
 		case $MODE in
 	
 			1)
-				echo "+X Solar Panel Failure"
+				echo "Setting Simulated +X Solar Panel Failure"
 				;;
 			2)
-				echo "-X Solar Panel Degredation"
+				echo "Setting Simulated -X Solar Panel Degredation"
 				;;
 			3)
-				echo "-Y Solar Panel Short Circuit"
+				echo "Setting Simulated -Y Solar Panel Short Circuit"
 				;;
 			4)
-				echo "Failed I2C Bus 1"
+				echo "Setting Simulated Failed I2C Bus 1"
 				;;
 			5)
-				echo "Failed I2C Bus 3"
+				echo "Setting Simulated Failed I2C Bus 3"
 				;;
 			6)
-				echo "Failed Camera"
+				echo "Setting Simulated Failed Camera"
 				;;
 			7)
-				echo "Failed Payload"
+				echo "Setting Simulated Failed Payload"
 				;;
 			8)
-				echo "Failed BME Sensor"
+				echo "Setting Simulated Failed BME Sensor"
 				;;
 			9)
-				echo "Failed MPU Sensor"
+				echo "Setting Simulated Failed MPU Sensor"
 				;;
 			*)
-				echo "Unknown Failure"
+				echo "Setting No Simulated Failure"
+				MODE=0
 				;;
 		esac
 	fi
