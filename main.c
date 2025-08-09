@@ -1508,7 +1508,7 @@ void get_tlm_fox() {
 		      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1]));
 		      encodeA(b_max, 0 + head_offset, (int)(sensor_max[XS2]));
 		      encodeB(b_max, 1 + head_offset, (int)(sensor_max[XS3]));
-
+		  }
 	      else
 	      {	        	    
 		      encodeB(b_max, 4 + head_offset, 2048); // 0
