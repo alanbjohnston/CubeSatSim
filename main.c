@@ -299,7 +299,8 @@ int main(int argc, char * argv[]) {
    map[BAT] = BAT2;
    map[PLUS_Z] = BAT;
    map[MINUS_Z] = PLUS_Z;
-   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
+//   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
+   strcpy(busStr,"1 3");	
    voltageThreshold = 8.0;
 	
   // check for camera	
