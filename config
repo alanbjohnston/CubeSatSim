@@ -314,6 +314,9 @@ if [ "$1" = "" ]; then
 				9)
 					echo "Failed MPU Sensor"
 					;;
+				10)
+					echo "Failed FM Audio"
+					;;
 				*)
 					echo "Unknown Failure"
 					;;
@@ -1517,7 +1520,10 @@ elif [ "$1" = "-M" ]; then
 			9)
 				echo "Failed MPU Sensor"
 				;;
-			*)
+			10)
+				echo "Failed FM Audio"
+				;;
+			*)		
 				echo "Unknown Failure"
 				;;
 			esac
@@ -1577,6 +1583,9 @@ elif [ "$1" = "-M" ]; then
 				;;
 			9)
 				echo "Setting Simulated Failed MPU Sensor"
+				;;
+			10)
+				echo "Setting Failed FM Audio"
 				;;
 			*)
 				echo "Setting No Simulated Failure"
