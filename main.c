@@ -1496,12 +1496,12 @@ void get_tlm_fox() {
 	      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
 	      {	     
 
-			      encodeB(b_max, 4 + head_offset, 2048); // 0
-			      encodeA(b_max, 6 + head_offset, 2048); // 0
-			      encodeB(b_max, 7 + head_offset, 2048); // 0	    
-			      encodeB(b_max, 40 + head_offset, 2048);
-			      encodeA(b_max, 42 + head_offset, 2048);
-			      encodeB(b_max, 43 + head_offset, 2048);
+	      		  encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+			      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+			      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
+			      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
+			      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
+			      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 
 		      encodeA(b_max, 48 + head_offset, (int)(sensor_max[DTEMP] * 10 + 0.5) + 2048);
 				  
@@ -1547,12 +1547,12 @@ void get_tlm_fox() {
 
 	      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
 	      {	   
-			      encodeB(b_min, 4 + head_offset, 2048); // 0
-			      encodeA(b_min, 6 + head_offset, 2048); // 0
-			      encodeB(b_min, 7 + head_offset, 2048); // 0	    
-			      encodeB(b_min, 40 + head_offset, 2048);
-			      encodeA(b_min, 42 + head_offset, 2048);
-			      encodeB(b_min, 43 + head_offset, 2048);
+			      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+			      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+			      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
+			      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
+			      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
+			      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
 			  
 
 		      encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);
