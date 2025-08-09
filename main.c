@@ -709,13 +709,13 @@ int main(int argc, char * argv[]) {
 
 	  if (failureMode == FAIL_BME) {
 			sensor[TEMP] = 0.0;
-		    strcpy(sensor[TEMP], "0.0");
+		    strcpy(sensor_string[TEMP], "0.0");
 			sensor[PRES] = 0.0;		  
-		    strcpy(sensor[PRES], "0.0");
+		    strcpy(sensor_string[PRES], "0.0");
 		    sensor[HUMI] = 0.0;
-		    strcpy(sensor[HUMI], "0.0");
+		    strcpy(sensor_string[HUMI], "0.0");
 		    sensor[ALT] = 0.0;	
-		    strcpy(sensor[ALT], "0.0");				
+		    strcpy(sensor_string[ALT], "0.0");				
 		    printf("Simulated BME Failure!\n");
 	  }
 
