@@ -14,6 +14,7 @@ import random
 
 def sim_failure_check():
 	try:
+		global card
 		file = open("/home/pi/CubeSatSim/failure_mode.txt")
 		fail_mode = file.read(2)
 		if (fail_mode == "10"):
