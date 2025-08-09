@@ -1214,6 +1214,7 @@ void get_tlm_fox() {
   int i;
 
   long int sync = syncWord;
+  int cam = ON;
 
   smaller = (int) (S_RATE / (2 * freq_Hz));
 
@@ -1289,13 +1290,13 @@ void get_tlm_fox() {
 	  current[map[PLUS_Z]] = 0.0;	  
 	  printf("I2C Bus 3 Simulated Failure!\n");	
   }		
-  if (failureMode == FAIL_CAMERA) {
-	  camera = OFF;
-	  printf("Camera Simulated Failure!\n");	  
-  }
   if (failureMode == FAIL_PAYLOAD) {
 	  payload = OFF;
 	  printf("Payload Simulated Failure!\n");	  
+  }
+  if (failureMode == FAIL_CAMERA) {
+	  cam = OFF;
+	  printf("Camera Simulated Failure!\n");	  
   }
 	
   if (mode == FSK)
@@ -1649,7 +1650,7 @@ void get_tlm_fox() {
 //  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
 //      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     int status = STEMBoardFailure + SafeMode * 2 + simulated * 4 + PayloadFailure1 * 8 +
-      (i2c_bus0 == OFF) * 16 + (i2c_1 == OFF) * 32 + (i2c_3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
+      (i2c_bus0 == OFF) * 16 + (i2c_1 == OFF) * 32 + (i2c_3 == OFF) * 64 + (cam == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
