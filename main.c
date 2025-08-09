@@ -675,7 +675,7 @@ int main(int argc, char * argv[]) {
               token = strtok(NULL, space);
             }
           } 	
-
+		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
 	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
