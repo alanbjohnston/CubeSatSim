@@ -314,7 +314,7 @@ if [ "$1" = "" ]; then
 				9)
 					echo "Failed MPU Sensor"
 					;;
-				10)
+				"10")
 					echo "Failed FM Audio"
 					;;
 				*)
