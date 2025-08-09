@@ -721,15 +721,21 @@ int main(int argc, char * argv[]) {
 
 	  if (failureMode == FAIL_MPU) {
 			sensor[ACCEL_X] = 0.0;
-			sensor[ACCEL_Y] = 0.0;		  
+		    strcpy(sensor_string[ACCEL_X], "0.0");
+			sensor[ACCEL_Y] = 0.0;
+		    strcpy(sensor_string[ACCEL_Y], "0.0");		  
 			sensor[ACCEL_Z] = 0.0;
+		    strcpy(sensor_string[ACCEL_Z], "0.0");
 			sensor[GYRO_X] = 0.0;
+		    strcpy(sensor_string[GYRO_X], "0.0");
 			sensor[GYRO_Y] = 0.0;
-			sensor[GYRO_Z] = 0.0;		  
+		    strcpy(sensor_string[GYRO_Y], "0.0");
+			sensor[GYRO_Z] = 0.0;
+		    strcpy(sensor_string[GYRO_Z], "0.0");		  
 		    printf("Simulated MPU Failure!\n");
 	  }
 
-		if (failureMode == FAIL_BME) {  // recreaate sensor_payload string	
+		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU)) {  // recreaate sensor_payload string	
 		  sensor_payload[0] = 0;
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 			  strcat(sensor_payload, sensor_string[count1]);
