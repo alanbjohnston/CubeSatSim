@@ -1482,6 +1482,53 @@ elif [ "$1" = "-j" ]; then
 elif [ "$1" = "-M" ]; then
 
 #	echo
+
+	echo
+	FILE=/home/pi/CubeSatSim/failure_mode.txt
+	if [ -f "$FILE" ]; then
+		if [[ $(grep '0' $FILE) ]]; then
+			echo "Currently, no simulated failure"
+		else
+			fail=$(<$FILE)
+			echo -n "Currenly, simulated "
+			case $fail in
+	
+			1)
+				echo "+X Solar Panel Failure"
+				;;
+			2)
+				echo "-X Solar Panel Degredation"
+				;;
+			3)
+				echo "-Y Solar Panel Short Circuit"
+				;;
+			4)
+				echo "Failed I2C Bus 1"
+				;;
+			5)
+				echo "Failed I2C Bus 3"
+				;;
+			6)
+				echo "Failed Camera"
+				;;
+			7)
+				echo "Failed Payload"
+				;;
+			8)
+				echo "Failed BME Sensor"
+				;;
+			9)
+				echo "Failed MPU Sensor"
+				;;
+			*)
+				echo "Unknown Failure"
+				;;
+		esac
+	else
+		echo "Currently, no simulated failure"
+	fi
+
+	MODE=0
 	echo "Set simulated failure mode"
 	echo
 
