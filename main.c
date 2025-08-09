@@ -320,7 +320,6 @@ int main(int argc, char * argv[]) {
   //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
-   
     payload = OFF;
     fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
@@ -332,7 +331,6 @@ int main(int argc, char * argv[]) {
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
-
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
@@ -626,22 +624,6 @@ int main(int argc, char * argv[]) {
         batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
 	   
    }
-
-//      if (payload == ON) {  // moved to here
-      
-//      if ((payload == ON) && (mode != BPSK)) {  // moved to here
-//        STEMBoardFailure = 0;
-
-/****		  
-	payload = get_payload_serial(FALSE);      
-        printf("get_payload_status: %d \n", payload);  // not debug
-	fflush(stdout); 
-//	printf("String: %s\n", buffer2);       
-	fflush(stdout);   
-	strcpy(sensor_payload, buffer2);     
-****/
-		  
-//	printf(" Response from STEM Payload board: %s\n", sensor_payload);
 
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
 //        printf("Writing payload string\n");
