@@ -295,13 +295,29 @@ int main(int argc, char * argv[]) {
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
 
-   map[BAT2] = MINUS_Z;
-   map[BAT] = BAT2;
-   map[PLUS_Z] = BAT;
-   map[MINUS_Z] = PLUS_Z;
-//   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
-   strcpy(busStr,"1 3");	
-   voltageThreshold = 8.0;
+if (vB4) {
+    map[BAT] = BAT2;
+    map[BAT2] = BAT;
+    snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
+  } else if (vB5) {
+    map[MINUS_X] = MINUS_Y;
+    map[PLUS_Z] = MINUS_X;	
+    map[MINUS_Y] = PLUS_Z;		  
+
+    if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
+      printf("/dev/i2c-11 is present\n\n");
+      snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
+    } else {
+      snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
+    }
+  } else {
+    map[BAT2] = MINUS_Z;
+    map[BAT] = BAT2;
+    map[PLUS_Z] = BAT;
+    map[MINUS_Z] = PLUS_Z;
+    snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
+    voltageThreshold = 8.0;
+  }
 	
   // check for camera	
 //  char cmdbuffer1[1000];
