@@ -830,8 +830,7 @@ int main(int argc, char * argv[]) {
 
       // end of simulated telemetry
     }
-    else {
-      }
+
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
