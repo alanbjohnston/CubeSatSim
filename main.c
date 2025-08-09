@@ -669,10 +669,10 @@ int main(int argc, char * argv[]) {
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
             if (token != NULL) {
               sensor[count1] = (float) atof(token);
-			  strcpy(sensor_string[count1], token);	
+			  strcpy(sensor_string[count1][], token);	
 //              #ifdef DEBUG_LOGGING
 //                printf("sensor: %f ", sensor[count1]);  // print sensor data
-				printf("Sensor String %d is %s\n",count1, sensor_string[count1]);
+				printf("Sensor String %d is %s\n",count1, sensor_string[count1][]);
 //              #endif
               token = strtok(NULL, space);
             }
@@ -728,7 +728,7 @@ int main(int argc, char * argv[]) {
 		if (failureMode == FAIL_BME) {  // recreaate sensor_payload string
 		  sensor_payload[0] = 0;
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
-			  strcat(sensor_payload, sensor_string[count1]);
+			  strcat(sensor_payload, sensor_string[count1][]);
 //            if (token != NULL) {
 //              sensor[count1] = (float) atof(token);
 //              #ifdef DEBUG_LOGGING
