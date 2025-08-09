@@ -278,7 +278,7 @@ if [ "$1" = "" ]; then
 
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
-		if [[ $(grep '0' $FILE) ]]; then
+		if [[ $(grep '-1' $FILE) ]]; then
 			echo "No simulated failure"
 		else
 			fail=$(<$FILE)
@@ -1486,7 +1486,7 @@ elif [ "$1" = "-M" ]; then
 
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
-		if [[ $(grep '0' $FILE) ]]; then
+		if [[ $(grep '-1' $FILE) ]]; then
 			echo "Currently, no simulated failure"
 		else
 			fail=$(<$FILE)
@@ -1533,7 +1533,7 @@ elif [ "$1" = "-M" ]; then
 	fi
 
 	echo
-	echo "Set simulated failure mode"
+	echo "Set simulated failure mode (or Return to turn OFF)"
 	echo
 
 	echo " 0  No Failure (turn OFF)"
@@ -1555,6 +1555,7 @@ elif [ "$1" = "-M" ]; then
 	echo
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
+		MODE="-1"
 	else	
 		case $MODE in
 	
