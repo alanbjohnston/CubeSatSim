@@ -1122,7 +1122,7 @@ void get_tlm(void) {
   }  
 	  
 //    strcpy(sensor_payload, buffer2);      	  
-//    printf(" Response from STEM Payload board:: %s\n", sensor_payload);
+    printf(" sensor_payload: %s\n", sensor_payload);
 //    printf(" Str so far: %s\n", str);   
 	  
     if (mode != CW) 
