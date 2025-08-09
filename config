@@ -1591,7 +1591,7 @@ elif [ "$1" = "-M" ]; then
 				;;
 			*)
 				echo "Setting No Simulated Failure"
-				MODE=0
+				MODE=-1
 				;;
 		esac
 	fi
