@@ -14,17 +14,17 @@ import random
 
 def sim_failure_check():
 	try:
-			file = open("/home/pi/CubeSatSim/failure_mode.txt")
-			fail_mode = file.read(2)
-			if (fail_mode == "10"):
-				card = "Device"  # Change audio so no FM audio plays
-				print("Failure mode no FM audio")
-			else:
-				print("Other failure mode")
-				card = "Headphones"
-		except:
-			print("No failure mode")
+		file = open("/home/pi/CubeSatSim/failure_mode.txt")
+		fail_mode = file.read(2)
+		if (fail_mode == "10"):
+			card = "Device"  # Change audio so no FM audio plays
+			print("Failure mode no FM audio")
+		else:
+			print("Other failure mode")
 			card = "Headphones"
+	except:
+		print("No failure mode")
+		card = "Headphones"
 
 def battery_saver_check():
 	try:
