@@ -1434,11 +1434,13 @@ void get_tlm_fox() {
 //    encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
 
-      encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-      encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-      encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
+    encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+    encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+    encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
 
     encodeA(b, 9 + head_offset, battCurr);
+
+	encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
 
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
@@ -1520,7 +1522,13 @@ void get_tlm_fox() {
 	
 		      encodeA(b_max, 48 + head_offset, 2048);
 	//	      encodeB(b_max, 49 + head_offset, 2048);
-	      }	  	
+	      }
+
+				  encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
+			      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
+		//	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
+			      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
+			      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
 
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
@@ -1576,10 +1584,19 @@ void get_tlm_fox() {
 		      encodeA(b_min, 48 + head_offset, 2048);
 	//	      encodeB(b_min, 49 + head_offset, 2048);
 	    }	
+		encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
+		encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
+		encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
+		encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
     }    
     encodeA(b, 30 + head_offset, BAT2Voltage);
 
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
+
+	  		encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
+		    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
+		    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
+		    encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
  
 	    encodeA(b, 36 + head_offset, Resets);
 	    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
