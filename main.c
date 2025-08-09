@@ -595,7 +595,7 @@ int main(int argc, char * argv[]) {
         if (token != NULL) {
           voltage[count1] = (float) atof(token);
           #ifdef DEBUG_LOGGING
-            printf("voltage: %f ", voltage[count1]);
+//            printf("voltage: %f ", voltage[count1]);
           #endif
           token = strtok(NULL, space);
           if (token != NULL) {
@@ -663,7 +663,7 @@ int main(int argc, char * argv[]) {
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
-		  printf("Valid Payload!\n");  	
+//		  printf("Valid Payload!\n");  	
           int count1;
           char * token;
  
@@ -752,7 +752,7 @@ int main(int argc, char * argv[]) {
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
 	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-		printf("Valid Payload!!\n");  
+//		printf("Valid Payload!!\n");  
         for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
