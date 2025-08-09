@@ -709,9 +709,13 @@ int main(int argc, char * argv[]) {
 
 	  if (failureMode == FAIL_BME) {
 			sensor[TEMP] = 0.0;
+		    strcpy(sensor[TEMP], "0.0");
 			sensor[PRES] = 0.0;		  
-			sensor[HUMI] = 0.0;
-			sensor[ALT] = 0.0;	
+		    strcpy(sensor[PRES], "0.0");
+		    sensor[HUMI] = 0.0;
+		    strcpy(sensor[HUMI], "0.0");
+		    sensor[ALT] = 0.0;	
+		    strcpy(sensor[ALT], "0.0");				
 		    printf("Simulated BME Failure!\n");
 	  }
 
@@ -729,15 +733,8 @@ int main(int argc, char * argv[]) {
 		  sensor_payload[0] = 0;
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 			  strcat(sensor_payload, sensor_string[count1]);
-//            if (token != NULL) {
-//              sensor[count1] = (float) atof(token);
-//              #ifdef DEBUG_LOGGING
-//                printf("sensor: %f ", sensor[count1]);  // print sensor data
-//              #endif
- //             token = strtok(NULL, space);
             }
-//          }
-		  printf("New Sensor String: %s\n", sensor_payload);	
+//		  printf("New Sensor String: %s\n", sensor_payload);	
 		}
 		else
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
