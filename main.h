@@ -122,7 +122,7 @@ FILE *image_file;
 #define TXCOMMAND 12
 
 #define FAIL_COUNT 10
-#define FAIL_NONE 0
+#define FAIL_NONE -1
 #define FAIL_SOLAR 1
 #define FAIL_DEGRADE 2
 #define FAIL_SHORT 3
