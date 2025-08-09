@@ -685,12 +685,16 @@ int main(int argc, char * argv[]) {
       if (!ax5043) {	      
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
 //        STEMBoardFailure = 0;
+
+/****		  
 	payload = get_payload_serial(FALSE);      
         printf("get_payload_status: %d \n", payload);  // not debug
 	fflush(stdout); 
 //	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
-	strcpy(sensor_payload, buffer2);      
+	strcpy(sensor_payload, buffer2);     
+****/
+		  
 //	printf(" Response from STEM Payload board: %s\n", sensor_payload);
 
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
@@ -1255,7 +1259,7 @@ void get_tlm(void) {
       else
       	strcat(str, footer_str2);
 	    
-      fprintf(stderr, "String to execute: %s\n", str);
+      fprintf(stderr, "APRS String to execute: %s\n", str);
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
 	    
