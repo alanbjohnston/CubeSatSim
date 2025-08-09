@@ -735,7 +735,8 @@ int main(int argc, char * argv[]) {
 		    printf("Simulated MPU Failure!\n");
 	  }
 
-		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU)) {  // recreaate sensor_payload string	
+		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU)) // recreaate sensor_payload string	
+		{  
 		  sensor_payload[0] = 0;
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 			  strcat(sensor_payload, sensor_string[count1]);
@@ -743,7 +744,7 @@ int main(int argc, char * argv[]) {
             }
 //		  printf("New Sensor String: %s\n", sensor_payload);	
 		}
-		else (failureMode != FAIL_PAYLOAD)
+		else if (failureMode != FAIL_PAYLOAD)
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
 	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
