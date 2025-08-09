@@ -672,7 +672,7 @@ int main(int argc, char * argv[]) {
 			  strcpy(sensor_string[count1], token);	
 //              #ifdef DEBUG_LOGGING
 //                printf("sensor: %f ", sensor[count1]);  // print sensor data
-				printf("Sensor String %d is %s\n",count1, sensor_string[count1]);
+//				printf("Sensor String %d is %s\n",count1, sensor_string[count1]);
 //              #endif
               token = strtok(NULL, space);
             }
