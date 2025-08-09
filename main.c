@@ -272,43 +272,7 @@ int main(int argc, char * argv[]) {
 /**/	
 
   fflush(stderr);
-  
-  if (mode == AFSK)
-  {
-  // Check for SPI and AX-5043 Digital Transceiver Board	
-    FILE * file = popen("sudo raspi-config nonint get_spi", "r");
-//  printf("getc: %c \n", fgetc(file));
-    if (fgetc(file) == 48) {
-      printf("SPI is enabled!\n");
-
-      FILE * file2 = popen("ls /dev/spidev0.* 2>&1", "r");
-              printf("Result getc: %c \n", getc(file2));
-
-      if (fgetc(file2) != 'l') {
-        printf("SPI devices present!\n");
-      //	  }
-
-        setSpiChannel(SPI_CHANNEL);
-        setSpiSpeed(SPI_SPEED);
-        initializeSpi();
-        ax25_init( & hax25, (uint8_t * ) dest_addr, 11, (uint8_t * ) call, 11, AX25_PREAMBLE_LEN, AX25_POSTAMBLE_LEN);
-        if (init_rf()) {
-          printf("AX5043 successfully initialized!\n");
-          ax5043 = TRUE;
-          cw_id = OFF;
-//        mode = AFSK;
-        //		cycle = OFF;
-          printf("Mode AFSK with AX5043\n");
-          transmit = TRUE;
-//	sleep(10);  // just in case CW ID is sent      
-        } else
-          printf("AX5043 not present!\n");
-          pclose(file2);	    
-      }
-    }
-    pclose(file);
-  }	
-
+	
   txLed = 2;
   txLedOn = HIGH;
   txLedOff = LOW;
@@ -331,29 +295,12 @@ int main(int argc, char * argv[]) {
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
 
-  if (vB4) {
-    map[BAT] = BAT2;
-    map[BAT2] = BAT;
-    snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
-  } else if (vB5) {
-    map[MINUS_X] = MINUS_Y;
-    map[PLUS_Z] = MINUS_X;	
-    map[MINUS_Y] = PLUS_Z;		  
-
-    if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
-      printf("/dev/i2c-11 is present\n\n");
-      snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
-    } else {
-      snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
-    }
-  } else {
-    map[BAT2] = MINUS_Z;
-    map[BAT] = BAT2;
-    map[PLUS_Z] = BAT;
-    map[MINUS_Z] = PLUS_Z;
-    snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
-    voltageThreshold = 8.0;
-  }
+   map[BAT2] = MINUS_Z;
+   map[BAT] = BAT2;
+   map[PLUS_Z] = BAT;
+   map[MINUS_Z] = PLUS_Z;
+   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
+   voltageThreshold = 8.0;
 	
   // check for camera	
 //  char cmdbuffer1[1000];
@@ -373,8 +320,7 @@ int main(int argc, char * argv[]) {
   //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
 	
-  if (!ax5043) // don't test for payload if AX5043 is present
-  {
+   
     payload = OFF;
     fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
@@ -386,7 +332,7 @@ int main(int argc, char * argv[]) {
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
-  }
+
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
@@ -682,7 +628,7 @@ int main(int argc, char * argv[]) {
    }
 
 //      if (payload == ON) {  // moved to here
-      if (!ax5043) {	      
+      
 //      if ((payload == ON) && (mode != BPSK)) {  // moved to here
 //        STEMBoardFailure = 0;
 
@@ -759,7 +705,7 @@ int main(int argc, char * argv[]) {
         }
 	else
 		; //payload = OFF;  // turn off since STEM Payload is not responding
-      }
+      
       if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
      		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
@@ -1044,20 +990,6 @@ int upper_digit(int number) {
   return digit;
 }
 
-static int init_rf() {
-  int ret;
-  fprintf(stderr, "Initializing AX5043\n");
-
-  ret = ax5043_init( & hax5043, XTAL_FREQ_HZ, VCO_INTERNAL);
-  if (ret != PQWS_SUCCESS) {
-    fprintf(stderr,
-      "ERROR: Failed to initialize AX5043 with error code %d\n", ret);
-    //       exit(EXIT_FAILURE);
-    return (0);
-  }
-  return (1);
-}
-
 void get_tlm(void) {
 
   FILE * txResult;
@@ -1122,16 +1054,14 @@ void get_tlm(void) {
     char footer_str2[] = " && touch /home/pi/CubeSatSim/ready"; 
 	char zero[] = "0.0";  
 	  
-    if (ax5043) {
-      strcpy(str, header_str);
-    } else {
+   
       strcpy(str, header_str3);
 //    }
       if (mode == AFSK) {
         strcat(str, call);
         strcat(str, header_str2);	    
       }	    
-    }
+    
 //      printf("Str: %s \n", str);
       if (mode != CW) {
          //	sprintf(header_str2b, "=%7.2f%c%c%c%08.2f%cShi hi ",4003.79,'N',0x5c,0x5c,07534.33,'W');  // add APRS lat and long
@@ -1144,9 +1074,6 @@ void get_tlm(void) {
         else
           sprintf(header_long, "%08.2f%c",toAprsFormat( longitude) * (-1.0), 'W'); // long
 	      
-        if (ax5043)
-          sprintf(header_str2b, "=%s%c%sShi hi ", header_lat, 0x5c, header_long); // add APRS lat and long	    
-        else
 //#ifdef HAB
 	if (hab_mode)	
 		sprintf(header_str2b, "=%s%c%sOhi hi ", header_lat, 0x2f, header_long); // add APRS lat and long with Balloon HAB icon
@@ -1227,30 +1154,7 @@ void get_tlm(void) {
         sleep(5);	      
       }    
     } 
-    else if (ax5043) {
-      digitalWrite(txLed, txLedOn);
-      fprintf(stderr, "INFO: Transmitting X.25 packet using AX5043\n");
-      memcpy(data, str, strnlen(str, 256));
-      printf("data: %s \n", data);	    
-      int ret = ax25_tx_frame( & hax25, & hax5043, data, strnlen(str, 256));
-      if (ret) {
-        fprintf(stderr,
-          "ERROR: Failed to transmit AX.25 frame with error code %d\n",
-          ret);
-        exit(EXIT_FAILURE);
-      }
-      ax5043_wait_for_transmit();
-      digitalWrite(txLed, txLedOff);
-
-      if (ret) {
-        fprintf(stderr,
-          "ERROR: Failed to transmit entire AX.25 frame with error code %d\n",
-          ret);
-        exit(EXIT_FAILURE);
-      }
-      sleep(4);  // was 2
-	    
-    } else {  // APRS using transmit
+    else {  // APRS using transmit
 	    
       strcat(str, footer_str1);
 //      strcat(str, call);
