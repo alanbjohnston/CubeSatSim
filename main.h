@@ -73,9 +73,6 @@ uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
 
-ax5043_conf_t hax5043;
-ax25_conf_t hax25;
-
 int twosToInt(int val, int len);
 float toAprsFormat(float input);
 float rnd_float(double min, double max);
@@ -172,7 +169,7 @@ float sleepTime;
 unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
+int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 // float voltageThreshold = 3.6, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
