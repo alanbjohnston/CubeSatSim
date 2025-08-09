@@ -674,8 +674,8 @@ int main(int argc, char * argv[]) {
 //              #endif
               token = strtok(NULL, space);
             }
-          } 	
-		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
+          }
+
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
 	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
@@ -723,6 +723,23 @@ int main(int argc, char * argv[]) {
 		    printf("Simulated MPU Failure!\n");
 	  }
 
+		if (failureMode == FAIL_BME) {  // recreaate sensor_payload string
+		  sensor_payload[0] = 0;	
+          for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
+			  strcat(sensor_payload, sensor[count1]);
+//            if (token != NULL) {
+//              sensor[count1] = (float) atof(token);
+//              #ifdef DEBUG_LOGGING
+//                printf("sensor: %f ", sensor[count1]);  // print sensor data
+//              #endif
+ //             token = strtok(NULL, space);
+            }
+//          }
+		  printf("New Sensor String: %s\n", sensor_payload);	
+		}
+		else
+		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
+	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
 		printf("Valid Payload!!\n");  
         for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
