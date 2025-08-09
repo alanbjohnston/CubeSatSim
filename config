@@ -1523,7 +1523,8 @@ elif [ "$1" = "-M" ]; then
 			*)
 				echo "Unknown Failure"
 				;;
-		esac
+			esac
+		fi
 	else
 		echo "Currently, no simulated failure"
 	fi
