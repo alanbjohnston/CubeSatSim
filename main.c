@@ -1259,8 +1259,8 @@ void get_tlm_fox() {
 	  printf("+X Solar Simulated Failure\n");
   }
   if (failureMode == FAIL_DEGRADE) {
-	  voltage[map[MINUS_X]] = voltage[MINUS_X] * 0.5;
-	  current[map[MINUS_X]] = current[MINUS_X] * 0.5;
+	  voltage[map[MINUS_X]] = voltage[map[MINUS_X]] * 0.5;
+	  current[map[MINUS_X]] = current[map[MINUS_X]] * 0.5;
 	  printf("-X Solar Deg Simulated Failure\n");	  
   }
   if (failureMode == FAIL_SHORT) {
