@@ -743,7 +743,7 @@ int main(int argc, char * argv[]) {
             }
 //		  printf("New Sensor String: %s\n", sensor_payload);	
 		}
-		else
+		else (failureMode != FAIL_PAYLOAD)
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
 	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
