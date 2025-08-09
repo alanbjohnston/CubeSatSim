@@ -299,7 +299,7 @@ int main(int argc, char * argv[]) {
    map[BAT] = BAT2;
    map[PLUS_Z] = BAT;
    map[MINUS_Z] = PLUS_Z;
-   snprintf(busStr, 10, "Bus test: %d %d", i2c_bus1, test_i2c_bus(0));
+   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
    voltageThreshold = 8.0;
 	
   // check for camera	
@@ -560,7 +560,7 @@ int main(int argc, char * argv[]) {
   }
   else
   {
-	  failureMode = OFF;
+//	  failureMode = OFF;
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
 	  if (failure_mode_file != NULL) {	
 	    char failure_string[10];	
@@ -571,7 +571,7 @@ int main(int argc, char * argv[]) {
 		}
 	  } else {
 		failureMode = FAIL_NONE;
-		printf("No simulated failure.");
+		printf("No simulated failure.\n");
 	  }
   }	  
 
