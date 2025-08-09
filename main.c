@@ -1576,7 +1576,7 @@ void get_tlm_fox() {
 		      encodeA(b_min, 48 + head_offset, 2048);
 	//	      encodeB(b_min, 49 + head_offset, 2048);
 	    }	
-//    }    
+    }    
     encodeA(b, 30 + head_offset, BAT2Voltage);
 
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
