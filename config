@@ -1555,7 +1555,7 @@ elif [ "$1" = "-M" ]; then
 	echo
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
-		MODE="-1"
+		MODE=-1
 	else	
 		case $MODE in
 	
