@@ -299,7 +299,7 @@ int main(int argc, char * argv[]) {
    map[BAT] = BAT2;
    map[PLUS_Z] = BAT;
    map[MINUS_Z] = PLUS_Z;
-   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
+   snprintf(busStr, 10, "Bus test: %d %d", i2c_bus1, test_i2c_bus(0));
    voltageThreshold = 8.0;
 	
   // check for camera	
@@ -591,7 +591,7 @@ int main(int argc, char * argv[]) {
         if (token != NULL) {
           voltage[count1] = (float) atof(token);
           #ifdef DEBUG_LOGGING
-//            printf("voltage: %f ", voltage[count1]);
+            printf("voltage: %f ", voltage[count1]);
           #endif
           token = strtok(NULL, space);
           if (token != NULL) {
@@ -605,22 +605,22 @@ int main(int argc, char * argv[]) {
           }
         }
         if (voltage[map[BAT]] == 0.0)  // No BAT Board
-		if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
-			batteryVoltage = 4.5;
-		else {
-			batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
+			if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
+				batteryVoltage = 4.5;
+			else {
+				batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
+				if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
+					sim_mode = FALSE; 
+					fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+				}
+			}
+		else  {
+			batteryVoltage = voltage[map[BAT]];  // BAT Board present
 			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 				sim_mode = FALSE; 
-				fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+				fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
 			}
 		}
-	else  {
-		batteryVoltage = voltage[map[BAT]];  // BAT Board present
-		if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
-			sim_mode = FALSE; 
-			fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
-		}
-	}
         batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
 	   
    }
