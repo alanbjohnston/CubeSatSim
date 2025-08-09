@@ -186,6 +186,7 @@ double eclipse_time;
 
 float voltage[9], current[9], sensor[SENSOR_FIELDS], other[3];
 char sensor_payload[500];
+char sensor_strings[SENSOR_FIELDS][32];
 
 int test_i2c_bus(int bus);
 
