@@ -1520,7 +1520,7 @@ elif [ "$1" = "-M" ]; then
 			9)
 				echo "Failed MPU Sensor"
 				;;
-			10)
+			"10")
 				echo "Failed FM Audio"
 				;;
 			*)		
@@ -1536,19 +1536,20 @@ elif [ "$1" = "-M" ]; then
 	echo "Set simulated failure mode"
 	echo
 
-	echo "0  No Failure (turn OFF)"
-	echo "1  +X Solar Panel Failure"
-	echo "2  -X Solar Panel Degredation"
-	echo "3  -Y Solar Panel Short Circuit"
-	echo "4  Failed I2C Bus 1"
-	echo "5  Failed I2C Bus 3"
-	echo "6  Failed Camera"
-	echo "7  Failed Payload"
-	echo "8  Failed BME Sensor"
-	echo "9  Failed MPU Sensor"
+	echo " 0  No Failure (turn OFF)"
+	echo " 1  +X Solar Panel Failure"
+	echo " 2  -X Solar Panel Degredation"
+	echo " 3  -Y Solar Panel Short Circuit"
+	echo " 4  Failed I2C Bus 1"
+	echo " 5  Failed I2C Bus 3"
+	echo " 6  Failed Camera"
+	echo " 7  Failed Payload"
+	echo " 8  Failed BME Sensor"
+	echo " 9  Failed MPU Sensor"
+	echo "10  Failed FM Audio"
 	echo
 
-	echo "Enter the failure number to set: 0 - 9"
+	echo "Enter the failure number to set: 0 - 10"
 	read MODE
 
 	echo
@@ -1584,7 +1585,7 @@ elif [ "$1" = "-M" ]; then
 			9)
 				echo "Setting Simulated Failed MPU Sensor"
 				;;
-			10)
+			"10")
 				echo "Setting Failed FM Audio"
 				;;
 			*)
