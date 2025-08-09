@@ -78,7 +78,7 @@ int main(int argc, char * argv[]) {
   }
 	
   if (strcmp(sim_yes, "yes") == 0) {
-	  sim_mode = TRUE;
+	   = TRUE;
 	  fprintf(stderr, "Sim mode is turned ON by configuration\n");
 	  sim_config = TRUE;
   }
@@ -336,9 +336,9 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
 
-  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+  if ((i2c_bus3 == OFF) || ( == TRUE)) {
 
-    sim_mode = TRUE;
+     = TRUE;
 	    
     fprintf(stderr, "Simulated telemetry mode!\n");
 
@@ -492,14 +492,14 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));	
 	
-  if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
+  if (((mode == FSK) || (mode == BPSK))) // && !)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
-  else if (((mode == FC))) // && !sim_mode)
+  else if (((mode == FC))) // && !)
       get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
 	
   firstTime = 1;
 	  
-//  if (!sim_mode)  // always read sensors, even in sim mode
+//  if (!)  // always read sensors, even in sim mode
   {
     strcpy(pythonStr, pythonCmd);
     strcat(pythonStr, busStr);
@@ -830,8 +830,7 @@ int main(int argc, char * argv[]) {
 
       // end of simulated telemetry
     }
-    else {
-      }
+  
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
