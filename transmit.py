@@ -12,6 +12,20 @@ from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial	
 import random
 
+def sim_failure_check():
+	try:
+			file = open("/home/pi/CubeSatSim/failure_mode.txt")
+			fail_mode = file.read(2)
+			if (fail_mode == "10"):
+				card = "Device"  # Change audio so no FM audio plays
+				print("Failure mode no FM audio")
+			else:
+				print("Other failure mode")
+				card = "Headphones"
+		except:
+			print("No failure mode")
+			card = "Headphones"
+
 def battery_saver_check():
 	try:
 		global txc
@@ -446,6 +460,7 @@ if __name__ == "__main__":
 #						
 #						battery_saver_check()
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
@@ -472,18 +487,7 @@ if __name__ == "__main__":
 						print("Ready for next packet!")
 						
 					sleep(0.5)
-					try:
-						file = open("/home/pi/CubeSatSim/failure_mode.txt")
-						fail_mode = file.read(2)
-						if (fail_mode == "10"):
-							card = "Device"  # Change audio so no FM audio plays
-							print("Failure mode no FM audio")
-						else:
-							print("Other failure mode")
-							card = "Headphones"
-					except:
-						print("No failure mode")
-						card = "Headphones"
+	
 				except:
 #					command_control_check()
 					sleep(1)
@@ -510,6 +514,7 @@ if __name__ == "__main__":
 							output(txLed, txLedOn)					
 	
 							if (txc):
+								sim_failure_check()
 #								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
@@ -571,6 +576,7 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
@@ -631,6 +637,7 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
@@ -668,6 +675,7 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
@@ -704,6 +712,7 @@ if __name__ == "__main__":
 #							battery_saver_check()
 
 							if (txc):
+								sim_failure_check()
 #								output(pd, 1)
 								output (ptt, 0)
 								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
@@ -735,6 +744,7 @@ if __name__ == "__main__":
 #							battery_saver_check()
 						
 							if (txc):
+								sim_failure_check()
 #								output(pd, 1)
 								output (ptt, 0)		
 								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv.wav")
