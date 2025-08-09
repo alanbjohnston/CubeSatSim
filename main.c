@@ -712,7 +712,7 @@ int main(int argc, char * argv[]) {
         fclose(telem_file);
 
 		if (failureMode == FAIL_PAYLOAD) {
-			sensor_payload[0] = 'X';  // This will cause the payload to not be processed.
+			sensor_payload[0] = '\0';  // This will cause the payload to not be processed.
 			printf("Simulated Payload Failure.\n");
 		}
       
@@ -1116,6 +1116,7 @@ void get_tlm(void) {
 //    char footer_str[] = "-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by transmit.py
     char footer_str[] = " && echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt && touch /home/pi/CubeSatSim/ready";  // transmit is done by transmit.py
     char footer_str2[] = " && touch /home/pi/CubeSatSim/ready"; 
+	char zero[] = "0.0";  
 	  
     if (ax5043) {
       strcpy(str, header_str);
