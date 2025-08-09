@@ -729,10 +729,11 @@ int main(int argc, char * argv[]) {
 		    printf("Simulated MPU Failure!\n");
 	  }
 
-		if (failureMode == FAIL_BME) {  // recreaate sensor_payload string
+		if (failureMode == FAIL_BME) {  // recreaate sensor_payload string	
 		  sensor_payload[0] = 0;
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 			  strcat(sensor_payload, sensor_string[count1]);
+			  strcat(sensor_payload, " ");
             }
 //		  printf("New Sensor String: %s\n", sensor_payload);	
 		}
