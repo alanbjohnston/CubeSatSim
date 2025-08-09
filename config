@@ -1487,7 +1487,7 @@ elif [ "$1" = "-M" ]; then
 			echo "Currently, no simulated failure"
 		else
 			fail=$(<$FILE)
-			echo -n "Currenly, simulated "
+			echo -n "Currently, simulated "
 			case $fail in
 	
 			1)
