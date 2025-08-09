@@ -314,9 +314,9 @@ if [ "$1" = "" ]; then
 				9)
 					echo "Failed MPU Sensor"
 					;;
-				"10")
-					echo "Failed FM Audio"
-					;;
+#				"10")
+#					echo "Failed FM Audio"
+#					;;
 				*)
 					echo "Unknown Failure"
 					;;
@@ -1520,9 +1520,9 @@ elif [ "$1" = "-M" ]; then
 			9)
 				echo "Failed MPU Sensor"
 				;;
-			"10")
-				echo "Failed FM Audio"
-				;;
+#			"10")
+#				echo "Failed FM Audio"
+#				;;
 			*)		
 				echo "Unknown Failure"
 				;;
@@ -1546,10 +1546,11 @@ elif [ "$1" = "-M" ]; then
 	echo " 7  Failed Payload"
 	echo " 8  Failed BME Sensor"
 	echo " 9  Failed MPU Sensor"
-	echo "10  Failed FM Audio"
+#	echo "10  Failed FM Audio"
 	echo
 
-	echo "Enter the failure number to set: 0 - 10"
+#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
+	echo "Enter the failure number to set: 0 - 9"
 	read MODE
 
 	echo
@@ -1586,9 +1587,9 @@ elif [ "$1" = "-M" ]; then
 			9)
 				echo "Setting Simulated Failed MPU Sensor"
 				;;
-			"10")
-				echo "Setting Failed FM Audio"
-				;;
+#			"10")
+#				echo "Setting Failed FM Audio"
+#				;;
 			*)
 				echo "Setting No Simulated Failure"
 				MODE=-1
