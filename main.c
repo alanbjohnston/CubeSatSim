@@ -625,6 +625,15 @@ int main(int argc, char * argv[]) {
 	   
    }
 
+	payload = get_payload_serial(FALSE);      
+    printf("get_payload_status: %d \n", payload);  // not debug
+	fflush(stdout); 
+//	printf("String: %s\n", buffer2);       
+	fflush(stdout);   
+	strcpy(sensor_payload, buffer2);  
+
+     printf(" Response from STEM Payload board: %s\n", sensor_payload);
+
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
 //        printf("Writing payload string\n");
         time_t timeStamp;
@@ -1111,8 +1120,9 @@ void get_tlm(void) {
 	      
       strcat(str, tlm_str);
   }  
-    strcpy(sensor_payload, buffer2);      	  
-    printf(" Response from STEM Payload board:: %s\n", sensor_payload);
+	  
+//    strcpy(sensor_payload, buffer2);      	  
+//    printf(" Response from STEM Payload board:: %s\n", sensor_payload);
 //    printf(" Str so far: %s\n", str);   
 	  
     if (mode != CW) 
