@@ -480,8 +480,10 @@ if __name__ == "__main__":
 							print("Failure mode no FM audio")
 						else:
 							print("Other failure mode")
+							card = "Headphones"
 					except:
 						print("No failure mode")
+						card = "Headphones"
 				except:
 #					command_control_check()
 					sleep(1)
