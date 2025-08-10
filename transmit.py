@@ -18,13 +18,13 @@ def sim_failure_check():
 		global cam_fail
 		cam_fail = False
 		file = open("/home/pi/CubeSatSim/failure_mode.txt")
-		fail_mode = file.read(2)
+		fail_mode = int(file.read(2))
 		print("Fail_mode: ")
 		print(fail_mode)
-		if (fail_mode == "10"):
+		if (fail_mode == 10):
 			card = "Device"  # Change audio so no FM audio plays
 			print("Failure mode no FM audio")
-		elif (fail_mode == "6"):
+		elif (fail_mode == 6):
 			cam_fail = True
 			print("Failure mode camera fail")	
 		else:
