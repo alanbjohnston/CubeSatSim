@@ -563,8 +563,8 @@ int main(int argc, char * argv[]) {
 	  fclose(failure_mode_file);	
     }
   }
-  else
-  {
+//  else
+//  {
 //	  failureMode = OFF;
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
 	  if (failure_mode_file != NULL) {	
@@ -578,7 +578,7 @@ int main(int argc, char * argv[]) {
 		failureMode = FAIL_NONE;
 		printf("No simulated failure.\n");
 	  }
-  }	  
+//  }	  
 
    {
       int count1;
