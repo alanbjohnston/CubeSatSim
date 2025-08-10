@@ -122,7 +122,7 @@ FILE *image_file;
 #define TXCOMMAND 12
 
 #define FAIL_COUNT 10
-#define FAIL_NONE 0
+#define FAIL_NONE -1
 #define FAIL_SOLAR 1
 #define FAIL_DEGRADE 2
 #define FAIL_SHORT 3
@@ -169,7 +169,7 @@ float sleepTime;
 unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
+int transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 // float voltageThreshold = 3.6, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;

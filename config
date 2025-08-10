@@ -210,7 +210,8 @@ function transmit_command_beacon {
 	exit
 }
 
-echo "CubeSatSim v2.1 configuration tool"
+echo
+echo "CubeSatSim v2.2 configuration tool"
 echo
 # echo $1
 # echo $2
@@ -222,8 +223,13 @@ sudo modprobe snd-aloop
 if [ -z "$2" ] ; then
 	noreboot=0
 else
-	noreboot=1
-	echo "Reboot disabled"
+	if [ "$2" = "n" ] ; then
+		echo "Reboot disabled"
+		noreboot=1
+	else
+		fail=$2
+	fi
+
 fi
 
 # echo "No reboot"
@@ -278,7 +284,7 @@ if [ "$1" = "" ]; then
 
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
-		if [[ $(grep '0' $FILE) ]]; then
+		if [[ $(grep "\-1" $FILE) ]]; then
 			echo "No simulated failure"
 		else
 			fail=$(<$FILE)
@@ -314,6 +320,9 @@ if [ "$1" = "" ]; then
 				9)
 					echo "Failed MPU Sensor"
 					;;
+#				"10")
+#					echo "Failed FM Audio"
+#					;;
 				*)
 					echo "Unknown Failure"
 					;;
@@ -1481,62 +1490,120 @@ elif [ "$1" = "-j" ]; then
 
 elif [ "$1" = "-M" ]; then
 
-#	echo
-	echo "Set simulated failure mode"
-	echo
+	if [ $fail ]; then
+		MODE=$fail
+	else
 
-	echo "0  No Failure (turn OFF)"
-	echo "1  +X Solar Panel Failure"
-	echo "2  -X Solar Panel Degredation"
-	echo "3  -Y Solar Panel Short Circuit"
-	echo "4  Failed I2C Bus 1"
-	echo "5  Failed I2C Bus 3"
-	echo "6  Failed Camera"
-	echo "7  Failed Payload"
-	echo "8  Failed BME Sensor"
-	echo "9  Failed MPU Sensor"
-	echo
+		FILE=/home/pi/CubeSatSim/failure_mode.txt
+		if [ -f "$FILE" ]; then
+			if [[ $(grep "\-1" $FILE) ]]; then
+				echo "Currently, no simulated failure"
+			else
+				fail=$(<$FILE)
+				echo -n "Currently, simulated "
+				case $fail in
+		
+				1)
+					echo "+X Solar Panel Failure"
+					;;
+				2)
+					echo "-X Solar Panel Degredation"
+					;;
+				3)
+					echo "-Y Solar Panel Short Circuit"
+					;;
+				4)
+					echo "Failed I2C Bus 1"
+					;;
+				5)
+					echo "Failed I2C Bus 3"
+					;;
+				6)
+					echo "Failed Camera"
+					;;
+				7)
+					echo "Failed Payload"
+					;;
+				8)
+					echo "Failed BME Sensor"
+					;;
+				9)
+					echo "Failed MPU Sensor"
+					;;
+	#			"10")
+	#				echo "Failed FM Audio"
+	#				;;
+				*)		
+					echo "Unknown Failure"
+					;;
+				esac
+			fi
+		else
+			echo "Currently, no simulated failure"
+		fi
+	
+		echo
+		echo "Set simulated failure mode (or Return to turn OFF)"
+		echo
+	
+		echo " 0  No Failure (turn OFF)"
+		echo " 1  +X Solar Panel Failure"
+		echo " 2  -X Solar Panel Degredation"
+		echo " 3  -Y Solar Panel Short Circuit"
+		echo " 4  Failed I2C Bus 1"
+		echo " 5  Failed I2C Bus 3"
+		echo " 6  Failed Camera"
+		echo " 7  Failed Payload"
+		echo " 8  Failed BME Sensor"
+		echo " 9  Failed MPU Sensor"
+	#	echo "10  Failed FM Audio"
+		echo
+	
+	#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
+		echo "Enter the failure number to set: 0 - 9"
+		read MODE
+		echo
+	fi
 
-	echo "Enter the failure number to set: 0 - 9"
-	read MODE
-
-	echo
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
-	else
-		echo -n "Setting Simulated " 
-	
+		MODE=-1
+	else	
 		case $MODE in
 	
 			1)
-				echo "+X Solar Panel Failure"
+				echo "Setting Simulated +X Solar Panel Failure"
 				;;
 			2)
-				echo "-X Solar Panel Degredation"
+				echo "Setting Simulated -X Solar Panel Degredation"
 				;;
 			3)
-				echo "-Y Solar Panel Short Circuit"
+				echo "Setting Simulated -Y Solar Panel Short Circuit"
 				;;
 			4)
-				echo "Failed I2C Bus 1"
+				echo "Setting Simulated Failed I2C Bus 1"
 				;;
 			5)
-				echo "Failed I2C Bus 3"
+				echo "Setting Simulated Failed I2C Bus 3"
 				;;
 			6)
-				echo "Failed Camera"
+				echo "Setting Simulated Failed Camera"
 				;;
 			7)
-				echo "Failed Payload"
+				echo "Setting Simulated Failed Payload"
 				;;
 			8)
-				echo "Failed BME Sensor"
+				echo "Setting Simulated Failed BME Sensor"
 				;;
 			9)
-				echo "Failed MPU Sensor"
+				echo "Setting Simulated Failed MPU Sensor"
 				;;
+#			"10")
+#				echo "Setting Failed FM Audio"
+#				;;
 			*)
-				echo "Unknown Failure"
+				echo "Setting No Simulated Failure"
+				MODE=-1
 				;;
 		esac
 	fi

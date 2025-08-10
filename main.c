@@ -25,7 +25,7 @@
 
 int main(int argc, char * argv[]) {
 	
-  printf("\n\nCubeSatSim v2.1 starting...\n\n");
+  printf("\n\nCubeSatSim v2.2 starting...\n\n");
 
   wiringPiSetup();	
 		
@@ -276,7 +276,6 @@ int main(int argc, char * argv[]) {
   txLed = 2;
   txLedOn = HIGH;
   txLedOff = LOW;
-  vB5 = TRUE;
   onLed = 27;
   onLedOn = HIGH;
   onLedOff = LOW;
@@ -295,12 +294,17 @@ int main(int argc, char * argv[]) {
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
 
-   map[BAT2] = MINUS_Z;
-   map[BAT] = BAT2;
-   map[PLUS_Z] = BAT;
-   map[MINUS_Z] = PLUS_Z;
-   snprintf(busStr, 10, "%d %d", i2c_bus1, test_i2c_bus(0));
-   voltageThreshold = 8.0;
+  map[MINUS_X] = MINUS_Y;
+  map[PLUS_Z] = MINUS_X;	
+  map[MINUS_Y] = PLUS_Z;		  
+
+  if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
+      printf("/dev/i2c-11 is present\n\n");
+      snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
+  } else {
+      snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
+  }
+ 
 	
   // check for camera	
 //  char cmdbuffer1[1000];
@@ -551,16 +555,17 @@ int main(int argc, char * argv[]) {
 
   if (sim_mode) {
 	if (loop % 10 == 0) { 	
-  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
+//  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
+  	  failureMode = (int) rnd_float(1, 9);
 	  printf("Sim Mode Random Failure Change\n");
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
 	  fprintf(failure_mode_file, "%d", failureMode);	
 	  fclose(failure_mode_file);	
     }
   }
-  else
-  {
-	  failureMode = OFF;
+//  else
+//  {
+//	  failureMode = OFF;
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "r");
 	  if (failure_mode_file != NULL) {	
 	    char failure_string[10];	
@@ -571,9 +576,9 @@ int main(int argc, char * argv[]) {
 		}
 	  } else {
 		failureMode = FAIL_NONE;
-		printf("No simulated failure.");
+		printf("No simulated failure.\n");
 	  }
-  }	  
+//  }	  
 
    {
       int count1;
@@ -605,22 +610,22 @@ int main(int argc, char * argv[]) {
           }
         }
         if (voltage[map[BAT]] == 0.0)  // No BAT Board
-		if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
-			batteryVoltage = 4.5;
-		else {
-			batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
+			if (voltage[map[BAT2]] == 0.0) // No BAT2 Board
+				batteryVoltage = 4.5;
+			else {
+				batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
+				if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
+					sim_mode = FALSE; 
+					fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+				}
+			}
+		else  {
+			batteryVoltage = voltage[map[BAT]];  // BAT Board present
 			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 				sim_mode = FALSE; 
-				fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+				fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
 			}
 		}
-	else  {
-		batteryVoltage = voltage[map[BAT]];  // BAT Board present
-		if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
-			sim_mode = FALSE; 
-			fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
-		}
-	}
         batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
 	   
    }
@@ -659,7 +664,7 @@ int main(int argc, char * argv[]) {
       
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
-		  printf("Valid Payload!\n");  	
+//		  printf("Valid Payload!\n");  	
           int count1;
           char * token;
  
@@ -748,7 +753,7 @@ int main(int argc, char * argv[]) {
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
 	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
-		printf("Valid Payload!!\n");  
+//		printf("Valid Payload!!\n");  
         for (int count1 = 0; count1 < SENSOR_FIELDS; count1++) {
           if (sensor[count1] < sensor_min[count1])
             sensor_min[count1] = sensor[count1];
@@ -825,8 +830,7 @@ int main(int argc, char * argv[]) {
 
       // end of simulated telemetry
     }
-    else {
-      }
+
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
@@ -1210,6 +1214,7 @@ void get_tlm_fox() {
   int i;
 
   long int sync = syncWord;
+  int cam = ON;
 
   smaller = (int) (S_RATE / (2 * freq_Hz));
 
@@ -1255,8 +1260,8 @@ void get_tlm_fox() {
 	  printf("+X Solar Simulated Failure\n");
   }
   if (failureMode == FAIL_DEGRADE) {
-	  voltage[map[MINUS_X]] = voltage[MINUS_X] * 0.5;
-	  current[map[MINUS_X]] = current[MINUS_X] * 0.5;
+	  voltage[map[MINUS_X]] = voltage[map[MINUS_X]] * 0.5;
+	  current[map[MINUS_X]] = current[map[MINUS_X]] * 0.5;
 	  printf("-X Solar Deg Simulated Failure\n");	  
   }
   if (failureMode == FAIL_SHORT) {
@@ -1285,13 +1290,13 @@ void get_tlm_fox() {
 	  current[map[PLUS_Z]] = 0.0;	  
 	  printf("I2C Bus 3 Simulated Failure!\n");	
   }		
-  if (failureMode == FAIL_CAMERA) {
-	  camera = OFF;
-	  printf("Camera Simulated Failure!\n");	  
-  }
   if (failureMode == FAIL_PAYLOAD) {
 	  payload = OFF;
 	  printf("Payload Simulated Failure!\n");	  
+  }
+  if (failureMode == FAIL_CAMERA) {
+	  cam = OFF;
+	  printf("Camera Simulated Failure!\n");	  
   }
 	
   if (mode == FSK)
@@ -1434,24 +1439,13 @@ void get_tlm_fox() {
 //    encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
 
-
-	if ((failureMode == FAIL_MPU) || (failureMode == FAIL_PAYLOAD)) 
-	{
-      encodeB(b, 4 + head_offset, 2048); // 0
-      encodeA(b, 6 + head_offset, 2048); // 0
-      encodeB(b, 7 + head_offset, 2048); // 0		
-	}
-	else
-	{
-      encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-      encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-      encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
-	}
+    encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+    encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+    encodeB(b, 7 + head_offset, (int)(sensor[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel
 
     encodeA(b, 9 + head_offset, battCurr);
 
-	if ((failureMode != FAIL_PAYLOAD) && (failureMode != FAIL_BME)) 	  
-      encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
+	encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5)); // Temp	  
 
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
@@ -1506,39 +1500,27 @@ void get_tlm_fox() {
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 
-	  if (failureMode != FAIL_PAYLOAD) {
 	      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
 	      {	     
-			  if (failureMode != FAIL_MPU) {
-			      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+
+	      		  encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
 			      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
 			      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
 			      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
 			      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
 			      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
-			  }
-			  else
-			  {
-			      encodeB(b_max, 4 + head_offset, 2048); // 0
-			      encodeA(b_max, 6 + head_offset, 2048); // 0
-			      encodeB(b_max, 7 + head_offset, 2048); // 0	    
-			      encodeB(b_max, 40 + head_offset, 2048);
-			      encodeA(b_max, 42 + head_offset, 2048);
-			      encodeB(b_max, 43 + head_offset, 2048);
-			  }
-			  if (failureMode != FAIL_BME) {
-			      encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
+			  
+				  encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
 			      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
 		//	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
 			      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
 			      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
-			  }
 		      encodeA(b_max, 48 + head_offset, (int)(sensor_max[DTEMP] * 10 + 0.5) + 2048);
 				  
 		      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1]));
 		      encodeA(b_max, 0 + head_offset, (int)(sensor_max[XS2]));
 		      encodeB(b_max, 1 + head_offset, (int)(sensor_max[XS3]));
-	      }	  
+		  }
 	      else
 	      {	        	    
 		      encodeB(b_max, 4 + head_offset, 2048); // 0
@@ -1550,18 +1532,8 @@ void get_tlm_fox() {
 	
 		      encodeA(b_max, 48 + head_offset, 2048);
 	//	      encodeB(b_max, 49 + head_offset, 2048);
-	      }	  	
-	  }
-	  else
-	  {
-		      encodeB(b_max, 4 + head_offset, 2048); // 0
-		      encodeA(b_max, 6 + head_offset, 2048); // 0
-		      encodeB(b_max, 7 + head_offset, 2048); // 0	    
-		      encodeB(b_max, 40 + head_offset, 2048);
-		      encodeA(b_max, 42 + head_offset, 2048);
-		      encodeB(b_max, 43 + head_offset, 2048);
-		      encodeA(b_max, 48 + head_offset, 2048);
-	  }
+	      }
+
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
       encodeA(b_min, 15 + head_offset, (int)(voltage_min[map[PLUS_Z]] * 100));
@@ -1585,33 +1557,19 @@ void get_tlm_fox() {
       encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
 
-	  if (failureMode != FAIL_PAYLOAD) {	
 	      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
 	      {	   
-			  if (failureMode != FAIL_MPU) 
-			  {		  
-			      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-			      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-			      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
-			      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
-			      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
-			      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
-			  }
-			  else
-			  {
-			      encodeB(b_min, 4 + head_offset, 2048); // 0
-			      encodeA(b_min, 6 + head_offset, 2048); // 0
-			      encodeB(b_min, 7 + head_offset, 2048); // 0	    
-			      encodeB(b_min, 40 + head_offset, 2048);
-			      encodeA(b_min, 42 + head_offset, 2048);
-			      encodeB(b_min, 43 + head_offset, 2048);
-			  }
-			  if (failureMode != FAIL_BME) {			  
-			      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
-			      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
-			      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
-			      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
-			  }
+		      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+		      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+		      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
+		      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
+		      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
+		      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
+			  
+		      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
+		      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
+		      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
+		      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
 		      encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);
 	//	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
 
@@ -1633,64 +1591,29 @@ void get_tlm_fox() {
 		      encodeA(b_min, 48 + head_offset, 2048);
 	//	      encodeB(b_min, 49 + head_offset, 2048);
 	    }	
-	  }
-	  else
-	  {
-		      encodeB(b_min, 4 + head_offset, 2048); // 0
-		      encodeA(b_min, 6 + head_offset, 2048); // 0
-		      encodeB(b_min, 7 + head_offset, 2048); // 0	    
-	
-		      encodeB(b_min, 40 + head_offset, 2048);
-		      encodeA(b_min, 42 + head_offset, 2048);
-		      encodeB(b_min, 43 + head_offset, 2048);
-	
-		      encodeA(b_min, 48 + head_offset, 2048);
-	  }
+
     }    
     encodeA(b, 30 + head_offset, BAT2Voltage);
 
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
-	if (failureMode != FAIL_PAYLOAD) {  
-		if (failureMode != FAIL_BME) {
-		    encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
+	  		encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
 		    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5)); // Altitude
 		    encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5)); // in place of sensor1
 		    encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
-		}  
+ 
 	    encodeA(b, 36 + head_offset, Resets);
 	    encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
 	
 	
-		if (failureMode != FAIL_MPU) {
 		    encodeB(b, 40 + head_offset, (int)(sensor[GYRO_X] + 0.5) + 2048);
 		    encodeA(b, 42 + head_offset, (int)(sensor[GYRO_Y] + 0.5) + 2048);
 		    encodeB(b, 43 + head_offset, (int)(sensor[GYRO_Z] + 0.5) + 2048);
-		}
-		else
-		{
-		    encodeB(b, 40 + head_offset, 2048);
-		    encodeA(b, 42 + head_offset, 2048);
-		    encodeB(b, 43 + head_offset, 2048);
-		}
 		encodeA(b, 48 + head_offset, (int)(sensor[DTEMP] * 10 + 0.5) + 2048);
 		encodeB(b, 49 + head_offset, (int)(sensor[XS1]));
     	encodeA(b, 0 + head_offset, (int)(sensor[XS2]));
     	encodeB(b, 1 + head_offset, (int)(sensor[XS3]));
-	}      
-	else
-	{	        	    
-		  encodeB(b, 4 + head_offset, 2048); // 0
-		  encodeA(b, 6 + head_offset, 2048); // 0
-		  encodeB(b, 7 + head_offset, 2048); // 0	    
 
-		  encodeB(b, 40 + head_offset, 2048);
-		  encodeA(b, 42 + head_offset, 2048);
-		  encodeB(b, 43 + head_offset, 2048);
-
-		  encodeA(b, 48 + head_offset, 2048);
-//	      encodeB(b_min, 49 + head_offset, 2048);
-	}	
     encodeB(b, 46 + head_offset, BAT2Current);
     encodeA(b, 39 + head_offset, (int)(other[IHU_TEMP] * 10 + 0.5));
 	  
@@ -1727,7 +1650,7 @@ void get_tlm_fox() {
 //  int status = STEMBoardFailure + SafeMode * 2 + sim_mode * 4 + PayloadFailure1 * 8 +    
 //      (i2c_bus0 == OFF) * 16 + (i2c_bus1 == OFF) * 32 + (i2c_bus3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
     int status = STEMBoardFailure + SafeMode * 2 + simulated * 4 + PayloadFailure1 * 8 +
-      (i2c_bus0 == OFF) * 16 + (i2c_1 == OFF) * 32 + (i2c_3 == OFF) * 64 + (camera == OFF) * 128 + groundCommandCount * 256;
+      (i2c_bus0 == OFF) * 16 + (i2c_1 == OFF) * 32 + (i2c_3 == OFF) * 64 + (cam == OFF) * 128 + groundCommandCount * 256;
 
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
