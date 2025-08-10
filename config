@@ -1561,9 +1561,9 @@ elif [ "$1" = "-M" ]; then
 	#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
 		echo "Enter the failure number to set: 0 - 9"
 		read MODE
+		echo
 	fi
 
-	echo
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
 		MODE=-1
