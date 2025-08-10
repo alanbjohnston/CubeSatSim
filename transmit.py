@@ -22,7 +22,7 @@ def sim_failure_check():
 		if (fail_mode == "10"):
 			card = "Device"  # Change audio so no FM audio plays
 			print("Failure mode no FM audio")
-		else if (fail_mode == "6"):
+		elif (fail_mode == "6"):
 			cam_fail = True
 			print("Failure mode camera fail")	
 		else:
