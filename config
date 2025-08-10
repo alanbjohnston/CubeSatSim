@@ -220,7 +220,11 @@ sudo modprobe snd-aloop
 
 # if [ "$2" = "n" ] ; then
 if [ -z "$2" ] ; then
-	noreboot=0
+	if [ "$2" = "n" ] ; then
+		noreboot=0
+	else
+		fail=$2
+	fi
 else
 	noreboot=1
 	echo "Reboot disabled"
@@ -1483,6 +1487,11 @@ elif [ "$1" = "-j" ]; then
 #	fi
 
 elif [ "$1" = "-M" ]; then
+
+	if [ -z $fail ] then
+		echo "$fail has a value!"
+		echo $fail
+	fi
 
 	FILE=/home/pi/CubeSatSim/failure_mode.txt
 	if [ -f "$FILE" ]; then
