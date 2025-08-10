@@ -1488,7 +1488,7 @@ elif [ "$1" = "-j" ]; then
 
 elif [ "$1" = "-M" ]; then
 
-	if [ -z $fail ] then
+	if [ -z $fail ]; then
 		echo "$fail has a value!"
 		echo $fail
 	fi
