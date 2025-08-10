@@ -1490,78 +1490,78 @@ elif [ "$1" = "-j" ]; then
 elif [ "$1" = "-M" ]; then
 
 	if [ $fail ]; then
-		echo "fail has a value!"
-		echo $fail
-	fi
-
-	FILE=/home/pi/CubeSatSim/failure_mode.txt
-	if [ -f "$FILE" ]; then
-		if [[ $(grep "\-1" $FILE) ]]; then
-			echo "Currently, no simulated failure"
-		else
-			fail=$(<$FILE)
-			echo -n "Currently, simulated "
-			case $fail in
-	
-			1)
-				echo "+X Solar Panel Failure"
-				;;
-			2)
-				echo "-X Solar Panel Degredation"
-				;;
-			3)
-				echo "-Y Solar Panel Short Circuit"
-				;;
-			4)
-				echo "Failed I2C Bus 1"
-				;;
-			5)
-				echo "Failed I2C Bus 3"
-				;;
-			6)
-				echo "Failed Camera"
-				;;
-			7)
-				echo "Failed Payload"
-				;;
-			8)
-				echo "Failed BME Sensor"
-				;;
-			9)
-				echo "Failed MPU Sensor"
-				;;
-#			"10")
-#				echo "Failed FM Audio"
-#				;;
-			*)		
-				echo "Unknown Failure"
-				;;
-			esac
-		fi
+		MODE=$fail
 	else
-		echo "Currently, no simulated failure"
+
+		FILE=/home/pi/CubeSatSim/failure_mode.txt
+		if [ -f "$FILE" ]; then
+			if [[ $(grep "\-1" $FILE) ]]; then
+				echo "Currently, no simulated failure"
+			else
+				fail=$(<$FILE)
+				echo -n "Currently, simulated "
+				case $fail in
+		
+				1)
+					echo "+X Solar Panel Failure"
+					;;
+				2)
+					echo "-X Solar Panel Degredation"
+					;;
+				3)
+					echo "-Y Solar Panel Short Circuit"
+					;;
+				4)
+					echo "Failed I2C Bus 1"
+					;;
+				5)
+					echo "Failed I2C Bus 3"
+					;;
+				6)
+					echo "Failed Camera"
+					;;
+				7)
+					echo "Failed Payload"
+					;;
+				8)
+					echo "Failed BME Sensor"
+					;;
+				9)
+					echo "Failed MPU Sensor"
+					;;
+	#			"10")
+	#				echo "Failed FM Audio"
+	#				;;
+				*)		
+					echo "Unknown Failure"
+					;;
+				esac
+			fi
+		else
+			echo "Currently, no simulated failure"
+		fi
+	
+		echo
+		echo "Set simulated failure mode (or Return to turn OFF)"
+		echo
+	
+		echo " 0  No Failure (turn OFF)"
+		echo " 1  +X Solar Panel Failure"
+		echo " 2  -X Solar Panel Degredation"
+		echo " 3  -Y Solar Panel Short Circuit"
+		echo " 4  Failed I2C Bus 1"
+		echo " 5  Failed I2C Bus 3"
+		echo " 6  Failed Camera"
+		echo " 7  Failed Payload"
+		echo " 8  Failed BME Sensor"
+		echo " 9  Failed MPU Sensor"
+	#	echo "10  Failed FM Audio"
+		echo
+	
+	#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
+		echo "Enter the failure number to set: 0 - 9"
+		read MODE
 	fi
-
-	echo
-	echo "Set simulated failure mode (or Return to turn OFF)"
-	echo
-
-	echo " 0  No Failure (turn OFF)"
-	echo " 1  +X Solar Panel Failure"
-	echo " 2  -X Solar Panel Degredation"
-	echo " 3  -Y Solar Panel Short Circuit"
-	echo " 4  Failed I2C Bus 1"
-	echo " 5  Failed I2C Bus 3"
-	echo " 6  Failed Camera"
-	echo " 7  Failed Payload"
-	echo " 8  Failed BME Sensor"
-	echo " 9  Failed MPU Sensor"
-#	echo "10  Failed FM Audio"
-	echo
-
-#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
-	echo "Enter the failure number to set: 0 - 9"
-	read MODE
 
 	echo
 	if [ "$MODE" = "0" ]; then
