@@ -115,6 +115,7 @@ def increment_mode():
 		print("can't write to .mode file")
 		
 def camera_photo():
+	global cam_fail
 	sim_failure_check()
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
