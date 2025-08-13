@@ -1250,10 +1250,10 @@ void get_tlm_fox() {
 	
   if (failureMode == FAIL_NONE) 
 	  printf("No Simulated Failure\n");	
-  if (failureMode == -1) {
-	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-	  printf("Random Failure\n");
-  }
+//  if (failureMode == -1) {
+//	  failureMode = (int) rnd_float(1, FAIL_COUNT);
+//	  printf("Random Failure\n");
+//  }
   if (failureMode == FAIL_SOLAR) {
 	  voltage[map[PLUS_X]] = 0.0;
 	  current[map[PLUS_X]] = 0.0;
