@@ -343,7 +343,7 @@ if [ "$1" = "" ]; then
 #	echo
 	echo -n "Current command count is: "
 	cat /home/pi/CubeSatSim/command_count.txt
-#	echo
+	echo
 #	echo
 #	echo "Current beacon transmit mode is:"
 #	cat /home/pi/CubeSatSim/command_tx
