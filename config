@@ -1595,7 +1595,7 @@ elif [ "$1" = "-M" ]; then
 		set -- $value
 		
 		echo
-		echo -n "Current value in seconds is"	
+		echo -n "Current value in seconds is "	
 		echo ${13}
 		echo
 		
@@ -1619,8 +1619,8 @@ elif [ "$1" = "-M" ]; then
 	
 			echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 	
-			echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
-			echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+			echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} $time
+			echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} $time > /home/pi/CubeSatSim/sim.cfg
 		fi	
 	
 		if [ "$norestart" = "1" ]; then
