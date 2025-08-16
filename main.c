@@ -41,11 +41,11 @@ int main(int argc, char * argv[]) {
 
 //  char * cfg_buf[100];
 
-  fscanf(config_file, "%s %d %f %f %s %d %s %s %s %d %d", 
-	  call, & reset_count, & lat_file, & long_file, sim_yes, & squelch, tx, rx, hab_yes, & rx_pl, & tx_pl);
+  fscanf(config_file, "%s %d %f %f %s %d %s %s %s %d %d %s %d", 
+	  call, &reset_count, &lat_file, &long_file, sim_yes, &squelch, tx, rx, hab_yes, &rx_pl, &tx_pl, fail_yes, &fail_time);
   fclose(config_file);
-  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d\n", 
-	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
+  fprintf(stderr,"Config file /home/pi/CubeSatSim/sim.cfg contains %s %d %f %f %s %d %s %s %s %d %d %s %d\n", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl, fail_yes, fail_time);
 
   fprintf(stderr, "Transmit on %s MHz Receive on %s MHz\n", tx, rx);
 
@@ -86,6 +86,10 @@ int main(int argc, char * argv[]) {
 	  hab_mode = TRUE;
 	  fprintf(stderr, "HAB mode is ON\n");
   }	
+  if (strcmp(fail_yes, "yes") == 0) {
+	  fail_rnd_mode = TRUE;
+	  fprintf(stderr, "Random fail mode is ON\n");
+  }		
 	
   FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
   if (command_file == NULL) {	  	
@@ -289,7 +293,8 @@ int main(int argc, char * argv[]) {
   }
 
   config_file = fopen("sim.cfg", "w");
-  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %d %d", call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl);
+  fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %d %d %s %d", 
+	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl, fail_yes, fail_time);
   //    fprintf(config_file, "%s %d", call, reset_count);
   fclose(config_file);
   config_file = fopen("sim.cfg", "r");
@@ -554,14 +559,16 @@ int main(int argc, char * argv[]) {
 //    #endif
     fclose(uptime_file);
 
-  if (sim_mode) {
-	if (loop % 10 == 0) { 	
+  if (fail_rnd_mode) {
+//	if (loop % 10 == 0) { 	
+	if ((loopTime - failTime) > fail_time * 1000)	{
 //  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
   	  failureMode = (int) rnd_float(1, 9);
 	  printf("Sim Mode Random Failure Change\n");
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
 	  fprintf(failure_mode_file, "%d", failureMode);	
-	  fclose(failure_mode_file);	
+	  fclose(failure_mode_file);
+	  failTime = loopTime;	
     }
   }
 //  else
