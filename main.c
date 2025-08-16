@@ -1315,7 +1315,7 @@ void get_tlm_fox() {
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
   
-    if ((firstTime != ON) && (second_time != ON)) {
+    if ((firstTime != ON) && (secondTime != ON)) {
       // delay for sample period
 
 /**/
