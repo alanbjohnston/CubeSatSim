@@ -1639,46 +1639,46 @@ elif [ "$1" = "-N" ]; then
 		fail=0
 	fi
 
-	if [ $fail == 0 ] then
-			echo "Changing to next mode"
-		
-			value=`cat /home/pi/CubeSatSim/.mode`
-			echo "$value" > /dev/null
-			set -- $value
-		
-			if [ "$1" = "a" ]; then
-				echo "Current mode is APRS"
-				echo "Next mode is FSK"
-				/home/pi/CubeSatSim/config -f
-			elif [ "$1" = "m" ]; then
-				echo "Current mode is CW"
-				echo "Next mode is FunCube"
-				/home/pi/CubeSatSim/config -j
-			elif [ "$1" = "f" ]; then
-				echo "Current mode is FSK"
-				echo "Next mode is BPSK"
-				/home/pi/CubeSatSim/config -b
-			elif [ "$1" = "b" ]; then
-				echo "Current mode is BPSK"	
-				echo "Next mode is SSTV"
-				/home/pi/CubeSatSim/config -s
-			elif [ "$1" = "s" ]; then
-				echo "Current mode is SSTV"
-				echo "Next mode is CW"
-				/home/pi/CubeSatSim/config -m
-			elif [ "$1" = "e" ]; then
-				echo "Current mode is Repeater"	
-				echo "Next mode is APRS"
-				/home/pi/CubeSatSim/config -a
-			elif [ "$1" = "j" ]; then
-				echo "Current mode is FUNcube"	
-				echo "Next mode is Repeater"
-				/home/pi/CubeSatSim/config -e
-			else
-				echo "Unknown mode"
-			fi
+	if [ $fail == 0 ]; then
+		echo "Changing to next mode"
+	
+		value=`cat /home/pi/CubeSatSim/.mode`
+		echo "$value" > /dev/null
+		set -- $value
+	
+		if [ "$1" = "a" ]; then
+			echo "Current mode is APRS"
+			echo "Next mode is FSK"
+			/home/pi/CubeSatSim/config -f
+		elif [ "$1" = "m" ]; then
+			echo "Current mode is CW"
+			echo "Next mode is FunCube"
+			/home/pi/CubeSatSim/config -j
+		elif [ "$1" = "f" ]; then
+			echo "Current mode is FSK"
+			echo "Next mode is BPSK"
+			/home/pi/CubeSatSim/config -b
+		elif [ "$1" = "b" ]; then
+			echo "Current mode is BPSK"	
+			echo "Next mode is SSTV"
+			/home/pi/CubeSatSim/config -s
+		elif [ "$1" = "s" ]; then
+			echo "Current mode is SSTV"
+			echo "Next mode is CW"
+			/home/pi/CubeSatSim/config -m
+		elif [ "$1" = "e" ]; then
+			echo "Current mode is Repeater"	
+			echo "Next mode is APRS"
+			/home/pi/CubeSatSim/config -a
+		elif [ "$1" = "j" ]; then
+			echo "Current mode is FUNcube"	
+			echo "Next mode is Repeater"
+			/home/pi/CubeSatSim/config -e
 		else
-			echo "Changing to next simulated failure mode"
+			echo "Unknown mode"
+		fi
+	else
+		echo "Changing to next simulated failure mode"
 	fi
 
 elif [ "$1" = "-h" ]; then
