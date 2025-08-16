@@ -1255,9 +1255,9 @@ void get_tlm_fox() {
 //	  printf("Random Failure\n");
 //  }
   if (failureMode == FAIL_UNPLUG) {
-	  voltage[map[PLUS_X]] = rnd_float(0.8, 0.95);
-	  current[map[PLUS_X]] = 0.0;
-	  printf("+X Solar Unplugged Failure\n");
+	  voltage[map[PLUS_Y]] = rnd_float(0.8, 0.95);
+	  current[map[PLUS_Y]] = 0.0;
+	  printf("+Y Solar Unplugged Failure\n");
   }	
   if (failureMode == FAIL_SOLAR) {
 	  voltage[map[PLUS_X]] = 0.0;
