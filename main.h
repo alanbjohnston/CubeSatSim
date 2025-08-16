@@ -123,6 +123,7 @@ FILE *image_file;
 
 #define FAIL_COUNT 10
 #define FAIL_NONE -1
+#define FAIL_UNPLUG 0
 #define FAIL_SOLAR 1
 #define FAIL_DEGRADE 2
 #define FAIL_SHORT 3
