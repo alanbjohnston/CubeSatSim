@@ -1682,6 +1682,7 @@ elif [ "$1" = "-N" ]; then
 		fail=$((fail + 1))
 		if [ $fail == 12 ]; then
 			fail=1
+		fi
 		echo $fail
 
 	fi
