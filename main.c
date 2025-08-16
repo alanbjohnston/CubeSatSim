@@ -292,6 +292,7 @@ int main(int argc, char * argv[]) {
     transmit = TRUE;
   }
 
+  strcpy(fail_yes, "no");	
   config_file = fopen("sim.cfg", "w");
   fprintf(config_file, "%s %d %8.4f %8.4f %s %d %s %s %s %d %d %s %d", 
 	  call, reset_count, lat_file, long_file, sim_yes, squelch, tx, rx, hab_yes, rx_pl, tx_pl, fail_yes, fail_time);
