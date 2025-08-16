@@ -499,7 +499,7 @@ int main(int argc, char * argv[]) {
 
   if (firstTime == 0)	
   	firstTime = 1;
-  if (firsTime == 1) && (secondTime == 0)
+  if ((firstTime == 1) && (secondTime == 0))
 	secondTime = 1;
 	  
 //  if (!sim_mode)  // always read sensors, even in sim mode
