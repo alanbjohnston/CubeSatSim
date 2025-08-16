@@ -294,7 +294,7 @@ if [ "$1" = "" ]; then
 			case $fail in
 
 				1)
-					echo "+X Solar Panel Unplugged"
+					echo "+Y Solar Panel Unplugged"
 					;;	
 				2)
 					echo "+X Solar Panel Failure"
@@ -1508,7 +1508,7 @@ elif [ "$1" = "-M" ]; then
 				case $fail in
 
 				1)
-					echo "+X Solar Panel Unplugged"
+					echo "+Y Solar Panel Unplugged"
 					;;			
 				2)
 					echo "+X Solar Panel Failure"
@@ -1554,7 +1554,7 @@ elif [ "$1" = "-M" ]; then
 		echo
 	
 		echo " 0  No Failure (turn OFF)"
-		echo " 1  +Z Solar Panel Unplugged"
+		echo " 1  +Y Solar Panel Unplugged"
 		echo " 2  +X Solar Panel Failure"
 		echo " 3  -X Solar Panel Degredation"
 		echo " 4  -Y Solar Panel Short Circuit"
@@ -1578,37 +1578,39 @@ elif [ "$1" = "-M" ]; then
 		MODE=-1
 	else	
 		case $MODE in
-	
 			1)
+				echo "+Y Solar Panel Unplugged"
+				;;			
+			2)
 				echo "Setting Simulated +X Solar Panel Failure"
 				;;
-			2)
+			3)
 				echo "Setting Simulated -X Solar Panel Degredation"
 				;;
-			3)
+			4)
 				echo "Setting Simulated -Y Solar Panel Short Circuit"
 				;;
-			4)
+			5)
 				echo "Setting Simulated Failed I2C Bus 1"
 				;;
-			5)
+			6)
 				echo "Setting Simulated Failed I2C Bus 3"
 				;;
-			6)
+			7)
 				echo "Setting Simulated Failed Camera"
 				;;
-			7)
+			8)
 				echo "Setting Simulated Failed Payload"
 				;;
-			8)
+			9)
 				echo "Setting Simulated Failed BME Sensor"
 				;;
-			9)
+			"10")
 				echo "Setting Simulated Failed MPU Sensor"
 				;;
-#			"10")
-#				echo "Setting Failed FM Audio"
-#				;;
+			"11")
+				echo "Setting Failed FM Audio"
+				;;
 			*)
 				echo "Setting No Simulated Failure"
 				MODE=-1
