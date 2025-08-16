@@ -98,6 +98,7 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1, loop_count = 0;
 int firstTime = ON; // 0;
+int secondTime = ON;
 long start;
 int testCount = 0;
 long time_start;
