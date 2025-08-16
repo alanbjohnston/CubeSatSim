@@ -54,7 +54,7 @@ function transmit_command_fsk {
 	 	echo "Resuming command and control"
 		sudo systemctl start command
 
-	else
+	
 
 		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
@@ -89,7 +89,7 @@ function transmit_command_bpsk {
 	 	echo "Resuming command and control"
 		sudo systemctl start command
 
-	else
+	
 
 		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
@@ -1633,6 +1633,7 @@ elif [ "$1" = "-N" ]; then
 			echo "Simulated failure mode"
 			fail=$(<$FILE)
 			echo $fail
+		fi
 	else
 		echo "No simulated failure"
 		fail=0
