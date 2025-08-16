@@ -1684,6 +1684,7 @@ elif [ "$1" = "-N" ]; then
 			fail=1
 		fi
 		echo $fail
+		/home/pi/CubeSatSim/config -M $fail
 
 	fi
 
