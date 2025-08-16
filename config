@@ -1680,6 +1680,8 @@ elif [ "$1" = "-N" ]; then
 	else
 		echo "Changing to next simulated failure mode"
 		fail=$((fail + 1))
+		if [ $fail == 12 ]; then
+			fail=1
 		echo $fail
 
 	fi
