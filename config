@@ -292,37 +292,40 @@ if [ "$1" = "" ]; then
 #			cat $FILE
 
 			case $fail in
-	
+
 				1)
+					echo "+X Solar Panel Unplugged"
+					;;	
+				2)
 					echo "+X Solar Panel Failure"
 					;;
-				2)
+				3)
 					echo "-X Solar Panel Degredation"
 					;;
-				3)
+				4)
 					echo "-Y Solar Panel Short Circuit"
 					;;
-				4)
+				5)
 					echo "Failed I2C Bus 1"
 					;;
-				5)
+				6)
 					echo "Failed I2C Bus 3"
 					;;
-				6)
+				7)
 					echo "Failed Camera"
 					;;
-				7)
+				8)
 					echo "Failed Payload"
 					;;
-				8)
+				9)
 					echo "Failed BME Sensor"
 					;;
-				9)
+				10)
 					echo "Failed MPU Sensor"
 					;;
-#				"10")
-#					echo "Failed FM Audio"
-#					;;
+				"11")
+					echo "Failed FM Audio"
+					;;
 				*)
 					echo "Unknown Failure"
 					;;
@@ -1503,37 +1506,40 @@ elif [ "$1" = "-M" ]; then
 				fail=$(<$FILE)
 				echo -n "Currently, simulated "
 				case $fail in
-		
+
 				1)
+					echo "+X Solar Panel Unplugged"
+					;;			
+				2)
 					echo "+X Solar Panel Failure"
 					;;
-				2)
+				3)
 					echo "-X Solar Panel Degredation"
 					;;
-				3)
+				4)
 					echo "-Y Solar Panel Short Circuit"
 					;;
-				4)
+				5)
 					echo "Failed I2C Bus 1"
 					;;
-				5)
+				6)
 					echo "Failed I2C Bus 3"
 					;;
-				6)
+				7)
 					echo "Failed Camera"
 					;;
-				7)
+				8)
 					echo "Failed Payload"
 					;;
-				8)
+				9)
 					echo "Failed BME Sensor"
 					;;
-				9)
+				"10")
 					echo "Failed MPU Sensor"
 					;;
-	#			"10")
-	#				echo "Failed FM Audio"
-	#				;;
+				"11")
+					echo "Failed FM Audio"
+					;;
 				*)		
 					echo "Unknown Failure"
 					;;
@@ -1548,20 +1554,21 @@ elif [ "$1" = "-M" ]; then
 		echo
 	
 		echo " 0  No Failure (turn OFF)"
-		echo " 1  +X Solar Panel Failure"
-		echo " 2  -X Solar Panel Degredation"
-		echo " 3  -Y Solar Panel Short Circuit"
-		echo " 4  Failed I2C Bus 1"
-		echo " 5  Failed I2C Bus 3"
-		echo " 6  Failed Camera"
-		echo " 7  Failed Payload"
-		echo " 8  Failed BME Sensor"
-		echo " 9  Failed MPU Sensor"
-	#	echo "10  Failed FM Audio"
+		echo " 1  +Z Solar Panel Unplugged"
+		echo " 2  +X Solar Panel Failure"
+		echo " 3  -X Solar Panel Degredation"
+		echo " 4  -Y Solar Panel Short Circuit"
+		echo " 5  Failed I2C Bus 1"
+		echo " 6  Failed I2C Bus 3"
+		echo " 7  Failed Camera"
+		echo " 8  Failed Payload"
+		echo " 9  Failed BME Sensor"
+		echo "10  Failed MPU Sensor"
+		echo "11  Failed FM Audio"
 		echo
 	
-	#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
-		echo "Enter the failure number to set: 0 - 9"
+		echo "Enter the failure number to set: 0 - 11" 
+	#	echo "Enter the failure number to set: 0 - 9"
 		read MODE
 		echo
 	fi
