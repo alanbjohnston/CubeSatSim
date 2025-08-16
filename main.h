@@ -121,19 +121,19 @@ FILE *image_file;
 #define REPEATER 7
 #define TXCOMMAND 12
 
-#define FAIL_COUNT 10
+#define FAIL_COUNT 11
 #define FAIL_NONE -1
-#define FAIL_UNPLUG 0
-#define FAIL_SOLAR 1
-#define FAIL_DEGRADE 2
-#define FAIL_SHORT 3
-#define FAIL_I2C1 4
-#define FAIL_I2C3 5
-#define FAIL_CAMERA 6
-#define FAIL_PAYLOAD 7
+#define FAIL_UNPLUG 1
+#define FAIL_SOLAR 2
+#define FAIL_DEGRADE 3
+#define FAIL_SHORT 4
+#define FAIL_I2C1 5
+#define FAIL_I2C3 6
+#define FAIL_CAMERA 7
+#define FAIL_PAYLOAD 8
 #define FAIL_BME 8
-#define FAIL_MPU 9
-#define FAIL_AUDIO 10
+#define FAIL_MPU 10
+#define FAIL_AUDIO 11
 int failureMode = FAIL_NONE;
 
 int transmitStatus = -1;
