@@ -1679,6 +1679,9 @@ elif [ "$1" = "-N" ]; then
 		fi
 	else
 		echo "Changing to next simulated failure mode"
+		fail=$((fail + 1))
+		echo $fail
+
 	fi
 
 elif [ "$1" = "-h" ]; then
