@@ -499,8 +499,6 @@ int main(int argc, char * argv[]) {
 
   if (firstTime == 0)	
   	firstTime = 1;
-  if ((firstTime == 1) && (secondTime == 0))
-	secondTime = 1;
 	  
 //  if (!sim_mode)  // always read sensors, even in sim mode
   {
@@ -1315,7 +1313,8 @@ void get_tlm_fox() {
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
   
-    if ((firstTime != ON) && (secondTime != ON)) {
+//    if (firstTime != ON) {
+	if (true) {	
       // delay for sample period
 
 /**/
@@ -2784,5 +2783,4 @@ void socket_send(int length) {
 	
   if (socket_open == 1)	
     firstTime = 0;
-	secondTime = 0;
 }
