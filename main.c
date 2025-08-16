@@ -496,8 +496,11 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   else if (((mode == FC))) // && !sim_mode)
       get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
-	
-  firstTime = 1;
+
+  if (firstTime == 0)	
+  	firstTime = 1;
+  if (firsTime == 1) && (secondTime == 0)
+	secondTime = 1;
 	  
 //  if (!sim_mode)  // always read sensors, even in sim mode
   {
@@ -1312,7 +1315,7 @@ void get_tlm_fox() {
   //  for (int frames = 0; frames < FRAME_CNT; frames++) 
   for (int frames = 0; frames < frameCnt; frames++) {
   
-    if (firstTime != ON) {
+    if ((firstTime != ON) && (second_time != ON)) {
       // delay for sample period
 
 /**/
@@ -1330,7 +1333,7 @@ void get_tlm_fox() {
       
       sampleTime = (unsigned int) millis();
     } else
-      printf("first time - no sleep\n");
+      printf("first or second time - no sleep\n");
 
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     fflush(stdout);
@@ -2781,4 +2784,5 @@ void socket_send(int length) {
 	
   if (socket_open == 1)	
     firstTime = 0;
+	secondTime = 0;
 }
