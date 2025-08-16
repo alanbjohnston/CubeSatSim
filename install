@@ -2,14 +2,13 @@
 
 echo -e "\ninstallation script for CubeSatSim v2.2\n"
 
-cat  | grep "11."
-
  if [[ $(grep '11.' /etc/debian_version) ]]; then
     echo "Installing on Debian 11 (Bullseye)"
   else
     echo "This is not Debian 11 (Bullseye)!"
 	echo "Installation is not likely to work."
 	echo "Recommend you start with a Bullseye."
+	echo
 	sleep 10
   fi
 
