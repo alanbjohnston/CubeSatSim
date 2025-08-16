@@ -1582,7 +1582,7 @@ elif [ "$1" = "-M" ]; then
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
 		MODE=-1
-    elseif [ "$MODE" = "12" ]; then
+    elif [ "$MODE" = "12" ]; then
 		echo "Setting Random Simulated Failure"
 
 		echo	
