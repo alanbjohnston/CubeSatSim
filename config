@@ -1755,6 +1755,8 @@ elif [ "$1" = "-U" ]; then
 			time="${13}"
 			echo "Keeping value of" $time
 #			norestart=1
+		fi
+
 	else
 		sim="no"
 		echo "Random Simulated Failure is OFF"
@@ -1774,8 +1776,6 @@ elif [ "$1" = "-U" ]; then
 ##	sudo reboot now
 #	sudo  restart cubesatsim
 	
-
-
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
