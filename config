@@ -1629,10 +1629,6 @@ elif [ "$1" = "-M" ]; then
 			reboot=1
 		fi
 
-
-
-
-
 	else	
 		case $MODE in
 			1)
@@ -1678,6 +1674,9 @@ elif [ "$1" = "-M" ]; then
 #	echo $MODE
 	echo
 	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
+
+	echo 'Changing simulated failure mode to $MODE' | wall
+
 
 elif [ "$1" = "-N" ]; then
 
