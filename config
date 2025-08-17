@@ -294,37 +294,37 @@ if [ "$1" = "" ]; then
 			case $fail in
 
 				1)
-					echo "+Y Solar Panel Unplugged"
+					echo "+Y Solar Panel Unplugged (1)"
 					;;	
 				2)
-					echo "+X Solar Panel Failure"
+					echo "+X Solar Panel Failure (2)"
 					;;
 				3)
-					echo "-X Solar Panel Degredation"
+					echo "-X Solar Panel Degredation (3)"
 					;;
 				4)
-					echo "-Y Solar Panel Short Circuit"
+					echo "-Y Solar Panel Short Circuit (4)"
 					;;
 				5)
-					echo "Failed I2C Bus 1"
+					echo "Failed I2C Bus 1 (5)"
 					;;
 				6)
-					echo "Failed I2C Bus 3"
+					echo "Failed I2C Bus 3 (6)"
 					;;
 				7)
-					echo "Failed Camera"
+					echo "Failed Camera (7)"
 					;;
 				8)
-					echo "Failed Payload"
+					echo "Failed Payload (8)"
 					;;
 				9)
-					echo "Failed BME Sensor"
+					echo "Failed BME Sensor (9)"
 					;;
 				10)
-					echo "Failed MPU Sensor"
+					echo "Failed MPU Sensor (10)"
 					;;
 				"11")
-					echo "Failed FM Audio"
+					echo "Failed FM Audio (11)"
 					;;
 				*)
 					echo "Unknown Failure"
@@ -337,7 +337,7 @@ if [ "$1" = "" ]; then
 	fi
 
 	if [ "${12}" = "y" ] || [ "${12}" = "yes" ] ; then
-		echo "Random Failure Mode is ON"
+		echo "Random Failure Mode is ON with time period " ${13} " seconds"
 	else
 		echo "Random Failure Mode is OFF"
 	fi
