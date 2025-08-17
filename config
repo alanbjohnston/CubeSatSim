@@ -1506,44 +1506,44 @@ elif [ "$1" = "-M" ]; then
 		FILE=/home/pi/CubeSatSim/failure_mode.txt
 		if [ -f "$FILE" ]; then
 			if [[ $(grep "\-1" $FILE) ]]; then
-				echo "Currently, no simulated failure"
+				echo "Currently, no simulated failure (0)"
 			else
 				fail=$(<$FILE)
 				echo -n "Currently, simulated "
 				case $fail in
 
 				1)
-					echo "+Y Solar Panel Unplugged"
+					echo "+Y Solar Panel Unplugged (1)"
 					;;			
 				2)
-					echo "+X Solar Panel Failure"
+					echo "+X Solar Panel Failure (2)"
 					;;
 				3)
-					echo "-X Solar Panel Degredation"
+					echo "-X Solar Panel Degredation (3)"
 					;;
 				4)
-					echo "-Y Solar Panel Short Circuit"
+					echo "-Y Solar Panel Short Circuit (4)"
 					;;
 				5)
-					echo "Failed I2C Bus 1"
+					echo "Failed I2C Bus 1 (5)"
 					;;
 				6)
-					echo "Failed I2C Bus 3"
+					echo "Failed I2C Bus 3 (6)"
 					;;
 				7)
-					echo "Failed Camera"
+					echo "Failed Camera (7)"
 					;;
 				8)
-					echo "Failed Payload"
+					echo "Failed Payload (8)"
 					;;
 				9)
-					echo "Failed BME Sensor"
+					echo "Failed BME Sensor (9)"
 					;;
 				"10")
-					echo "Failed MPU Sensor"
+					echo "Failed MPU Sensor (10)"
 					;;
 				"11")
-					echo "Failed FM Audio"
+					echo "Failed FM Audio (11)"
 					;;
 				*)		
 					echo "Unknown Failure"
@@ -1570,11 +1570,9 @@ elif [ "$1" = "-M" ]; then
 		echo " 9  Failed BME Sensor"
 		echo "10  Failed MPU Sensor"
 		echo "11  Failed FM Audio"
-#		echo "12  Random Failure"
 		echo
 	
 		echo "Enter the failure number to set: 0 - 11" 
-	#	echo "Enter the failure number to set: 0 - 9"
 		read MODE
 		echo
 	fi
