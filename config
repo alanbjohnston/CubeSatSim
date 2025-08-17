@@ -1699,7 +1699,7 @@ elif [ "$1" = "-N" ]; then
 		echo "Changing to next simulated failure mode"
 		fail=$((fail + 1))
 #		if [ $fail == 12 ]; then
-		if [ "$fail" -ge "11" ]; then
+		if [ "$fail" -gt "11" ]; then
 			fail=1
 		fi
 		echo $fail
