@@ -54,7 +54,7 @@ function transmit_command_fsk {
 	 	echo "Resuming command and control"
 		sudo systemctl start command
 
-	else
+	
 
 		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
@@ -89,7 +89,7 @@ function transmit_command_bpsk {
 	 	echo "Resuming command and control"
 		sudo systemctl start command
 
-	else
+	
 
 		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
@@ -292,37 +292,40 @@ if [ "$1" = "" ]; then
 #			cat $FILE
 
 			case $fail in
-	
+
 				1)
-					echo "+X Solar Panel Failure"
-					;;
+					echo "+Y Solar Panel Unplugged (1)"
+					;;	
 				2)
-					echo "-X Solar Panel Degredation"
+					echo "+X Solar Panel Failure (2)"
 					;;
 				3)
-					echo "-Y Solar Panel Short Circuit"
+					echo "-X Solar Panel Degredation (3)"
 					;;
 				4)
-					echo "Failed I2C Bus 1"
+					echo "-Y Solar Panel Short Circuit (4)"
 					;;
 				5)
-					echo "Failed I2C Bus 3"
+					echo "Failed I2C Bus 1 (5)"
 					;;
 				6)
-					echo "Failed Camera"
+					echo "Failed I2C Bus 3 (6)"
 					;;
 				7)
-					echo "Failed Payload"
+					echo "Failed Camera (7)"
 					;;
 				8)
-					echo "Failed BME Sensor"
+					echo "Failed Payload (8)"
 					;;
 				9)
-					echo "Failed MPU Sensor"
+					echo "Failed BME Sensor (9)"
 					;;
-#				"10")
-#					echo "Failed FM Audio"
-#					;;
+				10)
+					echo "Failed MPU Sensor (10)"
+					;;
+				"11")
+					echo "Failed FM Audio (11)"
+					;;
 				*)
 					echo "Unknown Failure"
 					;;
@@ -332,7 +335,12 @@ if [ "$1" = "" ]; then
 	else
 		echo "No simulated failure"
 	fi
-#	echo
+
+	if [ "${12}" = "y" ] || [ "${12}" = "yes" ] ; then
+		echo "Random Failure Mode is ON with time period" ${13} "seconds"
+	else
+		echo "Random Failure Mode is OFF"
+	fi
 
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
 		echo "Balloon mode is ON"
@@ -398,7 +406,7 @@ if [ "$1" = "" ]; then
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
 	echo
 	
 	echo "To change, include an OPTION"
@@ -544,7 +552,7 @@ elif [ "$1" = "-t" ]; then
 	
 	echo
 	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} 
 
 	echo "Do you want Simulated Telemetry ON (y/n) "
 	read sim
@@ -562,8 +570,8 @@ elif [ "$1" = "-t" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11}
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -590,7 +598,7 @@ elif [ "$1" = "-c" ]; then
 	echo $1
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13}
 
 	echo "Enter callsign in all capitals: "
 	read callsign
@@ -604,8 +612,8 @@ elif [ "$1" = "-c" ]; then
 	
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
-		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	fi
 	
 	if [ "$norestart" = "1" ]; then
@@ -638,7 +646,7 @@ elif [ "$1" = "-r" ]; then
 	echo $2
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} 
 
 	echo -e "Enter Reset Count (integer): "
 
@@ -658,8 +666,8 @@ elif [ "$1" = "-r" ]; then
 
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
-		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	fi	
 
 	if [ "$norestart" = "1" ]; then
@@ -693,7 +701,7 @@ elif [ "$1" = "-l" ]; then
 	echo $3
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} 
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
 
 	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
@@ -735,8 +743,8 @@ elif [ "$1" = "-l" ]; then
 	fi 
 
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
-	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11}
-	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	
 	if [ "$norestart" = "1" ]; then
 		echo 
@@ -1028,7 +1036,7 @@ elif [ "$1" = "-q" ]; then
 	echo $6
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
 
 	echo -e "Enter squelch  (integer 1 - 8): "
 
@@ -1050,8 +1058,8 @@ elif [ "$1" = "-q" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 ${10} ${11}
-	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 ${10} ${11} ${12} ${13}
+	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuration file"
 ##	echo
@@ -1073,7 +1081,7 @@ elif [ "$1" = "-P" ]; then
 
 	echo	
 	echo "Editing the PL (Private Line) CTCSS/CDCSS setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "the configuration file for CubeSatSim"	
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
@@ -1087,7 +1095,7 @@ elif [ "$1" = "-P" ]; then
 	echo ${11}
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
 
 	echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
 
@@ -1130,8 +1138,8 @@ elif [ "$1" = "-P" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl ${12} ${13}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -1161,7 +1169,7 @@ elif [ "$1" = "-F" ]; then
 	echo $8
 	echo	
 
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
 
 	echo "Enter tx frequency as 4XX.XXXX: "
 	read tx
@@ -1184,8 +1192,8 @@ elif [ "$1" = "-F" ]; then
 	
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11}
-		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13}
+		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 #	fi
 	
 #	if [ "$norestart" = "1" ]; then
@@ -1267,7 +1275,7 @@ elif [ "$1" = "-H" ]; then
 	
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
 
 	echo "Do you want Balloon mode ON (y/n) "
 	read hab
@@ -1284,8 +1292,8 @@ elif [ "$1" = "-H" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11}
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} ${12} ${13}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -1498,42 +1506,45 @@ elif [ "$1" = "-M" ]; then
 		FILE=/home/pi/CubeSatSim/failure_mode.txt
 		if [ -f "$FILE" ]; then
 			if [[ $(grep "\-1" $FILE) ]]; then
-				echo "Currently, no simulated failure"
+				echo "Currently, no simulated failure (0)"
 			else
 				fail=$(<$FILE)
 				echo -n "Currently, simulated "
 				case $fail in
-		
+
 				1)
-					echo "+X Solar Panel Failure"
-					;;
+					echo "+Y Solar Panel Unplugged (1)"
+					;;			
 				2)
-					echo "-X Solar Panel Degredation"
+					echo "+X Solar Panel Failure (2)"
 					;;
 				3)
-					echo "-Y Solar Panel Short Circuit"
+					echo "-X Solar Panel Degredation (3)"
 					;;
 				4)
-					echo "Failed I2C Bus 1"
+					echo "-Y Solar Panel Short Circuit (4)"
 					;;
 				5)
-					echo "Failed I2C Bus 3"
+					echo "Failed I2C Bus 1 (5)"
 					;;
 				6)
-					echo "Failed Camera"
+					echo "Failed I2C Bus 3 (6)"
 					;;
 				7)
-					echo "Failed Payload"
+					echo "Failed Camera (7)"
 					;;
 				8)
-					echo "Failed BME Sensor"
+					echo "Failed Payload (8)"
 					;;
 				9)
-					echo "Failed MPU Sensor"
+					echo "Failed BME Sensor (9)"
 					;;
-	#			"10")
-	#				echo "Failed FM Audio"
-	#				;;
+				"10")
+					echo "Failed MPU Sensor (10)"
+					;;
+				"11")
+					echo "Failed FM Audio (11)"
+					;;
 				*)		
 					echo "Unknown Failure"
 					;;
@@ -1548,20 +1559,20 @@ elif [ "$1" = "-M" ]; then
 		echo
 	
 		echo " 0  No Failure (turn OFF)"
-		echo " 1  +X Solar Panel Failure"
-		echo " 2  -X Solar Panel Degredation"
-		echo " 3  -Y Solar Panel Short Circuit"
-		echo " 4  Failed I2C Bus 1"
-		echo " 5  Failed I2C Bus 3"
-		echo " 6  Failed Camera"
-		echo " 7  Failed Payload"
-		echo " 8  Failed BME Sensor"
-		echo " 9  Failed MPU Sensor"
-	#	echo "10  Failed FM Audio"
+		echo " 1  +Y Solar Panel Unplugged"
+		echo " 2  +X Solar Panel Failure"
+		echo " 3  -X Solar Panel Degredation"
+		echo " 4  -Y Solar Panel Short Circuit"
+		echo " 5  Failed I2C Bus 1"
+		echo " 6  Failed I2C Bus 3"
+		echo " 7  Failed Camera"
+		echo " 8  Failed Payload"
+		echo " 9  Failed BME Sensor"
+		echo "10  Failed MPU Sensor"
+		echo "11  Failed FM Audio"
 		echo
 	
-	#	echo "Enter the failure number to set: 0 - 10" # 10 sometimes gets stuck on carrier
-		echo "Enter the failure number to set: 0 - 9"
+		echo "Enter the failure number to set: 0 - 11" 
 		read MODE
 		echo
 	fi
@@ -1569,39 +1580,49 @@ elif [ "$1" = "-M" ]; then
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
 		MODE=-1
+#    elif [ "$MODE" = "12" ]; then
+	
+#		if [ "$norestart" = "1" ]; then
+#			echo
+#		else
+#			reboot=1
+#		fi
+
 	else	
 		case $MODE in
-	
 			1)
+				echo "+Y Solar Panel Unplugged"
+				;;			
+			2)
 				echo "Setting Simulated +X Solar Panel Failure"
 				;;
-			2)
+			3)
 				echo "Setting Simulated -X Solar Panel Degredation"
 				;;
-			3)
+			4)
 				echo "Setting Simulated -Y Solar Panel Short Circuit"
 				;;
-			4)
+			5)
 				echo "Setting Simulated Failed I2C Bus 1"
 				;;
-			5)
+			6)
 				echo "Setting Simulated Failed I2C Bus 3"
 				;;
-			6)
+			7)
 				echo "Setting Simulated Failed Camera"
 				;;
-			7)
+			8)
 				echo "Setting Simulated Failed Payload"
 				;;
-			8)
+			9)
 				echo "Setting Simulated Failed BME Sensor"
 				;;
-			9)
+			"10")
 				echo "Setting Simulated Failed MPU Sensor"
 				;;
-#			"10")
-#				echo "Setting Failed FM Audio"
-#				;;
+			"11")
+				echo "Setting Failed FM Audio"
+				;;
 			*)
 				echo "Setting No Simulated Failure"
 				MODE=-1
@@ -1613,6 +1634,144 @@ elif [ "$1" = "-M" ]; then
 	echo
 	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
 
+	echo "Changing simulated failure mode to $MODE" | wall
+
+
+
+elif [ "$1" = "-N" ]; then
+
+	FILE=/home/pi/CubeSatSim/failure_mode.txt
+	if [ -f "$FILE" ]; then
+		if [[ $(grep "\-1" $FILE) ]]; then
+			echo "No simulated failure"
+			fail=0
+		else	
+			echo "Simulated failure mode"
+			fail=$(<$FILE)
+			echo $fail
+		fi
+	else
+		echo "No simulated failure"
+		fail=0
+	fi
+
+	if [ $fail == 0 ]; then
+		echo "Changing to next mode"
+	
+		value=`cat /home/pi/CubeSatSim/.mode`
+		echo "$value" > /dev/null
+		set -- $value
+	
+		if [ "$1" = "a" ]; then
+			echo "Current mode is APRS"
+			echo "Next mode is FSK"
+			/home/pi/CubeSatSim/config -f
+		elif [ "$1" = "m" ]; then
+			echo "Current mode is CW"
+			echo "Next mode is FunCube"
+			/home/pi/CubeSatSim/config -j
+		elif [ "$1" = "f" ]; then
+			echo "Current mode is FSK"
+			echo "Next mode is BPSK"
+			/home/pi/CubeSatSim/config -b
+		elif [ "$1" = "b" ]; then
+			echo "Current mode is BPSK"	
+			echo "Next mode is SSTV"
+			/home/pi/CubeSatSim/config -s
+		elif [ "$1" = "s" ]; then
+			echo "Current mode is SSTV"
+			echo "Next mode is CW"
+			/home/pi/CubeSatSim/config -m
+		elif [ "$1" = "e" ]; then
+			echo "Current mode is Repeater"	
+			echo "Next mode is APRS"
+			/home/pi/CubeSatSim/config -a
+		elif [ "$1" = "j" ]; then
+			echo "Current mode is FUNcube"	
+			echo "Next mode is Repeater"
+			/home/pi/CubeSatSim/config -e
+		else
+			echo "Unknown mode"
+		fi
+	else
+		echo "Changing to next simulated failure mode"
+		fail=$((fail + 1))
+#		if [ $fail == 12 ]; then
+		if [ "$fail" -gt "11" ]; then
+			fail=1
+		fi
+		echo $fail
+		/home/pi/CubeSatSim/config -M $fail
+
+	fi
+
+elif [ "$1" = "-U" ]; then
+
+	echo	
+	echo "Changing the Random Simulated Failure setting in"
+	echo "the configuration file for CubeSatSim"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "${12}" = "yes" ] || [ "${12}" = "y" ]; then
+		echo "Random Simulated Failure is ON"
+	else
+		echo "Random Simulated Failure is OFF"
+	fi
+	
+	echo
+	
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} 
+
+	echo "Do you want Random Simulated Failure ON (y/n) "
+	read sim
+	echo
+	
+	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+		sim="yes"
+		echo "Random Simulated Failure is ON"
+		echo	
+		echo "A new random failure is selected every"
+		echo  ${13} "seconds."	
+		echo 
+		echo "Enter a new value or Return keeps current value."
+			
+		echo "Enter time in seconds (integer): "
+	
+		read time
+	
+		if [ -z $time ] ; then
+			time="${13}"
+			echo "Keeping value of " $time " seconds"
+		fi
+	
+		if ! [[ $time =~ ^[0-9]+$ ]] ; then
+			echo "Error: not an integer!"
+			time="${13}"
+			echo "Keeping value of" $time
+		fi
+
+	else
+		sim="no"
+		echo "Random Simulated Failure is OFF"
+		time="${13}"
+#		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
+	fi
+	
+#	echo
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+#	echo
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time > /home/pi/CubeSatSim/sim.cfg
+	echo
+
+	if [ "${12}" != "$sim" ] || [ "${13}" != "$time" ] ; then
+		reboot=1
+	fi
+	
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1651,7 +1810,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
 	echo "   -M     Set simulated failure mode"
-
+	echo "   -U     Change the random failure mode setting"
+	echo "   -N     Set next mode or failure"
 	echo
 	exit
 

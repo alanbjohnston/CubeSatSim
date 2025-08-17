@@ -98,6 +98,7 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1, loop_count = 0;
 int firstTime = ON; // 0;
+int secondTime = ON;
 long start;
 int testCount = 0;
 long time_start;
@@ -121,18 +122,19 @@ FILE *image_file;
 #define REPEATER 7
 #define TXCOMMAND 12
 
-#define FAIL_COUNT 10
+#define FAIL_COUNT 11
 #define FAIL_NONE -1
-#define FAIL_SOLAR 1
-#define FAIL_DEGRADE 2
-#define FAIL_SHORT 3
-#define FAIL_I2C1 4
-#define FAIL_I2C3 5
-#define FAIL_CAMERA 6
-#define FAIL_PAYLOAD 7
+#define FAIL_UNPLUG 1
+#define FAIL_SOLAR 2
+#define FAIL_DEGRADE 3
+#define FAIL_SHORT 4
+#define FAIL_I2C1 5
+#define FAIL_I2C3 6
+#define FAIL_CAMERA 7
+#define FAIL_PAYLOAD 8
 #define FAIL_BME 8
-#define FAIL_MPU 9
-#define FAIL_AUDIO 10
+#define FAIL_MPU 10
+#define FAIL_AUDIO 11
 int failureMode = FAIL_NONE;
 
 int transmitStatus = -1;
@@ -159,6 +161,8 @@ long int uptime;
 char call[5];
 char sim_yes[10];
 char hab_yes[10];
+char fail_yes[10];
+int fail_time = 60;
 int squelch = 3; // default squelch
 char rx[12], tx[12];
 int tx_pl = 0;
@@ -223,8 +227,10 @@ int pi_zero_2_offset = 0;
 
 
 int hab_mode = FALSE; 
+int fail_rnd_mode = FALSE;
 int battery_saver_mode = FALSE;
 long int loopTime;
+long int failTime = 0;
 
 int error_count = 0;
 int groundCommandCount = 0;

@@ -27,7 +27,7 @@ def sim_failure_check():
 		elif (fail_mode == 6):
 			cam_fail = True
 			print("Failure mode camera fail")	
-		elif (fail_mode == 0):
+		elif (fail_mode == -1):
 			print("No failure mode")	
 		else:
 			print("Other failure mode")

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v2.1\n"
+echo -e "\nupdate script for CubeSatSim v2.2\n"
 
 FLAG=0
 checkout=0
@@ -288,24 +288,22 @@ fi
 
 cd /home/pi/pi-power-button
 
-  git checkout master
-
   git pull --no-rebase > .updated_p
 
-  grep 'changed' /home/pi/pi-power-button/.updated_p
-  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
+  git checkout next
+
+#  grep 'changed' /home/pi/pi-power-button/.updated_p
+#  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
   
     echo "updating pi-power-button."
-
-#    git checkout master
     
     script/install
 
     FLAG=1
 
-  else
-    echo "nothing to do for pi-power-button."
-  fi 
+ # else
+ #   echo "nothing to do for pi-power-button."
+ # fi 
 
 cd /home/pi/ssdv
 
