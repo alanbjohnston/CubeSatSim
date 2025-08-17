@@ -1570,10 +1570,10 @@ elif [ "$1" = "-M" ]; then
 		echo " 9  Failed BME Sensor"
 		echo "10  Failed MPU Sensor"
 		echo "11  Failed FM Audio"
-		echo "12  Random Failure"
+#		echo "12  Random Failure"
 		echo
 	
-		echo "Enter the failure number to set: 0 - 12" 
+		echo "Enter the failure number to set: 0 - 11" 
 	#	echo "Enter the failure number to set: 0 - 9"
 		read MODE
 		echo
@@ -1698,7 +1698,8 @@ elif [ "$1" = "-N" ]; then
 	else
 		echo "Changing to next simulated failure mode"
 		fail=$((fail + 1))
-		if [ $fail == 12 ]; then
+#		if [ $fail == 12 ]; then
+		if [ "$fail" -ge "11" ]; then
 			fail=1
 		fi
 		echo $fail
