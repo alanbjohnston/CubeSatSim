@@ -337,7 +337,7 @@ if [ "$1" = "" ]; then
 	fi
 
 	if [ "${12}" = "y" ] || [ "${12}" = "yes" ] ; then
-		echo "Random Failure Mode is ON with time period " ${13} " seconds"
+		echo "Random Failure Mode is ON with time period" ${13} "seconds"
 	else
 		echo "Random Failure Mode is OFF"
 	fi
@@ -1081,7 +1081,7 @@ elif [ "$1" = "-P" ]; then
 
 	echo	
 	echo "Editing the PL (Private Line) CTCSS/CDCSS setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "the configuration file for CubeSatSim"	
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
@@ -1735,7 +1735,7 @@ elif [ "$1" = "-U" ]; then
 		echo "Random Simulated Failure is ON"
 		echo	
 		echo "A new random failure is selected every"
-		echo  ${13} " seconds."	
+		echo  ${13} "seconds."	
 		echo 
 		echo "Enter a new value or Return keeps current value."
 			
