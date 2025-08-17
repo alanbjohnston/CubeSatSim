@@ -1675,7 +1675,7 @@ elif [ "$1" = "-M" ]; then
 	echo
 	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
 
-	echo 'Changing simulated failure mode to $MODE' | wall
+	echo 'Changing simulated failure mode to " $MODE | wall
 
 
 elif [ "$1" = "-N" ]; then
