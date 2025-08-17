@@ -1582,52 +1582,13 @@ elif [ "$1" = "-M" ]; then
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
 		MODE=-1
-    elif [ "$MODE" = "12" ]; then
-		echo "Setting Random Simulated Failure"
-
-		echo	
-		echo "with a new random failure selected in seconds"
-		echo
-		echo "Return keeps current value."
-		
-		value=`cat /home/pi/CubeSatSim/sim.cfg`
-		echo "$value" > /dev/null
-		set -- $value
-		
-		echo
-		echo -n "Current value in seconds is "	
-		echo ${13}
-		echo
-		
-	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} 
+#    elif [ "$MODE" = "12" ]; then
 	
-		echo -e "Enter time in seconds (integer): "
-	
-		read time
-	
-		if [ -z $time ] ; then
-			time="${13}"
-			echo "Keeping value of" $time
-		fi
-	
-		if ! [[ $time =~ ^[0-9]+$ ]] ; then
-			echo "Error: not an integer!"
-			time="${13}"
-			echo "Keeping value of" $time
-			norestart=1
-		else
-	
-			echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
-	
-			echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} $time
-			echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} $time > /home/pi/CubeSatSim/sim.cfg
-		fi	
-	
-		if [ "$norestart" = "1" ]; then
-			echo
-		else
-			reboot=1
-		fi
+#		if [ "$norestart" = "1" ]; then
+#			echo
+#		else
+#			reboot=1
+#		fi
 
 	else	
 		case $MODE in
@@ -1773,6 +1734,26 @@ elif [ "$1" = "-U" ]; then
 	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
 		sim="yes"
 		echo "Random Simulated Failure is ON"
+		echo	
+		echo "A new random failure is selected every"
+		echo  ${13} " seconds."	
+		echo 
+		echo "Enter a new value or Return keeps current value."
+			
+		echo "Enter time in seconds (integer): "
+	
+		read time
+	
+		if [ -z $time ] ; then
+			time="${13}"
+			echo "Keeping value of " $time " seconds"
+		fi
+	
+		if ! [[ $time =~ ^[0-9]+$ ]] ; then
+			echo "Error: not an integer!"
+			time="${13}"
+			echo "Keeping value of" $time
+#			norestart=1
 	else
 		sim="no"
 		echo "Random Simulated Failure is OFF"
@@ -1782,8 +1763,8 @@ elif [ "$1" = "-U" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim ${13}
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
