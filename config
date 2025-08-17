@@ -1759,6 +1759,7 @@ elif [ "$1" = "-U" ]; then
 	else
 		sim="no"
 		echo "Random Simulated Failure is OFF"
+		time="${13}"
 #		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
 	fi
 	
