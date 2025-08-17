@@ -1745,6 +1745,55 @@ elif [ "$1" = "-N" ]; then
 
 	fi
 
+elif [ "$1" = "-U" ]; then
+
+	echo	
+	echo "Changing the Random Simulated Failure setting in"
+	echo "the configuration file for CubeSatSim"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "${12}" = "yes" ] || [ "${12}" = "y" ]; then
+		echo "Random Simulated Failure is ON"
+	else
+		echo "Random Simulated Failure is OFF"
+	fi
+	
+	echo
+	
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} 
+
+	echo "Do you want Random Simulated Failure ON (y/n) "
+	read sim
+	echo
+	
+	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+		sim="yes"
+		echo "Random Simulated Failure is ON"
+	else
+		sim="no"
+		echo "Random Simulated Failure is OFF"
+#		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
+	fi
+	
+#	echo
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+#	echo
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim ${13}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo
+##	echo "Rebooting CubeSatSim with new configuration file"
+##	echo
+
+	reboot=1
+##	sudo reboot now
+#	sudo  restart cubesatsim
+	
+
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1783,7 +1832,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
 	echo "   -M     Set simulated failure mode"
-	echo "   -N     Set next mode"
+	echo "   -U     Change the random failure mode setting"
+	echo "   -N     Set next mode or failure"
 	echo
 	exit
 
