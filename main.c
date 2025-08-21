@@ -342,6 +342,8 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
 
+	sensor_setup();
+
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
     sim_mode = TRUE;
@@ -645,8 +647,13 @@ int main(int argc, char * argv[]) {
 //	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
 	strcpy(sensor_payload, buffer2);  
+	   
+     printf(" Response from STEM Payload: %s\n", sensor_payload);
 
-     printf(" Response from STEM Payload board: %s\n", sensor_payload);
+	 sensor_loop();
+	strcpy(sensor_payload, sensor_buffer);  
+
+	    printf(" Payload after new sensor read: %s\n", sensor_payload);
 
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
 //        printf("Writing payload string\n");
