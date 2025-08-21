@@ -52,7 +52,8 @@
 #define XS1 20 // NEW user defined token will be position 19
 #define XS2 21  
 #define XS3 22
-#define SENSOR_FIELDS 26
+#define NEW_SENSOR_FIELDS_MAX 6
+#define SENSOR_FIELDS (26 + 6)
 #define FC_EPS 1
 #define FC_BOB 25
 #define FC_SW 50
