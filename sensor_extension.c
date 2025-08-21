@@ -16,13 +16,17 @@ void sensor_setup() {
 
 // put your loop code here
 // Very Important: only use print, not println!!
-void sensor_loop() {
+int sensor_loop(char *sensor_buffer) {
 
-   printf("Reading new sensor!");
+   int sensors = 3;  // set to the number of sensor readings adding.
+   sensor_buffer[0] = 0; // make sure buffer is empty
+  
+   printf("Reading new sensors!\n");
+  
+   strcpy(sensor_buffer, "NEW 0.0 0.0 0.0");
 
-/*  
-  printf(" NEW 0.0");  // send sensor data over serial to Pi Zero
-  printf(" NEW 0.0");   // send sensor data over serial monitor for testing
-*/
+   printf("New sensor string: %s\n", sensor_buffer);
+
+  return(sensors);
   
 }
