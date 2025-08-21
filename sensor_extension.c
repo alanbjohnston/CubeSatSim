@@ -1,10 +1,11 @@
 // Use this template for adding additional sensors
-// see Payload_BME280_MPU6050_XS_Extended for an example
+// see example ...
 
 // put your library includes here
 
 
 // put your globals here
+
 
 // put your setup code here
 void sensor_setup() {
