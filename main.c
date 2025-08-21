@@ -650,11 +650,18 @@ int main(int argc, char * argv[]) {
 	   
      printf(" Response from STEM Payload: %s\n", sensor_payload);
 
-	 sensor_loop();
-	strcpy(sensor_payload, sensor_buffer);  
-
-	    printf(" Payload after new sensor read: %s\n", sensor_payload);
-
+	 char sensor_buffer[30];
+	 int sensor_count;  
+	 sensor_buffer[0] = 0;  
+	 sensor_count = sensor_loop(sensor_buffer);
+	 if (sensor_count > NEW_SENSOR_FIELDS_MAX)
+		 sensor_count = NEW_SENSOR_FIELDS_MAX;
+	 if (sensor_count > 0)  {
+		char space[] = " ";
+		strcat(sensor_payload, space);
+	 	strcat(sensor_payload, sensor_buffer);  
+	 	printf(" Payload after new sensor read: %s\n", sensor_payload);
+	 }
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
 //        printf("Writing payload string\n");
         time_t timeStamp;
