@@ -243,7 +243,7 @@ int groundCommandCount = 0;
     unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
 
 void sensor_setup();  // defined in sensor_extension.c
-void sensor_loop();  // defined in sensor_extension.c
+int sensor_loop(char *sensor_buffer);  // defined in sensor_extension.c
 
 // from funcubeLib/common/fecConstants.h
 
