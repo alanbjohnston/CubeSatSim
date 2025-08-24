@@ -893,18 +893,18 @@ int main(int argc, char * argv[]) {
 		
       float Vm, Vp;
 	  Vm = batt + 0.5;	
-	  Vp = (Xv >= 1) ? Xv : rnd_float(0.0, 0.1);
-	  voltage[map[PLUS_X]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));
-      Vp = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.0, 0.1);
-	  voltage[map[MINUS_X]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
-      Vp = (Yv >= 1) ? Yv : rnd_float(0.0, 0.1);
-	  voltage[map[PLUS_Y]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
-      Vp = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.0, 0.1);
-	  voltage[map[MINUS_Y]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));		
-      Vp = (Zv >= 1) ? Zv : rnd_float(0.0, 0.1);
-	  voltage[map[PLUS_Z]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
-      Vp = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.0, 0.1);
-	  voltage[map[MINUS_Z]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
+	  Vp = (Xv > 0) ? Xv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_X]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;
+      Vp = (Xv < 0) ? ((-1.0f) * Xv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_X]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+      Vp = (Yv > 0) ? Yv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_Y]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+      Vp = (Yv < 0) ? ((-1.0f) * Yv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_Y]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;		
+      Vp = (Zv > 0) ? Zv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_Z]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+      Vp = (Zv < 0) ? ((-1.0f) * Zv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_Z]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
 
       printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
