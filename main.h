@@ -58,6 +58,9 @@
 #define FC_BOB 25
 #define FC_SW 50
 #define FC_PAYLOAD 55
+#define X 0
+#define Y 1
+#define Z 2
 
 #define RSSI 0
 #define IHU_TEMP 2
