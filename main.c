@@ -356,7 +356,9 @@ int main(int argc, char * argv[]) {
     if (axis[X] == 0)
       axis[X] = rnd_float(-0.2, 0.2);
     axis[Y] = rnd_float(-0.2, 0.2);
-    axis[Z] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+	float axis_z;
+	axis_z  = sqrt(1 - axis[X] * axis[X] - axis[Y] * axis[Y]);  
+    axis[Z] = (rnd_float(-0.2, 0.2) > 0) ? axis_z : -1.0 * axis_z;
 
     angle[X] = (float) atan(axis[Y] / axis[Z]);
     angle[Y] = (float) atan(axis[Z] / axis[X]);
@@ -375,6 +377,50 @@ int main(int argc, char * argv[]) {
     batt = rnd_float(3.8, 4.1);
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
+	atmosphere = (rnd_float(-1, +4) > 0) ? 0.0 : 1.0;
+
+	if (atmosphere == 0) {
+		sensor[PRES] = 0;
+		strcpy(sensor_string[PRES], "0.0");
+		sensor[ALT] = 109343;
+		strcpy(sensor_string[ALT], "109343");
+		sensor[HUMI] = 0;
+		strcpy(sensor_string[HUMI], "0.0");
+		sensor[TEMP] = 0;	
+		strcpy(sensor_string[TEMP], "0.0");
+	} else {
+		sensor[PRES] = 1015;
+		strcpy(sensor_string[PRES], "1015");
+		sensor[ALT] = 175;
+		strcpy(sensor_string[ALT], "175");
+		sensor[HUMI] = 48;
+		strcpy(sensor_string[HUMI], "48");
+		sensor[TEMP] = 27;
+		strcpy(sensor_string[TEMP], "27.0");
+	}
+   char sensor_number[20];	  
+   sensor[ACCEL_X] = AXIS[X];
+   sprintf(sensor_number, "%7.2f", AXIS[X]);	  
+   strcpy(sensor_string[ACCEL_X], sensor_number);	  
+   sensor[ACCEL_Y] = AXIS[Y];
+   sprintf(sensor_number, "%7.2f", AXIS[Y]);	  
+   strcpy(sensor_string[ACCEL_Y], sensor_number);	  	  
+   sensor[ACCEL_Z] = AXIS[Z];
+   sprintf(sensor_number, "%7.2f", AXIS[Z]);	  
+   strcpy(sensor_string[ACCEL_Z], sensor_number);	  
+	  
+   float spin;
+   spin = rnd_float(-30.0, 30.0);	  
+   sensor[GYRO_X] = AXIS[X] * spin;
+   sprintf(sensor_number, "%7.2f", sensor[GYRO_X]);	  
+   strcpy(sensor_string[ACCEL_X], sensor_number);	  	  
+   sensor[GYRO_Y] = AXIS[Y] * spin;
+   sprintf(sensor_number, "%7.2f", sensor[GYRO_Y]);	  
+   strcpy(sensor_string[ACCEL_Y], sensor_number);		  
+   sensor[GYRO_Z] = AXIS[Z] * spin;
+   sprintf(sensor_number, "%7.2f", sensor[GYRO_Z]);	  
+   strcpy(sensor_string[ACCEL_Z], sensor_number);		  
+	  
 //    eclipse = 1;	  
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
@@ -684,7 +730,8 @@ int main(int argc, char * argv[]) {
 			sensor_payload[0] = '\0';  // This will cause the payload to not be processed.
 			printf("Simulated Payload Failure.\n");
 		}
-      
+
+	    if (!sim_mode) {
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
 //		  printf("Valid Payload!\n");  	
@@ -705,6 +752,7 @@ int main(int argc, char * argv[]) {
               token = strtok(NULL, space);
             }
           }
+	  
 
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
@@ -723,9 +771,10 @@ int main(int argc, char * argv[]) {
 			newGpsTime = millis();  
 		}
 	  }
-        }
-	else
-		; //payload = OFF;  // turn off since STEM Payload is not responding
+    }
+  	} 
+//	else
+//		; //payload = OFF;  // turn off since STEM Payload is not responding
       
       if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
@@ -763,7 +812,7 @@ int main(int argc, char * argv[]) {
 		    printf("Simulated MPU Failure!\n");
 	  }
 
-		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU)) // recreaate sensor_payload string	
+		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU) || sim_mode) // recreaate sensor_payload string	
 		{  
 		  sensor_payload[0] = 0;
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
@@ -860,8 +909,8 @@ int main(int argc, char * argv[]) {
       printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
       // end of simulated telemetry
-    }
-
+	  }
+	
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
