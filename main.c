@@ -352,27 +352,27 @@ int main(int argc, char * argv[]) {
 
     srand((unsigned int)time(0));
 
-    axis[0] = rnd_float(-0.2, 0.2);
-    if (axis[0] == 0)
-      axis[0] = rnd_float(-0.2, 0.2);
-    axis[1] = rnd_float(-0.2, 0.2);
-    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+    axis[X] = rnd_float(-0.2, 0.2);
+    if (axis[X] == 0)
+      axis[X] = rnd_float(-0.2, 0.2);
+    axis[Y] = rnd_float(-0.2, 0.2);
+    axis[Z] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
 
-    angle[0] = (float) atan(axis[1] / axis[2]);
-    angle[1] = (float) atan(axis[2] / axis[0]);
-    angle[2] = (float) atan(axis[1] / axis[0]);
+    angle[X] = (float) atan(axis[Y] / axis[Z]);
+    angle[Y] = (float) atan(axis[Z] / axis[X]);
+    angle[Z] = (float) atan(axis[Y] / axis[X]);
 
-    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
-    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
-    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+    volts_max[X] = rnd_float(9.0, 12.0) * (float) sin(angle[Y]);
+    volts_max[Y] = rnd_float(9.0, 12.0) * (float) cos(angle[X]);
+    volts_max[Z] = rnd_float(9.0, 12.0) * (float) cos(angle[Y] - angle[X]);
 
-    float amps_avg = rnd_float(150, 300);
+    float amps_avg = rnd_float(150, 750);
 
-    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
-    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
-    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+    amps_max[X] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[Y]);
+    amps_max[Y] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[X]);
+    amps_max[Z] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[Y] - angle[X]);
 
-    batt = rnd_float(3.8, 4.3);
+    batt = rnd_float(3.8, 4.1);
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
 //    eclipse = 1;	  
@@ -382,7 +382,7 @@ int main(int argc, char * argv[]) {
     temp_min = rnd_float(10, 20);
 
 //    #ifdef DEBUG_LOGGING
-    for (int i = 0; i < 3; i++)
+    for (int i = X; i <= Z; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
     printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
 //    #endif
@@ -813,15 +813,6 @@ int main(int argc, char * argv[]) {
       current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
       current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
-      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
-
-       printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
-
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
       tempS += +rnd_float(-1.0, 1.0);
       //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
@@ -834,22 +825,39 @@ int main(int argc, char * argv[]) {
 //      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
 //      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
-      current[map[BAT]] = rnd_float(285, 305) - charging;
+      current[map[BAT]] = rnd_float(320, 510) - charging;
 
         printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
       batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
-      if (batt < 3.0) {
-        batt = 3.0;
+      if (batt < 3.6) {
+        batt = 3.6;
         SafeMode = 1;
         printf("Safe Mode!\n");
       } else
         SafeMode= 0;
 
-      if (batt > 4.5)
-        batt = 4.5;
+      if (batt > 4.1)
+        batt = 4.1;
 
       voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+		
+      float Vm, Vp;
+	  Vm = batt + 0.5;	
+	  Vp = (Xv >= 1) ? Xv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_X]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));
+      Vp = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_X]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
+      Vp = (Yv >= 1) ? Yv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_Y]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
+      Vp = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_Y]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));		
+      Vp = (Zv >= 1) ? Zv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_Z]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
+      Vp = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_Z]] = (Vp >= Vm) ? Vp : (Vm + rnd_float(-0.1, 0.1));	
+
+      printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
       // end of simulated telemetry
     }
