@@ -2,7 +2,8 @@
 // see example ...
 
 // put your library includes here
-
+#include <stdio.h>
+#include <string.h>
 
 // put your globals here
 
