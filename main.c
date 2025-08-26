@@ -419,7 +419,9 @@ int main(int argc, char * argv[]) {
    strcpy(sensor_string[ACCEL_Y], sensor_number);		  
    sensor[GYRO_Z] = axis[Z] * spin;
    sprintf(sensor_number, "%7.2f", sensor[GYRO_Z]);	  
-   strcpy(sensor_string[ACCEL_Z], sensor_number);		  
+   strcpy(sensor_string[GYRO_Z], sensor_number);	
+
+   printf("sim sensor: %s\n", sensor_string[GYRO_Z]);	  
 	  
 //    eclipse = 1;	  
     period = rnd_float(150, 300);
