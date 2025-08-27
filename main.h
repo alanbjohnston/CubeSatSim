@@ -136,7 +136,7 @@ FILE *image_file;
 #define FAIL_I2C3 6
 #define FAIL_CAMERA 7
 #define FAIL_PAYLOAD 8
-#define FAIL_BME 8
+#define FAIL_BME 9
 #define FAIL_MPU 10
 #define FAIL_AUDIO 11
 int failureMode = FAIL_NONE;
