@@ -828,8 +828,10 @@ int main(int argc, char * argv[]) {
             }
 		  printf("Updated Sensor String: %s\n", sensor_payload);	
 		}
-		else if (failureMode != FAIL_PAYLOAD)
+		else if (failureMode != FAIL_PAYLOAD) {
+		  printf("Restoring sensor_payload\n");	
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
+		}
 	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
 //		printf("Valid Payload!!\n");  
