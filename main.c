@@ -378,51 +378,6 @@ int main(int argc, char * argv[]) {
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
 	atmosphere = (rnd_float(-1, +4) > 0) ? 0.0 : 1.0;
-
-	if (atmosphere == 0) {
-		sensor[PRES] = 0;
-		strcpy(sensor_string[PRES], "0.0");
-		sensor[ALT] = 1000;
-		strcpy(sensor_string[ALT], "1000");
-		sensor[HUMI] = 0;
-		strcpy(sensor_string[HUMI], "0.0");
-		sensor[TEMP] = 0;	
-		strcpy(sensor_string[TEMP], "0.0");
-	} else {
-		sensor[PRES] = 1015;
-		strcpy(sensor_string[PRES], "1015");
-		sensor[ALT] = 175;
-		strcpy(sensor_string[ALT], "175");
-		sensor[HUMI] = 48;
-		strcpy(sensor_string[HUMI], "48");
-		sensor[TEMP] = 27;
-		strcpy(sensor_string[TEMP], "27.0");
-	}
-   char sensor_number[20];	  
-   sensor[ACCEL_X] = axis[X];
-   sprintf(sensor_number, "%.2f", axis[X]);	  
-   strcpy(sensor_string[ACCEL_X], sensor_number);	  
-   sensor[ACCEL_Y] = axis[Y];
-   sprintf(sensor_number, "%.2f", axis[Y]);	  
-   strcpy(sensor_string[ACCEL_Y], sensor_number);	  	  
-   sensor[ACCEL_Z] = axis[Z];
-   sprintf(sensor_number, "%.2f", axis[Z]);	  
-   strcpy(sensor_string[ACCEL_Z], sensor_number);	  
-	  
-   float spin;
-   spin = rnd_float(-30.0, 30.0);	  
-   sensor[GYRO_X] = axis[X] * spin;
-   sprintf(sensor_number, "%.2f", sensor[GYRO_X]);	  
-   strcpy(sensor_string[GYRO_X], sensor_number);	  	  
-   sensor[GYRO_Y] = axis[Y] * spin;
-   sprintf(sensor_number, "%.2f", sensor[GYRO_Y]);	  
-   strcpy(sensor_string[GYRO_Y], sensor_number);		  
-   sensor[GYRO_Z] = axis[Z] * spin;
-   sprintf(sensor_number, "%.2f", sensor[GYRO_Z]);	  
-   strcpy(sensor_string[GYRO_Z], sensor_number);	
-
-//   printf("sim sensor: %s\n", sensor_string[GYRO_Z]);	  
-	 printf("sim sensor spin: %f value: %f length: %d string: %s\n", spin, sensor[GYRO_Z], strlen(sensor_string[GYRO_Z]), sensor_string[GYRO_Z]); 
 	  
 //    eclipse = 1;	  
     period = rnd_float(150, 300);
@@ -788,6 +743,53 @@ int main(int argc, char * argv[]) {
 //	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
+
+    if (sim_mode) {	   
+		if (atmosphere == 0) {
+			sensor[PRES] = 0;
+			strcpy(sensor_string[PRES], "0.0");
+			sensor[ALT] = 1000;
+			strcpy(sensor_string[ALT], "1000");
+			sensor[HUMI] = 0;
+			strcpy(sensor_string[HUMI], "0.0");
+			sensor[TEMP] = 0;	
+			strcpy(sensor_string[TEMP], "0.0");
+		} else {
+			sensor[PRES] = 1015;
+			strcpy(sensor_string[PRES], "1015");
+			sensor[ALT] = 175;
+			strcpy(sensor_string[ALT], "175");
+			sensor[HUMI] = 48;
+			strcpy(sensor_string[HUMI], "48");
+			sensor[TEMP] = 27;
+			strcpy(sensor_string[TEMP], "27.0");
+		}
+	   char sensor_number[20];	  
+	   sensor[ACCEL_X] = axis[X];
+	   sprintf(sensor_number, "%.2f", axis[X]);	  
+	   strcpy(sensor_string[ACCEL_X], sensor_number);	  
+	   sensor[ACCEL_Y] = axis[Y];
+	   sprintf(sensor_number, "%.2f", axis[Y]);	  
+	   strcpy(sensor_string[ACCEL_Y], sensor_number);	  	  
+	   sensor[ACCEL_Z] = axis[Z];
+	   sprintf(sensor_number, "%.2f", axis[Z]);	  
+	   strcpy(sensor_string[ACCEL_Z], sensor_number);	  
+		  
+	   float spin;
+	   spin = rnd_float(-30.0, 30.0);	  
+	   sensor[GYRO_X] = axis[X] * spin;
+	   sprintf(sensor_number, "%.2f", sensor[GYRO_X]);	  
+	   strcpy(sensor_string[GYRO_X], sensor_number);	  	  
+	   sensor[GYRO_Y] = axis[Y] * spin;
+	   sprintf(sensor_number, "%.2f", sensor[GYRO_Y]);	  
+	   strcpy(sensor_string[GYRO_Y], sensor_number);		  
+	   sensor[GYRO_Z] = axis[Z] * spin;
+	   sprintf(sensor_number, "%.2f", sensor[GYRO_Z]);	  
+	   strcpy(sensor_string[GYRO_Z], sensor_number);	
+	
+	//   printf("sim sensor: %s\n", sensor_string[GYRO_Z]);	  
+	   printf("sim sensor spin: %f value: %f length: %d string: %s\n", spin, sensor[GYRO_Z], strlen(sensor_string[GYRO_Z]), sensor_string[GYRO_Z]); 
+   }	   
 
 	  if (failureMode == FAIL_BME) {
 			sensor[TEMP] = 0.0;
