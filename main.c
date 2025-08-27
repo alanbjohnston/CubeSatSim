@@ -744,7 +744,7 @@ int main(int argc, char * argv[]) {
 	      	newGpsTime = millis();  
       }
 
-    if (sim_mode) {	   
+    if (sim_mode && (failureMode != FAIL_PAYLOAD)) {	   
 		if (atmosphere == 0) {
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
