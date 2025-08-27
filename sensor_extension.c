@@ -11,7 +11,7 @@
 // put your setup code here
 void sensor_setup() {
   
-  printf("Starting new sensor!");
+  printf("Starting new sensor!\n");
 
 }
 
