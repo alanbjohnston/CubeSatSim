@@ -1393,7 +1393,9 @@ void get_tlm_fox() {
 	  cam = OFF;
 	  printf("Camera Simulated Failure!\n");	  
   }
-	
+
+  printf("Sensor ALT: %f\n", sensor[ALT]);	
+
   if (mode == FSK)
     id = 7;
   else
