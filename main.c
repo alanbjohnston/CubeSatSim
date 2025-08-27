@@ -413,10 +413,10 @@ int main(int argc, char * argv[]) {
    spin = rnd_float(-30.0, 30.0);	  
    sensor[GYRO_X] = axis[X] * spin;
    sprintf(sensor_number, "%7.2f", sensor[GYRO_X]);	  
-   strcpy(sensor_string[ACCEL_X], sensor_number);	  	  
+   strcpy(sensor_string[GYRO_X], sensor_number);	  	  
    sensor[GYRO_Y] = axis[Y] * spin;
    sprintf(sensor_number, "%7.2f", sensor[GYRO_Y]);	  
-   strcpy(sensor_string[ACCEL_Y], sensor_number);		  
+   strcpy(sensor_string[GYRO_Y], sensor_number);		  
    sensor[GYRO_Z] = axis[Z] * spin;
    sprintf(sensor_number, "%7.2f", sensor[GYRO_Z]);	  
    strcpy(sensor_string[GYRO_Z], sensor_number);	
@@ -826,7 +826,7 @@ int main(int argc, char * argv[]) {
 			  strcat(sensor_payload, sensor_string[count1]);
 			  strcat(sensor_payload, " ");
             }
-		  printf("New Sensor String: %s\n", sensor_payload);	
+		  printf("Updated Sensor String: %s\n", sensor_payload);	
 		}
 		else if (failureMode != FAIL_PAYLOAD)
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
