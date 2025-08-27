@@ -594,12 +594,13 @@ int main(int argc, char * argv[]) {
     fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
-	if (!sim_mode)  
+	if (!sim_mode)  {
     	sensor_payload[0] = '\0';
+	    memset(sensor, 0, sizeof(sensor));
+	}
 	  
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));
-    memset(sensor, 0, sizeof(sensor));
     memset(other, 0, sizeof(other));	
 	  
     FILE * uptime_file = fopen("/proc/uptime", "r");
