@@ -549,10 +549,10 @@ int main(int argc, char * argv[]) {
     fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
-	if (!sim_mode)  {
+//	if (!sim_mode)  {
     	sensor_payload[0] = '\0';
 	    memset(sensor, 0, sizeof(sensor));
-	}
+//	}
 	  
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));
@@ -1396,8 +1396,6 @@ void get_tlm_fox() {
 	  cam = OFF;
 	  printf("Camera Simulated Failure!\n");	  
   }
-
-  printf("Sensor ALT: %f\n", sensor[ALT]);	
 
   if (mode == FSK)
     id = 7;
