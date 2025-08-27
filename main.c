@@ -1335,7 +1335,7 @@ void get_tlm_fox() {
   buffSize = (int) sizeof(buffer_test);
 	
   if (failureMode == FAIL_NONE) 
-	  printf("No Simulated Failure\n");	
+	  printf("No Simulated Failure!\n");	
 //  if (failureMode == -1) {
 //	  failureMode = (int) rnd_float(1, FAIL_COUNT);
 //	  printf("Random Failure\n");
