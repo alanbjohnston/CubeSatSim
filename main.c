@@ -880,7 +880,7 @@ int main(int argc, char * argv[]) {
 
         printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
-      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
+      batt -= (batt > 3.5) ? current[map[BAT]] / 300000 : current[map[BAT]] / 30000;
       if (batt < 3.6) {
         batt = 3.6;
         SafeMode = 1;
