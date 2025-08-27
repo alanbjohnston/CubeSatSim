@@ -594,8 +594,9 @@ int main(int argc, char * argv[]) {
     fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
+	if (!sim_mode)  
+    	sensor_payload[0] = '\0';
 	  
-    sensor_payload[0] = 0;
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));
     memset(sensor, 0, sizeof(sensor));
