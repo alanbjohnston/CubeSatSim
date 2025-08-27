@@ -822,7 +822,7 @@ int main(int argc, char * argv[]) {
 			  strcat(sensor_payload, sensor_string[count1]);
 			  strcat(sensor_payload, " ");
             }
-//		  printf("New Sensor String: %s\n", sensor_payload);	
+		  printf("New Sensor String: %s\n", sensor_payload);	
 		}
 		else if (failureMode != FAIL_PAYLOAD)
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
