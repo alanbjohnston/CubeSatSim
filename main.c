@@ -817,7 +817,7 @@ int main(int argc, char * argv[]) {
 
 		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU) || sim_mode) // recreaate sensor_payload string	
 		{  
-		  sensor_payload[0] = "\0";
+		  sensor_payload[0] = '\0';
 		  strcpy(sensor_string[0], "OK");
 		  strcpy(sensor_string[1], "BME280");
 		  strcpy(sensor_string[6], "MPU6050");
