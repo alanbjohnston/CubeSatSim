@@ -400,25 +400,25 @@ int main(int argc, char * argv[]) {
 	}
    char sensor_number[20];	  
    sensor[ACCEL_X] = axis[X];
-   sprintf(sensor_number, "%7.2f", axis[X]);	  
+   sprintf(sensor_number, "%.2f", axis[X]);	  
    strcpy(sensor_string[ACCEL_X], sensor_number);	  
    sensor[ACCEL_Y] = axis[Y];
-   sprintf(sensor_number, "%7.2f", axis[Y]);	  
+   sprintf(sensor_number, "%.2f", axis[Y]);	  
    strcpy(sensor_string[ACCEL_Y], sensor_number);	  	  
    sensor[ACCEL_Z] = axis[Z];
-   sprintf(sensor_number, "%7.2f", axis[Z]);	  
+   sprintf(sensor_number, "%.2f", axis[Z]);	  
    strcpy(sensor_string[ACCEL_Z], sensor_number);	  
 	  
    float spin;
    spin = rnd_float(-30.0, 30.0);	  
    sensor[GYRO_X] = axis[X] * spin;
-   sprintf(sensor_number, "%7.2f", sensor[GYRO_X]);	  
+   sprintf(sensor_number, "%.2f", sensor[GYRO_X]);	  
    strcpy(sensor_string[GYRO_X], sensor_number);	  	  
    sensor[GYRO_Y] = axis[Y] * spin;
-   sprintf(sensor_number, "%7.2f", sensor[GYRO_Y]);	  
+   sprintf(sensor_number, "%.2f", sensor[GYRO_Y]);	  
    strcpy(sensor_string[GYRO_Y], sensor_number);		  
    sensor[GYRO_Z] = axis[Z] * spin;
-   sprintf(sensor_number, "%7.2f", sensor[GYRO_Z]);	  
+   sprintf(sensor_number, "%.2f", sensor[GYRO_Z]);	  
    strcpy(sensor_string[GYRO_Z], sensor_number);	
 
 //   printf("sim sensor: %s\n", sensor_string[GYRO_Z]);	  
