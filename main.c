@@ -748,8 +748,8 @@ int main(int argc, char * argv[]) {
 		if (atmosphere == 0) {
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
-			sensor[ALT] = 1000;
-			strcpy(sensor_string[ALT], "1000");
+			sensor[ALT] = 400;
+			strcpy(sensor_string[ALT], "400");
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
 			sensor[TEMP] = 0;	
@@ -757,8 +757,8 @@ int main(int argc, char * argv[]) {
 		} else {
 			sensor[PRES] = 1015;
 			strcpy(sensor_string[PRES], "1015");
-			sensor[ALT] = 175;
-			strcpy(sensor_string[ALT], "175");
+			sensor[ALT] = 75;
+			strcpy(sensor_string[ALT], "75");
 			sensor[HUMI] = 48;
 			strcpy(sensor_string[HUMI], "48");
 			sensor[TEMP] = 27;
