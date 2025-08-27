@@ -383,7 +383,7 @@ int main(int argc, char * argv[]) {
 		sensor[PRES] = 0;
 		strcpy(sensor_string[PRES], "0.0");
 		sensor[ALT] = 109343;
-		strcpy(sensor_string[ALT], "109343");
+		strcpy(sensor_string[ALT], "1000");
 		sensor[HUMI] = 0;
 		strcpy(sensor_string[HUMI], "0.0");
 		sensor[TEMP] = 0;	
