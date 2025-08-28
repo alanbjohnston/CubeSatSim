@@ -685,9 +685,9 @@ int main(int argc, char * argv[]) {
 	*/   
 		snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	
 	    if (c2cStatus != DISABLED)
-			strcpy(bat_string," C");
+			strcat(bat_string," C");
 	    if (sim_mode || (failureMode != FAIL_NONE))
-			strcpy(bat_string," S");
+			strcat(bat_string," S");
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
 
@@ -1256,9 +1256,9 @@ void get_tlm(void) {
 */
 		snprintf(tlm_str, 30, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);	
 		if (c2cStatus != DISABLED)
-			strcpy(tlm_str,"C ");
+			strcat(tlm_str,"C ");
 		if (sim_mode || (failureMode != FAIL_NONE))
-			strcpy(tlm_str,"S ");
+			strcat(tlm_str,"S ");
 	   
       	strcat(str, tlm_str);
   }  
