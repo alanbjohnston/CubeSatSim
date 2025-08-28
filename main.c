@@ -683,7 +683,7 @@ int main(int argc, char * argv[]) {
 	else
 		snprintf(bat_string, 30, "BAT %4.2f %5.1f C", batteryVoltage, batteryCurrent);	
 	*/   
-		snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	
+		snprintf(bat_string, 30, "BAT %.2f %.1f", batteryVoltage, batteryCurrent);	
 	    if (c2cStatus != DISABLED)
 			strcat(bat_string," C");
 	    if (sim_mode || (failureMode != FAIL_NONE))
@@ -1004,7 +1004,7 @@ int main(int argc, char * argv[]) {
 		else
     			fprintf(fp, "BAT %4.2fV %4.0fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
 		*/
-		fprintf(fp, "BAT %4.2fV %4.0fmA", batteryVoltage, batteryCurrent);
+		fprintf(fp, "BAT %.2fV %.0fmA", batteryVoltage, batteryCurrent);
 		if (c2cStatus != DISABLED)
 			fprintf(fp," C");
 	    if (sim_mode || (failureMode != FAIL_NONE))
@@ -1254,7 +1254,7 @@ void get_tlm(void) {
       else
         sprintf(tlm_str, "BAT %4.2f %5.1f C ", batteryVoltage, batteryCurrent); 
 */
-		snprintf(tlm_str, 30, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent);	
+		snprintf(tlm_str, 30, "BAT %.2f %.1f ", batteryVoltage, batteryCurrent);	
 		if (c2cStatus != DISABLED)
 			strcat(tlm_str,"C ");
 		if (sim_mode || (failureMode != FAIL_NONE))
