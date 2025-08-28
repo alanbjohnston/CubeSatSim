@@ -1215,8 +1215,11 @@ void get_tlm(void) {
         strcat(str, header_str4);
 	strcat(str, call);
 	if (c2cStatus != DISABLED) {
-		strcat(str, header_c2c);
+		strcat(str, "  C");
 	}
+	if (sim_mode || failureMode != FAIL_NONE) {
+		strcat(str, "  S");
+	}	  
 
 	sprintf(tlm_str, "%s' > cw0.txt", &str);   
 	printf("CW string to execute: %s\n", &tlm_str);     
@@ -1259,8 +1262,8 @@ void get_tlm(void) {
 			strcat(tlm_str,"C ");
 		if (sim_mode || (failureMode != FAIL_NONE))
 			strcat(tlm_str,"S ");
-	   
-      	strcat(str, tlm_str);
+//	    printf("tlm_str: %s\n", tlm_str);
+//      	strcat(str, tlm_str);
   }  
 	  
 //    strcpy(sensor_payload, buffer2);      	  
