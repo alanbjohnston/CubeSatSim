@@ -677,12 +677,17 @@ int main(int argc, char * argv[]) {
         char timeStampNoNl[31], bat_string[31];    
         snprintf(timeStampNoNl, 30, "%.24s", ctime(&timeStamp)); 
 //        printf("TimeStamp: %s\n", timeStampNoNl);
-
+/*
 	if (c2cStatus == DISABLED)      
 		snprintf(bat_string, 30, "BAT %4.2f %5.1f", batteryVoltage, batteryCurrent);	
 	else
 		snprintf(bat_string, 30, "BAT %4.2f %5.1f C", batteryVoltage, batteryCurrent);	
-		
+	*/   
+		snprintf(bat_string, 30, "BAT %.2f %.1f", batteryVoltage, batteryCurrent);	
+	    if (c2cStatus != DISABLED)
+			strcat(bat_string," C");
+	    if (sim_mode || (failureMode != FAIL_NONE))
+			strcat(bat_string," S");
         fprintf(telem_file, "%s %s %s\n", timeStampNoNl, bat_string, sensor_payload);	 // write telemetry string to telem.txt file    
         fclose(telem_file);
 
@@ -992,11 +997,21 @@ int main(int argc, char * argv[]) {
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
-	if (batteryVoltage != 4.5)
+	if (batteryVoltage != 4.5) {
+/*		
 		if (c2cStatus == DISABLED)
     			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
 		else
     			fprintf(fp, "BAT %4.2fV %4.0fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
+		*/
+		fprintf(fp, "BAT %.2fV %.0fmA", batteryVoltage, batteryCurrent);
+		if (c2cStatus != DISABLED)
+			fprintf(fp," C");
+	    if (sim_mode || (failureMode != FAIL_NONE))
+			fprintf(fp," S\n");
+		else
+			fprintf(fp,"\n");
+	}
 	else
     		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
 		
@@ -1200,8 +1215,11 @@ void get_tlm(void) {
         strcat(str, header_str4);
 	strcat(str, call);
 	if (c2cStatus != DISABLED) {
-		strcat(str, header_c2c);
+		strcat(str, "  C");
 	}
+	if (sim_mode || failureMode != FAIL_NONE) {
+		strcat(str, "  S");
+	}	  
 
 	sprintf(tlm_str, "%s' > cw0.txt", &str);   
 	printf("CW string to execute: %s\n", &tlm_str);     
@@ -1233,13 +1251,19 @@ void get_tlm(void) {
 //      fclose(file_append);
 //    }
   } else {  // APRS
-
+/*
       if (c2cStatus == 0)	   
         sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent); 
       else
         sprintf(tlm_str, "BAT %4.2f %5.1f C ", batteryVoltage, batteryCurrent); 
-	      
-      strcat(str, tlm_str);
+*/
+		snprintf(tlm_str, 30, "BAT %.2f %.1f ", batteryVoltage, batteryCurrent);	
+		if (c2cStatus != DISABLED)
+			strcat(tlm_str,"C ");
+		if (sim_mode || (failureMode != FAIL_NONE))
+			strcat(tlm_str,"S ");
+//	    printf("tlm_str: %s\n", tlm_str);
+//      	strcat(str, tlm_str);
   }  
 	  
 //    strcpy(sensor_payload, buffer2);      	  
