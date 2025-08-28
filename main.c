@@ -1263,7 +1263,7 @@ void get_tlm(void) {
 		if (sim_mode || (failureMode != FAIL_NONE))
 			strcat(tlm_str,"S ");
 //	    printf("tlm_str: %s\n", tlm_str);
-//      	strcat(str, tlm_str);
+/      	strcat(str, tlm_str);
   }  
 	  
 //    strcpy(sensor_payload, buffer2);      	  
