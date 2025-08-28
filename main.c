@@ -342,6 +342,8 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
 
+	sensor_setup();
+
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
 
     sim_mode = TRUE;
@@ -350,29 +352,33 @@ int main(int argc, char * argv[]) {
 
     srand((unsigned int)time(0));
 
-    axis[0] = rnd_float(-0.2, 0.2);
-    if (axis[0] == 0)
-      axis[0] = rnd_float(-0.2, 0.2);
-    axis[1] = rnd_float(-0.2, 0.2);
-    axis[2] = (rnd_float(-0.2, 0.2) > 0) ? 1.0 : -1.0;
+    axis[X] = rnd_float(-0.2, 0.2);
+    if (axis[X] == 0)
+      axis[X] = rnd_float(-0.2, 0.2);
+    axis[Y] = rnd_float(-0.2, 0.2);
+	float axis_z;
+	axis_z  = sqrt(1 - axis[X] * axis[X] - axis[Y] * axis[Y]);  
+    axis[Z] = (rnd_float(-0.2, 0.2) > 0) ? axis_z : -1.0 * axis_z;
 
-    angle[0] = (float) atan(axis[1] / axis[2]);
-    angle[1] = (float) atan(axis[2] / axis[0]);
-    angle[2] = (float) atan(axis[1] / axis[0]);
+    angle[X] = (float) atan(axis[Y] / axis[Z]);
+    angle[Y] = (float) atan(axis[Z] / axis[X]);
+    angle[Z] = (float) atan(axis[Y] / axis[X]);
 
-    volts_max[0] = rnd_float(4.5, 5.5) * (float) sin(angle[1]);
-    volts_max[1] = rnd_float(4.5, 5.5) * (float) cos(angle[0]);
-    volts_max[2] = rnd_float(4.5, 5.5) * (float) cos(angle[1] - angle[0]);
+    volts_max[X] = rnd_float(9.0, 12.0) * (float) sin(angle[Y]);
+    volts_max[Y] = rnd_float(9.0, 12.0) * (float) cos(angle[X]);
+    volts_max[Z] = rnd_float(9.0, 12.0) * (float) cos(angle[Y] - angle[X]);
 
-    float amps_avg = rnd_float(150, 300);
+    float amps_avg = rnd_float(150, 750);
 
-    amps_max[0] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[1]);
-    amps_max[1] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[0]);
-    amps_max[2] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[1] - angle[0]);
+    amps_max[X] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) sin(angle[Y]);
+    amps_max[Y] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[X]);
+    amps_max[Z] = (amps_avg + rnd_float(-25.0, 25.0)) * (float) cos(angle[Y] - angle[X]);
 
-    batt = rnd_float(3.8, 4.3);
+    batt = rnd_float(3.8, 4.1);
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
+	atmosphere = (rnd_float(-1, +4) > 0) ? 0.0 : 1.0;
+	  
 //    eclipse = 1;	  
     period = rnd_float(150, 300);
     tempS = rnd_float(20, 55);
@@ -380,7 +386,7 @@ int main(int argc, char * argv[]) {
     temp_min = rnd_float(10, 20);
 
 //    #ifdef DEBUG_LOGGING
-    for (int i = 0; i < 3; i++)
+    for (int i = X; i <= Z; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
     printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
 //    #endif
@@ -543,11 +549,13 @@ int main(int argc, char * argv[]) {
     fflush(stdout);
     fflush(stderr);
 //    frames_sent++;
+//	if (!sim_mode)  {
+    	sensor_payload[0] = '\0';
+	    memset(sensor, 0, sizeof(sensor));
+//	}
 	  
-    sensor_payload[0] = 0;
     memset(voltage, 0, sizeof(voltage));
     memset(current, 0, sizeof(current));
-    memset(sensor, 0, sizeof(sensor));
     memset(other, 0, sizeof(other));	
 	  
     FILE * uptime_file = fopen("/proc/uptime", "r");
@@ -645,9 +653,21 @@ int main(int argc, char * argv[]) {
 //	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
 	strcpy(sensor_payload, buffer2);  
+	   
+     printf(" Response from STEM Payload: %s\n", sensor_payload);
 
-     printf(" Response from STEM Payload board: %s\n", sensor_payload);
-
+	 char sensor_buffer[30];
+	 int sensor_count;  
+	 sensor_buffer[0] = 0;  
+	 sensor_count = sensor_loop(sensor_buffer);
+	 if (sensor_count > NEW_SENSOR_FIELDS_MAX)
+		 sensor_count = NEW_SENSOR_FIELDS_MAX;
+	 if (sensor_count > 0)  {
+		char space[] = " ";
+		strcat(sensor_payload, space);
+	 	strcat(sensor_payload, sensor_buffer);  
+	 	printf(" Payload after new sensor read: %s\n", sensor_payload);
+	 }
         telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
 //        printf("Writing payload string\n");
         time_t timeStamp;
@@ -670,7 +690,8 @@ int main(int argc, char * argv[]) {
 			sensor_payload[0] = '\0';  // This will cause the payload to not be processed.
 			printf("Simulated Payload Failure.\n");
 		}
-      
+
+	    if (!sim_mode) {
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
 //		  printf("Valid Payload!\n");  	
@@ -691,6 +712,7 @@ int main(int argc, char * argv[]) {
               token = strtok(NULL, space);
             }
           }
+	  
 
           printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
@@ -709,9 +731,10 @@ int main(int argc, char * argv[]) {
 			newGpsTime = millis();  
 		}
 	  }
-        }
-	else
-		; //payload = OFF;  // turn off since STEM Payload is not responding
+    }
+  	} 
+//	else
+//		; //payload = OFF;  // turn off since STEM Payload is not responding
       
       if ((millis() - newGpsTime) > 60000) {
 		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
@@ -720,6 +743,53 @@ int main(int argc, char * argv[]) {
 //	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
+
+    if (sim_mode && (failureMode != FAIL_PAYLOAD)) {	   
+		if (atmosphere == 0) {
+			sensor[PRES] = 0;
+			strcpy(sensor_string[PRES], "0.0");
+			sensor[ALT] = 400;
+			strcpy(sensor_string[ALT], "400");
+			sensor[HUMI] = 0;
+			strcpy(sensor_string[HUMI], "0.0");
+			sensor[TEMP] = 0;	
+			strcpy(sensor_string[TEMP], "0.0");
+		} else {
+			sensor[PRES] = 1015;
+			strcpy(sensor_string[PRES], "1015");
+			sensor[ALT] = 75;
+			strcpy(sensor_string[ALT], "75");
+			sensor[HUMI] = 48;
+			strcpy(sensor_string[HUMI], "48");
+			sensor[TEMP] = 27;
+			strcpy(sensor_string[TEMP], "27.0");
+		}
+	   char sensor_number[20];	  
+	   sensor[ACCEL_X] = axis[X];
+	   sprintf(sensor_number, "%.2f", axis[X]);	  
+	   strcpy(sensor_string[ACCEL_X], sensor_number);	  
+	   sensor[ACCEL_Y] = axis[Y];
+	   sprintf(sensor_number, "%.2f", axis[Y]);	  
+	   strcpy(sensor_string[ACCEL_Y], sensor_number);	  	  
+	   sensor[ACCEL_Z] = axis[Z];
+	   sprintf(sensor_number, "%.2f", axis[Z]);	  
+	   strcpy(sensor_string[ACCEL_Z], sensor_number);	  
+		  
+	   float spin;
+	   spin = rnd_float(-30.0, 30.0);	  
+	   sensor[GYRO_X] = axis[X] * spin;
+	   sprintf(sensor_number, "%.2f", sensor[GYRO_X]);	  
+	   strcpy(sensor_string[GYRO_X], sensor_number);	  	  
+	   sensor[GYRO_Y] = axis[Y] * spin;
+	   sprintf(sensor_number, "%.2f", sensor[GYRO_Y]);	  
+	   strcpy(sensor_string[GYRO_Y], sensor_number);		  
+	   sensor[GYRO_Z] = axis[Z] * spin;
+	   sprintf(sensor_number, "%.2f", sensor[GYRO_Z]);	  
+	   strcpy(sensor_string[GYRO_Z], sensor_number);	
+	
+	//   printf("sim sensor: %s\n", sensor_string[GYRO_Z]);	  
+	   printf("sim sensor spin: %f value: %f length: %d string: %s\n", spin, sensor[GYRO_Z], strlen(sensor_string[GYRO_Z]), sensor_string[GYRO_Z]); 
+   }	   
 
 	  if (failureMode == FAIL_BME) {
 			sensor[TEMP] = 0.0;
@@ -749,17 +819,23 @@ int main(int argc, char * argv[]) {
 		    printf("Simulated MPU Failure!\n");
 	  }
 
-		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU)) // recreaate sensor_payload string	
+		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU) || sim_mode) // recreaate sensor_payload string	
 		{  
-		  sensor_payload[0] = 0;
+		  sensor_payload[0] = '\0';
+		  strcpy(sensor_string[0], "OK");
+		  strcpy(sensor_string[1], "BME280");
+		  strcpy(sensor_string[6], "MPU6050");
+			
           for (count1 = 0; count1 < SENSOR_FIELDS; count1++) {
 			  strcat(sensor_payload, sensor_string[count1]);
 			  strcat(sensor_payload, " ");
             }
-//		  printf("New Sensor String: %s\n", sensor_payload);	
+		  printf("Updated Sensor String: %s\n", sensor_payload);	
 		}
-		else if (failureMode != FAIL_PAYLOAD)
+		else if (failureMode != FAIL_PAYLOAD) {
+		  printf("Restoring sensor_payload\n");	
 		  strcpy(sensor_payload, buffer2);  // restore sensor_payload after strtok operation
+		}
 	   
       if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) {
 //		printf("Valid Payload!!\n");  
@@ -799,15 +875,6 @@ int main(int argc, char * argv[]) {
       current[map[PLUS_Z]] = (Zi >= 0) ? Zi : 0;
       current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
-      voltage[map[PLUS_X]] = (Xv >= 1) ? Xv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_X]] = (Xv <= -1) ? ((-1.0f) * Xv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Y]] = (Yv >= 1) ? Yv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Y]] = (Yv <= -1) ? ((-1.0f) * Yv) : rnd_float(0.9, 1.1);
-      voltage[map[PLUS_Z]] = (Zv >= 1) ? Zv : rnd_float(0.9, 1.1);
-      voltage[map[MINUS_Z]] = (Zv <= -1) ? ((-1.0f) * Zv) : rnd_float(0.9, 1.1);
-
-       printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
-
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
       tempS += +rnd_float(-1.0, 1.0);
       //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
@@ -820,26 +887,43 @@ int main(int argc, char * argv[]) {
 //      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
 //      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
-      current[map[BAT]] = rnd_float(285, 305) - charging;
+      current[map[BAT]] = rnd_float(320, 510) - charging;
 
         printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
-      batt -= (batt > 3.5) ? current[map[BAT]] / 30000 : current[map[BAT]] / 3000;
-      if (batt < 3.0) {
-        batt = 3.0;
+      batt -= (batt > 3.5) ? current[map[BAT]] / 300000 : current[map[BAT]] / 30000;
+      if (batt < 3.6) {
+        batt = 3.6;
         SafeMode = 1;
         printf("Safe Mode!\n");
       } else
         SafeMode= 0;
 
-      if (batt > 4.5)
-        batt = 4.5;
+      if (batt > 4.1)
+        batt = 4.1;
 
       voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+		
+      float Vm, Vp;
+	  Vm = batt + 0.5;	
+	  Vp = (Xv > 0) ? Xv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_X]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;
+      Vp = (Xv < 0) ? ((-1.0f) * Xv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_X]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+      Vp = (Yv > 0) ? Yv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_Y]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+      Vp = (Yv < 0) ? ((-1.0f) * Yv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_Y]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;		
+      Vp = (Zv > 0) ? Zv : rnd_float(0.0, 0.1);
+	  voltage[map[PLUS_Z]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+      Vp = (Zv < 0) ? ((-1.0f) * Zv) : rnd_float(0.0, 0.1);
+	  voltage[map[MINUS_Z]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+
+      printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
       // end of simulated telemetry
-    }
-
+	  }
+	
       FILE * cpuTempSensor = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
       if (cpuTempSensor) {
    //     double cpuTemp;
@@ -1258,7 +1342,7 @@ void get_tlm_fox() {
   buffSize = (int) sizeof(buffer_test);
 	
   if (failureMode == FAIL_NONE) 
-	  printf("No Simulated Failure\n");	
+	  printf("No Simulated Failure!\n");	
 //  if (failureMode == -1) {
 //	  failureMode = (int) rnd_float(1, FAIL_COUNT);
 //	  printf("Random Failure\n");
@@ -1312,7 +1396,7 @@ void get_tlm_fox() {
 	  cam = OFF;
 	  printf("Camera Simulated Failure!\n");	  
   }
-	
+
   if (mode == FSK)
     id = 7;
   else

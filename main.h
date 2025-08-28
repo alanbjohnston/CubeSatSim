@@ -52,11 +52,15 @@
 #define XS1 20 // NEW user defined token will be position 19
 #define XS2 21  
 #define XS3 22
-#define SENSOR_FIELDS 26
+#define NEW_SENSOR_FIELDS_MAX 6
+#define SENSOR_FIELDS (26 + 6)
 #define FC_EPS 1
 #define FC_BOB 25
 #define FC_SW 50
 #define FC_PAYLOAD 55
+#define X 0
+#define Y 1
+#define Z 2
 
 #define RSSI 0
 #define IHU_TEMP 2
@@ -132,7 +136,7 @@ FILE *image_file;
 #define FAIL_I2C3 6
 #define FAIL_CAMERA 7
 #define FAIL_PAYLOAD 8
-#define FAIL_BME 8
+#define FAIL_BME 9
 #define FAIL_MPU 10
 #define FAIL_AUDIO 11
 int failureMode = FAIL_NONE;
@@ -182,7 +186,7 @@ double cpuTemp;
 int frameTime;
 long int newGpsTime;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse, atmosphere;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE;
 int rxAntennaDeployed = 0, txAntennaDeployed = 0, c2cStatus = 0;
 int sim_config = FALSE; // sim mode not set by configuration
@@ -241,6 +245,8 @@ int groundCommandCount = 0;
     int m_ileaver_index;               /* Byte counter for interleaver */
     unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
 
+void sensor_setup();  // defined in sensor_extension.c
+int sensor_loop(char *sensor_buffer);  // defined in sensor_extension.c
 
 // from funcubeLib/common/fecConstants.h
 
