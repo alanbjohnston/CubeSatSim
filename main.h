@@ -179,7 +179,7 @@ int frames_sent = 0;
 int cw_id = ON;
 int transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 // float voltageThreshold = 3.6, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
-float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
+float voltageThreshold = 3.55, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
