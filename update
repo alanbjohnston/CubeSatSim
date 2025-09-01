@@ -53,7 +53,7 @@ git pull --no-rebase > .updated
 
 if [ $checkout -eq 1 ]; then
 	git checkout $branch	
-	git pull --no-rebase
+	git pull --no-rebase > .updated
 fi
 
 make debug
