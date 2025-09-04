@@ -279,7 +279,7 @@ if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
 	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
 	sudo apt-get install -y libi2c-dev
 	cd
-	git clone git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+	git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
 	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
 	sudo make install
 	make example
@@ -287,10 +287,8 @@ if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
 fi
 
 cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
-
-  git checkout master
-
-  git pull --no-rebase > .updated_p
+git checkout master
+git pull --no-rebase > .updated_p
 
 #  grep 'changed' /home/pi/ssdv/.updated_p
   if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
