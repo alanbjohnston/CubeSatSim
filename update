@@ -275,11 +275,40 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	FLAG=1
 fi
 
+if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
+	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
+	sudo apt-get install -y libi2c-dev
+	cd
+	git clone git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
+	sudo make install
+	make example
+    g++ mpu6050.o -o mpu6050 -lMPU6050 -pthread
+fi
+
+cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
+
+  git checkout master
+
+  git pull --no-rebase > .updated_p
+
+#  grep 'changed' /home/pi/ssdv/.updated_p
+  if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
+  
+    echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
+    sudo make install
+	make example
+	g++ mpu6050.o -o mpu6050 -lMPU6050 -pthread
+
+  else
+    echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
+  fi 
+
 if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
 	sudo rm /var/lib/dpkg/info/python3-pip.list
 	sudo apt install python3-pip --reinstall
-	sudo apt-get install -y python3-smbus libusb-1.0 -y
+	sudo apt-get install -y python3-smbus libusb-1.0 
 	cd
 	git clone https://github.com/csete/fcdctl.git
 	cd fcdctl
