@@ -275,7 +275,7 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	FLAG=1
 fi
 
-if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
+if [ ! -d "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
 	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
 	sudo apt-get install -y libi2c-dev
 	cd
