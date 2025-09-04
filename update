@@ -290,17 +290,39 @@ cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
 git checkout master
 git pull --no-rebase > .updated_p
 
-#  grep 'changed' /home/pi/ssdv/.updated_p
-  if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
-  
-    echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
-    sudo make install
+if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
+
+	echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
+	sudo make install
 	make example
 	g++ mpu6050.cpp -o mpu6050 -lMPU6050 -pthread
 
-  else
-    echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
-  fi 
+else
+	echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
+fi 
+
+if [ ! -d "/home/pi/raspberry-pi-bme280" ]; then
+	echo "Installing raspberry-pi-bme280"
+	sudo apt-get install -y libi2c-dev
+	cd
+	git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
+	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
+	git checkout payload
+	make 
+fi
+
+cd /home/pi/raspberry-pi-bme280
+git checkout payload
+git pull --no-rebase > .updated_p
+
+if [[ $(grep 'changed' /home/pi/raspberry-pi-bme280/.updated_p) ]]; then
+
+	echo "updating raspberry-pi-bme280"
+	make
+
+else
+	echo "nothing to do for raspberry-pi-bme280."
+fi 
 
 if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
