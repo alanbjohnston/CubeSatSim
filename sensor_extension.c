@@ -23,7 +23,7 @@ int sensor_loop(char *sensor_buffer) {
    sensor_buffer[0] = 0; // make sure buffer is empty
   
    printf("Reading new sensors!\n");
-
+   
    FILE *sensor_read = sopen("/home/pi/raspberry-pi-bme280/bme280");  // read BME if present 
    fgets(sensor_buffer, 1000, sensor_read);
 //   fprintf(stderr, "result: %s\n", sensor_buffer);
