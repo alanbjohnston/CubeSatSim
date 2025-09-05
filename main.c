@@ -647,13 +647,18 @@ int main(int argc, char * argv[]) {
 	   
    }
 
-	payload = get_payload_serial(FALSE);      
-    printf("get_payload_status: %d \n", payload);  // not debug
+#ifdef PI_SENSORS
+	payload = pi_sensors(buffer2);  
+	printf("pi_sensors status: %d \n", payload);     
+#else	   
+	payload = get_payload_serial(FALSE); // not debug
+    printf("get_payload_status: %d \n", payload);  
+#endif	   
 	fflush(stdout); 
 //	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
 	strcpy(sensor_payload, buffer2);  
-	   
+
      printf(" Response from STEM Payload: %s\n", sensor_payload);
 
 	 char sensor_buffer[30];
@@ -2899,4 +2904,18 @@ void socket_send(int length) {
 	
   if (socket_open == 1)	
     firstTime = 0;
+}
+
+int pi_sensors(char *buffer) 
+{
+	char sensor_buffer[1000];
+	strcpy(buffer, "OK BME280 ");
+	
+	FILE *sensor_read = sopen("/home/pi/raspberry-pi-bme280/bme280");  // read BME if present 
+    fgets(sensor_buffer, 1000, sensor_read);
+//   fprintf(stderr, "result: %s\n", sensor_buffer);
+    fclose(sensor_read);
+	strcpy(buffer, sensor_buffer);
+
+	return (1);
 }
