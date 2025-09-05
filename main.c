@@ -2930,6 +2930,7 @@ int pi_sensors(char *buffer)
     fclose(sensor_read);
 	if (sensor_buffer[strlen(sensor_buffer) - 1] == '\n')
 		sensor_buffer[strlen(sensor_buffer) - 1] = '\0'; // remove newline at end
+	strcat(buffer, sensor_buffer);
 	
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
 
