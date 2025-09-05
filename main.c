@@ -2928,6 +2928,19 @@ int pi_sensors(char *buffer)
     fgets(sensor_buffer, 1000, sensor_read);
     fprintf(stderr, "mpu result: %s\n", sensor_buffer);
     fclose(sensor_read);
+	if (sensor_buffer[strlen(sensor_buffer) - 1] == '\n')
+		sensor_buffer[strlen(sensor_buffer) - 1] = '\0'; // remove newline at end
+	
+	fprintf(stderr, "pi_sensors string: %s\n", buffer);
+
+	strcat(buffer, " GPS 0.0 0.0 0.0 TMP 0.0"); // place holders for GPS and diode temp
+
+	strcat(buffer, " YPR ");
+	
+	sensor_read = sopen("/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/ypr");  // read MPU if present 
+    fgets(sensor_buffer, 1000, sensor_read);
+    fprintf(stderr, "mpu result: %s\n", sensor_buffer);
+    fclose(sensor_read);
 	strcat(buffer, sensor_buffer);  // no need to remove newline at end
 	
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
