@@ -283,7 +283,6 @@ if [ ! -d "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
 	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
 	sudo make install
 	make payload
-//    g++ mpu6050.cpp -o mpu6050 -lMPU6050 -pthread -li2c
 fi
 
 cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
@@ -295,8 +294,6 @@ if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_
 	echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
 	sudo make install
 	make payload
-//	g++ mpu6050.cpp -o mpu6050 -lMPU6050 -pthread -li2c
-
 else
 	echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
 fi 
