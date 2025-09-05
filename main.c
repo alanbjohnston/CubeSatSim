@@ -2918,6 +2918,8 @@ int pi_sensors(char *buffer)
     fgets(sensor_buffer, 1000, sensor_read);
     fprintf(stderr, "bme result: %s\n", sensor_buffer);
     fclose(sensor_read);
+	if (sensor_buffer[strlen(sensor_buffer) - 1] == '\n')
+		sensor_buffer[strlen(sensor_buffer) - 1] = '\0'; // remove newline at end
 	strcat(buffer, sensor_buffer);
 
 	strcat(buffer, "MPU6050 ");
@@ -2926,7 +2928,7 @@ int pi_sensors(char *buffer)
     fgets(sensor_buffer, 1000, sensor_read);
     fprintf(stderr, "mpu result: %s\n", sensor_buffer);
     fclose(sensor_read);
-	strcat(buffer, sensor_buffer);
+	strcat(buffer, sensor_buffer);  // no need to remove newline at end
 	
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
 
