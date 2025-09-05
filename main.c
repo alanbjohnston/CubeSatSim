@@ -1757,7 +1757,7 @@ void get_tlm_fox() {
 	simulated = sim_mode;  
 	if (failureMode != FAIL_NONE)  {
 		simulated = TRUE;
-//		printf("Showing Simulted in FoxTelem\n");
+		printf("Showing Simulted in FoxTelem\n");
 	}
 	int i2c_1, i2c_3; 
 	i2c_1 = i2c_bus1;  
