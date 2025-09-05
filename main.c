@@ -2917,6 +2917,15 @@ int pi_sensors(char *buffer)
     fprintf(stderr, "result: %s\n", sensor_buffer);
     fclose(sensor_read);
 	strcat(buffer, sensor_buffer);
+
+	strcpy(buffer, "MPU6050 ");
+	
+	FILE *sensor_read = sopen("/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050");  // read MPU if present 
+    fgets(sensor_buffer, 1000, sensor_read);
+    fprintf(stderr, "result: %s\n", sensor_buffer);
+    fclose(sensor_read);
+	strcat(buffer, sensor_buffer);
+	
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
 
 	return (1);
