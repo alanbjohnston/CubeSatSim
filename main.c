@@ -2916,7 +2916,7 @@ int pi_sensors(char *buffer)
 	
 	sensor_read = sopen("/home/pi/raspberry-pi-bme280/bme280");  // read BME if present 
     fgets(sensor_buffer, 1000, sensor_read);
-    fprintf(stderr, "result: %s\n", sensor_buffer);
+    fprintf(stderr, "bme result: %s\n", sensor_buffer);
     fclose(sensor_read);
 	strcat(buffer, sensor_buffer);
 
@@ -2924,7 +2924,7 @@ int pi_sensors(char *buffer)
 	
 	sensor_read = sopen("/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050");  // read MPU if present 
     fgets(sensor_buffer, 1000, sensor_read);
-    fprintf(stderr, "result: %s\n", sensor_buffer);
+    fprintf(stderr, "mpu result: %s\n", sensor_buffer);
     fclose(sensor_read);
 	strcat(buffer, sensor_buffer);
 	
