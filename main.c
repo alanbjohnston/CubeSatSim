@@ -2914,9 +2914,10 @@ int pi_sensors(char *buffer)
 	
 	FILE *sensor_read = sopen("/home/pi/raspberry-pi-bme280/bme280");  // read BME if present 
     fgets(sensor_buffer, 1000, sensor_read);
-//   fprintf(stderr, "result: %s\n", sensor_buffer);
+    fprintf(stderr, "result: %s\n", sensor_buffer);
     fclose(sensor_read);
-	strcpy(buffer, sensor_buffer);
+	strcat(buffer, sensor_buffer);
+	fprintf(stderr, "pi_sensors string: %s\n", buffer);
 
 	return (1);
 }
