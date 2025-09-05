@@ -2910,9 +2910,11 @@ void socket_send(int length) {
 int pi_sensors(char *buffer) 
 {
 	char sensor_buffer[1000];
+	FILE *sensor_read;
+	
 	strcpy(buffer, "OK BME280 ");
 	
-	FILE *sensor_read = sopen("/home/pi/raspberry-pi-bme280/bme280");  // read BME if present 
+	sensor_read = sopen("/home/pi/raspberry-pi-bme280/bme280");  // read BME if present 
     fgets(sensor_buffer, 1000, sensor_read);
     fprintf(stderr, "result: %s\n", sensor_buffer);
     fclose(sensor_read);
@@ -2920,7 +2922,7 @@ int pi_sensors(char *buffer)
 
 	strcpy(buffer, "MPU6050 ");
 	
-	FILE *sensor_read = sopen("/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050");  // read MPU if present 
+	sensor_read = sopen("/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050");  // read MPU if present 
     fgets(sensor_buffer, 1000, sensor_read);
     fprintf(stderr, "result: %s\n", sensor_buffer);
     fclose(sensor_read);
