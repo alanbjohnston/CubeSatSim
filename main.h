@@ -247,6 +247,7 @@ int groundCommandCount = 0;
 
 void sensor_setup();  // defined in sensor_extension.c
 int sensor_loop(char *sensor_buffer);  // defined in sensor_extension.c
+int pi_sensors(char *buffer); // used to read BME and MPU sensor if connected to Pi
 
 // from funcubeLib/common/fecConstants.h
 
