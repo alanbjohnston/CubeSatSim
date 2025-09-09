@@ -303,7 +303,7 @@ if [ ! -f "/home/pi/raspberry-pi-bme280/bme280" ]; then
 	sudo apt-get install -y libi2c-dev
 	cd
 	git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
-	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
+	cd raspberry-pi-bme280
 	git checkout payload
 	make 
 fi
