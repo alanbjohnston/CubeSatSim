@@ -564,7 +564,7 @@ elif [ "$1" = "-t" ]; then
 	else
 		sim="no"
 		echo "Simulated Telemetry is OFF"
-		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
+		sudo echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
 	fi
 	
 #	echo
@@ -1632,7 +1632,7 @@ elif [ "$1" = "-M" ]; then
 
 #	echo $MODE
 	echo
-	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
+	sudo echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
 
 	echo "Changing simulated failure mode to $MODE" | wall
 
