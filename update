@@ -275,7 +275,7 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	FLAG=1
 fi
 
-if [ ! -d "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi" ]; then
+if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050" ]; then
 	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
 	sudo apt-get install -y libi2c-dev
 	cd
@@ -298,7 +298,7 @@ else
 	echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
 fi 
 
-if [ ! -d "/home/pi/raspberry-pi-bme280" ]; then
+if [ ! -f "/home/pi/raspberry-pi-bme280/bme280" ]; then
 	echo "Installing raspberry-pi-bme280"
 	sudo apt-get install -y libi2c-dev
 	cd
