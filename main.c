@@ -1019,6 +1019,7 @@ int main(int argc, char * argv[]) {
 			fprintf(fp,"\n");
 	}
 	else {
+		printf("Write simulted voltage and current to telem_string.txt\n");
  //   		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
 		fprintf(fp, "BAT %.2fV %.0fmA", voltage[map[BAT]], current[map[BAT]];  // display simulated voltage and current
 		if (c2cStatus != DISABLED)
