@@ -156,8 +156,8 @@ def camera_photo():
 	#					draw.text((120, 10), telem_string, font=font2, fill='white')					
 		draw.text((12, 12), callsign, font=font1, fill='black')
 		draw.text((10, 10), callsign, font=font1, fill='white')
-		draw.text((122, 12), telem_string, font=font2, fill='black')
-		draw.text((120, 10), telem_string, font=font2, fill='white')
+		draw.text((112, 12), telem_string, font=font2, fill='black')  # was 122
+		draw.text((110, 10), telem_string, font=font2, fill='white')  # was 120
 		img.save(file)
 
 print("CubeSatSim v2.2 transmit.py starting...")
