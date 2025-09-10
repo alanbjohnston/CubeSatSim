@@ -1003,8 +1003,7 @@ int main(int argc, char * argv[]) {
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
-//	if (batteryVoltage != 4.5) {
-	if (1)	{
+	if (batteryVoltage != 4.5) {
 /*		
 		if (c2cStatus == DISABLED)
     			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
@@ -1019,9 +1018,17 @@ int main(int argc, char * argv[]) {
 		else
 			fprintf(fp,"\n");
 	}
-	else
-    		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
+	else {
+ //   		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
+		fprintf(fp, "BAT %.2fV %.0fmA", voltage[map[BAT]], current[map[BAT]];  // display simulated voltage and current
+		if (c2cStatus != DISABLED)
+			fprintf(fp," C");
+	    if (sim_mode || (failureMode != FAIL_NONE))
+			fprintf(fp," S\n");
+		else
+			fprintf(fp,"\n");
 		
+	}
     	fclose(fp);	 
     } else 
 	    printf("Error writing to telem_string.txt\n");
