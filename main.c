@@ -1004,7 +1004,7 @@ int main(int argc, char * argv[]) {
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
 //	if (batteryVoltage != 4.5) {
-	if (true)	{
+	if (1)	{
 /*		
 		if (c2cStatus == DISABLED)
     			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
