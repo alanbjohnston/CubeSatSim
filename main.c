@@ -1003,7 +1003,8 @@ int main(int argc, char * argv[]) {
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
 //    	printf("Writing telem_string.txt\n");
-	if (batteryVoltage != 4.5) {
+//	if (batteryVoltage != 4.5) {
+	if (true)	{
 /*		
 		if (c2cStatus == DISABLED)
     			fprintf(fp, "BAT %4.2fV %4.0fmA\n", batteryVoltage, batteryCurrent);
