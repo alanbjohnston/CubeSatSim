@@ -22,6 +22,7 @@
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
+#define OLD_STEM_PAYLOAD  // Use with old v1.2 STEM Payload code
 
 int main(int argc, char * argv[]) {
 	
@@ -2271,6 +2272,55 @@ float toAprsFormat(float input) {
 
 int get_payload_serial(int debug_camera)  {
 
+#ifdef OLD_STEM_PAYLOAD
+
+	payload = OFF;
+
+    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+      char c;
+      int charss = (char) serialDataAvail(uart_fd);
+      if (charss != 0)
+        printf("Clearing buffer of %d chars \n", charss);
+      while ((charss--> 0))
+        c = (char) serialGetchar(uart_fd); // clear buffer
+
+      unsigned int waitTime;
+      int i;
+      for (i = 0; i < 2; i++) {
+	if (payload != ON) {
+          serialPutchar(uart_fd, 'R');
+          printf("Querying payload with R to reset\n");
+          waitTime = millis() + 500;
+          while ((millis() < waitTime) && (payload != ON)) {
+            if (serialDataAvail(uart_fd)) {
+              printf("%c", c = (char) serialGetchar(uart_fd));
+              fflush(stdout);
+              if (c == 'O') {
+                printf("%c", c = (char) serialGetchar(uart_fd));
+                fflush(stdout);
+                if (c == 'K')
+                  payload = ON;
+              }
+            }
+            printf("\n");
+            //        sleep(0.75);
+          }
+        }
+      }
+      if (payload == ON)  {	    
+        printf("\nSTEM Payload is present!\n");
+	sleep(2);  // delay to give payload time to get ready
+      }
+      else {
+        printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
+	      
+      }
+    } else {
+      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
+    }
+  
+	
+#else
   index1 = 0;
   flag_count = 0;
   start_flag_detected = FALSE;
@@ -2370,6 +2420,7 @@ int get_payload_serial(int debug_camera)  {
       printf("\nComplete\n");
   fflush(stdout);	
   return(finished);
+#endif	
 }
 
 void program_radio() {
