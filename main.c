@@ -2312,9 +2312,10 @@ int get_payload_serial(int debug_camera)  {
           buffer2[i++] = ' ';
           //  buffer2[i++] = '\n';
           buffer2[i] = '\0';
-          printf(" Response from STEM Payload board: %s\n", sensor_payload);
+          printf(" Response from STEM Payload board: %s\n", buffer2);
 	  sleep(0.1);  // added sleep between loops
 	}
+/*		  
         if ((buffer2[0] == 'O') && (buffer2[1] == 'K')) // only process if valid payload response
         {
           int count1;
@@ -2345,6 +2346,7 @@ int get_payload_serial(int debug_camera)  {
             //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
         }
       }	
+*/		
 } else
 		printf("Can't open serial to payload");
 
