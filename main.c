@@ -2300,6 +2300,9 @@ int get_payload_serial(int debug_camera)  {
                 fflush(stdout);
                 if (c == 'K')
                   payload = ON;
+				  buffer2[0] = 'O';
+				  buffer2[1] = 'K';
+				  buffer2[2] = 0;
               }
             }
             printf("\n");
@@ -2309,17 +2312,19 @@ int get_payload_serial(int debug_camera)  {
       }
       if (payload == ON)  {	    
         printf("\nSTEM Payload is present!\n");
-	sleep(2);  // delay to give payload time to get ready
+		sleep(2);  // delay to give payload time to get ready
+		return(TRUE);  
       }
       else {
         printf("\nSTEM Payload not present!\n -> Is STEM Payload programed and Serial1 set to 115200 baud?\n");
+		return(FALSE);  
 	      
       }
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
+	  return(FALSE);	
     }
   
-	
 #else
   index1 = 0;
   flag_count = 0;
