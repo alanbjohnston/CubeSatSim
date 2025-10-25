@@ -2314,7 +2314,8 @@ int get_payload_serial(int debug_camera)  {
           buffer2[i] = '\0';
           printf(" Response from STEM Payload board: %s\n", buffer2);
 	  sleep(0.1);  // added sleep between loops
-	}
+////	}  // removed this!
+
 /*		  
         if ((buffer2[0] == 'O') && (buffer2[1] == 'K')) // only process if valid payload response
         {
@@ -2337,6 +2338,7 @@ int get_payload_serial(int debug_camera)  {
 	else
 		payload = OFF;  // turn off since STEM Payload is not responding
       }
+		
       if ((buffer2[0] == 'O') && (buffer2[1] == 'K')) {
         for (int count1 = 0; count1 < 17; count1++) {
           if (sensor[count1] < sensor_min[count1])
