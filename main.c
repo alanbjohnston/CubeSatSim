@@ -2274,6 +2274,86 @@ int get_payload_serial(int debug_camera)  {
 
 #ifdef OLD_STEM_PAYLOAD
 
+      if (payload == ON) {  // -55
+        STEMBoardFailure = 0;
+
+  
+        char c;
+        unsigned int waitTime;
+	int i, end, trys = 0;
+	buffer2[0] = 0;
+	buffer2[1] = 0;
+	while (((buffer2[0] != 'O') || (buffer2[1] != 'K')) && (trys++ < 10)) {	      
+          i = 0;
+	  serialPutchar(uart_fd, '?');
+	  sleep(0.05);  // added delay after ?
+          printf("%d Querying payload with ?\n", trys);
+          waitTime = millis() + 500;
+          end = FALSE;
+          //  int retry = FALSE;
+          while ((millis() < waitTime) && !end) {
+            int chars = (char) serialDataAvail(uart_fd);
+            while ((chars > 0) && !end) {
+//	      printf("Chars: %d\ ", chars);
+	      chars--;
+	      c = (char) serialGetchar(uart_fd);
+              //	printf ("%c", c);
+              //	fflush(stdout);
+              if (c != '\n') {
+                buffer2[i++] = c;
+              } else {
+                end = TRUE;
+              }
+            }
+          }
+	
+          buffer2[i++] = ' ';
+          //  buffer2[i++] = '\n';
+          buffer2[i] = '\0';
+          printf(" Response from STEM Payload board: %s\n", sensor_payload);
+	  sleep(0.1);  // added sleep between loops
+	}
+        if ((buffer2[0] == 'O') && (buffer2[1] == 'K')) // only process if valid payload response
+        {
+          int count1;
+          char * token;
+ 
+          const char space[2] = " ";
+          token = strtok(sensor_payload, space);
+          for (count1 = 0; count1 < 17; count1++) {
+            if (token != NULL) {
+              sensor[count1] = (float) atof(token);
+              #ifdef DEBUG_LOGGING
+              //  printf("sensor: %f ", sensor[count1]);
+              #endif
+              token = strtok(NULL, space);
+            }
+          }
+          printf("\n");
+        }
+	else
+		payload = OFF;  // turn off since STEM Payload is not responding
+      }
+      if ((buffer2[0] == 'O') && (buffer2[1] == 'K')) {
+        for (int count1 = 0; count1 < 17; count1++) {
+          if (sensor[count1] < sensor_min[count1])
+            sensor_min[count1] = sensor[count1];
+          if (sensor[count1] > sensor_max[count1])
+            sensor_max[count1] = sensor[count1];
+            //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
+        }
+      }	
+
+  if (payload == ON)  {	    
+//        printf("\nSTEM Payload is present!\n");
+//		sleep(2);  // delay to give payload time to get ready
+		return(TRUE);  
+  }
+	
+#endif
+
+#ifdef OLD_STEM_PAYLOAD2
+
 	payload = OFF;
 
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
