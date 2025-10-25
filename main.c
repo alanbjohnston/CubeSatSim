@@ -2273,6 +2273,8 @@ float toAprsFormat(float input) {
 int get_payload_serial(int debug_camera)  {
 
 #ifdef OLD_STEM_PAYLOAD
+	if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+
 //      if (payload == ON) {  // -55
       if (TRUE) {  // -55
         STEMBoardFailure = 0;
@@ -2343,6 +2345,8 @@ int get_payload_serial(int debug_camera)  {
             //  printf("Smin %f Smax %f \n", sensor_min[count1], sensor_max[count1]);
         }
       }	
+} else
+		printf("Can't open serial to payload");
 
   if (payload == ON)  {	    
 //        printf("\nSTEM Payload is present!\n");
