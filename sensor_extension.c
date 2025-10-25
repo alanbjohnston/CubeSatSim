@@ -19,14 +19,15 @@ void sensor_setup() {
 // Very Important: only use print, not println!!
 int sensor_loop(char *sensor_buffer) {
 
-   int sensors = 3;  // set to the number of sensor readings adding.
-   sensor_buffer[0] = 0; // make sure buffer is empty
+   int sensors = 0;
+//   int sensors = 3;  // set to the number of sensor readings adding.
+//   sensor_buffer[0] = 0; // make sure buffer is empty
   
-   printf("Reading new sensors!\n");
+//   printf("Reading new sensors!\n");
   
-   strcpy(sensor_buffer, "NEW 0.0 0.0 0.0");
+//   strcpy(sensor_buffer, "NEW 0.0 0.0 0.0");
 
-   printf("New sensor string: %s\n", sensor_buffer);
+//   printf("New sensor string: %s\n", sensor_buffer);
 
   return(sensors);
   
