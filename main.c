@@ -2320,9 +2320,7 @@ if ((buffer2[0] == 'O') && (buffer2[1] == 'K'))  {
   return (TRUE);
 }
 
-#endif
-
-#ifdef OLD_STEM_PAYLOAD2
+#elif OLD_STEM_PAYLOAD2
 
 	payload = OFF;
 
