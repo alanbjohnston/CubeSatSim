@@ -11,11 +11,12 @@
 // put your setup code here
 void sensor_setup() {
   
-  printf("Starting new sensor!\n");
+//  printf("Starting new sensor!\n");
+//  put sensor initialization code here  
 
 }
 
-// put your loop code here
+// put your sensor loop code here
 // Very Important: only use print, not println!!
 int sensor_loop(char *sensor_buffer) {
 
