@@ -334,7 +334,11 @@ int main(int argc, char * argv[]) {
     payload = OFF;
     fprintf(stderr,"Opening serial\n");
     if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
-      fprintf(stderr,"Serial opened to Pico\n");	    
+#ifdef OLD_STEM_PAYLOAD
+      fprintf(stderr,"Serial opened to v1.2 STEM Payload Board\n");			
+#else		
+      fprintf(stderr,"Serial opened to Pico\n");	   
+#endif		
 //      payload = ON;	
       payload = get_payload_serial(FALSE); 
       fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	    
