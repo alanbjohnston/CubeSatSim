@@ -2314,7 +2314,7 @@ if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
 } else
   printf("Can't open serial to payload");
 
-if ((buffer2[0] == 'O') && (buffer2[1] == 'K'))  // {
+if ((buffer2[0] == 'O') && (buffer2[1] == 'K'))  {
   //        printf("\nSTEM Payload is present!\n");
   //		sleep(2);  // delay to give payload time to get ready
   return (TRUE);
