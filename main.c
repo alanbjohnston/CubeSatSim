@@ -22,7 +22,7 @@
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
-#define OLD_STEM_PAYLOAD2  // Use with old v1.2 STEM Payload code
+#define OLD_STEM_PAYLOAD  // Use with old v1.2 STEM Payload code
 
 int main(int argc, char * argv[]) {
 	
