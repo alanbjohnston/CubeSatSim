@@ -20,8 +20,9 @@ void sensor_setup() {
 int sensor_loop(char *sensor_buffer) {
 
    int sensors = 0;
-//   int sensors = 3;  // set to the number of sensor readings adding.
-//   sensor_buffer[0] = 0; // make sure buffer is empty
+   sensor_buffer[0] = 0; // make sure buffer is empty
+  
+//   sensors = 3;  // Add 3 new sensor readings
   
 //   printf("Reading new sensors!\n");
   
