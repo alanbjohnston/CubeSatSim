@@ -2273,8 +2273,8 @@ float toAprsFormat(float input) {
 int get_payload_serial(int debug_camera)  {
 
 #ifdef OLD_STEM_PAYLOAD
-
-      if (payload == ON) {  // -55
+//      if (payload == ON) {  // -55
+      if (TRUE) {  // -55
         STEMBoardFailure = 0;
 
   
