@@ -13,7 +13,7 @@ if __name__ == "__main__":
 		if (len(sys.argv)) > 1:
 			print("There are more arguments")
 			if (sys.argv[2] == 'g') or (sys.argv[2] == '-g'):
-			graph = 'y'  
+				graph = 'y'  
         
 	sampling_rate = 1024e3 # 250e3 # Hz
 	duration = 65536/sampling_rate # 1          # seconds
