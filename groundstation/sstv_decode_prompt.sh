@@ -127,7 +127,7 @@ threshold="0.1"
 confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
 echo "Auto tune confidence: "
 echo $confidence
-if [ "$confidence" .lt "$threshold" ]; then
+if [ "$confidence" -lt "$threshold" ]; then
 
   sleep 10
 
