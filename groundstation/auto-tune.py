@@ -21,7 +21,7 @@ sdr.gain = 4
 sdr.direct_sampling = False
 
 # signal = sdr.read_samples(64*1024) #256
-signal = sdr.read_samples(duration*sampling_rate) #256
+signal = sdr.read_samples(duration*sampling_rate).real #256
 
 print(f"Center frequency is {center_frequency}")
 
