@@ -4,18 +4,17 @@ import matplotlib.pyplot as plt
 
 if __name__ == "__main__":
 	graph = 'n'
-  center_frequency = 434.9e6
-  if (len(sys.argv)) > 0:
-    print("There are arguments!")
-    center_frequency = float(sys.argv[1])
-    if (center_frequency == 0):
-      center_frequency = 434.9e6
-    if (len(sys.argv)) > 1:
-        print("There are more arguments")
-        if (sys.argv[2] == 'g') or (sys.argv[2] == '-g'):
-          graph = 'y'  
+	center_frequency = 434.9e6
+	if (len(sys.argv)) > 0:
+		print("There are arguments!")
+	    center_frequency = float(sys.argv[1])
+    	if (center_frequency == 0):
+      		center_frequency = 434.9e6
+    	if (len(sys.argv)) > 1:
+        	print("There are more arguments")
+        	if (sys.argv[2] == 'g') or (sys.argv[2] == '-g'):
+          	graph = 'y'  
         
-
 	sampling_rate = 1024e3 # 250e3 # Hz
 	duration = 65536/sampling_rate # 1          # seconds
 	t = np.linspace(0, duration, int(sampling_rate * duration), endpoint=False)
