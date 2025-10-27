@@ -8,7 +8,7 @@ if __name__ == "__main__":
 	center_frequency = 434.7e6
 	if (len(sys.argv)) > 0:
 		print("There are arguments!")
-		center_frequency = float(sys.argv[1]) - 200e6
+		center_frequency = float(sys.argv[1]) - 200e3
 		if (center_frequency == 0):
 			center_frequency = 434.7e6
 		if (len(sys.argv)) > 1:
