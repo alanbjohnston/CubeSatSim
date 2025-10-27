@@ -26,7 +26,7 @@ if __name__ == "__main__":
 	sdr.sample_rate = sampling_rate # 250e3 # 2.4e6
 	#center_frequency = 434.8e6
 	sdr.center_freq = center_frequency
-	sdr.gain = 4
+	sdr.gain = 29
 	sdr.direct_sampling = False
 	
 	# signal = sdr.read_samples(64*1024) #256
