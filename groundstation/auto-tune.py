@@ -7,12 +7,12 @@ if __name__ == "__main__":
 	graph = 'n'
 	center_frequency = 434.7e6
 	if (len(sys.argv)) > 0:
-		print("There are arguments!")
+#		print("There are arguments!")
 		center_frequency = float(sys.argv[1]) - 200e3
 		if (center_frequency == 0):
 			center_frequency = 434.7e6
 		if (len(sys.argv)) > 1:
-			print("There are more arguments")
+#			print("There are more arguments")
 			if (sys.argv[2] == 'g') or (sys.argv[2] == '-g'):
 				graph = 'y'  
         
@@ -32,7 +32,7 @@ if __name__ == "__main__":
 	# signal = sdr.read_samples(64*1024) #256
 	signal = sdr.read_samples(duration*sampling_rate).real #256
 	
-	print(f"Center frequency is {center_frequency}")
+#	print(f"Center frequency is {center_frequency}")
 	
 	sdr.close()
 	
