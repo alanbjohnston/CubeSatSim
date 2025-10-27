@@ -121,8 +121,25 @@ setsid qsstv &
 
 sleep 5
 
-#sudo systemctl restart cubesatsim
+python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
 
+threshold="0.1"
+confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+echo "Auto tune confidence: "
+echo $confidence
+if [ "$confidence" .lt "$threshold" ]; then
+
+  sleep 10
+
+  python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+ 
+fi
+frequency=$(awk '{print $1}' auto-tune.txt)
+
+echo "Auto tune frequency: "
+echo $frequency
+
+#sudo systemctl restart cubesatsim
 
 value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
