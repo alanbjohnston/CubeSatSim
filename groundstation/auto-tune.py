@@ -72,7 +72,7 @@ if __name__ == "__main__":
 	x = amplitude_spectrum 
 	# print(x)
 	min_value = min(x)
-	max_value = max(x)
+	max_value = max(x) * 10
 	
 	#freq_min = np.argmax(min_value)
 	# print(np.argmax(x))
@@ -83,7 +83,7 @@ if __name__ == "__main__":
 	offset = (np.argmax(x)*(150e3 - 10e3)/(9770 - 709))
 	freq_max = center_frequency + offset 
 	
-	print(f" {freq_max:.0f} {max_value:.2f}")
+	print(f" {freq_max:.0f} {max_value:.0f}")
 	#print(f"The minimum signal is {min_value} at frequency {freq_min}")
 	
 	#print(min_value)
