@@ -37,7 +37,9 @@ sudo /etc/init.d/alsa-utils start
 
 echo
 
-frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" APRS "Test APRS decoding with CubeSatSim WAV file")
+autotune=0
+
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=4000 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" APRS "Test APRS decoding with CubeSatSim WAV file")
 
 #echo $frequency
 
@@ -74,6 +76,10 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
   echo
   echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
   echo
+
+elif [ "$frequency" = "Auto-tune" ] ; then
+
+  frequency=434900000
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ]; then
 
@@ -155,7 +161,38 @@ echo
 
 #fi
 
-sleep 5
+#sleep 5
+
+if [ "$autotune" = "1" ]; then
+  threshold=1
+  delay=1
+  retries=30
+  
+  tries=0
+  confidence=0
+  while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+
+    sleep $delay
+    source /home/pi/venv/bin/activate
+    python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    # echo "auto-tune.txt"
+    # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo "Auto tune confidence: " $confidence
+
+  done
+  
+  if [ "$confidence" -gt "$threshold" ]; then
+    frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo "Auto tune frequency: " $frequency
+  else
+    echo "Auto tune failed, frequency unchanged"
+  fi
+  echo
+  echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
+  echo
+
+fi
 
 value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
