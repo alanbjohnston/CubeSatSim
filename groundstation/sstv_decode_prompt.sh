@@ -137,8 +137,7 @@ if [ "$autotune" = "1" ]; then
   # echo "auto-tune.txt"
   # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
   confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-  echo -n "Auto tune confidence: "
-  echo $confidence
+  echo "Auto tune confidence: " $confidence
   
   if [ "$confidence" -le "$threshold" ]; then
     sleep $retry
@@ -146,8 +145,7 @@ if [ "$autotune" = "1" ]; then
   #  echo "auto-tune.txt"
   #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
     confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo -n "Auto tune confidence: " 
-    echo $confidence
+    echo "Auto tune confidence: " $confidence
   
     if [ "$confidence" -le "$threshold" ]; then
       sleep $retry
@@ -155,18 +153,18 @@ if [ "$autotune" = "1" ]; then
     #  echo "auto-tune.txt"
     #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
       confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-      echo -n "Auto tune confidence: " 
-      echo $confidence
+      echo "Auto tune confidence: " $confidence
     fi
   fi
   
   if [ "$confidence" -gt "$threshold" ]; then
     frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo -n "Auto tune frequency: "
-    echo $frequency
+    echo "Auto tune frequency: " $frequency
   else
     echo "Auto tune failed, frequency unchanged"
   fi
+  echo
+  echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
   echo
 
 fi
