@@ -132,7 +132,9 @@ if [ "$autotune" = "1" ]; then
   threshold=1
   delay=5
   retries=5
-  
+
+  echo "Starting Auto-tune scanning"
+  echo "Scan will stop when confidence exceeds threshold value of " $threshold " or after " $retries " retries"
   tries=0
   confidence=0
   while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
