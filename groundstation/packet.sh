@@ -182,6 +182,7 @@ if [ "$autotune" = "1" ]; then
     # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
     confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
     echo "Auto tune confidence: " $confidence
+    tries=$((tries+1))
 
   done
   
