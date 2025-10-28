@@ -81,7 +81,7 @@ if __name__ == "__main__":
 	# print(center_frequency)
 	
 	offset = (np.argmax(x)*(150e3 - 10e3)/(9770 - 709))
-	freq_max = center_frequency + offset + 4000
+	freq_max = center_frequency + offset + 2000
 	
 	print(f" {freq_max:.0f} {max_value:.0f}")
 	#print(f"The minimum signal is {min_value} at frequency {freq_min}")
