@@ -129,33 +129,23 @@ setsid qsstv &
 #sleep 5
 
 if [ "$autotune" = "1" ]; then
-  threshold="1"
-  retry="5"
+  threshold=1
+  delay=5
+  retries=5
   
-  source /home/pi/venv/bin/activate
-  python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-  # echo "auto-tune.txt"
-  # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
-  confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-  echo "Auto tune confidence: " $confidence
-  
-  if [ "$confidence" -le "$threshold" ]; then
-    sleep $retry
+  tries=0
+  confidence=0
+  while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+
+    sleep $delay
+    source /home/pi/venv/bin/activate
     python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-  #  echo "auto-tune.txt"
-  #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    # echo "auto-tune.txt"
+    # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
     confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
     echo "Auto tune confidence: " $confidence
-  
-    if [ "$confidence" -le "$threshold" ]; then
-      sleep $retry
-      python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-    #  echo "auto-tune.txt"
-    #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
-      confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-      echo "Auto tune confidence: " $confidence
-    fi
-  fi
+
+  done
   
   if [ "$confidence" -gt "$threshold" ]; then
     frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
