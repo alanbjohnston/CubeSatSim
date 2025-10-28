@@ -36,7 +36,7 @@ sudo killall -9 rtl_fm &>/dev/null
 
 autotune=0
 
-frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=260 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=270 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
 
 echo $frequency
 
