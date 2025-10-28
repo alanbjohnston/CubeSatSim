@@ -25,9 +25,13 @@
 #define OLD_STEM_PAYLOAD  // Use with old v1.2 STEM Payload code
 
 int main(int argc, char * argv[]) {
-	
-  printf("\n\nCubeSatSim v2.2 starting...\n\n");
 
+#ifdef	OLD_STEM_PAYLOAD
+  printf("\n\nCubeSatSim v1.2.1 starting...\n");
+  printf("This code should only be used with the v1.2 STEM Payload (white board)\n\n");
+#else
+  printf("\n\nCubeSatSim v2.2 starting...\n\n");
+#endif	
   wiringPiSetup();	
 
   strcpy(fail_yes, "no");		
