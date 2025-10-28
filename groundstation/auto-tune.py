@@ -72,7 +72,7 @@ if __name__ == "__main__":
 	x = amplitude_spectrum 
 	# print(x)
 	min_value = min(x)
-	max_value = max(x) * 10
+	max_value = max(x) * 100
 	
 	#freq_min = np.argmax(min_value)
 	# print(np.argmax(x))
