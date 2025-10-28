@@ -127,7 +127,7 @@ python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /ho
 # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
 threshold="1"
 confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-echo "Auto tune confidence: "
+echo -n "Auto tune confidence: "
 echo $confidence
 
 if [ "$confidence" -le "$threshold" ]; then
@@ -136,7 +136,7 @@ if [ "$confidence" -le "$threshold" ]; then
 #  echo "auto-tune.txt"
 #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
   confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-  echo "Auto tune confidence: " 
+  echo -n "Auto tune confidence: " 
   echo $confidence
 
   if [ "$confidence" -le "$threshold" ]; then
@@ -145,17 +145,16 @@ if [ "$confidence" -le "$threshold" ]; then
   #  echo "auto-tune.txt"
   #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
     confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune confidence: " 
+    echo -n "Auto tune confidence: " 
     echo $confidence
   fi
 fi
 
 if [ "$confidence" -gt "$threshold" ]; then
   frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+  echo -n "Auto tune frequency: "
+  echo $frequency
 fi
-
-echo "Auto tune frequency: "
-echo $frequency
 
 #sudo systemctl restart cubesatsim
 
