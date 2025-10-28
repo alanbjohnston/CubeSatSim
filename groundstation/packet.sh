@@ -39,7 +39,7 @@ echo
 
 autotune=0
 
-frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=4000 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" APRS "Test APRS decoding with CubeSatSim WAV file")
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=400 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" APRS "Test APRS decoding with CubeSatSim WAV file")
 
 #echo $frequency
 
@@ -80,6 +80,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
 elif [ "$frequency" = "Auto-tune" ] ; then
 
   frequency=434900000
+  autotune=1
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ]; then
 
