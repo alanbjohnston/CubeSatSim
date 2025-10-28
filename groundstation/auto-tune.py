@@ -16,7 +16,7 @@ if __name__ == "__main__":
 			if (sys.argv[2] == 'g') or (sys.argv[2] == '-g'):
 				graph = 'y'  
         
-	sampling_rate = 1e6 #1024e3 # 250e3 # Hz
+	sampling_rate = 1024e3 # 250e3 # Hz
 	duration = 65536/sampling_rate # 1          # seconds
 	t = np.linspace(0, duration, int(sampling_rate * duration), endpoint=False)
 	
@@ -80,8 +80,7 @@ if __name__ == "__main__":
 	# print(sampling_rate)
 	# print(center_frequency)
 	
-#	offset = (np.argmax(x)*(150e3 - 10e3)/(9770 - 709))
-	offset = np.argmax(x) - 2000
+	offset = (np.argmax(x)*(150e3 - 10e3)/(9770 - 709))
 	freq_max = center_frequency + offset + 2000
 	
 	print(f" {freq_max:.0f} {max_value:.0f}")
