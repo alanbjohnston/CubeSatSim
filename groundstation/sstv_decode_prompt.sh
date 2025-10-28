@@ -140,7 +140,7 @@ if [ "$confidence" -lt "$threshold" ]; then
   echo $confidence
 fi
 
-frequency=$(awk '{print $1}' auto-tune.txt)
+frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
 
 echo "Auto tune frequency: "
 echo $frequency
