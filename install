@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v2.2\n"
+echo -e "\ninstallation script for CubeSatSim v1.2.1\n"
 
  if [[ $(grep '11.' /etc/debian_version) ]]; then
     echo "Installing on Debian 11 (Bullseye)"
