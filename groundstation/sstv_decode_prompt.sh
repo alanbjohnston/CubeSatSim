@@ -154,7 +154,10 @@ if [ "$confidence" -gt "$threshold" ]; then
   frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
   echo -n "Auto tune frequency: "
   echo $frequency
+else
+  echo "Auto tune failed, frequency unchanged"
 fi
+echo
 
 #sudo systemctl restart cubesatsim
 
