@@ -122,18 +122,23 @@ setsid qsstv &
 sleep 5
 
 python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-
-threshold="1"
+echo "auto-tune.txt"
+cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+threshold="3"
 confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
 echo "Auto tune confidence: "
 echo $confidence
+
 if [ "$confidence" -lt "$threshold" ]; then
-
   sleep 10
-
   python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
- 
+  echo "auto-tune.txt"
+  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+  confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+  echo "Auto tune confidence: " 
+  echo $confidence
 fi
+
 frequency=$(awk '{print $1}' auto-tune.txt)
 
 echo "Auto tune frequency: "
