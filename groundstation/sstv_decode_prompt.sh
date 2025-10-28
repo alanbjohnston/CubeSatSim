@@ -134,7 +134,7 @@ if [ "$autotune" = "1" ]; then
   retries=5
 
   echo "Starting Auto-tune scanning"
-  echo "Scan will stop when confidence exceeds threshold value of " $threshold " or after " $retries " retries"
+  echo "Scan will stop when confidence exceeds threshold value of" $threshold "or after" $retries "retries"
   tries=0
   confidence=0
   while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
@@ -145,13 +145,13 @@ if [ "$autotune" = "1" ]; then
     # echo "auto-tune.txt"
     # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
     confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune confidence: " $confidence
+    echo "Auto tune confidence:" $confidence
 
   done
   
   if [ "$confidence" -gt "$threshold" ]; then
     frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune frequency: " $frequency
+    echo "Auto tune frequency:" $frequency
   else
     echo "Auto tune failed, frequency unchanged"
   fi
