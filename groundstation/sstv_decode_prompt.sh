@@ -34,7 +34,9 @@ sudo killall -9 rtl_fm &>/dev/null
 
 #echo "s" >> .mode
 
-frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=220 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
+autotune=0
+
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=220 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
 
 echo $frequency
 
@@ -69,6 +71,11 @@ echo "Frequency is" $frequency
 echo
 echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
 echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
+
+elif [ "$frequency" = "Auto-tune" ]; then
+
+frequency=434900000
+autotune=1
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "Other" ]; then
 
@@ -121,24 +128,17 @@ setsid qsstv &
 
 sleep 5
 
-source /home/pi/venv/bin/activate
-python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-# echo "auto-tune.txt"
-# cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
-threshold="1"
-confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-echo -n "Auto tune confidence: "
-echo $confidence
+if [ "$autotune" = "1" ]; then
 
-if [ "$confidence" -le "$threshold" ]; then
-  sleep 10
+  source /home/pi/venv/bin/activate
   python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-#  echo "auto-tune.txt"
-#  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+  # echo "auto-tune.txt"
+  # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+  threshold="1"
   confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-  echo -n "Auto tune confidence: " 
+  echo -n "Auto tune confidence: "
   echo $confidence
-
+  
   if [ "$confidence" -le "$threshold" ]; then
     sleep 10
     python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
@@ -147,17 +147,28 @@ if [ "$confidence" -le "$threshold" ]; then
     confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
     echo -n "Auto tune confidence: " 
     echo $confidence
+  
+    if [ "$confidence" -le "$threshold" ]; then
+      sleep 10
+      python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    #  echo "auto-tune.txt"
+    #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+      confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+      echo -n "Auto tune confidence: " 
+      echo $confidence
+    fi
   fi
-fi
+  
+  if [ "$confidence" -gt "$threshold" ]; then
+    frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo -n "Auto tune frequency: "
+    echo $frequency
+  else
+    echo "Auto tune failed, frequency unchanged"
+  fi
+  echo
 
-if [ "$confidence" -gt "$threshold" ]; then
-  frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-  echo -n "Auto tune frequency: "
-  echo $frequency
-else
-  echo "Auto tune failed, frequency unchanged"
 fi
-echo
 
 #sudo systemctl restart cubesatsim
 
