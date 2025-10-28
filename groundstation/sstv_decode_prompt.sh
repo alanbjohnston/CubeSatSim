@@ -122,25 +122,26 @@ echo
 
 echo -e "Auto decoding SSTV on $frequency Hz"
 
-sleep 2
+#sleep 2
 
 setsid qsstv &
 
-sleep 5
+#sleep 5
 
 if [ "$autotune" = "1" ]; then
-
+  threshold="1"
+  retry="5"
+  
   source /home/pi/venv/bin/activate
   python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
   # echo "auto-tune.txt"
   # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
-  threshold="1"
   confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
   echo -n "Auto tune confidence: "
   echo $confidence
   
   if [ "$confidence" -le "$threshold" ]; then
-    sleep 10
+    sleep $retry
     python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
   #  echo "auto-tune.txt"
   #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
@@ -149,7 +150,7 @@ if [ "$autotune" = "1" ]; then
     echo $confidence
   
     if [ "$confidence" -le "$threshold" ]; then
-      sleep 10
+      sleep $retry
       python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
     #  echo "auto-tune.txt"
     #  cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
