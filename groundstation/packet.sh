@@ -173,7 +173,7 @@ if [ "$autotune" = "1" ]; then
   confidence=0
   while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
 
-    sleep $delay
+#    sleep $delay
     source /home/pi/venv/bin/activate
     python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
     # echo "auto-tune.txt"
