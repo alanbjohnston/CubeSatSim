@@ -121,6 +121,7 @@ setsid qsstv &
 
 sleep 5
 
+source /home/pi/venv/bin/activate
 python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
 echo "auto-tune.txt"
 cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
