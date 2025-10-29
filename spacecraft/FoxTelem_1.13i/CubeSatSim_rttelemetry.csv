@@ -46,4 +46,3 @@
 44,RT,TXAntenna,1,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
 45,RT,C2CStatus,2,-,COMMAND_STATUS,Computer Software,3,5,0,Command Control, Command & Control Status
 46,RT,Pad,56,-,0,NONE,0,0,0,NONE,NONE
-
