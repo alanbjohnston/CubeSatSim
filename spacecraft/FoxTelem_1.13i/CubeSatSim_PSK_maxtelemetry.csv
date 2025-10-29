@@ -60,4 +60,3 @@
 58,MAX,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 59,MAX,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
 60,MAX,pad2,27,-,0,NONE,0,0,0,NONE,Filler
-
