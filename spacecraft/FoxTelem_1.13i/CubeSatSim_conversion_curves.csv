@@ -11,5 +11,3 @@ cubesatsim_sensor2,-2048,1,0,0,0,0,Conversion of Sensor 2
 cubesatsim_sensor3,-20.48,0.01,0,0,0,0,Conversion of Sensor 3
 cubesatsim_rpm,-204.8,0.1,0,0,0,0,Conversion of calculated RPM
 cubesatsim_rssi,-2048,1,0,0,0,0,Conversion of Received Signal Strength
-
-
