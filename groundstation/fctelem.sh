@@ -148,6 +148,8 @@ if [ "$autotune" = "1" ]; then
 
 fi
 
+sleep 10
+
 echo "Frequency is" $frequency
 echo
 echo "If your CubeSatSim is transmitting in FUNcube mode (mode 7) you should get some frames after 30 seconds"
