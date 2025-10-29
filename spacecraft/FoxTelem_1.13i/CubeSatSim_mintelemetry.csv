@@ -22,7 +22,7 @@
 20,MIN,BATT2_V,12,V,cubesatsim_voltage|FLOAT2,NONE,5,1,3,Battery 2 Voltage,INA219 Battery 2 Voltage
 21,MIN,SPIN,12,rpm,cubesatsim_rpm,NONE,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
 22,MIN,Pressure,12,hPa,cubesatsim_pressure,NONE,6,3,3,BME280 Pressure,STEM Payload Sensor BME280 Pressure
-23,MIN,Altitude,12,m,cubesatsim_altitude,NONE,6,4,3,BME280 Altitude,STEM Payload Sensor BME280 Altitude
+23,MIN,Altitude,12,m,cubesatsim_altitude|INT,NONE,6,4,3,BME280 Altitude,STEM Payload Sensor BME280 Altitude
 24,MIN,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
 25,MIN,RSSI,12,dBm,cubesatsim_rssi|INT,NONE,1,1,3,RSSI,Received Signal Strength Indication
 26,MIN,IHUTemperature,12,C,cubesatsim_temperature,NONE,2,1,3,IHU Temp (Pi),Internal Temperature of Pi IHU
@@ -46,3 +46,4 @@
 44,MIN,TXAntenna,1,-,16,NONE,1,2,0,TX Antenna,Transmit antenna status
 45,MIN,C2CStatus,2,-,COMMAND_STATUS,NONE,3,5,0,Command Control, Command & Control Status
 46,MIN,Pad,56,-,0,NONE,0,0,0,NONE,NONE
+
