@@ -46,4 +46,3 @@
 44,MIN,TXAntenna,1,-,16,NONE,1,2,0,TX Antenna,Transmit antenna status
 45,MIN,C2CStatus,2,-,COMMAND_STATUS,NONE,3,5,0,Command Control, Command & Control Status
 46,MIN,Pad,56,-,0,NONE,0,0,0,NONE,NONE
-
