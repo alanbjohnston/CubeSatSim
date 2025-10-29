@@ -146,9 +146,8 @@ if [ "$autotune" = "1" ]; then
     echo "Auto tune failed, frequency unchanged"
   fi
 
+sleep 5
 fi
-
-sleep 10
 
 echo "Frequency is" $frequency
 echo
