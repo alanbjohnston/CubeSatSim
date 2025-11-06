@@ -45,22 +45,23 @@
 43,realTime,RxAntenna,1,-,16,Radio,1,3,0,RX Antenna,Receive antenna status
 44,realTime,TxAntenna,1,-,16,Radio,1,2,0,TX Antenna,Transmit antenna status
 45,realTime,C2CStatus,2,-,COMMAND_STATUS,Computer Software,3,5,0,Command Control, Command & Control Status
-46,realTime,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
-47,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
-48,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
-49,realTime,rf6,12,-,0,NONE,0,0,0,None,None
-50,realTime,rf7,12,-,0,NONE,0,0,0,None,None
-51,realTime,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
-52,realTime,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
-53,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
-54,realTime,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
-55,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
-56,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
-57,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
-58,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
-59,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
-60,realTime,GroundCommands2,10,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
+46,realTime,GroundCommands2,10,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
+47,realTime,ICR3VProt,12,V,43,NONE,7,2,3,3V Prot,ICR 3V Proteted
+48,realTime,ICR2dot5V,12,V,43,NONE,7,3,3,2.5V,ICR 2.5V
+49,realTime,ICR2dot5VProt,12,V,43,NONE,7,4,3,2.5V Prot,ICR 2.5V Protected
+50,realTime,rf6,12,-,0,NONE,0,0,0,None,None
+51,realTime,rf7,12,-,0,NONE,0,0,0,None,None
+52,realTime,MuxTest,12,V,43,NONE,7,5,3,Sensor Power,Sensor Power Voltage at the ICR
+53,realTime,LtVGACtl,12,V,42,NONE,1,4,3,VGA Control,Control Voltage to the Variable Gain Amplifier (VGA)
+54,realTime,pad,4,-,34,NONE,0,0,0,None,Unused
+55,realTime,IHUdiagData,32,-,18,NONE,3,2,0,Diagnostic Info,Diagnostic Data on IHU Performance
+56,realTime,pad1,1,-,0,NONE,0,0,0,NONE,Filler
+57,realTime,wodSize,8,000s,36,NONE,3,3,0,WOD Stored,Number of WOD data payloads kept for each of Science and Housekeeping.  In hundreds
+58,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
+59,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
+60,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
 61,realTime,pad2,17,-,0,NONE,0,0,0,NONE,Filler
+
 
 
 
