@@ -59,7 +59,8 @@
 57,realTime,swCmds,32,-,35,NONE,7,6,0,Diagnostic,ICR Diagnostic information
 58,realTime,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 59,realTime,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
-60,realTime,GroundCommands,10,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
+60,realTime,GroundCommands2,10,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
 61,realTime,pad2,17,-,0,NONE,0,0,0,NONE,Filler
+
 
 
