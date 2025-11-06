@@ -47,5 +47,3 @@
 45,RT,C2CStatus,2,-,COMMAND_STATUS,Computer Software,3,5,0,Command Control, Command & Control Status
 46,RT,GroundCommands2,10,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
 47,RT,Pad,46,-,0,NONE,0,0,0,NONE,NONE
-
-
