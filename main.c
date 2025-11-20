@@ -1601,6 +1601,8 @@ void get_tlm_fox() {
 
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
+    encodeA(b, 53 + head_offset, groundCommandCount);
+	  
     if (mode == BPSK) {	  
       encodeA(b_max, 51 + head_offset, status);
       encodeA(b_min, 51 + head_offset, status);
