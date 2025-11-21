@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v2.2\n"
+echo -e "\nupdate script for CubeSatSim v2.1\n"
 
 FLAG=0
 checkout=0
@@ -263,7 +263,7 @@ if [ ! -d "/home/pi/fctelem" ]; then
 	mkdir /home/pi/fctelem/public_html
 	cd fctelem
 	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
-	unzip -u fctelem.zip
+	unzip fctelem.zip
 	FLAG=1
 elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	echo "Updating fctelem binary to version v0.2 for FUNcube mode"
@@ -273,61 +273,15 @@ elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
 	sudo mv fcdecode.conf fcdecode.conf.bk
 	sudo mv fctelem.zip fctelem.zip.1
 	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
-	unzip -u fctelem.zip
+	unzip fctelem.zip
 	FLAG=1
 fi
-
-if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050" ]; then
-	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
-	sudo apt-get install -y libi2c-dev
-	cd
-	git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
-	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
-	sudo make install
-	make payload
-fi
-
-cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
-git checkout master
-git pull --no-rebase > .updated_p
-
-if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
-
-	echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
-	sudo make install
-	make payload
-else
-	echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
-fi 
-
-if [ ! -f "/home/pi/raspberry-pi-bme280/bme280" ]; then
-	echo "Installing raspberry-pi-bme280"
-	sudo apt-get install -y libi2c-dev
-	cd
-	git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
-	cd raspberry-pi-bme280
-	git checkout payload
-	make 
-fi
-
-cd /home/pi/raspberry-pi-bme280
-git checkout payload
-git pull --no-rebase > .updated_p
-
-if [[ $(grep 'changed' /home/pi/raspberry-pi-bme280/.updated_p) ]]; then
-
-	echo "updating raspberry-pi-bme280"
-	make
-
-else
-	echo "nothing to do for raspberry-pi-bme280."
-fi 
 
 if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
 	sudo rm /var/lib/dpkg/info/python3-pip.list
 	sudo apt install python3-pip --reinstall
-	sudo apt-get install -y python3-smbus libusb-1.0 
+	sudo apt-get install -y python3-smbus libusb-1.0 -y
 	cd
 	git clone https://github.com/csete/fcdctl.git
 	cd fcdctl
@@ -336,22 +290,24 @@ fi
 
 cd /home/pi/pi-power-button
 
-  git pull --no-rebase > .updated_p
-
   git checkout master
 
-#  grep 'changed' /home/pi/pi-power-button/.updated_p
-#  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
+  git pull --no-rebase > .updated_p
+
+  grep 'changed' /home/pi/pi-power-button/.updated_p
+  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
   
     echo "updating pi-power-button."
+
+#    git checkout master
     
     script/install
 
     FLAG=1
 
- # else
- #   echo "nothing to do for pi-power-button."
- # fi 
+  else
+    echo "nothing to do for pi-power-button."
+  fi 
 
 cd /home/pi/ssdv
 
