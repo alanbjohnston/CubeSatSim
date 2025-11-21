@@ -336,7 +336,7 @@ cd /home/pi/pi-power-button
 
   git pull --no-rebase > .updated_p
 
-  git checkout next
+  git checkout master
 
 #  grep 'changed' /home/pi/pi-power-button/.updated_p
 #  if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
