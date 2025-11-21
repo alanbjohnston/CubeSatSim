@@ -648,13 +648,16 @@ int main(int argc, char * argv[]) {
 	   
    }
 
-#ifdef PI_SENSORS
-	payload = pi_sensors(buffer2);  
-	printf("pi_sensors status: %d \n", payload);     
-#else	   
+
+  
+   
 	payload = get_payload_serial(FALSE); // not debug
-    printf("get_payload_status: %d \n", payload);  
-#endif	   
+    printf("get_payload_status: %d \n", payload);
+	if (payload == FALSE) {
+		payload = pi_sensors(buffer2);  
+		printf("pi_sensors status: %d \n", payload);   
+	}
+  
 	fflush(stdout); 
 //	printf("String: %s\n", buffer2);       
 	fflush(stdout);   
