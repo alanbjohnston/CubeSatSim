@@ -1,6 +1,17 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v2.1\n"
+echo -e "\ninstallation script for CubeSatSim v2.2\n"
+
+ if [[ $(grep '11.' /etc/debian_version) ]]; then
+    echo "Installing on Debian 11 (Bullseye)"
+  else
+    echo "The OS is not Debian 11 (Bullseye)!"
+	echo "Installation is not likely to work."
+	echo "It is recommended you start with"
+ 	echo "Bullseye as your OS."
+	echo
+	sleep 10
+  fi
 
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
@@ -112,7 +123,7 @@ mkdir /home/pi/fctelem
 mkdir /home/pi/fctelem/public_html
 cd fctelem
 wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
-unzip fctelem.zip
+unzip -u fctelem.zip
 
 cd
 echo "Installing fcdctl to set FUNcubeDongle Pro gain"
