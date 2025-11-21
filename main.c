@@ -2948,7 +2948,7 @@ int pi_sensors(char *buffer)
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
 
 	strcat(buffer, " GPS 0.0 0.0 0.0 TMP 0.0"); // place holders for GPS and diode temp
-
+/*
 	strcat(buffer, " YPR ");
 	
 	sensor_read = sopen("/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/ypr");  // read MPU if present 
@@ -2960,7 +2960,7 @@ int pi_sensors(char *buffer)
 	strcat(buffer, sensor_buffer);  // no need to remove newline at end
 	
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
-
+*/
 	if (strcmp(buffer, "OK BME280 0.0 0.0 0.0 0.0 MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 GPS 0.0 0.0 0.0 TMP 0.0 YPR 0.0 0.0 0.0") == 0)
 		return (0);
 	else		
