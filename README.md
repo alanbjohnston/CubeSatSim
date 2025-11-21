@@ -1,10 +1,16 @@
 # CubeSatSim
 
-The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org).
+The CubeSat Simulator https://github.com/alanbjohnston/CubeSatSim/wiki is a low cost satellite emulator that runs on solar panels and batteries, transmits UHF radio telemetry, has a 3D printed frame, and can be extended by additional sensors and modules.  This project is sponsored by the not-for-profit [Radio Amateur Satellite Corporation, AMSAT®](https://amsat.org) https://CubeSatSim.org
+
+<img width="500" alt="CubeSatSim v2" src="https://CubeSatSim.org/v2/cubesatsim%20v2%20complete.png">
 
 The three custom PCBs are the Main, Battery and Solar boards.  Information including schematics and gerbers is in https://CubeSatSim.org/hardware
 
-<img width="200" alt="cubesatsim-main-v2 0 1_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-main-v2.0_top.png"> <img width="200" alt="cubesatsim-battery-v2 0_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-battery-v2.0.1_top.png"> <img width="200" alt="cubesatsim-solar-v2 0_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/b3178fc979a88031f06365590ba47a358158fd73/hardware/v2.0/cubesatsim-solar-v2.0.1_top.png">
+<img width="200" alt="cubesatsim-main-v2 0 1_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/628fd65edbb01fb772a9f223605d969a0aad14bd/hardware/v2.1/cubesatsim-main-v2.1.0_top.png"> <img width="200" alt="cubesatsim-battery-v2 0_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/4d079b486116180071c4dbf64ae2464518a63bdd/hardware/v2.1/cubesatsim-battery-v2.1.0_top.png"> <img width="200" alt="cubesatsim-solar-v2 0_top" src="https://github.com/alanbjohnston/CubeSatSim/blob/c904c66d7c8fb44a3d088d0cbebf24903cf3572c/hardware/v2.1/cubesatsim-solar-v2.1.0_top.png">
+
+For information about the AMSAT STEM education program based on the CubeSatSim, see https://CubeSatSim.org/EducatorsGuide
+
+For STEM activities to do with the CubeSatSim, see the https://CubeSatSim.org/ActivityGuides
 
 There are several hardware versions and software branches to go with them - see below for information.
 

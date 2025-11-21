@@ -47,6 +47,8 @@ sudo sed -i 's/update to/update\nto/g' /etc/motd
 
 sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
 
+sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+
 cd /home/pi/CubeSatSim
 
 git pull --no-rebase > .updated
@@ -404,7 +406,7 @@ cd /home/pi/ssdv
 #    sudo apt-get update && sudo apt-get dist-upgrade -y
     sudo apt-get update -y
     sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 python3-pil
-    sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
+    sudo pip3 install -y adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
 
   fi
 

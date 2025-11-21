@@ -1,5 +1,7 @@
 This code for the Raspberry Pi Pico W supports the built-in BME-280 and MPU-6050 sensors on the Main board and adds support for Adafruit.io
 
+Here is a ZIP file of these files: https://github.com/user-attachments/files/21951798/Payload_BME280_MPU6050_AIO.zip
+
 To use this code, you will need to create a Free account at https://io.adafruit.com
 
 You will need to configure your Adafruit.io account information and your WiFi credentials in the edit_this_config_and_rename.h file

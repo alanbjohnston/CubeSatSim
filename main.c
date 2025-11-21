@@ -1642,40 +1642,40 @@ void get_tlm_fox() {
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 
-	      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
-	      {	     
+      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
+      {	        	    
+	      encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+	      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+	      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
 
-	      		  encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-			      encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-			      encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	    
-			      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
-			      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
-			      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
-			  
-				  encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
-			      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] * 10.0 + 0.5)); // Altitude
-		//	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
-			      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
-			      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
-		      encodeA(b_max, 48 + head_offset, (int)(sensor_max[DTEMP] * 10 + 0.5) + 2048);
-				  
-		      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1]));
-		      encodeA(b_max, 0 + head_offset, (int)(sensor_max[XS2]));
-		      encodeB(b_max, 1 + head_offset, (int)(sensor_max[XS3]));
-		  }
-	      else
-	      {	        	    
-		      encodeB(b_max, 4 + head_offset, 2048); // 0
-		      encodeA(b_max, 6 + head_offset, 2048); // 0
-		      encodeB(b_max, 7 + head_offset, 2048); // 0	    
-		      encodeB(b_max, 40 + head_offset, 2048);
-		      encodeA(b_max, 42 + head_offset, 2048);
-		      encodeB(b_max, 43 + head_offset, 2048);
-	
-		      encodeA(b_max, 48 + head_offset, 2048);
-	//	      encodeB(b_max, 49 + head_offset, 2048);
-	      }
+	      encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5)); // Pressure
+	      encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] / 10.0 + 0.5)); // Altitude
+	      encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
+	      encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
+	      encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 
+	      encodeA(b_max, 48 + head_offset, (int)(sensor_max[DTEMP] * 10 + 0.5) + 2048);
+//	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
+	      encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5)); 	
+	      encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
+
+	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1]));
+	      encodeA(b_max, 0 + head_offset, (int)(sensor_max[XS2]));
+	      encodeB(b_max, 1 + head_offset, (int)(sensor_max[XS3]));
+      }	  
+      else
+      {	        	    
+	      encodeB(b_max, 4 + head_offset, 2048); // 0
+	      encodeA(b_max, 6 + head_offset, 2048); // 0
+	      encodeB(b_max, 7 + head_offset, 2048); // 0	    
+
+	      encodeB(b_max, 40 + head_offset, 2048);
+	      encodeA(b_max, 42 + head_offset, 2048);
+	      encodeB(b_max, 43 + head_offset, 2048);
+
+	      encodeA(b_max, 48 + head_offset, 2048);
+//	      encodeB(b_max, 49 + head_offset, 2048);
+      }	  	      
       encodeA(b_min, 12 + head_offset, (int)(voltage_min[map[PLUS_X]] * 100));
       encodeB(b_min, 13 + head_offset, (int)(voltage_min[map[PLUS_Y]] * 100));
       encodeA(b_min, 15 + head_offset, (int)(voltage_min[map[PLUS_Z]] * 100));
@@ -1698,22 +1698,48 @@ void get_tlm_fox() {
       encodeB(b_min, 31 + head_offset, ((int)(other_min[SPIN] * 10)) + 2048);
       encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);	    
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
+	    
+      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
+      {	        
+	      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
+	      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
+	      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
 
-	      if (sensor_min[TEMP] != 1000.0) // make sure values are valid
-	      {	   
-		      encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
-		      encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
-		      encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048); // Zaccel	
-		      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
-		      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
-		      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
-			  
-		      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
-		      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] * 10.0 + 0.5)); // Altitude
-		      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
-		      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
-		      encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);
-	//	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
+	      encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5)); // Pressure
+	      encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] / 10.0 + 0.5)); // Altitude
+	      encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
+	      encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
+	      encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
+
+	      encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);
+//	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
+	      encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5)); 	    
+	      encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
+
+	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1]));
+	      encodeA(b_min, 0 + head_offset, (int)(sensor_min[XS2]));
+	      encodeB(b_min, 1 + head_offset, (int)(sensor_min[XS3]));	      	      	      
+    }      
+      else
+      {	        	    
+	      encodeB(b_min, 4 + head_offset, 2048); // 0
+	      encodeA(b_min, 6 + head_offset, 2048); // 0
+	      encodeB(b_min, 7 + head_offset, 2048); // 0	    
+
+	      encodeB(b_min, 40 + head_offset, 2048);
+	      encodeA(b_min, 42 + head_offset, 2048);
+	      encodeB(b_min, 43 + head_offset, 2048);
+
+	      encodeA(b_min, 48 + head_offset, 2048);
+//	      encodeB(b_min, 49 + head_offset, 2048);
+      }	 
+    }    
+    encodeA(b, 30 + head_offset, BAT2Voltage);
+
+    encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
+
+    encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5)); // Pressure
+    encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5)); // Altitude
 
 	
 		      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1]));
@@ -1796,6 +1822,8 @@ void get_tlm_fox() {
 
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
+    encodeA(b, 53 + head_offset, groundCommandCount);
+	  
     if (mode == BPSK) {	  
       encodeA(b_max, 51 + head_offset, status);
       encodeA(b_min, 51 + head_offset, status);
