@@ -19,7 +19,6 @@
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#define PI_SENSORS
 #include "main.h"
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
