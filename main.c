@@ -704,7 +704,8 @@ int main(int argc, char * argv[]) {
 			printf("Simulated Payload Failure.\n");
 		}
 
-	    if (!sim_mode) {
+////	    if (!sim_mode) {
+		{	
         if ((sensor_payload[0] == 'O') && (sensor_payload[1] == 'K')) // only process if valid payload response
         {
 //		  printf("Valid Payload!\n");  	
@@ -757,12 +758,13 @@ int main(int argc, char * argv[]) {
 	      	newGpsTime = millis();  
       }
 
-    if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {	   
+    if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {
+		printf("Generating simulated payload telemetry\n");
 		if (atmosphere == 0) {
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
 			sensor[ALT] = 400;
-			strcpy(sensor_string[ALT], "400");
+			strcpy(sensor_string[ALT], "30000");
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
 			sensor[TEMP] = 0;	
