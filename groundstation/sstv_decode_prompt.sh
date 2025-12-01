@@ -4,9 +4,11 @@ echo "Script to decode SSTV using QSSTV with rtl_fm"
 
 echo
 
-sudo systemctl stop openwebrx
+sudo systemctl stop openwebrx  &>/dev/null
 
 sudo modprobe snd-aloop
+
+sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -16,7 +18,7 @@ sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp  &>/dev/null
 
 pkill -o chromium &>/dev/null
 
@@ -27,6 +29,9 @@ sudo killall -9 java &>/dev/null
 sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
 #echo "s" >> .mode
 
@@ -65,7 +70,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ]; then
 frequency=434900000
 echo "Frequency is" $frequency
 echo
-echo "If your CubeSatSim is transmitting in SSTV mode (mode 5) you should get images."
+echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
 echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "Other" ]; then
@@ -128,7 +133,10 @@ set -- $value
 
 #rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 
 #rtl_fm -M fm -f 434.9M -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
-rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
+
+#rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
+rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
+#rtl_fm -M fm -f $frequency -s 48k | aplay -D plughw:${2:0:1},0,1 -r 48000 -t raw -f S16_LE -c 1
 
 sleep 5
 

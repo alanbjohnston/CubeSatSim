@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Pacsat
+GenericName=Pacsat Loopback
+Comment=Pacsat
+Exec=/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat.sh"
+Icon=/home/pi/Icons/pacsat.png
+Terminal=true
+Type=Application
+Categories=HamRadio;
+Keywords=APRS;

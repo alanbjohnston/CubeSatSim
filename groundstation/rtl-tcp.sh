@@ -23,13 +23,15 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
-sudo systemctl stop openwebrx
+sudo systemctl stop openwebrx &>/dev/null
 
 sleep 2
 
 pkill -o chromium &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp &>/dev/null
+
+sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 java &>/dev/null
 
@@ -43,12 +45,22 @@ sudo killall -9 qsstv &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
-sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
+#sudo /bin/sh -c '/usr/local/bin/rtl_tcp -a $(hostname -I|cut -f1 -d " ")'
+sudo systemctl start rtl_tcp &>/dev/null
+
+sudo journalctl -af -u rtl_tcp &
+
+while [[ $(sudo systemctl status rtl_tcp | grep "Active: active (running)") ]]
+do
+  sleep 5
+done  
 
 sleep 5
 

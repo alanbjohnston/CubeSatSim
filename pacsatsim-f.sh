@@ -1,49 +1,52 @@
 #!/bin/bash
 
-# script to auto decode packet using rtl_fm and Direwolf
+# script to auto decode packet using rtl_fm and Direwolf and run Pacsat
+
+export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+
+#sudo systemctl stop cubesatsim
+
+#sudo systemctl stop transmit
+
+sudo systemctl stop command &>/dev/null
 
 sudo modprobe snd-aloop
 
-sudo systemctl stop openwebrx
+#sudo systemctl stop openwebrx
 
-sudo systemctl stop rtl_tcp
+#sudo systemctl stop rtl_tcp &>/dev/null
 
-pkill -o chromium &>/dev/null
+#pkill -o chromium &>/dev/null
 
-sudo killall -9 rtl_fm &>/dev/null
+#sudo killall -9 rtl_fm &>/dev/null
 
-sudo killall -9 sdrpp &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#udo killall -9 aplay &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 qsstv &>/dev/null
 
-sudo killall -9 qsstv &>/dev/null
+#sudo killall -9 rtl_tcp &>/dev/null
 
-sudo killall -9 rtl_tcp &>/dev/null
+#sudo killall -9 java &>/dev/null
 
-sudo killall -9 java &>/dev/null
+#sudo killall -9 CubicSDR &>/dev/null
 
-sudo killall -9 CubicSDR &>/dev/null
-
-sudo killall -9 zenity &>/dev/null
-
-sudo /etc/init.d/alsa-utils stop
-sudo /etc/init.d/alsa-utils start
+#sudo killall -9 zenity &>/dev/null
 
 echo
 
-frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
+#frequency=$(zenity --list 2>/dev/null --width=410 --height=360 --title="Packet Decoding with Direwolf" --text="Choose the frequency for packet decoding" --column="kHz" --column="Application" 144390 "APRS US 2m" 434900 "CubeSatSim" 144800 "APRS European 2m" 145175 "APRS Australian 2m" Other "Choose another frequency" 145825 "APRS on ISS" 437100 "Serenity CubeSat 4800 bps" Serenity "Test Serenity CubeSat decoding with WAV file" APRS "Test APRS decoding with CubeSatSim WAV file")
 
 #echo $frequency
 
-if [ -z "$frequency" ]; then 
+#if [ -z "$frequency" ]; then 
 
-echo "No choice made.  Exiting."
+#echo "No choice made.  Exiting."
 
-sleep 3
+#sleep 3
 
-exit
+#exit
 
 #echo "Choose the number for the packet decoding option:"
 #echo
@@ -60,7 +63,9 @@ exit
 
 #read -r choice
 
-fi
+choice=2
+
+#fi
 
 if [ "$choice" = "1" ] || [ "$frequency" = "144390" ]; then
 
@@ -70,7 +75,7 @@ elif [ "$choice" = "2" ] || [ "$frequency" = "434900" ] ; then
 
   frequency=434900000
   echo
-  echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
+  echo "If your Pacsat Ground Station is transmitting packets, you will see them here"
   echo
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "144800" ]; then
@@ -164,9 +169,9 @@ elif [ "$choice" = "8" ] || [ "$frequency" = "APRS" ] ; then
 
 fi
 
-echo
+#echo
 
-echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
+#echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
 
 echo
 
@@ -178,10 +183,17 @@ if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ] 
 
 else
 
-  echo -e "Auto decoding APRS packets on $frequency Hz"
+#  echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf & # -t 0 &
+#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
 
+  /usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/pacsatsim-df.sh"
+
+###  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
+
+  echo "Don't close the direwolf window or the Pacsatsim will stop running."
+
+  echo
 fi
 
 sleep 5
@@ -190,8 +202,10 @@ value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
 set -- $value
 
-#rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
-#rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,1 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
-rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
+#rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
+
+cd /home/pi/pi_pacsat/Debug
+
+./pi_pacsat -c pacsat.config -d /home/pi/PacSat
 
 sleep 5

@@ -2,7 +2,7 @@
 Name=APRS Decode using Direwolf
 GenericName=Decodes APRS using rtl_fm and Direwolf
 Comment=APRS signals
-Exec=/home/pi/CubeSatSim/groundstation/aprs.sh
+Exec=/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/packet.sh"
 Icon=/home/pi/Icons/aprs.png
 Terminal=true
 Type=Application

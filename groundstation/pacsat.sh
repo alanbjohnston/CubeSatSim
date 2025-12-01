@@ -4,21 +4,29 @@
 
 sudo modprobe snd-aloop
 
-/home/pi/CubeSatSim/config -I
+sudo systemctl stop cubesatsim >/dev/null 2>&1
 
-sudo systemctl stop command &>/dev/null
+sudo systemctl stop transmit >/dev/null 2>&1
 
-sudo systemctl stop openwebrx &>/dev/null
+sudo systemctl stop command >/dev/null 2>&1
 
-sudo systemctl stop rtl_tcp &>/dev/null
+#/home/pi/CubeSatSim/config -I
+
+sudo systemctl stop command >/dev/null 2>&1
+
+sudo systemctl stop openwebrx >/dev/null 2>&1
+
+sudo systemctl stop rtl_tcp >/dev/null 2>&1
 
 pkill -o chromium &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+sudo killall -9 sdrpp &>/dev/null
+
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -32,48 +40,67 @@ sudo killall -9 zenity &>/dev/null
 
 echo
 
-value=`cat /home/pi/CubeSatSim/sim.cfg`
-echo "$value" > /dev/null
-set -- $value
+#sudo systemctl restart pacsatsim
 
-echo "Receive frequency is $8 MHz"	
-echo "Transmit frequency is $7 MHz"	
-echo 
-echo "To change, quit and type CubeSatSim/config -F"
-echo
+#sudo /etc/init.d/alsa-utils stop
+#sudo /etc/init.d/alsa-utils start
 
-frequency="$8e6"
+
+#echo "Waiting 10 seconds for Pacsatsim to start"
+
+#sleep 10
+
+#value=`cat /home/pi/CubeSatSim/sim.cfg`
+#echo "$value" > /dev/null
+#set -- $value
+
+#echo "Receive frequency is $8 MHz"	
+#echo "Transmit frequency is $7 MHz"	
+#echo 
+#echo "To change, quit and type CubeSatSim/config -F"
+#echo
+
+#frequency="$8e6"
 
 #echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
 
 #echo
 
-if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+echo 
+echo "The Pacsat Ground Station are running on this Pi using FM receiver and rpitx transmitter"
+echo
 
-	echo -e "Direwolf using USB Sound Card (FM Transceiver) on $frequency Hz"
-	
-	direwolf -P+ -D1 -qd -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14.conf -t 0 &
+#cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
-else
+#setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
-	echo -e "Direwolf using RTL-SDR on $frequency Hz"
-	
-	direwolf -P+ -D3 -r 48000 -qd -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf -t 0 &
-	
-	sleep 5
-	
-	value=`aplay -l | grep "Loopback"`
-	echo "$value" > /dev/null
-	set -- $value
-	
-	#rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
-	rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1 &
+#direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  # &
+#/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
 
-fi
+/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-d.sh"
+
+arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
+
+echo "Don't close the direwolf window or the Pacsatsim will stop running."
 
 cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
-sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
+setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
+
+
+#cd /home/pi/Desktop/PacSatGround_0.46m_linux/
+
+#sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
+
+cd
+
+#sudo systemctl stop pacsatsim 
+
+sleep 10
+
+#echo "Stopping Pacsatsim"
+
+#$SHELL
 
 
 

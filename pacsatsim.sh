@@ -14,15 +14,15 @@ sudo modprobe snd-aloop
 
 #sudo systemctl stop openwebrx
 
-sudo systemctl stop rtl_tcp &>/dev/null
+#sudo systemctl stop rtl_tcp &>/dev/null
 
 #pkill -o chromium &>/dev/null
 
-sudo killall -9 rtl_fm &>/dev/null
+#sudo killall -9 rtl_fm &>/dev/null
 
-sudo killall -9 direwolf &>/dev/null
+#sudo killall -9 direwolf &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#udo killall -9 aplay &>/dev/null
 
 #sudo killall -9 qsstv &>/dev/null
 
@@ -183,10 +183,17 @@ if [ "$choice" = "7" ] || [ "$choice" = "8" ]  || [ "$frequency" = "Serenity" ] 
 
 else
 
-  echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
+#  echo -e "Auto decoding APRS Pacsat packets on $frequency Hz"
 
-  direwolf -P+ -D1 -qd -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
+#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
 
+  /usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/pacsatsim-d.sh"
+
+  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
+
+  echo "Don't close the direwolf window or the Pacsatsim will stop running."
+
+  echo
 fi
 
 sleep 5

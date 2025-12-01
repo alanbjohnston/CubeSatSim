@@ -2,7 +2,7 @@
 Type=Application
 Exec=/home/pi/CubeSatSim/groundstation/fox-download.sh
 Name=FoxTelem Download
-Comment=FIAB-v3
+Comment=FIAB-v4
 Icon=/home/pi/Icons/FoxTelemDownload.png
 Path=/home/pi
 Terminal=true
