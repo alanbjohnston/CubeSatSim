@@ -23,7 +23,7 @@ if [ "$1" = "u" ]; then
 
 fi
 
-sudo apt-get install -y python3-smbus
+sudo apt-get install -y python3-smbus cmake
 
 sudo sed -i 's/update.sh/update /g' /etc/motd
 
@@ -374,16 +374,18 @@ cd /home/pi/direwolf
 
 #git status | grep 'invert'
 
-if [[ ! $(git status | grep 'invert') ]]; then
+if [[ ! $(git status | grep 'master-sync-invert') ]]; then
 
-	echo "updating direwolf to ptt invert version"
+	echo "updating direwolf to master-sync-invert version"
 
 	git pull --no-rebase
-	git checkout invert
-	make clean	
-	make -j	
+	git checkout master-sync-invert
+	mkdir build 
+	cd build
+	cmake ..
+	make -j4
 	sudo make install
-	make install-rpi
+	make install-conf
 	cd
 
 fi
