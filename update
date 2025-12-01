@@ -307,7 +307,7 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	
 	cd
 	
-	git clone https://github.com/ac2cz/iors_common.git
+	git clone https://github.com/alanbjohnston/iors_common.git
 	
 	cd iors_common/Debug/
 	
