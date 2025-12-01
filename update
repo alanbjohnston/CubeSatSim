@@ -354,10 +354,10 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	
 	tar -xzf PacsatGround_unix_0_46n.tar.gz -C /home/pi/Desktop
 	
-	rm PacSatGround_0.46n_linux.tar.gz
+	rm PacsatGround_unix_0_46n.tar.gz
 	
-	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacsatGround_unix_0_46n/spacecraft/
-	
+	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacsatGround/spacecraft/
+		
 	mkdir /home/pi/PacSatGround
 
 	sudo usermod -a -G gpio pi
