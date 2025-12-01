@@ -352,8 +352,8 @@ if __name__ == "__main__":
 	print(txLedOn)
 	GPIO.setup(txLed, GPIO.OUT)
 
-#	card = "Headphones"  # default using pcm audio output of Pi Zero
-	card = "Device" # using USB sound card for audio output	
+	card = "Headphones"  # default using pcm audio output of Pi Zero
+#	card = "Device" # using USB sound card for audio output	
 
 	print("Programming FM module!\n");	
 	output(pd, 1)
