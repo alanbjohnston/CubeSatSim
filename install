@@ -176,7 +176,7 @@ sudo raspi-config nonint do_vnc 0
 
 cd /tmp
 
-wget https://www.g0kla.com/pacsat/downloads/test/PacSatGround_0.46m_linux.tar.gz
+wget https://www.g0kla.com/pacsat/downloads/test/PacSatGround_0.46n_linux.tar.gz
 
 tar -xzf PacSatGround_0.46m_linux.tar.gz -C /home/pi/Desktop
 
