@@ -126,7 +126,7 @@ cd rpitx
 
 cd
 
-git clone https://github.com/ac2cz/iors_common.git
+git clone https://github.com/alanbjohnston/iors_common.git
 
 cd iors_common/Debug/
 
@@ -250,10 +250,17 @@ sudo raspi-config nonint do_legacy 0
   fi
   
   if [[ $(grep 'dtoverlay=dwc2' /boot/config.txt) ]]; then
-    echo "dtoverlay=dwc2 aalready in /boot/config.txt"
+   
+	if [[ $(grep 'dtoverlay=dwc2,dr_mode=peripheral' /boot/config.txt) ]]; then
+		echo "dtoverlay=dwc2,dr_mode=peripheral aalready in /boot/config.txt"
+	else
+		sudo sed -i 's/dtoverlay=dwc2/dtoverlay=dwc2,dr_mode=peripheral/g' /boot/config.txt
+		echo " adding dr_mode=peripheral to /boot/config.txt"
+	fi
+
   else
-    echo "adding dtoverlay=dwc2 to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=dwc2" >> /boot/config.txt'
+    echo "adding dtoverlay=dwc2,dr_mode=peripheral to /boot/config.txt"
+    sudo sh -c 'echo "\ndtoverlay=dwc2,dr_mode=peripheral" >> /boot/config.txt'
   fi
 
   if [[ $(grep 'modules-load=dwc2,g_ether' /boot/cmdline.txt) ]]; then
