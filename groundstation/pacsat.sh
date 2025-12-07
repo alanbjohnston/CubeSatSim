@@ -84,7 +84,7 @@ echo
 
 echo "Don't close the direwolf window or the Pacsatsim will stop running."
 
-cd /home/pi/Desktop/PacSatGround/
+cd /home/pi/Desktop/PacsatGround/
 
 setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
