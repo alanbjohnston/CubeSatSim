@@ -771,7 +771,7 @@ int main(int argc, char * argv[]) {
 		if (gps_read != NULL) {
 	    	fgets(cmdbuffer, 1000, gps_read);
 
-			const char *gpsTestStr[] = "2 32.3 -54 333\n";
+			const char gpsTestStr[] = "2 32.3 -54 333\n";
 			strcpy(cmdbuffer, gpsTestStr);
 			
 	    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
