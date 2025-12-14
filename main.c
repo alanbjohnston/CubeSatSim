@@ -355,7 +355,8 @@ int main(int argc, char * argv[]) {
 		} else
 			fprintf(stderr, "Pi GPS off");
 		fclose(gps_read);
-	}
+	} else
+		fprintf(stderr, "Error checking gps");
 
 	sensor_setup();
 
