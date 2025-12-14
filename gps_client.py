@@ -16,7 +16,7 @@ session = gps.gps(mode=gps.WATCH_ENABLE)
 start = time.perf_counter()
 
 try:
-    while session.read() == 0 and ((time.perf_counter(0 - start)) < 1):
+    while session.read() == 0 and ((time.perf_counter() - start) < 1):
         print(gps.MODE_SET)
         print(session.valid)
         if not (gps.MODE_SET & session.valid):
