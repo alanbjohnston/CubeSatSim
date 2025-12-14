@@ -6,6 +6,8 @@ run this way: python3 example1.py.txt
 
 # from https://gpsd.gitlab.io/gpsd/gpsd-client-example-code.html
 
+# this client is for the CubeSatSim Lite which does not have a Pico microcontroller
+
 import gps               # the gpsd interface module
 
 session = gps.gps(mode=gps.WATCH_ENABLE)
@@ -16,21 +18,22 @@ try:
             # not useful, probably not a TPV message
             continue
 
-        print('Mode: %s(%d) Time: ' %
-              (("Invalid", "NO_FIX", "2D", "3D")[session.fix.mode],
-               session.fix.mode), end="")
+#        print('Mode: %s(%d) Time: ' %
+#              (("Invalid", "NO_FIX", "2D", "3D")[session.fix.mode],
+#               session.fix.mode), end="")
         # print time, if we have it
-        if gps.TIME_SET & session.valid:
-            print(session.fix.time, end="")
-        else:
-            print('n/a', end="")
+        print("%d ", session.fix.mode)
+#        if gps.TIME_SET & session.valid:
+#            print(session.fix.time, end="")
+#        else:
+#            print('n/a', end="")
 
         if ((gps.isfinite(session.fix.latitude) and
              gps.isfinite(session.fix.longitude))):
-            print(" Lat %.6f Lon %.6f" %
+            print(" %.6f %.6f" %
                   (session.fix.latitude, session.fix.longitude))
         else:
-            print(" Lat n/a Lon n/a")
+            print(" 0 0")
 
 except KeyboardInterrupt:
     # got a ^C.  Say bye, bye
