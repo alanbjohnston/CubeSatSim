@@ -66,7 +66,7 @@
 #define IHU_TEMP 2
 #define SPIN 1
 
-#define OFF - 1
+#define  - 1
 #define ON 1
 #define CHECK 0
 #define DISABLED 0
@@ -235,6 +235,7 @@ int fail_rnd_mode = FALSE;
 int battery_saver_mode = FALSE;
 long int loopTime;
 long int failTime = 0;
+int gps_mode = OFF;
 
 int error_count = 0;
 int groundCommandCount = 0;
