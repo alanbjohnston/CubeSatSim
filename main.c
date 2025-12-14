@@ -337,7 +337,7 @@ int main(int argc, char * argv[]) {
 	if (gps_read != NULL) {
     	fgets(cmdbuffer, 1000, gps_read);
     	fprintf(stderr, "gps read: %s\n", cmdbuffer);
-		if ((cmdbuffer[0] == '-') and (cmdbuffer[1] == '1'))
+		if ((cmdbuffer[0] == '-') && (cmdbuffer[1] == '1'))
 		{
 			gps_status = OFF;
 			fprintf(stderr, "Pi GPS off\n");
