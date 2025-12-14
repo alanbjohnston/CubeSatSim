@@ -770,6 +770,10 @@ int main(int argc, char * argv[]) {
 	
 		if (gps_read != NULL) {
 	    	fgets(cmdbuffer, 1000, gps_read);
+
+			char *gpsTestStr[] = "2 32.3 -54 333\n";
+			strcpy(cmdbuffer, gpsTestStr);
+			
 	    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
 			if ((cmdbuffer[0] == '2') || (cmdbuffer[0] == '3'))
 			{
