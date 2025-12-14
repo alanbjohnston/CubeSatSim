@@ -46,7 +46,7 @@ try:
         if ((gps.isfinite(session.fix.latitude) and
              gps.isfinite(session.fix.longitude))):
             print("%.6f %.6f %.6f" %
-                  (session.fix.latitude, session.fix.longitude), session.fix.altitude)
+                  (session.fix.latitude, session.fix.longitude, session.fix.altitude))
             lat = session.fix.latitude
             lon = session.fix.longitude 
             alt = session.fix.altitude     
@@ -59,5 +59,5 @@ except KeyboardInterrupt:
 
 # Got ^C, or fell out of the loop.  Cleanup, and leave.
 session.close()
-print("%.6f %.6f %.1f" % lat, lon, alt)
+print("%.6f %.6f %.1f" % (lat, lon, alt))
 exit(0)
