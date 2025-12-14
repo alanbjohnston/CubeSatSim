@@ -762,9 +762,47 @@ int main(int argc, char * argv[]) {
               token = strtok(NULL, space);
             }
           }
-	  
 
-          printf("\n");
+	 if (gps_status == TRUE) {
+		fprintf(stderr, "Checking Pi gps\n");
+		cmdbuffer[0] = '\0';
+		gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
+	
+		if (gps_read != NULL) {
+	    	fgets(cmdbuffer, 1000, gps_read);
+	    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
+			if ((cmdbuffer[0] == '2') || (cmdbuffer[0] == '3'))
+			{
+			  printf("Valid gps data!\n");  	
+	          int count1;
+	          char * token;
+	 
+	          const char space[2] = " ";
+	          token = strtok(cmdbuffer, space);
+	//	  printf("token: %s\n", token);	
+	          for (count1 = GPS; count1 < (GPS + 3); count1++) {
+	            if (token != NULL) {
+	              sensor[count1] = (float) atof(token);
+				  strcpy(sensor_string[count1], token);	
+	//              #ifdef DEBUG_LOGGING
+	              printf("sensor: %f ", sensor[count1]);  // print sensor data
+				  printf("Sensor String %d is %s\n",count1, sensor_string[count1]);
+	//              #endif
+	              token = strtok(NULL, space);
+	            }
+	          }
+	          printf("\n");
+	
+			} else {
+				fprintf(stderr, "No Pi gps available\n");
+			}
+			fclose(gps_read);
+		} else
+			fprintf(stderr, "Error checking gps");
+
+	 }
+			
+      printf("\n");
 //	  if (sensor[GPS1] != 0) {     		
 	  if ((sensor[GPS1] > -90.0) && (sensor[GPS1] < 90.0) && (sensor[GPS1] != 0.0))  { 
 		if (sensor[GPS1] != latitude) {  
