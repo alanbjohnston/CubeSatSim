@@ -341,24 +341,34 @@ int main(int argc, char * argv[]) {
 		{
 			gps_status = OFF;
 			fprintf(stderr, "Pi GPS off\n");
-		} else
+		} else {
 			gps_status = ON;
 			fprintf(stderr, "Pi GPS on\n");
+		}
 		fclose(gps_read);
 	} else
 		fprintf(stderr, "Error checking gps");
 	
     payload = OFF;
-    fprintf(stderr,"Opening serial\n");
-    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
-      fprintf(stderr,"Serial opened to Pico\n");	    
-//      payload = ON;	
-      payload = get_payload_serial(FALSE); 
-      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	 	
-	    
-    } else {
-      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
-    }
+
+	if (gps_status == OFF)
+	{	
+	    fprintf(stderr,"Opening serial\n");
+	    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+	      fprintf(stderr,"Serial opened to Pico\n");	    
+	//      payload = ON;	
+	      payload = get_payload_serial(FALSE); 
+	      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	 	
+		    
+	    } else {
+	      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
+	    }
+	}
+	else
+	{
+		payload = FALSE;
+		printf("get_payload_status not run since gps_status is ON\n");
+	}
 	
 	sensor_setup();
 
@@ -667,9 +677,17 @@ int main(int argc, char * argv[]) {
 
 
   
-   
-	payload = get_payload_serial(FALSE); // not debug
-    printf("get_payload_status: %d \n", payload);
+    if (gps_status == OFF) 
+	{
+		payload = get_payload_serial(FALSE); // not debug
+		printf("get_payload_status: %d \n", payload);
+	}
+	else 
+	{
+		payload = FALSE;
+		printf("get_payload_status not run since gps_status is ON\n");
+	}
+    
 	if (payload == FALSE) {
 		payload = pi_sensors(buffer2);  
 		printf("pi_sensors status: %d \n", payload);   
