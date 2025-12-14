@@ -329,7 +329,8 @@ int main(int argc, char * argv[]) {
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
   //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
-
+	
+	cmdbuffer[0] = '\0';
 	gps_status = OFF;
 	FILE *gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
 
