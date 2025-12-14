@@ -22,7 +22,7 @@ try:
 #              (("Invalid", "NO_FIX", "2D", "3D")[session.fix.mode],
 #               session.fix.mode), end="")
         # print time, if we have it
-        print("%d ", session.fix.mode)
+        print("%d " % session.fix.mode, end="")
 #        if gps.TIME_SET & session.valid:
 #            print(session.fix.time, end="")
 #        else:
