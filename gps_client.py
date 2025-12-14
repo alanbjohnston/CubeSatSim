@@ -43,7 +43,7 @@ try:
     #        else:
     #            print('n/a', end="")
         
-            if ((gps.isfinite(session.fix.latitude): 
+            if gps.isfinite(session.fix.latitude): 
                 lat = session.fix.latitude
             if gps.isfinite(session.fix.longitude):         
                 lon = session.fix.longitude 
