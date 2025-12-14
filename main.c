@@ -351,8 +351,9 @@ int main(int argc, char * argv[]) {
 		if (cmdbuffer[0] != '-')
 		{
 			gps_status = ON;
-			fprintf(stderr, "Pi GPS enabled");
-		}
+			fprintf(stderr, "Pi GPS on");
+		} else
+			fprintf(stderr, "Pi GPS off");
 		fclose(gps_read);
 	}
 
