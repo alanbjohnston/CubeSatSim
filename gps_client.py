@@ -11,14 +11,14 @@ run this way: python3 example1.py.txt
 import gps               # the gpsd interface module
 import time
 
-mode = -1    
-lat = 0    
-lon = 0    
-alt = 0
-
 try:
     
     session = gps.gps(mode=gps.WATCH_ENABLE)
+
+    mode = -1    
+    lat = 0    
+    lon = 0    
+    alt = 0
     
     start = time.perf_counter()
     
@@ -64,5 +64,5 @@ try:
     exit(0)
     
 except:
-    print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
+    print("-1 0 0 0)
     exit(0)
