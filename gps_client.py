@@ -60,5 +60,6 @@ try:
     
     # Got ^C, or fell out of the loop.  Cleanup, and leave.
     session.close()
+except:
 print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
 exit(0)
