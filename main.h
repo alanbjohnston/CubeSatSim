@@ -235,7 +235,7 @@ int fail_rnd_mode = FALSE;
 int battery_saver_mode = FALSE;
 long int loopTime;
 long int failTime = 0;
-int gps_mode = OFF;
+int gps_status = OFF;
 
 int error_count = 0;
 int groundCommandCount = 0;
