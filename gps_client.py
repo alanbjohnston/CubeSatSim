@@ -61,7 +61,7 @@ try:
     # Got ^C, or fell out of the loop.  Cleanup, and leave.
     session.close()
     print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
-    exit(0)
+#    exit(0)
     
 except:    
     print("-1 0 0 0")
