@@ -39,16 +39,17 @@
 #define PRES 3
 #define ALT 4
 #define HUMI 5
-#define GYRO_X 7 // MPU6050 is posisition 6
+#define GYRO_X 7 // MPU6050 label is posisition 6
 #define GYRO_Y 8
 #define GYRO_Z 9
 #define ACCEL_X 10
 #define ACCEL_Y 11
 #define ACCEL_Z 12
-#define GPS1 14 // GPS is position 13
-#define GPS2 15
-#define GPS3 16
-#define DTEMP 18  // TMP is position 17
+#define GPS 13 // GPS label
+#define GPS1 14 // latitude
+#define GPS2 15  // longitude
+#define GPS3 16  // altitude
+#define DTEMP 18  // TMP label is position 17
 #define XS1 20 // NEW user defined token will be position 19
 #define XS2 21  
 #define XS3 22
