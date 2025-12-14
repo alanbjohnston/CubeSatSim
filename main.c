@@ -341,6 +341,20 @@ int main(int argc, char * argv[]) {
     } else {
       fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
     }
+	
+	gps_status = OFF;
+	FILE *gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
+	
+	if (gps_read != NULL) {
+    	fgets(cmdbuffer, 1000, gps_read);
+    	fprintf(stderr, "gps read: %s\n", gps_read);
+		if cmdbuffer[0] != '-')
+		{
+			gps_status = ON;
+			fprintf(stderr, "Pi GPS enabled");
+		}
+		fclose(gps_read);
+	}
 
 	sensor_setup();
 
