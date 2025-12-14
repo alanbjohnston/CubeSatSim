@@ -329,22 +329,10 @@ int main(int argc, char * argv[]) {
   FILE * file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1", "r");
   //file5 = popen("sudo rm /home/pi/CubeSatSim/camera_out.jpg.wav > /dev/null 2>&1", "r");
   pclose(file5);
-	
-    payload = OFF;
-    fprintf(stderr,"Opening serial\n");
-    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
-      fprintf(stderr,"Serial opened to Pico\n");	    
-//      payload = ON;	
-      payload = get_payload_serial(FALSE); 
-      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	    
-	    
-    } else {
-      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
-    }
-	
+
 	gps_status = OFF;
 	FILE *gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
-	
+
 	if (gps_read != NULL) {
     	fgets(cmdbuffer, 1000, gps_read);
     	fprintf(stderr, "gps read: %s\n", gps_read);
@@ -357,7 +345,19 @@ int main(int argc, char * argv[]) {
 		fclose(gps_read);
 	} else
 		fprintf(stderr, "Error checking gps");
-
+	
+    payload = OFF;
+    fprintf(stderr,"Opening serial\n");
+    if ((uart_fd = serialOpen("/dev/ttyAMA0", 115200)) >= 0) {  // was 9600
+      fprintf(stderr,"Serial opened to Pico\n");	    
+//      payload = ON;	
+      payload = get_payload_serial(FALSE); 
+      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	 	
+	    
+    } else {
+      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
+    }
+	
 	sensor_setup();
 
   if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
