@@ -21,9 +21,13 @@ try:
     session = gps.gps(mode=gps.WATCH_ENABLE)
     
     start = time.perf_counter()
-    
+
     try:
-        while (session.read() == 0) and ((time.perf_counter() - start) < 2) and (mode < 2):
+#        while (session.read() == 0) and ((time.perf_counter() - start) < 2) and (mode < 2):
+        while ((time.perf_counter() - start) < 2) and (mode < 2):
+            if session.waiting(2.0):
+                session.read()
+                
     #        print(gps.MODE_SET)
      #       print(session.valid)
             if (session.valid):
