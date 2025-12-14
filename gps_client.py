@@ -59,5 +59,5 @@ except KeyboardInterrupt:
 
 # Got ^C, or fell out of the loop.  Cleanup, and leave.
 session.close()
-print("%.6f %.6f %.1" % lat, lon, alt)
+print("%.6f %.6f %.1f" % lat, lon, alt)
 exit(0)
