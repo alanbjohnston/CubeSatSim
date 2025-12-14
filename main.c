@@ -348,7 +348,7 @@ int main(int argc, char * argv[]) {
 	if (gps_read != NULL) {
     	fgets(cmdbuffer, 1000, gps_read);
     	fprintf(stderr, "gps read: %s\n", gps_read);
-		if cmdbuffer[0] != '-')
+		if (cmdbuffer[0] != '-')
 		{
 			gps_status = ON;
 			fprintf(stderr, "Pi GPS enabled");
