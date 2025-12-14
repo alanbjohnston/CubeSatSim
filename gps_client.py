@@ -27,31 +27,31 @@ try:
     while (session.read() == 0) and ((time.perf_counter() - start) < 2) and (mode < 3):
 #        print(gps.MODE_SET)
  #       print(session.valid)
-        if not (gps.MODE_SET & session.valid):
+        if (session.valid):
             # not useful, probably not a TPV message
-            continue
+#            continue
 
 #        print('Mode: %s(%d) Time: ' %
 #              (("Invalid", "NO_FIX", "2D", "3D")[session.fix.mode],
 #               session.fix.mode), end="")
         # print time, if we have it
-        print("%d " % session.fix.mode, end="")
-        if (session.fix.mode > mode):
-            mode = session.fix.mode
-#        if gps.TIME_SET & session.valid:
-#            print(session.fix.time, end="")
-#        else:
-#            print('n/a', end="")
-
-        if ((gps.isfinite(session.fix.latitude) and
-             gps.isfinite(session.fix.longitude))):
-            print("%.6f %.6f %.6f" %
-                  (session.fix.latitude, session.fix.longitude, session.fix.altitude))
-            lat = session.fix.latitude
-            lon = session.fix.longitude 
-            alt = session.fix.altitude     
-        else:
-            print(" 0 0 0")
+            print("%d " % session.fix.mode, end="")
+            if (session.fix.mode > mode):
+                mode = session.fix.mode
+    #        if gps.TIME_SET & session.valid:
+    #            print(session.fix.time, end="")
+    #        else:
+    #            print('n/a', end="")
+    
+            if ((gps.isfinite(session.fix.latitude) and
+                 gps.isfinite(session.fix.longitude))):
+                print("%.6f %.6f %.6f" %
+                      (session.fix.latitude, session.fix.longitude, session.fix.altitude))
+                lat = session.fix.latitude
+                lon = session.fix.longitude 
+                alt = session.fix.altitude     
+            else:
+                print(" 0 0 0")
 
 except KeyboardInterrupt:
     # got a ^C.  Say bye, bye
