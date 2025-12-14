@@ -48,15 +48,14 @@ try:
                     lon = session.fix.longitude 
                 if gps.isfinite(session.fix.altitude):        
                     alt = session.fix.altitude     
-                print("%.6f %.6f %.6f" %
-                          (session.fix.latitude, session.fix.longitude, session.fix.altitude))
+#                print("%.6f %.6f %.6f" % (session.fix.latitude, session.fix.longitude, session.fix.altitude))
                
     #            else:
     #                print(" 0 0 0")
     
     except KeyboardInterrupt:
         # got a ^C.  Say bye, bye
-        print('')
+#        print('')
     
     # Got ^C, or fell out of the loop.  Cleanup, and leave.
     session.close()
