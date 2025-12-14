@@ -42,16 +42,18 @@ try:
     #            print(session.fix.time, end="")
     #        else:
     #            print('n/a', end="")
-    
-            if ((gps.isfinite(session.fix.latitude) and
-                 gps.isfinite(session.fix.longitude))):
-                print("%.6f %.6f %.6f" %
-                      (session.fix.latitude, session.fix.longitude, session.fix.altitude))
+        
+            if ((gps.isfinite(session.fix.latitude) 
                 lat = session.fix.latitude
+            if gps.isfinite(session.fix.longitude)         
                 lon = session.fix.longitude 
+            if gps.isfinite(session.fix.altitude):        
                 alt = session.fix.altitude     
-            else:
-                print(" 0 0 0")
+            print("%.6f %.6f %.6f" %
+                      (session.fix.latitude, session.fix.longitude, session.fix.altitude))
+           
+#            else:
+#                print(" 0 0 0")
 
 except KeyboardInterrupt:
     # got a ^C.  Say bye, bye
