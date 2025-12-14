@@ -15,10 +15,18 @@ session = gps.gps(mode=gps.WATCH_ENABLE)
 
 start = time.perf_counter()
 
+mode = -1
+
+lat = 0
+
+lon = 0
+
+alt = 0
+
 try:
-    while session.read() == 0 and ((time.perf_counter() - start) < 1):
-        print(gps.MODE_SET)
-        print(session.valid)
+    while (session.read() == 0) and ((time.perf_counter() - start) < 1.5) and (mode < 3):
+#        print(gps.MODE_SET)
+ #       print(session.valid)
         if not (gps.MODE_SET & session.valid):
             # not useful, probably not a TPV message
             continue
@@ -28,6 +36,8 @@ try:
 #               session.fix.mode), end="")
         # print time, if we have it
         print("%d " % session.fix.mode, end="")
+        if (session.fix.mode > mode):
+            mode = session.fix.mode
 #        if gps.TIME_SET & session.valid:
 #            print(session.fix.time, end="")
 #        else:
@@ -37,8 +47,11 @@ try:
              gps.isfinite(session.fix.longitude))):
             print("%.6f %.6f" %
                   (session.fix.latitude, session.fix.longitude))
+            lat = session.fix.latitude
+            lon = session.fix.longitude 
+            alt = session.fix.altitude     
         else:
-            print(" 0 0")
+            print(" 0 0 0")
 
 except KeyboardInterrupt:
     # got a ^C.  Say bye, bye
@@ -46,4 +59,5 @@ except KeyboardInterrupt:
 
 # Got ^C, or fell out of the loop.  Cleanup, and leave.
 session.close()
+print("%.6f %.6f %.1" % lat lon alt)
 exit(0)
