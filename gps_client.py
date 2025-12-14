@@ -55,7 +55,7 @@ try:
     
     except KeyboardInterrupt:
         # got a ^C.  Say bye, bye
-#        print('')
+        print('')
     
     # Got ^C, or fell out of the loop.  Cleanup, and leave.
     session.close()
