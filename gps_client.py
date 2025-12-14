@@ -14,6 +14,8 @@ session = gps.gps(mode=gps.WATCH_ENABLE)
 
 try:
     while 0 == session.read():
+        print(gps.MODE_SET)
+        print(session.valid)
         if not (gps.MODE_SET & session.valid):
             # not useful, probably not a TPV message
             continue
@@ -30,7 +32,7 @@ try:
 
         if ((gps.isfinite(session.fix.latitude) and
              gps.isfinite(session.fix.longitude))):
-            print(" %.6f %.6f" %
+            print("%.6f %.6f" %
                   (session.fix.latitude, session.fix.longitude))
         else:
             print(" 0 0")
