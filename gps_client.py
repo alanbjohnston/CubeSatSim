@@ -24,7 +24,7 @@ lon = 0
 alt = 0
 
 try:
-    while (session.read() == 0) and ((time.perf_counter() - start) < 1.5) and (mode < 3):
+    while (session.read() == 0) and ((time.perf_counter() - start) < 2) and (mode < 3):
 #        print(gps.MODE_SET)
  #       print(session.valid)
         if not (gps.MODE_SET & session.valid):
