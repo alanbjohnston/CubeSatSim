@@ -336,13 +336,14 @@ int main(int argc, char * argv[]) {
 
 	if (gps_read != NULL) {
     	fgets(cmdbuffer, 1000, gps_read);
-    	fprintf(stderr, "gps read: %s\n", gps_read);
-		if (cmdbuffer[0] != '-')
+    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
+		if ((cmdbuffer[0] == '-') and (cmdbuffer[1] == '1'))
 		{
+			gps_status = OFF;
+			fprintf(stderr, "Pi GPS off\n");
+		} else
 			gps_status = ON;
 			fprintf(stderr, "Pi GPS on\n");
-		} else
-			fprintf(stderr, "Pi GPS off\n");
 		fclose(gps_read);
 	} else
 		fprintf(stderr, "Error checking gps");
