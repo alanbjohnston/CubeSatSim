@@ -779,6 +779,10 @@ int main(int argc, char * argv[]) {
 			{
 			  printf("Valid gps data!\n"); 
 			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
+			  if (cmdbuffer[strlen(cmdbuffer) - 1] == '\n')
+				  cmdbuffer[strlen(cmdbuffer) - 1] = '\0';
+			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
+				
 	          int count1;
 	          char * token;
 	 
