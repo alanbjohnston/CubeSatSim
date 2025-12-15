@@ -784,7 +784,7 @@ int main(int argc, char * argv[]) {
 	          const char space[2] = " ";
 	          token = strtok(cmdbuffer, space);
 	//	  printf("token: %s\n", token);	
-	          for (count1 = GPS; count1 < (GPS + 3); count1++) {
+	          for (count1 = GPS; count1 < (GPS + 4); count1++) {
 	            if (token != NULL) {
 	              sensor[count1] = (float) atof(token);
 				  strcpy(sensor_string[count1], token);	
