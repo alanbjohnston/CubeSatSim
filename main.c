@@ -777,7 +777,8 @@ int main(int argc, char * argv[]) {
 	    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
 			if ((cmdbuffer[0] == '2') || (cmdbuffer[0] == '3'))
 			{
-			  printf("Valid gps data!\n");  	
+			  printf("Valid gps data!\n"); 
+			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
 	          int count1;
 	          char * token;
 	 
