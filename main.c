@@ -796,6 +796,7 @@ int main(int argc, char * argv[]) {
 	            }
 	          }
 	          printf("\n");
+			  strcpy(sensor_string[GPS], "GPS");		
 	
 			} else {
 				fprintf(stderr, "No Pi gps available\n");
