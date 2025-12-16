@@ -270,7 +270,7 @@ sudo raspi-config nonint do_legacy 0
 
 sudo sh -c 'echo "\n" >> /boot/config.txt'
 
-sudo sed -i 's/DEVICES=""/DEVICES="/dev/serial0"/g' /etc/default/gpsd
+sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
 
 changed=0
 value=`cat /home/pi/CubeSatSim/sim.cfg`
