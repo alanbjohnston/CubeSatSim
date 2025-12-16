@@ -404,9 +404,8 @@ if __name__ == "__main__":
 		print(f"Command run was: {e.cmd}")
 		print(f"Output of the command (stdout): {e.stdout}")
 		print(f"Error output of the command (stderr): {e.stderr}")
-	print(result.stdout)
 	
-	if (mode != 'e') and (result.stdout != "active"):
+	if (mode != 'e') and (e.stdout != "active"):
 		print("Programming FM module!\n");	
 		output(pd, 1)
 		output (ptt, 1)
