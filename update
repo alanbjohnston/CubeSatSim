@@ -49,7 +49,7 @@ sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # si
 
 sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
 
-sudo sed -i 's/DEVICES=""/DEVICES="/dev/serial0"/g' /etc/default/gpsd
+sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
 
 cd /home/pi/CubeSatSim
 
