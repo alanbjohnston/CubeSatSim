@@ -402,10 +402,11 @@ if __name__ == "__main__":
 	except subprocess.CalledProcessError as e:
 		print(f"Command failed with return code: {e.returncode}")
 		print(f"Command run was: {e.cmd}")
+		output = e.cmd
 		print(f"Output of the command (stdout): {e.stdout}")
 		print(f"Error output of the command (stderr): {e.stderr}")
 	
-	if (mode != 'e') and (e.stdout != "active"):
+	if (mode != 'e') and (output != "active"):
 		print("Programming FM module!\n");	
 		output(pd, 1)
 		output (ptt, 1)
