@@ -399,6 +399,9 @@ if __name__ == "__main__":
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
+		print(f"Command run was: {query}")
+		gpsd_status = result.stdout
+		print(f"Output of the command (stdout): {gpsd_status}")
 	except subprocess.CalledProcessError as e:
 #		print(f"Command failed with return code: {e.returncode}")
 		print(f"Command run was: {e.cmd}")
