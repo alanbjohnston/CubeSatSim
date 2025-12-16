@@ -397,8 +397,14 @@ if __name__ == "__main__":
 #	card = "Device" # using USB sound card for audio output	
 
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket.service"]
-	result = subprocess.run(query, capture_output=True, text=True, check=True)
-	print(result.stdout)
+	try:
+		result = subprocess.run(query, capture_output=True, text=True, check=True)
+	except subprocess.CalledProcessError as e:
+	    print(f"Command failed with return code: {e.returncode}")
+	    print(f"Command run was: {e.cmd}")
+	    print(f"Output of the command (stdout): {e.stdout}")
+	    print(f"Error output of the command (stderr): {e.stderr}")
+		print(result.stdout)
 	
 	if (mode != 'e') and (result.stdout != "active"):
 		print("Programming FM module!\n");	
