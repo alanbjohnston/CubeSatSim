@@ -1788,6 +1788,7 @@ elif [ "$1" = "-u" ]; then
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "gpsd set to ON"
+			sudo systemctl disable gpsd
 			sudo systemctl disable gpsd.socket
 			reboot=1
 		fi
@@ -1801,8 +1802,9 @@ elif [ "$1" = "-u" ]; then
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "gpsd set to OFF"
+			sudo systemctl enable gpsd
 			sudo systemctl enable gpsd.socket
-			reboot=1
+reboot=1
 		fi
 
 	fi
