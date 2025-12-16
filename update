@@ -53,6 +53,9 @@ sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero
 
 sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
 
+sudo systemctl disable gpsd > /dev/null 2>&1 
+sudo systemctl disable gpsd.socket > /dev/null 2>&1 
+
 cd /home/pi/CubeSatSim
 
 git pull --no-rebase > .updated
