@@ -396,7 +396,7 @@ if __name__ == "__main__":
 	card = "Headphones"  # default using pcm audio output of Pi Zero
 #	card = "Device" # using USB sound card for audio output	
 
-	query = ["sudo", "systemctl", "is-active", "gpsd.socket.service"]
+	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
 	except subprocess.CalledProcessError as e:
