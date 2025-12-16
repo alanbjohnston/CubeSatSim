@@ -400,13 +400,13 @@ if __name__ == "__main__":
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
 	except subprocess.CalledProcessError as e:
-		print(f"Command failed with return code: {e.returncode}")
+#		print(f"Command failed with return code: {e.returncode}")
 		print(f"Command run was: {e.cmd}")
-		output = e.cmd
+		gpsd_status = e.stdout
 		print(f"Output of the command (stdout): {e.stdout}")
-		print(f"Error output of the command (stderr): {e.stderr}")
+#		print(f"Error output of the command (stderr): {e.stderr}")
 	
-	if (mode != 'e') and (output != "active"):
+	if (mode != 'e') and (gpsd_status != "active"):
 		print("Programming FM module!\n");	
 		output(pd, 1)
 		output (ptt, 1)
