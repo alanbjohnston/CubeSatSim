@@ -1771,7 +1771,42 @@ elif [ "$1" = "-U" ]; then
 	if [ "${12}" != "$sim" ] || [ "${13}" != "$time" ] ; then
 		reboot=1
 	fi
-	
+
+elif [ "$1" = "-u" ]; then
+
+	echo	
+	echo "Change gpsd state"
+	echo 
+
+	FILE=/home/pi/CubeSatSim/command_control
+	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
+    	echo "gpsd is inactive"
+		echo
+		echo "Do you want to turn gpsd to ON (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "gpsd set to ON"
+			sudo systemctl disable gpsd.socket
+			reboot=1
+		fi
+
+	else 
+    	echo "gpsd is active"
+		echo
+		echo "Do you want to turn gpsd to OFF (y/n) "
+		read reset
+		echo
+
+		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+			echo "gpsd set to OFF"
+			sudo systemctl enable gpsd.socket
+			reboot=1
+		fi
+
+	fi
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
