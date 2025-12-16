@@ -1188,24 +1188,24 @@ elif [ "$1" = "-F" ]; then
 		rx="$8"
 		echo "Keeping value of" $rx
 	fi
-#	else
-	
-		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13}
-		echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
-#	fi
-	
-#	if [ "$norestart" = "1" ]; then
-#		echo 
-#	else
-		echo
-		echo "Restarting CubeSatSim with new configuration file"
-##		echo
-#		reboot=1
-##		sudo reboot now
+	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13}
+	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+
+	echo
+	echo "Restarting CubeSatSim with new configuration file"
+
+	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
 		sudo systemctl restart transmit
-#	fi
+	else
+		echo
+		echo "temporarily disabling gpsd and rebooting to program FM module"
+		sudo systemctl stop gpsd.socket
+		sudo systemctl restart transmit
+		sleep 10
+		restart=1
+	fi
 
 elif [ "$1" = "-o" ]; then
 
@@ -1778,7 +1778,6 @@ elif [ "$1" = "-u" ]; then
 	echo "Change gpsd state"
 	echo 
 
-	FILE=/home/pi/CubeSatSim/command_control
 	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
     	echo "gpsd is inactive"
 		echo
