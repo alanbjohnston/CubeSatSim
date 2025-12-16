@@ -11,6 +11,7 @@ from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial	
 import random
+import subprocess
 
 def sim_failure_check():
 	try:
@@ -395,7 +396,11 @@ if __name__ == "__main__":
 	card = "Headphones"  # default using pcm audio output of Pi Zero
 #	card = "Device" # using USB sound card for audio output	
 
-	if (mode != 'e'):
+	query = ["sudo", "systemctl", "is-active", "gpsd.socket.service"]
+	result = subprocess.run(query, capture_output=True, text=True, check=True)
+	print(result.stdout)
+	
+	if (mode != 'e') and (result.stdout != "active"):
 		print("Programming FM module!\n");	
 		output(pd, 1)
 		output (ptt, 1)
