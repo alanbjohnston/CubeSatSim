@@ -409,9 +409,9 @@ if __name__ == "__main__":
 		print(f"Output of the command (stdout): {e.stdout}")
 #		print(f"Error output of the command (stderr): {e.stderr}")
 
-	if gpsd_status == "active"):
+	if gpsd_status == "active":
 		print("gpsd status is active"
-	if gpsd_status == "inactive"):
+	if gpsd_status == "inactive":
 		print("gpsd status is inactive"		  
 	
 	if (mode != 'e') and (gpsd_status != "active"):
