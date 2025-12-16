@@ -1790,6 +1790,9 @@ elif [ "$1" = "-u" ]; then
 			echo "gpsd set to ON"
 			sudo systemctl enable gpsd
 			sudo systemctl enable gpsd.socket
+			echo
+			echo "to monitor your gps device, use the command gpsmon"
+			echo
 			reboot=1
 		fi
 
