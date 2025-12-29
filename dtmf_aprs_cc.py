@@ -261,7 +261,7 @@ if __name__ == "__main__":
 			
 			GPIO.output(txLed, 0)
 			GPIO.output(powerPin, 0)
-			system("sudo systemctl stop rpitx")
+			system("sudo systemctl stop transmit")
 #			system("sudo systemctl stop cubesatsim")
 			
 			print("\n/home/pi/CubeSatSim/config -" + mode)
