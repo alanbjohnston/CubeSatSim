@@ -60,7 +60,7 @@ function transmit_command_fsk {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to FSK"
+		echo -n "Sending APRS packet to change mode to FSK "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -95,7 +95,7 @@ function transmit_command_bpsk {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to BPSK"
+		echo -n "Sending APRS packet to change mode to BPSK "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -130,7 +130,7 @@ function transmit_command_sstv {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to SSTV"
+		echo -n "Sending APRS packet to change mode to SSTV "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -165,7 +165,7 @@ function transmit_command_cw {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to CW"
+		echo -n "Sending APRS packet to change mode to CW "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -200,7 +200,7 @@ function transmit_command_repeater {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to Repeater"
+		echo -n "Sending APRS packet to change mode to Repeater "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -235,7 +235,7 @@ function transmit_command_funcube {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to mode FUNcube"
+		echo -n "Sending APRS packet to mode FUNcube "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -270,7 +270,7 @@ function transmit_command_beacon {
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to toggle Beacon"
+		echo -n "Sending APRS packet to toggle Beacon "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
