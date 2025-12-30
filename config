@@ -1322,10 +1322,20 @@ elif [ "$1" = "-v" ]; then
 
 elif [ "$1" = "-e" ]; then
 
-	echo "changing CubeSatSim to Repeater mode"
-	sudo echo "e" > /home/pi/CubeSatSim/.mode
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
-	restart=1
+	if [ "$1" == "n" ]; then
+
+		transmit_command_repeater
+
+	else
+
+		echo "changing CubeSatSim to Repeater mode"
+		sudo echo "e" > /home/pi/CubeSatSim/.mode	
+		restart=1
+	fi
 
 elif [ "$1" = "-n" ]; then
 
@@ -1500,6 +1510,19 @@ elif [ "$1" = "-j" ]; then
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+
+	if [ "$1" == "n" ]; then
+
+		transmit_command_funcube
+
+	else
+
+		value=`cat /home/pi/CubeSatSim/.mode`
+		echo "$value" > /dev/null
+		set -- $value
+		restart=1
+
+	fi
 
 #	if [ "$1" == "n" ]; then
 
