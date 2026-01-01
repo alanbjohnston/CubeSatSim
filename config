@@ -47,7 +47,7 @@ function transmit_command {
 	exit
 }
 
-functionn check_restart {
+function check_restart {
 
 	sudo echo "a" > /home/pi/CubeSatSim/.mode	
 	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
