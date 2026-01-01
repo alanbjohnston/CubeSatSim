@@ -1114,7 +1114,7 @@ elif [ "$1" = "-n" ]; then
 
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Commands mode OFF"
-		if [ "$2 = "-a" ] || [ "$2" = "-f" || [ "$2" = "-b" || [ "$2" = "-s" || [ "$2" = "-m" || [ "$2" = "-e" || [ "$2" = "-j" ]  ; then
+		if [ "$2 = "-a" ] || [ "$2" = "-f" ] || [ "$2" = "-b" ] || [ "$2" = "-s" ] || [ "$2" = "-m" ] || [ "$2" = "-e" ] || [ "$2" = "-j" ]  ; then
 			echo "Switching to mode "${2:1:1} 
 			sudo echo ${2:1:1} > /home/pi/CubeSatSim/.mode
 			restart=1
