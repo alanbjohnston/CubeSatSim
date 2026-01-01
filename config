@@ -1283,7 +1283,7 @@ elif [ "$1" = "-j" ]; then
 		echo "changing CubeSatSim to FUNcube mode"
 		sudo echo "j" > /home/pi/CubeSatSim/.mode
 		restart=1
-#	fi
+	fi
 
 elif [ "$1" = "-h" ]; then
 
