@@ -1114,9 +1114,15 @@ elif [ "$1" = "-n" ]; then
 
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Commands mode OFF"
-		echo "Switching to BPSK mode"
-		sudo echo "b" > /home/pi/CubeSatSim/.mode
-		reboot=1
+		if [ "$2 = "-a" ] || [ "$2" = "-f" || [ "$2" = "-b" || [ "$2" = "-s" || [ "$2" = "-m" || [ "$2" = "-e" || [ "$2" = "-j" ]  ; then
+			echo "Switching to mode "${2:1:1} 
+			sudo echo ${2:1:1} > /home/pi/CubeSatSim/.mode
+			restart=1
+		else
+			echo "Switching to BPSK mode"
+			sudo echo "b" > /home/pi/CubeSatSim/.mode
+			restart=1
+		fi
 	else
 		echo "Turning Transmit Commands mode ON"
 		sudo echo "n" > /home/pi/CubeSatSim/.mode
