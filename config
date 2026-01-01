@@ -1383,26 +1383,26 @@ elif [ "$1" = "-e" ]; then
 
 elif [ "$1" = "-n" ]; then
 
-	echo "changing CubeSatSim to Transmit Commands mode"
+#	echo "changing CubeSatSim to Transmit Commands mode"
 
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
 
 	if [ "$1" = "n" ]; then
-		echo "Turning Transmit Command and Control mode OFF"
+		echo "Turning Transmit Commands mode OFF"
 		echo "Switching to BPSK mode"
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
 		reboot=1
 	else
-		echo "Turning Transmit Command and Control mode ON"
+		echo "Turning Transmit Commands mode ON"
 		sudo echo "n" > /home/pi/CubeSatSim/.mode
 		restart=1
 	fi
 
 elif [ "$1" = "-A" ]; then
 
-	echo "Transmit APRS control packets to control another CubeSatSim"
+	echo "Transmit APRS Commands to control another CubeSatSim"
 	echo
 
 	value=`cat /home/pi/CubeSatSim/.mode`
