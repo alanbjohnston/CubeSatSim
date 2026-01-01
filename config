@@ -1126,9 +1126,9 @@ elif [ "$1" = "-n" ]; then
 			restart=1
 		fi
 	else
-		echo "Turning Transmit Commands mode ON"
+		echo "Switching to Transmit Commands mode"
+		check_restart
 		sudo echo "n" > /home/pi/CubeSatSim/.mode
-		restart=1
 	fi
 
 elif [ "$1" = "-A" ]; then
