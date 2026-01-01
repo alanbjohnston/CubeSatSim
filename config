@@ -57,13 +57,14 @@ function check_restart {
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
 			restart=1
-			echo "Need to restart"
+			echo "Need to restart since batt saver"
 		else 
 			reboot=1
 			echo "Need to reboot"
 		fi	
 	else
 		restart=1
+		echo "Need to restart"
 	fi	
 }
 
@@ -224,17 +225,18 @@ elif [ "$1" = "-a" ]; then
 	else
 
 		echo "changing CubeSatSim to AFSK mode"
+		check_restart
 		sudo echo "a" > /home/pi/CubeSatSim/.mode	
-		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-			FILE=/home/pi/CubeSatSim/battery_saver
-			if [ -f "$FILE" ]; then
-				restart=1
-			else 
-		    		reboot=1
-			fi	
-		else
-			restart=1
-		fi	
+#		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+#			FILE=/home/pi/CubeSatSim/battery_saver
+#			if [ -f "$FILE" ]; then
+#				restart=1
+#			else 
+#		    		reboot=1
+#			fi	
+#		else
+#			restart=1
+#		fi	
 	fi
 
 elif [ "$1" = "-m" ]; then
@@ -250,17 +252,18 @@ elif [ "$1" = "-m" ]; then
 	else
 
 		echo "changing CubeSatSim to CW mode"
+		check_restart
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
-		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-			FILE=/home/pi/CubeSatSim/battery_saver
-			if [ -f "$FILE" ]; then
-				restart=1
-			else 
-		    		reboot=1
-			fi	
-		else
-			restart=1
-		fi
+#		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+#			FILE=/home/pi/CubeSatSim/battery_saver
+#			if [ -f "$FILE" ]; then
+#				restart=1
+#			else 
+#		    		reboot=1
+#			fi	
+#		else
+#			restart=1
+#		fi
 	fi
  
 elif [ "$1" = "-f" ]; then
@@ -310,18 +313,19 @@ elif [ "$1" = "-s" ]; then
 	else
 
 		echo "changing CubeSatSim to SSTV mode"
+		check_restart
 		sudo echo "s" > /home/pi/CubeSatSim/.mode
-		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-
-			FILE=/home/pi/CubeSatSim/battery_saver
-			if [ -f "$FILE" ]; then
-				restart=1
-			else 
-		    		reboot=1
-			fi		
-		else
-			restart=1
-		fi
+#		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+#
+#			FILE=/home/pi/CubeSatSim/battery_saver
+#			if [ -f "$FILE" ]; then
+#				restart=1
+#			else 
+#		    		reboot=1
+#			fi		
+#		else
+#			restart=1
+#		fi
 	fi
 
 elif [ "$1" = "-t" ]; then
