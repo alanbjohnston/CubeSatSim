@@ -1108,15 +1108,17 @@ elif [ "$1" = "-n" ]; then
 
 #	echo "changing CubeSatSim to Transmit Commands mode"
 
+	new=$2
+
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
 
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Commands mode OFF"
-		if [ "$2" = "a" ] || [ "$2" = "f" ] || [ "$2" = "b" ] || [ "$2" = "s" ] || [ "$2" = "m" ] || [ "$2" = "e" ] || [ "$2" = "j" ]  ; then
+		if [ "$new" = "a" ] || [ "$new" = "f" ] || [ "$new" = "b" ] || [ "$new" = "s" ] || [ "$new" = "m" ] || [ "$new" = "e" ] || [ "$new" = "j" ]  ; then
 			echo "Switching to mode "$2 
-			sudo echo $2 > /home/pi/CubeSatSim/.mode
+			sudo echo $new > /home/pi/CubeSatSim/.mode
 			restart=1
 		else
 			echo "Switching to BPSK mode"
