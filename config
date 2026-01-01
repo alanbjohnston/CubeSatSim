@@ -47,6 +47,21 @@ function transmit_command {
 	exit
 }
 
+functionn check_restart {
+
+	sudo echo "a" > /home/pi/CubeSatSim/.mode	
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			restart=1
+		else 
+			reboot=1
+		fi	
+	else
+		restart=1
+	fi	
+}
+
 echo "CubeSatSim v2.1 configuration tool"
 echo
 # echo $1
@@ -1116,7 +1131,11 @@ elif [ "$1" = "-n" ]; then
 
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Commands mode OFF"
-		if [ "$new" = "a" ] || [ "$new" = "f" ] || [ "$new" = "b" ] || [ "$new" = "s" ] || [ "$new" = "m" ] || [ "$new" = "e" ] || [ "$new" = "j" ]  ; then
+		if [ "$new" = "a" ] || [ "$new" = "s" ] || [ "$new" = "m" ] ; then
+			echo "Switching to mode "$new 
+			sudo echo $new > /home/pi/CubeSatSim/.mode
+			check_restart
+		elif [ "$new" = "f" ] || [ "$new" = "b" ] || [ "$new" = "e" ] || [ "$new" = "j" ]  ; then
 			echo "Switching to mode "$new 
 			sudo echo $new > /home/pi/CubeSatSim/.mode
 			restart=1
