@@ -1137,9 +1137,9 @@ elif [ "$1" = "-n" ]; then
 	if [ "$1" = "n" ]; then
 		echo "Turning Transmit Commands mode OFF"
 		if [ "$new" = "a" ] || [ "$new" = "s" ] || [ "$new" = "m" ] ; then
+			check_restart
 			echo "Switching to mode "$new 
 			sudo echo $new > /home/pi/CubeSatSim/.mode
-			check_restart
 		elif [ "$new" = "f" ] || [ "$new" = "b" ] || [ "$new" = "e" ] || [ "$new" = "j" ]  ; then
 			echo "Switching to mode "$new 
 			sudo echo $new > /home/pi/CubeSatSim/.mode
