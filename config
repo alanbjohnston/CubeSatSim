@@ -57,8 +57,10 @@ function check_restart {
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
 			restart=1
+			echo "Need to restart"
 		else 
 			reboot=1
+			echo "Need to reboot"
 		fi	
 	else
 		restart=1
