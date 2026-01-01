@@ -3,7 +3,6 @@
 function transmit_command {
 
 	echo "CubeSatSim is in Transmit Commands mode"
-	echo
 
 	FILE=/home/pi/CubeSatSim/transmit_dtmf
 	if [ -f "$FILE" ]; then
@@ -38,6 +37,7 @@ function transmit_command {
 
 	fi
 
+	echo
 	echo "To change the mode of this CubeSatSim use config -n"
 
 	exit
