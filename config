@@ -56,11 +56,11 @@ echo
 sudo modprobe snd-aloop
 
  if [ "$2" = "n" ] ; then
-#if [ -z "$2" ] ; then
-	noreboot=0
-else
+#if [ -z "$2" ] ; then  # need to swap else if change
 	noreboot=1
 	echo "Reboot disabled"
+else
+	noreboot=0
 fi
 
 # echo "No reboot"
