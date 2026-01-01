@@ -49,7 +49,10 @@ function transmit_command {
 
 function check_restart {
 
-	sudo echo "a" > /home/pi/CubeSatSim/.mode	
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
 	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
