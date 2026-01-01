@@ -43,286 +43,6 @@ function transmit_command {
 	exit
 }
 
-function transmit_command_aprs {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to APRS "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_fsk {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-fsk.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to FSK "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_bpsk {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-bpsk.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to BPSK "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_sstv {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-sstv.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=s"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to SSTV "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_cw {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-cw.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=m"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to CW "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_repeater {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-repeater.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=e"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to Repeater "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_funcube {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-funcube.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=j"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to mode FUNcube "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_beacon {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-beacon.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=o"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to toggle Beacon "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
 echo "CubeSatSim v2.1 configuration tool"
 echo
 # echo $1
@@ -475,7 +195,6 @@ elif [ "$1" = "-a" ]; then
 
 	if [ "$1" == "n" ]; then
 
-#		transmit_command_aprs
 		transmit_command "1" "a"
 
 	else
@@ -502,7 +221,7 @@ elif [ "$1" = "-m" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_cw
+		transmit_command "5" "m"
 
 	else
 
@@ -528,7 +247,7 @@ elif [ "$1" = "-f" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_fsk
+		transmit_command "2" "f"
 
 	else
 
@@ -545,7 +264,7 @@ elif [ "$1" = "-b" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_bpsk
+		transmit_command "3" "b"
 
 	else
 
@@ -562,7 +281,7 @@ elif [ "$1" = "-s" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_sstv
+		transmit_command "4" "s"
 
 	else
 
@@ -1262,7 +981,7 @@ elif [ "$1" = "-o" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_beacon
+		transmit_command "10" "o"
 
 	else
 		echo	
@@ -1372,7 +1091,7 @@ elif [ "$1" = "-e" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_repeater
+		transmit_command "6" "e"
 
 	else
 
@@ -1557,22 +1276,9 @@ elif [ "$1" = "-j" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_funcube
+		transmit_command "7" "j"
 
 	else
-
-		value=`cat /home/pi/CubeSatSim/.mode`
-		echo "$value" > /dev/null
-		set -- $value
-		restart=1
-
-	fi
-
-#	if [ "$1" == "n" ]; then
-
-#		transmit_command_bpsk
-
-#	else
 
 		echo "changing CubeSatSim to FUNcube mode"
 		sudo echo "j" > /home/pi/CubeSatSim/.mode
