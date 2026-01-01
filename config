@@ -14,8 +14,8 @@ function transmit_command {
 		mode=1
 		cat direwolf/direwolf-transmit-dtmf.conf > direwolf-tmp.conf && echo 'CBEACON dest="DTMF-3" info="'$1' #" delay=0' >> direwolf-tmp.conf
 
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
+#	 	echo "Stopping command and control"
+#		sudo systemctl stop command
 
 		echo "Transmit DTMF start"
 		gpio write 28 0 # ptt
@@ -25,8 +25,8 @@ function transmit_command {
 		gpio write 28 1 #ptt
 		echo "Transmit stop"
 
-	 	echo "Resuming command and control"
-		sudo systemctl start command
+#	 	echo "Resuming command and control"
+#		sudo systemctl start command
 
 	else
 
