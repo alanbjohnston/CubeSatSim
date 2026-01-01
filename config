@@ -227,16 +227,7 @@ elif [ "$1" = "-a" ]; then
 		echo "changing CubeSatSim to AFSK mode"
 		check_restart
 		sudo echo "a" > /home/pi/CubeSatSim/.mode	
-#		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-#			FILE=/home/pi/CubeSatSim/battery_saver
-#			if [ -f "$FILE" ]; then
-#				restart=1
-#			else 
-#		    		reboot=1
-#			fi	
-#		else
-#			restart=1
-#		fi	
+
 	fi
 
 elif [ "$1" = "-m" ]; then
@@ -254,16 +245,7 @@ elif [ "$1" = "-m" ]; then
 		echo "changing CubeSatSim to CW mode"
 		check_restart
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
-#		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-#			FILE=/home/pi/CubeSatSim/battery_saver
-#			if [ -f "$FILE" ]; then
-#				restart=1
-#			else 
-#		    		reboot=1
-#			fi	
-#		else
-#			restart=1
-#		fi
+
 	fi
  
 elif [ "$1" = "-f" ]; then
@@ -315,17 +297,7 @@ elif [ "$1" = "-s" ]; then
 		echo "changing CubeSatSim to SSTV mode"
 		check_restart
 		sudo echo "s" > /home/pi/CubeSatSim/.mode
-#		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-#
-#			FILE=/home/pi/CubeSatSim/battery_saver
-#			if [ -f "$FILE" ]; then
-#				restart=1
-#			else 
-#		    		reboot=1
-#			fi		
-#		else
-#			restart=1
-#		fi
+
 	fi
 
 elif [ "$1" = "-t" ]; then
