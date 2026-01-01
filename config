@@ -7,6 +7,10 @@ function transmit_command {
 	FILE=/home/pi/CubeSatSim/transmit_dtmf
 	if [ -f "$FILE" ]; then
 
+		echo
+		echo "Sending DTMF tones to change to mode "$1
+		echo
+
 		mode=1
 		cat direwolf/direwolf-transmit-dtmf.conf > direwolf-tmp.conf && echo 'CBEACON dest="DTMF-3" info="'$1' #" delay=0' >> direwolf-tmp.conf
 
