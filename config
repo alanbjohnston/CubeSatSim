@@ -6,7 +6,7 @@ function transmit_command {
 	if [ -f "$FILE" ]; then
 
 		mode=1
-		cat direwolf/direwolf-transmit-dtmf.conf > direwolf-now.conf && echo 'CBEACON dest="DTMF-3" info="'$1' #" delay=0' >> direwolf-now.conf
+		cat direwolf/direwolf-transmit-dtmf.conf > direwolf-tmp.conf && echo 'CBEACON dest="DTMF-3" info="'$1' #" delay=0' >> direwolf-tmp.conf
 
 	 	echo "Stopping command and control"
 		sudo systemctl stop command
@@ -14,7 +14,7 @@ function transmit_command {
 		echo "Transmit DTMF start"
 		gpio write 28 0 # ptt
 		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c direwolf-now.conf  -t 0l 
+		timeout 3 direwolf -c direwolf-tmp.conf  -t 0l 
 		gpio write 2 0 # tx LED
 		gpio write 28 1 #ptt
 		echo "Transmit stop"
@@ -24,7 +24,7 @@ function transmit_command {
 
 	else
 
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE="$1
+		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE="$2
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
