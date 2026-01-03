@@ -182,9 +182,9 @@ else:
 	print("TXC not present")
 
 # txc = False  # forcing it off
-output(txLed, txLedOn)
-sleep(1)
-output(txLed, txLedOff)
+#output(txLed, txLedOn)
+#sleep(1)
+#output(txLed, txLedOff)
 
 battery_saver_check()	
 
