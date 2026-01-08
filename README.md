@@ -40,7 +40,7 @@ CubeSatSim runs on the Bullseye version of Raspberry Pi OS (Desktop or Lite), al
 
 Here is a Bullseye Pi OS image that works: https://downloads.raspberrypi.org/raspios_full_armhf/images/raspios_full_armhf-2023-05-03/ Here is the file download link: https://downloads.raspberrypi.org/raspios_full_armhf/images/raspios_full_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-full.img.xz
 
-You can use this with the Raspberry Pi Imager, but under `OS` you need to choose the `Use Custom` option at the very bottom of the list, then select the downloaded image` 2023-05-03-raspios-bullseye-armhf-full.img.xz`
+You can use this with the Raspberry Pi Imager, but under `OS` you need to choose the `Use Custom` option at the very bottom of the list, then select the downloaded image `2023-05-03-raspios-bullseye-armhf-full.img.xz`
 
 Unfortunately, Customization is not supported with a Custom image, so you can't preset your username, password, localization, and WiFi settings.
 
