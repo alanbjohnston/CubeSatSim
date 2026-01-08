@@ -38,6 +38,8 @@ See the Wiki Software Install page for details: [https://github.com/alanbjohnsto
 
 CubeSatSim runs on the Bullseye version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.
 
+For the status of our efforts to get the code running on Bookworm, see https://github.com/alanbjohnston/CubeSatSim/discussions/389
+
 Here is a Bullseye Pi OS image that works: https://downloads.raspberrypi.org/raspios_full_armhf/images/raspios_full_armhf-2023-05-03/ Here is the file download link: https://downloads.raspberrypi.org/raspios_full_armhf/images/raspios_full_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-full.img.xz
 
 You can use this with the Raspberry Pi Imager, but under `OS` you need to choose the `Use Custom` option at the very bottom of the list, then select the downloaded image `2023-05-03-raspios-bullseye-armhf-full.img.xz`
