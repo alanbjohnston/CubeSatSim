@@ -10,6 +10,13 @@ else
     echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
 fi
 
+if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
+	echo "motd already updated"
+else
+	echo "updating motd"
+	sudo sh -c 'echo /home/pi/CubeSatSim/motd.txt >> /etc/motd'
+fi
+
 FILE=/home/pi/CubeSatSim/command_tx
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
@@ -280,7 +287,7 @@ if [ $changed -eq 1 ]; then
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 	echo
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11 > /home/pi/CubeSatSim/sim.cfg
