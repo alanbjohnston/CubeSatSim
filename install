@@ -80,7 +80,7 @@ sudo dpkg -i debian-template/wiringpi-2.61-1.deb
 cd
 
 #changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial libusb-1.0
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
 sudo pip3 install --upgrade setuptools
 
