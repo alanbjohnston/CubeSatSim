@@ -175,33 +175,6 @@ if [ ! -d "/home/pi/PiSSTVpp" ]; then
   
   sudo raspi-config nonint do_camera 0
   
-
-  FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
-  if [ ! -f "$FILE" ]; then
-      echo "Copying SSTV image 1."
-      cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
-  fi
-
-  FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
-  if [ ! -f "$FILE" ]; then
-      echo "Copying SSTV image 2."
-      cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
-  fi
-  
-#  echo "You need to reboot to complete this update.  Reboot now (y/n)?"
-
-#  read -r ANS
-
-#  if [ "$ANS" = "y" ]; then
-
-#    sudo reboot now
-
-#  else
-
-#    echo "The CubeSatSim software may not work correctly until you reboot."
-
-#  fi 
-  
 fi
 
 if [ ! -d "/home/pi/rpitx" ]; then
@@ -228,7 +201,7 @@ if [ ! -d "/home/pi/WiringPi" ]; then
 
   cd
 
-  git clone https://github.com/PinkFreud/WiringPi
+  git clone https://github.com/alanbjohnston/WiringPi
   cd WiringPi
   ./build debian
 
@@ -354,15 +327,15 @@ cd /home/pi/ssdv
     sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
     FLAG=1
 
-    cd /home/pi/pi-power-button
-    git pull --no-rebase
-    git checkout reboot-mode-change
-    script/install
+#    cd /home/pi/pi-power-button
+#   git pull --no-rebase
+#    git checkout reboot-mode-change
+#    script/install
 
-#    sudo apt-get update && sudo apt-get dist-upgrade -y
-    sudo apt-get update -y
-    sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 python3-pil
-    sudo pip3 install -y adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
+##    sudo apt-get update && sudo apt-get dist-upgrade -y
+#    sudo apt-get update -y
+#    sudo apt-get install -y libjpeg-dev zlib1g-dev libfreetype6-dev liblcms1-dev libopenjp2-7 libtiff5 python3-pil
+#    sudo pip3 install -y adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219 pillow
 
   fi
 
