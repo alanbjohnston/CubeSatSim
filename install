@@ -2,6 +2,23 @@
 
 echo -e "\ninstallation script for CubeSatSim v2.1\n"
 
+if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+	echo "Bullseye detected, installation continuing."
+else
+	echo "Your Pi OS version is not Bullseye."
+	echo "The software installation will likely not work."
+	echo "See the README.md for how to install using Bullseye."
+	echo
+
+	echo "Are you sure you want to continue the installation (y/n)?"
+	
+	read -r ANS
+	
+	if [ "$ANS" = "n" ]; then	
+	    exit 1
+	fi
+fi
+
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
