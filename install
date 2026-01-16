@@ -31,7 +31,7 @@ if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
 	echo "motd already updated"
 else
 	echo "updating motd"
-	sudo sh -c 'echo /home/pi/CubeSatSim/motd.txt >> /etc/motd'
+	sudo sh -c 'cat /home/pi/CubeSatSim/motd.txt >> /etc/motd'
 fi
 
 FILE=/home/pi/CubeSatSim/command_tx
