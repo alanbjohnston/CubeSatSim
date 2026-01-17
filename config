@@ -62,11 +62,16 @@ function transmit_command {
 
 	else
 
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE="$1
+		$MODE=$1
+		value=`cat /home/pi/CubeSatSim/sim.cfg`
+		echo "$value" > /dev/null
+		set -- $value
+
+		STRING="$1-11>APCSS:=3901.40N\07704.39WShi hi MODE="$MODE
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to "$1" "
+		echo -n "Sending APRS packet to change mode to "$MODE" "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
