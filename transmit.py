@@ -338,6 +338,7 @@ if __name__ == "__main__":
 			print("Can't read callsign from sim.cfg file, defaulting to AMSAT")	
 	file.close()
 
+	no_command = True
 	try:
 		f = open("/home/pi/CubeSatSim/command_control", "r")
 		f.close()
@@ -346,15 +347,16 @@ if __name__ == "__main__":
 		GPIO.setup(squelch, GPIO.IN, pull_up_down=GPIO.PUD_UP)  ## pull up in case pin is not connected
 		if GPIO.input(squelch) == False:
 			print("squelch not set correctly, no command input!")
-			no_command = True
 		else:
-			print("command and control is activated")
-			no_command = False
-#			system("/home/pi/CubeSatSim/command &")
-			system("sudo systemctl start command")
+			if (mode != 'n') and (mode !'= 'x'):
+				print("command and control is activated")
+				no_command = False
+				system("sudo systemctl start command")
+			else:
+				print("Command and control not activated since Transmit Commands mode")				
 	except:
 		print("command and control not activated")
-		no_command = True
+
 	
 	print(callsign)
 	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
