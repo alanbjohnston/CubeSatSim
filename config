@@ -612,7 +612,7 @@ elif [ "$1" = "-T" ]; then
 		echo
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control set to OFF"
+			echo "Turning command and control OFF"
 			sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
 #			reboot=1
 			echo "restarting command and control"
@@ -623,21 +623,30 @@ elif [ "$1" = "-T" ]; then
 		fi
 
 	else 
-    		echo "Radio command and control is OFF"
+    	echo "Radio command and control is OFF"
 		echo
 		echo "Do you want to set command and control to ON (y/n) "
 		read reset
 		echo
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control set to ON"
-			sudo touch /home/pi/CubeSatSim/command_control
-			echo "restarting command and control"
-#			reboot=1
-			sudo systemctl restart command
-			echo "restarting transmit"
-			sudo systemctl restart transmit
-##			sudo reboot now	
+
+			value=`cat /home/pi/CubeSatSim/.mode`
+			echo "$value" > /dev/null
+			set -- $value
+	
+			if [ "$1" != "n" ] ; then
+				echo "Turning command and control ON"
+				sudo touch /home/pi/CubeSatSim/command_control
+				echo "restarting command and control"
+#				reboot=1
+				sudo systemctl restart command
+				echo "restarting transmit"
+				sudo systemctl restart transmit
+##				sudo reboot now	
+			else
+				echo "Can't turn on Command and control in Transmit Commands mode."
+			fi
 		fi
 
 	fi
