@@ -1209,6 +1209,8 @@ elif [ "$1" = "-A" ]; then
 
 		transmit_command $MODE
 
+		echo $MODE
+
 	done
 	
 	sudo systemctl restart command
