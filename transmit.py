@@ -423,6 +423,7 @@ if __name__ == "__main__":
 			else:
 #				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
+				system("sudo systemctl stop command")
 #			while True:
 #				sleep(0.1)
 			if (mode != 'n'):
