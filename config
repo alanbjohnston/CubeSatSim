@@ -35,7 +35,7 @@ function transmit_command {
 				number=7
 				;;
 			o)
-				number=11
+				number=10
 				;;
 			*)
 				number=0
