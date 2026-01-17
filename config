@@ -1020,6 +1020,7 @@ elif [ "$1" = "-o" ]; then
 	#			restart=1
 			fi
 		fi
+		sleep 3
 	fi
 
 elif [ "$1" = "-H" ]; then
