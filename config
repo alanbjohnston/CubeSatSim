@@ -1201,7 +1201,7 @@ elif [ "$1" = "-A" ]; then
 
 	MODE="0"
 
-	while [ "$MODE" != "x" ]
+	while [ "$MODE" != "x" ];
 	do
 
 		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, o=Beacon on/off x=Exit this mode"
