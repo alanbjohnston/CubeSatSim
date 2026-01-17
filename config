@@ -1205,9 +1205,11 @@ elif [ "$1" = "-A" ]; then
 		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, o=Beacon on/off x=Exit this mode"
 		read MODE
 
-		transmit_command $MODE
+		if [ "$MODE" != "x" ]; then
+			transmit_command $MODE
+		fi
 
-		echo $MODE
+		echo
 
 	done
 	
