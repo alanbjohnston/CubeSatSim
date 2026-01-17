@@ -134,6 +134,12 @@ if [ "$1" = "" ]; then
 	fi
 	echo
 
+	echo -n "TX Frequency is: "
+	echo -n ${7}
+	echo -n " MHz, RX Frequency is: "
+	echo -n ${8}
+	echo " MHz"
+
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
 		echo "Balloon mode is ON"
 	else
