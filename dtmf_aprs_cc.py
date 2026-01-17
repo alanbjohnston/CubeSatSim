@@ -108,12 +108,9 @@ if __name__ == "__main__":
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
 			change_mode = True
-		print(" ")	
-		print("Counter: ")
-		print(counter)
-		print(" ")
-		if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
-##		if (debug_mode == False)  and (change_mode == True): # skip every other APRS command since Direwolf prints them twice
+
+##		if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
+		if (debug_mode == False)  and (change_mode == True): # skip every other APRS command since Direwolf prints them twice
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
 			GPIO.setup(powerPin, GPIO.OUT)
