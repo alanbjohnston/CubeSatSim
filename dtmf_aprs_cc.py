@@ -92,7 +92,7 @@ if __name__ == "__main__":
 			change_mode = True
 		if ((line.find("MODE=o")) > 0):
 			counter = (counter + 1) % 2 # Direwolf prints it twice, only do once
-			ir (counter == 1):
+			if (counter == 1):
 				system("echo '\nBeacon Mode toggle!!\n'")
 				mode = 'o'
 				change_mode = True
