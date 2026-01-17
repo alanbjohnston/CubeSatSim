@@ -348,7 +348,7 @@ if __name__ == "__main__":
 		if GPIO.input(squelch) == False:
 			print("squelch not set correctly, no command input!")
 		else:
-			if (mode != 'n') and (mode !'= 'x'):
+			if (mode != 'n') and (mode != 'x'):
 				print("command and control is activated")
 				no_command = False
 				system("sudo systemctl start command")
