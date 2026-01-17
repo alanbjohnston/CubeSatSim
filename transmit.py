@@ -421,7 +421,7 @@ if __name__ == "__main__":
 			if (mode == 'a'):
 				print("AFSK")
 			else:
-				GPIO.output(powerPin, 0)
+#				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
 #			while True:
 #				sleep(0.1)
