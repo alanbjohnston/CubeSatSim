@@ -75,8 +75,6 @@ function transmit_command {
 
 	echo
 	echo "To change the mode of this CubeSatSim use config -n"
-
-	exit
 }
 
 function check_restart {
