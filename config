@@ -1203,8 +1203,9 @@ elif [ "$1" = "-A" ]; then
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 5
-		sudo touch /home/pi/CubeSatSim/ready
-
+		if [ "$MODE" != "10" ]; then
+			sudo touch /home/pi/CubeSatSim/ready
+		fi
 		echo
 		echo "Do you want to send another APRS command packet (y/n) "
 		read sim
