@@ -30,7 +30,6 @@ if __name__ == "__main__":
 			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
 			change_mode = True
-			counter = 1
 		if ((line.find("DTMF>APDW15:t1#")) > 0):
 			system("echo '\nAPRS Mode!!\n'")
 			mode = 'a'
@@ -39,7 +38,6 @@ if __name__ == "__main__":
 			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
 			change_mode = True
-			counter = 1
 		if ((line.find("DTMF>APDW15:t2#")) > 0):
 			system("echo '\nFSK Mode!!\n'")
 			mode = 'f'
@@ -48,7 +46,6 @@ if __name__ == "__main__":
 			system("echo '\nBPSK Mode!!\n'")
 			mode = 'b'
 			change_mode = True
-			counter = 1
 		if ((line.find("DTMF>APDW15:t3#")) > 0):
 			system("echo '\nBPSK Mode!!\n'")
 			mode = 'b'
@@ -57,7 +54,6 @@ if __name__ == "__main__":
 			system("echo '\nSSTV Mode!!\n'")
 			mode = 's'
 			change_mode = True
-			counter = 1
 		if ((line.find("DTMF>APDW15:t4#")) > 0):
 			system("echo '\nSSTV Mode!!\n'")
 			mode = 's'
@@ -66,17 +62,14 @@ if __name__ == "__main__":
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
-			counter = 1
 		if ((line.find("DTMF>APDW15:t5#")) > 0):
 			system("echo '\nCW Mode!!\n'")
 			mode = 'm'
 			change_mode = True
-
 		if ((line.find("MODE=e")) > 0):
 			system("echo '\nRepeater Mode!!\n'")
 			mode = 'e'
 			change_mode = True
-			counter = (counter + 1) % 2
 		if ((line.find("DTMF>APDW15:t6#")) > 0):
 			system("echo '\nRepeater Mode!!\n'")
 			mode = 'e'
@@ -85,7 +78,6 @@ if __name__ == "__main__":
 			system("echo '\nFUNcube Mode!!\n'")
 			mode = 'j'
 			change_mode = True
-			counter = 1
 		if ((line.find("DTMF>APDW15:t7#")) > 0):
 			system("echo '\nFUNcube Mode!!\n'")
 			mode = 'j'
@@ -94,23 +86,24 @@ if __name__ == "__main__":
 			system("echo '\nTransmit Commands Mode!!\n'")
 			mode = 'n'
 			change_mode = True
-			counter = 1		
 		if ((line.find("DTMF>APDW15:t11#")) > 0):
 			system("echo '\nTransmit Commands Mode!!\n'")
 			mode = 'n'
 			change_mode = True
 		if ((line.find("MODE=o")) > 0):
-			system("echo '\nBeacon Mode toggle!!\n'")
-			mode = 'o'
-			change_mode = True
-			counter = (counter + 1) % 2
+			counter = (counter + 1) % 2 # Direwolf prints it twice, only do once
+			ir (counter == 1):
+				system("echo '\nBeacon Mode toggle!!\n'")
+				mode = 'o'
+				change_mode = True
+				counter = 1		
 		if ((line.find("DTMF>APDW15:t10#")) > 0):
 			system("echo '\nBeacon Mode toggle!!\n'")
 			mode = 'o'
 			change_mode = True
 
-		if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
-#		if (debug_mode == False)  and (change_mode == True): # skip every other APRS command since Direwolf prints them twice
+#		if ((debug_mode == False) and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
+		if (debug_mode == False)  and (change_mode == True): # skip every other APRS command since Direwolf prints them twice
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
 			GPIO.setup(powerPin, GPIO.OUT)
