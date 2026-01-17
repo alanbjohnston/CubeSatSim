@@ -62,7 +62,7 @@ function transmit_command {
 
 	else
 
-		$MODE=$1
+		MODE=$1
 		value=`cat /home/pi/CubeSatSim/sim.cfg`
 		echo "$value" > /dev/null
 		set -- $value
