@@ -11,8 +11,41 @@ function transmit_command {
 		echo "Sending DTMF tones to change to mode "$1
 		echo
 
+		case $1 in
+	
+			a)
+				number=1
+				;;
+			f)
+				number=2
+				;;
+			b)
+				number=3
+				;;
+			s)
+				number=4
+				;;
+			m)
+				number=5
+				;;
+			e)
+				number=6
+				;;
+			j)
+				number=7
+				;;
+			o)
+				number=11
+				;;
+			*)
+				number=0
+				;;
+		esac
+
+		echo $number
+
 		mode=1
-		cat /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf.conf > /home/pi/CubeSatSim/direwolf-tmp.conf && echo 'CBEACON dest="DTMF-3" info="'$1' #" delay=0' >> /home/pi/CubeSatSim/direwolf-tmp.conf
+		cat /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf.conf > /home/pi/CubeSatSim/direwolf-tmp.conf && echo 'CBEACON dest="DTMF-3" info="'$number' #" delay=0' >> /home/pi/CubeSatSim/direwolf-tmp.conf
 
 #	 	echo "Stopping command and control"
 #		sudo systemctl stop command
@@ -30,11 +63,11 @@ function transmit_command {
 
 	else
 
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE="$2
+		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE="$1
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to "$2" "
+		echo -n "Sending APRS packet to change mode to "$1" "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
@@ -226,7 +259,7 @@ elif [ "$1" = "-a" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "1" "a"
+		transmit_command "a"
 
 	else
 
@@ -244,7 +277,7 @@ elif [ "$1" = "-m" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "5" "m"
+		transmit_command "m"
 
 	else
 
@@ -262,7 +295,7 @@ elif [ "$1" = "-f" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "2" "f"
+		transmit_command "f"
 
 	else
 
@@ -279,7 +312,7 @@ elif [ "$1" = "-b" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "3" "b"
+		transmit_command "b"
 
 	else
 
@@ -296,7 +329,7 @@ elif [ "$1" = "-s" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "4" "s"
+		transmit_command "s"
 
 	else
 
@@ -987,7 +1020,7 @@ elif [ "$1" = "-o" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "10" "o"
+		transmit_command "o"
 
 	else
 		echo	
@@ -1098,7 +1131,7 @@ elif [ "$1" = "-e" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "6" "e"
+		transmit_command "e"
 
 	else
 
@@ -1132,10 +1165,12 @@ elif [ "$1" = "-n" ]; then
 			sudo echo "b" > /home/pi/CubeSatSim/.mode
 			restart=1
 		fi
+		sudo systemctl restart command
 	else
 		echo "Switching to Transmit Commands mode"
 		check_restart
 		sudo echo "n" > /home/pi/CubeSatSim/.mode
+		sudo systemctl stop command
 	fi
 
 elif [ "$1" = "-A" ]; then
@@ -1151,17 +1186,18 @@ elif [ "$1" = "-A" ]; then
 
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop transmit
+		sudo systemctl stop command
 	#	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 	
 		sudo python3 -u /home/pi/CubeSatSim/transmit.py x > /dev/null 2>&1 &  # Force APRS mode
 	fi
 
-	sim="y"
+	MODE="0"
 
-	while [ "$sim" = "y" ]
+	while [ "$MODE" != "99" ]
 	do
 
-		echo "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW, 6=Repeater, 7=FUNcube, 10=Beacon on/off"
+		echo "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW, 6=Repeater, 7=FUNcube, 10=Beacon on/off 99=Exit this mode"
 		read MODE
 	
 		case $MODE in
@@ -1213,13 +1249,14 @@ elif [ "$1" = "-A" ]; then
 		if [ "$MODE" != "10" ]; then
 			sudo touch /home/pi/CubeSatSim/ready
 		fi
-		echo
-		echo "Do you want to send another APRS command packet (y/n) "
-		read sim
-		echo
+#		echo
+#		echo "Do you want to send another APRS command packet (y/n) "
+#		read sim
+#		echo
 	done
 	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 #	sudo systemctl restart cubesatsim
+	sudo systemctl restart command
 
 	if [ "$1" != "n" ]; then
 
@@ -1296,7 +1333,7 @@ elif [ "$1" = "-j" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command "7" "j"
+		transmit_command "j"
 
 	else
 
