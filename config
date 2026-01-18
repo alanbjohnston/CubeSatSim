@@ -1,213 +1,110 @@
 #!/bin/bash
 
-function transmit_command_aprs {
+function transmit_command {
 
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
+	MODE=$1
+	echo "CubeSatSim is in Transmit Commands mode"
+	echo
 
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-aprs.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to APRS "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_fsk {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-fsk.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
 	
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to FSK"
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_bpsk {
+	echo -n "TX Frequency is: "
+	echo -n ${7}
+	echo " MHz"
 
 	FILE=/home/pi/CubeSatSim/transmit_dtmf
 	if [ -f "$FILE" ]; then
 
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
+		echo
+		echo "Sending DTMF tones to change to mode "$MODE
 
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-bpsk.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
+		case $MODE in
 	
+			a)
+				number=1
+				;;
+			f)
+				number=2
+				;;
+			b)
+				number=3
+				;;
+			s)
+				number=4
+				;;
+			m)
+				number=5
+				;;
+			e)
+				number=6
+				;;
+			j)
+				number=7
+				;;
+			o)
+				number=10
+				;;
+			*)
+				number=0
+				;;
+		esac
 
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to BPSK"
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
+#		echo $number
 
-	fi
+		cat /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf.conf > /home/pi/CubeSatSim/direwolf-tmp.conf && echo 'CBEACON dest="DTMF-3" info="'$number' #" delay=0' >> /home/pi/CubeSatSim/direwolf-tmp.conf
 
-	exit
-}
+#	 	echo "Stopping command and control"
+#		sudo systemctl stop command
 
-function transmit_command_sstv {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
+#		echo "Transmit start"
 		gpio write 28 0 # ptt
 		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-sstv.conf  -t 0l 
+		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf-tmp.conf  -t 0l > /dev/null 2>&1
 		gpio write 2 0 # tx LED
 		gpio write 28 1 #ptt
-		echo "Transmit stop"
+#		echo "Transmit stop"
 
-	 	echo "Resuming command and control"
-		sudo systemctl start command
+#	 	echo "Resuming command and control"
+#		sudo systemctl start command
 
 	else
 
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=s"
+		STRING="$1-11>APCSS:=3901.40N\07704.39WShi hi MODE="$MODE
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 		echo $STRING > /home/pi/CubeSatSim/t.txt
 		echo
-		echo -n "Sending APRS packet to change mode to SSTV"
+		echo -n "Sending APRS packet to change mode to "$MODE" "
 		echo $STRING
 		sudo touch /home/pi/CubeSatSim/ready
 		sleep 3
 
 	fi
 
-	exit
+	echo
+	echo "To change the mode of this CubeSatSim use config -n"
 }
 
-function transmit_command_cw {
+function check_restart {
 
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-cw.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			restart=1
+#			echo "Need to restart since batt saver"
+		else 
+			reboot=1
+#			echo "Need to reboot"
+		fi	
 	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=m"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to change mode to CW"
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
-}
-
-function transmit_command_beacon {
-
-	FILE=/home/pi/CubeSatSim/transmit_dtmf
-	if [ -f "$FILE" ]; then
-
-	 	echo "Stopping command and control"
-		sudo systemctl stop command
-
-		echo "Transmit DTMF start"
-		gpio write 28 0 # ptt
-		gpio write 2 1 # tx LED
-		timeout 3 direwolf -c /home/pi/CubeSatSim/direwolf/direwolf-transmit-dtmf-beacon.conf  -t 0l 
-		gpio write 2 0 # tx LED
-		gpio write 28 1 #ptt
-		echo "Transmit stop"
-
-	 	echo "Resuming command and control"
-		sudo systemctl start command
-
-	else
-
-		STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=o"
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet to toggle Beacon"
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 3
-
-	fi
-
-	exit
+		restart=1
+#		echo "Need to restart"
+	fi	
 }
 
 echo
@@ -342,6 +239,12 @@ if [ "$1" = "" ]; then
 		echo "Random Failure Mode is OFF"
 	fi
 
+	echo -n "TX Frequency is: "
+	echo -n ${7}
+	echo -n " MHz, RX Frequency is: "
+	echo -n ${8}
+	echo " MHz"
+
 	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
 		echo "Balloon mode is ON"
 	else
@@ -428,22 +331,14 @@ elif [ "$1" = "-a" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_aprs
+		transmit_command "a"
 
 	else
 
 		echo "changing CubeSatSim to AFSK mode"
+		check_restart
 		sudo echo "a" > /home/pi/CubeSatSim/.mode	
-		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-			FILE=/home/pi/CubeSatSim/battery_saver
-			if [ -f "$FILE" ]; then
-				restart=1
-			else 
-		    		reboot=1
-			fi	
-		else
-			restart=1
-		fi	
+
 	fi
 
 elif [ "$1" = "-m" ]; then
@@ -454,22 +349,14 @@ elif [ "$1" = "-m" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_cw
+		transmit_command "m"
 
 	else
 
 		echo "changing CubeSatSim to CW mode"
+		check_restart
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
-		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
-			FILE=/home/pi/CubeSatSim/battery_saver
-			if [ -f "$FILE" ]; then
-				restart=1
-			else 
-		    		reboot=1
-			fi	
-		else
-			restart=1
-		fi
+
 	fi
  
 elif [ "$1" = "-f" ]; then
@@ -480,7 +367,7 @@ elif [ "$1" = "-f" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_fsk
+		transmit_command "f"
 
 	else
 
@@ -497,7 +384,7 @@ elif [ "$1" = "-b" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_bpsk
+		transmit_command "b"
 
 	else
 
@@ -514,23 +401,14 @@ elif [ "$1" = "-s" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_sstv
+		transmit_command "s"
 
 	else
 
 		echo "changing CubeSatSim to SSTV mode"
+		check_restart
 		sudo echo "s" > /home/pi/CubeSatSim/.mode
-		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
 
-			FILE=/home/pi/CubeSatSim/battery_saver
-			if [ -f "$FILE" ]; then
-				restart=1
-			else 
-		    		reboot=1
-			fi		
-		else
-			restart=1
-		fi
 	fi
 
 elif [ "$1" = "-t" ]; then
@@ -794,7 +672,6 @@ elif [ "$1" = "-C" ]; then
 
 elif [ "$1" = "-T" ]; then
 
-	echo	
 	echo "Change command and control state"
 	echo 
 
@@ -807,7 +684,7 @@ elif [ "$1" = "-T" ]; then
 		echo
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control set to OFF"
+			echo "Turning command and control OFF"
 			sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
 #			reboot=1
 			echo "restarting command and control"
@@ -818,21 +695,40 @@ elif [ "$1" = "-T" ]; then
 		fi
 
 	else 
-    		echo "Radio command and control is OFF"
+    	echo "Radio command and control is OFF"
 		echo
 		echo "Do you want to set command and control to ON (y/n) "
 		read reset
 		echo
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control set to ON"
-			sudo touch /home/pi/CubeSatSim/command_control
-			echo "restarting command and control"
-#			reboot=1
-			sudo systemctl restart command
-			echo "restarting transmit"
-			sudo systemctl restart transmit
-##			sudo reboot now	
+
+			value=`cat /home/pi/CubeSatSim/.mode`
+			echo "$value" > /dev/null
+			set -- $value
+	
+			if [ "$1" != "n" ] ; then
+				echo "Turning command and control ON"
+
+				value=`cat /home/pi/CubeSatSim/sim.cfg`
+				echo "$value" > /dev/null
+				set -- $value
+				
+				echo -n "RX Frequency is: "
+				echo -n ${8}
+				echo " MHz"
+				echo
+
+				sudo touch /home/pi/CubeSatSim/command_control
+				echo "restarting command and control"
+#				reboot=1
+				sudo systemctl restart command
+				echo "restarting transmit"
+				sudo systemctl restart transmit
+##				sudo reboot now	
+			else
+				echo "Can't turn on Command and control in Transmit Commands mode."
+			fi
 		fi
 
 	fi
@@ -1216,7 +1112,7 @@ elif [ "$1" = "-o" ]; then
 
 	if [ "$1" == "n" ]; then
 
-		transmit_command_beacon
+		transmit_command "o"
 
 	else
 		echo	
@@ -1255,6 +1151,7 @@ elif [ "$1" = "-o" ]; then
 	#			restart=1
 			fi
 		fi
+		sleep 3
 	fi
 
 elif [ "$1" = "-H" ]; then
@@ -1320,102 +1217,119 @@ elif [ "$1" = "-v" ]; then
 
 elif [ "$1" = "-e" ]; then
 
-	echo "changing CubeSatSim to Repeater mode"
-	sudo echo "e" > /home/pi/CubeSatSim/.mode
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
-	restart=1
+	if [ "$1" == "n" ]; then
+
+		transmit_command "e"
+
+	else
+
+		echo "changing CubeSatSim to Repeater mode"
+		sudo echo "e" > /home/pi/CubeSatSim/.mode	
+		restart=1
+	fi
 
 elif [ "$1" = "-n" ]; then
 
-	echo "changing CubeSatSim to Transmit Commands mode"
+#	echo "changing CubeSatSim to Transmit Commands mode"
+
+	new=$2
 
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
 
 	if [ "$1" = "n" ]; then
-		echo "Turning Transmit Command and Control mode OFF"
-		echo "Switching to BPSK mode"
-		sudo echo "b" > /home/pi/CubeSatSim/.mode
-		reboot=1
+		echo "Turning Transmit Commands mode OFF"
+		if [ "$new" = "a" ] || [ "$new" = "s" ] || [ "$new" = "m" ] ; then
+			check_restart
+			echo "Switching to mode "$new 
+			sudo echo $new > /home/pi/CubeSatSim/.mode
+		elif [ "$new" = "f" ] || [ "$new" = "b" ] || [ "$new" = "e" ] || [ "$new" = "j" ]  ; then
+			echo "Switching to mode "$new 
+			sudo echo $new > /home/pi/CubeSatSim/.mode
+			restart=1
+		else
+			echo "Switching to BPSK mode"
+			sudo echo "b" > /home/pi/CubeSatSim/.mode
+			reboot=1
+		fi
+		sudo systemctl restart command
 	else
-		echo "Turning Transmit Command and Control mode ON"
+		echo "Switching to Transmit Commands mode"
+	
+		value=`cat /home/pi/CubeSatSim/sim.cfg`
+		echo "$value" > /dev/null
+		set -- $value
+		
+		echo -n "TX Frequency is: "
+		echo -n ${7}
+		echo " MHz"
+		echo
+
+		check_restart
 		sudo echo "n" > /home/pi/CubeSatSim/.mode
-		restart=1
+		sudo systemctl stop command
 	fi
 
 elif [ "$1" = "-A" ]; then
 
-	echo "Transmit APRS control packets to control another CubeSatSim"
+	echo "Transmit APRS Commands to control another CubeSatSim"
+	echo
+
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	
+	echo -n "TX Frequency is: "
+	echo -n ${7}
+	echo " MHz"
 	echo
 
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
 
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+		echo "The CubeSatSim/config -A command can only be run in APRS, SSTV, CW, or Transmit Commands modes."
+		echo "Switch to one of these modes (a, s, m, or n) then re-run this command."
+		exit
+	fi
+
 	if [ "$1" != "n" ]; then
 
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop transmit
-	#	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
 	
 		sudo python3 -u /home/pi/CubeSatSim/transmit.py x > /dev/null 2>&1 &  # Force APRS mode
 	fi
+	sudo systemctl stop command
 
-	sim="y"
+	MODE="0"
 
-	while [ "$sim" = "y" ]
+	while [ "$MODE" != "x" ];
 	do
 
-		echo "Enter the mode number to change: 1=APRS, 2=FSK, 3=BPSK, 4=SSTV, 5=CW"
+		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, o=Beacon on/off x=Exit this mode"
 		read MODE
-	
-		case $MODE in
-	
-			1)
-				echo "Mode 1 is APRS"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=a"
-				;;
-			2)
-				echo "Mode 2 is FSK"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=f"
-				;;
-			3)
-				echo "Mode 3 is BPSK"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=b"
-				;;
-			4)
-				echo "Mode 4 is SSTV"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=s"
-				;;
-			5)
-				echo "Mode 5 is CW"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=m"
-				;;
-			*)
-				echo "Unknown mode"
-				STRING="AMSAT-11>APCSS:=3901.40N\07704.39WShi hi MODE=?"
-				;;
-		esac
-		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-		echo $STRING > /home/pi/CubeSatSim/t.txt
-		echo
-		echo -n "Sending APRS packet "
-		echo $STRING
-		sudo touch /home/pi/CubeSatSim/ready
-		sleep 5
-		sudo touch /home/pi/CubeSatSim/ready
+
+		if [ "$MODE" != "x" ]; then
+			transmit_command $MODE
+		fi
 
 		echo
-		echo "Do you want to send another APRS command packet (y/n) "
-		read sim
-		echo
+
 	done
-	sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
-#	sudo systemctl restart cubesatsim
 
-	if [ "$1" != "n" ]; then
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 
+	if [ "$1" != "n" ] ; then
+		sudo systemctl restart command
 		reboot=1
 	fi
 
@@ -1487,16 +1401,16 @@ elif [ "$1" = "-j" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-#	if [ "$1" == "n" ]; then
+	if [ "$1" == "n" ]; then
 
-#		transmit_command_bpsk
+		transmit_command "j"
 
-#	else
+	else
 
 		echo "changing CubeSatSim to FUNcube mode"
 		sudo echo "j" > /home/pi/CubeSatSim/.mode
 		restart=1
-#	fi
+	fi
 
 elif [ "$1" = "-M" ]; then
 

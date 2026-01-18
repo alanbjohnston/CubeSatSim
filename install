@@ -13,12 +13,36 @@ echo -e "\ninstallation script for CubeSatSim v2.2\n"
 	sleep 10
   fi
 
+if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+	echo "Bullseye detected, installation continuing."
+else
+	echo "Your Pi OS version is not Bullseye."
+	echo "The software installation will likely not work."
+	echo "See the README.md for how to install using Bullseye."
+	echo
+
+	echo "Are you sure you want to continue the installation (y/n)?"
+	
+	read -r ANS
+	
+	if [ "$ANS" = "n" ]; then	
+	    exit 1
+	fi
+fi
+
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
     echo "creating $FILE"
     echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
+fi
+
+if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
+	echo "motd already updated"
+else
+	echo "updating motd"
+	sudo sh -c 'cat /home/pi/CubeSatSim/motd.txt >> /etc/motd'
 fi
 
 FILE=/home/pi/CubeSatSim/command_tx
@@ -67,7 +91,7 @@ sudo dpkg -i debian-template/wiringpi-2.61-1.deb
 cd
 
 #changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial libusb-1.0
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
 sudo pip3 install --upgrade setuptools
 
@@ -134,6 +158,8 @@ cd
 git clone https://github.com/csete/fcdctl.git
 cd fcdctl
 make fcdpp
+
+cd
 
 git clone https://github.com/alanbjohnston/PiSSTVpp.git
 
@@ -293,7 +319,7 @@ if [ $changed -eq 1 ]; then
 	echo -e "Current sim.cfg configuration file:"	
 	echo
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 	echo
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11
 	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11 > /home/pi/CubeSatSim/sim.cfg

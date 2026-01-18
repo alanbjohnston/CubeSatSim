@@ -18,9 +18,9 @@ See the Wiki Software Install page for more details: https://github.com/alanbjoh
 
 There are two ways to get the CubeSatSim(TM) software for your Pi.
 
-One option is to download the disk image file and write it to a 16GB micro SD card or larger.  The image is based on Raspberry Pi OS (Rasbian) Lite, dated December 2020. All software is installed, you just need to login to change your password and set your amateur radio callsign if you have one.  You can run the ./update.sh script to update all packages and update and compile the latest CubeSatSim software.
+One option is to download the disk image file and write it to a 16GB micro SD card or larger.  The image is based on Raspberry Pi OS (Bulleye) Lite. All software is installed, you just need to login to change your password and set your amateur radio callsign if you have one.  You can run the ./update.sh script to update all packages and update and compile the latest CubeSatSim software.
 
-The other option is to start with a Raspberry Pi OS (Rasbian) image (Bullseye or Buster works) and run the installation script ./install.sh which will install and compile all the related software.  This includes the following packages:
+The other option is to start with a Raspberry Pi OS (Rasbian) image (only Bullseye works, Bookworm or Trixie are not compatible) and run the installation script ./install.sh which will install and compile all the related software.  This includes the following packages:
 - wiringpi
 - git
 - libasound2-dev
@@ -36,11 +36,23 @@ See the Wiki Software Install page for details: [https://github.com/alanbjohnsto
 
 ## Installation Script Option Steps
 
-CubeSatSim runs on the Bullseye or Buster version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.
+CubeSatSim runs on the Bullseye version of Raspberry Pi OS (Desktop or Lite), although a Pi Zero or Pi Zero W should only run Lite.  Your Pi will need to have internet access to update settings and install packages.
+
+For the status of our efforts to get the code running on Bookworm, see https://github.com/alanbjohnston/CubeSatSim/discussions/389
+
+Here is a Bullseye Pi OS image that works: https://downloads.raspberrypi.org/raspios_full_armhf/images/raspios_full_armhf-2023-05-03/ Here is the file download link: https://downloads.raspberrypi.org/raspios_full_armhf/images/raspios_full_armhf-2023-05-03/2023-05-03-raspios-bullseye-armhf-full.img.xz
+
+You can use this with the Raspberry Pi Imager, but under `OS` you need to choose the `Use Custom` option at the very bottom of the list, then select the downloaded image `2023-05-03-raspios-bullseye-armhf-full.img.xz`
+
+Unfortunately, Customization is not supported with a Custom image, so you can't preset your username, password, localization, and WiFi settings.
+
+So after you write this image to your microSD card, you will need to connect a monitor and keyboard to your Pi Zero 2 to set these things (make sure you set `pi` as the username). After that, you can connect it to your WiFi and turn on ssh and vnc for remote access.
+
+You can then follow the software installation steps and it work work.  The only hiccup is that if you run the installer script while running the Desktop, the Direwolf installation will freeze.  But you can just cycle the power to the Pi Zero 2, then run the installer script again and it will complete successfully.  Alternatively, if you use `sudo raspi-config` to change to Boot to Console (System/ Boot Auto Login/ Console or Console Auto Login) then the installer script will complete without any issues.
 
 *Note:* CubeSatSim expects to be installed as the `pi` user and references many paths in `/home/pi/*`. Installing as a different user will result in configuration files not saving along with many other issues.
 
-To get the software follow these steps:
+To install the software follow these steps:
 
 `sudo apt-get update`
 
