@@ -639,6 +639,16 @@ elif [ "$1" = "-T" ]; then
 	
 			if [ "$1" != "n" ] ; then
 				echo "Turning command and control ON"
+
+				value=`cat /home/pi/CubeSatSim/sim.cfg`
+				echo "$value" > /dev/null
+				set -- $value
+				
+				echo -n "RX Frequency is: "
+				echo -n ${8}
+				echo " MHz"
+				echo
+
 				sudo touch /home/pi/CubeSatSim/command_control
 				echo "restarting command and control"
 #				reboot=1
