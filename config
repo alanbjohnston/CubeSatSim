@@ -1221,6 +1221,12 @@ elif [ "$1" = "-A" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+		echo "The CubeSatSim/config -A command can only be run in APRS, SSTV, CW, or Transmit Commands modes."
+		echo "Switch to one of these modes (a, s, m, or n) then re-run this command."
+		exit
+	fi
+
 	if [ "$1" != "n" ]; then
 
 		sudo systemctl stop cubesatsim
