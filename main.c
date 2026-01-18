@@ -1831,7 +1831,7 @@ void get_tlm_fox() {
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5));        // Pressure
-    encodeB(b, 34 + head_offset, (int)(sensor[ALT] * 10.0 + 0.5));  // Altitude
+    encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5));  // Altitude
     encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5));   // in place of sensor1
     encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
 
