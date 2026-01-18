@@ -1182,7 +1182,7 @@ elif [ "$1" = "-n" ]; then
 		else
 			echo "Switching to BPSK mode"
 			sudo echo "b" > /home/pi/CubeSatSim/.mode
-			restart=1
+			reboot=1
 		fi
 		sudo systemctl restart command
 	else
