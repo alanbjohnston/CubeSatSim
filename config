@@ -9,7 +9,6 @@ function transmit_command {
 
 		echo
 		echo "Sending DTMF tones to change to mode "$1
-		echo
 
 		case $1 in
 	
