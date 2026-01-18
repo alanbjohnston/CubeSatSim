@@ -2,15 +2,25 @@
 
 function transmit_command {
 
+	MODE=$1
 	echo "CubeSatSim is in Transmit Commands mode"
+	echo
+
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	
+	echo -n "TX Frequency is: "
+	echo -n ${7}
+	echo " MHz"
 
 	FILE=/home/pi/CubeSatSim/transmit_dtmf
 	if [ -f "$FILE" ]; then
 
 		echo
-		echo "Sending DTMF tones to change to mode "$1
+		echo "Sending DTMF tones to change to mode "$MODE
 
-		case $1 in
+		case $MODE in
 	
 			a)
 				number=1
@@ -60,11 +70,6 @@ function transmit_command {
 #		sudo systemctl start command
 
 	else
-
-		MODE=$1
-		value=`cat /home/pi/CubeSatSim/sim.cfg`
-		echo "$value" > /dev/null
-		set -- $value
 
 		STRING="$1-11>APCSS:=3901.40N\07704.39WShi hi MODE="$MODE
 		sudo rm /home/pi/CubeSatSim/t.txt > /dev/null 2>&1
