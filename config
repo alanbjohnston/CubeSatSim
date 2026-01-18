@@ -1179,6 +1179,15 @@ elif [ "$1" = "-n" ]; then
 		sudo systemctl restart command
 	else
 		echo "Switching to Transmit Commands mode"
+	
+		value=`cat /home/pi/CubeSatSim/sim.cfg`
+		echo "$value" > /dev/null
+		set -- $value
+		
+		echo -n "TX Frequency is: "
+		echo -n ${7}
+		echo
+
 		check_restart
 		sudo echo "n" > /home/pi/CubeSatSim/.mode
 		sudo systemctl stop command
@@ -1187,6 +1196,14 @@ elif [ "$1" = "-n" ]; then
 elif [ "$1" = "-A" ]; then
 
 	echo "Transmit APRS Commands to control another CubeSatSim"
+	echo
+
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	
+	echo -n "TX Frequency is: "
+	echo -n ${7}
 	echo
 
 	value=`cat /home/pi/CubeSatSim/.mode`
