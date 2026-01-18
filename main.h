@@ -39,30 +39,35 @@
 #define PRES 3
 #define ALT 4
 #define HUMI 5
-#define GYRO_X 7 // MPU6050 is posisition 6
+#define GYRO_X 7 // MPU6050 label is posisition 6
 #define GYRO_Y 8
 #define GYRO_Z 9
 #define ACCEL_X 10
 #define ACCEL_Y 11
 #define ACCEL_Z 12
-#define GPS1 14 // GPS is position 13
-#define GPS2 15
-#define GPS3 16
-#define DTEMP 18  // TMP is position 17
+#define GPS 13 // GPS label
+#define GPS1 14 // latitude
+#define GPS2 15  // longitude
+#define GPS3 16  // altitude
+#define DTEMP 18  // TMP label is position 17
 #define XS1 20 // NEW user defined token will be position 19
 #define XS2 21  
 #define XS3 22
-#define SENSOR_FIELDS 26
+#define NEW_SENSOR_FIELDS_MAX 6
+#define SENSOR_FIELDS (26 + 6)
 #define FC_EPS 1
 #define FC_BOB 25
 #define FC_SW 50
 #define FC_PAYLOAD 55
+#define X 0
+#define Y 1
+#define Z 2
 
 #define RSSI 0
 #define IHU_TEMP 2
 #define SPIN 1
 
-#define OFF - 1
+#define OFF -1
 #define ON 1
 #define CHECK 0
 #define DISABLED 0
@@ -72,9 +77,6 @@
 uint32_t tx_freq_hz = 434900000 + FREQUENCY_OFFSET;
 uint8_t data[1024];
 uint32_t tx_channel = 0;
-
-ax5043_conf_t hax5043;
-ax25_conf_t hax25;
 
 int twosToInt(int val, int len);
 float toAprsFormat(float input);
@@ -101,6 +103,7 @@ int socket_open = 0;
 int sock = 0;
 int loop = -1, loop_count = 0;
 int firstTime = ON; // 0;
+int secondTime = ON;
 long start;
 int testCount = 0;
 long time_start;
@@ -123,6 +126,21 @@ FILE *image_file;
 #define FC 6
 #define REPEATER 7
 #define TXCOMMAND 12
+
+#define FAIL_COUNT 11
+#define FAIL_NONE -1
+#define FAIL_UNPLUG 1
+#define FAIL_SOLAR 2
+#define FAIL_DEGRADE 3
+#define FAIL_SHORT 4
+#define FAIL_I2C1 5
+#define FAIL_I2C3 6
+#define FAIL_CAMERA 7
+#define FAIL_PAYLOAD 8
+#define FAIL_BME 9
+#define FAIL_MPU 10
+#define FAIL_AUDIO 11
+int failureMode = FAIL_NONE;
 
 int transmitStatus = -1;
 
@@ -148,6 +166,8 @@ long int uptime;
 char call[5];
 char sim_yes[10];
 char hab_yes[10];
+char fail_yes[10];
+int fail_time = 60;
 int squelch = 3; // default squelch
 char rx[12], tx[12];
 int tx_pl = 0;
@@ -158,16 +178,16 @@ float sleepTime;
 unsigned int sampleTime = 0;
 int frames_sent = 0;
 int cw_id = ON;
-int vB4 = FALSE, vB5 = FALSE, vB3 = FALSE, ax5043 = FALSE, transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
+int transmit = FALSE, onLed, onLedOn, onLedOff, txLed, txLedOn, txLedOff, payload = OFF;
 // float voltageThreshold = 3.6, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
-float voltageThreshold = 3.5, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
+float voltageThreshold = 3.55, batteryVoltage = 4.5, batteryCurrent = 0, currentThreshold = 100;
 float latitude = 39.027702f, longitude = -77.078064f;
 float lat_file, long_file;
 double cpuTemp;
 int frameTime;
 long int newGpsTime;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse, atmosphere;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE;
 int rxAntennaDeployed = 0, txAntennaDeployed = 0, c2cStatus = 0;
 int sim_config = FALSE; // sim mode not set by configuration
@@ -175,6 +195,7 @@ double eclipse_time;
 
 float voltage[9], current[9], sensor[SENSOR_FIELDS], other[3];
 char sensor_payload[500];
+char sensor_string[SENSOR_FIELDS][32];
 
 int test_i2c_bus(int bus);
 
@@ -211,8 +232,11 @@ int pi_zero_2_offset = 0;
 
 
 int hab_mode = FALSE; 
+int fail_rnd_mode = FALSE;
 int battery_saver_mode = FALSE;
 long int loopTime;
+long int failTime = 0;
+int gps_status = OFF;
 
 int error_count = 0;
 int groundCommandCount = 0;
@@ -223,6 +247,9 @@ int groundCommandCount = 0;
     int m_ileaver_index;               /* Byte counter for interleaver */
     unsigned char m_conv_sr;           /* Convolutional encoder shift register state */
 
+void sensor_setup();  // defined in sensor_extension.c
+int sensor_loop(char *sensor_buffer);  // defined in sensor_extension.c
+int pi_sensors(char *buffer); // used to read BME and MPU sensor if connected to Pi
 
 // from funcubeLib/common/fecConstants.h
 

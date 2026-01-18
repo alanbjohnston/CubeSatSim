@@ -1,6 +1,17 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v2.1\n"
+echo -e "\ninstallation script for CubeSatSim v2.2\n"
+
+ if [[ $(grep '11.' /etc/debian_version) ]]; then
+    echo "Installing on Debian 11 (Bullseye)"
+  else
+    echo "The OS is not Debian 11 (Bullseye)!"
+	echo "Installation is not likely to work."
+	echo "It is recommended you start with"
+ 	echo "Bullseye as your OS."
+	echo
+	sleep 10
+  fi
 
 if [[ $(grep 'bullseye' /etc/os-release) ]]; then
 	echo "Bullseye detected, installation continuing."
@@ -61,7 +72,7 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 sudo apt-get remove pulseaudio -y
 
 # removed wiringpi and python-picamera python3-picamera 
-sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
+sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom gpsd gpsd-clients libgps-dev python3-gps
 
 cd /tmp
 
@@ -136,7 +147,7 @@ mkdir /home/pi/fctelem
 mkdir /home/pi/fctelem/public_html
 cd fctelem
 wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
-unzip -o fctelem.zip
+unzip -u fctelem.zip
 
 cd
 echo "Installing fcdctl to set FUNcubeDongle Pro gain"
@@ -284,6 +295,8 @@ sudo raspi-config nonint do_legacy 0
   if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 
 sudo sh -c 'echo "\n" >> /boot/config.txt'
+
+sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
 
 changed=0
 value=`cat /home/pi/CubeSatSim/sim.cfg`
