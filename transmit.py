@@ -352,6 +352,7 @@ if __name__ == "__main__":
 				print("command and control is activated")
 				no_command = False
 				system("sudo systemctl start command")
+				txc = True # Transmit commands only works with FM transceiver, so bypass Battery Saver if activated
 			else:
 				print("Command and control not activated since Transmit Commands mode")				
 	except:
