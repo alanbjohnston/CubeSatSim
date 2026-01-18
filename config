@@ -1185,7 +1185,7 @@ elif [ "$1" = "-n" ]; then
 		set -- $value
 		
 		echo -n "TX Frequency is: "
-		echo -n ${7}
+		echo ${7}
 		echo
 
 		check_restart
@@ -1203,7 +1203,7 @@ elif [ "$1" = "-A" ]; then
 	set -- $value
 	
 	echo -n "TX Frequency is: "
-	echo -n ${7}
+	echo ${7}
 	echo
 
 	value=`cat /home/pi/CubeSatSim/.mode`
