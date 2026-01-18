@@ -601,7 +601,6 @@ elif [ "$1" = "-C" ]; then
 
 elif [ "$1" = "-T" ]; then
 
-	echo	
 	echo "Change command and control state"
 	echo 
 
