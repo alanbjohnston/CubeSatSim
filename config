@@ -1245,10 +1245,13 @@ elif [ "$1" = "-A" ]; then
 		echo
 
 	done
-	
-	sudo systemctl restart command
 
-	if [ "$1" != "n" ]; then
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "$1" != "n" ] ; then
+		sudo systemctl restart command
 		reboot=1
 	fi
 
