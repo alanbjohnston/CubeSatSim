@@ -333,7 +333,7 @@ int main(int argc, char * argv[]) {
 	cmdbuffer[0] = '\0';
 	gps_status = OFF;
 	FILE *gps_read = NULL;
-	if ((mode == AFSK) || (mode == CW) || mode == SSTV)) 
+	if ((mode == AFSK) || (mode == CW) || (mode == SSTV)) 
 	{
 		gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
 	
