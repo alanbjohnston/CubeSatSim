@@ -63,6 +63,9 @@ git pull --no-rebase > .updated
 if [ $checkout -eq 1 ]; then
 	git checkout $branch	
 	git pull --no-rebase > .updated
+	FLAG=1
+	echo "Running update script again"
+	/home/pi/CubeSatSim/update
 fi
 
 make debug
