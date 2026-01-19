@@ -1693,7 +1693,7 @@ elif [ "$1" = "-u" ]; then
 	echo "Change gpsd state"
 	echo 
 
-	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
+	if [[ $(sudo systemctl is-active d.socket | grep inactive) ]]; then
     	echo "gpsd is inactive"
 		echo
 		echo "Do you want to turn gpsd to ON (y/n) "
@@ -1705,7 +1705,7 @@ elif [ "$1" = "-u" ]; then
 			sudo systemctl enable gpsd
 			sudo systemctl enable gpsd.socket
 			echo
-			echo "Unless you configure gpsd otherwise, the gps is connected to serial0 on the Pi."
+			echo "Unless you configure gpsd otherwise, the  is connected to serial0 on the Pi."
 			echo "To monitor your gps device, use the command gpsmon"
 			echo
 			reboot=1
@@ -1768,6 +1768,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -M     Set simulated failure mode"
 	echo "   -U     Change the random failure mode setting"
 	echo "   -N     Set next mode or failure"
+	echo "   -u 	Change gpsd state"
 	echo
 	exit
 
