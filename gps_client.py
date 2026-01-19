@@ -17,7 +17,7 @@ import signal
 signal.signal(signal.SIGINT, signal.SIG_DFL)
 signal.signal(signal.SIGPIPE, signal.SIG_DFL)
 
-While True:
+while True:
     try:
     
         mode = -1    
