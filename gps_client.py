@@ -80,11 +80,6 @@ while True:
         lon = 0    
         alt = 0
         time.sleep(2)
-#        exit(0)
-    try:
-        inp = input()
-        print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
-#        print(inp)
-    except:
-        print("Python error getting input!")        
-    
+
+    with open('gps_latest.txt', 'w') as file:
+        file.write("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
