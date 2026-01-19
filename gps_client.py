@@ -75,7 +75,7 @@ while True:
         
     except:    
         print("-1 0 0 0")
-        exit(0)
+#        exit(0)
     try:
         inp = input()
 #        print(inp)
