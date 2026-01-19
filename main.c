@@ -332,22 +332,26 @@ int main(int argc, char * argv[]) {
 	
 	cmdbuffer[0] = '\0';
 	gps_status = OFF;
-	FILE *gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
-
-	if (gps_read != NULL) {
-    	fgets(cmdbuffer, 1000, gps_read);
-    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
-		if ((cmdbuffer[0] == '-') && (cmdbuffer[1] == '1'))
-		{
-			gps_status = OFF;
-			fprintf(stderr, "Pi GPS off\n");
-		} else {
-			gps_status = ON;
-			fprintf(stderr, "Pi GPS on\n");
-		}
-//		fclose(gps_read);
-	} else
-		fprintf(stderr, "Error checking gps");
+	FILE *gps_read = NULL;
+	if ((mode == AFSK) || (mode == CW) || mode == SSTV)) 
+	{
+		gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
+	
+		if (gps_read != NULL) {
+	    	fgets(cmdbuffer, 1000, gps_read);
+	    	fprintf(stderr, "gps read: %s\n", cmdbuffer);
+			if ((cmdbuffer[0] == '-') && (cmdbuffer[1] == '1'))
+			{
+				gps_status = OFF;
+				fprintf(stderr, "Pi GPS off\n");
+			} else {
+				gps_status = ON;
+				fprintf(stderr, "Pi GPS on\n");
+			}
+	//		fclose(gps_read);
+		} else
+			fprintf(stderr, "Error checking gps");
+	}
 	
     payload = OFF;
 
