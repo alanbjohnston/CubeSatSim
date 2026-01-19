@@ -11,7 +11,6 @@ run this way: python3 example1.py.txt
 import gps               # the gpsd interface module
 import time
 import signal
-import time
 
 # Don't turn these signal into exceptions, just die. 
 # https://stackoverflow.com/questions/26692284/how-to-prevent-brokenpipeerror-when-doing-a-flush-in-python
