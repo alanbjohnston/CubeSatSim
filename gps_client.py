@@ -11,6 +11,7 @@ run this way: python3 example1.py.txt
 import gps               # the gpsd interface module
 import time
 import signal
+import time
 
 # Don't turn these signal into exceptions, just die. 
 # https://stackoverflow.com/questions/26692284/how-to-prevent-brokenpipeerror-when-doing-a-flush-in-python
@@ -70,14 +71,20 @@ while True:
         
         # Got ^C, or fell out of the loop.  Cleanup, and leave.
         session.close()
-        print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
+#        print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
     #    exit(0)
         
     except:    
-        print("-1 0 0 0")
+#        print("-1 0 0 0")
+        mode = -1    
+        lat = 0    
+        lon = 0    
+        alt = 0
+        time.sleep(2)
 #        exit(0)
     try:
         inp = input()
+        print("%d %.6f %.6f %.1f" % (mode, lat, lon, alt))
 #        print(inp)
     except:
         print("Python error getting input!")        
