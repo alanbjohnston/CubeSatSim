@@ -74,6 +74,9 @@ sudo apt-get remove pulseaudio -y
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom gpsd gpsd-clients libgps-dev python3-gps
 
+sudo systemctl disable gpsd
+sudo systemctl disable gpsd.socket
+
 cd /tmp
 
 # wget https://project-downloads.drogon.net/wiringpi-latest.deb
