@@ -326,6 +326,22 @@ if [ $changed -eq 1 ]; then
 	echo
 fi
 
+echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
+sudo apt-get install -y libi2c-dev
+cd
+git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+cd MPU6050-C-CPP-Library-for-Raspberry-Pi
+sudo make install
+make payload
+
+echo "Installing raspberry-pi-bme280"
+sudo apt-get install -y libi2c-dev
+cd
+git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
+cd raspberry-pi-bme280
+git checkout payload
+make 
+
 echo "Would you like to reboot to complete the installation (y/n)?"
 
 read -r ANS
