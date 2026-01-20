@@ -1359,17 +1359,24 @@ void get_tlm(void) {
 //      fclose(file_append);
 //    }
   } else {  // APRS
-/*
-      if (c2cStatus == 0)	   
-        sprintf(tlm_str, "BAT %4.2f %5.1f ", batteryVoltage, batteryCurrent); 
-      else
-        sprintf(tlm_str, "BAT %4.2f %5.1f C ", batteryVoltage, batteryCurrent); 
-*/
-		snprintf(tlm_str, 30, "BAT %.2f %.1f ", batteryVoltage, batteryCurrent);	
-		if (c2cStatus != DISABLED)
-			strcat(tlm_str,"C ");
-		if (sim_mode || (failureMode != FAIL_NONE))
+
+		if (sim_mode || (failureMode != FAIL_NONE)) {  
+			if (voltage[map[BAT2]] == 0)
+				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT]],  current[map[BAT]]);
+			else
+				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT]],  current[map[BAT]] + current[map[BAT2]]);
+
+			if (c2cStatus != DISABLED)
+				strcat(tlm_str,"C ");
+			
 			strcat(tlm_str,"S ");
+		}
+	   else {
+		   	snprintf(tlm_str, 30, "BAT %.2f %.1f ", batteryVoltage, batteryCurrent);	
+
+			if (c2cStatus != DISABLED)
+				strcat(tlm_str,"C ");
+	   }
 //	    printf("tlm_str: %s\n", tlm_str);
       	strcat(str, tlm_str);
   }  
