@@ -3052,7 +3052,7 @@ int pi_sensors(char *buffer)
 	
 	fprintf(stderr, "pi_sensors string: %s\n", buffer);
 */
-	if (strcmp(buffer, "OK BME280 0.0 0.0 0.0 0.0 MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 GPS 0.0 0.0 0.0 TMP 0.0 YPR 0.0 0.0 0.0") == 0)
+	if (strncmp(buffer, "OK BME280 0.0 0.0 0.0 0.0 MPU6050 0.0 0.0 0.0 0.0 0.0 0.0 GPS 0.0 0.0 0.0", 57) == 0)
 		return (0);
 	else		
 		return (1);
