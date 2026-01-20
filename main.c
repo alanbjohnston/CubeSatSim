@@ -409,7 +409,7 @@ int main(int argc, char * argv[]) {
     batt = rnd_float(3.8, 4.1);
     speed = rnd_float(1.0, 2.5);
     eclipse = (rnd_float(-1, +4) > 0) ? 1.0 : 0.0;
-	atmosphere = (rnd_float(-1, +4) > 0) ? 0.0 : 1.0;
+	atmosphere = (rnd_float(-1, +1) > 0) ? 0.0 : 1.0;
 	  
 //    eclipse = 1;	  
     period = rnd_float(150, 300);
@@ -420,7 +420,8 @@ int main(int argc, char * argv[]) {
 //    #ifdef DEBUG_LOGGING
     for (int i = X; i <= Z; i++)
       printf("axis: %f angle: %f v: %f i: %f \n", axis[i], angle[i], volts_max[i], amps_max[i]);
-    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f\n", batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min);
+    printf("batt: %f speed: %f eclipse_time: %f eclipse: %f period: %f temp: %f max: %f min: %f atmosphere: %f\n", 
+		batt, speed, eclipse_time, eclipse, period, tempS, temp_max, temp_min, atmosphere);
 //    #endif
 
     time_start = (long int) millis();
