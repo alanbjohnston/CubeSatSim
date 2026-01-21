@@ -866,28 +866,35 @@ tempP = rnd_float(-25, -15);  // simulated payload parameters
 */
 	   
     if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {
+		char str_tmp[10];
 		printf("Generating simulated payload telemetry\n");
 		if (atmosphere == 0) {
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
 			sensor[ALT] = altSP;
-			strcpy(sensor_string[ALT], &itoa(altSP));
+			sprintf(str_tmp, "%5.0f", altSP); 
+			strcpy(sensor_string[ALT], str_tmp);
 			print("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
-			sensor[TEMP] = &itoa(tempP + 80 * (1 - eclipse));	
-			strcpy(sensor_string[TEMP], &itoa(tempP + 80 * (1 - eclipse)));
+			sensor[TEMP] = tempP + 80 * (1 - eclipse);	
+			sprintf(char_tmp, "%4.1f", sensor[TEMP]);
+			strcpy(sensor_string[ALT], str_tmp);
 			print("Temp: %s\n", sensor_string[TEMP]);
 		} else {
 			sensor[PRES] = presP;
-			strcpy(sensor_string[PRES], atoi(presP));
+			sprintf(str_tmp, "%5.0f", presP); 
+			strcpy(sensor_string[PRES], str_tmp);
 			print("Pres: %s\n", sensor_string[PRES]);
 			sensor[ALT] = altGP;
-			strcpy(sensor_string[ALT], atoi(altGP));
+			sprintf(str_tmp, "%5.0f", altGP); 
+			strcpy(sensor_string[ALT], str_tmp);
 			sensor[HUMI] = humiP;
-			strcpy(sensor_string[HUMI], atoi(humiP));
-			sensor[TEMP] = &itoa(tempP + 80 * (1 - eclipse));
-			strcpy(sensor_string[TEMP], &itoa(tempP + 80 * (1 - eclipse)));
+			sprintf(str_tmp, "%3.0f", humiP); 
+			strcpy(sensor_string[HUMI], str_tmp);
+			sensor[TEMP] = tempP + 80 * (1 - eclipse);
+			sprintf(str_tmp, "%3.0f",sensor[TEMP]); 
+			strcpy(sensor_string[TEMP], str_tmp);
 			print("Temp: %s\n", sensor_string[TEMP]);
 		}
 	   char sensor_number[20];	  
