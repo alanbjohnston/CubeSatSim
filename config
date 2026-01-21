@@ -1092,17 +1092,17 @@ elif [ "$1" = "-F" ]; then
 	echo
 	echo "Restarting CubeSatSim with new configuration file"
 
-	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
+#	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
 		sudo systemctl restart transmit
-	else
-		echo
-		echo "temporarily disabling gpsd and rebooting to program FM module"
-		echo "this will take about 40 seconds"
-		sudo systemctl stop gpsd.socket
+#	else
+#		echo
+#		echo "temporarily disabling gpsd and rebooting to program FM module"
+#		echo "this will take about 40 seconds"
+#		sudo systemctl stop gpsd.socket
 		sudo systemctl restart transmit
-		sleep 10
-		reboot=1
-	fi
+#		sleep 10
+#		reboot=1
+#	fi
 
 elif [ "$1" = "-o" ]; then
 
