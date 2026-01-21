@@ -784,10 +784,10 @@ int main(int argc, char * argv[]) {
 			if ((cmdbuffer[0] == '2') || (cmdbuffer[0] == '3'))
 			{
 			  printf("Valid gps data!\n"); 
-			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
+//			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
 			  if (cmdbuffer[strlen(cmdbuffer) - 1] == '\n')
 				  cmdbuffer[strlen(cmdbuffer) - 1] = '\0';
-			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
+//			  printf("%x %x \n", cmdbuffer[strlen(cmdbuffer) - 2], cmdbuffer[strlen(cmdbuffer) - 1]	);
 				
 	          int count1;
 	          char * token;
@@ -800,13 +800,13 @@ int main(int argc, char * argv[]) {
 	              sensor[count1] = (float) atof(token);
 				  strcpy(sensor_string[count1], token);	
 	//              #ifdef DEBUG_LOGGING
-	              printf("sensor: %f ", sensor[count1]);  // print sensor data
-				  printf("Sensor String %d is %s\n",count1, sensor_string[count1]);
+//	              printf("sensor: %f ", sensor[count1]);  // print sensor data
+//				  printf("Sensor String %d is %s\n",count1, sensor_string[count1]);
 	//              #endif
 	              token = strtok(NULL, space);
 	            }
 	          }
-	          printf("\n");
+//	          printf("\n");
 			  strcpy(sensor_string[GPS], "GPS");		
 	
 			} else {
