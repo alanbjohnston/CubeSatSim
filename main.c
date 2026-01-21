@@ -430,7 +430,7 @@ int main(int argc, char * argv[]) {
     if (eclipse == 0.0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
 
-	tempP = rnd_float(-25, -15);  // simulated payload parameters
+	tempP = rnd_float(80, 90);  // simulated payload parameters
 	altSP = rnd_float(28000, 32000);
 	changeP = rnd_float(-10, 10);   
 	presP = rnd_float(1014, 1016);  
