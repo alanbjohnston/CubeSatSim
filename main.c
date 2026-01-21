@@ -1678,7 +1678,7 @@ void get_tlm_fox() {
     BAT2Current = (int)(current[map[BAT2]] + 0.5) + 2048;
 
 //    if (payload == ON) STEMBoardFailure = 0;
-    if (payload == ON) || (sim_mode && (failureMode != FAIL_PAYLOAD))  
+    if ((payload == ON) || (sim_mode && (failureMode != FAIL_PAYLOAD)))  
 		STEMBoardFailure = 0;
 
     // read payload sensor if available
