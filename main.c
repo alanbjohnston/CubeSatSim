@@ -856,7 +856,7 @@ int main(int argc, char * argv[]) {
 	      	newGpsTime = millis();  
       }
 	   
-#    if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {	   
+//    if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {	   
     if (sim_mode && (failureMode != FAIL_PAYLOAD)) {
 		char str_tmp[10];
 		printf("Generating simulated payload telemetry\n");
