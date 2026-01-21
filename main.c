@@ -429,6 +429,14 @@ int main(int argc, char * argv[]) {
     eclipse_time = (long int)(millis() / 1000.0);
     if (eclipse == 0.0)
       eclipse_time -= period / 2; // if starting in eclipse, shorten interval	
+
+	tempP = rnd_float(-25, -15);  // simulated payload parameters
+	altSP = rnd_float(28000, 32000);
+	changeP = rnd_float(-10, 10);   
+	presP = rnd_float(1014, 1016);  
+	altGP = rnd_float(20,120);  
+	humiP = rnd_float(40,60); 
+	  
   }
 
   // tx_freq_hz -= tx_channel * 50000;
@@ -848,26 +856,39 @@ int main(int argc, char * argv[]) {
 	      	newGpsTime = millis();  
       }
 
+/*
+tempP = rnd_float(-25, -15);  // simulated payload parameters
+	 = rnd_float(28000, 32000);
+	changeP = rnd_float(-10, 10);   
+	presP = rnd_float(1014, 1016);  
+	altGP = rnd_float(20,120);  
+	humiP
+*/
+	   
     if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {
 		printf("Generating simulated payload telemetry\n");
 		if (atmosphere == 0) {
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
-			sensor[ALT] = 400;
-			strcpy(sensor_string[ALT], "30000");
+			sensor[ALT] = altSP;
+			strcpy(sensor_string[ALT], itoa(altSP));
+			print("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
-			sensor[TEMP] = 0;	
-			strcpy(sensor_string[TEMP], "0.0");
+			sensor[TEMP] = itoa(tempP + 80 * (1 - eclipse));	
+			strcpy(sensor_string[TEMP], itoa(tempP + 80 * (1 - eclipse)));
+			print("Temp: %s\n", sensor_string[TEMP]);
 		} else {
-			sensor[PRES] = 1015;
-			strcpy(sensor_string[PRES], "1015");
-			sensor[ALT] = 75;
-			strcpy(sensor_string[ALT], "75");
-			sensor[HUMI] = 48;
-			strcpy(sensor_string[HUMI], "48");
-			sensor[TEMP] = 27;
-			strcpy(sensor_string[TEMP], "27.0");
+			sensor[PRES] = presP;
+			strcpy(sensor_string[PRES], atoi(presP));
+			print("Pres: %s\n", sensor_string[PRES]);
+			sensor[ALT] = altGP;
+			strcpy(sensor_string[ALT], atoi(altGP));
+			sensor[HUMI] = humiP;
+			strcpy(sensor_string[HUMI], atoi(humiP));
+			sensor[TEMP] = itoa(tempP + 80 * (1 - eclipse));
+			strcpy(sensor_string[TEMP], itoa(tempP + 80 * (1 - eclipse)));
+			print("Temp: %s\n", sensor_string[TEMP]);
 		}
 	   char sensor_number[20];	  
 	   sensor[ACCEL_X] = axis[X];
