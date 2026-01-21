@@ -412,7 +412,10 @@ if __name__ == "__main__":
 		print(f"Output of the command (stdout): {e.stdout}")
 #		print(f"Error output of the command (stderr): {e.stderr}")
   	
-	if (mode != 'e') and (gpsd_status != "active"):
+	if (mode != 'e'): 
+		
+		if (gpsd_status == "active"):
+			system("sudo systemctl stop gpsd.socket")
 		print("Programming FM module!\n");	
 		output(pd, 1)
 		output (ptt, 1)
@@ -431,6 +434,8 @@ if __name__ == "__main__":
 		except:
 			print("Error in serial write")
 		output(pd, 0)
+		if (gpsd_status == "active"):
+			system("sudo systemctl start gpsd.socket")
 
 	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
