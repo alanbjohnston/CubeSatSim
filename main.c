@@ -871,12 +871,12 @@ tempP = rnd_float(-25, -15);  // simulated payload parameters
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
 			sensor[ALT] = altSP;
-			strcpy(sensor_string[ALT], itoa(altSP));
+			strcpy(sensor_string[ALT], &itoa(altSP));
 			print("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
-			sensor[TEMP] = itoa(tempP + 80 * (1 - eclipse));	
-			strcpy(sensor_string[TEMP], itoa(tempP + 80 * (1 - eclipse)));
+			sensor[TEMP] = &itoa(tempP + 80 * (1 - eclipse));	
+			strcpy(sensor_string[TEMP], &itoa(tempP + 80 * (1 - eclipse)));
 			print("Temp: %s\n", sensor_string[TEMP]);
 		} else {
 			sensor[PRES] = presP;
@@ -886,8 +886,8 @@ tempP = rnd_float(-25, -15);  // simulated payload parameters
 			strcpy(sensor_string[ALT], atoi(altGP));
 			sensor[HUMI] = humiP;
 			strcpy(sensor_string[HUMI], atoi(humiP));
-			sensor[TEMP] = itoa(tempP + 80 * (1 - eclipse));
-			strcpy(sensor_string[TEMP], itoa(tempP + 80 * (1 - eclipse)));
+			sensor[TEMP] = &itoa(tempP + 80 * (1 - eclipse));
+			strcpy(sensor_string[TEMP], &itoa(tempP + 80 * (1 - eclipse)));
 			print("Temp: %s\n", sensor_string[TEMP]);
 		}
 	   char sensor_number[20];	  
