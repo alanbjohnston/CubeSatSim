@@ -703,7 +703,12 @@ int main(int argc, char * argv[]) {
     
 	if (payload == FALSE) {
 		payload = pi_sensors(buffer2);  
-		printf("pi_sensors status: %d \n", payload);   
+		printf("pi_sensors status: %d \n", payload);  
+	}
+
+	if (payload && !sim_config) { 
+		sim_mode = FALSE;
+		printf("Turning off sim mod since payload is present and sim mode not manually configured.");
 	}
   
 	fflush(stdout); 
