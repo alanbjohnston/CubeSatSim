@@ -855,44 +855,37 @@ int main(int argc, char * argv[]) {
 //	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
       }
-
-/*
-tempP = rnd_float(-25, -15);  // simulated payload parameters
-	 = rnd_float(28000, 32000);
-	changeP = rnd_float(-10, 10);   
-	presP = rnd_float(1014, 1016);  
-	altGP = rnd_float(20,120);  
-	humiP
-*/
 	   
-    if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {
+#    if (sim_mode && (failureMode != FAIL_PAYLOAD) && !payload) {	   
+    if (sim_mode && (failureMode != FAIL_PAYLOAD)) {
 		char str_tmp[10];
 		printf("Generating simulated payload telemetry\n");
 		if (atmosphere == 0) {
 			sensor[PRES] = 0;
 			strcpy(sensor_string[PRES], "0.0");
+			altSP += changeP;
 			sensor[ALT] = altSP;
 			sprintf(str_tmp, "%5.0f", altSP); 
 			strcpy(sensor_string[ALT], str_tmp);
 			printf("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
-			sensor[TEMP] = tempP + 80 * (1 - eclipse);	
+			sensor[TEMP] = tempP - 80 * (1 - eclipse) + rnd_float(-0.3, 0.3);	
 			sprintf(str_tmp, "%4.1f", sensor[TEMP]);
 			strcpy(sensor_string[ALT], str_tmp);
 			printf("Temp: %s\n", sensor_string[TEMP]);
 		} else {
-			sensor[PRES] = presP;
+			sensor[PRES] = presP + rnd_float(-1, 1);
 			sprintf(str_tmp, "%5.0f", presP); 
 			strcpy(sensor_string[PRES], str_tmp);
 			printf("Pres: %s\n", sensor_string[PRES]);
 			sensor[ALT] = altGP;
 			sprintf(str_tmp, "%5.0f", altGP); 
 			strcpy(sensor_string[ALT], str_tmp);
-			sensor[HUMI] = humiP;
+			sensor[HUMI] = humiP + rnd_float(-1, 1);
 			sprintf(str_tmp, "%3.0f", humiP); 
 			strcpy(sensor_string[HUMI], str_tmp);
-			sensor[TEMP] = tempP + 80 * (1 - eclipse);
+			sensor[TEMP] = tempP - 80 * (1 - eclipse) + rnd_float(-0.3, 0.3);
 			sprintf(str_tmp, "%3.0f",sensor[TEMP]); 
 			strcpy(sensor_string[TEMP], str_tmp);
 			printf("Temp: %s\n", sensor_string[TEMP]);
