@@ -187,7 +187,7 @@ double cpuTemp;
 int frameTime;
 long int newGpsTime;
 
-float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse, atmosphere;
+float axis[3], angle[3], volts_max[3], amps_max[3], batt, speed, period, tempS, temp_max, temp_min, eclipse, atmosphere, tempP, altSP, presP, altGP, humiP;
 int i2c_bus0 = OFF, i2c_bus1 = OFF, i2c_bus3 = OFF, camera = OFF, sim_mode = FALSE, SafeMode = FALSE;
 int rxAntennaDeployed = 0, txAntennaDeployed = 0, c2cStatus = 0;
 int sim_config = FALSE; // sim mode not set by configuration
