@@ -1872,8 +1872,9 @@ void get_tlm_fox() {
     } else
       printf("Error opening command_count.txt!\n");
     fclose(command_count_file);
+	  
 
-    //    printf("Command count: %d\n", groundCommandCount);
+    printf("Command count: %d\n", groundCommandCount);
     int simulated;
     simulated = sim_mode;
     if (failureMode != FAIL_NONE) {
