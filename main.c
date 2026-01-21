@@ -706,7 +706,7 @@ int main(int argc, char * argv[]) {
 		printf("pi_sensors status: %d \n", payload);  
 	}
 
-	if (payload && !sim_config) { 
+	if (sim_mode && payload && !sim_config) { 
 		sim_mode = FALSE;
 		printf("Turning off sim mod since payload is present and sim mode not manually configured.");
 	}
