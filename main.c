@@ -348,7 +348,7 @@ int main(int argc, char * argv[]) {
 				gps_status = ON;
 				fprintf(stderr, "Pi GPS on\n");
 			}
-	//		fclose(gps_read);
+			fclose(gps_read);
 		} else
 			fprintf(stderr, "Error checking gps");
 	}
@@ -771,10 +771,10 @@ int main(int argc, char * argv[]) {
 	 if (gps_status == TRUE) {
 		fprintf(stderr, "Checking Pi gps\n");
 		cmdbuffer[0] = '\0';
-//		gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
+		gps_read = sopen("python3 /home/pi/CubeSatSim/gps_client.py");  // python sensor polling function	  
 	
 		if (gps_read != NULL) {
-			fputc('\n', gps_read);
+//			fputc('\n', gps_read);
 	    	fgets(cmdbuffer, 1000, gps_read);
 
 //			const char gpsTestStr[] = "2 32.3 -54 333\n";
