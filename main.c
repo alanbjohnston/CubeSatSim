@@ -874,11 +874,11 @@ tempP = rnd_float(-25, -15);  // simulated payload parameters
 			sensor[ALT] = altSP;
 			sprintf(str_tmp, "%5.0f", altSP); 
 			strcpy(sensor_string[ALT], str_tmp);
-			print("Alt: %s\n", sensor_string[ALT]);
+			printf("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
 			sensor[TEMP] = tempP + 80 * (1 - eclipse);	
-			sprintf(char_tmp, "%4.1f", sensor[TEMP]);
+			sprintf(str_tmp, "%4.1f", sensor[TEMP]);
 			strcpy(sensor_string[ALT], str_tmp);
 			print("Temp: %s\n", sensor_string[TEMP]);
 		} else {
