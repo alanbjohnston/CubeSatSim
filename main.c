@@ -880,12 +880,12 @@ tempP = rnd_float(-25, -15);  // simulated payload parameters
 			sensor[TEMP] = tempP + 80 * (1 - eclipse);	
 			sprintf(str_tmp, "%4.1f", sensor[TEMP]);
 			strcpy(sensor_string[ALT], str_tmp);
-			print("Temp: %s\n", sensor_string[TEMP]);
+			printf("Temp: %s\n", sensor_string[TEMP]);
 		} else {
 			sensor[PRES] = presP;
 			sprintf(str_tmp, "%5.0f", presP); 
 			strcpy(sensor_string[PRES], str_tmp);
-			print("Pres: %s\n", sensor_string[PRES]);
+			printf("Pres: %s\n", sensor_string[PRES]);
 			sensor[ALT] = altGP;
 			sprintf(str_tmp, "%5.0f", altGP); 
 			strcpy(sensor_string[ALT], str_tmp);
@@ -895,7 +895,7 @@ tempP = rnd_float(-25, -15);  // simulated payload parameters
 			sensor[TEMP] = tempP + 80 * (1 - eclipse);
 			sprintf(str_tmp, "%3.0f",sensor[TEMP]); 
 			strcpy(sensor_string[TEMP], str_tmp);
-			print("Temp: %s\n", sensor_string[TEMP]);
+			printf("Temp: %s\n", sensor_string[TEMP]);
 		}
 	   char sensor_number[20];	  
 	   sensor[ACCEL_X] = axis[X];
