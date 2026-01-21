@@ -71,6 +71,18 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 
 sudo apt-get remove pulseaudio -y
 
+cd
+
+git clone https://github.com/alanbjohnston/direwolf.git
+
+cd direwolf
+
+make -j
+
+sudo make install
+
+make install-rpi
+
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom gpsd gpsd-clients libgps-dev python3-gps
 
@@ -113,19 +125,6 @@ else
     echo "creating $FILE"
     echo "b" > .mode
 fi
-
-cd
-
-git clone https://github.com/alanbjohnston/direwolf.git
-
-cd direwolf
-
-make -j
-
-sudo make install
-
-make install-rpi
-
 
 cd
 
