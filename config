@@ -1693,7 +1693,7 @@ elif [ "$1" = "-u" ]; then
 	echo "Change gpsd state"
 	echo 
 
-	if [[ $(sudo systemctl is-active d.socket | grep inactive) ]]; then
+	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
     	echo "gpsd is inactive"
 		echo
 		echo "Do you want to turn gpsd to ON (y/n) "
