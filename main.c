@@ -1867,13 +1867,15 @@ void get_tlm_fox() {
     FILE* command_count_file = fopen("/home/pi/CubeSatSim/command_count.txt", "r");
     if (command_count_file != NULL) {
       char count_string[10];
-      if ((fgets(count_string, 10, command_count_file)) != NULL) groundCommandCount = atoi(count_string);
+      if ((fgets(count_string, 10, command_count_file)) != NULL) 
+		  groundCommandCount = atoi(count_string);
+	  else
+		  printf("command_count.txt is invalid\n");
       //      fclose(command_count_file);
     } else
       printf("Error opening command_count.txt!\n");
     fclose(command_count_file);
 	  
-
     printf("Command count: %d\n", groundCommandCount);
     int simulated;
     simulated = sim_mode;
@@ -2748,7 +2750,9 @@ void get_tlm_fc() {  // FUNcube Mode telemetry generation
 	if (command_count_file != NULL) {	
 		char count_string[10];	
 		if ( (fgets(count_string, 10, command_count_file)) != NULL)
-			groundCommandCount = (uint16_t) atoi(count_string);     
+			groundCommandCount = (uint16_t) atoi(count_string);    
+	    else
+		    printf("command_count.txt is invalid\n");		
 	} else 
 		printf("Error opening command_count.txt!\n");
 	fclose(command_count_file);
