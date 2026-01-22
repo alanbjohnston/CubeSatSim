@@ -549,7 +549,7 @@ if __name__ == "__main__":
 
 #								query = ["su", "-c", "'timeout",  "3", "sudo", "/home/pi/rpitx/rpitx", "-i-", "-m", "RF", "-f", "434.9e3'", "pi"]
 
-								query = ["sudo", "/home/pi/rpitx/rpitx", "-i-", "-m", "RF", "-f", "434.9e3'", "pi"]
+								query = ["sudo", "/home/pi/rpitx/rpitx", "-i-", "-m", "RF", "-f", "434.9e3"]
 								try:
 									result = subprocess.run(query, capture_output=True, text=True, check=True)
 									print(f"Command run was: {query}")
