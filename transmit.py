@@ -339,7 +339,6 @@ if __name__ == "__main__":
 			if config[4] == 'y' or config[4] == 'yes':		
 				sim_mode = True
 				sim_config = True
-				print("Simulation mode set by configuration")
 		if len(config) > 6:
 			txf = float(config[6])
 			if (mode == 'e'):
@@ -538,33 +537,11 @@ if __name__ == "__main__":
 #							output(pd, 0)							
 						else:
 							system("echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt")
-							if card != "Device":
-								if (debug_mode == 1):
-									system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-								else:
-									system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+							if (debug_mode == 1):
+								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 							else:
-								#system("timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-#								system("su -c 'timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3' pi")	
-
-#								query = ["su", "-c", "'timeout",  "3", "sudo", "/home/pi/rpitx/rpitx", "-i-", "-m", "RF", "-f", "434.9e3'", "pi"]
-
-								query = ["/home/pi/rpitx/rpitx", "-i-", "-m", "RF", "-f", "434.9e3"]
-								try:
-									result = subprocess.run(query, capture_output=True, text=True, check=True)
-									print(f"Command run was: {query}")
-#									gpsd_status = result.stdout.strip()
-									print(f"Output of the command (stdout): {result.stdout}")
-								except subprocess.CalledProcessError as e:
-							#		print(f"Command failed with return code: {e.returncode}")
-									print(f"Command run was: {e.cmd}")
-#									gpsd_status = e.stdout.strip()
-									print(f"Exception Output of the command (stdout): {e.stdout}")
-							#		print(f"Error output of the command (stderr): {e.stderr}")
-
-
-								
-								print("Transmit carrier only since FM failure is simulated")
+								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+					
 						sleep(0.1)  
 #						output (ptt, 1)
 #						output(pd, 0)
