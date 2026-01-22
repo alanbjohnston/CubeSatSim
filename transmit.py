@@ -228,8 +228,6 @@ output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
 
-sleep(10)  # to fix FSK no CW ID
-
 battery_saver_check()	
 
 # print(txLedOn)
@@ -253,7 +251,7 @@ if __name__ == "__main__":
 		elif (('s' == sys.argv[1]) or ('-s' in sys.argv[1])):
 			skip = True
 			print("Skipping delay and CW ID")
-			
+
 	print(transmit)
 
 	uptime_time = 45  #  45 second boot time if Pi Zero 
@@ -264,24 +262,6 @@ if __name__ == "__main__":
 		uptime_time = 20  # 20 second boot time if Pi Zero 2
 	except:
 		print("Pi Zero 2 not detected")
-
-	try:
-		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
-		file = open("/home/pi/CubeSatSim/uptime")
-		up = file.read().split(" ")[0]
-		print(up)
-		uptime = float(up)
-		print(uptime)
-		if (uptime < uptime_time):
-			print("Uptime < threshold seconds")
-		else:
-			print("Uptime > threshold seconds")
-			print("Skip CW ID")
-			skip = True
-		file.close() 
-	except:
-		print("Can't open /proc/uptime") 
-	print(skip)	
 
 	if ( mode == "y"):
 		try:
@@ -294,6 +274,29 @@ if __name__ == "__main__":
 	print("Mode is: ")
 	print(mode)
 
+		try:
+		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
+		file = open("/home/pi/CubeSatSim/uptime")
+		up = file.read().split(" ")[0]
+		print(up)
+		uptime = float(up)
+		print(uptime)
+		extra = 0	
+		if (mode == 'f')
+			extra = 15
+		if (uptime < (uptime_time + extra)):
+			print("Uptime < threshold seconds")
+		else:
+			print("Uptime > threshold seconds")
+			print("Skip CW ID")
+			skip = True
+		file.close() 
+	except:
+		print("Can't open /proc/uptime") 
+	print(skip)	
+
+	if (mode == 'f')
+			sleep(10)  # wait to avoid restart and truncated cw id
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
 		file.close()
