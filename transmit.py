@@ -17,6 +17,8 @@ def sim_failure_check():
 	try:
 		global card
 		global cam_fail
+		global sim_mode
+		global sim_config
 		cam_fail = False
 		file = open("/home/pi/CubeSatSim/failure_mode.txt")
 		fail_mode = int(file.read(2))
@@ -25,17 +27,24 @@ def sim_failure_check():
 		if (fail_mode == 11):
 			card = "Device"  # Change audio so no FM audio plays
 			print("Failure mode no FM audio")
+			sim_mode = True
 		elif (fail_mode == 7):
 			cam_fail = True
 			print("Failure mode camera fail")	
+			sim_mode = True			
 		elif (fail_mode == -1):
-			print("No failure mode")	
+			print("No failure mode")
+			if sim_config:
+				sim_mode = True
 		else:
 			print("Other failure mode")
 			card = "Headphones"
+			sim_mode = True
 	except:
 		print("No failure mode")
 		card = "Headphones"
+		if sim_config:
+			sim_mode = True
 
 def battery_saver_check():
 	try:
@@ -314,6 +323,7 @@ if __name__ == "__main__":
 	rx = '435.0000'
 	txr = '144.9000'
 	sim_mode = False
+	sim_config = False
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -328,6 +338,7 @@ if __name__ == "__main__":
 		if len(config) > 4:
 			if config[4] == 'y' or config[4] == 'yes':		
 				sim_mode = True
+				sim_config = True
 		if len(config) > 6:
 			txf = float(config[6])
 			if (mode == 'e'):
