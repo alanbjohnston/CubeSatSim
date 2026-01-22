@@ -439,7 +439,8 @@ if __name__ == "__main__":
 		if (gpsd_status == "active"):
 			print("Restarting gpsd.socket")
 			system("sudo systemctl restart gpsd.socket")
-
+			
+	sim_failure_check()
 	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 		GPIO.setup(txLed, GPIO.OUT)	
