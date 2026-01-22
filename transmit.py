@@ -546,7 +546,7 @@ if __name__ == "__main__":
 #					command_control_check()
 					sleep(1)
 		elif (mode == 'm'):
-			system("touch /home/pi/CubeSatSim/cwready")
+#			system("touch /home/pi/CubeSatSim/cwready")
 			print("CW")
 			while True:
 #				command_control_check()
