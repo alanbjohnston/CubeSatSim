@@ -341,6 +341,7 @@ if __name__ == "__main__":
 			if config[4] == 'y' or config[4] == 'yes':		
 				sim_mode = True
 				sim_config = True
+				print("Simulated telemetry mode is configured.")
 		if len(config) > 6:
 			txf = float(config[6])
 			if (mode == 'e'):
