@@ -274,7 +274,7 @@ if __name__ == "__main__":
 	print("Mode is: ")
 	print(mode)
 
-		try:
+	try:
 		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
 		file = open("/home/pi/CubeSatSim/uptime")
 		up = file.read().split(" ")[0]
