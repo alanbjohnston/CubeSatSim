@@ -446,11 +446,11 @@ if __name__ == "__main__":
 		output(txLed, txLedOn)
 		print("Transmit CW ID")
 		status = ""
-		if (no_command):
+		if no_command:
 			status = status + " C"
-		if (sim_mode):
+		if sim_mode:
 			status = status + " S"
-		if (card != "Device):	
+		if card != "Device":	
 			if (debug_mode == 1):
 				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 			else:
