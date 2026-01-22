@@ -1768,7 +1768,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -M     Set simulated failure mode"
 	echo "   -U     Change the random failure mode setting"
 	echo "   -N     Set next mode or failure"
-	echo "   -u 	Change gpsd state"
+	echo "   -u     Change gpsd state"
 	echo
 	exit
 
