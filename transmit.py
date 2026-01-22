@@ -31,20 +31,20 @@ def sim_failure_check():
 		elif (fail_mode == 7):
 			cam_fail = True
 			print("Failure mode camera fail")	
-			 = True			
+			sim_mode = True			
 		elif (fail_mode == -1):
 			print("No failure mode")
 			if sim_config:
-				 = True
+				sim_mode = True
 		else:
 			print("Other failure mode")
 			card = "Headphones"
-			 = True
+			sim_mode = True
 	except:
 		print("No failure mode")
 		card = "Headphones"
 		if sim_config:
-			 = True
+			sim_mode = True
 
 def battery_saver_check():
 	try:
