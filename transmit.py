@@ -660,6 +660,7 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+							print(card)
 							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
