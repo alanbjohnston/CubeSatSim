@@ -31,20 +31,20 @@ def sim_failure_check():
 		elif (fail_mode == 7):
 			cam_fail = True
 			print("Failure mode camera fail")	
-			sim_mode = True			
+			 = True			
 		elif (fail_mode == -1):
 			print("No failure mode")
 			if sim_config:
-				sim_mode = True
+				 = True
 		else:
 			print("Other failure mode")
 			card = "Headphones"
-			sim_mode = True
+			 = True
 	except:
 		print("No failure mode")
 		card = "Headphones"
 		if sim_config:
-			sim_mode = True
+			 = True
 
 def battery_saver_check():
 	try:
@@ -339,6 +339,7 @@ if __name__ == "__main__":
 			if config[4] == 'y' or config[4] == 'yes':		
 				sim_mode = True
 				sim_config = True
+				print("Simulation mode set by configuration")
 		if len(config) > 6:
 			txf = float(config[6])
 			if (mode == 'e'):
@@ -537,11 +538,14 @@ if __name__ == "__main__":
 #							output(pd, 0)							
 						else:
 							system("echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt")
-							if (debug_mode == 1):
-								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+							if card != "Device":
+								if (debug_mode == 1):
+									system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+								else:
+									system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 							else:
-								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-					
+								system("timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f" + tx + "e3")
+								print("Transmit carrier only since FM failure is simulated")
 						sleep(0.1)  
 #						output (ptt, 1)
 #						output(pd, 0)
