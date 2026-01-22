@@ -545,7 +545,7 @@ if __name__ == "__main__":
 									system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 							else:
 								#system("timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-								system("su -c 'timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3' pi")								
+								system("sudo -c 'timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f 434.9e3' pi")								
 								print("Transmit carrier only since FM failure is simulated")
 						sleep(0.1)  
 #						output (ptt, 1)
