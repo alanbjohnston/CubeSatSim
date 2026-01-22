@@ -228,6 +228,8 @@ output(txLed, txLedOn)
 sleep(1)
 output(txLed, txLedOff)
 
+sleep(10)  # to fix FSK no CW ID
+
 battery_saver_check()	
 
 # print(txLedOn)
