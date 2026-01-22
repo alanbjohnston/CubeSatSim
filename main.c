@@ -1391,7 +1391,7 @@ void get_tlm(void) {
 			if (voltage[map[BAT2]] == 0)
 				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT]],  current[map[BAT]]);
 			else
-				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT]],  current[map[BAT]] + current[map[BAT2]]);
+				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT2]],  current[map[BAT]] + current[map[BAT2]]);
 
 			if (c2cStatus != DISABLED)
 				strcat(tlm_str,"C ");
