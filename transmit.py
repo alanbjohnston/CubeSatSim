@@ -461,7 +461,7 @@ if __name__ == "__main__":
 		output(txLed, txLedOn)
 		print("Transmit CW ID")
 		status = ""
-		if !no_command:
+		if not no_command:
 			status = status + " C"
 		if sim_mode:
 			status = status + " S"
