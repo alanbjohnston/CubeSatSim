@@ -282,7 +282,7 @@ if __name__ == "__main__":
 		uptime = float(up)
 		print(uptime)
 		extra = 0	
-		if (mode == 'f')
+		if (mode == 'f'):
 			extra = 15
 		if (uptime < (uptime_time + extra)):
 			print("Uptime < threshold seconds")
@@ -295,7 +295,7 @@ if __name__ == "__main__":
 		print("Can't open /proc/uptime") 
 	print(skip)	
 
-	if (mode == 'f')
+	if (mode == 'f'):
 			sleep(10)  # wait to avoid restart and truncated cw id
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
