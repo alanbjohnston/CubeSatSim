@@ -575,13 +575,13 @@ int main(int argc, char * argv[]) {
     current_max[i] = -1000.0;
   }
   for (int i = 0; i < SENSOR_FIELDS; i++) {
-    sensor_min[i] = 1000.0;
-    sensor_max[i] = -1000.0;
+    sensor_min[i] = 100000.0;
+    sensor_max[i] = -100000.0;
  //   printf("Sensor min and max initialized!");
   }
   for (int i = 0; i < 3; i++) {
-    other_min[i] = 1000.0;
-    other_max[i] = -1000.0;
+    other_min[i] = 100000.0;
+    other_max[i] = -100000.0;
   }
 
   loopTime = millis();	
@@ -1621,7 +1621,7 @@ void get_tlm_fox() {
               voltage[count1] = voltage_min[count1];
               current[count1] = current_min[count1];
             }
-            if (sensor_min[count1] != 1000.0)  // make sure values are valid
+            if (sensor_min[count1] != 100000.0)  // make sure values are valid
               sensor[count1] = sensor_min[count1];
           }
         }
@@ -1634,7 +1634,7 @@ void get_tlm_fox() {
               voltage[count1] = voltage_max[count1];
               current[count1] = current_max[count1];
             }
-            if (sensor_max[count1] != -1000.0)  // make sure values are valid
+            if (sensor_max[count1] != -100000.0)  // make sure values are valid
               sensor[count1] = sensor_max[count1];
           }
         }
@@ -1753,7 +1753,7 @@ void get_tlm_fox() {
       encodeA(b_max, 39 + head_offset, (int)(other_max[IHU_TEMP] * 10 + 0.5));
       encodeB(b_max, 31 + head_offset, ((int)(other_max[SPIN] * 10)) + 2048);
 
-      if (sensor_min[TEMP] != 1000.0)  // make sure values are valid
+      if (sensor_min[TEMP] != 100000.0)  // make sure values are valid
       {
         encodeB(b_max, 4 + head_offset, (int)(sensor_max[ACCEL_X] * 100 + 0.5) + 2048);  // Xaccel
         encodeA(b_max, 6 + head_offset, (int)(sensor_max[ACCEL_Y] * 100 + 0.5) + 2048);  // Yaccel
@@ -1808,7 +1808,7 @@ void get_tlm_fox() {
       encodeB(b_min, 37 + head_offset, (int)(other_min[RSSI] + 0.5) + 2048);
       encodeA(b_min, 39 + head_offset, (int)(other_min[IHU_TEMP] * 10 + 0.5));
 
-      if (sensor_min[TEMP] != 1000.0)  // make sure values are valid
+      if (sensor_min[TEMP] != 100000.0)  // make sure values are valid
       {
         encodeB(b_min, 4 + head_offset, (int)(sensor_min[ACCEL_X] * 100 + 0.5) + 2048);  // Xaccel
         encodeA(b_min, 6 + head_offset, (int)(sensor_min[ACCEL_Y] * 100 + 0.5) + 2048);  // Yaccel
