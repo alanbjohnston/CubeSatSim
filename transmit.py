@@ -313,6 +313,7 @@ if __name__ == "__main__":
 	tx = '434.9000'	
 	rx = '435.0000'
 	txr = '144.9000'
+	sim_mode = False
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -324,11 +325,11 @@ if __name__ == "__main__":
 			if (mode == 'p') or (mode == 'P'): 
 				sq = 0 # turn off squelch for Pacsat
 			print(sq)
+		if len(config) > 4:
+			if config[4] == 'y' or config[4] == 'yes':		
+				sim_mode = True
 		if len(config) > 6:
 			txf = float(config[6])
-#                        print(txf)
-#                        print( "{:.4f}".format(txf))
-                        
 			if (mode == 'e'):
 				txr = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
 				tx = "{:.4f}".format(txr)
@@ -444,16 +445,28 @@ if __name__ == "__main__":
 		GPIO.setup(txLed, GPIO.OUT)	
 		output(txLed, txLedOn)
 		print("Transmit CW ID")
+		status = ""
 		if (no_command):
+			status = status + " C"
+		if (sim_mode):
+			status = status + " S"
+		if (card != "Device):	
 			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 			else:
 				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 		else:
-			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-			else:
-				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+			system("timeout 3 sudo /home/pi/rpitx/rpitx -i- -m RF -f" + tx + "e3")  # just transmit carrier to simulate FM failure
+#		if (no_command):
+#			if (debug_mode == 1):
+#				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+#			else:
+#				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+#		else:
+#			if (debug_mode == 1):
+#				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+#			else:
+#				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 
 			
 		output(txLed, txLedOff)
