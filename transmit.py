@@ -553,12 +553,12 @@ if __name__ == "__main__":
 									result = subprocess.run(query, capture_output=True, text=True, check=True)
 									print(f"Command run was: {query}")
 #									gpsd_status = result.stdout.strip()
-									print(f"Output of the command (stdout): {gpsd_status}")
+									print(f"Output of the command (stdout): {result.stdout}")
 								except subprocess.CalledProcessError as e:
 							#		print(f"Command failed with return code: {e.returncode}")
 									print(f"Command run was: {e.cmd}")
 #									gpsd_status = e.stdout.strip()
-									print(f"Output of the command (stdout): {e.stdout}")
+									print(f"Exception Output of the command (stdout): {e.stdout}")
 							#		print(f"Error output of the command (stderr): {e.stderr}")
 
 
