@@ -493,8 +493,8 @@ if __name__ == "__main__":
 				system("sudo systemctl stop command")
 #			while True:
 #				sleep(0.1)
-			if (mode != 'n'):
-				system("touch /home/pi/CubeSatSim/ready")
+#			if (mode != 'n'):
+#				system("touch /home/pi/CubeSatSim/ready")
 
 			while True:
 				try:
