@@ -872,7 +872,7 @@ int main(int argc, char * argv[]) {
 			printf("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
-			sensor[TEMP] = tempP - 80 * (1 - eclipse) + rnd_float(-0.3, 0.3);	
+			sensor[TEMP] = tempP - 80 * (1 - eclipse) + rnd_float(-0.7, 0.7);	
 			sprintf(str_tmp, "%4.1f", sensor[TEMP]);
 			strcpy(sensor_string[TEMP], str_tmp);
 			printf("Temp: %s\n", sensor_string[TEMP]);
@@ -887,8 +887,8 @@ int main(int argc, char * argv[]) {
 			sensor[HUMI] = humiP + rnd_float(-1, 1);
 			sprintf(str_tmp, "%3.0f", sensor[HUMI]); 
 			strcpy(sensor_string[HUMI], str_tmp);
-			sensor[TEMP] = tempP - 70 - 10 * (1 - eclipse) + rnd_float(-0.3, 0.3);
-			sprintf(str_tmp, "%3.0f",sensor[TEMP]); 
+			sensor[TEMP] = tempS + rnd_float(-0.7, 0.7);
+			sprintf(str_tmp, "%4.1f",sensor[TEMP]); 
 			strcpy(sensor_string[TEMP], str_tmp);
 			printf("Temp: %s\n", sensor_string[TEMP]);
 		}
