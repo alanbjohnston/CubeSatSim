@@ -27,8 +27,6 @@ int main(int argc, char * argv[]) {
 	
   printf("\n\nCubeSatSim v2.2 starting...\n\n");
 
-  error_count = 0;	
-
   wiringPiSetup();	
 
   strcpy(fail_yes, "no");		
@@ -2938,7 +2936,7 @@ void socket_send(int length) {
     struct sockaddr_in serv_addr;
     //    char *hello = "Hello from client"; 
     //    char buffer[1024] = {0};
-	
+	error_count = 0;
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
       printf("\n Socket creation error \n");
       error = 1;
