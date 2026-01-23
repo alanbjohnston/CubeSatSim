@@ -134,12 +134,12 @@ int main(int argc, char * argv[]) {
     else
       fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
 	    
-    pi_zero_2_offset = 500;
-    if (uptime_sec < 30.0) {
-//	FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
-//  	pclose(transmit_stop);   
+	  pi_zero_2_offset = 500;
+	  if (uptime_sec < 30.0) {
+	    FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
+	    pclose(transmit_stop);   
         fprintf(stderr, "Sleep 5 sec\n");    
-	sleep(5);  // try sleep at start to help boot
+	    sleep(5);  // try sleep at start to help boot
     }
   }
   else {
