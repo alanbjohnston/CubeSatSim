@@ -971,7 +971,7 @@ int main(int argc, char * argv[]) {
 		 sensor_count = sensor_loop(sensor_buffer);
 		 if (sensor_count > NEW_SENSOR_FIELDS_MAX)
 			 sensor_count = NEW_SENSOR_FIELDS_MAX;
-		 if (sensor_count > 0)  {
+		 if ((sensor_count > 0) && (failureMode != FAIL_PAYLOAD))  {
 			char space[] = " ";
 			strcat(sensor_payload, space);
 		 	strcat(sensor_payload, sensor_buffer);  
