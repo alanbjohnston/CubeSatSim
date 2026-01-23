@@ -136,8 +136,8 @@ int main(int argc, char * argv[]) {
 	    
     pi_zero_2_offset = 500;
     if (uptime_sec < 30.0) {
-	FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
-  	pclose(transmit_stop);   
+//	FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
+//  	pclose(transmit_stop);   
         fprintf(stderr, "Sleep 5 sec\n");    
 	sleep(5);  // try sleep at start to help boot
     }
@@ -150,8 +150,8 @@ int main(int argc, char * argv[]) {
       pi_zero_2_offset = 500;
     }
     if (uptime_sec < 30.0) {
-      FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
-      pclose(transmit_stop);
+//      FILE * transmit_stop = popen("sudo systemctl start transmit", "r");
+//      pclose(transmit_stop);
       fprintf(stderr,"Sleep 10 sec\n");    
       sleep(10);
     }
@@ -2986,8 +2986,8 @@ void socket_send(int length) {
 //    ; //transmitStatus = -1;
       if (error_count++ > 5) { 
 	  printf("Restarting transmit\n");    
-  	  FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
-  	  pclose(transmit_restartf);	      
+//  	  FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
+//  	  pclose(transmit_restartf);	      
           sleep(10);  // was 5 // sleep if socket connection refused
       }	    
     }
