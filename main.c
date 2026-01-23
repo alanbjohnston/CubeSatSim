@@ -548,10 +548,11 @@ int main(int argc, char * argv[]) {
 //  if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
   if (mode == FSK) { // && !sim_mode)
       get_tlm_fox();		
-      get_tlm_fox();
+//      get_tlm_fox();
   }
   if (mode == BPSK) { // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
+	  get_tlm_fox();
 	  get_tlm_fox();
   }
   else if (((mode == FC))) // && !sim_mode)
