@@ -344,7 +344,7 @@ int main(int argc, char * argv[]) {
 			{
 				gps_status = OFF;
 				fprintf(stderr, "Pi GPS off\n");
-			} else if ((cmdbuffer[0] == '1') !! (cmdbuffer[1] == '2') !! (cmdbuffer[1] == '3'))  {
+			} else if ((cmdbuffer[0] == '1') || (cmdbuffer[0] == '2') || (cmdbuffer[0] == '3'))  {
 				gps_status = ON;
 				fprintf(stderr, "Pi GPS on\n");
 			}
