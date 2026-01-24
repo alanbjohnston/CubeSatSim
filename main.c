@@ -554,9 +554,9 @@ int main(int argc, char * argv[]) {
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
 //	  get_tlm_fox();
   }
-  else if (((mode == FC))) // && !sim_mode)
+  else if (mode == FC) // && !sim_mode)
       get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
-  else if (((mode == AFSK) || (mode == CW)))
+  else if (mode == CW))
 	  get_tlm(); // generate a frame of telemetry right away
 
   if (firstTime == 0)	
