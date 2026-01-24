@@ -1205,7 +1205,7 @@ int main(int argc, char * argv[]) {
 
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
-      printf("Writing telem_string.txt v: %f v2: %f batteryVoltage: %f\n", voltage[map[BAT], voltage[map[BAT2], batteryVoltage);
+      printf("Writing telem_string.txt v: %f v2: %f batteryVoltage: %f\n", voltage[map[BAT]], voltage[map[BAT2]], batteryVoltage);
 	  if (batteryVoltage != 4.5) {
 		
 		if (failureMode != FAIL_I2C1)
