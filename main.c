@@ -1140,7 +1140,7 @@ int main(int argc, char * argv[]) {
 		else
     			fprintf(fp, "BAT %4.2fV %4.0fmA C\n", batteryVoltage, batteryCurrent);	// show command and control is on		
 		*/
-		if (failureMode == FAIL_I2C1)
+		if (failureMode != FAIL_I2C1)
 			fprintf(fp, "BAT %.2fV %.0fmA", batteryVoltage, batteryCurrent);
 		else
 			fprintf(fp, "BAT %.2fV %.0fmA", 0.0, 0.0);
