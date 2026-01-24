@@ -1192,6 +1192,50 @@ int main(int argc, char * argv[]) {
 	    }
     }	
   // printf("c2cStatus: %d \n", c2cStatus);	  
+
+	  if (failureMode == FAIL_NONE) 
+		  printf("No Simulated Failure!\n");
+	  if (failureMode == FAIL_UNPLUG) {
+	    voltage[map[PLUS_Y]] = rnd_float(0.8, 0.95);
+	    current[map[PLUS_Y]] = 0.0;
+	    printf("+Y Solar Unplugged Failure\n");
+	  }
+	  if (failureMode == FAIL_SOLAR) {
+	    voltage[map[PLUS_X]] = 0.0;
+	    current[map[PLUS_X]] = 0.0;
+	    printf("+X Solar Simulated Failure\n");
+	  }
+	  if (failureMode == FAIL_DEGRADE) {
+	    voltage[map[MINUS_X]] = voltage[map[MINUS_X]] * 0.5;
+	    current[map[MINUS_X]] = current[map[MINUS_X]] * 0.5;
+	    printf("-X Solar Deg Simulated Failure\n");
+	  }
+	  if (failureMode == FAIL_SHORT) {
+	    voltage[map[MINUS_Y]] = 0.0;
+	    printf("-Y Solar SC Simulated Failure!\n");
+	  }
+	  if (failureMode == FAIL_I2C1) {
+	    voltage[map[PLUS_X]] = 0.0;
+	    current[map[PLUS_X]] = 0.0;
+	    voltage[map[PLUS_Y]] = 0.0;
+	    current[map[PLUS_Y]] = 0.0;
+	    voltage[map[BAT]] = 0.0;
+	    current[map[BAT]] = 0.0;
+	    voltage[map[BAT2]] = 0.0;
+	    current[map[BAT2]] = 0.0;
+	    printf("I2C Bus 1 Simulated Failure!\n");
+	  }
+	  if (failureMode == FAIL_I2C3) {
+	    voltage[map[MINUS_X]] = 0.0;
+	    current[map[MINUS_X]] = 0.0;
+	    voltage[map[MINUS_Y]] = 0.0;
+	    current[map[MINUS_Y]] = 0.0;
+	    voltage[map[MINUS_Z]] = 0.0;
+	    current[map[MINUS_Z]] = 0.0;
+	    voltage[map[PLUS_Z]] = 0.0;
+	    current[map[PLUS_Z]] = 0.0;
+	    printf("I2C Bus 3 Simulated Failure!\n");
+	  }	  
 	  
     if ((mode == AFSK) || (mode == CW)) {
       get_tlm();
@@ -1517,52 +1561,6 @@ void get_tlm_fox() {
   int buffSize;
   buffSize = (int)sizeof(buffer_test);
 
-  if (failureMode == FAIL_NONE) printf("No Simulated Failure!\n");
-  //  if (failureMode == -1) {
-  //	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-  //	  printf("Random Failure\n");
-  //  }
-  if (failureMode == FAIL_UNPLUG) {
-    voltage[map[PLUS_Y]] = rnd_float(0.8, 0.95);
-    current[map[PLUS_Y]] = 0.0;
-    printf("+Y Solar Unplugged Failure\n");
-  }
-  if (failureMode == FAIL_SOLAR) {
-    voltage[map[PLUS_X]] = 0.0;
-    current[map[PLUS_X]] = 0.0;
-    printf("+X Solar Simulated Failure\n");
-  }
-  if (failureMode == FAIL_DEGRADE) {
-    voltage[map[MINUS_X]] = voltage[map[MINUS_X]] * 0.5;
-    current[map[MINUS_X]] = current[map[MINUS_X]] * 0.5;
-    printf("-X Solar Deg Simulated Failure\n");
-  }
-  if (failureMode == FAIL_SHORT) {
-    voltage[map[MINUS_Y]] = 0.0;
-    printf("-Y Solar SC Simulated Failure!\n");
-  }
-  if (failureMode == FAIL_I2C1) {
-    voltage[map[PLUS_X]] = 0.0;
-    current[map[PLUS_X]] = 0.0;
-    voltage[map[PLUS_Y]] = 0.0;
-    current[map[PLUS_Y]] = 0.0;
-    voltage[map[BAT]] = 0.0;
-    current[map[BAT]] = 0.0;
-    voltage[map[BAT2]] = 0.0;
-    current[map[BAT2]] = 0.0;
-    printf("I2C Bus 1 Simulated Failure!\n");
-  }
-  if (failureMode == FAIL_I2C3) {
-    voltage[map[MINUS_X]] = 0.0;
-    current[map[MINUS_X]] = 0.0;
-    voltage[map[MINUS_Y]] = 0.0;
-    current[map[MINUS_Y]] = 0.0;
-    voltage[map[MINUS_Z]] = 0.0;
-    current[map[MINUS_Z]] = 0.0;
-    voltage[map[PLUS_Z]] = 0.0;
-    current[map[PLUS_Z]] = 0.0;
-    printf("I2C Bus 3 Simulated Failure!\n");
-  }
   if (failureMode == FAIL_PAYLOAD) {
     payload = OFF;
     printf("Payload Simulated Failure!\n");
