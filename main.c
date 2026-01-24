@@ -1768,7 +1768,8 @@ void get_tlm_fox() {
         encodeB(b_max, 7 + head_offset, (int)(sensor_max[ACCEL_Z] * 100 + 0.5) + 2048);  // Zaccel
 
         encodeA(b_max, 33 + head_offset, (int)(sensor_max[PRES] + 0.5));        // Pressure
-        encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] / 10.0 + 0.5));  // Altitude
+		if (sensor_max[ALT] < 0)  sensor_max[ALT] = 0.0;
+		encodeB(b_max, 34 + head_offset, (int)(sensor_max[ALT] / 10.0 + 0.5));  // Altitude
         encodeB(b_max, 40 + head_offset, (int)(sensor_max[GYRO_X] + 0.5) + 2048);
         encodeA(b_max, 42 + head_offset, (int)(sensor_max[GYRO_Y] + 0.5) + 2048);
         encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
@@ -1823,6 +1824,7 @@ void get_tlm_fox() {
         encodeB(b_min, 7 + head_offset, (int)(sensor_min[ACCEL_Z] * 100 + 0.5) + 2048);  // Zaccel
 
         encodeA(b_min, 33 + head_offset, (int)(sensor_min[PRES] + 0.5));        // Pressure
+		if (sensor_min[ALT] < 0)  sensor_min[ALT] = 0.0;			
         encodeB(b_min, 34 + head_offset, (int)(sensor_min[ALT] / 10.0 + 0.5));  // Altitude
         encodeB(b_min, 40 + head_offset, (int)(sensor_min[GYRO_X] + 0.5) + 2048);
         encodeA(b_min, 42 + head_offset, (int)(sensor_min[GYRO_Y] + 0.5) + 2048);
@@ -1854,8 +1856,8 @@ void get_tlm_fox() {
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5));        // Pressure
-    encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5));  // Altitude
-
+	if (sensor[ALT] < 0)  sensor[ALT] = 0.0;
+	encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5));  // Altitude
     encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1]));
     encodeA(b_min, 0 + head_offset, (int)(sensor_min[XS2]));
     encodeB(b_min, 1 + head_offset, (int)(sensor_min[XS3]));
@@ -1880,7 +1882,8 @@ void get_tlm_fox() {
     encodeB(b, 31 + head_offset, ((int)(other[SPIN] * 10)) + 2048);
 
     encodeA(b, 33 + head_offset, (int)(sensor[PRES] + 0.5));        // Pressure
-    encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5));  // Altitude
+	if (sensor[ALT] < 0)  sensor[ALT] = 0.0;
+	encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5));  // Altitude
     encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5));   // in place of sensor1
     encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
 
