@@ -26,14 +26,14 @@ fi
 
 sudo rm /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/id.txt /home/pi/CubeSatSim/cw.txt > /dev/null 2>&1 
 
-if [ "$1" = "u" ]; then
+#if [ "$1" = "u" ]; then
 
 #  sudo apt-get update && sudo apt-get dist-upgrade -y
   sudo apt-get update -y
 
   sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev python3-pip minicom gpsd gpsd-clients libgps-dev python3-gps
 
-fi
+#fi
 
 sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
 
