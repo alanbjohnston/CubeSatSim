@@ -8,10 +8,10 @@ run this way: python3 example1.py.txt
 
 # this client is for the CubeSatSim Lite which does not have a Pico microcontroller
 
-import gps               # the gpsd interface module
-import time
-
 try:
+    
+    import gps               # the gpsd interface module
+    import time
 
     mode = -1    
     lat = 0    
