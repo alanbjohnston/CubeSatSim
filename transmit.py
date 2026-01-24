@@ -460,7 +460,9 @@ if __name__ == "__main__":
 			system("sudo systemctl restart gpsd.socket")
 			
 	sim_failure_check()
-	if not (hab_mode == True) and (mode == 'a'):
+	if (hab_mode == True) and (mode == 'a'):
+		print("Don't transmit CW ID since APRS HAB mode is active")
+	else:	
 		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 			GPIO.setup(txLed, GPIO.OUT)	
@@ -480,8 +482,7 @@ if __name__ == "__main__":
 			sleep(1)
 		else:
 			print("Don't transmit CW ID since command_tx is False or APRS mode or change of mode")
-	else:
-		print("Don't transmit CW ID since APRS HAB mode is active")
+	
 		
 	if (transmit):
 #		print 'Length: ', len(sys.argv)
