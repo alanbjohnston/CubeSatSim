@@ -326,22 +326,23 @@ if __name__ == "__main__":
 	txr = '144.9000'
 	sim_mode = False
 	sim_config = False
+	hab_mode = False
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split()		
 		callsign = config[0]
+		if len(config) > 4:
+			if config[4] == 'y' or config[4] == 'yes':		
+				sim_mode = True
+				sim_config = True
+				print("Simulated telemetry mode is configured.")		
 		if len(config) > 5:
 			sq = config[5]
 			if (mode == 'p') or (mode == 'P'): 
 				sq = 0 # turn off squelch for Pacsat
 			print(sq)
-		if len(config) > 4:
-			if config[4] == 'y' or config[4] == 'yes':		
-				sim_mode = True
-				sim_config = True
-				print("Simulated telemetry mode is configured.")
 		if len(config) > 6:
 			txf = float(config[6])
 			if (mode == 'e'):
@@ -356,6 +357,10 @@ if __name__ == "__main__":
 #                        print( "{:.4f}".format(rxf))
                         rx = "{:.4f}".format(rxf)
                         print(rx)
+		if len(config) > 8:
+			if config[8] == 'y' or config[8] == 'yes':		
+				hab_mode = True
+				print("Balloon (HAB) mode is configured.")				
 		if len(config) > 9:
                         rxpl = float(config[9])
  #                       print(rxpl)
@@ -455,28 +460,30 @@ if __name__ == "__main__":
 			system("sudo systemctl restart gpsd.socket")
 			
 	sim_failure_check()
-	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
-		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-		GPIO.setup(txLed, GPIO.OUT)	
-		output(txLed, txLedOn)
-		print("Transmit CW ID")
-		status = ""
-		if not no_command:
-			status = status + " C"
-		if sim_mode:
-			status = status + " S"
-		if (debug_mode == 1):
-			system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-		else:
-			system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-		output(txLed, txLedOff)
-
-		sleep(1)
-	else:
-		print("Don't transmit CW ID since command_tx is False or APRS mode or change of mode")
-
-	if (transmit):
+	if (hab_mode == True) and (mode == 'a'):
+		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
+			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+			GPIO.setup(txLed, GPIO.OUT)	
+			output(txLed, txLedOn)
+			print("Transmit CW ID")
+			status = ""
+			if not no_command:
+				status = status + " C"
+			if sim_mode:
+				status = status + " S"
+			if (debug_mode == 1):
+				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+			else:
+				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+			output(txLed, txLedOff)
 	
+			sleep(1)
+		else:
+			print("Don't transmit CW ID since command_tx is False or APRS mode or change of mode")
+	else:
+		print("Don't transmit CW ID since APRS HAB mode is active")
+		
+	if (transmit):
 #		print 'Length: ', len(sys.argv)
     
 #		if (len(sys.argv)) > 1:
