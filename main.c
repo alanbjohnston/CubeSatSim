@@ -694,6 +694,8 @@ int main(int argc, char * argv[]) {
 				if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 					sim_mode = FALSE; 
 					fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+					FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+	    			pclose(sim_mode_auto);  
 				}
 			}
 		else  {
@@ -730,6 +732,8 @@ int main(int argc, char * argv[]) {
 	if (sim_mode && payload && !sim_config) { 
 		sim_mode = FALSE;
 		printf("Turning off sim mod since payload is present and sim mode not manually configured.");
+		FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+		pclose(sim_mode_auto);  
 	}
   
 	fflush(stdout); 
