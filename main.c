@@ -80,7 +80,7 @@ int main(int argc, char * argv[]) {
 	
   if (strcmp(sim_yes, "yes") == 0) {
 	  sim_mode = TRUE;
-	  fprintf(stderr, "Sim mode is turned ON by configuration\n");
+	  fprintf(stderr, "Sim Mode is turned ON by configuration\n");
 	  sim_config = TRUE;
   }
   if (strcmp(hab_yes, "yes") == 0) {
@@ -118,7 +118,7 @@ int main(int argc, char * argv[]) {
   fflush(stdout);
 
   if (i2c_bus3 == OFF) { 
-	printf("Sim mode turned on automatically\n");  
+	printf("Sim Mode turned on automatically\n");  
     sim_mode = TRUE;
 	FILE * sim_mode_auto = popen("touch /home/pi/CubeSatSim/sim_mode_auto", "r"); // store sim_mode_auto flag
     pclose(sim_mode_auto);   
@@ -388,9 +388,7 @@ int main(int argc, char * argv[]) {
 
   if (sim_mode == TRUE) {
 
-    sim_mode = TRUE;
-	    
-    fprintf(stderr, "Sim mode is ON!\n");
+	  fprintf(stderr, "Sim Mode is ON!\n");
 
     srand((unsigned int)time(0));
 
@@ -633,7 +631,7 @@ int main(int argc, char * argv[]) {
 	if ((loopTime - failTime) > fail_time * 1000)	{
 //  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
   	  failureMode = (int) rnd_float(1, 10);
-	  printf("Sim Mode Random Failure Change\n");
+	  printf("Simulated Random Failure Change\n");
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
 	  fprintf(failure_mode_file, "%d", failureMode);	
 	  fclose(failure_mode_file);
@@ -693,7 +691,7 @@ int main(int argc, char * argv[]) {
 				batteryVoltage = voltage[map[BAT2]];  // only BAT2 Board present
 				if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 					sim_mode = FALSE; 
-					fprintf(stderr, "Turning off sim_mode since battery sensor 2 is present\n");
+					fprintf(stderr, "Turning off Sim Mode since battery sensor 2 is present\n");
 					FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
 	    			pclose(sim_mode_auto);  
 				}
@@ -702,7 +700,7 @@ int main(int argc, char * argv[]) {
 			batteryVoltage = voltage[map[BAT]];  // BAT Board present
 			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 				sim_mode = FALSE; 
-				fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
+				fprintf(stderr, "Turning off Sim Mode since battery sensor is present\n");
 				FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
     			pclose(sim_mode_auto);  
 			}
@@ -731,7 +729,7 @@ int main(int argc, char * argv[]) {
 
 	if (sim_mode && payload && !sim_config) { 
 		sim_mode = FALSE;
-		printf("Turning off sim mod since payload is present and sim mode not manually configured.");
+		printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.");
 		FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
 		pclose(sim_mode_auto);  
 	}
