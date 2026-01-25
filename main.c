@@ -1205,17 +1205,15 @@ int main(int argc, char * argv[]) {
 
     FILE * fp = fopen("/home/pi/CubeSatSim/telem_string.txt", "w");
     if (fp != NULL)  {	  
-      printf("Writing telem_string.txt v: %f v2: %f batteryVoltage: %f\n", voltage[map[BAT]], voltage[map[BAT2]], batteryVoltage);
-	  if (batteryVoltage != 4.5) {
-		
-		if (failureMode != FAIL_I2C1)
+//      printf("Writing telem_string.txt v: %f v2: %f batteryVoltage: %f\n", voltage[map[BAT]], voltage[map[BAT2]], batteryVoltage);
+]		if (sim_mode || (failureMode != FAIL_NONE)) {  
 			if (voltage[map[BAT2]] == 0)
-				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT]],  current[map[BAT]]);
+				fprintf(fp, "BAT %.2f %.1f ",  voltage[map[BAT]],  current[map[BAT]]);
 			else
-				snprintf(tlm_str, 30, "BAT %.2f %.1f ",  voltage[map[BAT2]],  current[map[BAT]] + current[map[BAT2]]);
+				fprintf(fp, "BAT %.2f %.1f ",  voltage[map[BAT2]],  current[map[BAT]] + current[map[BAT2]]);
+		}
 		else {
-			fprintf(fp, "BAT %.2fV %.0fmA", 0.0, 0.0);
-			printf("Display battery voltage and current as zero since simulated I2C1 failure.\n");
+			fprintf(fp, "BAT %.2fV %.0fmA", batteryVoltage, batteryCurrent);
 		}
 		
 //			fprintf(fp, "BAT %.2fV %.0fmA", batteryVoltage, batteryCurrent);
@@ -1226,19 +1224,6 @@ int main(int argc, char * argv[]) {
 			fprintf(fp," S\n");
 		else
 			fprintf(fp,"\n");
-	}
-	else {
-		printf("Write simulted voltage and current to telem_string.txt\n");
- //   		fprintf(fp, "\n");	// don't show voltage and current if it isn't a sensor value
-		fprintf(fp, "BAT %.2fV %.0fmA", voltage[map[BAT]], current[map[BAT]]);  // display simulated voltage and current
-		if (c2cStatus != DISABLED)
-			fprintf(fp," C");
-	    if (sim_mode || (failureMode != FAIL_NONE))
-			fprintf(fp," S\n");
-		else
-			fprintf(fp,"\n");
-		
-	}
     	fclose(fp);	 
     } else 
 	    printf("Error writing to telem_string.txt\n");	  
