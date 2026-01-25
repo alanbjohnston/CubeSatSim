@@ -394,7 +394,7 @@ int main(int argc, char * argv[]) {
 
   if (sim_mode == TRUE) {
 
-	  fprintf(stderr, "Sim Mode is ON!\n");
+	fprintf(stderr, "Sim Mode is active\n");
 
     srand((unsigned int)time(0));
 
