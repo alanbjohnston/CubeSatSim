@@ -180,11 +180,10 @@ if [ "$1" = "" ]; then
 #		# Check the exit code of the last command
 #			if [ $? -ne 0 ]; then
 #				echo "Simulated Telemetry is automatically turned ON"
-			else
-				echo "Simulated Telemetry is OFF"
-			fi
+#			else
+#				echo "Simulated Telemetry is OFF"
+#			fi
 		else
-			echo "Battery not present!" 
 			echo "Simulated Telemetry is automatically turned ON"
 		fi
 	fi
