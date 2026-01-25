@@ -185,7 +185,7 @@ if [ "$1" = "" ]; then
   				echo "Command succeeded."
 				echo "Simulated Telemetry is automatically turned ON"
 			fi
-
+		else
 			echo "Simulated Telemetry is OFF"
 		fi
 	fi
