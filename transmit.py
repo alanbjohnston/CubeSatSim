@@ -337,7 +337,23 @@ if __name__ == "__main__":
 			if config[4] == 'y' or config[4] == 'yes':		
 				sim_mode = True
 				sim_config = True
-				print("Simulated telemetry mode is configured.")		
+				print("Simulated telemetry mode is configured.")
+			else
+
+				query = ["timeout", "2", "i2cdetect", "-y", "3"]
+				try:
+					result = subprocess.run(query, capture_output=True, text=True, check=True)
+					print(f"Command run was: {query}")
+					print("Sucess!")
+					print(f"Output of the command (stdout): {result}")
+				except subprocess.CalledProcessError as e:
+					print(f"Command failed with return code: {e.returncode}")
+					print(f"Command run was: {e.cmd}")
+					print(f"Output of the command (stdout): {e.stdout}")
+					print(f"Error output of the command (stderr): {e.stderr}")
+					print("Sim mode automatically turned on!")
+					sim_mode = True
+							
 		if len(config) > 5:
 			sq = config[5]
 			if (mode == 'p') or (mode == 'P'): 
