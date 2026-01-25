@@ -436,9 +436,9 @@ elif [ "$1" = "-t" ]; then
 	set -- $value
 
 	if [ "$5" = "yes" ] || [ "$5" = "y" ]; then
-		echo "Simualted Telemetry is ON"
+		echo "Simulalted Telemetry is ON"
 	else
-		echo "Simualted Telemetry is OFF"
+		echo "Simulalted Telemetry is OFF"
 	fi
 	
 	echo
