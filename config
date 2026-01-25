@@ -186,7 +186,8 @@ if [ "$1" = "" ]; then
 				echo "Simulated Telemetry is OFF"
 			fi
 		else
-			echo "Simulated Telemetry is OFF"
+			echo "Battery not present!" 
+			echo "Simulated Telemetry is automatically turned ON"
 		fi
 	fi
 #	echo
