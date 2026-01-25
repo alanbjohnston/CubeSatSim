@@ -171,11 +171,14 @@ if [ "$1" = "" ]; then
 	set -- $value
 	
 	if [ "$5" = "y" ] || [ "$5" = "yes" ] ; then
-#		sim="yes"
 		echo "Simulated Telemetry is ON"
 	else
-#		sim="no"
-		echo "Simulated Telemetry is OFF"
+		FILE=/home/pi/CubeSatSim/sim_mode_auto
+		if [ -f "$FILE" ]; then
+			echo "Simulated Telemetry is automatically turned ON"
+		else
+			echo "Simulated Telemetry is OFF"
+		fi
 	fi
 #	echo
 
