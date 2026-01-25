@@ -177,6 +177,17 @@ if [ "$1" = "" ]; then
 		if [ -f "$FILE" ]; then
 			echo "Simulated Telemetry is automatically turned ON"
 		else
+
+		if [[ $(timeout 2 i2cdetect -y 1 | grep -e "43" -e "44") ]]; then
+		# Check the exit code of the last command
+			if [ $? -ne 0 ]; then
+  				echo "Command failed!" 
+				echo "Simulated Telemetry is OFF"
+			else
+  				echo "Command succeeded."
+				echo "Simulated Telemetry is automatically turned ON"
+			fi
+
 			echo "Simulated Telemetry is OFF"
 		fi
 	fi
