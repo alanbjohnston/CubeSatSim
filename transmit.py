@@ -338,7 +338,7 @@ if __name__ == "__main__":
 				sim_mode = True
 				sim_config = True
 				print("Simulated telemetry mode is configured.")
-			else
+			else:
 
 				query = ["timeout", "2", "i2cdetect", "-y", "3"]
 				try:
