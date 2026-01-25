@@ -372,8 +372,14 @@ int main(int argc, char * argv[]) {
 	      fprintf(stderr,"Serial opened to Pico\n");	    
 	//      payload = ON;	
 	      payload = get_payload_serial(FALSE); 
-	      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	 	
-		    
+	      fprintf(stderr,"Get_payload_status: %d \n", payload);  // not debug	 
+
+		  if (sim_mode && payload && !sim_config) { 
+		    sim_mode = FALSE;
+		    printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.");
+		    FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+		    pclose(sim_mode_auto);  
+		  } 
 	    } else {
 	      fprintf(stderr, "Unable to open UART: %s\n -> Did you configure /boot/config.txt and /boot/cmdline.txt?\n", strerror(errno));
 	    }
@@ -706,10 +712,7 @@ int main(int argc, char * argv[]) {
 			}
 		}
         batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
-	   
    }
-
-
   
     if (gps_status == OFF) 
 	{
