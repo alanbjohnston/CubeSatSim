@@ -376,7 +376,7 @@ int main(int argc, char * argv[]) {
 
 		  if (sim_mode && payload && !sim_config) { 
 		    sim_mode = FALSE;
-		    printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.");
+		    printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.\n");
 		    FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
 		    pclose(sim_mode_auto);  
 		  } 
@@ -732,7 +732,7 @@ int main(int argc, char * argv[]) {
 
 	if (sim_mode && payload && !sim_config) { 
 		sim_mode = FALSE;
-		printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.");
+		printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.\n");
 		FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
 		pclose(sim_mode_auto);  
 	}
