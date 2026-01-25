@@ -176,13 +176,11 @@ if [ "$1" = "" ]; then
 		FILE=/home/pi/CubeSatSim/sim_mode_auto
 		if [ -f "$FILE" ]; then
 			echo "Simulated Telemetry is automatically turned ON"
-		elif [[ $(timeout 2 i2cdetect -y 1 | grep -e "44" -e "45") ]]; then  # check for battery board sensors
-		# Check the exit code of the last command
-			if [ $? -ne 0 ]; then
-  				echo "Command succeeded."
-				echo "Simulated Telemetry is automatically turned ON"
+#		elif [[ $(timeout 2 i2cdetect -y 1 | grep -e "44" -e "45") ]]; then  # check for battery board sensors
+#		# Check the exit code of the last command
+#			if [ $? -ne 0 ]; then
+#				echo "Simulated Telemetry is automatically turned ON"
 			else
-  				echo "Command failed!" 
 				echo "Simulated Telemetry is OFF"
 			fi
 		else
