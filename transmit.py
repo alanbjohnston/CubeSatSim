@@ -337,7 +337,7 @@ if __name__ == "__main__":
 			if config[4] == 'y' or config[4] == 'yes':		
 				sim_mode = True
 				sim_config = True
-				print("Simulated telemetry mode is configured.")
+				print("Simulated telemetry mode is configured")
 			else:
 #				query = ["timeout", "2", "i2cdetect", "-y", "3"] # Test if Solar board is present
 #				try:
