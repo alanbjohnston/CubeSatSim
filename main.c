@@ -390,7 +390,7 @@ int main(int argc, char * argv[]) {
 
     sim_mode = TRUE;
 	    
-    fprintf(stderr, "Simulated telemetry mode!\n");
+    fprintf(stderr, "Sim mode is ON!\n");
 
     srand((unsigned int)time(0));
 
@@ -701,6 +701,8 @@ int main(int argc, char * argv[]) {
 			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 				sim_mode = FALSE; 
 				fprintf(stderr, "Turning off sim_mode since battery sensor is present\n");
+				FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+    			pclose(sim_mode_auto);  
 			}
 		}
         batteryCurrent = current[map[BAT]] + current[map[BAT2]];  // Sum BAT and BAT2 currents
