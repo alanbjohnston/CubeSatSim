@@ -107,6 +107,25 @@ int main(int argc, char * argv[]) {
 	    }
   }	
   printf("c2cStatus: %d \n", c2cStatus);
+
+  printf("Test bus 1\n");
+  fflush(stdout);	
+  i2c_bus1 = (test_i2c_bus(1) != -1) ? 1 : OFF;
+  printf("Test bus 3\n");	
+  fflush(stdout);
+  i2c_bus3 = (test_i2c_bus(3) != -1) ? 3 : OFF;
+  printf("Finished testing\n");	
+  fflush(stdout);
+
+  if (i2c_bus3 == OFF) { 
+	printf("Sim mode turned on automatically\n");  
+    sim_mode = TRUE;
+	FILE * sim_mode_auto = popen("touch /home/pi/CubeSatSim/sim_mode_auto", "r"); // store sim_mode_auto flag
+    pclose(sim_mode_auto);   
+  }	else {
+	FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+    pclose(sim_mode_auto);  
+  }
 	
   char resbuffer[1000];
 //  const char testStr[] = "cat /proc/cpuinfo | grep 'Revision' | awk '{print $3}' | sed 's/^1000//' | grep '9000'";
@@ -166,15 +185,6 @@ int main(int argc, char * argv[]) {
 	
 //  FILE * file_deletes = popen("sudo rm /home/pi/CubeSatSim/ready /home/pi/CubeSatSim/cwready > /dev/null", "r");
 //  pclose(file_deletes);	
-	
-  printf("Test bus 1\n");
-  fflush(stdout);	
-  i2c_bus1 = (test_i2c_bus(1) != -1) ? 1 : OFF;
-  printf("Test bus 3\n");	
-  fflush(stdout);
-  i2c_bus3 = (test_i2c_bus(3) != -1) ? 3 : OFF;
-  printf("Finished testing\n");	
-  fflush(stdout);
 
 //  sleep(2);
 
@@ -376,7 +386,7 @@ int main(int argc, char * argv[]) {
 	
 	sensor_setup();
 
-  if ((i2c_bus3 == OFF) || (sim_mode == TRUE)) {
+  if (sim_mode == TRUE) {
 
     sim_mode = TRUE;
 	    
