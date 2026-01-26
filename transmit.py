@@ -254,12 +254,12 @@ if __name__ == "__main__":
 			
 	print(transmit)
 
-	uptime_time = 45  #  45 second boot time if Pi Zero 
+	uptime_time = 55  #  55 second boot time if Pi Zero 
 	try:
 		f = open("/home/pi/CubeSatSim/pi_zero2", "r")
 		f.close()
 		print("Pi Zero 2 detected!")
-		uptime_time = 20  # 20 second boot time if Pi Zero 2
+		uptime_time = 30  # 30 second boot time if Pi Zero 2
 	except:
 		print("Pi Zero 2 not detected")
 
