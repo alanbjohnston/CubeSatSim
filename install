@@ -71,6 +71,8 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 
 sudo apt-get remove pulseaudio -y
 
+sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-client-dev libgpiod-dev
+
 cd
 
 git clone https://github.com/alanbjohnston/direwolf.git
