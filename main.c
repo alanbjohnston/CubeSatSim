@@ -3004,6 +3004,7 @@ void socket_send(int length) {
       printf("\nConnection Failed \n");
       printf("Error: %s\n", strerror(errno));
       error = 1;
+	  sleep(1);	
 
     // try again
       error = 0;
@@ -3027,6 +3028,7 @@ void socket_send(int length) {
         printf("\nConnection Failed \n");
         printf("Error: %s\n", strerror(errno));
         error = 1;
+	    sleep(1);			  
       }	    
     }
     if (error == 1) {
@@ -3038,7 +3040,6 @@ void socket_send(int length) {
   	    pclose(transmit_restartf);	      
         sleep(10);  // was 5 // sleep if socket connection refused
       }
-	  sleep(10); 	
     }
     else {
       socket_open = 1;
