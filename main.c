@@ -2973,7 +2973,8 @@ void get_tlm_fc() {  // FUNcube Mode telemetry generation
 
 void socket_send(int length) {
 
-  printf("Socket_send!\n");	
+  printf("Socket_send!\n");
+  fflush(stdout);	
   int error = 0;
 
   if (!socket_open && transmit) { // open socket if not open
@@ -2983,7 +2984,7 @@ void socket_send(int length) {
     struct sockaddr_in serv_addr;
     //    char *hello = "Hello from client"; 
     //    char buffer[1024] = {0};
-	error_count = 0;
+	// error_count = 0;
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
       printf("\n Socket creation error \n");
       error = 1;
@@ -3003,7 +3004,9 @@ void socket_send(int length) {
     if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
       printf("\nConnection Failed \n");
       printf("Error: %s\n", strerror(errno));
+	  fflush(stdout);	
       error = 1;
+	  sleep(1);	
 
     // try again
       error = 0;
@@ -3026,18 +3029,21 @@ void socket_send(int length) {
       if (connect(sock, (struct sockaddr * ) & serv_addr, sizeof(serv_addr)) < 0) {
         printf("\nConnection Failed \n");
         printf("Error: %s\n", strerror(errno));
+		fflush(stdout);	  
         error = 1;
+	    sleep(1);			  
       }	    
     }
     if (error == 1) {
       printf("Socket error count: %d\n", error_count);  	    
 //    ; //transmitStatus = -1;
       if (error_count++ > 5) { 
-	    printf("Restarting transmit\n");    
+	    printf("Restarting transmit\n");
+		fflush(stdout);	  
    	    FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
   	    pclose(transmit_restartf);	      
         sleep(10);  // was 5 // sleep if socket connection refused
-      }	    
+      }
     }
     else {
       socket_open = 1;
