@@ -41,9 +41,10 @@ cubesatsim: libax5043.a
 cubesatsim: afsk/ax25.o
 cubesatsim: afsk/ax5043.o
 cubesatsim: TelemEncoding.o
+cubesatsim: sensor_extension.o
 cubesatsim: main.o
 cubesatsim: codecAO40.o
-	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o TelemEncoding.o codecAO40.o main.o -lwiringPi -lax5043 -lm
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o cubesatsim -Wall -Wextra -L./ afsk/ax25.o afsk/ax5043.o TelemEncoding.o sensor_extension.o codecAO40.o main.o -lwiringPi -lax5043 -lm
 
 telem: telem.o
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -o telem -Wall -Wextra -L./ telem.o -lwiringPi 
@@ -51,6 +52,9 @@ telem: telem.o
 TelemEncoding.o: TelemEncoding.c
 TelemEncoding.o: TelemEncoding.h
 	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c TelemEncoding.c
+
+sensor_extension.o: sensor_extension.c
+	gcc -std=gnu99 $(DEBUG_BEHAVIOR) -Wall -Wextra -c sensor_extension.c
 
 codecAO40.o: codecAO40.c
 codecAO40.o: codecAO40.h

@@ -11,6 +11,42 @@ from os import system
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial	
 import random
+import subprocess
+
+def sim_failure_check():
+	try:
+		global card
+		global cam_fail
+		global sim_mode
+		global sim_config
+		cam_fail = False
+		file = open("/home/pi/CubeSatSim/failure_mode.txt")
+		fail_mode = int(file.read(2))
+#		print("Fail_mode: ")
+#		print(fail_mode)
+		if (fail_mode == 11):
+			card = "Device"  # Change audio so no FM audio plays
+			print("Failure mode no FM audio")
+			sim_mode = True
+		elif (fail_mode == 7):
+			cam_fail = True
+			print("Failure mode camera fail")	
+			sim_mode = True
+			card = "Headphones"
+		elif (fail_mode == -1):
+			print("No failure mode")
+			card = "Headphones"
+			if sim_config:
+				sim_mode = True
+		else:
+			print("Other failure mode")
+			card = "Headphones"
+			sim_mode = True
+	except:
+		print("No failure mode")
+		card = "Headphones"
+		if sim_config:
+			sim_mode = True
 
 def battery_saver_check():
 	try:
@@ -95,6 +131,8 @@ def increment_mode():
 		print("can't write to .mode file")
 		
 def camera_photo():
+	global cam_fail
+	sim_failure_check()
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
@@ -102,6 +140,10 @@ def camera_photo():
 		f = open("/home/pi/CubeSatSim/camera_out.jpg")
 		f.close()
 		print("Photo taken")
+		if (cam_fail == True):
+			system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
+			print("Using stored image")
+			stored_image = True
 	except:
 		system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
 		print("Using stored image")
@@ -126,11 +168,11 @@ def camera_photo():
 	#					draw.text((120, 10), telem_string, font=font2, fill='white')					
 		draw.text((12, 12), callsign, font=font1, fill='black')
 		draw.text((10, 10), callsign, font=font1, fill='white')
-		draw.text((122, 12), telem_string, font=font2, fill='black')
-		draw.text((120, 10), telem_string, font=font2, fill='white')
+		draw.text((112, 12), telem_string, font=font2, fill='black')  # was 122
+		draw.text((110, 10), telem_string, font=font2, fill='white')  # was 120
 		img.save(file)
 
-print("CubeSatSim v2.1 transmit.py starting...")
+print("CubeSatSim v2.2 transmit.py starting...")
 
 pd = 21
 ptt = 20
@@ -212,12 +254,12 @@ if __name__ == "__main__":
 			
 	print(transmit)
 
-	uptime_time = 45  #  45 second boot time if Pi Zero 
+	uptime_time = 55  #  55 second boot time if Pi Zero 
 	try:
 		f = open("/home/pi/CubeSatSim/pi_zero2", "r")
 		f.close()
 		print("Pi Zero 2 detected!")
-		uptime_time = 20  # 20 second boot time if Pi Zero 2
+		uptime_time = 30  # 30 second boot time if Pi Zero 2
 	except:
 		print("Pi Zero 2 not detected")
 
@@ -282,12 +324,42 @@ if __name__ == "__main__":
 	tx = '434.9000'	
 	rx = '435.0000'
 	txr = '144.9000'
+	sim_mode = False
+	sim_config = False
+	hab_mode = False
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
 #		callsign = file.readline().split(" ")[0]
 		config = file.readline().split()		
 		callsign = config[0]
+		if len(config) > 4:
+			if config[4] == 'y' or config[4] == 'yes':		
+				sim_mode = True
+				sim_config = True
+				print("Simulated telemetry mode is configured")
+			else:
+#				query = ["timeout", "2", "i2cdetect", "-y", "3"] # Test if Solar board is present
+#				try:
+#					result = subprocess.run(query, capture_output=True, text=True, check=True)
+#					print(f"Command run was: {query}")
+#					print("Sucess!")
+#					print(f"Output of the command (stdout): {result}")
+#				except subprocess.CalledProcessError as e:
+#					print(f"Command failed with return code: {e.returncode}")
+#					print(f"Command run was: {e.cmd}")
+#					print(f"Output of the command (stdout): {e.stdout}")
+#					print(f"Error output of the command (stderr): {e.stderr}")
+
+				try:
+					file = open("/home/pi/CubeSatSim/sim_mode_auto")
+					print("Simulated telemetry mode automatically turned on!")
+					sim_mode = True
+					sim_config = True
+					file.close()
+				except:
+					if (debug_mode == 1):
+						print("/home/pi/CubeSatSim/sim_mode_auto not found")	
 		if len(config) > 5:
 			sq = config[5]
 			if (mode == 'p') or (mode == 'P'): 
@@ -295,9 +367,6 @@ if __name__ == "__main__":
 			print(sq)
 		if len(config) > 6:
 			txf = float(config[6])
-#                        print(txf)
-#                        print( "{:.4f}".format(txf))
-                        
 			if (mode == 'e'):
 				txr = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
 				tx = "{:.4f}".format(txr)
@@ -310,6 +379,10 @@ if __name__ == "__main__":
 #                        print( "{:.4f}".format(rxf))
                         rx = "{:.4f}".format(rxf)
                         print(rx)
+		if len(config) > 8:
+			if config[8] == 'y' or config[8] == 'yes':		
+				hab_mode = True
+				print("Balloon (HAB) mode is configured.")				
 		if len(config) > 9:
                         rxpl = float(config[9])
  #                       print(rxpl)
@@ -368,7 +441,24 @@ if __name__ == "__main__":
 	card = "Headphones"  # default using pcm audio output of Pi Zero
 #	card = "Device" # using USB sound card for audio output	
 
-	if (mode != 'e'):
+	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
+	try:
+		result = subprocess.run(query, capture_output=True, text=True, check=True)
+		print(f"Command run was: {query}")
+		gpsd_status = result.stdout.strip()
+		print(f"Output of the command (stdout): {gpsd_status}")
+	except subprocess.CalledProcessError as e:
+#		print(f"Command failed with return code: {e.returncode}")
+		print(f"Command run was: {e.cmd}")
+		gpsd_status = e.stdout.strip()
+		print(f"Output of the command (stdout): {e.stdout}")
+#		print(f"Error output of the command (stderr): {e.stderr}")
+  	
+	if (mode != 'e'): 
+		
+		if (gpsd_status == "active"):
+			print("Stopping gpsd.socket")
+			system("sudo systemctl stop gpsd.socket")
 		print("Programming FM module!\n");	
 		output(pd, 1)
 		output (ptt, 1)
@@ -387,32 +477,36 @@ if __name__ == "__main__":
 		except:
 			print("Error in serial write")
 		output(pd, 0)
-
-	if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
-		GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-		GPIO.setup(txLed, GPIO.OUT)	
-		output(txLed, txLedOn)
-		print("Transmit CW ID")
-		if (no_command):
-			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-			else:
-				system("echo 'hi hi de " + callsign + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-		else:
-			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-			else:
-				system("echo 'hi hi de " + callsign + "  C" + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-
+		if (gpsd_status == "active"):
+			print("Restarting gpsd.socket")
+			system("sudo systemctl restart gpsd.socket")
 			
-		output(txLed, txLedOff)
-
-		sleep(1)
-	else:
-		print("Don't transmit CW ID since command_tx is False or APRS mode or change of mode")
-
-	if (transmit):
+	sim_failure_check()
+	if (hab_mode == True) and (mode == 'a'):
+		print("Don't transmit CW ID since APRS HAB mode is active")
+	else:	
+		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
+			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+			GPIO.setup(txLed, GPIO.OUT)	
+			output(txLed, txLedOn)
+			print("Transmit CW ID")
+			status = ""
+			if not no_command:
+				status = status + " C"
+			if sim_mode:
+				status = status + " S"
+			if (debug_mode == 1):
+				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+			else:
+				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+			output(txLed, txLedOff)
 	
+			sleep(1)
+		else:
+			print("Don't transmit CW ID since command_tx is False or APRS mode or change of mode")
+	
+		
+	if (transmit):
 #		print 'Length: ', len(sys.argv)
     
 #		if (len(sys.argv)) > 1:
@@ -429,8 +523,8 @@ if __name__ == "__main__":
 				system("sudo systemctl stop command")
 #			while True:
 #				sleep(0.1)
-			if (mode != 'n'):
-				system("touch /home/pi/CubeSatSim/ready")
+#			if (mode != 'n'):
+#				system("touch /home/pi/CubeSatSim/ready")
 
 			while True:
 				try:
@@ -450,6 +544,7 @@ if __name__ == "__main__":
 #						
 #						battery_saver_check()
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
@@ -476,11 +571,12 @@ if __name__ == "__main__":
 						print("Ready for next packet!")
 						
 					sleep(0.5)
+	
 				except:
 #					command_control_check()
 					sleep(1)
 		elif (mode == 'm'):
-			system("touch /home/pi/CubeSatSim/cwready")
+#			system("touch /home/pi/CubeSatSim/cwready")
 			print("CW")
 			while True:
 #				command_control_check()
@@ -502,6 +598,7 @@ if __name__ == "__main__":
 							output(txLed, txLedOn)					
 	
 							if (txc):
+								sim_failure_check()
 #								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
@@ -563,6 +660,7 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg.wav")
@@ -581,35 +679,7 @@ if __name__ == "__main__":
 					print("image 2 did not load - copy from CubeSatSim/sstv directory")
 				while 1:
 #					command_control_check()			
-					camera_photo()
-##					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
-##					print("Photo taken")
-##
-##					file='/home/pi/CubeSatSim/camera_out.jpg'
-##					font1 = ImageFont.truetype('DejaVuSerif.ttf', 20)
-##					font2 = ImageFont.truetype('DejaVuSerif-Bold.ttf', 16)
-##
-##					try:
-##						filep = open("/home/pi/CubeSatSim/telem_string.txt")
-##						telem_string = filep.readline()
-##					except:
-##						telem_string = ""
-##						if (debug_mode == 1):
-##							print("Can't read telem_string.txt")		
-##					print(telem_string)
-##					
-##					img = Image.open(file)
-##					draw = ImageDraw.Draw(img) 
-#					draw.text((10, 10), callsign, font=font2, fill='white')
-#					draw.text((120, 10), telem_string, font=font2, fill='white')					
-##					draw.text((12, 12), callsign, font=font1, fill='black')
-##					draw.text((10, 10), callsign, font=font1, fill='white')
-##					draw.text((122, 12), telem_string, font=font2, fill='black')
-##					draw.text((120, 10), telem_string, font=font2, fill='white')
-##					img.save(file)
-					
-#					command_control_check()			
-					
+					camera_photo()					
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
@@ -623,6 +693,8 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+#							print(card)
+							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/camera_out.jpg.wav")	
@@ -660,6 +732,7 @@ if __name__ == "__main__":
 #						battery_saver_check()
 
 						if (txc):
+							sim_failure_check()
 #							output(pd, 1)
 							output (ptt, 0)
 							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
@@ -696,6 +769,7 @@ if __name__ == "__main__":
 #							battery_saver_check()
 
 							if (txc):
+								sim_failure_check()
 #								output(pd, 1)
 								output (ptt, 0)
 								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg.wav")
@@ -727,6 +801,7 @@ if __name__ == "__main__":
 #							battery_saver_check()
 						
 							if (txc):
+								sim_failure_check()
 #								output(pd, 1)
 								output (ptt, 0)		
 								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/sstv.wav")

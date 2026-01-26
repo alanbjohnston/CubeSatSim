@@ -45,3 +45,5 @@ pi_zero2
 image_file.bin
 logt.txt
 telem.txt.bk
+failure_mode.txt
+sim_mode_auto
