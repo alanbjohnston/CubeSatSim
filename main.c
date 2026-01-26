@@ -3038,7 +3038,7 @@ void socket_send(int length) {
   	    pclose(transmit_restartf);	      
         sleep(10);  // was 5 // sleep if socket connection refused
       }
-	  sleep(1); 	
+	  sleep(10); 	
     }
     else {
       socket_open = 1;
