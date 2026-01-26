@@ -895,14 +895,14 @@ int main(int argc, char * argv[]) {
 			printf("Temp: %s\n", sensor_string[TEMP]);
 		} else {
 			sensor[PRES] = presP + rnd_float(-1, 1);
-			sprintf(str_tmp, "%5.0f", presP); 
+			sprintf(str_tmp, "%6.1f", presP); 
 			strcpy(sensor_string[PRES], str_tmp);
 			printf("Pres: %s\n", sensor_string[PRES]);
 			sensor[ALT] = altGP;
 			sprintf(str_tmp, "%5.0f", altGP); 
 			strcpy(sensor_string[ALT], str_tmp);
 			sensor[HUMI] = humiP + rnd_float(-1, 1);
-			sprintf(str_tmp, "%3.0f", sensor[HUMI]); 
+			sprintf(str_tmp, "%4.1f", sensor[HUMI]); 
 			strcpy(sensor_string[HUMI], str_tmp);
 			sensor[TEMP] = tempS + rnd_float(-0.7, 0.7);
 			sprintf(str_tmp, "%4.1f",sensor[TEMP]); 
