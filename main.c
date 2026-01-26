@@ -3037,7 +3037,8 @@ void socket_send(int length) {
    	    FILE * transmit_restartf = popen("sudo systemctl restart transmit", "r");
   	    pclose(transmit_restartf);	      
         sleep(10);  // was 5 // sleep if socket connection refused
-      }	    
+      }
+	  sleep(1); 	
     }
     else {
       socket_open = 1;
