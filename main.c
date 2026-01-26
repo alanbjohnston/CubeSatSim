@@ -1573,9 +1573,13 @@ void get_tlm_fox() {
     payload = OFF;
     printf("Payload Simulated Failure!\n");
   }
+	
   if (failureMode == FAIL_CAMERA) {
     cam = OFF;
     printf("Camera Simulated Failure!\n");
+  }
+  else {
+    cam = camera;
   }
 
   if (mode == FSK)
