@@ -61,7 +61,7 @@ else
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
 
-cd
+touch /home/pi/CubeSatSim/command_control_direwolf
 
 CubeSatSim/config -c -n
 
