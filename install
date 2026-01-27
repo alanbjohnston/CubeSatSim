@@ -302,6 +302,8 @@ sudo sh -c 'echo "\n" >> /boot/config.txt'
 
 sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
 
+sudo sed -i 's/GPSD_OPTIONS=""/GPSD_OPTIONS="-s 9600"/g' /etc/default/gpsd
+
 changed=0
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
