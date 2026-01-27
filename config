@@ -1715,8 +1715,15 @@ elif [ "$1" = "-u" ]; then
 			sudo systemctl enable gpsd
 			sudo systemctl enable gpsd.socket
 			echo
-			echo "Unless you configure gpsd otherwise, the GPS is connected to serial0 on the Pi."
-			echo "To monitor your gps device, use the command gpsmon"
+			echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+			echo
+
+			cat /etc/default/gpsd
+
+			echo
+			echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+			echo
+			echo "To monitor your gps device, use the gpsmon command."
 			echo
 			reboot=1
 		fi
