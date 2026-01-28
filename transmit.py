@@ -8,6 +8,7 @@ from time import sleep
 #import os
 import sys
 from os import system
+from os import path
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial	
 import random
@@ -352,11 +353,10 @@ if __name__ == "__main__":
 #					print(f"Error output of the command (stderr): {e.stderr}")
 
 				try:
-					file = open("/home/pi/CubeSatSim/sim_mode_auto")
-					print("Simulated telemetry mode automatically turned on!")
-					sim_mode = True
-					sim_config = True
-					file.close()
+					if path.isfile("/home/pi/CubeSatSim/sim_mode_auto"):
+						print("Simulated telemetry mode automatically turned on!")
+						sim_mode = True
+						sim_config = True
 				except:
 					if (debug_mode == 1):
 						print("/home/pi/CubeSatSim/sim_mode_auto not found")	
