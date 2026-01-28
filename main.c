@@ -90,6 +90,7 @@ int main(int argc, char * argv[]) {
   if (strcmp(fail_yes, "yes") == 0) {
 	  fail_rnd_mode = TRUE;
 	  fprintf(stderr, "Random fail mode is ON\n");
+	  failTime = loopTime;
   }		
 	
   FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
