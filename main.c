@@ -637,13 +637,14 @@ int main(int argc, char * argv[]) {
 //	if (loop % 10 == 0) { 	
 	if ((loopTime - failTime) > fail_time * 1000)	{
 //  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-  	  failureMode = (int) rnd_float(1.0, 10.0);
+  	  failureMode = rnd_float(1.0, 10.0);
 	  printf("Simulated Random Failure Change to %d\n", failureMode);
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
 	  fprintf(failure_mode_file, "%d", failureMode);	
 	  fclose(failure_mode_file);
 	  failTime = loopTime;	
-    }
+    } else
+		printf("No random failure change. loopTime: %ld failTime: %ld fail_time: %d\n", loopTime, failTime, fail_time);
   }
 //  else
 //  {
@@ -869,8 +870,8 @@ int main(int argc, char * argv[]) {
 //		; //payload = OFF;  // turn off since STEM Payload is not responding
       
       if ((millis() - newGpsTime) > 60000) {
-		longitude += rnd_float(-0.05, 0.05) / 100.0;  // was .05
-     		latitude += rnd_float(-0.05, 0.05) / 100.0;	      
+		longitude += (-0.05, 0.05) / 100.0;  // was .05
+     		latitude += (-0.05, 0.05) / 100.0;	      
 //       		printf("GPS Location with Rnd: %f, %f \n", latitude, longitude);    
 //	        printf("GPS Location with Rnd: APRS %07.2f, %08.2f \n", toAprsFormat(latitude), toAprsFormat(longitude));    
 	      	newGpsTime = millis();  
@@ -890,22 +891,22 @@ int main(int argc, char * argv[]) {
 			printf("Alt: %s\n", sensor_string[ALT]);
 			sensor[HUMI] = 0;
 			strcpy(sensor_string[HUMI], "0.0");
-			sensor[TEMP] = tempP - 80 * (1 - eclipse) + rnd_float(-0.7, 0.7);	
+			sensor[TEMP] = tempP - 80 * (1 - eclipse) + (-0.7, 0.7);	
 			sprintf(str_tmp, "%4.1f", sensor[TEMP]);
 			strcpy(sensor_string[TEMP], str_tmp);
 			printf("Temp: %s\n", sensor_string[TEMP]);
 		} else {
-			sensor[PRES] = presP + rnd_float(-1, 1);
+			sensor[PRES] = presP + (-1, 1);
 			sprintf(str_tmp, "%6.1f", presP); 
 			strcpy(sensor_string[PRES], str_tmp);
 			printf("Pres: %s\n", sensor_string[PRES]);
 			sensor[ALT] = altGP;
 			sprintf(str_tmp, "%5.0f", altGP); 
 			strcpy(sensor_string[ALT], str_tmp);
-			sensor[HUMI] = humiP + rnd_float(-1, 1);
+			sensor[HUMI] = humiP + (-1, 1);
 			sprintf(str_tmp, "%4.1f", sensor[HUMI]); 
 			strcpy(sensor_string[HUMI], str_tmp);
-			sensor[TEMP] = tempS + rnd_float(-0.7, 0.7);
+			sensor[TEMP] = tempS + (-0.7, 0.7);
 			sprintf(str_tmp, "%4.1f",sensor[TEMP]); 
 			strcpy(sensor_string[TEMP], str_tmp);
 			printf("Temp: %s\n", sensor_string[TEMP]);
@@ -922,7 +923,7 @@ int main(int argc, char * argv[]) {
 	   strcpy(sensor_string[ACCEL_Z], sensor_number);	  
 		  
 	   float spin;
-	   spin = rnd_float(-30.0, 30.0);	  
+	   spin = (-30.0, 30.0);	  
 	   sensor[GYRO_X] = axis[X] * spin;
 	   sprintf(sensor_number, "%.2f", sensor[GYRO_X]);	  
 	   strcpy(sensor_string[GYRO_X], sensor_number);	  	  
@@ -1017,13 +1018,13 @@ int main(int argc, char * argv[]) {
         printf("\n\nSwitching eclipse mode! \n\n");
       }
 
-      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-2, 2);
-      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-2, 2);
-      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-2, 2);
+      double Xi = eclipse * amps_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + (-2, 2);
+      double Yi = eclipse * amps_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + (-2, 2);
+      double Zi = eclipse * amps_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + (-2, 2);
 
-      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + rnd_float(-0.2, 0.2);
-      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + rnd_float(-0.2, 0.2);
-      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + rnd_float(-0.2, 0.2);
+      double Xv = eclipse * volts_max[0] * (float) sin(2.0 * 3.14 * time / (46.0 * speed)) + (-0.2, 0.2);
+      double Yv = eclipse * volts_max[1] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + (3.14 / 2.0)) + (-0.2, 0.2);
+      double Zv = 2.0 * eclipse * volts_max[2] * (float) sin((2.0 * 3.14 * time / (46.0 * speed)) + 3.14 + angle[2]) + (-0.2, 0.2);
 
        printf("Yi: %f Zi: %f %f %f Zv: %f \n", Yi, Zi, amps_max[2], angle[2], Zv);
 
@@ -1035,18 +1036,18 @@ int main(int argc, char * argv[]) {
       current[map[MINUS_Z]] = (Zi >= 0) ? 0 : ((-1.0f) * Zi);
 
       tempS += (eclipse > 0) ? ((temp_max - tempS) / 50.0f) : ((temp_min - tempS) / 50.0f);
-      tempS += +rnd_float(-1.0, 1.0);
-      //  IHUcpuTemp = (int)((tempS + rnd_float(-1.0, 1.0)) * 10 + 0.5);
+      tempS += +(-1.0, 1.0);
+      //  IHUcpuTemp = (int)((tempS + (-1.0, 1.0)) * 10 + 0.5);
       other[IHU_TEMP] = tempS;
 
-      voltage[map[BAT2]] = 0.0; // rnd_float(5.0, 5.005);
-      current[map[BAT2]] = 0.0; // rnd_float(158, 171);
+      voltage[map[BAT2]] = 0.0; // (5.0, 5.005);
+      current[map[BAT2]] = 0.0; // (158, 171);
 
       float charging = current[map[PLUS_X]] + current[map[MINUS_X]] + current[map[PLUS_Y]] + current[map[MINUS_Y]] + current[map[PLUS_Z]] + current[map[MINUS_Z]];
-//      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
+//      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + (-4.0, 4.0));
 
 //      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
-      current[map[BAT]] = rnd_float(320, 510) - charging;
+      current[map[BAT]] = (320, 510) - charging;
 
         printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
@@ -1061,22 +1062,22 @@ int main(int argc, char * argv[]) {
       if (batt > 4.1)
         batt = 4.1;
 
-      voltage[map[BAT]] = batt + rnd_float(-0.01, 0.01);
+      voltage[map[BAT]] = batt + (-0.01, 0.01);
 		
       float Vm, Vp;
 	  Vm = batt + 0.5;	
-	  Vp = (Xv > 0) ? Xv : rnd_float(0.0, 0.1);
-	  voltage[map[PLUS_X]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;
-      Vp = (Xv < 0) ? ((-1.0f) * Xv) : rnd_float(0.0, 0.1);
-	  voltage[map[MINUS_X]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
-      Vp = (Yv > 0) ? Yv : rnd_float(0.0, 0.1);
-	  voltage[map[PLUS_Y]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
-      Vp = (Yv < 0) ? ((-1.0f) * Yv) : rnd_float(0.0, 0.1);
-	  voltage[map[MINUS_Y]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;		
-      Vp = (Zv > 0) ? Zv : rnd_float(0.0, 0.1);
-	  voltage[map[PLUS_Z]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
-      Vp = (Zv < 0) ? ((-1.0f) * Zv) : rnd_float(0.0, 0.1);
-	  voltage[map[MINUS_Z]] = (Vp >= Vm) ? (Vm + rnd_float(-0.1, 0.1)) : Vp;	
+	  Vp = (Xv > 0) ? Xv : (0.0, 0.1);
+	  voltage[map[PLUS_X]] = (Vp >= Vm) ? (Vm + (-0.1, 0.1)) : Vp;
+      Vp = (Xv < 0) ? ((-1.0f) * Xv) : (0.0, 0.1);
+	  voltage[map[MINUS_X]] = (Vp >= Vm) ? (Vm + (-0.1, 0.1)) : Vp;	
+      Vp = (Yv > 0) ? Yv : (0.0, 0.1);
+	  voltage[map[PLUS_Y]] = (Vp >= Vm) ? (Vm + (-0.1, 0.1)) : Vp;	
+      Vp = (Yv < 0) ? ((-1.0f) * Yv) : (0.0, 0.1);
+	  voltage[map[MINUS_Y]] = (Vp >= Vm) ? (Vm + (-0.1, 0.1)) : Vp;		
+      Vp = (Zv > 0) ? Zv : (0.0, 0.1);
+	  voltage[map[PLUS_Z]] = (Vp >= Vm) ? (Vm + (-0.1, 0.1)) : Vp;	
+      Vp = (Zv < 0) ? ((-1.0f) * Zv) : (0.0, 0.1);
+	  voltage[map[MINUS_Z]] = (Vp >= Vm) ? (Vm + (-0.1, 0.1)) : Vp;	
 
       printf("temp: %f Time: %f Eclipse: %d : %f %f | %f %f | %f %f\n",tempS, time, eclipse, voltage[map[PLUS_X]], voltage[map[MINUS_X]], voltage[map[PLUS_Y]], voltage[map[MINUS_Y]], current[map[PLUS_Z]], current[map[MINUS_Z]]);
 
@@ -1180,7 +1181,7 @@ int main(int argc, char * argv[]) {
 	  if (failureMode == FAIL_NONE) 
 		  printf("No Simulated Failure!\n");
 	  if (failureMode == FAIL_UNPLUG) {
-	    voltage[map[PLUS_Y]] = rnd_float(0.8, 0.95);
+	    voltage[map[PLUS_Y]] = (0.8, 0.95);
 	    current[map[PLUS_Y]] = 0.0;
 	    printf("+Y Solar Unplugged Failure\n");
 	  }
@@ -1251,7 +1252,7 @@ int main(int argc, char * argv[]) {
       sleep(25);
 //      fprintf(stderr, "INFO: Sleeping for 25 sec\n");	 
 	    
-      int rand_sleep = (int)rnd_float(0.0, 5.0);	    
+      int rand_sleep = (int)(0.0, 5.0);	    
       sleep(rand_sleep);	    
 //      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
