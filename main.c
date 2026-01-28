@@ -90,7 +90,7 @@ int main(int argc, char * argv[]) {
   if (strcmp(fail_yes, "yes") == 0) {
 	  fail_rnd_mode = TRUE;
 	  fprintf(stderr, "Random fail mode is ON\n");
-	  failTime = millis();
+	  failTime = 0;
 	  srand((unsigned int)time(0));
   }		
 	
@@ -636,7 +636,7 @@ int main(int argc, char * argv[]) {
 
   if (fail_rnd_mode) {
 //	if (loop % 10 == 0) { 	
-	if ((loopTime - failTime) > fail_time * 1000)	{
+	if ((millis() - failTime) > fail_time * 1000)	{
 //  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
   	  failureMode = rnd_float(1.0, 10.0);
 	  printf("Simulated Random Failure Change to %d\n", failureMode);
