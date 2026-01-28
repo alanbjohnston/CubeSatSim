@@ -90,7 +90,8 @@ int main(int argc, char * argv[]) {
   if (strcmp(fail_yes, "yes") == 0) {
 	  fail_rnd_mode = TRUE;
 	  fprintf(stderr, "Random fail mode is ON\n");
-	  failTime = loopTime;
+	  failTime = 0;
+	  srand((unsigned int)time(0));
   }		
 	
   FILE * command_file = fopen("/home/pi/CubeSatSim/command_control", "r");
@@ -634,16 +635,15 @@ int main(int argc, char * argv[]) {
     fclose(uptime_file);
 
   if (fail_rnd_mode) {
-//	if (loop % 10 == 0) { 	
-	if ((loopTime - failTime) > fail_time * 1000)	{
-//  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-  	  failureMode = (int) rnd_float(1.0, 10.0);
+	if ((millis() - failTime) > fail_time * 1000)	{
+  	  failureMode = rnd_float(1.0, 10.0);
 	  printf("Simulated Random Failure Change to %d\n", failureMode);
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
 	  fprintf(failure_mode_file, "%d", failureMode);	
 	  fclose(failure_mode_file);
 	  failTime = loopTime;	
-    }
+	} else
+		printf("No random failure change. millis: %ld failTime: %ld fail_time: %d\n", millis(), failTime, fail_time);
   }
 //  else
 //  {
