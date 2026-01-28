@@ -964,7 +964,7 @@ int main(int argc, char * argv[]) {
 		    printf("Simulated MPU Failure!\n");
 	  }
 
-		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU) || (sim_mode && (failureMode == FAIL_PAYLOAD))) // recreaate sensor_payload string	
+		if ((failureMode == FAIL_BME) || (failureMode == FAIL_MPU) || (sim_mode && (failureMode != FAIL_PAYLOAD))) // recreaate sensor_payload string	
 		{  
 		  sensor_payload[0] = '\0';
 		  strcpy(sensor_string[0], "OK");
