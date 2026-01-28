@@ -645,7 +645,7 @@ int main(int argc, char * argv[]) {
 	  fclose(failure_mode_file);
 	  failTime = millis();	
     } else
-		printf("No random failure change. loopTime: %ld failTime: %ld fail_time: %d\n", loopTime, failTime, fail_time);
+		printf("No random failure change. millis: %ld failTime: %ld fail_time: %d\n", millis(), failTime, fail_time);
   }
 //  else
 //  {
