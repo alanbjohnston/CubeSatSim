@@ -637,8 +637,8 @@ int main(int argc, char * argv[]) {
 //	if (loop % 10 == 0) { 	
 	if ((loopTime - failTime) > fail_time * 1000)	{
 //  	  failureMode = (int) rnd_float(1, FAIL_COUNT);
-  	  failureMode = (int) rnd_float(1, 10);
-	  printf("Simulated Random Failure Change\n");
+  	  failureMode = (int) rnd_float(1.0, 10.0);
+	  printf("Simulated Random Failure Change to %d\n", failureMode);
 	  FILE * failure_mode_file = fopen("/home/pi/CubeSatSim/failure_mode.txt", "w");
 	  fprintf(failure_mode_file, "%d", failureMode);	
 	  fclose(failure_mode_file);
