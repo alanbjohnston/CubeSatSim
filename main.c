@@ -2684,6 +2684,10 @@ if (setting == ON) {
 
 void get_tlm_fc() {  // FUNcube Mode telemetry generation
 
+    printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime) / 1000.0);
+    fflush(stdout);
+    loopTime = millis();	
+
 //# define FC_EM
 //#define JY_1
 #define FC_SIM	
