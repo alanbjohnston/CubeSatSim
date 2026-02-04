@@ -372,7 +372,7 @@ if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
 		
 		rm PacsatGround_unix_0_46o.tar.gz
 		
-		cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
+		cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacsatGround/spacecraft/
 			
 		mkdir /home/pi/PacSatGround
 	
