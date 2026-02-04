@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nupdate script for CubeSatSim v2.1\n"
+echo -e "\nupdate script for CubeSatSim v2.2\n"
 
 if [ "$1" = "n" ] ; then
 # if [ -z "$2" ] ; then
@@ -307,9 +307,9 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	
 	cd
 	
-	git clone https://github.com/alanbjohnston/iors_common.git
+	git clone https://github.com/alanbjohnston/g0kla_common.git
 	
-	cd iors_common/Debug/
+	cd g0kla_common/Debug/
 	
 	make all
 	
@@ -327,7 +327,9 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	mkdir /home/pi/PacSat/pacsat
 	mkdir /home/pi/PacSat/pacsat/dir
 	
-	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+#	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+
+	export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
@@ -350,13 +352,13 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	
 	cd /tmp
 	
-	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46n.tar.gz
+	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
 	
-	tar -xzf PacsatGround_unix_0_46n.tar.gz -C /home/pi/Desktop
+	tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
 	
-	rm PacsatGround_unix_0_46n.tar.gz
+	rm PacsatGround_unix_0_46o.tar.gz
 	
-	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacsatGround/spacecraft/
+	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
 		
 	mkdir /home/pi/PacSatGround
 
