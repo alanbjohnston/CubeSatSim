@@ -349,22 +349,38 @@ if [ ! -d "/home/pi/pi_pacsat" ]; then
 	sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
 	
 	sudo raspi-config nonint do_vnc 0
-	
-	cd /tmp
-	
-	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
-	
-	tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
-	
-	rm PacsatGround_unix_0_46o.tar.gz
-	
-	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
-		
-	mkdir /home/pi/PacSatGround
 
-	sudo usermod -a -G gpio pi
+fi
+
+if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
+
+	echo "Installing PacSat Ground Station!"
+
+	if [ ! -d "/home/pi/Desktop" ]; then
+
+		echo
+		echo "You won't be able to run the PacSat Ground Station as this Pi OS does not seem to have the Desktop GUI installed." 
+		echo
+
+	else
 	
-	sudo apt-get install default-jdk -y
+		cd /tmp
+		
+		wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
+		
+		tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
+		
+		rm PacsatGround_unix_0_46o.tar.gz
+		
+		cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
+			
+		mkdir /home/pi/PacSatGround
+	
+		sudo usermod -a -G gpio pi
+		
+		sudo apt-get install default-jdk -y
+
+	fi
 
 cd
 
