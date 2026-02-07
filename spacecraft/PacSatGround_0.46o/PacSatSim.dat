@@ -14,5 +14,5 @@ name=ISS
 description=PacSatSim
 satId=3
 catalogNumber=0
-conversionCoefficients=PacSatSim_conversion_curves.csv
+conversionCoefficients=PacSatSim-coef.csv
 layoutsUseBits=True
