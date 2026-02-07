@@ -1003,9 +1003,12 @@ if __name__ == "__main__":
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
-			
-			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
-			GPIO.setup(txLed, GPIO.OUT)
+
+			try:
+				GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
+				GPIO.setup(txLed, GPIO.OUT)
+			except:
+				print("Can't set txLed")
 			
 			if (command_tx == True):
 				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 &")
