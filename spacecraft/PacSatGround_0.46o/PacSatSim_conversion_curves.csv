@@ -1,0 +1,13 @@
+﻿CurveName,a,bx,cx^2,dx^3,ex^4,fx^5,Description
+cubesatsim_voltage,0,0.01,0,0,0,0,Converts voltages read from the INA219 sensors
+cubesatsim_current,-2048,1,0,0,0,0,Converts positive and negative currents read from the INA219 sensors
+cubesatsim_temperature,0,0.1,0,0,0,0,Converts temperature of Pi
+cubesatsim_rotation,-2048,1,0,0,0,0,Converts positive and negative dps rotation
+cubesatsim_acceleration,-20.48,0.01,0,0,0,0,Converts positive and negative g acceleration
+cubesatsim_altitude,0,0.1,0,0,0,0,Converts altitude
+cubesatsim_pressure,0,1,0,0,0,0,Converts pressure
+cubesatsim_sensor1,0,1,0,0,0,0,Conversion of Sensor 1
+cubesatsim_sensor2,-2048,1,0,0,0,0,Conversion of Sensor 2
+cubesatsim_sensor3,-20.48,0.01,0,0,0,0,Conversion of Sensor 3
+cubesatsim_rpm,-204.8,0.1,0,0,0,0,Conversion of calculated RPM
+cubesatsim_rssi,-2048,1,0,0,0,0,Conversion of Received Signal Strength
