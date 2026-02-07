@@ -437,8 +437,8 @@ if __name__ == "__main__":
 				GPIO.output(txLed, 0)
 				print("0")
 				
-#				GPIO.setup(pttPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-				
+				GPIO.setup(pttPin, GPIO.IN)
+			
 				while (True):
 					sleep(0.1)
 					GPIO.wait_for_edge(pttPin, GPIO.FALLING)
