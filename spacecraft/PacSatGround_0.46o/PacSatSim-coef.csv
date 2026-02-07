@@ -27,6 +27,7 @@
 26,-,SPARE2,0,0,0,0,0,0,Counts,0,4096,SPARE
 27,-,O2Conc,0,0.01,0,0,0,0,Sint16,0,4096,O2 concentration as percentage
 28,-,SSTVMode,0,0,0,0,0,0,Enum,0,4096,MartinM1:MartinM2:ScottieS1:ScottieS2:Robot36:PasokonP3:PasokonP5:PasokonP7:PD90:PD120:PD160:PD180:PD240:PD290:Robot8BW:Robot24BW
+29,-,DivideBy100,0,0.01,0,0,0,0,None,0,4096,Divide by 100
 NOTES:,,,,,,,,,,,,
 Serial,Ignore,name,a,b,c,d,e,f,format,low limit,high limit,Comment
 Echo value = a + bx + cx^2 + dx^3 + ex^4 + fx^5,Echo value = a + bx + cx^2 + dx^3 + ex^4 + fx^5,,,,,,,,,,,
