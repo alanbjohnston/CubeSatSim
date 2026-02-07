@@ -437,7 +437,7 @@ if __name__ == "__main__":
 				GPIO.output(txLed, 0)
 				print("0")
 				
-				GPIO.setup(pttPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+#				GPIO.setup(pttPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 				
 				while (True):
 					sleep(0.1)
