@@ -435,6 +435,7 @@ if __name__ == "__main__":
 				GPIO.setwarnings(False)
 				GPIO.setup(txLed, GPIO.OUT)
 				GPIO.output(txLed, 0)
+				print("0")
 				
 				GPIO.setup(pttPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 				
@@ -442,9 +443,11 @@ if __name__ == "__main__":
 					sleep(0.1)
 					GPIO.wait_for_edge(pttPin, GPIO.FALLING)
 					GPIO.output(txLed, 1)
+					print("1")
 					sleep(0.1)
 					GPIO.wait_for_edge(pttPin, GPIO.RISING)	
-					GPIO.output(txLed, 1)
+					GPIO.output(txLed, 0)
+					print("0")
 			else:
 				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
