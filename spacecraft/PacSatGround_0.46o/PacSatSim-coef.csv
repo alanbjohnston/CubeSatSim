@@ -32,6 +32,7 @@
 31,-,Offset,-2048,1,0,0,0,0,None,0,4096,Offset
 32,-,DivideBy10Offset,-204.8,0.1,0,0,0,0,None,0,4096,Divide by 10 with Offset
 33,-,Status,0,0,0,0,0,0,Enum,0,4096,ON:OFF
+34,-,CommandStatus,0,0,0,0,0,0,Enum,0,4096,OFF:Carrier:DTMF/APRS
 NOTES:,,,,,,,,,,,,
 Serial,Ignore,name,a,b,c,d,e,f,format,low limit,high limit,Comment
 Echo value = a + bx + cx^2 + dx^3 + ex^4 + fx^5,Echo value = a + bx + cx^2 + dx^3 + ex^4 + fx^5,,,,,,,,,,,
