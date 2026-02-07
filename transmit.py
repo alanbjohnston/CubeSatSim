@@ -423,16 +423,28 @@ if __name__ == "__main__":
 			output(ptt, 1)
 			if (mode == 'a'):
 				print("AFSK")
-			elif (mode == 'p'):
-				print("Pacsat")
-#				system('/home/pi/CubeSatSim/pacsatsim.sh')
-#				system('sudo systemctl restart pacsatsim')
-				while True:
-					sleep(30)
-			elif (mode == 'P'):
-				print("Pacsat Ground Station")
-				while True:
-					sleep(30)
+			elif (mode == 'p') or (mode == 'P'):
+				if (mode == 'P'):
+					print("Pacsat Ground Station")
+				else:
+					print("Pacsat")
+#				txPin = 27
+				pttPin = 20
+				
+				GPIO.setmode(GPIO.BCM)
+				GPIO.setwarnings(False)
+				GPIO.setup(txLed, GPIO.OUT)
+				GPIO.output(txLed, 0)
+				
+				GPIO.setup(pttPin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+				
+				while (True):
+					sleep(0.1)
+					GPIO.wait_for_edge(pttPin, GPIO.FALLING)
+					GPIO.output(txLed, 1)
+					sleep(0.1)
+					GPIO.wait_for_edge(pttPin, GPIO.RISING)	
+					GPIO.output(txLed, 1)
 			else:
 				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
