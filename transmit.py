@@ -184,14 +184,17 @@ powerPin = 16
 
 command_tx = True
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
-GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-GPIO.setup(green, GPIO.OUT)
-GPIO.output(powerPin, 1)
+try:
+	GPIO.setmode(GPIO.BCM)
+	GPIO.setwarnings(False)
+	GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+	GPIO.setup(green, GPIO.OUT)
+	GPIO.output(powerPin, 1)
+except:
+	print("Can't set txLed")
 
 transmit = False
 txLed = 27
