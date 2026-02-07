@@ -1,0 +1,37 @@
+# This is a list of commands that can be sent to the spacecraft
+# args are 16 bit except the special code 99099099 which is replaced with the unix time, or when special code MSB32BIT is used to combine two fields
+LIST, namespaces, None, Operations, Telem, File System
+LIST, IMAGE FOLDER, sstv_queue 1, sstv_queue 2, sstv_queue 3, sstv_queue 4, sstv_queue 5, sstv_queue 6, sstv_queue 7, sstv_queue 8, sstv_queue 9
+LIST, FOLDER, bin, lib, config, PACSAT dir, upload queue, wod queue, log queue, text queue, sensor wod queue, data1, data2, data3, data4, data5, data6, data7, data8, data9
+LIST, ENABLE, false, true
+LIST, ROLL AT STARTUP, false, true
+LIST, OVERWRITE, false, true
+LIST, FSK, false, true
+LIST, REMOVE ORPHAN FILES, false, true
+LIST, STATE, stop, start
+LIST, UPLINK MODE, Off, All stations, Command Stations Only
+LIST, FILENAME, use id for file name, user file name
+LIST, SHUTDOWN, reboot, shutdown
+LIST, RESET, reboot
+LIST, RATE, 1200, 9600
+LIST, FEC, Off, On
+LIST, FULL DUPLEX, false, true
+LIST, LOG NAME, Log, WOD
+LIST, LOG LEVEL, None, Error, Warnings, Info
+# Name, Name space, cmd, arg0, arg1, arg2, arg3, argName0, argName1, argName2, argName3, confirm, use reset/uptime, description
+#
+# PACSAT
+#
+Pacsat Broadcast,3,1,0,0,0,0,State,Period(sec),Timeout(sec),NONE,false,false,Enable or disable the Pacsat Broadcast module. The directory entries and individual files will be broadcast based on commands from ground stations.
+File Uploads,3,2,0,0,0,0,Uplink Mode,Period(sec),Timeout(sec),NONE,false,false,Enable or disable File Uploads.  Limit file uploads to command stations that authenticate with a secret key.
+Install File,3,3,0,0,0,0,FileId,MSB32BIT,Folder,NONE,false,false,Copy a file from the PACSAT Directory to a folder and name it with a 4 byte hex name that matches the id or the user filename.
+Execute File,3,13,0,0,0,0,FileId,MSB32BIT,Arg1,Arg2,true,false,Execute a file on the ARISS-PI. The file must already be installed in the bin folder
+Delete File,3,4,0,0,0,0,FileId,MSB32BIT,Folder,NONE,true,false,Delete a file on the ARISS-PI. Typically this leaves the original copy in the PACSAT dir.  To delete the original copy specify the PACSAT Dir folder
+Delete Folder Contents,3,5,0,0,0,0,Folder,Remove Orphan Files,NONE,NONE,true,false,Remove all files from the folder.  The original files will remain in the PACSAT Directory unless deleted seperately. Orphan files are files in a folder without a corresponding Pacsat Dir file. NB: Deleting the entire Pacsat Dir is a desperate measure perhaps only useful in testing!
+Default File Expiry Period,3,6,0,0,0,0,Period(days),NONE,NONE,NONE,false,false,Set the default expiry period for files without a specific expiry time.  The new value will be applied to all files.
+File Expiry Period,3,7,0,0,0,0,FileId,MSB32BIT,Date,MSB32BIT,false,false,Set the expiry date for a specific file`.
+Directory Maintenence Period,3,8,0,0,0,0,Period(s),NONE,NONE,NONE,false,false,Period between checks to each node in the directory for file expiry.
+Uplink queue maintenance Period,3,9,0,0,0,0,Period(s),NONE,NONE,NONE,false,false,Period to check the entire uplink queue for expired files.
+Int File Que Check Period,3,10,0,0,0,0,Period(s),NONE,NONE,NONE,false,false,Period to check the ingestion queues for newly generated internal files.
+Max File Size,3,11,0,0,0,0,Size(kb),NONE,NONE,NONE,false,false,Maximum size for an uploaded file
+Max Upload File Age,3,12,0,0,0,0,Age(days),NONE,NONE,NONE,false,false,Partially uploaded files not modified for more than this period will be removed from the upload queue.
