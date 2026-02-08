@@ -45,7 +45,8 @@ def sim_failure_check():
 			sim_mode = True
 	except:
 		print("No failure mode")
-		card = "Headphones"
+#		card = "Headphones"
+		card = "Device"		
 		if sim_config:
 			sim_mode = True
 
