@@ -296,6 +296,13 @@ sudo raspi-config nonint do_legacy 0
     sudo sh -c 'echo "\nboot_delay=0" >> /boot/firmware/config.txt'
   fi
 
+  if [[ $(grep 'camera_auto_detect=1' /boot/firmware/config.txt) ]]; then
+    echo "camera_auto_detect=1 already in /boot/firmware/config.txt"
+  else
+    echo "adding camera_auto_detect=1 to /boot/firmware/config.txt"
+    sudo sh -c 'echo "\ncamera_auto_detect=1" >> /boot/firmware/config.txt'
+  fi
+
   if ! grep -q force_turbo=1 /boot/firmware/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/firmware/config.txt'; fi
 
 sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
