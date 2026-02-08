@@ -245,6 +245,7 @@ if __name__ == "__main__":
 				print("Can't open .mode file, defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
+	system("sudo systemctl stop pacsatsim")
 
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
@@ -428,6 +429,7 @@ if __name__ == "__main__":
 					print("Pacsat Ground Station")
 				else:
 					print("Pacsat")
+					system("sudo systemctl restart pacsatsim")
 #				txPin = 27
 				pttPin = 20
 				
