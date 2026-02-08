@@ -193,8 +193,10 @@ try:
 	GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.setup(green, GPIO.OUT)
 	GPIO.output(powerPin, 1)
+	GPIO.setup(27, GPIO.IN)
 except:
 	print("GPIO setup problem")
+	system("gpio -g mode 27 IN")
 try:	
 	GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 except:
