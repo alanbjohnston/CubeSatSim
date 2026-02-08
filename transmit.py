@@ -138,7 +138,7 @@ def camera_photo():
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
-		system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256") #  > /dev/null 2>&1")
+		system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 		f = open("/home/pi/CubeSatSim/camera_out.jpg")
 		f.close()
 		print("Photo taken")
@@ -668,7 +668,7 @@ if __name__ == "__main__":
 #					from pysstv.sstv import SSTV
 #				camera = PiCamera()
 				print("Testing for camera")
-				system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
+				system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256")
 				f = open("/home/pi/CubeSatSim/camera_out.jpg")
 				f.close()
 				print("Camera present")
