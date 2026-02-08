@@ -1424,12 +1424,12 @@ elif [ "$1" = "-g" ]; then
 
 elif [ "$1" = "-G" ]; then
 
-	echo "Changing to Pacsat mode"
+	echo "Changing to PacSatSim mode"
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "changing CubeSatSim to Pacsat mode"
+#	echo "changing CubeSatSim to Pacsat mode"
 	sudo echo "p" > /home/pi/CubeSatSim/.mode	
 	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
@@ -1444,12 +1444,14 @@ elif [ "$1" = "-G" ]; then
 
 elif [ "$1" = "-I" ]; then
 
-	echo "Changing to Pacsat Ground Station mode"
-	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "Changing to PacSat Ground Station mode"
+	echo
+	echo "Run the Pacsat Ground Station in the Desktop"
+	value=`cat /home/pi/CubeSatSim/.mode`	
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "changing CubeSatSim to Pacsat mode"
+#	echo "changing CubeSatSim to Pacsat mode"
 	sudo echo "P" > /home/pi/CubeSatSim/.mode	
 	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
@@ -1461,8 +1463,6 @@ elif [ "$1" = "-I" ]; then
 	else
 		restart=1
 	fi	
-
-
 
 elif [ "$1" = "-h" ]; then
 
@@ -1500,8 +1500,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings"
-	echo "   -G     Change to Pacsat mode"
-	echo "   -I     Changing to Pacsat Ground Station mode"
+	echo "   -G     Change to PacSatSim mode"
+	echo "   -I     Changing to PacSat Ground Station mode"
 
 	echo
 	exit
