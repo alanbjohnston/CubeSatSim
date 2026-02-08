@@ -454,8 +454,8 @@ if __name__ == "__main__":
 	except:
 		print("Can't set txLed")
 
-	card = "Headphones"  # default using pcm audio output of Pi Zero
-#	card = "Device" # using USB sound card for audio output	
+#	card = "Headphones"  # default using pcm audio output of Pi Zero
+	card = "Device" # using USB sound card for audio output	
 
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
 	try:
