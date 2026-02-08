@@ -201,7 +201,8 @@ except:
 	print("Can't set txLed")
 
 transmit = False
-txLed = 27
+# txLed = 27
+txLed = 17
 txLedOn = 1 
 txLedOff = 0
 if GPIO.input(12) == False:
