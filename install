@@ -347,14 +347,17 @@ cd raspberry-pi-bme280
 git checkout payload
 make 
 
+cd
 sudo apt install python3-venv
 sudo python3 -m venv venv
-source venv/bin/activate
+source /home/pi/venv/bin/activate
 
 curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
 
 sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
 sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
+
+cd
 
 CubeSatSim/config -c -n
 
