@@ -62,10 +62,6 @@ else
 fi
 
 touch /home/pi/CubeSatSim/command_control_direwolf
-
-CubeSatSim/config -c -n
-
-CubeSatSim/config -l -n
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
@@ -359,6 +355,10 @@ curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
 
 sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
 sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
+
+CubeSatSim/config -c -n
+
+CubeSatSim/config -l -n
 
 echo "Would you like to reboot to complete the installation (y/n)?"
 
