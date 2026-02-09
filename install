@@ -140,6 +140,8 @@ git checkout master
 
 ./script/install
 
+sudo apt-get update -y libraspberrypi-dev
+
 cd
 
 echo "Installing SSDV for FUNcube mode"
@@ -173,15 +175,7 @@ cd PiSSTVpp
 
 make pisstvpp
 
-echo "Copying SSTV image 1"
-cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
-
-echo "Copying SSTV image 2"
-cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
-
 cd
-
-git clone https://github.com/alanbjohnston/rpitx.git
 
 cd rpitx
 
@@ -356,8 +350,6 @@ git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
 cd raspberry-pi-bme280
 git checkout payload
 make 
-
-sudo apt-get update -y libraspberrypi-dev
 
 sudo apt install python3-venv
 sudo python3 -m venv venv
