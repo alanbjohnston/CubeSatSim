@@ -61,20 +61,6 @@ else
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
 
-cd
-
-git clone https://github.com/alanbjohnston/direwolf.git
-
-cd direwolf
-
-make -j
-
-sudo make install
-
-make install-rpi
-
-#
-
 touch /home/pi/CubeSatSim/command_control_direwolf
 
 CubeSatSim/config -c -n
@@ -88,7 +74,21 @@ sudo apt-get remove pulseaudio -y
 sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-client-dev libgpiod-dev raspi-config 
 
 # removed wiringpi and python-picamera python3-picamera 
-sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom gpsd gpsd-clients libgps-dev python3-gps
+sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
+
+cd
+
+git clone https://github.com/alanbjohnston/direwolf.git
+
+cd direwolf
+
+make -j
+
+sudo make install
+
+make install-rpi
+
+sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
 
 sudo systemctl disable gpsd
 sudo systemctl disable gpsd.socket
@@ -110,7 +110,7 @@ sudo dpkg -i debian-template/wiringpi-2.61-1.deb
 cd
 
 #changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff6 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
 sudo pip3 install --upgrade setuptools
 
@@ -358,6 +358,15 @@ git checkout payload
 make 
 
 sudo apt-get update -y libraspberrypi-dev
+
+sudo apt install python3-venv
+sudo python3 -m venv venv
+source venv/bin/activate
+
+curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
+
+sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
+sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
 
 echo "Would you like to reboot to complete the installation (y/n)?"
 
