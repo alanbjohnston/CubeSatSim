@@ -173,6 +173,8 @@ make pisstvpp
 
 cd
 
+git clone https://github.com/alanbjohnston/rpitx.git
+
 cd rpitx
 
 ./install.sh
