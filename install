@@ -136,7 +136,7 @@ git checkout master
 
 ./script/install
 
-sudo apt-get update -y libraspberrypi-dev
+sudo apt-get install -y libraspberrypi-dev
 
 cd
 
