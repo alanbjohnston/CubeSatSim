@@ -61,18 +61,6 @@ else
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
 
-touch /home/pi/CubeSatSim/command_control_direwolf
-
-CubeSatSim/config -c -n
-
-CubeSatSim/config -l -n
-  
-sudo apt-get update && sudo apt-get dist-upgrade -y
-
-sudo apt-get remove pulseaudio -y
-
-sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-client-dev libgpiod-dev raspi-config libraspberrypi-dev
-
 cd
 
 git clone https://github.com/alanbjohnston/direwolf.git
@@ -84,6 +72,20 @@ make -j
 sudo make install
 
 make install-rpi
+
+#
+
+touch /home/pi/CubeSatSim/command_control_direwolf
+
+CubeSatSim/config -c -n
+
+CubeSatSim/config -l -n
+  
+sudo apt-get update && sudo apt-get dist-upgrade -y
+
+sudo apt-get remove pulseaudio -y
+
+sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-client-dev libgpiod-dev raspi-config 
 
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom gpsd gpsd-clients libgps-dev python3-gps
@@ -354,6 +356,8 @@ git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
 cd raspberry-pi-bme280
 git checkout payload
 make 
+
+sudo apt-get update -y libraspberrypi-dev
 
 echo "Would you like to reboot to complete the installation (y/n)?"
 
