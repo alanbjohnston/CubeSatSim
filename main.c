@@ -590,7 +590,7 @@ int main(int argc, char * argv[]) {
     file1 = sopen(pythonConfigStr);  // python sensor polling function	  
 
     fgets(cmdbuffer, 1000, file1);
-    fprintf(stderr, "pythonStr result: %s\n", cmdbuffer);
+    fprintf(stderr, "pythonStr INA219 read result: %s\n", cmdbuffer);
   }
 
   for (int i = 0; i < 9; i++) {
@@ -667,7 +667,7 @@ int main(int argc, char * argv[]) {
       char * token;
       fputc('\n', file1);
       fgets(cmdbuffer, 1000, file1);
-//      fprintf(stderr, "Python read Result: %s\n", cmdbuffer);
+      fprintf(stderr, "Python INA219 read Result: %s\n", cmdbuffer);
 
 //      serialPuts(uart_fd, cmdbuffer);   // write INA data to Pico over serial
 
