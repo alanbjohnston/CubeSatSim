@@ -1,11 +1,20 @@
 import sys
 from os import system
-import RPi.GPIO as GPIO
-from RPi.GPIO import output
+# import RPi.GPIO as GPIO
+# from RPi.GPIO import output
 from time import sleep
 import logging
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
+
+def blink(times):
+	for i in range(times):
+		system("gpio write 27 0")
+#		GPIO.output(27, 0) 
+		sleep(0.1)
+		system("gpio write 27 1")
+#		GPIO.output(27, 1)
+		sleep(0.1)
 
 if __name__ == "__main__":
 	powerPin = 16
@@ -104,141 +113,33 @@ if __name__ == "__main__":
 
 #		if ((debug_mode == False) and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
 		if (debug_mode == False)  and (change_mode == True): # skip every other APRS command since Direwolf prints them twice
-			GPIO.setmode(GPIO.BCM)
-			GPIO.setwarnings(False)
-			try:
-				GPIO.setup(powerPin, GPIO.OUT)
-			except:
-				print("GPIO powerPin setup problem")
-			try:
-				GPIO.setup(txLed, GPIO.OUT)
-			except:
-				print("GPIO txLed setup problem")
 			if (mode == 'f'):
-				GPIO.output(powerPin, 0) # blink two times
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+				blink(2)
 				sleep(1)
 		
 			elif (mode == 'b'):
-				GPIO.output(powerPin, 0) # blink three times
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+				blink(3)
 				sleep(1)
 			
-			elif (mode == 's'):
-				GPIO.output(powerPin, 0) # blink four times
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+			elif
+				blink(4)
 				sleep(1)
 		
 			elif (mode == 'm'):
-				GPIO.output(powerPin, 0) # blink five times
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1);
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+				blink(5)
 				sleep(1)
 
 			elif (mode == 'e'):
-				GPIO.output(powerPin, 0) # blink six times
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1);
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+				blink6)
 				sleep(1)
 
 			elif (mode == 'j'):
-				GPIO.output(powerPin, 0) # blink seven times
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1);
-				GPIO.output(powerPin, 1)	
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
-				sleep(0.1)
-				GPIO.output(powerPin, 0)
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+				blink(7)
 				sleep(1)			
 			
 			elif (mode == 'a'):
 				mode = 'a'
-				GPIO.output(powerPin, 0) # blink one time
-				sleep(0.1)
-				GPIO.output(powerPin, 1)
+				blink(1)
 				sleep(1)
 			
 			try:
@@ -257,8 +158,12 @@ if __name__ == "__main__":
 			print("Command_count: ")
 			print(command_count)	
 			
-			GPIO.output(txLed, 0)
-			GPIO.output(powerPin, 0)
+#			GPIO.output(txLed, 0)
+#			GPIO.output(powerPin, 0)
+			system("gpio write 27 0")
+			system("gpio write 0 0")
+			system("gpio write 2 0")
+		
 			system("sudo systemctl stop transmit")
 #			system("sudo systemctl stop cubesatsim")
 			
