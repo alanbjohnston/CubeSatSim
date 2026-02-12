@@ -161,8 +161,8 @@ if __name__ == "__main__":
 #			GPIO.output(txLed, 0)
 #			GPIO.output(powerPin, 0)
 			system("gpio write 27 0")
-			system("gpio write 0 0")
-			system("gpio write 2 0")
+			# system("gpio write 0 0")
+			# system("gpio write 2 0")
 		
 			system("sudo systemctl stop transmit")
 #			system("sudo systemctl stop cubesatsim")
