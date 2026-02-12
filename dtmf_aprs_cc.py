@@ -130,7 +130,7 @@ if __name__ == "__main__":
 				sleep(1)
 
 			elif (mode == 'e'):
-				blink6)
+				blink(6)
 				sleep(1)
 
 			elif (mode == 'j'):
