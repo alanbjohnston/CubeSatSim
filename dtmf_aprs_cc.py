@@ -121,7 +121,7 @@ if __name__ == "__main__":
 				blink(3)
 				sleep(1)
 			
-			elif
+			elif (mode == 's'):
 				blink(4)
 				sleep(1)
 		
