@@ -106,9 +106,14 @@ if __name__ == "__main__":
 		if (debug_mode == False)  and (change_mode == True): # skip every other APRS command since Direwolf prints them twice
 			GPIO.setmode(GPIO.BCM)
 			GPIO.setwarnings(False)
-			GPIO.setup(powerPin, GPIO.OUT)
-			GPIO.setup(txLed, GPIO.OUT)
-
+			try:
+				GPIO.setup(powerPin, GPIO.OUT)
+			except:
+				print("GPIO powerPin setup problem")
+			try:
+				GPIO.setup(txLed, GPIO.OUT)
+			except:
+				print("GPIO txLed setup problem")
 			if (mode == 'f'):
 				GPIO.output(powerPin, 0) # blink two times
 				sleep(0.1)
