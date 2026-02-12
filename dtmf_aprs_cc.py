@@ -161,7 +161,7 @@ if __name__ == "__main__":
 #			GPIO.output(txLed, 0)
 #			GPIO.output(powerPin, 0)
 			system("gpio write 27 0")
-		    system("gpio write 0 1")
+			system("gpio write 0 1")
 			system("gpio write 2 1")
 		
 			system("sudo systemctl stop transmit")
