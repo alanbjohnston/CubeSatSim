@@ -469,7 +469,7 @@ if __name__ == "__main__":
 #	card = "Headphones"  # default using pcm audio output of Pi Zero
 	card = "Device" # using USB sound card for audio output	
 
-	query = ["grep", "bullseye", "/etc/os-release"] 
+	query = ["grep", "VERSION_CODENAME=bullseye", "/etc/os-release"] 
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
 		print(f"Command run was: {query}")
