@@ -178,6 +178,10 @@ def camera_photo():
 		draw.text((110, 10), telem_string, font=font2, fill='white')  # was 120
 		img.save(file)
 
+		return True
+	else:
+		return False
+
 print("CubeSatSim v2.2 transmit.py starting...")
 
 pd = 21
@@ -682,24 +686,17 @@ if __name__ == "__main__":
 			print("SSTV")
 #			command_control_check()	
 			output (ptt, 1)
-			output(pd, 1)			
-			try: 
-#				from picamera import PiCamera
-#					from pysstv.sstv import SSTV
-#				camera = PiCamera()
-				print("Testing for camera")
-				system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256")
-				f = open("/home/pi/CubeSatSim/camera_out.jpg")
-				f.close()
-				print("Camera present")
+			output(pd, 1)	
+			
+			print("Testing for camera")
+			if camera_photo():
 				camera_present = 1
-#				camera.close()
-			except:
+				print("camera present")
+			else:
+				camera_present = 0
 				print("No camera available")
 				print(" -> if camera plugged in, is software enabled?")
-				camera_present = 0
-
-#				while 1:
+				
 			try:
 				output(txLed, txLedOff)
 			except:
