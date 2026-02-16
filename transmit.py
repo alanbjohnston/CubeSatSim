@@ -134,11 +134,15 @@ def increment_mode():
 		
 def camera_photo():
 	global cam_fail
+	global os_status
 	sim_failure_check()
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
-		system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+		if os_status == "bookworm":
+			system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+		else:
+			system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
 		f = open("/home/pi/CubeSatSim/camera_out.jpg")
 		f.close()
 		print("Photo taken")
@@ -461,7 +465,7 @@ if __name__ == "__main__":
 #	card = "Headphones"  # default using pcm audio output of Pi Zero
 	card = "Device" # using USB sound card for audio output	
 
-	query = ["grep", "bookworm", "/etc/os-release"] 
+	query = ["grep", "bullseye", "/etc/os-release"] 
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
 		print(f"Command run was: {query}")
@@ -473,8 +477,8 @@ if __name__ == "__main__":
 		os_status = e.stdout.strip()
 		print(f"Output of the command (stdout): {e.stdout}")
 #		print(f"Error output of the command (stderr): {e.stderr}")
-	if os_status != "bookworm":
-		os_status = "bullseye"
+	if os_status != "bullseye":
+		os_status = "bookworm"
 	print (os_status)
 
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
