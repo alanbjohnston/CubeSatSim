@@ -461,6 +461,22 @@ if __name__ == "__main__":
 #	card = "Headphones"  # default using pcm audio output of Pi Zero
 	card = "Device" # using USB sound card for audio output	
 
+	query = ["grep", "bookworm", "/etc/os-release"] 
+	try:
+		result = subprocess.run(query, capture_output=True, text=True, check=True)
+		print(f"Command run was: {query}")
+		os_status = result.stdout.strip()
+		print(f"Output of the command (stdout): {os_status}")
+	except subprocess.CalledProcessError as e:
+#		print(f"Command failed with return code: {e.returncode}")
+		print(f"Command run was: {e.cmd}")
+		os_status = e.stdout.strip()
+		print(f"Output of the command (stdout): {e.stdout}")
+#		print(f"Error output of the command (stderr): {e.stderr}")
+	if os_status != "bookworm":
+		os_status = "bullseye"
+	print (os_status)
+
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
