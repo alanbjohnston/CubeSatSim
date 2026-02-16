@@ -481,8 +481,10 @@ if __name__ == "__main__":
 		os_status = e.stdout.strip()
 		print(f"Output of the command (stdout): {e.stdout}")
 #		print(f"Error output of the command (stderr): {e.stderr}")
-	if os_status != "bullseye":
+	if os_status != "VERSION_CODENAME=bullseye":
 		os_status = "bookworm"
+	else:
+		os_status = "bullseye"
 	print (os_status)
 
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
