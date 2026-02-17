@@ -134,11 +134,15 @@ def increment_mode():
 		
 def camera_photo():
 	global cam_fail
+	global os_status
 	sim_failure_check()
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
-		system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+		if os_status == "bookworm":
+			system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+		else:
+			system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
 		f = open("/home/pi/CubeSatSim/camera_out.jpg")
 		f.close()
 		print("Photo taken")
@@ -173,6 +177,10 @@ def camera_photo():
 		draw.text((112, 12), telem_string, font=font2, fill='black')  # was 122
 		draw.text((110, 10), telem_string, font=font2, fill='white')  # was 120
 		img.save(file)
+
+		return True
+	else:
+		return False
 
 print("CubeSatSim v2.2 transmit.py starting...")
 
@@ -461,6 +469,24 @@ if __name__ == "__main__":
 #	card = "Headphones"  # default using pcm audio output of Pi Zero
 	card = "Device" # using USB sound card for audio output	
 
+	query = ["grep", "VERSION_CODENAME=bullseye", "/etc/os-release"] 
+	try:
+		result = subprocess.run(query, capture_output=True, text=True, check=True)
+		print(f"Command run was: {query}")
+		os_status = result.stdout.strip()
+		print(f"Output of the command (stdout): {os_status}")
+	except subprocess.CalledProcessError as e:
+#		print(f"Command failed with return code: {e.returncode}")
+		print(f"Command run was: {e.cmd}")
+		os_status = e.stdout.strip()
+		print(f"Output of the command (stdout): {e.stdout}")
+#		print(f"Error output of the command (stderr): {e.stderr}")
+	if os_status != "VERSION_CODENAME=bullseye":
+		os_status = "bookworm"
+	else:
+		os_status = "bullseye"
+	print (os_status)
+
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
@@ -662,24 +688,17 @@ if __name__ == "__main__":
 			print("SSTV")
 #			command_control_check()	
 			output (ptt, 1)
-			output(pd, 1)			
-			try: 
-#				from picamera import PiCamera
-#					from pysstv.sstv import SSTV
-#				camera = PiCamera()
-				print("Testing for camera")
-				system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256")
-				f = open("/home/pi/CubeSatSim/camera_out.jpg")
-				f.close()
-				print("Camera present")
+			output(pd, 1)	
+			
+			print("Testing for camera")
+			if camera_photo():
 				camera_present = 1
-#				camera.close()
-			except:
+				print("camera present")
+			else:
+				camera_present = 0
 				print("No camera available")
 				print(" -> if camera plugged in, is software enabled?")
-				camera_present = 0
-
-#				while 1:
+				
 			try:
 				output(txLed, txLedOff)
 			except:
