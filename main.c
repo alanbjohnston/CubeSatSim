@@ -325,7 +325,7 @@ int main(int argc, char * argv[]) {
 
   FILE * os_test = popen("cat /etc/os-release", "r");
   fgets(cmdbuffer, 1000, os_test);
-  printf("os-release: %s\n" cmdbuffer);
+  printf("os-release: %s\n", cmdbuffer);
   char os_present[] = "bookworm";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? ON : OFF;	
