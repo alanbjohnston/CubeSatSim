@@ -322,17 +322,36 @@ int main(int argc, char * argv[]) {
   } else {
       snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
   }
- 
-	
-  // check for camera	
-//  char cmdbuffer1[1000];
-  FILE * file4 = popen("vcgencmd get_camera", "r");
-  fgets(cmdbuffer, 1000, file4);
-  char camera_present[] = "supported=1 detected=1";
+
+  FILE * os_test = popen("cat /etc/os-release", "r");
+  fgets(cmdbuffer, 1000, os_test);
+  printf("os-release: %s\n", cmdbuffer);
+  char os_present[] = "bookworm";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
-  camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
-  printf("Camera result:%s camera: %d \n", & cmdbuffer, camera);
-  pclose(file4);
+  int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? ON : OFF;	
+  printf("os_status: %d\n", os_status);
+  pclose(os_test);
+
+  // check for camera	
+  FILE *cam_test;
+  if (os_status == ON) {  // bookworm
+ 	  cam_test = popen("sudo rpicam-hello --list-cameras | grep 'No cameras available!'", "r");
+	  fgets(cmdbuffer, 1000, cam_test);
+	  char no_camera_present[] = "No cameras available!";
+	  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+	  camera = (strstr( (const char *)& cmdbuffer, no_camera_present) != NULL) ? OFF : ON;
+  }
+  else  // bullseye
+  {
+	  cam_test = popen("vcgencmd get_camera", "r");
+	  fgets(cmdbuffer, 1000, cam_test);
+	  char camera_present[] = "supported=1 detected=1";
+	  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+	  camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
+  }
+	
+  printf("Camera result: %s camera: %d \n", & cmdbuffer, camera);
+  pclose(cam_test);
 
   #ifdef DEBUG_LOGGING
   printf("INFO: I2C bus status 0: %d 1: %d 3: %d camera: %d\n", i2c_bus0, i2c_bus1, i2c_bus3, camera);
