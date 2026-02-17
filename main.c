@@ -329,8 +329,8 @@ int main(int argc, char * argv[]) {
   char os_present[] = "bookworm";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? ON : OFF;	
-  printf(os_status);
-  pclose (os_test);
+  printf("os_status: %d\n", os_status);
+  pclose(os_test);
 	
   // check for camera	
 //  char cmdbuffer1[1000];
