@@ -350,7 +350,7 @@ int main(int argc, char * argv[]) {
 	  camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
   }
 	
-  printf("Camera result:%s camera: %d \n", & cmdbuffer, camera);
+  printf("Camera result: %s camera: %d \n", & cmdbuffer, camera);
   pclose(cam_test);
 
   #ifdef DEBUG_LOGGING
