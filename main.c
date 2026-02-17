@@ -322,7 +322,14 @@ int main(int argc, char * argv[]) {
   } else {
       snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
   }
- 
+
+  FILE * file4 = popen("cat /etc/os-release", "r");
+  fgets(cmdbuffer, 1000, file4);
+  printf("os-release: %s\n", cmdbuffer);
+  char os_present[] = "bookworm";
+  // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
+  int os_status = (strstr( (const char *)& cmdbuffer, os_present) != NULL) ? ON : OFF;	
+  printf(os_status);	
 	
   // check for camera	
 //  char cmdbuffer1[1000];
@@ -331,6 +338,8 @@ int main(int argc, char * argv[]) {
   char camera_present[] = "supported=1 detected=1";
   // printf("strstr: %s \n", strstr( & cmdbuffer1, camera_present));
   camera = (strstr( (const char *)& cmdbuffer, camera_present) != NULL) ? ON : OFF;
+
+	
   printf("Camera result:%s camera: %d \n", & cmdbuffer, camera);
   pclose(file4);
 
