@@ -194,17 +194,17 @@ powerPin = 16
 command_tx = True
 
 try:
+	system("gpio -g write " + str(powerPin) + " 1")
 	GPIO.setmode(GPIO.BCM)
 	GPIO.setwarnings(False)
 	GPIO.setup(13, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.setup(12, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.setup(txc_pin, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 	GPIO.setup(green, GPIO.OUT)
-	system("gpio -g write " + str(powerPin) + " 1")
 	GPIO.setup(27, GPIO.IN)
 except:
-	print("gpio -g setup problem")
-	system("gpio -g -g mode 27 IN")
+	print("gpio setup problem")
+	system("gpio -g mode 27 IN")
 try:	
 	GPIO.setup(27, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 except:
