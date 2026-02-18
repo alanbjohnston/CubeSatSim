@@ -114,6 +114,7 @@ if [ "$choice" != "4" ] && [ "$frequency" != "SSTV" ]; then
 
 #echo $frequency
 
+echo
 echo "Testing for FM TXC"
 
 gpio -g mode 7 up
@@ -133,7 +134,7 @@ if [[ $(grep "0" out.txt) ]] ; then
       gpio -g write 21 1
 
       echo
-      echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 - USB Audio Device' then OK"
+      echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 - USB Audio Device' then OK."
       echo
       sleep 10
   else
