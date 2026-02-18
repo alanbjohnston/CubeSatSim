@@ -131,9 +131,11 @@ if [[ $(grep "0" out.txt) ]] ; then
       gpio -g write 20 1
       gpio -g mode 21 out  # set PD high
       gpio -g write 21 1
-      
+
+      echo
       echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 - USB Audio Device' then OK"
-      sleep 5
+      echo
+      sleep 10
   else
       echo "No USB Sound Card present - need to plug it in."
   fi
@@ -200,7 +202,7 @@ rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t r
 
 rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
 
-sleep 5
+sleep 15
 
 fi
 
