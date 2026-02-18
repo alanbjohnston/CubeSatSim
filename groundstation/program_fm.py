@@ -1,5 +1,6 @@
 import serial	
 from os import system
+import sys
 
 if __name__ == "__main__":
 	txf = 434.9
