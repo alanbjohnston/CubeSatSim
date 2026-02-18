@@ -189,6 +189,8 @@ echo
 
   else  
 
+  	echo "RTL-SDR detected!"
+
    # direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
     setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf  &
   
