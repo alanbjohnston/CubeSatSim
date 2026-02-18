@@ -159,8 +159,10 @@ echo
 
   echo -e "Auto decoding APRS packets on $frequency Hz"
 
-  timeout 1 rtl_test &> out.txt
+  timeout 2 rtl_test &> out.txt
+  sleep 1
   sudo pkill -9 rtl_test
+  sleep 1
   if [[ $(grep "No supported" out.txt) ]] || [[ $(grep "Failed to open" out.txt) ]] ; then
 
     echo "No RTL-SDR detected.  Trying FM TXC"
@@ -173,6 +175,8 @@ echo
     	echo "FM TXC detected"
 
       if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+
+          echo "USB Sound Card is present"
 
           gpio -g mode 20 out  # set PTT high
           gpio -g write 20 1
