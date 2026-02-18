@@ -161,7 +161,7 @@ echo
 
   timeout 1 rtl_test &> out.txt
   sudo pkill -9 rtl_test
-  if [[ $(grep "No supported" out.txt) ]] ; then
+  if [[ $(grep "No supported" out.txt) ]] || [[ $(grep "Failed to open" out.txt) ]] ; then
 
     echo "No RTL-SDR detected.  Trying FM TXC"
 
