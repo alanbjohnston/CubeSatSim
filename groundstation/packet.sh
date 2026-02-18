@@ -157,41 +157,75 @@ echo
 
   echo -e "Auto decoding APRS packets on $frequency Hz"
 
- # direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
-  setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf  &
+	timeout 1 rtl_test &> out.txt
+  if [[ $(grep "No supported" out.txt) ]] ; then
 
-#fi
+    echo "No RTL-SDR detected.  Trying FM TXC"
 
-#sleep 5
+    gpio -g mode 7 up
+    gpio -g read 7 > out.txt
+    
+    if [[ $(grep "0" out.txt) ]] ; then
+    
+    	echo "FM TXC detected"
 
-if [ "$autotune" = "1" ]; then
-  threshold=1
-  delay=1
-  retries=30
+      if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
 
-  echo "Starting Auto-tune scanning"
-  echo "Scan will stop when confidence exceeds threshold value of " $threshold " or after " $retries " retries"
-  tries=0
-  confidence=0
-  while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+          gpio -g mode 20 out  # set PTT high
+          gpio -g write 20 1
+          gpio -g mode 21 out  # set PD high
+          gpio -g write 21 1
+          
+          setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14-device.conf  &
+      else
+          echo "No USB Sound Card present - need to plug it in."
 
-#    sleep $delay
-    source /home/pi/venv/bin/activate
-    python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-    # echo "auto-tune.txt"
-    # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
-    confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune confidence: " $confidence
-    tries=$((tries+1))
+      fi
+    
+    else
+    
+    	echo "FM TXC not detected"
+    fi
 
-  done
+  else  
+
+   # direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
+    setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf  &
   
-  if [ "$confidence" -gt "$threshold" ]; then
-    frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune frequency: " $frequency
-  else
-    echo "Auto tune failed, frequency unchanged"
+  #fi
+  
+  #sleep 5
+  
+  if [ "$autotune" = "1" ]; then
+    threshold=1
+    delay=1
+    retries=30
+  
+    echo "Starting Auto-tune scanning"
+    echo "Scan will stop when confidence exceeds threshold value of " $threshold " or after " $retries " retries"
+    tries=0
+    confidence=0
+    while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+  
+  #    sleep $delay
+      source /home/pi/venv/bin/activate
+      python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+      # echo "auto-tune.txt"
+      # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+      confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+      echo "Auto tune confidence: " $confidence
+      tries=$((tries+1))
+  
+    done
+    
+    if [ "$confidence" -gt "$threshold" ]; then
+      frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+      echo "Auto tune frequency: " $frequency
+    else
+      echo "Auto tune failed, frequency unchanged"
+    fi
   fi
+
   echo
   echo "If your CubeSatSim is transmitting in APRS mode (mode 1) then you should see packets."
   echo
