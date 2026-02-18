@@ -114,6 +114,31 @@ if [ "$choice" != "4" ] && [ "$frequency" != "SSTV" ]; then
 
 #echo $frequency
 
+echo "Testing for FM TXC"
+
+gpio -g mode 7 up
+gpio -g read 7 > out.txt
+
+if [[ $(grep "0" out.txt) ]] ; then
+
+  echo "FM TXC detected"
+
+  if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+
+      echo "USB Sound Card is present"
+
+      gpio -g mode 20 out  # set PTT high
+      gpio -g write 20 1
+      gpio -g mode 21 out  # set PD high
+      gpio -g write 21 1
+      
+      echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 - USB Audio Device' then OK"
+      sleep 5
+  else
+      echo "No USB Sound Card present - need to plug it in."
+  fi
+fi
+
 echo
 
 echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
