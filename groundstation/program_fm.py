@@ -7,7 +7,7 @@ if __name__ == "__main__":
 	if (len(sys.argv)) > 1:
 		print("There are arguments!")
 		txf = float(sys.argv[1])
-    if (len(sys.argv)) > 2:
+	if (len(sys.argv)) > 2:
 		rxf = loat(sys.argv[2])
 		print("Programming FM module!\n")
 	tx = "{:.4f}".format(txf)
