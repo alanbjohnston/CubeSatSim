@@ -5,7 +5,7 @@ if __name__ == "__main__":
 	txf = 434.9
 	rxf = 435
 	if (len(sys.argv)) > 1:
-    	print("There are arguments!")
+		print("There are arguments!")
 		txf = float(sys.argv[1])
     if (len(sys.argv)) > 2:
 		rxf = loat(sys.argv[2])
@@ -14,8 +14,6 @@ if __name__ == "__main__":
 	rx = "{:.4f}".format(rxf)
 	print(tx)
 	print(rx)
-		output(pd, 1)
-		output (ptt, 1)
 
 	system("gpio -g mode 20 out")
 	system("gpio -g write 20 1")
