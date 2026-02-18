@@ -192,6 +192,11 @@ echo
     else
     
     	echo "FM TXC not detected"
+
+      sleep 10
+      
+      exit
+      
     fi
 
   else  
