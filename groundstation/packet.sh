@@ -183,7 +183,7 @@ echo
           gpio -g mode 21 out  # set PD high
           gpio -g write 21 1
           
-          setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14-device.conf  &
+          setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14-device.conf 
       else
           echo "No USB Sound Card present - need to plug it in."
 
