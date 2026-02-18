@@ -157,7 +157,8 @@ echo
 
   echo -e "Auto decoding APRS packets on $frequency Hz"
 
-	timeout 1 rtl_test &> out.txt
+  timeout 1 rtl_test &> out.txt
+  sudo pkill -9 rtl_test
   if [[ $(grep "No supported" out.txt) ]] ; then
 
     echo "No RTL-SDR detected.  Trying FM TXC"
