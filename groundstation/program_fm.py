@@ -13,8 +13,8 @@ if __name__ == "__main__":
 		print("There are more arguments!")
 		rxf = float(sys.argv[2])
 	print("Programming FM module!\n")
-	tx = "{:.4f}".format(txf/e6)
-	rx = "{:.4f}".format(rxf/e6)
+	tx = "{:.4f}".format(txf/1e6)
+	rx = "{:.4f}".format(rxf/1e6)
 	print(f"Transmit frequency: {tx}")
 	print(f"Receive frequency: {rx}")
 
