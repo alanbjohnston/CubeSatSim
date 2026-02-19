@@ -4,8 +4,8 @@ import sys
 from time import sleep
 
 if __name__ == "__main__":
-	txf = 434.9
-	rxf = 435
+	txf = 434.9e6
+	rxf = 435e6
 	if (len(sys.argv)) > 1:
 		print("There are arguments!")
 		txf = float(sys.argv[1])
@@ -13,8 +13,8 @@ if __name__ == "__main__":
 		print("There are more arguments!")
 		rxf = float(sys.argv[2])
 	print("Programming FM module!\n")
-	tx = "{:.4f}".format(txf/1000000.0)
-	rx = "{:.4f}".format(rxf/1000000.0)
+	tx = "{:.4f}".format(txf/e6)
+	rx = "{:.4f}".format(rxf/e6)
 	print(f"Transmit frequency: {tx}")
 	print(f"Receive frequency: {rx}")
 
