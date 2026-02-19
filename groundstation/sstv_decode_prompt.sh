@@ -134,7 +134,8 @@ if [[ $(grep "0" out.txt) ]] ; then
       gpio -g write 21 1
 
       echo
-      echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 - USB Audio Device' then OK."
+      echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 -- USB Audio Device' then OK then click Play (triangle icon)."
+      echo "If you want to use the RTL-SDR as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Loopback,DEV=1 -- Loopback, Loopback PCM' then OKthen click Play (triangle icon)."
       echo
       sleep 10
 
@@ -169,6 +170,7 @@ if [[ $(grep "No supported" out.txt) ]] || [[ $(grep "Failed to open" out.txt) ]
   
 else  
 
+  echo
   echo "RTL-SDR detected."
 
   echo
