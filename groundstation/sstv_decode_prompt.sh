@@ -166,52 +166,64 @@ setsid qsstv &
 
 #sleep 5
 
-if [ "$autotune" = "1" ]; then
-  threshold=1
-  delay=5
-  retries=5
+timeout 2 rtl_test &> out.txt
+sleep 1
+sudo pkill -9 rtl_test
+sleep 1
+if [[ $(grep "No supported" out.txt) ]] || [[ $(grep "Failed to open" out.txt) ]] ; then
 
-  echo "Starting Auto-tune scanning"
-  echo "Scan will stop when confidence exceeds threshold value of" $threshold "or after" $retries "retries"
-  tries=0
-  confidence=0
-  delay=$((delay-2))  # subtract 2 second built in delay
-  while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
-
-    sleep $delay
-    source /home/pi/venv/bin/activate
-    python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
-    # echo "auto-tune.txt"
-    # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
-    confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune confidence:" $confidence
-    tries=$((tries+1))
-
-  done
+  echo "No RTL-SDR detected."
+else  
+  echo "RTL-SDR detected."
   
-  if [ "$confidence" -gt "$threshold" ]; then
-    frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
-    echo "Auto tune frequency:" $frequency
-  else
-    echo "Auto tune failed, frequency unchanged"
+  if [ "$autotune" = "1" ]; then
+    threshold=1
+    delay=5
+    retries=5
+  
+    echo "Starting Auto-tune scanning"
+    echo "Scan will stop when confidence exceeds threshold value of" $threshold "or after" $retries "retries"
+    tries=0
+    confidence=0
+    delay=$((delay-2))  # subtract 2 second built in delay
+    while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+  
+      sleep $delay
+      source /home/pi/venv/bin/activate
+      python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+      # echo "auto-tune.txt"
+      # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+      confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+      echo "Auto tune confidence:" $confidence
+      tries=$((tries+1))
+  
+    done
+    
+    if [ "$confidence" -gt "$threshold" ]; then
+      frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+      echo "Auto tune frequency:" $frequency
+    else
+      echo "Auto tune failed, frequency unchanged"
+    fi
+    echo
+    echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
+    echo
+  
   fi
-  echo
-  echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
-  echo
-
+  
+  #sudo systemctl restart cubesatsim
+  
+  value=`aplay -l | grep "Loopback"`
+  echo "$value" > /dev/null
+  set -- $value
+  
+  #rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 
+  #rtl_fm -M fm -f 434.9M -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
+  rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
+  
+  rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
+  
 fi
-
-#sudo systemctl restart cubesatsim
-
-value=`aplay -l | grep "Loopback"`
-echo "$value" > /dev/null
-set -- $value
-
-#rtl_fm -M fm -f 434.9M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 
-#rtl_fm -M fm -f 434.9M -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -D hw:0,0 -r 48000 -t raw -f S16_LE -c 1
-rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
-
-rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
 
 sleep 15
 
