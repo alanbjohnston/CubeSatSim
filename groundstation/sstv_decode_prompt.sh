@@ -152,14 +152,6 @@ if [[ $(grep "0" out.txt) ]] ; then
   fi
 fi
 
-echo
-
-echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
-
-echo
-
-echo -e "Auto decoding SSTV on $frequency Hz"
-
 #sleep 2
 
 setsid qsstv &
@@ -175,6 +167,14 @@ if [[ $(grep "No supported" out.txt) ]] || [[ $(grep "Failed to open" out.txt) ]
   echo "No RTL-SDR detected."
 else  
   echo "RTL-SDR detected."
+
+  echo
+
+  echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
+
+  echo
+
+  echo -e "Auto decoding SSTV on $frequency Hz"
   
   if [ "$autotune" = "1" ]; then
     threshold=1
