@@ -182,6 +182,15 @@ echo
           gpio -g write 20 1
           gpio -g mode 21 out  # set PD high
           gpio -g write 21 1
+
+          if [ "$frequency" -gt "450000000" ] || [ "$frequency" -lt "420000000" ] ; then
+
+            echo "Frequency is outside 420 - 450 MHz supported by FM TXC!"
+            echo "Using default frequency of 434.9 MHz"
+            frequency=434900000
+          fi
+
+          python3 /home/pi/CubeSatSim/groundstation/program_fm.py 434900000 $frequency
           
           setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14-device.conf 
       else
