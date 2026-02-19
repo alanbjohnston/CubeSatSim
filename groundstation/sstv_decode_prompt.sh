@@ -164,8 +164,11 @@ sudo pkill -9 rtl_test
 sleep 1
 if [[ $(grep "No supported" out.txt) ]] || [[ $(grep "Failed to open" out.txt) ]] ; then
 
+  echo
   echo "No RTL-SDR detected."
+  
 else  
+
   echo "RTL-SDR detected."
 
   echo
