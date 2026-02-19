@@ -137,6 +137,16 @@ if [[ $(grep "0" out.txt) ]] ; then
       echo "If you want to use the FM TXC as your receiver, go under Options/Configuration/Sound and for Input Audio Device select 'hw:CARD=Device,DEV=0 - USB Audio Device' then OK."
       echo
       sleep 10
+
+      if [ "$frequency" -gt "450000000" ] || [ "$frequency" -lt "420000000" ] ; then
+
+        echo "Frequency is outside 420 - 450 MHz supported by FM TXC!"
+        echo "Not setting the frequency"
+#        frequency=434900000
+      else
+        python3 /home/pi/CubeSatSim/groundstation/program_fm.py 434900000 $frequency
+      fi
+
   else
       echo "No USB Sound Card present - need to plug it in."
   fi
