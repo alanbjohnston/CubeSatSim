@@ -238,8 +238,6 @@ output(powerPin, 1)
 
 transmit = False
 txLed = 27
-1 = 1 
-0 = 0
 if input(12) == False:
 	print("LPF present")
 	transmit = True
