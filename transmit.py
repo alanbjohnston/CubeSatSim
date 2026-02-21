@@ -227,8 +227,8 @@ powerPin = 16
 
 command_tx = True
 
-GPIO.setmode(GPIO.BCM)
-GPIO.setwarnings(False)
+# GPIO.setmode(GPIO.BCM)
+# GPIO.setwarnings(False)
 setup(13, "up")
 setup(12, "up")
 setup(27, "up")
