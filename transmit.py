@@ -38,7 +38,7 @@ def setup(pin, config):
 	if config == "in" or config == "out" or config == "up" or config == "down":
 		command = "gpio -g mode " + str(powerPin) + " " + config
 		system(command)
-	else
+	else:
 		print(f"Unknown GPIO setup configuration: {config}")
 
 def blink(times):
