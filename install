@@ -3,13 +3,8 @@
 FLAG=0
 checkout=0
 
-if [ ! -d "/home/pi/CubeSatSim" ]; then
-
-	echo -e "\nInstallation script for CubeSatSim v2.2\n"
-
-	touch /home/pi/CubeSatSim/command_control_direwolf
-
-else
+FILE=/home/pi/CubeSatSim/cubesatsim  # code has already been compiled
+if [ -f "$FILE" ]; then
 
 	echo -e "\nUpdate script for CubeSatSim v2.2\n"
 
@@ -29,9 +24,19 @@ else
 		noreboot=0
 	fi
 
+else
+
+	echo -e "\nInstallation script for CubeSatSim v2.2\n"
+
+	touch /home/pi/CubeSatSim/command_control_direwolf
+
+	/home/piCubeSatSim/config -c -n
+
+	/home/piCubeSatSim/config -l -n
+
 fi
 
- if [[ $(grep '11.' /etc/debian_version) ]]; then
+if [[ $(grep '11.' /etc/debian_version) ]]; then
     echo "Installing on Debian 11 (Bullseye)"
 
   	sudo cp /boot/config.txt /boot/config.txt.0
@@ -308,7 +313,6 @@ else
     echo "creating $FILE"
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
-
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
@@ -321,34 +325,21 @@ sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev l
 
 if [ ! -d "/home/pi/direwolf" ]; then
 
-	cd
-	
+	cd	
 	git clone https://github.com/alanbjohnston/direwolf.git
-	
-	cd direwolf
-	
+	cd direwolf	
 	make -j
-	
-	sudo make install
-	
+	sudo make install	
 	make install-rpi
-	
+fi
+
 	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
-	
 	sudo systemctl disable gpsd
 	sudo systemctl disable gpsd.socket
-fi
 
 if [ ! -d "/home/pi/WiringPi" ]; then
 
-	cd /tmp
-	
-	# wget https://project-downloads.drogon.net/wiringpi-latest.deb
-	
-	# sudo dpkg -i wiringpi-latest.deb
-	
 	cd
-	
 	git clone https://github.com/alanbjohnston/WiringPi
 	cd WiringPi
 	./build debian
@@ -368,9 +359,17 @@ sudo pip3 install --upgrade setuptools
 
 sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
 
-cd ~/CubeSatSim
+cd /home/pi/CubeSatSim
 
-git pull --no-rebase
+git pull --no-rebase > .updated
+
+if [ $checkout -eq 1 ]; then
+	git checkout $branch	
+	git pull --no-rebase > .updated
+	FLAG=1
+	echo "Running update script again"
+	/home/pi/CubeSatSim/install
+fi
 
 make debug
 
@@ -382,81 +381,133 @@ else
     echo "b" > .mode
 fi
 
-cd
+if [ ! -d "/home/pi/pi-power-button" ]; then
 
-git clone https://github.com/alanbjohnston/pi-power-button.git
+	cd
+	git clone https://github.com/alanbjohnston/pi-power-button.git
+	cd pi-power-button
+	git checkout master
+	./script/install	
+	sudo apt-get install -y libraspberrypi-dev
 
-cd pi-power-button
+fi
 
+cd /home/pi/pi-power-button
+
+git pull --no-rebase > .updated_p
 git checkout master
+grep 'changed' /home/pi/pi-power-button/.updated_p
+if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
 
-./script/install
-
-sudo apt-get install -y libraspberrypi-dev
-
-cd
-
-echo "Installing SSDV for FUNcube mode"
-git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FUNcube images
-cd ssdv
-make
-cd
-
-echo "Installing fctelem binary v0.2 for FUNcube mode"
-mkdir /home/pi/fctelem
-mkdir /home/pi/fctelem/public_html
-cd fctelem
-wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
-unzip -u fctelem.zip
-
-cd
-echo "Installing fcdctl to set FUNcubeDongle Pro gain"
-# sudo rm /var/lib/dpkg/info/python3-pip.list
-# sudo apt install python3-pip --reinstall
-# sudo apt-get install -y python3-smbus libusb-1.0
-cd
-git clone https://github.com/csete/fcdctl.git
-cd fcdctl
-make fcdpp
+	echo "updating pi-power-button."
+	script/install
+	FLAG=1
+fi
 
 cd
 
-git clone https://github.com/alanbjohnston/PiSSTVpp.git
+if [ ! -d "/home/pi/PiSSTVpp" ]; then
 
-cd PiSSTVpp
+  sudo apt-get update -y
+  sudo apt-get install -y python-picamera python3-picamera build-essential libgd-dev libmagic-dev
+  cd
+  git clone https://github.com/alanbjohnston/PiSSTVpp.git
+  cd PiSSTVpp
+  make pisstvpp
 
-make pisstvpp
+fi
 
-echo "Copying SSTV image 1"
-cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+if [ ! -d "/home/pi/rpitx" ]; then
 
-echo "Copying SSTV image 2"
-cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+	cd
+	git clone https://github.com/alanbjohnston/rpitx.git
+	cd rpitx
+	./install.sh
+	cd
+else
 
-cd
+	if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
+	    echo "rpitx library already updated"
+	else
+	    echo "updating rpitx"
+	    cd  /home/pi/rpitx
+	    git pull
+	    ./update.sh
+	    cd
+	fi
+fi
 
-git clone https://github.com/alanbjohnston/rpitx.git
+if [[ $(diff systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
+  echo "changed cubesatsim.service."
+  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+  FLAG=1
+else
+  echo "no changes to cubesatsim.service."
+fi
 
-cd rpitx
+FILE=/etc/systemd/system/rpitx.service
+if [ -f "$FILE" ]; then
+  sudo systemctl disable rpitx
+  sudo rm /etc/systemd/system/rpitx.service
+fi
 
-./install.sh
+FILE=/etc/systemd/system/transmit.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff systemd/transmit.service /etc/systemd/system/transmit.service) ]]; then
+    echo "changed transmit.service."
+    sudo cp /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
+    FLAG=1
+  else
+    echo "no change to transmit.service."
+  fi
+else
+  echo "creating transmit.service."
+  sudo cp /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
+  FLAG=1
+fi
 
-cd
+FILE=/etc/systemd/system/command.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff systemd/command.service /etc/systemd/system/command.service) ]]; then
+    echo "changed command.service."
+    sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+    FLAG=1
+  else
+    echo "no change to command.service."
+  fi
+else
+  echo "creating command.service."
+  sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  sudo systemctl enable command
+  FLAG=1
+fi
 
-sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+FILE=/etc/asound.conf
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
+    echo "changed /etc/asound.conf."
+    sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+    FLAG=1
+  else
+    echo "no change to /etc/asound.conf."
+  fi
+else
+  echo "creating /etc/asound.conf."
+  sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+  FLAG=1
+fi
 
-sudo systemctl enable cubesatsim
-
-sudo cp ~/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
-
-# sudo systemctl enable transmit
-
-sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
-
-sudo systemctl enable command
-
-sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
-
+FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+if [ ! -f "$FILE" ]; then
+    echo "Copying SSTV image 1."
+    cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+fi
+    
+FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+if [ ! -f "$FILE" ]; then
+    echo "Copying SSTV image 2."
+    cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+fi
 
 sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
 
@@ -490,48 +541,133 @@ if [ $changed -eq 1 ]; then
 	echo
 fi
 
-echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
-sudo apt-get install -y libi2c-dev
-cd
-git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
-cd MPU6050-C-CPP-Library-for-Raspberry-Pi
-sudo make install
-make payload
+if [ ! -d "/home/pi/fctelem" ]; then
+	echo "Installing fctelem binary v0.2 for FUNcube mode"
+	cd
+	mkdir /home/pi/fctelem
+	mkdir /home/pi/fctelem/public_html
+	cd fctelem
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip -u fctelem.zip
+	FLAG=1
+elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
+	echo "Updating fctelem binary to version v0.2 for FUNcube mode"
+	cd
+	cd /home/pi/fctelem
+	sudo mv fctelem fctelem.bk
+	sudo mv fcdecode.conf fcdecode.conf.bk
+	sudo mv fctelem.zip fctelem.zip.1
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip -u fctelem.zip
+	FLAG=1
+fi
 
-echo "Installing raspberry-pi-bme280"
-sudo apt-get install -y libi2c-dev
-cd
-git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
-cd raspberry-pi-bme280
+if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050" ]; then
+	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
+	sudo apt-get install -y libi2c-dev
+	cd
+	git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
+	sudo make install
+	make payload
+fi
+
+cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
+git checkout master
+git pull --no-rebase > .updated_p
+
+if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
+	echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
+	sudo make install
+	make payload
+else
+	echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
+fi 
+
+if [ ! -f "/home/pi/raspberry-pi-bme280/bme280" ]; then
+	echo "Installing raspberry-pi-bme280"
+	sudo apt-get install -y libi2c-dev
+	cd
+	git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
+	cd raspberry-pi-bme280
+	git checkout payload
+	make 
+fi
+
+cd /home/pi/raspberry-pi-bme280
 git checkout payload
-make 
+git pull --no-rebase > .updated_p
 
-cd
-sudo apt install python3-venv
-sudo python3 -m venv venv
-source /home/pi/venv/bin/activate
+if [[ $(grep 'changed' /home/pi/raspberry-pi-bme280/.updated_p) ]]; then
 
-curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
-
-sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
-sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
-
-cd
-
-CubeSatSim/config -c -n
-
-CubeSatSim/config -l -n
-
-echo "Would you like to reboot to complete the installation (y/n)?"
-
-read -r ANS
-
-if [ "$ANS" = "y" ]; then
-
-    sudo reboot now
+	echo "updating raspberry-pi-bme280"
+	make
 
 else
+	echo "nothing to do for raspberry-pi-bme280."
+fi 
 
-    echo "The CubeSatSim software will start next time you reboot"
+if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
+	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
+	sudo rm /var/lib/dpkg/info/python3-pip.list
+	sudo apt install python3-pip --reinstall
+	sudo apt-get install -y python3-smbus libusb-1.0 
+	cd
+	git clone https://github.com/csete/fcdctl.git
+	cd fcdctl
+	make fcdpp
+fi
+
+
+if [ ! -d "/home/pi/venv" ]; then
+
+	cd
+	sudo apt install python3-venv
+	sudo python3 -m venv venv
+	source /home/pi/venv/bin/activate
+	
+	curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
+	
+	sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
+	sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
+
+fi
+
+cd
+
+#echo "Would you like to reboot to complete the installation (y/n)?"
+
+#read -r ANS
+
+#if [ "$ANS" = "y" ]; then
+
+#    sudo reboot now
+
+#else
+
+ #   echo "The CubeSatSim software will start next time you reboot"
     
+#fi
+
+if [ "$noreboot" = "0" ] ; then  
+
+	if [ $FLAG -eq 1 ]; then
+	  echo "systemctl daemon-reload and reboot"
+	  sudo systemctl daemon-reload 
+	  sudo reboot -h now
+#  sudo  cubesatsim
+	else
+	  grep 'changed' /home/pi/CubeSatSim/.updated
+	  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
+	    echo "reboot due to code changes " | wall
+	    sudo reboot -h now
+#    sudo  cubesatsim
+	  else
+	    echo "nothing to do."
+	  fi  
+	fi
+else
+	if [ $FLAG -eq 1 ]; then
+		echo "reboot needed for changes to take effect" | wall
+	fi
 fi
