@@ -26,13 +26,13 @@ def input(pin):
 		print(f"Command run was: {query}")
 		print("Sucess!")
 		print(f"Output of the command (stdout): {result}")
-		return result
+		return int(result)
 	except subprocess.CalledProcessError as e:
 		print(f"Command failed with return code: {e.returncode}")
 		print(f"Command run was: {e.cmd}")
 		print(f"Output of the command (stdout): {e.stdout}")
 		print(f"Error output of the command (stderr): {e.stderr}")
-		return 0
+		return -1
 
 def setup(pin, config):
 	if config == "in" or config == "out" or config == "up" or config == "down":
