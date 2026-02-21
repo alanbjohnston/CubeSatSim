@@ -1,6 +1,35 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v2.2\n"
+FLAG=0
+checkout=0
+
+if [ ! -d "/home/pi/CubeSatSim" ]; then
+
+	echo -e "\nInstallation script for CubeSatSim v2.2\n"
+
+	touch /home/pi/CubeSatSim/command_control_direwolf
+
+else
+
+	echo -e "\nUpdate script for CubeSatSim v2.2\n"
+
+	if [ -z "$1" ] ; then
+		checkout=0
+	else
+		checkout=1
+		branch="$1"
+		echo -n "changing to branch "
+		echo $branch
+		FLAG=1
+	fi
+	
+	if [ "$2" = "n" ] ; then
+		noreboot=1
+	else
+		noreboot=0
+	fi
+
+fi
 
  if [[ $(grep '11.' /etc/debian_version) ]]; then
     echo "Installing on Debian 11 (Bullseye)"
@@ -9,19 +38,12 @@ echo -e "\ninstallation script for CubeSatSim v2.2\n"
 
 	  sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
 	
-	
 	  sudo raspi-config nonint do_i2c 0
 	
 	  sudo raspi-config nonint do_camera 0
 	
 	  sudo raspi-config nonint do_legacy 0
-	
-	#if [ "$1" = "u" ]; then
-	#fi
-	
-	##  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 	  
-	
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 	
 	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
@@ -112,19 +134,12 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	
 	sudo cp /boot/firmware/cmdline.txt /boot/firmware/cmdline.txt.0
 	
-	
 	sudo raspi-config nonint do_i2c 0
 	
 	sudo raspi-config nonint do_camera 0
 	
 	sudo raspi-config nonint do_legacy 0
 	
-	#if [ "$1" = "u" ]; then
-	#fi
-	
-	##  sudo sed -i 's/console=serial0,115200 //g' /boot/firmware/cmdline.txt
-  
-
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/firmware/cmdline.txt
 	
 	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
@@ -214,8 +229,10 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 
 	  sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
 
-else
-	echo "Your Pi OS version is not Bookworm."
+elif [[ $(grep 'trixie' /etc/os-release) ]]; then
+
+	echo "Trixie detected, installation continuing."
+	echo "Your Pi OS version is not Bookworm or Bullseye."
 	echo "The software installation will likely not work."
 	echo "See the README.md for how to install using Bookworm."
 	echo
@@ -232,9 +249,41 @@ fi
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
+
+	changed=0
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	# echo "$value"
+	echo "$value" > /dev/null
+	set -- $value
+	
+	if [ -z "$1" ] ; then n1="AMSAT" ; changed=1 ; else n1=$1 ; fi # callsign
+	if [ -z "$2" ] ; then n2="0" ; changed=1 ; else n2=$2 ; fi # reset count
+	if [ -z "$3" ] ; then n3="0" ; changed=1 ; else n3=$3 ; fi # lat
+	if [ -z "$4" ] ; then n4="0" ; changed=1 ; else n4=$4 ; fi # lon
+	if [ -z "$5" ] ; then n5="no" ; changed=1 ; else n5=$5 ; fi # sim mode
+	if [ -z "$6" ] ; then n6="3" ; changed=1 ; else n6=$6 ; fi # squelch
+	if [ -z "$7" ] ; then n7="434.9000" ; changed=1 ; else n7=$7 ; fi # transmit frequency
+	if [ -z "$8" ] ; then n8="435.0000" ; changed=1 ; else n8=$8 ; fi # receive frequency
+	if [ -z "$9" ] ; then n9="no" ; changed=1 ; else n9=$9 ; fi # hab mode
+	if [ -z "${10}" ] ; then m1="0" ; changed=1 ; else m1=${10} ; fi # rx pl code 
+	if [ -z "${11}" ] ; then m2="0" ; changed=1 ; else m2=${11} ; fi # tx pl code
+	if [ -z "${12}" ] ; then m1="no" ; changed=1 ; else m1=${12} ; fi # random fail
+	if [ -z "${13}" ] ; then m2="60" ; changed=1 ; else m2=${13} ; fi # random fail period
+
+	if [ $changed -eq 1 ]; then
+		echo -e "Current sim.cfg configuration file:"	
+		echo
+		echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+		echo
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4> /home/pi/CubeSatSim/sim.cfg
+		echo
+	fi
+
 else 
     echo "creating $FILE"
-    echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
 fi
 
 if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
@@ -260,7 +309,6 @@ else
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
 
-touch /home/pi/CubeSatSim/command_control_direwolf
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
@@ -271,36 +319,42 @@ sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-c
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
 
-cd
+if [ ! -d "/home/pi/direwolf" ]; then
 
-git clone https://github.com/alanbjohnston/direwolf.git
+	cd
+	
+	git clone https://github.com/alanbjohnston/direwolf.git
+	
+	cd direwolf
+	
+	make -j
+	
+	sudo make install
+	
+	make install-rpi
+	
+	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
+	
+	sudo systemctl disable gpsd
+	sudo systemctl disable gpsd.socket
+fi
 
-cd direwolf
+if [ ! -d "/home/pi/WiringPi" ]; then
 
-make -j
-
-sudo make install
-
-make install-rpi
-
-sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
-
-sudo systemctl disable gpsd
-sudo systemctl disable gpsd.socket
-
-cd /tmp
-
-# wget https://project-downloads.drogon.net/wiringpi-latest.deb
-
-# sudo dpkg -i wiringpi-latest.deb
-
-cd
-
-git clone https://github.com/alanbjohnston/WiringPi
-cd WiringPi
-./build debian
-
-sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+	cd /tmp
+	
+	# wget https://project-downloads.drogon.net/wiringpi-latest.deb
+	
+	# sudo dpkg -i wiringpi-latest.deb
+	
+	cd
+	
+	git clone https://github.com/alanbjohnston/WiringPi
+	cd WiringPi
+	./build debian
+	
+	sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+fi
 
 cd
 
