@@ -25,8 +25,8 @@ def input(pin):
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
 		print(f"Command run was: {query}")
 		print("Sucess!")
-		print(f"Output of the command (stdout): {result}")
-		return int(result)
+		print(f"Output of the command (stdout): {result.stdout}")
+		return int(result.stdout)
 	except subprocess.CalledProcessError as e:
 		print(f"Command failed with return code: {e.returncode}")
 		print(f"Command run was: {e.cmd}")
