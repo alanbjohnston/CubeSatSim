@@ -321,6 +321,11 @@ fi
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
+if [ $BULLSEYE -eq 1 ]; then
+	sudo apt purge -y python3-pip
+	sudo apt install -y python3-pip
+fi
+
 if [ ! -d "/home/pi/venv" ]; then
 
 	cd
@@ -368,11 +373,7 @@ cd
 
 if [ ! $BULLSEYE -eq 1 ]; then
 	sudo apt install -y libtiff6
-else
-	sudo apt purge -y python3-pip
-	sudo apt install -y python3-pip
 fi
-
 
 sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
