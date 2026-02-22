@@ -114,7 +114,7 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 	    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
 	  fi
 	
-	  if [[ $(grep 'disable_splash=1 ' /boot/config.txt) ]]; then
+	  if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
 	    echo "disable_splash=1 already in /boot/config.txt"
 	  else
 	    echo "adding disable_splash=1 to /boot/config.txt"
@@ -211,7 +211,7 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/firmware/config.txt'
 	  fi
 	
-	  if [[ $(grep 'disable_splash=1 ' /boot/firmware/config.txt) ]]; then
+	  if [[ $(grep 'disable_splash=1' /boot/firmware/config.txt) ]]; then
 	    echo "disable_splash=1 already in /boot/firmware/config.txt"
 	  else
 	    echo "adding disable_splash=1 to /boot/firmware/config.txt"
