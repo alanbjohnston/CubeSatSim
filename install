@@ -38,6 +38,9 @@ else
 fi
 
 if [[ $(grep '11.' /etc/debian_version) ]]; then
+
+	BULLSEYE=1
+
     echo "Debian 11 (Bullseye) detected"
 
   	sudo cp /boot/config.txt /boot/config.txt.0
@@ -134,7 +137,7 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
   fi
 
 if [[ $(grep 'bookworm' /etc/os-release) ]]; then
-	BULLSEYE=1
+	
 	echo "Debian 12 (Bookworm) detected"
 
 	sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.0
