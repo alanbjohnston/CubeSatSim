@@ -3,9 +3,12 @@
 FLAG=0
 checkout=0
 BULLSEYE=0
+UPDATE=0
 
 FILE=/home/pi/CubeSatSim/cubesatsim  # code has already been compiled
 if [ -f "$FILE" ]; then
+
+	UPDATE=1
 
 	echo -e "\nUpdate script for CubeSatSim v2.2\n"
 
@@ -377,9 +380,13 @@ fi
 
 sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
-sudo pip3 install --upgrade setuptools
+if [ $BULLSEYE -eq 1 ] || [ $UPDATE -eq 0] ; then
 
-sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
+	sudo pip3 install --upgrade setuptools
+	
+	sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
+
+fi
 
 cd /home/pi/CubeSatSim
 
