@@ -38,7 +38,7 @@ else
 fi
 
 if [[ $(grep '11.' /etc/debian_version) ]]; then
-    echo "Installing on Debian 11 (Bullseye)"
+    echo "Debian 11 (Bullseye) detected"
 
   	sudo cp /boot/config.txt /boot/config.txt.0
 
@@ -135,7 +135,7 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 
 if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	BULLSEYE=1
-	echo "Bookworm detected, installation continuing."
+	echo "Bookworm detected."
 
 	sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.0
 	
@@ -253,20 +253,6 @@ elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 	fi
 fi
 
-if [ ! -d "/home/pi/venv" ]; then
-
-	cd
-	sudo apt install -y python3-venv
-	sudo python3 -m venv venv
-	source /home/pi/venv/bin/activate
-	
-	curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
-	
-	sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
-	sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
-
-fi
-
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
@@ -331,6 +317,20 @@ else
 fi
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
+
+if [ ! -d "/home/pi/venv" ]; then
+
+	cd
+	sudo apt install -y python3-venv
+	sudo python3 -m venv venv
+	source /home/pi/venv/bin/activate
+	
+	curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
+	
+	sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
+	sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
+
+fi
 
 sudo apt-get remove pulseaudio -y
 
