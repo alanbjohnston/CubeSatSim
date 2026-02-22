@@ -135,7 +135,7 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 
 if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	BULLSEYE=1
-	echo "Bookworm detected."
+	echo "Debian 12 (Bookworm) detected"
 
 	sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.0
 	
