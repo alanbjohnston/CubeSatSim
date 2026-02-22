@@ -17,6 +17,7 @@ import subprocess
 def output(pin, value):
 	command = "gpio -g write " + str(pin) + " " + str(value)
 	system(command)
+	print(command)
 
 def input(pin):
 	# command = "gpio -g read " + str(pin)
@@ -36,8 +37,9 @@ def input(pin):
 
 def setup(pin, config):
 	if config == "in" or config == "out" or config == "up" or config == "down":
-		command = "gpio -g mode " + str(powerPin) + " " + config
+		command = "gpio -g mode " + str(pin) + " " + config
 		system(command)
+		print(command)
 	else:
 		print(f"Unknown GPIO setup configuration: {config}")
 
