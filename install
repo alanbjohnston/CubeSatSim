@@ -383,7 +383,7 @@ fi
 
 sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
-if [ $BULLSEYE -eq 1 ] || [ $UPDATE -eq 0] ; then
+if [ $BULLSEYE -eq 1 ] || [ $UPDATE -eq 0 ] ; then
 
 	sudo pip3 install --upgrade setuptools
 	
