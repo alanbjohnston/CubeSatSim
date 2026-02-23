@@ -469,12 +469,21 @@ else
 	fi
 fi
 
-if [[ $(diff /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
-  echo "changed cubesatsim.service."
-  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
-  FLAG=1
+FILE=/etc/systemd/system/cubesatsim.service
+if [ -f "$FILE" ]; then
+	if [[ $(diff /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
+	  echo "changed cubesatsim.service."
+	  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+	  FLAG=1
+	else
+	  echo "no changes to cubesatsim.service."
+	fi
 else
-  echo "no changes to cubesatsim.service."
+  echo "creating cubesatsim.service."
+  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+  sudo systemctl enable command
+
+  FLAG=1
 fi
 
 FILE=/etc/systemd/system/rpitx.service
