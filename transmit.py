@@ -479,7 +479,7 @@ if __name__ == "__main__":
 #	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 #	print(txLed)
 #	print(1)
-	setup(txLed, "out")
+#	setup(txLed, "out")
 
 	query = ["grep", "VERSION_CODENAME=bullseye", "/etc/os-release"] 
 	try:
@@ -548,7 +548,7 @@ if __name__ == "__main__":
 	else:	
 		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 #			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-			setup(txLed, "out")	
+#			setup(txLed, "out")	
 			output(txLed, 1)
 			print("Transmit CW ID")
 			status = ""
@@ -597,7 +597,7 @@ if __name__ == "__main__":
 					system("cat /home/pi/CubeSatSim/t.txt")
 					if (command_tx == True):
 #						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-						setup(txLed, "out")	
+#						setup(txLed, "out")	
 						output(txLed, 1)
 #						output(pd, 1)
 #						output (ptt, 0)
@@ -655,7 +655,7 @@ if __name__ == "__main__":
 ##						chan = chan + 1						
 						if (command_tx == True):
 #							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-							setup(txLed, "out")	
+#							setup(txLed, "out")	
 							output(txLed, 1)					
 	
 							if (txc):
@@ -719,7 +719,7 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 #						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-						setup(txLed, "out")	
+#						setup(txLed, "out")	
 						output(txLed, 1)
 #						battery_saver_check()
 
@@ -752,7 +752,7 @@ if __name__ == "__main__":
 					if (command_tx == True):
 						print ("Sending SSTV image")
 #						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-						setup(txLed, "out")	
+#						setup(txLed, "out")	
 						output(txLed, 1)
 #						battery_saver_check()
 
@@ -790,7 +790,7 @@ if __name__ == "__main__":
 
 						print ("Sending SSTV image")
 #						GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-						setup(txLed, "out")	
+#						setup(txLed, "out")	
 						output(txLed, 1)
 
 #						battery_saver_check()
@@ -828,7 +828,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							print ("Sending SSTV image")
 #							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-							setup(txLed, "out")	
+#							setup(txLed, "out")	
 							output(txLed, 1)
 #							battery_saver_check()
 
@@ -859,7 +859,7 @@ if __name__ == "__main__":
 #							command_control_check()	
 							
 #							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-							setup(txLed, "out")	
+#							setup(txLed, "out")	
 							output(txLed, 1)
 
 #							battery_saver_check()
@@ -890,7 +890,7 @@ if __name__ == "__main__":
 			output(ptt, 1)
 
 #			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
-			setup(txLed, "out")
+#			setup(txLed, "out")
 			
 			if (command_tx == True):
 #				system("sudo nc -l 8080 | csdr convert_i16_f | csdr fir_interpolate_cc 2 | csdr dsb_fc | csdr bandpass_fir_fft_cc 0.002 0.06 0.01 | csdr fastagc_ff | sudo /home/pi/rpitx/sendiq -i /dev/stdin -s 96000 -f 434.9e6 -t float &")
@@ -910,7 +910,7 @@ if __name__ == "__main__":
 				
 				if (command_tx == True):		
 #					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-					setup(txLed, "out")
+#					setup(txLed, "out")
 					output(txLed, 1)
 #					print(txLed)
 #					print(1)
@@ -950,7 +950,7 @@ if __name__ == "__main__":
 			output(pd, 1)
 			output(ptt, 1)
 #			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
-			setup(txLed, "out")
+#			setup(txLed, "out")
 #			GPIO.setup(powerPin, GPIO.OUT)
 			setup(squelch, "up")  ## pull up in case pin is not connected	
 #			GPIO.output(powerPin, 1)  # was 0
@@ -964,7 +964,7 @@ if __name__ == "__main__":
 				if (input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 #					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-					setup(txLed, "out")						
+#					setup(txLed, "out")						
 					output(txLed, 1)
 					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 16000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
 					sleep(0.5)
@@ -989,7 +989,7 @@ if __name__ == "__main__":
 			output(ptt, 1)
 			
 #			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
-			setup(txLed, "out")
+#			setup(txLed, "out")
 			
 			if (command_tx == True):
 				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 &")
@@ -1004,7 +1004,7 @@ if __name__ == "__main__":
 #				command_control_check()
 				if (command_tx == True):		
 #					GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
-					setup(txLed, "out")					
+#					setup(txLed, "out")					
 					output(txLed, 1)
 #					print(txLed)
 #					print(1)					
