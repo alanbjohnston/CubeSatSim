@@ -34,9 +34,9 @@ else
 
 	touch /home/pi/CubeSatSim/command_control_direwolf
 
-	/home/piCubeSatSim/config -c -n
+	/home/pi/CubeSatSim/config -c -n
 
-	/home/piCubeSatSim/config -l -n
+	/home/pi/CubeSatSim/config -l -n
 
 fi
 
