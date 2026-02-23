@@ -631,6 +631,14 @@ if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	make fcdpp
 fi
 
+if [ ! -f "/home/pi/ssdv/ssdv" ]; then
+	cd
+	echo "Installing SSDV for FUNcube mode"
+	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FUNcube images
+	cd ssdv
+	make
+fi
+
 cd
 
 #echo "Would you like to reboot to complete the installation (y/n)?"
