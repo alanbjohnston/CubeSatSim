@@ -34,6 +34,9 @@ else
 
 	touch /home/pi/CubeSatSim/command_control_direwolf
 
+    echo "creating $FILE"
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+
 	/home/pi/CubeSatSim/config -c -n
 
 	/home/pi/CubeSatSim/config -l -n
