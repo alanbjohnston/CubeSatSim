@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
-#import RPi.GPIO as GPIO
-#from RPi.GPIO import output
+import RPi.GPIO as GPIO
+from RPi.GPIO import output
 #import subprocess
 import time
 from time import sleep
@@ -15,9 +15,12 @@ import random
 import subprocess
 
 def output(pin, value):
-	command = "gpio -g write " + str(pin) + " " + str(value)
-	system(command)
-	print(command)
+	if (pin != 20):
+		command = "gpio -g write " + str(pin) + " " + str(value)
+		system(command)
+		print(command)
+	else: # ptt pin
+		GPIO.output(pin, value)
 
 def input(pin):
 	# command = "gpio -g read " + str(pin)
@@ -37,9 +40,17 @@ def input(pin):
 
 def setup(pin, config):
 	if config == "in" or config == "out" or config == "up" or config == "down":
-		command = "gpio -g mode " + str(pin) + " " + config
-		system(command)
-		print(command)
+		if (pin != 20):
+			command = "gpio -g mode " + str(pin) + " " + config
+			system(command)
+			print(command)
+		else: # ptt pin
+			GPIO.setwarnings(False)
+			GPIO.setmode(GPIO.BCM)
+			if config == "out:
+				GPIO.setup(27, GPIO.OUT)
+			else:
+				GPIO.setup(27, GPIO.IN)
 	else:
 		print(f"Unknown GPIO setup configuration: {config}")
 
