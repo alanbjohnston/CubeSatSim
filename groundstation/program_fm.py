@@ -26,7 +26,7 @@ if __name__ == "__main__":
 	try:
 		ser = serial.Serial("/dev/ttyAMA0", 9600)
 		print(ser.portstr)
-		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,0,0,0\r\n" # squelch off
 #		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
 		print(uhf_string)
 		for i in range(6):
