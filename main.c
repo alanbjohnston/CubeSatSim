@@ -1907,6 +1907,9 @@ void get_tlm_fox() {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
+
+  if (firstTime && (mode == PACSAT))
+	  firstTime = 0;
 	
   return;
 }
