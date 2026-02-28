@@ -1908,12 +1908,12 @@ void get_tlm_fox() {
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
-  if (firstTime && (mode == PACSAT))
-  {
-	  firstTime = OFF;
-	  fprintf(stderr, "No longer first time\n");
-	  fflush(stdout);
-  }
+//  if (firstTime && (mode == PACSAT))
+//  {
+//	  firstTime = OFF;
+//	  fprintf(stderr, "No longer first time\n");
+//	  fflush(stdout);
+//  }
   return;
 }
 
