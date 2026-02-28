@@ -5,8 +5,9 @@ echo -e "\nLog file script for CubeSatSim\n"
 if [ "$1" = "-h" ]  ; then
   echo "Displays systemd logs for the chose process.  The choices are:"
   echo " -d cubesatsim (also no choice gives you this)"
-  echo " -t transmit "
+  echo " -t transmit"
   echo " -c command and control"
+  echo " -p pacsat"
   echo "Default is the log is dumpted to the screen and written to a file."
   echo "If an additional r is included, the log is realtime, and exits with a Control-C"
   echo
@@ -45,19 +46,19 @@ if [ "$REALTIME" = "1" ]  ; then
 else
   
   if [ "$1" = "-r" ] || [ "$1" = "-t" ] ; then
-    sudo journalctl -u transmit > /home/pi/CubeSatSim/logt.txt 
+    sudo journalctl -a -u transmit > /home/pi/CubeSatSim/logt.txt 
     cat /home/pi/CubeSatSim/logt.txt
     echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
   elif [ "$1" = "-c" ]; then
-    sudo journalctl -u command > /home/pi/CubeSatSim/logc.txt 
+    sudo journalctl -a -u command > /home/pi/CubeSatSim/logc.txt 
     cat /home/pi/CubeSatSim/logc.txt
     echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
   elif [ "$1" = "-p" ]; then
-    sudo journalctl -u pacsatsim > /home/pi/CubeSatSim/logp.txt 
+    sudo journalctl -a -u pacsatsim > /home/pi/CubeSatSim/logp.txt 
     cat /home/pi/CubeSatSim/logp.txt
     echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
   else
-    sudo journalctl -u cubesatsim  > /home/pi/CubeSatSim/log.txt 
+    sudo journalctl -a -u cubesatsim  > /home/pi/CubeSatSim/log.txt 
     cat /home/pi/CubeSatSim/log.txt
     echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
   fi
