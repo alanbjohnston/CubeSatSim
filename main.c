@@ -1343,10 +1343,7 @@ void get_tlm_fox() {
 
 //    encodeA(b, 0 + head_offset, batt_a_v);  // replaced by XS2 and XS3 below
 //    encodeB(b, 1 + head_offset, batt_b_v);
-	printf("%02X%02X%02X%02X%02X\n", b[0],b[1],b[2],b[3],b[4]);  
     encodeA(b, 3 + head_offset, batt_c_v);
-	printf("%02X%02X%02X%02X%02X\n", b[0],b[1],b[2],b[3],b[4]);   
-	printf("batt_c_v: %d 3+head_offset: %d\n", batt_c_v, 3+head_offset);
 
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
     encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
@@ -1898,11 +1895,6 @@ void get_tlm_fox() {
       //transmitStatus = -1;
     }
   }
-  if (!transmit) {
-    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
-    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
-  }
-
   if (socket_open == 1)	
     firstTime = 0;
 //  else if (frames_sent > 0) //5)
@@ -1910,6 +1902,12 @@ void get_tlm_fox() {
 	
  }
   } // extra bracket for some reason?
+
+  if (!transmit) {
+    fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
+    fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
+  }
+	
   return;
 }
 
