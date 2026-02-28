@@ -1578,7 +1578,7 @@ void get_tlm_fox() {
 		    int count;
 			char byte;
 			printf("b is: \n");
-		    for (count = 0; count < 70; count++) {
+		    for (count = 0; count < dataLen; count++) {
 				byte = b[count];
 				fwrite(&byte, 1, 1, telem_binary);
 		        printf("%02X ", byte);
