@@ -1909,8 +1909,10 @@ void get_tlm_fox() {
   }
 
   if (firstTime && (mode == PACSAT))
-	  firstTime = 0;
-	
+  {
+	  firstTime = OFF;
+	  fprintf(stderr, "No longer first time\n");
+  }
   return;
 }
 
