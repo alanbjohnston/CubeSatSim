@@ -1175,6 +1175,8 @@ void get_tlm_fox() {
 
   smaller = (int) (S_RATE / (2 * freq_Hz));
 
+  if (mode == PACSAT)
+	  dataLen = 78;
   short int b[dataLen];
   short int b_max[dataLen];
   short int b_min[dataLen];
@@ -1542,7 +1544,7 @@ void get_tlm_fox() {
 
     encodeA(b, 51 + head_offset, status);
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
-    if (mode == BPSK) {	  
+    if ((mode == BPSK) || (mode == PACSAT)) {	  
       encodeA(b_max, 51 + head_offset, status);
       encodeA(b_min, 51 + head_offset, status);
       encodeB(b_max, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
