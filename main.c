@@ -1568,7 +1568,7 @@ void get_tlm_fox() {
 	{
 		FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "wb");
 		if (telem_binary != NULL) {
-			int bytes_written = fwrite(b, sizeof(char), 78, telem_binary);
+			int bytes_written = fwrite(b, sizeof(char), 70, telem_binary);
 			printf("Writing %d bytes to tlm.bin\n", bytes_written);
 			fclose(telem_binary);
 		}
