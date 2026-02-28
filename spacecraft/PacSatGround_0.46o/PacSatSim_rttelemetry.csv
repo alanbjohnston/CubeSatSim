@@ -42,7 +42,7 @@
 40,float,I2CBus1Failure,1,-,35,Computer Hardware,2,2,0,I2C Bus 1,I2C bus 1 failure indicator
 41,float,I2CBus3Failure,1,-,35,Computer Hardware,2,3,0,I2C Bus 3,I2C bus 3 failure indicator
 42,float,CameraFailure,1,-,35,Computer Hardware,2,4,0,Camera,Camera failure indicator
-43,int,GroundCommands,4,-,1,Computer Software,3,3,0,Ground Commands,Number of ground commands received
+43,int,GroundCommands,4,-,2,Computer Software,3,3,0,Ground Commands,Number of ground commands received
 44,float,RxAntenna,1,-,36,Radio,1,3,0,RX Antenna,Receive antenna status
 45,float,TxAntenna,1,-,36,Radio,1,2,0,TX Antenna,Transmit antenna status
 46,float,C2CStatus,2,-,34,Computer Software,3,5,0,Command Control, Command & Control Status
@@ -61,3 +61,4 @@
 59,float,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 60,float,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
 61,float,pad2,27,-,0,NONE,0,0,0,NONE,Filler
+
