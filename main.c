@@ -1883,8 +1883,7 @@ void get_tlm_fox() {
 		printf("socket resend %d in %d ms bytes: %d \n\n",times, millis() - start, sock_ret);
 	      }
       }
-      sampleTime = (unsigned int) millis(); // resetting time for sleeping
-      fflush(stdout);
+
 //      if (firstTime == 1)
 //	      max -= 1;
     }
@@ -1908,12 +1907,16 @@ void get_tlm_fox() {
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
-//  if (firstTime && (mode == PACSAT))
-//  {
-//	  firstTime = OFF;
-//	  fprintf(stderr, "No longer first time\n");
-//	  fflush(stdout);
-//  }
+  if (firstTime && (mode == PACSAT))
+  {
+	  firstTime = OFF;
+	  fprintf(stderr, "No longer first time\n");
+	  fflush(stdout);
+  }
+
+  sampleTime = (unsigned int) millis(); // resetting time for sleeping
+  fflush(stdout);
+	
   return;
 }
 
