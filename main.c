@@ -1228,13 +1228,12 @@ void get_tlm_fox() {
 /**/
       printf("Start sleep %d Sleep period: %d  while period: %d\n", startSleep, millis() - startSleep, (unsigned int)frameTime - 750 + pi_zero_2_offset);
       fflush(stdout);
-      
-      sampleTime = (unsigned int) millis();
     } else 
 	{
       printf("first time - no sleep\n");
 	  firstTime = OFF;
 	}
+	sampleTime = (unsigned int) millis();  
 	  
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     fflush(stdout);
