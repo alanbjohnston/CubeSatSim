@@ -1576,7 +1576,7 @@ void get_tlm_fox() {
 			printf("Error opening tlm.bin\n");
 	}
 	else
-
+	{ // extra bracket for some reason?
 	{
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
@@ -1890,6 +1890,7 @@ void get_tlm_fox() {
 //    firstTime = 0;
 	
  }
+  } // extra bracket for some reason?
   return;
 }
 
