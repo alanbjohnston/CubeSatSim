@@ -1342,7 +1342,7 @@ void get_tlm_fox() {
 //    encodeA(b, 0 + head_offset, batt_a_v);  // replaced by XS2 and XS3 below
 //    encodeB(b, 1 + head_offset, batt_b_v);
     encodeA(b, 3 + head_offset, batt_c_v);
-	printf("batt_c_v: %d \n", batt_c_v);
+	printf("batt_c_v: %d 3+head_offset: %d\n", batt_c_v, 3+head_offset);
 
     encodeB(b, 4 + head_offset, (int)(sensor[ACCEL_X] * 100 + 0.5) + 2048); // Xaccel
     encodeA(b, 6 + head_offset, (int)(sensor[ACCEL_Y] * 100 + 0.5) + 2048); // Yaccel
