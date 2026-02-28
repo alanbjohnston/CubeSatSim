@@ -873,9 +873,9 @@ int main(int argc, char * argv[]) {
       sleep(rand_sleep);	    
 //      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
-    } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
+    } else if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT)) {// FSK or BPSK
       get_tlm_fox();
-    } else {  				// SSTV	 or PACSAT or PACSATGND
+    } else {  				// SSTV	 or PACSATGND
 //      fprintf(stderr, "Sleeping\n");
       sleep(30);	    
     }
@@ -1562,7 +1562,22 @@ void get_tlm_fox() {
       encodeA(b, 63 + head_offset, 0x00); 
       encodeA(b, 62 + head_offset, 0x01);
       encodeB(b, 74 + head_offset, 0xfff); 
-    }	  
+    }
+
+	if (mode == PACSAT) 
+	{
+		telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "wb");
+		if (telem_binary != NULL) {
+			int bytes_written = fwrite(b, 78, 1, telem_binary);
+			printf("Writing %d bytes to tlm.bin\n", bytes_written);
+			fclose(telem_binary);
+		}
+		else
+			printf("Error opening tlm.bin\n");
+	}
+	else
+
+	{
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
 
@@ -1873,7 +1888,8 @@ void get_tlm_fox() {
     firstTime = 0;
 //  else if (frames_sent > 0) //5)
 //    firstTime = 0;
-
+	
+ }
   return;
 }
 
