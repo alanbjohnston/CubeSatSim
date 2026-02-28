@@ -1912,6 +1912,7 @@ void get_tlm_fox() {
   {
 	  firstTime = OFF;
 	  fprintf(stderr, "No longer first time\n");
+	  fflush(stdout);
   }
   return;
 }
