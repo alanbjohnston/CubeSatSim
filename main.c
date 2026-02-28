@@ -1579,10 +1579,12 @@ void get_tlm_fox() {
 			fwrite(&now, sizeof(now), 1, telem_binary);
 			
 		    int count;
+			char byte;
 			printf("b is: \n");
 		    for (count = 0; count < 70; count++) {
-				fwrite((char)b[count], 1, 1, telem_binary);
-		        printf("%02X ", b[count]);
+				byte = b[count];
+				fwrite(&byte, 1, 1, telem_binary);
+		        printf("%02X ", byte);
 				bytes_written++;
 		    }
 		    printf("\n");
