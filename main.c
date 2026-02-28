@@ -1230,9 +1230,12 @@ void get_tlm_fox() {
       fflush(stdout);
       
       sampleTime = (unsigned int) millis();
-    } else
+    } else 
+	{
       printf("first time - no sleep\n");
-
+	  firstTime = OFF;
+	}
+	  
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     fflush(stdout);
     loopTime = millis();	  
