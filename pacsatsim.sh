@@ -201,6 +201,8 @@ else
   echo
 fi
 
+sudo /home/pi/pacsat_telem/Debug/pacsat_telem -v -d /home/pi/PacSat/pacsat &
+
 sleep 5
 
 value=`aplay -l | grep "Loopback"`
