@@ -33,7 +33,7 @@ if __name__ == "__main__":
 					mode = 'a'
 					change_mode = True
 					counter = (counter + 1) % 2
-				if ((line.find("DTMF>APDW15:t1#")) > 0):
+				if ((line.find(":t1#")) > 0):
 					system("echo '\nAPRS Mode!!\n'")
 					mode = 'a'
 					change_mode = True
@@ -42,7 +42,7 @@ if __name__ == "__main__":
 					mode = 'f'
 					change_mode = True
 					counter = (counter + 1) % 2
-				if ((line.find("DTMF>APDW15:t2#")) > 0):
+				if ((line.find(":t2#")) > 0):
 					system("echo '\nFSK Mode!!\n'")
 					mode = 'f'
 					change_mode = True
@@ -51,7 +51,7 @@ if __name__ == "__main__":
 					mode = 'b'
 					change_mode = True
 					counter = (counter + 1) % 2
-				if ((line.find("DTMF>APDW15:t3#")) > 0):
+				if ((line.find(":t3#")) > 0):
 					system("echo '\nBPSK Mode!!\n'")
 					mode = 'b'
 					change_mode = True
@@ -60,7 +60,7 @@ if __name__ == "__main__":
 					mode = 's'
 					change_mode = True
 					counter = (counter + 1) % 2
-				if ((line.find("DTMF>APDW15:t4#")) > 0):
+				if ((line.find(":t4#")) > 0):
 					system("echo '\nSSTV Mode!!\n'")
 					mode = 's'
 					change_mode = True
@@ -69,7 +69,7 @@ if __name__ == "__main__":
 					mode = 'm'
 					change_mode = True
 					counter = (counter + 1) % 2
-				if ((line.find("DTMF>APDW15:t5#")) > 0):
+				if ((line.find(":t5#")) > 0):
 					system("echo '\nCW Mode!!\n'")
 					mode = 'm'
 					change_mode = True
@@ -78,7 +78,7 @@ if __name__ == "__main__":
 					mode = 'n'
 					change_mode = True
 					counter = (counter + 1) % 2			
-				if ((line.find("DTMF>APDW15:t11#")) > 0):
+				if ((line.find(":t11#")) > 0):
 					system("echo '\nTransmit Commands Mode!!\n'")
 					mode = 'n'
 					change_mode = True
@@ -88,7 +88,7 @@ if __name__ == "__main__":
 					mode = 'o'
 					change_mode = True
 					counter = (counter + 1) % 2
-				if ((line.find("DTMF>APDW15:t10#")) > 0):
+				if ((line.find(":t10#")) > 0):
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
