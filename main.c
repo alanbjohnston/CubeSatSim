@@ -247,11 +247,11 @@ int main(int argc, char * argv[]) {
   } 
 
   if ( mode == PACSAT) {
-		FILE * pacsat_file = popen("sudo systemctl start cubesatsim", "r");
+		FILE * pacsat_file = popen("sudo systemctl start pacsatsim", "r");
         pclose(pacsat_file);
   }
   else  {
-		FILE * pacsat_file = popen("sudo systemctl stop cubesatsim", "r");
+		FILE * pacsat_file = popen("sudo systemctl stop pacsatsim", "r");
         pclose(pacsat_file);
   }
 
