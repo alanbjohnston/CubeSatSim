@@ -698,6 +698,7 @@ int main(int argc, char * argv[]) {
       }
 	   
     if (sim_mode) { // simulated telemetry 
+	  printf("Simulated telemetry mode\n");	
 
       double time = ((long int)millis() - time_start) / 1000.0;
 
