@@ -33,7 +33,7 @@
 31,float,Humidity,12,%,5,Experiments,6,5,3,BME280 Humidity,BME280 Humidity
 32,float,BAT2_I,12,mA,31,Battery2,5,2,3,Battery2 Current,INA219 Battery2 Current
 33,float,DiodeTemp,12,C,32,Experiments,6,6,3,Diode Temp,STEM Payload Diode Temperature
-34,int,Sensor 1,1,integer,1,Experiments,6,7,3,Sensor 1,STEM Payload Extra Sensor 1
+34,int,Sensor 1,12,integer,1,Experiments,6,7,3,Sensor 1,STEM Payload Extra Sensor 1
 35,float,STEMPayloadStatus,1,-,35,Experiments,6,1,0,STEM Payload Status, STEM Payload STEM Payload board failure Indicator
 36,float,SafeMode,1,-,33,Computer Software,3,2,0,Safe Mode, Safe Mode (Low Battery Voltage)
 37,float,SimulatedTelemetry,1,-,33,Computer Software,3,4,0,Simulated Telemetry,Simulated Telemetry Indicator
@@ -61,3 +61,4 @@
 59,float,hwCmdCnt,6,-,1,NONE,7,7,0,HW Command Count,Number of hardware commands since last reset
 60,float,swCmdCnt,6,-,1,NONE,7,8,0,SW Command Count,Number of software commands since last reset
 61,float,pad2,27,-,0,NONE,0,0,0,NONE,Filler
+
