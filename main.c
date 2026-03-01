@@ -493,8 +493,11 @@ int main(int argc, char * argv[]) {
 	   
       frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
-      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
-        bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	  if (mode == BPSK) 
+      	printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+        	bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	  else
+		  printf("\n dataLen: %d \n", dataLen);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
 //      printf("Sin map: ");	 		
@@ -510,7 +513,7 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));	
 	
-  if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
+  if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   firstTime = 1;
 	  
