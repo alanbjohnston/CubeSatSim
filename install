@@ -134,9 +134,9 @@ if [ -f "$FILE" ]; then
 	sudo ./install.sh
 	
 	cd
-	#git clone https://github.com/alanbjohnston/pi_pacsat.git
-	git clone https://github.com/ac2cz/pi_pacsat.git
-	cd pi_pacsat
+	#git clone https://github.com/alanbjohnston/pi_.git
+	git clone https://github.com/ac2cz/pi_.git
+	cd pi_
 	#git checkout master-debug
 	cd Debug
 	make all
@@ -166,6 +166,7 @@ fi
 FILE=/home/pi/pacsat_telem/Debug/pacsat_telem  # code has already been compiled
 if [ -f "$FILE" ]; then
 	cd
+	sudo apt-get install -y libbsd-dev
 	git clone https://github.com/alanbjohnston/pacsat_telem.git
 	cd pacsat_telem
 	git checkout master-fox
@@ -181,13 +182,13 @@ sudo raspi-config nonint do_vnc 0
 
 cd /tmp
 
-wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46n.tar.gz
+wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
 
-tar -xzf PacsatGround_unix_0_46n.tar.gz -C /home/pi/Desktop
+tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
 
-rm PacsatGround_unix_0_46n.tar.gz
+rm PacsatGround_unix_0_46o.tar.gz
 
-cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46m/* /home/pi/Desktop/PacsatGround/spacecraft/
+cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
 	
 mkdir /home/pi/PacSatGround
 
