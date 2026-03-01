@@ -75,12 +75,12 @@ if __name__ == "__main__":
 					change_mode = True
 				if ((line.find("MODE=G")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'G'
+					mode = 'p'
 					change_mode = True
 					counter = (counter + 1) % 2
 				if ((line.find(":t8#")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'G'
+					mode = 'p'
 					change_mode = True					
 				if ((line.find("MODE=n")) > 0):
 					system("echo '\nTransmit Commands Mode!!\n'")
