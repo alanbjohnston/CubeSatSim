@@ -11,10 +11,10 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-FILE=/home/pi/.pacsatprofile  
-if [ ! -f "$FILE" ]; then
+#FILE=/home/pi/.pacsatprofile  
+#if [ ! -f "$FILE" ]; then
 
-   profile=$(zenity --text="Choice:" --list 2>/dev/null --width=410 --height=120 --title="PacSat Ground Station Choice" --column="Choice" --column="Result" "PacSat" "Receive from CubeSatSim PacSatSim" "Configure" "Configure PacSat Ground Station" "Loopback" "Run a Locally Simulated PacSat")
+   profile=$(zenity --text="Choice:" --list 2>/dev/null --width=410 --height=120 --title="PacSat Ground Station Choice" "PacSat" "Receive from CubeSatSim PacSatSim" "Configure" "Configure PacSat Ground Station" "Loopback" "Run a Locally Simulated PacSat")
 
    echo $profile
 
@@ -103,11 +103,11 @@ if [ ! -f "$FILE" ]; then
        
     fi  
     
-fi    
+#fi    
 
-value=`cat /home/pi/FoxTelemetryData/.foxprofile`
-echo "$value" > /dev/null
-set -- $value
+#value=`cat /home/pi/FoxTelemetryData/.foxprofile`
+#echo "$value" > /dev/null
+#set -- $value
 
 sudo killall -9 java &>/dev/null
 
