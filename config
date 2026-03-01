@@ -739,6 +739,7 @@ elif [ "$1" = "-C" ]; then
 	sudo systemctl stop cubesatsim
 	sudo systemctl stop transmit
 	sudo systemctl stop command
+	sudo systemctl stop pacsatsim
 
 	sudo mv -f /home/pi/CubeSatSim/telem.txt /home/pi/CubeSatSim/telem.txt.bk
 
