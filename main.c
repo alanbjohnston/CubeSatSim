@@ -247,7 +247,7 @@ int main(int argc, char * argv[]) {
   } 
 
   if ( mode == PACSAT) {
-		FILE * pacsat_file = popen("sudo systemctl start pacsatsim", "r");
+		FILE * pacsat_file = popen("sudo systemctl restart pacsatsim", "r");
         pclose(pacsat_file);
   }
   else  {
