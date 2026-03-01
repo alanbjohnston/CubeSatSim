@@ -1430,17 +1430,19 @@ elif [ "$1" = "-G" ]; then
 	set -- $value
 
 #	echo "changing CubeSatSim to Pacsat mode"
-	sudo echo "p" > /home/pi/CubeSatSim/.mode	
-	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
-		FILE=/home/pi/CubeSatSim/battery_saver
-		if [ -f "$FILE" ]; then
-			restart=1
-		else 
-			reboot=1
-		fi	
-	else
-		restart=1
-	fi	
+
+	reboot=1
+#	sudo echo "p" > /home/pi/CubeSatSim/.mode	
+#	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
+#		FILE=/home/pi/CubeSatSim/battery_saver
+#		if [ -f "$FILE" ]; then
+#			restart=1
+#		else 
+#			reboot=1
+#		fi	
+#	else
+#		restart=1
+#	fi	
 
 elif [ "$1" = "-I" ]; then
 
@@ -1452,17 +1454,19 @@ elif [ "$1" = "-I" ]; then
 	set -- $value
 
 #	echo "changing CubeSatSim to Pacsat mode"
-	sudo echo "P" > /home/pi/CubeSatSim/.mode	
-	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
-		FILE=/home/pi/CubeSatSim/battery_saver
-		if [ -f "$FILE" ]; then
-			restart=1
-		else 
-			reboot=1
-		fi	
-	else
-		restart=1
-	fi	
+
+	reboot=1
+#	sudo echo "P" > /home/pi/CubeSatSim/.mode	
+#	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
+#		FILE=/home/pi/CubeSatSim/battery_saver
+#		if [ -f "$FILE" ]; then
+#			restart=1
+#		else 
+#			reboot=1
+#		fi	
+#	else
+#		restart=1
+#	fi	
 
 elif [ "$1" = "-h" ]; then
 
