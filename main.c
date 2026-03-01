@@ -236,7 +236,7 @@ int main(int argc, char * argv[]) {
         printf("Mode is Transmit Command\n");	    
      } else if ( mode_string == 'p') {
         mode = PACSAT;
-        printf("Mode is Pacsat\n");	 	      
+        printf("Mode is Pacsat\n");
      } else if ( mode_string == 'P') {
         mode = PACSATGND;
         printf("Mode is Pacsat Ground Station\n");	
@@ -245,6 +245,15 @@ int main(int argc, char * argv[]) {
       }	    
     }
   } 
+
+  if ( mode == PACSAT) {
+		FILE * pacsat_file = popen("sudo systemctl start cubesatsim", "r");
+        pclose(pacsat_file);
+  }
+  else  {
+		FILE * pacsat_file = popen("sudo systemctl stop cubesatsim", "r");
+        pclose(pacsat_file);
+  }
 
   // Open telemetry file with STEM Payload Data
   telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
