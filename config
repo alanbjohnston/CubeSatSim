@@ -369,7 +369,7 @@ elif [ "$1" = "-a" ]; then
 	else
 
 		echo "changing CubeSatSim to AFSK mode"
-		sudo echo "a" > /home/pi/CubeSatSim/.mode	
+		sudo echo "a" > /home/pi/CubeSatSim/.mode
 		if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
 			FILE=/home/pi/CubeSatSim/battery_saver
 			if [ -f "$FILE" ]; then
@@ -377,6 +377,8 @@ elif [ "$1" = "-a" ]; then
 			else 
 		    		reboot=1
 			fi	
+		elif [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
 		else
 			restart=1
 		fi	
@@ -422,7 +424,10 @@ elif [ "$1" = "-f" ]; then
 
 		echo "changing CubeSatSim to FSK mode"
 		sudo echo "f" > /home/pi/CubeSatSim/.mode
-		restart=1
+		if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
+		else
+			restart=1
 	fi
 
 elif [ "$1" = "-b" ]; then
@@ -439,7 +444,10 @@ elif [ "$1" = "-b" ]; then
 
 		echo "changing CubeSatSim to BPSK mode"
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
-		restart=1
+		if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
+		else
+			restart=1
 	fi
 
 elif [ "$1" = "-s" ]; then
