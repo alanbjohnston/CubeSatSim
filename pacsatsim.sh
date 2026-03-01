@@ -13,7 +13,7 @@ export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
 #sudo systemctl stop transmit
 
-sudo systemctl stop command &>/dev/null
+#sudo systemctl stop command &>/dev/null
 
 sudo modprobe snd-aloop
 
