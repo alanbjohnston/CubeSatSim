@@ -874,7 +874,7 @@ int main(int argc, char * argv[]) {
       sleep(rand_sleep);	    
 //      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
-    } else if ((mode == FSK) || (mode == BPSK) || (AT)) {// FSK or BPSK
+    } else if ((mode == FSK) || (mode == BPSK) || (mode == PACAT)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	 or PACSATGND
 //      fprintf(stderr, "Sleeping\n");
