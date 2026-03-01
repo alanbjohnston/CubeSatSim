@@ -428,6 +428,7 @@ elif [ "$1" = "-f" ]; then
 			reboot=1
 		else
 			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-b" ]; then
@@ -448,6 +449,7 @@ elif [ "$1" = "-b" ]; then
 			reboot=1
 		else
 			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-s" ]; then
