@@ -33,7 +33,7 @@
 32,-,DivideBy10Offset,-204.8,0.1,0,0,0,0,None,0,4096,Divide by 10 with Offset
 33,-,Status,0,0,0,0,0,0,Enum,0,4096,OFF:ON
 34,-,CommandStatus,0,0,0,0,0,0,Enum,0,4096,OFF:Carrier:DTMF/APRS
-35,-,FailStatus,0,0,0,0,0,0,Enum,0,4096,FAIL:OK
+35,-,FailStatus,0,0,0,0,0,0,Enum,0,4096,OK:FAIL
 36,-,AntStatus,0,0,0,0,0,0,Enum,0,4096,STOWED:DEPLOYED
 NOTES:,,,,,,,,,,,,
 Serial,Ignore,name,a,b,c,d,e,f,format,low limit,high limit,Comment
