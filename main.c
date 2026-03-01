@@ -461,7 +461,8 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
-    } else if (mode == BPSK) {
+//    } else if (mode == BPSK) {
+    } else {
       bitRate = 1200;
       rsFrames = 3;
       payloads = 6;
@@ -873,7 +874,7 @@ int main(int argc, char * argv[]) {
       sleep(rand_sleep);	    
 //      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
-    } else if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT)) {// FSK or BPSK
+    } else if ((mode == FSK) || (mode == BPSK) || (AT)) {// FSK or BPSK
       get_tlm_fox();
     } else {  				// SSTV	 or PACSATGND
 //      fprintf(stderr, "Sleeping\n");
@@ -1175,8 +1176,8 @@ void get_tlm_fox() {
 
   smaller = (int) (S_RATE / (2 * freq_Hz));
 
-  if (mode == PACSAT)
-	  dataLen = 78;
+//  if (mode == PACSAT)
+//	  dataLen = 78;
   short int b[dataLen];
   short int b_max[dataLen];
   short int b_min[dataLen];
@@ -1231,7 +1232,10 @@ void get_tlm_fox() {
       
       sampleTime = (unsigned int) millis();
     } else
+	{
       printf("first time - no sleep\n");
+	  firstTime = OFF;	
+	}
 
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime)/1000.0);
     fflush(stdout);
