@@ -50,6 +50,8 @@ sudo killall -9 direwolf &>/dev/null
         echo "You have chosen to set the PacSat Ground Station Callsign"
 		echo 
 
+		/home/pi/CubeSatSim/config -J n
+
     elif [ "$ANS" = "2" ] ; then
 
         echo "You have chosen to set the CubeSatSim PacSat Satellite callsign"
@@ -71,7 +73,8 @@ sudo killall -9 direwolf &>/dev/null
 		 echo "Next time you run the Ground Station you will need to Add the PacSatSim spacecraft"
 		 echo
 
-		 /home/pi/CubeSatSim/groundstation/pacsat-reset.sh
+#		 /home/pi/CubeSatSim/groundstation/pacsat-reset.sh
+		 /home/pi/CubeSatSim/config -K n
 
 
 	elif [ "$ANS" = "5" ] ; then
@@ -79,7 +82,7 @@ sudo killall -9 direwolf &>/dev/null
          echo "You have chosen to reset the PacSat Satellite"
          echo 
 
-		 /home/pi/CubeSatSim/config -X n
+		 /home/pi/CubeSatSim/config -k n
 		 		 
     else
     
