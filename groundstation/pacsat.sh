@@ -1,6 +1,17 @@
 #!/bin/bash
 
-# script to auto decode packet using rtl_fm and Direwolf and run Pacsat
+# script to auto decode packet using rtl_fm and Direwolf and run Pacsat Ground Station
+
+if [ ! -d "/home/pi/PacSatGround" ]; then
+
+  mkdir /home/pi/PacSatGround
+  
+  echo
+  echo "You will need to install the Pacsatsim spacecraft file and set the Delay to 750ms and Port to 8100 and restart the Pacsat Ground Station"
+  
+  sleep 10
+
+fi
 
 sudo modprobe snd-aloop
 
