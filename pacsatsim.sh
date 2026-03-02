@@ -112,8 +112,6 @@ fi
 
 ##  echo "Don't close the direwolf window or the Pacsatsim will stop running."
 
-  echo
-fi
 
 sudo /home/pi/pacsat_telem/Debug/pacsat_telem -v -d /home/pi/PacSat/pacsat &
 
