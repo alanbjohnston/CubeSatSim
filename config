@@ -573,8 +573,8 @@ elif [ "$1" = "-c" ]; then
 		sudo sed -i "s/AMSAT/$callsign/g" /home/pi/pi_pacsat/Debug/pacsat.config 
 		sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
 		sudo sed -i "s/callsign=AMSAT/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
-		sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
-		sudo sed -i "s/AMSAT/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
+#		sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
+#		sudo sed -i "s/AMSAT/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
 	fi
 	
 	if [ "$norestart" = "1" ]; then
@@ -1490,13 +1490,6 @@ elif [ "$1" = "-I" ]; then
 #		restart=1
 #	fi	
 
-elif [ "$1" = "-J" ]; then
-
-	echo
-	echo "Changing the PacSat Ground Station callsign"
-	echo
-	echo "Run the Pacsat Ground Station in the Desktop"
-
 elif [ "$1" = "-K" ]; then
 
 	echo
@@ -1553,7 +1546,6 @@ elif [ "$1" = "-h" ]; then
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings and shutdown"
-	echo "   -J     Set the PacSat Ground Station callsign"
 	echo "   -k     Reset the PacSatSim Configuration"
 	echo "   -K     Reset the PacSatSim Ground Station Configuration"
 
