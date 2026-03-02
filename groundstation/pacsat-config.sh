@@ -50,7 +50,7 @@ sudo killall -9 direwolf &>/dev/null
         echo "You have chosen to set the PacSat Ground Station Callsign"
 		echo 
 
-		/home/pi/CubeSatSim/config -J n
+		/home/pi/CubeSatSim/config -c n
 
     elif [ "$ANS" = "2" ] ; then
 
