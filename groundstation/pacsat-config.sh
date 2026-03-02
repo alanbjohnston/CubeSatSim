@@ -115,6 +115,6 @@ sudo killall -9 direwolf &>/dev/null
     fi  
     
 
-sleep 10
+# sleep 10
 
 #$SHELL
