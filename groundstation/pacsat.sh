@@ -93,11 +93,11 @@ sudo usermod -a -G gpio pi
 if [ ! "$1" = "l" ]; then
 #/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-df.sh"
   echo "Using TXC FM transceiver"
-  /home/pi/CubeSatSim/groundstation/pacsat-df.sh
+  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
 
 else
   echo "Using audio loopback"
-  /home/pi/CubeSatSim/groundstation/pacsat-d.sh
+  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
 
 fi
 
