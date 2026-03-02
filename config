@@ -1487,6 +1487,27 @@ elif [ "$1" = "-I" ]; then
 #		restart=1
 #	fi	
 
+elif [ "$1" = "-J" ]; then
+
+	echo "Changing the PacSat Ground Station callsign"
+	echo
+	echo "Run the Pacsat Ground Station in the Desktop"
+
+elif [ "$1" = "-k" ]; then
+
+	echo "Reset PacSat Ground Station configuration"
+	echo
+	sudo killall -9 java &>/dev/null
+	sudo rm -r /home/pi/PacSatGround
+
+elif [ "$1" = "-K" ]; then
+
+	echo "Reset PacSatSim configuration"
+	echo
+	sudo systemctl stop pacsatsim
+	sudo rm -r /home/pi/PacSat
+	reboot=1
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1501,13 +1522,16 @@ elif [ "$1" = "-h" ]; then
 	echo "   -s     Change to SSTV mode"
 	echo "   -n     Change to Transmit Commands mode"
 	echo "   -e     Change to Repeater mode"
+	echo "   -j     Change to FUNcube mode"
+	echo "   -G     Change to PacSatSim mode"
+	echo "   -I     Change to PacSat Ground Station mode"
 	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
 	echo "   -S     Scan both I2C buses on the Raspberry Pi"
-	echo "   -C     Clear logs"
+	echo "   -C     Clear logs and reboot"
 	echo "   -T     Change command and control state"
 	echo "   -d     Change command and control Direwolf state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
@@ -1517,14 +1541,15 @@ elif [ "$1" = "-h" ]; then
 	echo "   -H     Change the Balloon (HAB) mode"
 	echo "   -p     Display payload sensor data"
 	echo "   -v     Display voltage and current data"
-	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
+	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for FM RX and TX"
 	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
 	echo "   -D     Change Transmit Commands state APRS or DTMF"
 	echo "   -o     Change telemetry beacon transmit state"
 	echo "   -L     Change microphone level for command and control"
-	echo "   -g     Reset configuration back to default settings"
-	echo "   -G     Change to PacSatSim mode"
-	echo "   -I     Changing to PacSat Ground Station mode"
+	echo "   -g     Reset configuration back to default settings and shutdown"
+	echo "   -J     Set the PacSat Ground Station callsign"
+	echo "   -k     Reset the PacSatSim Configuration"
+	echo "   -K     Reset the PacSatSim Ground Station Configuration"
 
 	echo
 	exit
