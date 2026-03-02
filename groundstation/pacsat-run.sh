@@ -59,6 +59,12 @@ sudo killall -9 zenity &>/dev/null
 	elif [ "$ANS" = "3" ] || [ "$profile" = "Loopback" ] ; then
 
          echo "You have chosen the Loopback Simulated PacSat Ground Station"
+		 
+		sleep 1
+
+		/usr/bin/x-terminal-emulator --geometry=120x40 -e "bash /home/pi/CubeSatSim/pacsatsim.sh l"
+
+		sleep 1
 
 		 /home/pi/CubeSatSim/groundstation/pacsat.sh l
 	
