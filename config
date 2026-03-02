@@ -1489,22 +1489,25 @@ elif [ "$1" = "-I" ]; then
 
 elif [ "$1" = "-J" ]; then
 
+	echo
 	echo "Changing the PacSat Ground Station callsign"
 	echo
 	echo "Run the Pacsat Ground Station in the Desktop"
 
-elif [ "$1" = "-k" ]; then
+elif [ "$1" = "-K" ]; then
 
+	echo
 	echo "Reset PacSat Ground Station configuration"
 	echo
 	sudo killall -9 java &>/dev/null
 	sudo rm -r /home/pi/PacSatGround
 
-elif [ "$1" = "-K" ]; then
+elif [ "$1" = "-k" ]; then
 
+	echo
 	echo "Reset PacSatSim configuration"
 	echo
-	sudo systemctl stop pacsatsim
+	sudo systemctl stop pacsatsim &>/dev/null
 	sudo rm -r /home/pi/PacSat
 	reboot=1
 
