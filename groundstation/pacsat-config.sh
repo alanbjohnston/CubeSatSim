@@ -23,7 +23,7 @@ sudo killall -9 direwolf &>/dev/null
     echo 
     echo "1. Set PacSat Ground Station Callsign"
     echo
-    echo "2. Set PacSat Satellite Callsign"
+    echo "2. Set Remote PacSat Satellite Callsign in Ground Station configuration"
     echo 
     echo "3. Set Frequencies"
     echo
@@ -54,10 +54,34 @@ sudo killall -9 direwolf &>/dev/null
 
     elif [ "$ANS" = "2" ] ; then
 
-        echo "You have chosen to set the CubeSatSim PacSat Satellite callsign"
+        echo "You have chosen to set the remote CubeSatSim PacSat Satellite callsign in ground station configuration"
         echo
 
-		/home/pi/CubeSatSim/config -c n
+		oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/PacSatGround/spacecraft/PacSatSim.properties)
+
+		echo "Current value of remote PacSat callsign is"	
+		echo $oldcallsign
+		echo
+			
+		echo "Enter new callsign in all capitals: "
+		read callsign
+	
+		if [ -z $callsign ] ; then
+	
+			callsign="$1"
+			echo "Keeping value of" $oldcallsign
+
+		else
+	
+			sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
+			echo
+			echo "Changing callsign to "
+			echo $callsign
+			echo 
+			echo "You will see the change next time you run the PacSat Ground Station"
+			echo
+		fi
+		
 
     elif [ "$ANS" = "3" ] ; then
 
