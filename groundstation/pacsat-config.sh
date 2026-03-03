@@ -27,9 +27,11 @@ sudo killall -9 direwolf &>/dev/null
     echo 
     echo "3. Set Frequencies"
     echo
-    echo "4. Reset PacSat Ground Station"
-    echo
-    echo "5. Reset PacSat Satellite"
+    echo "4. Reset PacSat Ground Station Configuration"
+	echo
+    echo "5. Reset PacSat Ground Station Loopback Configuration"
+	echo    
+    echo "6. Reset PacSat Satellite"
     echo
 	echo "Which do you choose?  Enter 1 - 5"
     
@@ -92,16 +94,23 @@ sudo killall -9 direwolf &>/dev/null
 
     elif [ "$ANS" = "4" ] ; then
 
-         echo "You have chosen to reset the PacSat Ground Station"
+         echo "You have chosen to reset the PacSat Ground Station Configuration"
          echo 
 		 echo "Next time you run the Ground Station you will need to Add the PacSatSim spacecraft"
 		 echo
 
-#		 /home/pi/CubeSatSim/groundstation/pacsat-reset.sh
-		 /home/pi/CubeSatSim/config -K n
+		 sudo rm -r /home/pi/PacSatGround
 
+    elif [ "$ANS" = "5" ] ; then
 
-	elif [ "$ANS" = "5" ] ; then
+         echo "You have chosen to reset the PacSat Ground Station Loopback Configuration"
+         echo 
+		 echo "Next time you run the Ground Station you will need to Add the PacSatSim spacecraft"
+		 echo
+
+		 sudo rm -r /home/pi/PacSatGroundLoop
+
+	elif [ "$ANS" = "6" ] ; then
 
          echo "You have chosen to reset the PacSat Satellite"
          echo 
