@@ -24,13 +24,22 @@ value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
 set -- $value
 
+
 callsign="$1"
 
+echo "Configured callsign is "
+echo $callsign
+
 oldcallsign=$(grep -oP '(?<=callsign=).*(?=-)' /home/pi/PacSatGround/PacSatGround.properties)
+
+echo "Callsign in PacSatGround.properties is "
+echo $oldcallsign
 
 if [ ! "$callsign" = "$oldcallsign" ] ; then
 
   sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
+
+  cat /home/pi/PacSatGround/PacSatGround.properties
   
 fi
 
