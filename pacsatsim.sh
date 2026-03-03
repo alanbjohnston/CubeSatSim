@@ -139,12 +139,12 @@ echo
 if [ "$loopback" = "1" ]; then
 
   echo "Using audio loopback"
-  /home/pi/CubeSatSim/pacsatsim-d.sh &
+  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
   
 else
 
   echo "Using TXC FM transceiver"
-  /home/pi/CubeSatSim/pacsatsim-df.sh &
+  sudo /home/pi/CubeSatSim/pacsatsim-df.sh &
 
 fi
 
