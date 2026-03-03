@@ -76,6 +76,7 @@ sudo killall -9 direwolf &>/dev/null
        
     fi  
     
+sudo killall -9 direwolf &>/dev/null
 
 sleep 10
 
