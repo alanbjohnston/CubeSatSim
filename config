@@ -1490,14 +1490,6 @@ elif [ "$1" = "-I" ]; then
 #		restart=1
 #	fi	
 
-elif [ "$1" = "-K" ]; then
-
-	echo
-	echo "Reset PacSat Ground Station configuration"
-	echo
-	sudo killall -9 java &>/dev/null
-	sudo rm -r /home/pi/PacSatGround
-
 elif [ "$1" = "-k" ]; then
 
 	echo
@@ -1547,7 +1539,6 @@ elif [ "$1" = "-h" ]; then
 	echo "   -L     Change microphone level for command and control"
 	echo "   -g     Reset configuration back to default settings and shutdown"
 	echo "   -k     Reset the PacSatSim Configuration"
-	echo "   -K     Reset the PacSatSim Ground Station Configuration"
 
 	echo
 	exit
