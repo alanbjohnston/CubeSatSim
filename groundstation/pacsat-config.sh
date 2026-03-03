@@ -133,6 +133,12 @@ sudo killall -9 direwolf &>/dev/null
 	
 			 sudo rm -r /home/pi/PacSatGround
 
+		else
+
+			echo "Please choose an option 1-3"
+
+		fi	 
+
 	elif [ "$ANS" = "2" ] ; then
 	
 		echo "Here are your PacSat Ground Station Loopback Configuration choices:"
