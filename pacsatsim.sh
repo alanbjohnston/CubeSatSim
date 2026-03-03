@@ -105,6 +105,10 @@ sudo modprobe snd-aloop
 
 #sudo killall -9 zenity &>/dev/null
 
+sudo killall -9 pacsat_telem &>/dev/null
+
+sudo killall -9 pi_pacsat &>/dev/null
+
 echo
 
 
