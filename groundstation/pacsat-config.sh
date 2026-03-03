@@ -21,13 +21,13 @@ sudo killall -9 direwolf &>/dev/null
 
     echo "Here are the PacSat configuration choices:"
     echo 
-    echo "1. PacSat Ground Station Configuration"
+    echo " 1. PacSat Ground Station Configuration"
     echo
-    echo "2. PacSat Ground Station Loopback Configuration"
+    echo " 2. PacSat Ground Station Simulation Configuration"
     echo
-	echo "3. Set Frequencies"
+	echo " 3. Set Frequencies"
     echo
-    echo "4. Reset PacSat Satellite"
+    echo " 4. Reset PacSat Satellite"
     echo
 	echo "Which do you choose?  Enter 1 - 4"
 	
@@ -51,11 +51,11 @@ sudo killall -9 direwolf &>/dev/null
 			echo "Here are your PacSat Ground Station Simulation Configuration choices:"
 		fi	
 		echo
-	    echo "1. PacSat Ground Station Callsign"
+	    echo " 1. PacSat Ground Station Callsign"
 	    echo
-	    echo "2. Set Remote PacSat Satellite Callsign in Ground Station configuration"
+	    echo " 2. Set Remote PacSat Satellite Callsign in Ground Station configuration"
 	    echo
-	    echo "3. Reset PacSat Ground Station Configuration"
+	    echo " 3. Reset PacSat Ground Station Configuration"
 	
 		read -r ANS
 
@@ -72,6 +72,7 @@ sudo killall -9 direwolf &>/dev/null
 
 		if [ "$ANS" = "1" ] ; then
 
+			echo
 			if [ "$ANS" = "1" ] ; then
 				oldcallsign=$(grep -oP '(?<=callsign=).*$' /home/pi/PacSatGround/PacSatGround.properties)
 			else
