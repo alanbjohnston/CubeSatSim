@@ -32,6 +32,35 @@ if [ ! -d "/home/pi/PacSat" ]; then
 
 fi
 
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
+callsign="$1"
+
+echo "Configured callsign is "
+echo $callsign
+
+oldcallsign=$(grep -oP '(?<=bbs_callsign=).*(?=-)' /home/pi/pi_pacsat/Debug/pacsat.config)
+
+echo "Callsign in pacsat.config is "
+echo $oldcallsign
+
+if [ ! "$callsign" = "$oldcallsign" ] ; then
+
+  sudo sed -i "s/bbs_callsign=$oldcallsign/bbs_callsign=$callsign/g" /home/pi/pi_pacsat/Debug/pacsat.config
+  sudo sed -i "s/broadcast_callsign=$oldcallsign/broadcast_callsign=$callsign/g" /home/pi/pi_pacsat/Debug/pacsat.config
+  sudo sed -i "s/digi_callsign=$oldcallsign/digi_callsign=$callsign/g" /home/pi/pi_pacsat/Debug/pacsat.config
+
+  echo "New pacsat.confg is"
+  echo
+
+  cat /home/pi/pi_pacsat/Debug/pacsat.config
+  
+fi
+
+
+
 sudo /etc/init.d/alsa-utils stop
 sudo /etc/init.d/alsa-utils start
 
