@@ -6,15 +6,18 @@ loopback=0
 if [ "$1" = "l" ] ; then
 
   loopback=1
+  echo "PacSat Ground Station with Loopback"  
   
 fi  
 
 if [ ! -d "/home/pi/PacSatGround" ] ; then
 
   mkdir /home/pi/PacSatGround
+
+  mkdir /home/pi/PacSatGroundLoop
   
   echo
-  echo "You will need to install the Pacsatsim spacecraft file and set the Delay to 750ms and Port to 8100 and restart the Pacsat Ground Station"
+  echo "The first time you run the Ground Station, you will need to install the Pacsatsim spacecraft file and set the Delay to 750ms and Port to 8100 and restart the Pacsat Ground Station"
   
   sleep 10
 
@@ -39,6 +42,19 @@ if [ ! "$callsign" = "$oldcallsign" ] ; then
   sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
 
   cat /home/pi/PacSatGround/PacSatGround.properties
+  
+fi
+
+oldcallsign=$(grep -oP '(?<=callsign=).*$' /home/pi/PacSatGroundLoop/PacSatGround.properties)
+
+echo "Callsign in Loopback PacSatGround.properties is "
+echo $oldcallsign
+
+if [ ! "$callsign" = "$oldcallsign" ] ; then
+
+  sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
+
+  cat /home/pi/PacSatGroundLoop/PacSatGround.properties
   
 fi
 
@@ -139,9 +155,15 @@ fi
 
 cd /home/pi/Desktop/PacsatGround/
 
-setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
+if [ "$loopback" = "1" ]; then
 
+  setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGroundLoop" # removed &
 
+else
+
+  setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
+
+fi
 #cd /home/pi/Desktop/PacSatGround_0.46m_linux/
 
 #sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
