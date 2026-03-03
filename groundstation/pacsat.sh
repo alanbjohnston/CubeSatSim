@@ -28,7 +28,7 @@ callsign="$1"
 
 oldcallsign=$(grep -oP '(?<=callsign=).*(?=-)' /home/pi/PacSatGround/PacSatGround.properties)
 
-if [ ! "$callsign" = "$oldcallsign" ] 
+if [ ! "$callsign" = "$oldcallsign" ] ; then
 
   sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
   
