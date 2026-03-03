@@ -93,6 +93,7 @@ sudo killall -9 direwolf &>/dev/null
 				  cat /home/pi/PacSatGround/PacSatGround.properties
 				  
 				fi
+			fi	
 
 		elif [ "$ANS" = "2" ] ; then
 	
