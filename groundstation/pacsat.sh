@@ -32,40 +32,8 @@ if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
 
 fi
 
-value=`cat /home/pi/CubeSatSim/sim.cfg`
-echo "$value" > /dev/null
-set -- $value
-
-callsign="$1"
-
-echo "Configured callsign is "
-echo $callsign
-
-oldcallsign=$(grep -oP '(?<=callsign=).*$' /home/pi/PacSatGround/PacSatGround.properties)
-
-echo "Callsign in PacSatGround.properties is "
-echo $oldcallsign
-
-if [ ! "$callsign" = "$oldcallsign" ] ; then
-
-  sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
-
-  cat /home/pi/PacSatGround/PacSatGround.properties
-  
-fi
-
-oldcallsign=$(grep -oP '(?<=callsign=).*$' /home/pi/PacSatGroundLoop/PacSatGround.properties)
-
-echo "Callsign in Loopback PacSatGround.properties is "
-echo $oldcallsign
-
-if [ ! "$callsign" = "$oldcallsign" ] ; then
-
-  sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
-
-  cat /home/pi/PacSatGroundLoop/PacSatGround.properties
-  
-fi
+sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGround/PacSatGround.properties
+sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
 
 sudo modprobe snd-aloop
 
