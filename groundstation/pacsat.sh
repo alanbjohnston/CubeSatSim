@@ -2,7 +2,14 @@
 
 # script to auto decode packet using rtl_fm and Direwolf and run Pacsat Ground Station
 
-if [ ! -d "/home/pi/PacSatGround" ]; then
+loopback=0
+if [ "$1" = "l" ] ; then
+
+  loopback=1
+  
+fi  
+
+if [ ! -d "/home/pi/PacSatGround" ] ; then
 
   mkdir /home/pi/PacSatGround
   
@@ -11,6 +18,20 @@ if [ ! -d "/home/pi/PacSatGround" ]; then
   
   sleep 10
 
+fi
+
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
+callsign="$1"
+
+oldcallsign=$(grep -oP '(?<=callsign=).*(?=-)' /home/pi/PacSatGround/PacSatGround.properties)
+
+if [ ! "$callsign" = "$oldcallsign" ] 
+
+  sudo sed -i "s/callsign=$oldcallsign/callsign=$callsign/g" /home/pi/PacSatGround/PacSatGround.properties
+  
 fi
 
 sudo modprobe snd-aloop
@@ -90,14 +111,16 @@ echo
 
 sudo usermod -a -G gpio pi
 
-if [ ! "$1" = "l" ]; then
+if [ "$loopback" = "1" ]; then
 #/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-df.sh"
-  echo "Using TXC FM transceiver"
-  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
+
+  echo "Using Audio Loopback"
+  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
 
 else
-  echo "Using audio loopback"
-  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
+
+  echo "Using TXC FM Transceiver"
+  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
 
 fi
 
