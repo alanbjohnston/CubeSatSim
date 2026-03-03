@@ -5,16 +5,18 @@ echo "Startup script to run the PacSat Ground Station for FIAB v4"
 
 echo 
 
-source /home/pi/venv/bin/activate
+# source /home/pi/venv/bin/activate
 
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo killall -9 direwolf &>/dev/null
+
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
-   profile=$(zenity --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=120 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Loopback" "Run a Locally Simulated PacSat")
+   profile=$(zenity --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=170 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated PacSat")
 
    echo $profile
 
@@ -56,9 +58,9 @@ sudo killall -9 zenity &>/dev/null
 
 		/home/pi/CubeSatSim/groundstation/pacsat-config.sh
 
-	elif [ "$ANS" = "3" ] || [ "$profile" = "Loopback" ] ; then
+	elif [ "$ANS" = "3" ] || [ "$profile" = "Simulate" ] ; then
 
-         echo "You have chosen the Loopback Simulated PacSat Ground Station"
+         echo "You have chosen the PacSat Ground Station with Local Simulated Satellite"
 		 
 		sleep 1
 
