@@ -2,6 +2,13 @@
 
 # script to run PacsatSim
 
+loopback=0
+if [ "$1" = "l" ] ; then
+
+  loopback=1
+  
+fi  
+
 if [ ! -d "/home/pi/PacSat" ]; then
 
   echo "Setting up PacSatSim default configuration"
@@ -125,14 +132,15 @@ echo
 
 
 
-if [ ! "$1" = "l" ]; then
-#/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-df.sh"
-  echo "Using TXC FM transceiver"
-  /home/pi/CubeSatSim/pacsatsim-df.sh &
+if [ "$loopback" = "1" ]; then
 
-else
   echo "Using audio loopback"
   /home/pi/CubeSatSim/pacsatsim-d.sh &
+  
+else
+
+  echo "Using TXC FM transceiver"
+  /home/pi/CubeSatSim/pacsatsim-df.sh &
 
 fi
 
