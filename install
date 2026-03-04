@@ -80,6 +80,7 @@ fi
 
 cd
 
+sudo apt-get install -y cmake
 git clone https://github.com/wb2osz/direwolf.git
 cd direwolf
 mkdir build 
