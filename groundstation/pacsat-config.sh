@@ -57,10 +57,10 @@ sudo killall -9 direwolf &>/dev/null
 	    echo
 	    echo " 3. Reset PacSat Ground Station Configuration"
 	
-		read -r ANS
+		read -r CH
 
 		
-	    if [ -z "$ANS" ]; then 
+	    if [ -z "$CH" ]; then 
 	   
 		    echo "No choice made.  Exiting."
 		    
@@ -70,7 +70,7 @@ sudo killall -9 direwolf &>/dev/null
 	
 	    fi
 
-		if [ "$ANS" = "1" ] ; then
+		if [ "$CH" = "1" ] ; then
 
 			echo
 			if [ "$ANS" = "1" ] ; then
@@ -107,7 +107,7 @@ sudo killall -9 direwolf &>/dev/null
 				fi
 			fi	
 
-		elif [ "$ANS" = "2" ] ; then
+		elif [ "$CH" = "2" ] ; then
 	
 			echo "You have chosen to set the remote CubeSatSim PacSat Satellite callsign in ground station configuration"
 			echo
@@ -143,7 +143,7 @@ sudo killall -9 direwolf &>/dev/null
 				echo
 			fi
 	
-	    elif [ "$ANS" = "3" ] ; then
+	    elif [ "$CH" = "3" ] ; then
 	
 	         echo "You have chosen to reset the PacSat Ground Station Configuration"
 	         echo 
