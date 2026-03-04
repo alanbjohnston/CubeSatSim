@@ -32,7 +32,7 @@ CubeSatSim/config -c -n
 
 CubeSatSim/config -l -n
 
-cp /home/piCubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
+cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
