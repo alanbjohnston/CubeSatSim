@@ -84,7 +84,7 @@ git clone https://github.com/alanbjohnston/direwolf.git
 
 cd direwolf
 
-git checkout invert
+git checkout master-sync-invert
 
 make -j
 
