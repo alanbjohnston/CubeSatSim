@@ -148,7 +148,7 @@ if [ "$loopback" = "1" ]; then
 
 elif [ "$vox" = "1" ]; then
 
-  echo "Using USB Audio TX and RX"
+  echo "Using Soundcard Audio TX and RX (VOX)"
   sudo /home/pi/CubeSatSim/pacsatsim-dj.sh &
 
 else
