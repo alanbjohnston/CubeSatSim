@@ -165,7 +165,7 @@ if [ -f "$FILE" ]; then
 fi
 
 FILE=/home/pi/pacsat_telem/Debug/pacsat_telem  # code has already been compiled
-if [ -f "$FILE" ]; then
+if [ ! -f "$FILE" ]; then
 	cd
 	sudo apt-get install -y libbsd-dev
 	git clone https://github.com/alanbjohnston/pacsat_telem.git
