@@ -80,18 +80,14 @@ fi
 
 cd
 
-git clone https://github.com/alanbjohnston/direwolf.git
-
+git clone https://github.com/wb2osz/direwolf.git
 cd direwolf
-
-git checkout master-sync-invert
-
-make -j
-
+mkdir build 
+cd build
+cmake ..
+make -j4
 sudo make install
-
-make install-rpi
-
+make install-conf
 
 cd
 
