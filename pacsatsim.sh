@@ -3,9 +3,14 @@
 # script to run PacsatSim
 
 loopback=0
+vox=0
 if [ "$1" = "l" ] ; then
 
   loopback=1
+
+elif [ "$1" = "v" ] ; then
+
+  vox=1  
   
 fi  
 
@@ -141,7 +146,7 @@ if [ "$loopback" = "1" ]; then
   echo "Using audio loopback"
   sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
 
-elif [ "$loopback" = "v" ]; then
+elif [ "$vox" = "1" ]; then
 
   echo "Using USB Audio TX and RX"
   sudo /home/pi/CubeSatSim/pacsatsim-dj.sh &
