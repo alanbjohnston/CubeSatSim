@@ -140,7 +140,12 @@ if [ "$loopback" = "1" ]; then
 
   echo "Using audio loopback"
   sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
-  
+
+elif [ "$loopback" = "v" ]; then
+
+  echo "Using USB Audio TX and RX"
+  sudo /home/pi/CubeSatSim/pacsatsim-dj.sh &
+
 else
 
   echo "Using TXC FM transceiver"
