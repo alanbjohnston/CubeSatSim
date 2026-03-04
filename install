@@ -129,7 +129,7 @@ cd rpitx
 sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
 
 FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
-if [ -f "$FILE" ]; then
+if [ ! -f "$FILE" ]; then
 	cd
 	git clone https://github.com/alanbjohnston/g0kla_common.git
 	cd g0kla_common/Debug/
