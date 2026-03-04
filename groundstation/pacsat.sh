@@ -3,10 +3,16 @@
 # script to auto decode packet using rtl_fm and Direwolf and run Pacsat Ground Station
 
 loopback=0
+vox=0
 if [ "$1" = "l" ] ; then
 
   loopback=1
   echo "PacSat Ground Station with Loopback"  
+
+elif [ "$1" = "v" ] ; then
+
+  vox=1 
+  echo "PacSat Ground Station with Soundcard (VOX)"  
   
 fi  
 
@@ -117,6 +123,11 @@ if [ "$loopback" = "1" ]; then
 
   echo "Using Audio Loopback"
   /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
+
+elif [ "$vox" = "1" ]; then
+
+  echo "Using Soundcard Audio TX RX (VOX)"
+  /home/pi/CubeSatSim/groundstation/pacsat-dj.sh &
 
 else
 
