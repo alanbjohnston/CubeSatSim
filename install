@@ -1,13 +1,313 @@
 #!/bin/bash
 
-echo -e "\ninstallation script for CubeSatSim v2.1\n"
+FLAG=0
+checkout=0
+BULLSEYE=0
+UPDATE=0
+
+FILE=/home/pi/CubeSatSim/cubesatsim  # code has already been compiled
+if [ -f "$FILE" ]; then
+
+	UPDATE=1
+
+	echo -e "\nUpdate script for CubeSatSim v2.2\n"
+
+	if [ -z "$1" ] ; then
+		checkout=0
+	else
+		checkout=1
+		branch="$1"
+		echo -n "changing to branch "
+		echo $branch
+		FLAG=1
+	fi
+	
+	if [ "$2" = "n" ] ; then
+		noreboot=1
+	else
+		noreboot=0
+	fi
+
+else
+
+	echo -e "\nInstallation script for CubeSatSim v2.2\n"
+
+	touch /home/pi/CubeSatSim/command_control_direwolf
+
+    echo "creating $FILE"
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+
+	/home/pi/CubeSatSim/config -c -n
+
+	/home/pi/CubeSatSim/config -l -n
+
+fi
+
+if [[ $(grep '11.' /etc/debian_version) ]]; then
+
+	BULLSEYE=1
+
+    echo "Debian 11 (Bullseye) detected"
+
+  	sudo cp /boot/config.txt /boot/config.txt.0
+
+	  sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
+	
+	  sudo raspi-config nonint do_i2c 0
+	
+	  sudo raspi-config nonint do_camera 0
+	
+	  sudo raspi-config nonint do_legacy 0
+	  
+	  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
+	
+	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+	
+	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+	
+	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
+	  
+	  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
+	    echo "dtoverlay=i2c-gpio already in /boot/config.txt"
+	  else
+	    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
+	  fi
+	
+	  if [[ $(grep 'enable_uart=1' /boot/config.txt) ]]; then
+	    echo "enable_uart=1 already in /boot/config.txt"
+	  else
+	    echo "adding enable_uart=1 to /boot/config.txt"
+	    sudo sh -c 'echo "\nenable_uart=1" >> /boot/config.txt'
+	  fi
+	  
+	  if [[ $(grep 'dtoverlay=disable-bt' /boot/config.txt) ]]; then
+	    echo "dtoverlay=disable-bt already in /boot/config.txt"
+	  else
+	    echo "adding dtoverlay=disable-bt to /boot/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=disable-bt" >> /boot/config.txt'
+	  fi
+	  
+	  if [[ $(grep 'dtoverlay=dwc2' /boot/config.txt) ]]; then
+	    echo "dtoverlay=dwc2 aalready in /boot/config.txt"
+	  else
+	    echo "adding dtoverlay=dwc2 to /boot/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=dwc2" >> /boot/config.txt'
+	  fi
+	
+	  if [[ $(grep 'modules-load=dwc2,g_ether' /boot/cmdline.txt) ]]; then
+	    echo "modules-load=dwc2,g_ether already in /boot/cmdline.txt"
+	  else
+	    echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
+	    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
+	  fi
+	  
+	  if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
+	    echo "dtparam=audio=on already in /boot/config.txt"
+	  else
+	    echo "adding dtparam=audio=on to /boot/config.txt"
+	    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
+	  fi
+	
+	  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
+	    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
+	  else
+	    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
+	  fi
+	
+	  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
+	    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
+	  else
+	    echo "adding overlay=pwm,pin=18,func=2 to /boot/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
+	  fi
+	
+	  if [[ $(grep 'disable_splash=1' /boot/config.txt) ]]; then
+	    echo "disable_splash=1 already in /boot/config.txt"
+	  else
+	    echo "adding disable_splash=1 to /boot/config.txt"
+	    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/config.txt'
+	  fi
+	
+	  if [[ $(grep 'boot_delay=0' /boot/config.txt) ]]; then
+	    echo "boot_delay=0 already in /boot/config.txt"
+	  else
+	    echo "adding boot_delay=0 to /boot/config.txt"
+	    sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
+	  fi
+	
+	  if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
+	
+	  sudo sh -c 'echo "\n" >> /boot/config.txt'
+  fi
+
+if [[ $(grep 'bookworm' /etc/os-release) ]]; then
+	
+	echo "Debian 12 (Bookworm) detected"
+
+	sudo cp /boot/firmware/config.txt /boot/firmware/config.txt.0
+	
+	sudo cp /boot/firmware/cmdline.txt /boot/firmware/cmdline.txt.0
+	
+	sudo raspi-config nonint do_i2c 0
+	
+	sudo raspi-config nonint do_camera 0
+	
+	sudo raspi-config nonint do_legacy 0
+	
+	  sudo sed -i 's/console=serial0,115200 //g' /boot/firmware/cmdline.txt
+	
+	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+	
+	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+	
+	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/firmware/config.txt
+	  
+	  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/firmware/config.txt) ]]; then
+	    echo "dtoverlay=i2c-gpio already in /boot/firmware/config.txt"
+	  else
+	    echo "adding dtoverlay=i2c-gpio to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'enable_uart=1' /boot/firmware/config.txt) ]]; then
+	    echo "enable_uart=1 already in /boot/firmware/config.txt"
+	  else
+	    echo "adding enable_uart=1 to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\nenable_uart=1" >> /boot/firmware/config.txt'
+	  fi
+	  
+	  if [[ $(grep 'dtoverlay=disable-bt' /boot/firmware/config.txt) ]]; then
+	    echo "dtoverlay=disable-bt already in /boot/firmware/config.txt"
+	  else
+	    echo "adding dtoverlay=disable-bt to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=disable-bt" >> /boot/firmware/config.txt'
+	  fi
+	  
+	  if [[ $(grep 'dtoverlay=dwc2' /boot/firmware/config.txt) ]]; then
+	    echo "dtoverlay=dwc2 aalready in /boot/firmware/config.txt"
+	  else
+	    echo "adding dtoverlay=dwc2 to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=dwc2" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'modules-load=dwc2,g_ether' /boot/firmware/cmdline.txt) ]]; then
+	    echo "modules-load=dwc2,g_ether already in /boot/firmware/cmdline.txt"
+	  else
+	    echo "adding modules-load=dwc2,g_ether to /boot/firmware/cmdline.txt"
+	    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/firmware/cmdline.txt
+	  fi
+	  
+	  if [[ $(grep 'dtparam=audio=on' /boot/firmware/config.txt) ]]; then
+	    echo "dtparam=audio=on already in /boot/firmware/config.txt"
+	  else
+	    echo "adding dtparam=audio=on to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/firmware/config.txt) ]]; then
+	    echo "dtoverlay=audremap,enable_jack=on already in /boot/firmware/config.txt"
+	  else
+	    echo "adding dtoverlay=audremap,enable_jack=on to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/firmware/config.txt) ]]; then
+	    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/firmware/config.txt"
+	  else
+	    echo "adding  to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'disable_splash=1' /boot/firmware/config.txt) ]]; then
+	    echo "disable_splash=1 already in /boot/firmware/config.txt"
+	  else
+	    echo "adding disable_splash=1 to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'boot_delay=0' /boot/firmware/config.txt) ]]; then
+	    echo "boot_delay=0 already in /boot/firmware/config.txt"
+	  else
+	    echo "adding boot_delay=0 to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\nboot_delay=0" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if [[ $(grep 'camera_auto_detect=1' /boot/firmware/config.txt) ]]; then
+	    echo "camera_auto_detect=1 already in /boot/firmware/config.txt"
+	  else
+	    echo "adding camera_auto_detect=1 to /boot/firmware/config.txt"
+	    sudo sh -c 'echo "\ncamera_auto_detect=1" >> /boot/firmware/config.txt'
+	  fi
+	
+	  if ! grep -q force_turbo=1 /boot/firmware/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/firmware/config.txt'; fi
+
+	  sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
+
+elif [[ $(grep 'trixie' /etc/os-release) ]]; then
+
+	echo "Trixie detected, installation continuing."
+	echo "Your Pi OS version is not Bookworm or Bullseye."
+	echo "The software installation will likely not work."
+	echo "See the README.md for how to install using Bookworm."
+	echo
+
+	echo "Are you sure you want to continue the installation (y/n)?"
+	
+	read -r ANS
+	
+	if [ "$ANS" = "n" ]; then	
+	    exit 1
+	fi
+fi
+>>>>>>> 9518ba870ed4548fcaf00285b0578312a9a300c2
 
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
+
+	changed=0
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	# echo "$value"
+	echo "$value" > /dev/null
+	set -- $value
+	
+	if [ -z "$1" ] ; then n1="AMSAT" ; changed=1 ; else n1=$1 ; fi # callsign
+	if [ -z "$2" ] ; then n2="0" ; changed=1 ; else n2=$2 ; fi # reset count
+	if [ -z "$3" ] ; then n3="0" ; changed=1 ; else n3=$3 ; fi # lat
+	if [ -z "$4" ] ; then n4="0" ; changed=1 ; else n4=$4 ; fi # lon
+	if [ -z "$5" ] ; then n5="no" ; changed=1 ; else n5=$5 ; fi # sim mode
+	if [ -z "$6" ] ; then n6="3" ; changed=1 ; else n6=$6 ; fi # squelch
+	if [ -z "$7" ] ; then n7="434.9000" ; changed=1 ; else n7=$7 ; fi # transmit frequency
+	if [ -z "$8" ] ; then n8="435.0000" ; changed=1 ; else n8=$8 ; fi # receive frequency
+	if [ -z "$9" ] ; then n9="no" ; changed=1 ; else n9=$9 ; fi # hab mode
+	if [ -z "${10}" ] ; then m1="0" ; changed=1 ; else m1=${10} ; fi # rx pl code 
+	if [ -z "${11}" ] ; then m2="0" ; changed=1 ; else m2=${11} ; fi # tx pl code
+	if [ -z "${12}" ] ; then m3="no" ; changed=1 ; else m3=${12} ; fi # random fail
+	if [ -z "${13}" ] ; then m4="60" ; changed=1 ; else m4=${13} ; fi # random fail period
+
+	if [ $changed -eq 1 ]; then
+		echo -e "Current sim.cfg configuration file:"	
+		echo
+		echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+		echo
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4> /home/pi/CubeSatSim/sim.cfg
+		echo
+	fi
+
 else 
     echo "creating $FILE"
-    echo "AMSAT 1 0.0 0.0" > /home/pi/CubeSatSim/sim.cfg
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+fi
+
+if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
+	echo "motd already updated"
+else
+	echo "updating motd"
+	sudo sh -c 'cat /home/pi/CubeSatSim/motd.txt >> /etc/motd'
 fi
 
 FILE=/home/pi/CubeSatSim/command_tx
@@ -25,48 +325,87 @@ else
     echo "creating $FILE"
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
-
-cd
-
-CubeSatSim/config -c -n
-
-CubeSatSim/config -l -n
-
-cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
   
 sudo apt-get update && sudo apt-get dist-upgrade -y
 
+# if [ $BULLSEYE -eq 1 ]; then
+#	sudo apt purge -y python3-pip
+#	sudo apt install -y python3-pip
+# fi
+
+cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
+
+if [ ! -d "/home/pi/venv" ]; then
+
+	cd
+	sudo apt install -y python3-venv
+	sudo python3 -m venv venv
+	source /home/pi/venv/bin/activate
+	
+	curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
+	
+	sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
+	sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
+
+fi
+>>>>>>> 9518ba870ed4548fcaf00285b0578312a9a300c2
+
 sudo apt-get remove pulseaudio -y
+
+sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-client-dev libgpiod-dev raspi-config 
 
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
 
-cd /tmp
+if [ ! -d "/home/pi/direwolf" ]; then
 
-# wget https://project-downloads.drogon.net/wiringpi-latest.deb
+	cd	
+	git clone https://github.com/alanbjohnston/direwolf.git
+	cd direwolf	
+	make -j
+	sudo make install	
+	make install-rpi
+fi
 
-# sudo dpkg -i wiringpi-latest.deb
+	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
+	sudo systemctl disable gpsd
+	sudo systemctl disable gpsd.socket
+
+if [ ! -d "/home/pi/WiringPi" ]; then
+	cd
+	git clone https://github.com/alanbjohnston/WiringPi
+	cd WiringPi
+	./build debian
+	sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+fi
 
 cd
 
-git clone https://github.com/alanbjohnston/WiringPi
-cd WiringPi
-./build debian
+if [ ! $BULLSEYE -eq 1 ]; then
+	sudo apt install -y libtiff6
+fi
 
-sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
-cd
+if [ $BULLSEYE -eq 1 ] || [ $UPDATE -eq 0 ] ; then
 
-#changed to python3-smbus
-sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 libtiff5 python3-pil python3-serial
+	sudo pip3 install --upgrade setuptools
+	
+	sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
 
-sudo pip3 install --upgrade setuptools
+fi
 
-sudo pip3 install adafruit-blinka RPI.GPIO adafruit-extended-bus adafruit-circuitpython-ina219
+cd /home/pi/CubeSatSim
 
-cd ~/CubeSatSim
+git pull --no-rebase > .updated
 
-git pull --no-rebase
+if [ $checkout -eq 1 ]; then
+	git checkout $branch	
+	git pull --no-rebase > .updated
+	FLAG=1
+	echo "Running update script again"
+	/home/pi/CubeSatSim/install
+fi
 
 make debug
 
@@ -80,7 +419,6 @@ fi
 
 cd
 
-sudo apt-get install -y cmake
 git clone https://github.com/wb2osz/direwolf.git
 cd direwolf
 mkdir build 
@@ -92,38 +430,29 @@ make install-conf
 
 cd
 
-git clone https://github.com/alanbjohnston/pi-power-button.git
+if [ ! -d "/home/pi/pi-power-button" ]; then
 
-cd pi-power-button
+	cd
+	git clone https://github.com/alanbjohnston/pi-power-button.git
+	cd pi-power-button
+	git checkout master
+	./script/install	
+	sudo apt-get install -y libraspberrypi-dev
 
+fi
+
+cd /home/pi/pi-power-button
+
+git pull --no-rebase > .updated_p
 git checkout master
-
-./script/install
-
-
-cd
-
-git clone https://github.com/alanbjohnston/PiSSTVpp.git
-
-cd PiSSTVpp
-
-make pisstvpp
-
-echo "Copying SSTV image 1"
-cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
-
-echo "Copying SSTV image 2"
-cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+grep 'changed' /home/pi/pi-power-button/.updated_p
+if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
+	echo "updating pi-power-button."
+	script/install
+	FLAG=1
+fi
 
 cd
-
-git clone https://github.com/alanbjohnston/rpitx.git
-
-cd rpitx
-
-./install.sh
-
-sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
 
 FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
 if [ ! -f "$FILE" ]; then
@@ -198,154 +527,258 @@ sudo apt-get install default-jdk -y
 
 cd
 
-sudo cp ~/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+if [ ! -d "/home/pi/PiSSTVpp" ]; then
 
-sudo systemctl enable cubesatsim
+  sudo apt-get update -y
+  sudo apt-get install -y python-picamera python3-picamera build-essential libgd-dev libmagic-dev
+  cd
+  git clone https://github.com/alanbjohnston/PiSSTVpp.git
+  cd PiSSTVpp
+  make pisstvpp
 
-sudo cp ~/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
-
-# sudo systemctl enable transmit
-
-sudo cp ~/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
-
-sudo systemctl enable command
-
-sudo cp ~/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
-
-sudo cp /boot/config.txt /boot/config.txt.0
-
-sudo cp /boot/cmdline.txt /boot/cmdline.txt.0
-
-
-sudo raspi-config nonint do_i2c 0
-
-sudo raspi-config nonint do_camera 0
-
-sudo raspi-config nonint do_legacy 0
-
-#if [ "$1" = "u" ]; then
-#fi
-
-##  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
-  
-  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
-
-  #sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
-  
-  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
-  
-  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/config.txt) ]]; then
-    echo "dtoverlay=i2c-gpio already in /boot/config.txt"
-  else
-    echo "adding dtoverlay=i2c-gpio to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24" >> /boot/config.txt'
-  fi
-
-  if [[ $(grep 'enable_uart=1' /boot/config.txt) ]]; then
-    echo "enable_uart=1 already in /boot/config.txt"
-  else
-    echo "adding enable_uart=1 to /boot/config.txt"
-    sudo sh -c 'echo "\nenable_uart=1" >> /boot/config.txt'
-  fi
-  
-  if [[ $(grep 'dtoverlay=disable-bt' /boot/config.txt) ]]; then
-    echo "dtoverlay=disable-bt already in /boot/config.txt"
-  else
-    echo "adding dtoverlay=disable-bt to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=disable-bt" >> /boot/config.txt'
-  fi
-  
-  if [[ $(grep 'dtoverlay=dwc2' /boot/config.txt) ]]; then
-    echo "dtoverlay=dwc2 aalready in /boot/config.txt"
-  else
-    echo "adding dtoverlay=dwc2 to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=dwc2" >> /boot/config.txt'
-  fi
-
-  if [[ $(grep 'modules-load=dwc2,g_ether' /boot/cmdline.txt) ]]; then
-    echo "modules-load=dwc2,g_ether already in /boot/cmdline.txt"
-  else
-    echo "adding modules-load=dwc2,g_ether to /boot/cmdline.txt"
-    sudo sed -i 's/ rootwait/ rootwait modules-load=dwc2,g_ether/g' /boot/cmdline.txt
-  fi
-  
-  if [[ $(grep 'dtparam=audio=on' /boot/config.txt) ]]; then
-    echo "dtparam=audio=on already in /boot/config.txt"
-  else
-    echo "adding dtparam=audio=on to /boot/config.txt"
-    sudo sh -c 'echo "\ndtparam=audio=on" >> /boot/config.txt'
-  fi
-
-  if [[ $(grep 'dtoverlay=audremap,enable_jack=on' /boot/config.txt) ]]; then
-    echo "dtoverlay=audremap,enable_jack=on already in /boot/config.txt"
-  else
-    echo "adding dtoverlay=audremap,enable_jack=on to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=audremap,enable_jack=on" >> /boot/config.txt'
-  fi
-
-  if [[ $(grep 'dtoverlay=pwm,pin=18,func=2' /boot/config.txt) ]]; then
-    echo "dtoverlay=pwm,pin=18,func=2 already in /boot/config.txt"
-  else
-    echo "adding  to /boot/config.txt"
-    sudo sh -c 'echo "\ndtoverlay=pwm,pin=18,func=2" >> /boot/config.txt'
-  fi
-
-  if [[ $(grep 'disable_splash=1 ' /boot/config.txt) ]]; then
-    echo "disable_splash=1 already in /boot/config.txt"
-  else
-    echo "adding  to /boot/config.txt"
-    sudo sh -c 'echo "\ndisable_splash=1" >> /boot/config.txt'
-  fi
-
-  if [[ $(grep 'boot_delay=0' /boot/config.txt) ]]; then
-    echo "boot_delay=0 already in /boot/config.txt"
-  else
-    echo "adding  to /boot/config.txt"
-    sudo sh -c 'echo "\nboot_delay=0" >> /boot/config.txt'
-  fi
-
-  if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
-
-sudo sh -c 'echo "\n" >> /boot/config.txt'
-
-changed=0
-value=`cat /home/pi/CubeSatSim/sim.cfg`
-echo "$value" > /dev/null
-set -- $value
-
-if [ -z "$1" ] ; then n1="AMSAT" ; changed=1 ; else n1=$1 ; fi # callsign
-if [ -z "$2" ] ; then n2="0" ; changed=1 ; else n2=$2 ; fi # reset count
-if [ -z "$3" ] ; then n3="0" ; changed=1 ; else n3=$3 ; fi # lat
-if [ -z "$4" ] ; then n4="0" ; changed=1 ; else n4=$4 ; fi # lon
-if [ -z "$5" ] ; then n5="no" ; changed=1 ; else n5=$5 ; fi # sim mode
-if [ -z "$6" ] ; then n6="3" ; changed=1 ; else n6=$6 ; fi # squelch
-if [ -z "$7" ] ; then n7="434.9000" ; changed=1 ; else n7=$7 ; fi # transmit frequency
-if [ -z "$8" ] ; then n8="435.0000" ; changed=1 ; else n8=$8 ; fi # receive frequency
-if [ -z "$9" ] ; then n9="no" ; changed=1 ; else n9=$9 ; fi # hab mode
-if [ -z "${10}" ] ; then n10="0" ; changed=1 ; else n10=${10} ; fi # rx pl code 
-if [ -z "${11}" ] ; then n11="0" ; changed=1 ; else n11=${11} ; fi # tx pl code
-
-if [ $changed -eq 1 ]; then
-	echo -e "Current sim.cfg configuration file:"	
-	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11}
-	echo -e "\nCubeSatSim configuraation sim.cfg file updated to: \n"
-	echo
-	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11
-	echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $n10 $n11 > /home/pi/CubeSatSim/sim.cfg
-	echo
 fi
 
-echo "Would you like to reboot to complete the installation (y/n)?"
+if [ ! -d "/home/pi/rpitx" ]; then
 
-read -r ANS
-
-if [ "$ANS" = "y" ]; then
-
-    sudo reboot now
-
+	cd
+	git clone https://github.com/alanbjohnston/rpitx.git
+	cd rpitx
+	./install.sh
+	cd
 else
 
-    echo "The CubeSatSim software will start next time you reboot"
+	if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
+	    echo "rpitx library already updated"
+	else
+	    echo "updating rpitx"
+	    cd  /home/pi/rpitx
+	    git pull
+	    ./update.sh
+	    cd
+	fi
+fi
+
+FILE=/etc/systemd/system/cubesatsim.service
+if [ -f "$FILE" ]; then
+	if [[ $(diff /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service) ]]; then
+	  echo "changed cubesatsim.service."
+	  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+	  FLAG=1
+	else
+	  echo "no changes to cubesatsim.service."
+	fi
+else
+  echo "creating cubesatsim.service."
+  sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
+  sudo systemctl enable command
+
+  FLAG=1
+fi
+
+FILE=/etc/systemd/system/rpitx.service
+if [ -f "$FILE" ]; then
+  sudo systemctl disable rpitx
+  sudo rm /etc/systemd/system/rpitx.service
+fi
+
+FILE=/etc/systemd/system/transmit.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service) ]]; then
+    echo "changed transmit.service."
+    sudo cp /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
+    FLAG=1
+  else
+    echo "no change to transmit.service."
+  fi
+else
+  echo "creating transmit.service."
+  sudo cp /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service
+  FLAG=1
+fi
+
+FILE=/etc/systemd/system/command.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service) ]]; then
+    echo "changed command.service."
+    sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+    FLAG=1
+  else
+    echo "no change to command.service."
+  fi
+else
+  echo "creating command.service."
+  sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  sudo systemctl enable command
+  FLAG=1
+fi
+
+FILE=/etc/systemd/system/pacsatsim.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service) ]]; then
+    echo "changed pacsatsim.service."
+    sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
+    FLAG=1
+  else
+    echo "no change to pacsatsim.service."
+  fi
+else
+  echo "creating pacsatsim.service."
+  sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
+  sudo systemctl enable command
+  FLAG=1
+fi
+
+FILE=/etc/asound.conf
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
+    echo "changed /etc/asound.conf."
+    sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+    FLAG=1
+  else
+    echo "no change to /etc/asound.conf."
+  fi
+else
+  echo "creating /etc/asound.conf."
+  sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
+  FLAG=1
+fi
+
+FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+if [ ! -f "$FILE" ]; then
+    echo "Copying SSTV image 1."
+    cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
+fi
     
+FILE=/home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+if [ ! -f "$FILE" ]; then
+    echo "Copying SSTV image 2."
+    cp /home/pi/CubeSatSim/sstv/sstv_image_2_320_x_256.jpg /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg
+fi
+
+sudo sed -i 's/DEVICES=""/DEVICES="\/dev\/serial0"/g' /etc/default/gpsd
+
+sudo sed -i 's/GPSD_OPTIONS=""/GPSD_OPTIONS="-s 9600"/g' /etc/default/gpsd
+
+if [ ! -d "/home/pi/fctelem" ]; then
+	echo "Installing fctelem binary v0.2 for FUNcube mode"
+	cd
+	mkdir /home/pi/fctelem
+	mkdir /home/pi/fctelem/public_html
+	cd fctelem
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip -u fctelem.zip
+	FLAG=1
+elif [ ! -f "/home/pi/fctelem/v0.2" ]; then
+	echo "Updating fctelem binary to version v0.2 for FUNcube mode"
+	cd
+	cd /home/pi/fctelem
+	sudo mv fctelem fctelem.bk
+	sudo mv fcdecode.conf fcdecode.conf.bk
+	sudo mv fctelem.zip fctelem.zip.1
+	wget https://github.com/alanbjohnston/go/releases/download/v0.2/fctelem.zip
+	unzip -u fctelem.zip
+	FLAG=1
+fi
+
+if [ ! -f "/home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/mpu6050" ]; then
+	echo "Installing MPU6050-C-CPP-Library-for-Raspberry-Pi"
+	sudo apt-get install -y libi2c-dev
+	cd
+	git clone https://github.com/alanbjohnston/MPU6050-C-CPP-Library-for-Raspberry-Pi.git
+	cd MPU6050-C-CPP-Library-for-Raspberry-Pi
+	sudo make install
+	make payload
+fi
+
+cd /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi
+git checkout master
+git pull --no-rebase > .updated_p
+
+if [[ $(grep 'changed' /home/pi/MPU6050-C-CPP-Library-for-Raspberry-Pi/.updated_p) ]]; then
+	echo "updating MPU6050-C-CPP-Library-for-Raspberry-Pi"
+	sudo make install
+	make payload
+else
+	echo "nothing to do for MPU6050-C-CPP-Library-for-Raspberry-Pi."
+fi 
+
+if [ ! -f "/home/pi/raspberry-pi-bme280/bme280" ]; then
+	echo "Installing raspberry-pi-bme280"
+	sudo apt-get install -y libi2c-dev
+	cd
+	git clone https://github.com/alanbjohnston/raspberry-pi-bme280.git
+	cd raspberry-pi-bme280
+	git checkout payload
+	make 
+fi
+
+cd /home/pi/raspberry-pi-bme280
+git checkout payload
+git pull --no-rebase > .updated_p
+
+if [[ $(grep 'changed' /home/pi/raspberry-pi-bme280/.updated_p) ]]; then
+
+	echo "updating raspberry-pi-bme280"
+	make
+
+else
+	echo "nothing to do for raspberry-pi-bme280."
+fi 
+
+if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
+	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
+	sudo rm /var/lib/dpkg/info/python3-pip.list
+	sudo apt install python3-pip --reinstall
+	sudo apt-get install -y python3-smbus libusb-1.0 
+	cd
+	git clone https://github.com/csete/fcdctl.git
+	cd fcdctl
+	make fcdpp
+fi
+
+if [ ! -f "/home/pi/ssdv/ssdv" ]; then
+	cd
+	echo "Installing SSDV for FUNcube mode"
+	git clone https://github.com/alanbjohnston/ssdv.git  # install ssdv for FUNcube images
+	cd ssdv
+	make
+fi
+
+cd
+
+#echo "Would you like to reboot to complete the installation (y/n)?"
+
+#read -r ANS
+
+#if [ "$ANS" = "y" ]; then
+
+#    sudo reboot now
+
+#else
+
+ #   echo "The CubeSatSim software will start next time you reboot"
+    
+#fi
+
+if [ "$noreboot" = "0" ] ; then  
+
+	if [ $FLAG -eq 1 ]; then
+	  echo "systemctl daemon-reload and reboot"
+	  sudo systemctl daemon-reload 
+	  sudo reboot -h now
+#  sudo  cubesatsim
+	else
+	  grep 'changed' /home/pi/CubeSatSim/.updated
+	  if [[ $(grep 'changed' /home/pi/CubeSatSim/.updated) ]]; then
+	    echo "reboot due to code changes " | wall
+	    sudo reboot -h now
+#    sudo  cubesatsim
+	  else
+	    echo "nothing to do."
+	  fi  
+	fi
+else
+	if [ $FLAG -eq 1 ]; then
+		echo "reboot needed for changes to take effect" | wall
+	fi
 fi
