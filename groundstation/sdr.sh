@@ -36,6 +36,8 @@ sudo killall -9 rtl_tcp &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
+sudo killall -9 sdrpp &>/dev/null
+
 sudo killall -9 qsstv &>/dev/null
 
 #sudo killall -9 aplay &>/dev/null
@@ -49,7 +51,9 @@ sudo systemctl stop rtl_tcp &>/dev/null
 sudo /etc/init.d/alsa-utils stop
 sudo /etc/init.d/alsa-utils start
 
-sudo systemctl restart openwebrx &>/dev/null
+sudo killall -9 rtl_fm &>/dev/null
+
+sudo systemctl restart openwebrx
 
 sleep 10
 
