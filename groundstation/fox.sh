@@ -21,6 +21,8 @@ sudo killall -9 java &>/dev/null
 
 sudo killall -9 CubicSDR &>/dev/null
 
+sudo killall -9 sdrpp &>/dev/null
+
 sudo killall -9 direwolf &>/dev/null
 
 #sudo killall -9 aplay &>/dev/null
@@ -31,6 +33,8 @@ sudo killall -9 zenity &>/dev/null
 
 sudo /etc/init.d/alsa-utils stop
 sudo /etc/init.d/alsa-utils start
+
+sudo killall -9 rtl_fm &>/dev/null
 
 sleep 5
 
