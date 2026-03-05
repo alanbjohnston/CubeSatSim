@@ -1,11 +1,20 @@
 import sys
 from os import system
-import RPi.GPIO as GPIO
-from RPi.GPIO import output
+#import RPi.GPIO as GPIO
+#from RPi.GPIO import output
 from time import sleep
 import logging
 logging.basicConfig(format='%(message)s')
 # logging.warning('CC-Warning!')
+
+def blink(times):
+	for i in range(times):
+		system("gpio write 27 0")
+#		GPIO.output(27, 0) 
+		sleep(0.1)
+		system("gpio write 27 1")
+#		GPIO.output(27, 1)
+		sleep(0.1)
 
 if __name__ == "__main__":
 	powerPin = 16
@@ -64,6 +73,7 @@ if __name__ == "__main__":
 					system("echo '\nSSTV Mode!!\n'")
 					mode = 's'
 					change_mode = True
+					
 				if ((line.find("MODE=m")) > 0):
 					system("echo '\nCW Mode!!\n'")
 					mode = 'm'
@@ -73,15 +83,27 @@ if __name__ == "__main__":
 					system("echo '\nCW Mode!!\n'")
 					mode = 'm'
 					change_mode = True
+					
+				if ((line.find("MODE=e")) > 0):
+					system("echo '\nRepeater Mode!!\n'")
+					mode = 'e'
+					change_mode = True
+					
+				if ((line.find(":t6#")) > 0):
+					system("echo '\nFUNcube Mode!!\n'")
+					mode = 'j'
+					change_mode = True	
+					
 				if ((line.find("MODE=G")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'G'
+					mode = 'p'
 					change_mode = True
 					
 				if ((line.find(":t8#")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'G'
-					change_mode = True					
+					mode = 'p'
+					change_mode = True
+					
 				if ((line.find("MODE=n")) > 0):
 					system("echo '\nTransmit Commands Mode!!\n'")
 					mode = 'n'
@@ -91,91 +113,50 @@ if __name__ == "__main__":
 					system("echo '\nTransmit Commands Mode!!\n'")
 					mode = 'n'
 					change_mode = True
-		# Currently, C2C does not support Repeater mode e			
+
 				if ((line.find("MODE=o")) > 0):
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
 					counter =  (counter + 1) % 2
+					
 				if ((line.find(":t10#")) > 0):
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
 					
 				if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
-					GPIO.setmode(GPIO.BCM)
-					GPIO.setwarnings(False)
-					GPIO.setup(powerPin, GPIO.OUT)
-					GPIO.setup(txLed, GPIO.OUT)
 		
 					if (mode == 'f'):
-						GPIO.output(powerPin, 0) # blink two times
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
+						blink(2)
 						sleep(1)
 				
 					elif (mode == 'b'):
-						GPIO.output(powerPin, 0) # blink three times
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)	
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
+						blink(3)
 						sleep(1)
 					
 					elif (mode == 's'):
-						GPIO.output(powerPin, 0) # blink four times
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)	
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)	
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
+						blink(4)
 						sleep(1)
 				
 					elif (mode == 'm'):
-						GPIO.output(powerPin, 0) # blink five times
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)	
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1);
-						GPIO.output(powerPin, 1)	
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
-						sleep(0.1)
-						GPIO.output(powerPin, 0)
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
+						blink(5)
 						sleep(1)
+						
+					elif (mode == 'e'):
+						blink(6)
+						sleep(1)
+						
+					elif (mode == 'j'):
+						blink(7)
+						sleep(1)
+						
+					elif (mode == 'p'):
+						blink(8)
+						sleep(1)
+						
 					elif (mode == 'a'):
-						mode = 'a'
-						GPIO.output(powerPin, 0) # blink one time
-						sleep(0.1)
-						GPIO.output(powerPin, 1)
+						blink(1)
 						sleep(1)
 					
 					try:
@@ -196,7 +177,7 @@ if __name__ == "__main__":
 					
 					GPIO.output(txLed, 0)
 					GPIO.output(powerPin, 0)
-					system("sudo systemctl stop rpitx")
+					system("sudo systemctl stop transmit")
 		#			system("sudo systemctl stop cubesatsim")
 					
 					print("\n/home/pi/CubeSatSim/config -" + mode)
