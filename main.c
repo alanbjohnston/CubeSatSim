@@ -518,8 +518,8 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
-//    } else if (mode == BPSK) {
-    } else {
+    } else if (mode == BPSK) {
+////    } else {
 
       bitRate = 1200;
       rsFrames = 3;
