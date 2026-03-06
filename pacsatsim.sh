@@ -139,7 +139,7 @@ echo
 
  # /usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/pacsatsim-df.sh"
 
-
+sudo usermod -a -G gpio pi
 
 if [ "$loopback" = "1" ]; then
 
