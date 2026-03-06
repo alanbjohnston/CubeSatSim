@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import RPi.GPIO as GPIO
-from RPi.GPIO import output
+#from RPi.GPIO import output
 #import subprocess
 import time
 from time import sleep
