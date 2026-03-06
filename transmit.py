@@ -218,7 +218,7 @@ def camera_photo():
 		img = Image.open(file)
 		draw = ImageDraw.Draw(img) 
 	#					draw.text((10, 10), callsign, font=font2, fill='white')
-	#					draw.text((120, 10), telem_string, font=font2, fill='white')					
+	#					draw.text((120, 10), telem_string, font=font2, fill='white')				
 		draw.text((12, 12), callsign, font=font1, fill='black')
 		draw.text((10, 10), callsign, font=font1, fill='white')
 		draw.text((112, 12), telem_string, font=font2, fill='black')  # was 122
@@ -346,6 +346,7 @@ if __name__ == "__main__":
 				print("Can't open .mode file, defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
+#	system("sudo systemctl stop pacsatsim")
 
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
@@ -394,18 +395,6 @@ if __name__ == "__main__":
 				sim_config = True
 				print("Simulated telemetry mode is configured")
 			else:
-#				query = ["timeout", "2", "i2cdetect", "-y", "3"] # Test if Solar board is present
-#				try:
-#					result = subprocess.run(query, capture_output=True, text=True, check=True)
-#					print(f"Command run was: {query}")
-#					print("Sucess!")
-#					print(f"Output of the command (stdout): {result}")
-#				except subprocess.CalledProcessError as e:
-#					print(f"Command failed with return code: {e.returncode}")
-#					print(f"Command run was: {e.cmd}")
-#					print(f"Output of the command (stdout): {e.stdout}")
-#					print(f"Error output of the command (stderr): {e.stderr}")
-
 				try:
 					if path.isfile("/home/pi/CubeSatSim/sim_mode_auto"):
 						print("Simulated telemetry mode automatically turned on!")
@@ -414,11 +403,10 @@ if __name__ == "__main__":
 				except:
 					if (debug_mode == 1):
 						print("/home/pi/CubeSatSim/sim_mode_auto not found")	
-		if len(config) > 5:
-			sq = config[5]
-			if (mode == 'p') or (mode == 'P'): 
-				sq = 0 # turn off squelch for Pacsat
-			print(sq)
+		if len(config) > 5:		
+			if (mode != 'p') and (mode != 'P'): # squelch off for Pacsat	
+				sq = config[5] 		
+			print(f'squelch: {sq}')
 		if len(config) > 6:
 			txf = float(config[6])
 			if (mode == 'e'):
@@ -485,7 +473,6 @@ if __name__ == "__main__":
 	except:
 		print("command and control not activated")
 
-	
 	print(callsign)
 #	GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi 4
 #	print(txLed)
@@ -557,7 +544,7 @@ if __name__ == "__main__":
 	if (hab_mode == True) and (mode == 'a'):
 		print("Don't transmit CW ID since APRS HAB mode is active")
 	else:	
-		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
+		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j') or (mode == 'p') or (mode == 'P')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
 #			GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
 #			setup(txLed, "out")	
 			output(txLed, 1)
@@ -583,12 +570,38 @@ if __name__ == "__main__":
     
 #		if (len(sys.argv)) > 1:
 #        		print("There are arguments!")
-		if (mode == 'a') or (mode == 'x') or (mode == 'n'):
+		if (mode == 'a') or (mode == 'x') or (mode == 'n') or (mode == 'p') or (mode == 'P'):
 #			command_control_check()	
 			output(pd, 1)
 			output(ptt, 1)
 			if (mode == 'a'):
 				print("AFSK")
+			elif (mode == 'p') or (mode == 'P'):
+				if (mode == 'P'):
+					print("Pacsat Ground Station")
+				else:
+					print("Pacsat")
+#					system("sudo systemctl restart pacsatsim")
+#				txPin = 27
+				pttPin = 20
+				
+				GPIO.setmode(GPIO.BCM)
+				GPIO.setwarnings(False)
+				GPIO.setup(txLed, GPIO.OUT)
+				GPIO.output(txLed, 0)
+				print("0")
+				
+				GPIO.setup(pttPin, GPIO.IN)
+			
+				while (True):
+					sleep(0.1)
+					GPIO.wait_for_edge(pttPin, GPIO.FALLING)
+					GPIO.output(txLed, 1)
+					print("1")
+					sleep(0.1)
+					GPIO.wait_for_edge(pttPin, GPIO.RISING)	
+					GPIO.output(txLed, 0)
+					print("0")
 			else:
 #				GPIO.output(powerPin, 0)
 				print("Transmit APRS Commands")
@@ -621,7 +634,7 @@ if __name__ == "__main__":
 							sleep(0.1) # add delay before transmit
 							output (ptt, 0)
 							sleep(0.3)   # add even more time at start
-							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/telem.wav")							
+							system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/telem.wav")
 							sleep(0.2)  # add more time at end
 							output (ptt, 1)
 #							output(pd, 0)							
@@ -665,7 +678,7 @@ if __name__ == "__main__":
 						system(command)
 ##						chan = chan + 1						
 						if (command_tx == True):
-#							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+#							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4	
 #							setup(txLed, "out")	
 							output(txLed, 1)					
 	
@@ -682,7 +695,7 @@ if __name__ == "__main__":
 								if (debug_mode == 1):
 									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 								else:
-									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")					
+									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
 							output(txLed, 0)
 							
 #						command_control_check()
@@ -705,7 +718,7 @@ if __name__ == "__main__":
 				if os_status == "bookworm":
 					system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 				else:
-					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")				
+					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")			
 				f = open("/home/pi/CubeSatSim/camera_out.jpg")
 				f.close()
 				print("Camera present")
@@ -838,7 +851,7 @@ if __name__ == "__main__":
 	
 						if (command_tx == True):
 							print ("Sending SSTV image")
-#							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+#							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4	
 #							setup(txLed, "out")	
 							output(txLed, 1)
 #							battery_saver_check()
@@ -869,7 +882,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 #							command_control_check()	
 							
-#							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4		
+#							GPIO.setmode(GPIO.BCM)  # added to make Tx LED work on Pi Zero 2 and Pi 4	
 #							setup(txLed, "out")	
 							output(txLed, 1)
 

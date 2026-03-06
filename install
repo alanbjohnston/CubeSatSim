@@ -332,6 +332,8 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 #	sudo apt install -y python3-pip
 # fi
 
+cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
+
 if [ ! -d "/home/pi/venv" ]; then
 
 	cd
@@ -356,11 +358,14 @@ sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev l
 if [ ! -d "/home/pi/direwolf" ]; then
 
 	cd	
-	git clone https://github.com/alanbjohnston/direwolf.git
-	cd direwolf	
-	make -j
-	sudo make install	
-	make install-rpi
+	git clone https://github.com/wb2osz/direwolf.git
+	cd direwolf
+	mkdir build 
+	cd build
+	cmake ..
+	make -j4
+	sudo make install
+	make install-conf
 fi
 
 	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
@@ -435,6 +440,79 @@ if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
 	script/install
 	FLAG=1
 fi
+
+cd
+
+FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
+if [ ! -f "$FILE" ]; then
+	cd
+	git clone https://github.com/alanbjohnston/g0kla_common.git
+	cd g0kla_common/Debug/
+	make all
+	sudo ./install.sh
+	
+	cd
+	#git clone https://github.com/alanbjohnston/pi_pacsat.git
+	git clone https://github.com/ac2cz/pi_pacsat.git
+	cd pi_pacsat
+	#git checkout master-debug
+	cd Debug
+	make all
+	
+	mkdir /home/pi/PacSat
+	mkdir /home/pi/PacSat/pacsat
+	mkdir /home/pi/PacSat/pacsat/dir
+	
+	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+	
+	#value=`cat /home/pi/CubeSatSim/sim.cfg`
+	#echo "$value" > /dev/null
+	#set -- $value
+	
+	echo "bit_rate=9600" > pacsat.config
+	echo "bbs_callsign=AMSAT-12" >> pacsat.config
+	echo "broadcast_callsign=AMSAT-11" >> pacsat.config
+	echo "digi_callsign=AMSAT-1" >> pacsat.config
+	echo "max_frames_in_tx_buffer=5" >> pacsat.config
+	
+	echo "pb_open=1" > pacsat.state
+	echo "uplink_open=1" >> pacsat.state
+	echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
+	echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
+fi
+
+FILE=/home/pi/pacsat_telem/Debug/pacsat_telem  # code has already been compiled
+if [ ! -f "$FILE" ]; then
+	cd
+	sudo apt-get install -y libbsd-dev
+	git clone https://github.com/alanbjohnston/pacsat_telem.git
+	cd pacsat_telem
+	git checkout master-fox
+	cd Debug
+	make all
+fi
+
+sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
+sudo sed -i 's/#hdmi_mode=1/hdmi_mode=16/g' /boot/config.txt
+sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
+
+sudo raspi-config nonint do_vnc 0
+
+cd /tmp
+
+wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
+
+tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
+
+rm PacsatGround_unix_0_46o.tar.gz
+
+cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
+	
+mkdir /home/pi/PacSatGround
+
+sudo usermod -a -G gpio pi
+
+sudo apt-get install default-jdk -y
 
 cd
 
@@ -519,6 +597,22 @@ if [ -f "$FILE" ]; then
 else
   echo "creating command.service."
   sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
+  sudo systemctl enable command
+  FLAG=1
+fi
+
+FILE=/etc/systemd/system/pacsatsim.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service) ]]; then
+    echo "changed pacsatsim.service."
+    sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
+    FLAG=1
+  else
+    echo "no change to pacsatsim.service."
+  fi
+else
+  echo "creating pacsatsim.service."
+  sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
   sudo systemctl enable command
   FLAG=1
 fi

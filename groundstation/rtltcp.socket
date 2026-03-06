@@ -1,0 +1,9 @@
+[Unit]
+Description=RTL TCP Socket
+PartOf=rtltcp.service
+
+[Socket]
+ListenStream=[::]:1234
+
+[Install]
+WantedBy=sockets.target

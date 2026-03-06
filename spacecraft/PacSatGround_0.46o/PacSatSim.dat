@@ -1,0 +1,18 @@
+#Pacsat Telemetry Decoder Properties
+#Fri Feb 6 18:12:20 EST 2026
+numberOfLookupTables=0
+measurementsFileName=measurements.csv
+model=1
+layoutsUseToCallsignAsType=true
+numberOfLayouts=2
+layout0.filename=PacSatSim_rttelemetry.csv
+layout0.name=TLMP1
+layout1.filename=PacSatSim_rttelemetry.csv
+layout1.name=WOD
+passMeasurementsFileName=passmeasurements.csv
+name=ISS
+description=PacSatSim
+satId=3
+catalogNumber=0
+conversionCoefficients=PacSatSim-coef.csv
+layoutsUseBits=True

@@ -24,6 +24,8 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
+sudo killall -9 sdrpp &>/dev/null
+
 sudo killall -9 java &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
@@ -38,13 +40,18 @@ sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
-sudo killall -9 aplay &>/dev/null
+#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp &>/dev/null
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
+
+sudo killall -9 rtl_fm &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
@@ -52,7 +59,7 @@ sudo systemctl restart openwebrx
 
 sleep 10
 
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8073 &>/dev/null & 
+setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars --app=http://localhost:8073 &>/dev/null & 
 
 sleep 10
 
