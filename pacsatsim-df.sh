@@ -4,6 +4,8 @@ pwm=1
 
 sudo modprobe snd-aloop
 
+sudo usermod -a -G gpio pi
+
 if [ "$pwm" = "1" ] ; then  
 
   direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm.conf -t 0 
