@@ -48,11 +48,11 @@ def setup(pin, config):
 			GPIO.setwarnings(False)
 			GPIO.setmode(GPIO.BCM)
 			if config == "out":
-				GPIO.setup(27, GPIO.OUT)
-				print("GPIO.setup(27, GPIO.OUT")
+				GPIO.setup(20, GPIO.OUT)
+				print("GPIO.setup(20, GPIO.OUT)")
 			else:
-				GPIO.setup(27, GPIO.IN)
-				print("GPIO.setup(27, GPIO.IN")
+				GPIO.setup(20, GPIO.IN)
+				print("GPIO.setup(20, GPIO.IN)")
 	else:
 		print(f"Unknown GPIO setup configuration: {config}")
 
@@ -271,7 +271,7 @@ setup(pd, "out")
 #output(pd, 1)
 output(pd, 0)
 setup(ptt, "out")
-output (ptt, 1)
+output(ptt, 1)
 
 txc = False
 if input(txc_pin) == False:
