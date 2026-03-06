@@ -49,8 +49,10 @@ def setup(pin, config):
 			GPIO.setmode(GPIO.BCM)
 			if config == "out":
 				GPIO.setup(27, GPIO.OUT)
+				print("GPIO.setup(27, GPIO.OUT")
 			else:
 				GPIO.setup(27, GPIO.IN)
+				print("GPIO.setup(27, GPIO.IN")
 	else:
 		print(f"Unknown GPIO setup configuration: {config}")
 
