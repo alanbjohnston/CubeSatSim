@@ -61,9 +61,10 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 	  
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 	
-	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/cmdline.txt 
 	
-	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
 	
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
 	  
@@ -158,9 +159,11 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/firmware/cmdline.txt
 	
-	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/firmware/cmdline.txt 
+
 	
-	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
 	
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/firmware/config.txt
 	  
@@ -355,6 +358,24 @@ sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-c
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
 
+if [ -d "/home/pi/direwolf" ]; then
+
+	# Get the URL of the 'origin' remote
+	REPO_URL=$(git config --get remote.origin.url)
+	
+	# Check if the command was successful and a URL was retrieved
+	if [ $? -eq 0 ] && [ -n "$REPO_URL" ]; then
+	
+		if [ ! "$REPO_URL" = "https://github.com/wb2osz/direwolf.git"]; then
+	
+	    	echo "Current Direwolf git repository URL is $REPO_URL"
+			echo "Reinstalling Direwolf from https://github.com/wb2osz/direwolf.git"
+			sudo rm -r /home/pi/direwolf
+		fi
+	else
+    	echo "Could not find the URL for the 'origin' remote for Direwolf"		
+	fi
+
 if [ ! -d "/home/pi/direwolf" ]; then
 
 	cd	
@@ -366,6 +387,7 @@ if [ ! -d "/home/pi/direwolf" ]; then
 	make -j4
 	sudo make install
 	make install-conf
+
 fi
 
 	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
