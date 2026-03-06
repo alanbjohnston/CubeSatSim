@@ -163,8 +163,9 @@ fi
 
 ##  echo "Don't close the direwolf window or the Pacsatsim will stop running."
 
+export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH
 
-sudo /home/pi/pacsat_telem/Debug/pacsat_telem -v -d /home/pi/PacSat/pacsat &
+/home/pi/pacsat_telem/Debug/pacsat_telem -v -d /home/pi/PacSat/pacsat &
 
 sleep 5
 
