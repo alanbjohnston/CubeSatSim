@@ -47,7 +47,7 @@ def setup(pin, config):
 		else: # ptt pin
 			GPIO.setwarnings(False)
 			GPIO.setmode(GPIO.BCM)
-			if config == "out:
+			if config == "out":
 				GPIO.setup(27, GPIO.OUT)
 			else:
 				GPIO.setup(27, GPIO.IN)
