@@ -601,8 +601,6 @@ int main(int argc, char * argv[]) {
 	
   if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT)) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
-//	  get_tlm_fox();
-  }
   else if (mode == FC) // && !sim_mode)
       get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
   else if (mode == CW)
