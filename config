@@ -1263,6 +1263,7 @@ elif [ "$1" = "-e" ]; then
 			reboot=1
 		else
 			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-n" ]; then
