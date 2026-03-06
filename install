@@ -448,6 +448,7 @@ if [ ! -f "$FILE" ]; then
 	cd
 	git clone https://github.com/alanbjohnston/g0kla_common.git
 	cd g0kla_common/Debug/
+	make clean
 	make all
 	sudo ./install.sh
 	
@@ -457,6 +458,7 @@ if [ ! -f "$FILE" ]; then
 	cd pi_pacsat
 	#git checkout master-debug
 	cd Debug
+	make clean
 	make all
 	
 	mkdir /home/pi/PacSat
@@ -489,6 +491,7 @@ if [ ! -f "$FILE" ]; then
 	cd pacsat_telem
 	git checkout master-fox
 	cd Debug
+	make clean
 	make all
 fi
 
