@@ -261,7 +261,6 @@ elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 	    exit 1
 	fi
 fi
->>>>>>> 9518ba870ed4548fcaf00285b0578312a9a300c2
 
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
@@ -348,7 +347,6 @@ if [ ! -d "/home/pi/venv" ]; then
 	sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
 
 fi
->>>>>>> 9518ba870ed4548fcaf00285b0578312a9a300c2
 
 sudo apt-get remove pulseaudio -y
 
@@ -360,11 +358,14 @@ sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev l
 if [ ! -d "/home/pi/direwolf" ]; then
 
 	cd	
-	git clone https://github.com/alanbjohnston/direwolf.git
-	cd direwolf	
-	make -j
-	sudo make install	
-	make install-rpi
+	git clone https://github.com/wb2osz/direwolf.git
+	cd direwolf
+	mkdir build 
+	cd build
+	cmake ..
+	make -j4
+	sudo make install
+	make install-conf
 fi
 
 	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
@@ -417,19 +418,6 @@ else
     echo "b" > .mode
 fi
 
-cd
-
-git clone https://github.com/wb2osz/direwolf.git
-cd direwolf
-mkdir build 
-cd build
-cmake ..
-make -j4
-sudo make install
-make install-conf
-
-cd
-
 if [ ! -d "/home/pi/pi-power-button" ]; then
 
 	cd
@@ -447,6 +435,7 @@ git pull --no-rebase > .updated_p
 git checkout master
 grep 'changed' /home/pi/pi-power-button/.updated_p
 if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
+
 	echo "updating pi-power-button."
 	script/install
 	FLAG=1

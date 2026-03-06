@@ -145,6 +145,21 @@ FILE *image_file;
 #define FAIL_AUDIO 11
 int failureMode = FAIL_NONE;
 
+#define FAIL_COUNT 11
+#define FAIL_NONE -1
+#define FAIL_UNPLUG 1
+#define FAIL_SOLAR 2
+#define FAIL_DEGRADE 3
+#define FAIL_SHORT 4
+#define FAIL_I2C1 5
+#define FAIL_I2C3 6
+#define FAIL_CAMERA 7
+#define FAIL_PAYLOAD 8
+#define FAIL_BME 9
+#define FAIL_MPU 10
+#define FAIL_AUDIO 11
+int failureMode = FAIL_NONE;
+
 int transmitStatus = -1;
 
 float amplitude; // = ; // 20000; // 32767/(10%amp+5%amp+100%amp)

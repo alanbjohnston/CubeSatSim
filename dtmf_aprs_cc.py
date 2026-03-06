@@ -18,7 +18,7 @@ def blink(times):
 
 if __name__ == "__main__":
 	powerPin = 16
-	txLed = 27
+	txLed = 17
 	change_mode = False
 	debug_mode = False
 	counter = 1
@@ -187,6 +187,7 @@ if __name__ == "__main__":
 					change_mode = False
 		except:
 			print("Error reading line (probably due to UTF-8 issue)")
+
 	print("Waiting 5 seconds to allow unplug and plug of soundcard")
 	sleep(5)
 	print("Done")

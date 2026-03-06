@@ -152,6 +152,7 @@ echo
 
   echo -e "Auto decoding APRS packets on $frequency Hz"
 
+ # direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf -t 0 &
   setsid direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf.conf  &
 
 #fi

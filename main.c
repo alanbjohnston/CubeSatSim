@@ -1660,7 +1660,6 @@ void get_tlm_fox() {
       for (int count1 = 0; count1 < 8; count1++) {
         if (voltage[count1] < voltage_min[count1]) voltage_min[count1] = voltage[count1];
         if (current[count1] < current_min[count1]) current_min[count1] = current[count1];
-
         if (voltage[count1] > voltage_max[count1]) voltage_max[count1] = voltage[count1];
         if (current[count1] > current_max[count1]) current_max[count1] = current[count1];
 
@@ -2735,6 +2734,8 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
+		battery_saver_mode = OFF;
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");

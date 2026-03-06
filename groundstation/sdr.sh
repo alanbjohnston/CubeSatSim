@@ -53,6 +53,8 @@ sudo /etc/init.d/alsa-utils start
 
 sudo killall -9 rtl_fm &>/dev/null
 
+sudo killall -9 rtl_fm &>/dev/null
+
 sudo systemctl restart openwebrx
 
 sleep 10
