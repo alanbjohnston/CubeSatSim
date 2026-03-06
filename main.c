@@ -2731,9 +2731,8 @@ if (setting == ON) {
 		FILE *command = popen("rm /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
 		battery_saver_mode = OFF;
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");
