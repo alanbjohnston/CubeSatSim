@@ -151,6 +151,8 @@ int main(int argc, char * argv[]) {
       fprintf(stderr, "Pi Zero 2 detected\n");
       FILE * pi_zero2 = popen("touch /home/pi/CubeSatSim/pi_zero2", "r"); // store Pi Zero 2 flag
       pclose(pi_zero2); 
+	  FILE * transmit_stop = popen("sudo systemctl start transmit", "r");  // missing start transmit?
+      pclose(transmit_stop);	
     }
     else
       fprintf(stderr, "Not a Pi Zero or Pi Zero 2\n");
