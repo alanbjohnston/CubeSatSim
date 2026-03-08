@@ -428,6 +428,14 @@ if [ $checkout -eq 1 ]; then
 	FLAG=1
 	echo "Running update script again"
 	/home/pi/CubeSatSim/install
+	exit
+fi
+
+grep 'install' /home/pi/CubeSatSim/.updated
+if [[ $(grep 'install' /home/pi/CubeSatSim/.updated) ]]; then
+	echo "install script updated, running again"
+	/home/pi/CubeSatSim/install
+	exit
 fi
 
 make debug
