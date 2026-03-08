@@ -15,7 +15,7 @@ import random
 import subprocess
 
 def output(pin, value):
-	if (pin != 20):
+	if (pin != 30):
 		command = "gpio -g write " + str(pin) + " " + str(value)
 		system(command)
 		print(command)
@@ -40,7 +40,7 @@ def input(pin):
 
 def setup(pin, config):
 	if config == "in" or config == "out" or config == "up" or config == "down":
-		if (pin != 20):
+		if (pin != 30):
 			command = "gpio -g mode " + str(pin) + " " + config
 			system(command)
 			print(command)
