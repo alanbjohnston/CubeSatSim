@@ -375,6 +375,7 @@ if [ -d "/home/pi/direwolf" ]; then
 	else
     	echo "Could not find the URL for the 'origin' remote for Direwolf"		
 	fi
+fi
 
 if [ ! -d "/home/pi/direwolf" ]; then
 
@@ -426,7 +427,7 @@ if [ $checkout -eq 1 ]; then
 	git checkout $branch	
 	git pull --no-rebase > .updated
 	FLAG=1
-	echo "Running update script again"
+	echo "Running update again"
 	/home/pi/CubeSatSim/install
 	exit
 fi
