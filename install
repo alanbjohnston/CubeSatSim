@@ -366,7 +366,7 @@ if [ -d "/home/pi/direwolf" ]; then
 	# Check if the command was successful and a URL was retrieved
 	if [ $? -eq 0 ] && [ -n "$REPO_URL" ]; then
 	
-		if [ ! "$REPO_URL" = "https://github.com/wb2osz/direwolf.git"]; then
+		if [ ! "$REPO_URL" = "https://github.com/wb2osz/direwolf.git" ]; then
 	
 	    	echo "Current Direwolf git repository URL is $REPO_URL"
 			echo "Reinstalling Direwolf from https://github.com/wb2osz/direwolf.git"
