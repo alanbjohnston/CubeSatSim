@@ -321,7 +321,7 @@ if __name__ == "__main__":
 		print("Pi Zero 2 not detected")
 
 	try:
-		system("cat /proc/uptime > /home/pi/CubeSatSim/uptime")
+		system("sudo cat /proc/uptime > /home/pi/CubeSatSim/uptime")
 		file = open("/home/pi/CubeSatSim/uptime")
 		up = file.read().split(" ")[0]
 		print(up)
