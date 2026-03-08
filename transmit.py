@@ -233,10 +233,6 @@ def camera_photo():
 		
 print("CubeSatSim v2.2 transmit.py starting...")
 
-print("\nSleeping 20 seconds\n")
-
-sleep(20)
-
 pd = 21
 ptt = 20
 txc_pin = 7
