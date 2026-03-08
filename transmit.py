@@ -41,7 +41,7 @@ def setup(pin, config):
 		command = "gpio -g mode " + str(pin) + " " + config
 		system(command)
 		print(command)
-else:
+	else:
 		print(f"Unknown gpio setup configuration: {config}")
 
 def blink(times):
