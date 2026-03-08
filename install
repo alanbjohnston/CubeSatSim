@@ -505,6 +505,18 @@ if [ ! -f "$FILE" ]; then
 	echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
 fi
 
+cd /home/pi/pi_pacsat/Debug/
+
+git pull --no-rebase > .updated
+grep 'changed' /home/pi/pi_pacsat/Debug/.updated
+if [[ $(grep 'changed' /home/pi/pi_pacsat/Debug/.updated) ]]; then
+
+	echo "updating pi_pacsat"
+	make clean
+	make all
+	FLAG=1
+fi
+
 FILE=/home/pi/pacsat_telem/Debug/pacsat_telem  # code has already been compiled
 if [ ! -f "$FILE" ]; then
 	cd
@@ -515,6 +527,19 @@ if [ ! -f "$FILE" ]; then
 	cd Debug
 	make clean
 	make all
+fi
+
+cd /home/pi/pacsat_telem/Debug/
+
+git pull --no-rebase > .updated
+# git checkout master-fox
+grep 'changed' /home/pi/pacsat_telem/Debug/.updated
+if [[ $(grep 'changed' /home/pi/pacsat_telem/Debug/.updated) ]]; then
+
+	echo "updating pacsat_telem"
+	make clean
+	make all
+	FLAG=1
 fi
 
 sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
