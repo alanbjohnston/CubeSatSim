@@ -27,15 +27,17 @@ def input(pin):
 	query = ["gpio", "-g", "read", str(pin)] # Read GPIO pin
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
-		print(f"Command run was: {query}")
-		print("Sucess!")
-		print(f"Output of the command (stdout): {result.stdout}")
+#		print(f"Command run was: {query}")
+#		print("Sucess!")
+#		print(f"Output of the command (stdout): {result.stdout}")
+		print(f"{query}: {result.stdout}")
 		return int(result.stdout)
 	except subprocess.CalledProcessError as e:
-		print(f"Command failed with return code: {e.returncode}")
-		print(f"Command run was: {e.cmd}")
-		print(f"Output of the command (stdout): {e.stdout}")
-		print(f"Error output of the command (stderr): {e.stderr}")
+#		print(f"Command failed with return code: {e.returncode}")
+#		print(f"Command run was: {e.cmd}")
+#		print(f"Output of the command (stdout): {e.stdout}")
+#		print(f"Error output of the command (stderr): {e.stderr}")
+		print(f"{query}: -1")
 		return -1
 
 def setup(pin, config):
