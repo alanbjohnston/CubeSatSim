@@ -589,24 +589,31 @@ if __name__ == "__main__":
 					print("Pacsat")
 #					system("sudo systemctl restart pacsatsim")
 #				txPin = 27
-				pttPin = 20
+#				pttPin = 20
 				
-				GPIO.setmode(GPIO.BCM)
-				GPIO.setwarnings(False)
-				GPIO.setup(txLed, GPIO.OUT)
-				GPIO.output(txLed, 0)
+#				GPIO.setmode(GPIO.BCM)
+#				GPIO.setwarnings(False)
+#				GPIO.setup(txLed, GPIO.OUT)
+#				GPIO.output(txLed, 0)
+				output(txLed, 0)
 				print("0")
 				
 #				GPIO.setup(pttPin, GPIO.IN)
 			
 				while (True):
 					sleep(0.1)
-					GPIO.wait_for_edge(pttPin, GPIO.FALLING)
-					GPIO.output(txLed, 1)
+	#				GPIO.wait_for_edge(pttPin, GPIO.FALLING)
+					while (input(pttPin) != 0):
+						sleep(0.5)
+#					GPIO.output(txLed, 1)
+					output(txLed, 1)
 					print("1")
-					sleep(0.1)
+#					sleep(0.1)
 					GPIO.wait_for_edge(pttPin, GPIO.RISING)	
-					GPIO.output(txLed, 0)
+					while (input(pttPin) != 1):
+						sleep(0.5)					
+#					GPIO.output(txLed, 0)
+					output(txLed, 0)
 					print("0")
 			else:
 #				GPIO.output(powerPin, 0)
