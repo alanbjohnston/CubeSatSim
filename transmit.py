@@ -603,15 +603,15 @@ if __name__ == "__main__":
 				while (True):
 					sleep(0.1)
 	#				GPIO.wait_for_edge(pttPin, GPIO.FALLING)
-					while (input(pttPin) != 0):
-						sleep(0.5)
+					while (input(ptt) != 0):
+						sleep(0.2)
 #					GPIO.output(txLed, 1)
 					output(txLed, 1)
 					print("1")
 #					sleep(0.1)
-					GPIO.wait_for_edge(pttPin, GPIO.RISING)	
-					while (input(pttPin) != 1):
-						sleep(0.5)					
+#					GPIO.wait_for_edge(pttPin, GPIO.RISING)	
+					while (input(ptt) != 1):
+						sleep(0.2)					
 #					GPIO.output(txLed, 0)
 					output(txLed, 0)
 					print("0")
