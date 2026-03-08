@@ -809,7 +809,7 @@ cd
 
 if [ "$noreboot" = "0" ] ; then  
 
-	if [ $FLAG -eq 1 ]; then
+	if [ $FLAG -eq 1 ]; then # Not sure if this is needed
 	  echo "systemctl daemon-reload and reboot"
 	  sudo systemctl daemon-reload 
 	  sudo reboot -h now
