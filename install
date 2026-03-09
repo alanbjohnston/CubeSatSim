@@ -369,7 +369,6 @@ if [ -d "/home/pi/direwolf" ]; then
 		if [ ! "$REPO_URL" = "https://github.com/wb2osz/direwolf.git" ]; then
 	
 	    	echo "Current Direwolf git repository URL is $REPO_URL"
-			echo "Reinstalling Direwolf from https://github.com/wb2osz/direwolf.git"
 			sudo rm -r /home/pi/direwolf
 		fi
 	else
@@ -379,6 +378,7 @@ fi
 
 if [ ! -d "/home/pi/direwolf" ]; then
 
+	echo "Installing Direwolf from https://github.com/wb2osz/direwolf.git"
 	cd	
 	git clone https://github.com/wb2osz/direwolf.git
 	cd direwolf
