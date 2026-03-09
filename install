@@ -559,21 +559,20 @@ sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
 
 sudo raspi-config nonint do_vnc 0
 
-cd /tmp
 
-wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
 
-tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
+if [ ! -d "/home/pi/PacSatGround" ]; then
 
-rm PacsatGround_unix_0_46o.tar.gz
+	cd /tmp
+	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
+	tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
+	rm PacsatGround_unix_0_46o.tar.gz
+	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
+	mkdir /home/pi/PacSatGround
+	sudo usermod -a -G gpio pi
+	sudo apt-get install default-jdk -y
 
-cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
-	
-mkdir /home/pi/PacSatGround
-
-sudo usermod -a -G gpio pi
-
-sudo apt-get install default-jdk -y
+fi
 
 cd
 
