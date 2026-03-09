@@ -618,7 +618,7 @@ if [ -f "$FILE" ]; then
 else
   echo "creating cubesatsim.service."
   sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
-  sudo systemctl enable command
+  sudo systemctl enable cubesatsim
 
   FLAG=1
 fi
