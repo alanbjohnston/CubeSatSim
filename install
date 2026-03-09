@@ -360,6 +360,8 @@ sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev l
 
 if [ -d "/home/pi/direwolf" ]; then
 
+	cd
+	cd direwolf
 	# Get the URL of the 'origin' remote
 	REPO_URL=$(git config --get remote.origin.url)
 	
