@@ -330,13 +330,15 @@ int main(int argc, char * argv[]) {
   map[MINUS_X] = MINUS_Y;
   map[PLUS_Z] = MINUS_X;	
   map[MINUS_Y] = PLUS_Z;		  
-
+/*
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
       printf("/dev/i2c-11 is present\n\n");
       snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
   } else {
       snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
   }
+*/
+  snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);	
 
   FILE * os_test = popen("cat /etc/os-release", "r");
   fgets(cmdbuffer, 1000, os_test);
