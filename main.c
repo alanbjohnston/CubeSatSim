@@ -617,6 +617,8 @@ int main(int argc, char * argv[]) {
     strcat(pythonConfigStr, " c");  
 
     fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
+
+	FILE *file2 = sopen(pythonVenv); // activate venv  
 	
     file1 = sopen(pythonConfigStr);  // python sensor polling function	  
 
