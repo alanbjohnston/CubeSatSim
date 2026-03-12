@@ -21,7 +21,7 @@ if [ ! -d "/home/pi/PacSatGround" ] ; then
   mkdir /home/pi/PacSatGround
   
   echo
-  echo "The first time you run the Ground Station, you will need to install the Pacsatsim spacecraft file and set the Delay to 750ms and Port to 8100 and restart the Pacsat Ground Station"
+  echo "The first time you run the Ground Station, you will need to put in your callsign, add the Pacsatsim spacecraft then restart the Pacsat Ground Station"
   
   sleep 10
 
@@ -32,7 +32,7 @@ if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
   mkdir /home/pi/PacSatGroundLoop
   
   echo
-  echo "The first time you run the Ground Station, you will need to install the Pacsatsim spacecraft file and set the Delay to 750ms and Port to 8100 and restart the Pacsat Ground Station"
+  echo "The first time you run the Ground Station, you will need to put in your callsign, add the Pacsatsim spacecraft then restart the Pacsat Ground Station"
   
   sleep 10
 
