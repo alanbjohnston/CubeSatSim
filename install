@@ -12,6 +12,9 @@ if [ -f "$FILE" ]; then
 
 	echo -e "\nUpdate script for CubeSatSim v2.2\n"
 
+	sudo rm /home/pi/CubeSatSim/telem.wav &>/dev/null
+	sudo rm /home/pi/CubeSatSim/t.txt  &>/dev/null
+
 	if [ -z "$1" ] ; then
 		checkout=0
 	else
