@@ -876,7 +876,7 @@ elif [ "$1" = "-R" ]; then
 	echo 
 
 	echo "Current commands count is:"
-	cat /home/pi/CubeSatSim/commands_count.txt
+	cat /home/pi/CubeSatSim/command_count.txt
 	echo
 
 	echo "Do you want to reset the commands count to zero (y/n) "
