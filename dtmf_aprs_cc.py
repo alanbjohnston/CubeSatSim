@@ -42,94 +42,98 @@ if __name__ == "__main__":
 					mode = 'a'
 					change_mode = True
 					
-				if ((line.find(":t1#")) > 0):
+				elif ((line.find(":t1#")) > 0):
 					system("echo '\nAPRS Mode!!\n'")
 					mode = 'a'
 					change_mode = True
-				if ((line.find("MODE=f")) > 0):
+				elif ((line.find("MODE=f")) > 0):
 					system("echo '\nFSK Mode!!\n'")
 					mode = 'f'
 					change_mode = True
 					
-				if ((line.find(":t2#")) > 0):
+				elif ((line.find(":t2#")) > 0):
 					system("echo '\nFSK Mode!!\n'")
 					mode = 'f'
 					change_mode = True
-				if ((line.find("MODE=b")) > 0):
+					
+				elif ((line.find("MODE=b")) > 0):
 					system("echo '\nBPSK Mode!!\n'")
 					mode = 'b'
 					change_mode = True
 					
-				if ((line.find(":t3#")) > 0):
+				elif ((line.find(":t3#")) > 0):
 					system("echo '\nBPSK Mode!!\n'")
 					mode = 'b'
 					change_mode = True
-				if ((line.find("MODE=s")) > 0):
+				elif ((line.find("MODE=s")) > 0):
 					system("echo '\nSSTV Mode!!\n'")
 					mode = 's'
 					change_mode = True
 					
-				if ((line.find(":t4#")) > 0):
+				elif ((line.find(":t4#")) > 0):
 					system("echo '\nSSTV Mode!!\n'")
 					mode = 's'
 					change_mode = True
 					
-				if ((line.find("MODE=m")) > 0):
+				elif ((line.find("MODE=m")) > 0):
 					system("echo '\nCW Mode!!\n'")
 					mode = 'm'
 					change_mode = True
 					
-				if ((line.find(":t5#")) > 0):
+				elif ((line.find(":t5#")) > 0):
 					system("echo '\nCW Mode!!\n'")
 					mode = 'm'
 					change_mode = True
 					
-				if ((line.find("MODE=e")) > 0):
+				elif ((line.find("MODE=e")) > 0):
 					system("echo '\nRepeater Mode!!\n'")
 					mode = 'e'
 					change_mode = True
 					
-				if ((line.find(":t6#")) > 0):
+				elif ((line.find(":t6#")) > 0):
 					system("echo '\nFUNcube Mode!!\n'")
 					mode = 'j'
 					change_mode = True	
 					
-				if ((line.find("MODE=G")) > 0):
+				elif ((line.find("MODE=G")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
 					mode = 'p'
 					change_mode = True
 					
-				if ((line.find(":t8#")) > 0):
+				elif ((line.find(":t8#")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
 					mode = 'p'
 					change_mode = True
 					
-				if ((line.find("MODE=n")) > 0):
+				elif ((line.find("MODE=n")) > 0):
 					system("echo '\nTransmit Commands Mode!!\n'")
 					mode = 'n'
 					change_mode = True
 								
-				if ((line.find(":t11#")) > 0):
+				elif ((line.find(":t11#")) > 0):
 					system("echo '\nTransmit Commands Mode!!\n'")
 					mode = 'n'
 					change_mode = True
 
-				if ((line.find("MODE=o")) > 0):
+				elif ((line.find("MODE=o")) > 0):
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
 					counter =  (counter + 1) % 2
 					
-				if ((line.find(":t10#")) > 0):
+				elif ((line.find(":t10#")) > 0):
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
+
+				system("echo 'before if'")
 					
 				if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
 		
 					if (mode == 'f'):
 						blink(2)
 						sleep(1)
+						system("echo 'after if'")
 				
 					elif (mode == 'b'):
 						blink(3)
@@ -174,7 +178,7 @@ if __name__ == "__main__":
 						print("Can't write command_count file!")
 					print("Command_count: ")
 					print(command_count)	
-					
+					system("echo 'print command count'")
 					GPIO.output(txLed, 0)
 					GPIO.output(powerPin, 0)
 					system("sudo systemctl stop transmit")
@@ -182,6 +186,7 @@ if __name__ == "__main__":
 					
 					print("\n/home/pi/CubeSatSim/config -" + mode)
 					system("/home/pi/CubeSatSim/config -" + mode)
+					system("echo 'config'")
 		
 					
 					change_mode = False
