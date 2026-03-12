@@ -10,7 +10,6 @@ def blink(times):
 		system("gpio write 27 0")
 		sleep(0.1)
 		system("gpio write 27 1")
-#		output(27, 1)
 		sleep(0.1)
 
 if __name__ == "__main__":
