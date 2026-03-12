@@ -115,7 +115,7 @@ if __name__ == "__main__":
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
-					counter =  (counter + 1) % 2
+#					counter =  (counter + 1) % 2
 					
 				elif ((line.find(":t10#")) > 0):
 					system("echo '\nBeacon Mode toggle!!\n'")
