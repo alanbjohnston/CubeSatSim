@@ -1,7 +1,5 @@
 import sys
 from os import system
-#import RPi.GPIO as GPIO
-#from RPi.GPIO import output
 from time import sleep
 import logging
 logging.basicConfig(format='%(message)s')
@@ -10,7 +8,6 @@ logging.basicConfig(format='%(message)s')
 def blink(times):
 	for i in range(times):
 		system("gpio write 27 0")
-#		GPIO.output(27, 0) 
 		sleep(0.1)
 		system("gpio write 27 1")
 #		output(27, 1)
@@ -125,15 +122,12 @@ if __name__ == "__main__":
 					system("echo '\nBeacon Mode toggle!!\n'")
 					mode = 'o'
 					change_mode = True
-
-				system("echo 'before if'")
 					
 				if (debug_mode == False)  and (change_mode == True) and (counter == 1): # skip every other APRS command since Direwolf prints them twice
 		
 					if (mode == 'f'):
 						blink(2)
 						sleep(1)
-						system("echo 'after if'")
 				
 					elif (mode == 'b'):
 						blink(3)
@@ -178,19 +172,14 @@ if __name__ == "__main__":
 						print("Can't write command_count file!")
 					print("Command_count: ")
 					print(command_count)	
-					system("echo 'print command count'")
 					system("gpio write " + str(txLed) + " 0")
 					system("gpio write " + str(powerPin) + " 0")
-		#			GPIO.output(txLed, 0)
-		#			GPIO.output(powerPin, 0)
 					system("sudo systemctl stop transmit")
 		#			system("sudo systemctl stop cubesatsim")
 					
 					print("\n/home/pi/CubeSatSim/config -" + mode)
 					system("/home/pi/CubeSatSim/config -" + mode)
-					system("echo 'config'")
-		
-					
+								
 					change_mode = False
 		except:
 			print("Error reading line (probably due to UTF-8 issue)")
