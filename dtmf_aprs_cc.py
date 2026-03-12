@@ -13,7 +13,7 @@ def blink(times):
 #		GPIO.output(27, 0) 
 		sleep(0.1)
 		system("gpio write 27 1")
-#		GPIO.output(27, 1)
+#		output(27, 1)
 		sleep(0.1)
 
 if __name__ == "__main__":
@@ -179,6 +179,8 @@ if __name__ == "__main__":
 					print("Command_count: ")
 					print(command_count)	
 					system("echo 'print command count'")
+					system("gpio write " + str(txLed) + " 0")
+					system("gpio write " + str(powerPin) + " 0")
 		#			GPIO.output(txLed, 0)
 		#			GPIO.output(powerPin, 0)
 					system("sudo systemctl stop transmit")
