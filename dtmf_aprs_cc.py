@@ -179,8 +179,8 @@ if __name__ == "__main__":
 					print("Command_count: ")
 					print(command_count)	
 					system("echo 'print command count'")
-					GPIO.output(txLed, 0)
-					GPIO.output(powerPin, 0)
+		#			GPIO.output(txLed, 0)
+		#			GPIO.output(powerPin, 0)
 					system("sudo systemctl stop transmit")
 		#			system("sudo systemctl stop cubesatsim")
 					
