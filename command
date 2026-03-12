@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nCommand and Control script for CubeSatSim v2.1\n"
+echo -e "\nCommand and Control script for CubeSatSim v2.2\n"
 
 sudo modprobe snd-aloop
 
@@ -60,11 +60,11 @@ if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 	
 		echo "debug mode"
 	
-		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 	
 	else
 	
-		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 	
 	fi
 else
@@ -109,11 +109,11 @@ else
 			
 #				echo "debug mode"
 			
-#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 			
 #			else
 			
-#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 			
 #			fi
 
@@ -130,11 +130,11 @@ else
 	
 		echo "debug mode"
 	
-		python3 /home/pi/CubeSatSim/squelch_cc.py d
+		/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py d
 	
 	else
 	
-		python3 /home/pi/CubeSatSim/squelch_cc.py
+		/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py
 	
 	fi	 
 fi
