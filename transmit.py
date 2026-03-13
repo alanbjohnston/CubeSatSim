@@ -556,15 +556,18 @@ if __name__ == "__main__":
 				print("0")
 				
 				while (True):
-					sleep(0.1)
-					while (input(ptt) != 0):
-						sleep(0.2)
-					output(txLed, 1)
-					print("1")
-					while (input(ptt) != 1):
-						sleep(0.2)					
-					output(txLed, 0)
-					print("0")
+					if (txc):
+						sleep(0.1)
+						while (input(ptt) != 0):
+							sleep(0.2)
+						output(txLed, 1)
+						print("1")
+						while (input(ptt) != 1):
+							sleep(0.2)					
+						output(txLed, 0)
+						print("0")
+					else:
+						sleep(10)
 			else:
 				print("Transmit APRS Commands")
 				system("sudo systemctl stop command")
