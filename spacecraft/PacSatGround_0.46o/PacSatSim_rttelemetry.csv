@@ -23,7 +23,7 @@
 21,float,BATT2_V,12,V,29,Battery2,5,1,3,Battery2 Voltage,INA219 Battery2 Voltage
 22,float,spin,12,rpm,32,Computer Software,3,1,3,Spacecraft Spin,Calculated spin rate using solar cells
 23,int,Pressure,12,hPa,0,Experiments,6,3,3,BME280 Pressure,BME280 STEM Payload sensor pressure
-24,float,Altitude,12,m,12,Experiments,6,4,3,BME280 Altitude,BME280 STEM Payload sensor altitude
+24,float,Altitude,12,m,37,Experiments,6,4,3,BME280 Altitude,BME280 STEM Payload sensor altitude
 25,float,Resets,12,-,12,NONE,3,2,3,Reset Count, Software Reset Count
 26,float,rssi,12,dBm,31,Radio,1,1,3,RSSI,Received Signal Strength Indication
 27,float,IHUcpuTemp,12,C,5,Computer Hardware,2,1,3,IHU Temp (Pi),Internal temperature of IHU from Pi
