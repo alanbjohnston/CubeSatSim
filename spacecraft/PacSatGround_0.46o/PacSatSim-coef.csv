@@ -35,7 +35,7 @@
 34,-,CommandStatus,0,0,0,0,0,0,Enum,0,4096,OFF:Carrier:DTMF/APRS
 35,-,FailStatus,0,0,0,0,0,0,Enum,0,4096,OK:FAIL
 36,-,AntStatus,0,0,0,0,0,0,Enum,0,4096,STOWED:DEPLOYED
-37,-,Times100,0,100.0,0,0,0,0,Counts,0,4096,Multiply by 100
+37,-,Times10,0,10.0,0,0,0,0,Counts,0,4096,Multiply by 10
 NOTES:,,,,,,,,,,,,
 Serial,Ignore,name,a,b,c,d,e,f,format,low limit,high limit,Comment
 Echo value = a + bx + cx^2 + dx^3 + ex^4 + fx^5,Echo value = a + bx + cx^2 + dx^3 + ex^4 + fx^5,,,,,,,,,,,
