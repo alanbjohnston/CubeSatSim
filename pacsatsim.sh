@@ -4,6 +4,8 @@
 
 loopback=0
 vox=0
+safe=0
+
 if [ "$1" = "l" ] ; then
 
   loopback=1
@@ -11,6 +13,13 @@ if [ "$1" = "l" ] ; then
 elif [ "$1" = "v" ] ; then
 
   vox=1  
+  
+fi  
+
+FILE=/home/pi/CubeSatSim/battery_saver
+if [ -f "$FILE" ]; then
+
+  safe=1
   
 fi  
 
@@ -70,8 +79,6 @@ if [ ! "$callsign" = "$oldcallsign" ] ; then
   cat /home/pi/pi_pacsat/Debug/pacsat.config
   
 fi
-
-
 
 sudo /etc/init.d/alsa-utils stop
 sudo /etc/init.d/alsa-utils start
@@ -141,25 +148,51 @@ echo
 
 sudo usermod -a -G gpio pi
 
-if [ "$loopback" = "1" ]; then
+if [ "$safe" = "1" ] ; then
+
+  echo "Safe mode - battery saver"
+#  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
+
+  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm-loopback.conf -t 0 &
+
+  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
+
+
+elif [ "$loopback" = "1" ] ; then
 
   echo "Using audio loopback"
-  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
+#  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
+
+  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
 
 elif [ "$vox" = "1" ]; then
 
   echo "Using Soundcard Audio TX and RX (VOX)"
-  sudo /home/pi/CubeSatSim/pacsatsim-dj.sh &
+#  sudo /home/pi/CubeSatSim/pacsatsim-dj.sh &
+
+  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14-half.conf -t 0 &
 
 else
 
   echo "Using TXC FM transceiver"
-  sudo /home/pi/CubeSatSim/pacsatsim-df.sh &
+#  sudo /home/pi/CubeSatSim/pacsatsim-df.sh &
+
+  pwm=1
+
+  if [ "$pwm" = "1" ] ; then  
+
+    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm.conf -t 0 &
+
+  else
+
+    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
+
+  fi
 
 fi
 
 #  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
-##  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
+## arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
 
 ##  echo "Don't close the direwolf window or the Pacsatsim will stop running."
 
