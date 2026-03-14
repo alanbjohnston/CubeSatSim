@@ -573,7 +573,7 @@ if __name__ == "__main__":
 							sleep(0.05)
 						system(rpitx)
 #						print("1")
-						while (input(17) -= 1):
+						while (input(17) == 1):
 							sleep(0.05)					
 						system(stop_rpitx)
 #						print("0")						
