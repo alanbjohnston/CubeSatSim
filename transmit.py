@@ -5,7 +5,7 @@ import time
 from time import sleep
 #import os
 import sys
-from os import sys
+from os import system
 from os import path
 from PIL import Image, ImageDraw, ImageFont, ImageColor
 import serial	
