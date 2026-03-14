@@ -554,7 +554,8 @@ if __name__ == "__main__":
 #					system("sudo systemctl restart pacsatsim")
 				output(txLed, 0)
 				print("0")
-				
+				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &"
+				stop_rpitx = "sudo killall -9 rpitx"
 				while (True):
 					if (txc):
 						sleep(0.1)
@@ -567,8 +568,19 @@ if __name__ == "__main__":
 						output(txLed, 0)
 						print("0")
 					else:
-						sleep(10)
-			else:
+#						sleep(0.1)
+						while (input(17) == 0):
+							sleep(0.05)
+						system(rpitx)
+#						print("1")
+						while (input(17) -= 1):
+							sleep(0.05)					
+						system(stop_rpitx)
+#						print("0")						
+						
+#						sleep(10)
+
+				else:
 				print("Transmit APRS Commands")
 				system("sudo systemctl stop command")
 #			while True:
