@@ -26,7 +26,7 @@ def input(pin):
 #		print(f"Command run was: {query}")
 #		print("Sucess!")
 #		print(f"Output of the command (stdout): {result.stdout}")
-		print(f"{command}: {result.stdout}")
+#		print(f"{command}: {result.stdout}")
 		return int(result.stdout)
 	except subprocess.CalledProcessError as e:
 #		print(f"Command failed with return code: {e.returncode}")
@@ -554,8 +554,8 @@ if __name__ == "__main__":
 #					system("sudo systemctl restart pacsatsim")
 				output(txLed, 0)
 				print("0")
-				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &"
-				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3"
+				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + rx + "e3 > /dev/null 2>&1 &"
+				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3 > /dev/null 2>&1"
 				system(stop_rpitx)
 				while (True):
 					if (txc):
