@@ -580,7 +580,7 @@ if __name__ == "__main__":
 						
 #						sleep(10)
 
-				else:
+			else:
 				print("Transmit APRS Commands")
 				system("sudo systemctl stop command")
 #			while True:
