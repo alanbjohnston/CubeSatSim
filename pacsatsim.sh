@@ -159,8 +159,17 @@ echo
 
 sudo usermod -a -G gpio pi
 
+if [ "$loopback" = "1" ] ; then
 
-if [ "$safe" = "1" ] ; then
+  echo "Using audio loopback"
+  ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=0"
+  PTT="PTT GPIOD gpiochip0 17"
+  
+#  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
+
+#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
+
+elif [ "$safe" = "1" ] ; then
 
   echo "Safe mode - battery saver"
 #  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
@@ -173,13 +182,6 @@ if [ "$safe" = "1" ] ; then
 #  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
 #  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f $frequency &
 
-
-elif [ "$loopback" = "1" ] ; then
-
-  echo "Using audio loopback"
-#  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
-
-  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
 
 elif [ "$vox" = "1" ]; then
 
