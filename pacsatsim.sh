@@ -197,14 +197,16 @@ else
 
 fi
 
-echo "$ADEVICE" > /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
-echo "$PTT" >> /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
-cat /home/pi/CubeSatSim/direwolf-pacsatsim.conf >> /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
+DIREWOLF_CONF="/home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf"
+
+echo "$ADEVICE" > $DIREWOLF_CONF
+echo "$PTT" >> $DIREWOLF_CONF
+cat /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim.conf >> $DIREWOLF_CONF
 
 echo
-echo "direwolf-pacsatsim-tmp.conf"
+echo "$DIREWOLF_CONF"
 echo
-cat /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
+cat $DIREWOLF_CONF
 echo
 
 #  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
