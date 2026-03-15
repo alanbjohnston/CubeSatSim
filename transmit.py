@@ -556,8 +556,9 @@ if __name__ == "__main__":
 				print("0")
 				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &"
 				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3 > /dev/null 2>&1"
-				system(stop_rpitx)
-				system(rpitx)			
+				if not txc:
+					system(stop_rpitx)
+					system(rpitx)			
 				while (True):
 					if (txc):
 						sleep(0.1)
