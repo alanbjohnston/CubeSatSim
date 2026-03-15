@@ -47,3 +47,6 @@ logt.txt
 telem.txt.bk
 failure_mode.txt
 sim_mode_auto
+direwolf-pacsatsim-tmp.conf
+groundstation/direwolf-pacsat-tmp.conf
+tlm.bin
