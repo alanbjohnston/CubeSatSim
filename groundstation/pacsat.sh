@@ -142,7 +142,12 @@ if [ "$loopback" = "1" ]; then
 #/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-df.sh"
 
   echo "Using Audio Loopback"
-  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
+#  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
+
+#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0 
+
+    ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+    PTT="PTT GPIOD gpiochip0 17" 
 
 elif [ "$vox" = "1" ]; then
 
