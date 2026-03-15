@@ -565,20 +565,22 @@ if __name__ == "__main__":
 						while (input(ptt) != 0):
 							sleep(0.2)
 						output(txLed, 1)
-						print("1")
+#						print("1")
 						while (input(ptt) != 1):
 							sleep(0.2)					
 						output(txLed, 0)
-						print("0")
+#						print("0")
 					else:
 #						sleep(0.1)
 						while (input(17) == 0):
 							sleep(0.05)
 ##						system(rpitx)
+						output(txLed, 1)
 #						print("1")
 						while (input(17) == 1):
 							sleep(0.05)					
 ##						system(stop_rpitx)
+						output(txLed, 0)
 #						print("0")						
 						
 #						sleep(10)
