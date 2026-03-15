@@ -16,6 +16,26 @@ elif [ "$1" = "v" ] ; then
   
 fi  
 
+FILE=/home/pi/CubeSatSim/battery_saver
+if [ -f "$FILE" ]; then
+
+  safe=1
+  
+fi  
+
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
+callsign="$1"
+frequency="$7e3"
+
+echo -n "Callsign is "
+echo $callsign
+echo -n "Transmit Frequency is "
+echo $frequency
+echo
+
 if [ ! -d "/home/pi/PacSatGround" ] ; then
 
   mkdir /home/pi/PacSatGround
@@ -132,9 +152,39 @@ elif [ "$vox" = "1" ]; then
 else
 
   echo "Using TXC FM Transceiver"
-  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
+  pwm=1
+#  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
+
+  if [ "$pwm" = "1" ] ; then  
+  
+#    direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-pwm.conf -t 0 &
+
+    echo "FM TXC using Soundcard input (JP13), PWM output"
+    ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+    PTT="PTT GPIOD gpiochip0 -20" 
+   
+  else
+  
+    direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14.conf -t 0 &
+    
+  fi  
 
 fi
+
+DIREWOLF_CONF="/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
+
+echo "$ADEVICE" > $DIREWOLF_CONF
+echo "MYCALL $callsign-1" >> $DIREWOLF_CONF
+echo "$PTT" >> $DIREWOLF_CONF
+cat /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf >> $DIREWOLF_CONF
+
+echo
+echo "$DIREWOLF_CONF"
+echo
+cat $DIREWOLF_CONF
+echo
+
+direwolf -r 48000 -c $DIREWOLF_CONF -t 0 &
 
 # arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
 ##arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
