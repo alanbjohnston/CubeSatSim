@@ -5,6 +5,8 @@
 loopback=0
 vox=0
 safe=0
+card=0
+pwm=0
 
 if [ "$1" = "l" ] ; then
 
@@ -13,6 +15,14 @@ if [ "$1" = "l" ] ; then
 elif [ "$1" = "v" ] ; then
 
   vox=1  
+
+elif [ "$1" = "c" ] ; then
+
+  card=1  
+
+else
+
+  pwm=1  
   
 fi  
 
@@ -173,34 +183,27 @@ elif [ "$loopback" = "1" ] ; then
 
 elif [ "$vox" = "1" ]; then
 
-  echo "Using Soundcard Audio TX and RX (VOX)"
+  echo "Using Soundcard Audio TX and RX (VOX, no PTT)"
+  ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 17" 
 #  sudo /home/pi/CubeSatSim/pacsatsim-dj.sh &
 
-  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14-half.conf -t 0 &
+#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14-half.conf -t 0 &
 
-else
-
-  echo "Using TXC FM transceiver"
-#  sudo /home/pi/CubeSatSim/pacsatsim-df.sh &
-
-  pwm=1
-
-  if [ "$pwm" = "1" ] ; then  
+elif [ "$pwm" = "1" ] ; then  
   
-    echo "Using Soundcard input (JP13), PWM output"
+    echo "FM TXC using Soundcard input (JP13), PWM output"
     ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
     PTT="PTT GPIOD gpiochip0 -20" 
 
 #    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm.conf -t 0 &
 
-  else
+else
 
-    echo "Using Soundcard input (JP13) and output (JP14)"
+    echo "FM TXC using Soundcard input (JP13) and output (JP14)"
     ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
     PTT="PTT GPIOD gpiochip0 -20" 
 #    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
-
-  fi
 
 fi
 
