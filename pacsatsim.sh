@@ -187,7 +187,10 @@ else
 
   if [ "$pwm" = "1" ] ; then  
 
-    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm.conf -t 0 &
+    ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+    PTT="PTT GPIOD gpiochip0 -20" 
+
+#    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm.conf -t 0 &
 
   else
 
