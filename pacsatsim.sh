@@ -200,6 +200,7 @@ fi
 DIREWOLF_CONF="/home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf"
 
 echo "$ADEVICE" > $DIREWOLF_CONF
+echo "MYCALL $callsign-1" >> $DIREWOLF_CONF
 echo "$PTT" >> $DIREWOLF_CONF
 cat /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim.conf >> $DIREWOLF_CONF
 
