@@ -149,10 +149,14 @@ echo
 
 sudo usermod -a -G gpio pi
 
+
 if [ "$safe" = "1" ] ; then
 
   echo "Safe mode - battery saver"
 #  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
+
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+  PTT="PTT GPIOD gpiochip0 17"
 
   direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm-loopback.conf -t 0 &
 
@@ -192,6 +196,16 @@ else
   fi
 
 fi
+
+echo "$ADEVICE" > /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
+echo "$PTT" >> /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
+cat /home/pi/CubeSatSim/direwolf-pacsatsim.conf >> /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
+
+echo
+echo "direwolf-pacsatsim-tmp.conf"
+echo
+cat /home/pi/CubeSatSim/direwolf-pacsatsim-tmp.conf
+echo
 
 #  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
 ## arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
