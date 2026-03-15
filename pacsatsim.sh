@@ -183,10 +183,11 @@ else
   echo "Using TXC FM transceiver"
 #  sudo /home/pi/CubeSatSim/pacsatsim-df.sh &
 
-  pwm=1
+  #pwm=1
 
   if [ "$pwm" = "1" ] ; then  
-
+  
+    echo "Using Soundcard input (JP13), PWM output"
     ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
     PTT="PTT GPIOD gpiochip0 -20" 
 
@@ -194,7 +195,10 @@ else
 
   else
 
-    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
+    echo "Using Soundcard input (JP13) and output (JP14)"
+    ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
+    PTT="PTT GPIOD gpiochip0 -20" 
+#    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-jp14.conf -t 0 &
 
   fi
 
