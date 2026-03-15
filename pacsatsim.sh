@@ -183,7 +183,7 @@ else
   echo "Using TXC FM transceiver"
 #  sudo /home/pi/CubeSatSim/pacsatsim-df.sh &
 
-  #pwm=1
+  pwm=1
 
   if [ "$pwm" = "1" ] ; then  
   
