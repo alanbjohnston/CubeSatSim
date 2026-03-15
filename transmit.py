@@ -558,7 +558,8 @@ if __name__ == "__main__":
 				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3 > /dev/null 2>&1"
 				if not txc:
 					system(stop_rpitx)
-					system(rpitx)			
+					system(rpitx)	
+					print("Safe Mode!")
 				while (True):
 					if (txc):
 						sleep(0.1)
