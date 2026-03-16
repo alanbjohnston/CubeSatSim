@@ -1158,9 +1158,9 @@ elif [ "$1" = "-o" ]; then
 			echo "Turn beacon telemetry ON"
 			sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
 			sudo systemctl restart transmit
-			if [ "$MODE" = "p" ]; then
-				sudo systemctl restart pacsatsim
-			fi
+#			if [ "$MODE" = "p" ]; then
+#				sudo systemctl restart pacsatsim
+#			fi
 	
 		else 
 	    	echo "Transmit beacon telemetry is on"
@@ -1168,12 +1168,12 @@ elif [ "$1" = "-o" ]; then
 	
 			echo "Turn beacon telemetry OFF"
 			touch /home/pi/CubeSatSim/beacon_off
-			if [ "$MODE" = "p" ]; then
-				sudo systemctl stop pacsatsim
-				sudo systemctl stop transmit
-			else
+#			if [ "$MODE" = "p" ]; then
+#				sudo systemctl stop pacsatsim
+#				sudo systemctl stop transmit
+#			else
 				sudo systemctl restart transmit
-			fi
+#			fi
 		fi
 		sleep 3
 	fi
