@@ -154,11 +154,15 @@ sudo killall -9 direwolf &>/dev/null
 			 	sudo rm -r /home/pi/PacSatGround
 				cd
 				sudo rm PacSatGround.zip
-				wget https://github.com/alanbjohnston/CubeSatSim/raw/60d11e78d79c7070a1cff5ff98aa622044a9335a/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-				unzip PacSatGround.zip
+				wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+				unzip PacSatGround.zip -d PacSatGround
 				sudo rm PacSatGround.zip
 			 else
 			 	sudo rm -r /home/pi/PacSatGroundLoop
+				sudo rm PacSatGround.zip
+				wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+				unzip PacSatGround.zip -d PacSatGroundLoop
+				sudo rm PacSatGround.zip				
 			 fi
 		else
 
