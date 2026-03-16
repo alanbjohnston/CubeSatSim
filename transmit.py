@@ -554,6 +554,7 @@ if __name__ == "__main__":
 					print("Pacsat")
 					if (command_tx == True):
 						system("sudo systemctl restart pacsatsim")
+						print("Starting PacSatSim")
 				output(txLed, 0)
 				print("0")
 				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &"
