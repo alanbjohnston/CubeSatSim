@@ -336,7 +336,7 @@ if __name__ == "__main__":
 	print("Command_tx: ")
 	print(command_tx)
 
-	if (mode != "p") || (!command_tx):
+	if (mode != "p") or (!command_tx):
 		system("sudo systemctl stop pacsatsim")
 	
 	try:
