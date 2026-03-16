@@ -131,9 +131,9 @@ sudo killall -9 direwolf &>/dev/null
 	
 			else
 				if [ "$ANS" = "1" ] ; then
-					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
+					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties 
 				else
-					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGroundLoop/spacecraft/PacSatSim.properties
+					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties 
 				fi
 				echo
 				echo "Changing callsign to "
