@@ -324,8 +324,6 @@ if __name__ == "__main__":
 				print("Can't open .mode file, defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
-	if ( mode != "p"):
-		system("sudo systemctl stop pacsatsim")
 
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
@@ -337,6 +335,9 @@ if __name__ == "__main__":
 			print("Can't open beacon_off file, defaulting to False")
 	print("Command_tx: ")
 	print(command_tx)
+
+	if (mode != "p") || (!command_tx):
+		system("sudo systemctl stop pacsatsim")
 	
 	try:
 		file = open("/home/pi/CubeSatSim/command_count.txt", "r")
