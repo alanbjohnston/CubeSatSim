@@ -113,9 +113,9 @@ sudo killall -9 direwolf &>/dev/null
 			echo
 
 			if [ "$ANS" = "1" ] ; then
-				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/PacSatGround/spacecraft/PacSatSim.properties)
+				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties )
 			else
-				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/PacSatGroundLoop/spacecraft/PacSatSim.properties)
+				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties )
 			fi
 			echo "Current value of remote PacSat callsign is"	
 			echo $oldcallsign
