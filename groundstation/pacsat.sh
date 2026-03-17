@@ -4,15 +4,25 @@
 
 loopback=0
 vox=0
+safe=0
+card=0
+pwm=0
+
 if [ "$1" = "l" ] ; then
 
   loopback=1
-  echo "PacSat Ground Station with Loopback"  
 
 elif [ "$1" = "v" ] ; then
 
-  vox=1 
-  echo "PacSat Ground Station with Soundcard (VOX)"  
+  vox=1  
+
+elif [ "$1" = "c" ] ; then
+
+  card=1  
+
+else
+
+  pwm=1  
   
 fi  
 
@@ -139,41 +149,35 @@ echo
 sudo usermod -a -G gpio pi
 
 if [ "$loopback" = "1" ]; then
-#/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-df.sh"
 
   echo "Using Audio Loopback"
-#  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
+  ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+  PTT="PTT GPIOD gpiochip0 17" 
 
-#  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0 
+elif [ "$safe" = "1" ] ; then
 
-    ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
-    PTT="PTT GPIOD gpiochip0 17" 
+  echo "Safe mode - battery saver"
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+  PTT="PTT GPIOD gpiochip0 17"
 
 elif [ "$vox" = "1" ]; then
 
-  echo "Using Soundcard Audio TX RX (VOX)"
-  /home/pi/CubeSatSim/groundstation/pacsat-dj.sh &
-
-else
-
-  echo "Using TXC FM Transceiver"
-  pwm=1
-#  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
-
-  if [ "$pwm" = "1" ] ; then  
+  echo "Using Soundcard Audio TX and RX (VOX, no PTT)"
+  ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 17" 
   
-#    direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-pwm.conf -t 0 &
-
-    echo "FM TXC using Soundcard input (JP13), PWM output"
-    ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
-    PTT="PTT GPIOD gpiochip0 -20" 
+elif [ "$pwm" = "1" ] ; then  
+  
+  echo "FM TXC using Soundcard input (JP13), PWM output"
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 -20" 
    
-  else
+else
   
-    direwolf -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-fm-pacsat-jp14.conf -t 0 &
+  echo "FM TXC using Soundcard input (JP13) and output (JP14)"
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 -20" 
     
-  fi  
-
 fi
 
 DIREWOLF_CONF="/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
