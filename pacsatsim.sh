@@ -39,14 +39,16 @@ if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
 else
   echo "No USB Sound Card detected"
   soundcard=0
+fi  
 
 gpio -g mode 7 up
-if [[ $(gpio -g read 7 | grep 0) ]]; then
+if [[ $(gpio -g read 7 | grep 0) ]] ; then
 	echo "TXC is present"
 	txc=1
 else:
 	echo "TXC not present"
   txc=0
+fi  
 
 timeout 1 rtl_test &> out.txt
 if [[ $(grep "No supported" out.txt) ]] ; then
