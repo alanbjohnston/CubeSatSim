@@ -1,6 +1,8 @@
 #!/bin/bash
 
-# script to auto decode packet using rtl_fm and Direwolf and run Pacsat Ground Station
+# script to auto decode packets using Direwolf and FM TXC and run Pacsat Ground Station
+
+sudo pkill -f "/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
 
 loopback=0
 vox=0
