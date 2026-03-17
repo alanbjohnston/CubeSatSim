@@ -43,10 +43,10 @@ fi
 
 gpio -g mode 7 up
 if [[ $(gpio -g read 7 | grep 0) ]] ; then
-	echo "TXC is present"
-	txc=1
-else:
-	echo "TXC not present"
+  echo "TXC is present"
+  txc=1
+else
+  echo "TXC not present"
   txc=0
 fi  
 
