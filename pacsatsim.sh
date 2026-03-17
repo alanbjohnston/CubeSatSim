@@ -33,6 +33,30 @@ if [ -f "$FILE" ]; then
   
 fi  
 
+if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+  echo "USB Sound Card detected"
+  soundcard=1
+else
+  echo "No USB Sound Card detected"
+  soundcard=0
+
+gpio -g mode 7 up
+if [[ $(gpio -g read 7 | grep 0) ]]; then
+	echo "TXC is present"
+	txc=1
+else:
+	echo "TXC not present"
+  txc=0
+
+timeout 1 rtl_test &> out.txt
+if [[ $(grep "No supported" out.txt) ]] ; then
+  echo "No RTL-SDR detected"
+  rtl=0
+else
+  echo "RTL-SDR detected."
+  rtl=1
+fi
+
 if [ ! -d "/home/pi/PacSat" ]; then
 
   echo "Setting up PacSatSim default configuration"
