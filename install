@@ -172,6 +172,8 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/firmware/config.txt
 
 	  sudo sed -i 's/#dtoverlay=vc4-fkms-v3d/dtoverlay=vc4-fkms-v3d/g' /boot/firmware/config.txt
+	  sudo sed -i 's/#dtoverlay=vc4-kms-v3d/dtoverlay=vc4-kms-v3d/g' /boot/firmware/config.txt
+
 	  
 	  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/firmware/config.txt) ]]; then
 	    echo "dtoverlay=i2c-gpio already in /boot/firmware/config.txt"
