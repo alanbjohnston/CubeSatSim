@@ -176,7 +176,7 @@ echo
 
 sudo usermod -a -G gpio pi
 
-if [ "$loopback" = "1" ]; then
+if [ "$loopback" = "1" ] ; then
 
   echo "Using Audio Loopback"
   ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
@@ -187,7 +187,7 @@ elif [ "$safe" = "1" ] ; then
   ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
   PTT="PTT GPIOD gpiochip0 17"
 
-  if [ ! "$txc" = "1" ] then
+  if [ ! "$txc" = "1" ] ; then
     echo "Safe mode - battery saver won't work since no TXC present"
     sleep 5
   elif [ ! "$soundcard" = "1" ] ; then
@@ -197,7 +197,7 @@ elif [ "$safe" = "1" ] ; then
     echo "Safe mode - battery saver"
   fi  
 
-elif [ "$vox" = "1" ]; then
+elif [ "$vox" = "1" ] ; then
 
   ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
   PTT="PTT GPIOD gpiochip0 17" 
@@ -214,7 +214,7 @@ elif [ "$pwm" = "1" ] ; then
   ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
   PTT="PTT GPIOD gpiochip0 -20" 
 
-  if [ ! "$txc" = "1" ] then
+  if [ ! "$txc" = "1" ] ; then
     echo "FM TXC using Soundcard input (JP13), PWM output won't work since no TXC present"
     sleep 5
   elif [ ! "$soundcard" = "1" ] ; then
@@ -230,7 +230,7 @@ else
   ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
   PTT="PTT GPIOD gpiochip0 -20"
 
-  if [ ! "$txc" = "1" ] then
+  if [ ! "$txc" = "1" ] ; then
     echo "FM TXC using Soundcard input (JP13) and output (JP14) won't work since no TXC present"
     sleep 5
   elif [ ! "$soundcard" = "1" ] ; then
@@ -264,7 +264,7 @@ direwolf -r 48000 -c $DIREWOLF_CONF -t 0 &
 
 cd /home/pi/Desktop/PacsatGround/
 
-if [ "$loopback" = "1" ]; then
+if [ "$loopback" = "1" ] ; then
 
   setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGroundLoop" # removed &
 
