@@ -184,27 +184,61 @@ if [ "$loopback" = "1" ]; then
 
 elif [ "$safe" = "1" ] ; then
 
-  echo "Safe mode - battery saver"
   ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
   PTT="PTT GPIOD gpiochip0 17"
 
+  if [ ! "$txc" = "1" ] then
+    echo "Safe mode - battery saver won't work since no TXC present"
+    sleep 5
+  elif [ ! "$soundcard" = "1" ] ; then
+     echo "Safe mode - battery saver won't work since no sound card present"
+     sleep 5
+  else
+    echo "Safe mode - battery saver"
+  fi  
+
 elif [ "$vox" = "1" ]; then
 
-  echo "Using Soundcard Audio TX and RX (VOX, no PTT)"
   ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
   PTT="PTT GPIOD gpiochip0 17" 
   
+  if [ "$soundcard" = "1" ] ; then
+     echo "Using Soundcard Audio TX and RX (VOX, no PTT)"
+  else
+    echo "Soundcard Audio TX and RX (VOX, no PTT) will not work since no sound card present"
+    sleep 5
+  fi  
+  
 elif [ "$pwm" = "1" ] ; then  
   
-  echo "FM TXC using Soundcard input (JP13), PWM output"
   ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
   PTT="PTT GPIOD gpiochip0 -20" 
+
+  if [ ! "$txc" = "1" ] then
+    echo "FM TXC using Soundcard input (JP13), PWM output won't work since no TXC present"
+    sleep 5
+  elif [ ! "$soundcard" = "1" ] ; then
+     echo "FM TXC using Soundcard input (JP13), PWM output won't work since no sound card present"
+     sleep 5
+  else
+    echo "FM TXC using Soundcard input (JP13), PWM output"
+  fi
    
 else
   
   echo "FM TXC using Soundcard input (JP13) and output (JP14)"
   ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
-  PTT="PTT GPIOD gpiochip0 -20" 
+  PTT="PTT GPIOD gpiochip0 -20"
+
+  if [ ! "$txc" = "1" ] then
+    echo "FM TXC using Soundcard input (JP13) and output (JP14) won't work since no TXC present"
+    sleep 5
+  elif [ ! "$soundcard" = "1" ] ; then
+     echo "FM TXC using Soundcard input (JP13), output (JP14) won't work since no sound card present"
+     sleep 5
+  else
+    echo "FM TXC using Soundcard input (JP13), output JP14"
+  fi
     
 fi
 
