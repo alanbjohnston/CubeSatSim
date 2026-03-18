@@ -950,7 +950,7 @@ if __name__ == "__main__":
 				if (input(squelch) == False) and (command_tx == True):
 					print("Carrier detected, starting repeater")
 					output(txLed, 1)
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 8000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &")
 					sleep(0.5)
 					system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					while (input(squelch) == False):
