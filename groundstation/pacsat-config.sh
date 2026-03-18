@@ -113,9 +113,9 @@ sudo killall -9 direwolf &>/dev/null
 			echo
 
 			if [ "$ANS" = "1" ] ; then
-				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/PacSatGround/spacecraft/PacSatSim.properties)
+				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties )
 			else
-				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/PacSatGroundLoop/spacecraft/PacSatSim.properties)
+				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties )
 			fi
 			echo "Current value of remote PacSat callsign is"	
 			echo $oldcallsign
@@ -131,9 +131,9 @@ sudo killall -9 direwolf &>/dev/null
 	
 			else
 				if [ "$ANS" = "1" ] ; then
-					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGround/spacecraft/PacSatSim.properties
+					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties 
 				else
-					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/PacSatGroundLoop/spacecraft/PacSatSim.properties
+					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties 
 				fi
 				echo
 				echo "Changing callsign to "
@@ -152,8 +152,17 @@ sudo killall -9 direwolf &>/dev/null
 			 
 			 if [ "$ANS" = "1" ] ; then
 			 	sudo rm -r /home/pi/PacSatGround
+				cd
+				sudo rm PacSatGround.zip
+				wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+				unzip PacSatGround.zip -d PacSatGround
+				sudo rm PacSatGround.zip
 			 else
 			 	sudo rm -r /home/pi/PacSatGroundLoop
+				sudo rm PacSatGround.zip
+				wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+				unzip PacSatGround.zip -d PacSatGroundLoop
+				sudo rm PacSatGround.zip				
 			 fi
 		else
 

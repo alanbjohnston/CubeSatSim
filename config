@@ -324,6 +324,32 @@ if [ "$1" = "" ]; then
   		echo "Transmit beacon telemetry is ON"
 	fi
 
+	if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+	  echo "USB Sound Card detected"
+	  soundcard=1
+	else
+	  echo "No USB Sound Card detected"
+	  soundcard=0
+	fi  
+	
+	gpio -g mode 7 up
+	if [[ $(gpio -g read 7 | grep 0) ]] ; then
+	  echo "FM TXC is present"
+	  txc=1
+	else
+	  echo "FM TXC not present"
+	  txc=0
+	fi  
+	
+	timeout 1 rtl_test &> out.txt
+	if [[ $(grep "No supported" out.txt) ]] ; then
+	  echo "No RTL-SDR detected"
+	  rtl=0
+	else
+	  echo "RTL-SDR detected"
+	  rtl=1
+	fi
+
 	echo
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
@@ -1139,8 +1165,9 @@ elif [ "$1" = "-o" ]; then
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+	MODE=$1
 
-	if [ "$1" == "n" ]; then
+	if [ "$MODE" == "n" ]; then
 
 		transmit_command "o"
 
@@ -1151,35 +1178,19 @@ elif [ "$1" = "-o" ]; then
 	
 		FILE=/home/pi/CubeSatSim/beacon_off
 		if [ -f "$FILE" ]; then
-	    		echo "Transmit beacon telemetry is off"
-#			echo
-#			echo "Do you want to turn beacon telemetry ON (y/n) "
-#			read reset
-
-			reset="y"
+	    	echo "Transmit beacon telemetry is off"
 			echo
 	
-			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-				echo "Turn beacon telemetry ON"
-				sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
-				sudo systemctl restart transmit
-	#			restart=1
-			fi
-	
+			echo "Turn beacon telemetry ON"
+			sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
+			sudo systemctl restart transmit
 		else 
-	    		echo "Transmit beacon telemetry is on"
-#			echo
-#			echo "Do you want to turn beacon telemetry OFF (y/n) "
-#			read reset
-			reset="y"
+	    	echo "Transmit beacon telemetry is on"
 			echo
 	
-			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-				echo "Turn beacon telemetry OFF"
-				touch /home/pi/CubeSatSim/beacon_off
-				sudo systemctl restart transmit
-	#			restart=1
-			fi
+			echo "Turn beacon telemetry OFF"
+			touch /home/pi/CubeSatSim/beacon_off
+			sudo systemctl restart transmit
 		fi
 		sleep 3
 	fi

@@ -1,20 +1,78 @@
 #!/bin/bash
 
-# script to auto decode packet using rtl_fm and Direwolf and run Pacsat Ground Station
+# script to auto decode packets using Direwolf and FM TXC and run Pacsat Ground Station
+
+sudo pkill -f "/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
 
 loopback=0
 vox=0
+safe=0
+card=0
+pwm=0
+
 if [ "$1" = "l" ] ; then
 
   loopback=1
-  echo "PacSat Ground Station with Loopback"  
 
 elif [ "$1" = "v" ] ; then
 
-  vox=1 
-  echo "PacSat Ground Station with Soundcard (VOX)"  
+  vox=1  
+
+elif [ "$1" = "c" ] ; then
+
+  card=1  
+
+else
+
+  pwm=1  
   
 fi  
+
+if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+  echo "USB Sound Card detected"
+  soundcard=1
+else
+  echo "No USB Sound Card detected"
+  soundcard=0
+fi  
+
+gpio -g mode 7 up
+if [[ $(gpio -g read 7 | grep 0) ]] ; then
+  echo "TXC is present"
+  txc=1
+else
+  echo "TXC not present"
+  txc=0
+fi  
+
+timeout 1 rtl_test &> out.txt
+if [[ $(grep "No supported" out.txt) ]] ; then
+  echo "No RTL-SDR detected"
+  rtl=0
+else
+  echo "RTL-SDR detected."
+  rtl=1
+fi
+
+FILE=/home/pi/CubeSatSim/battery_saver
+if [ -f "$FILE" ]; then
+
+  safe=1
+  
+fi  
+
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
+callsign="$1"
+frequency="$7e3"
+
+echo -n "Callsign is "
+echo $callsign
+echo -n "Transmit Frequency is "
+echo $frequency
+echo
 
 if [ ! -d "/home/pi/PacSatGround" ] ; then
 
@@ -77,73 +135,97 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-echo
-
 #sudo systemctl restart pacsatsim
 
 #sudo /etc/init.d/alsa-utils stop
 #sudo /etc/init.d/alsa-utils start
 
-
-#echo "Waiting 10 seconds for Pacsatsim to start"
-
-#sleep 10
-
-#value=`cat /home/pi/CubeSatSim/sim.cfg`
-#echo "$value" > /dev/null
-#set -- $value
-
-#echo "Receive frequency is $8 MHz"	
-#echo "Transmit frequency is $7 MHz"	
-#echo 
-#echo "To change, quit and type CubeSatSim/config -F"
-#echo
-
-#frequency="$8e6"
-
-#echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
-
-#echo
-
-echo 
-echo "The Pacsat Ground Station is running on this Pi using FM receiver or RTL-SDR"
-echo
-
-#cd /home/pi/Desktop/PacSatGround_0.46m_linux/
-
-#setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
-
-#direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  # &
-#/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
-
 sudo usermod -a -G gpio pi
 
-if [ "$loopback" = "1" ]; then
-#/usr/bin/x-terminal-emulator --geometry=120x40 -e "/home/pi/CubeSatSim/groundstation/pacsat-df.sh"
+if [ "$loopback" = "1" ] ; then
 
   echo "Using Audio Loopback"
-  /home/pi/CubeSatSim/groundstation/pacsat-d.sh &
+  ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+  PTT="PTT GPIOD gpiochip0 17" 
 
-elif [ "$vox" = "1" ]; then
+elif [ "$safe" = "1" ] ; then
 
-  echo "Using Soundcard Audio TX RX (VOX)"
-  /home/pi/CubeSatSim/groundstation/pacsat-dj.sh &
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+  PTT="PTT GPIOD gpiochip0 17"
 
+  if [ ! "$txc" = "1" ] ; then
+    echo "Safe mode - battery saver won't work since no TXC present"
+    sleep 5
+  elif [ ! "$soundcard" = "1" ] ; then
+     echo "Safe mode - battery saver won't work since no sound card present"
+     sleep 5
+  else
+    echo "Safe mode - battery saver"
+  fi  
+
+elif [ "$vox" = "1" ] ; then
+
+  ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 17" 
+  
+  if [ "$soundcard" = "1" ] ; then
+     echo "Using Soundcard Audio TX and RX (VOX, no PTT)"
+  else
+    echo "Soundcard Audio TX and RX (VOX, no PTT) will not work since no sound card present"
+    sleep 5
+  fi  
+  
+elif [ "$pwm" = "1" ] ; then  
+  
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 -20" 
+
+  if [ ! "$txc" = "1" ] ; then
+    echo "FM TXC using Soundcard input (JP13), PWM output won't work since no TXC present"
+    sleep 5
+  elif [ ! "$soundcard" = "1" ] ; then
+     echo "FM TXC using Soundcard input (JP13), PWM output won't work since no sound card present"
+     sleep 5
+  else
+    echo "FM TXC using Soundcard input (JP13), PWM output"
+  fi
+   
 else
+  
+  echo "FM TXC using Soundcard input (JP13) and output (JP14)"
+  ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
+  PTT="PTT GPIOD gpiochip0 -20"
 
-  echo "Using TXC FM Transceiver"
-  /home/pi/CubeSatSim/groundstation/pacsat-df.sh &
-
+  if [ ! "$txc" = "1" ] ; then
+    echo "FM TXC using Soundcard input (JP13) and output (JP14) won't work since no TXC present"
+    sleep 5
+  elif [ ! "$soundcard" = "1" ] ; then
+     echo "FM TXC using Soundcard input (JP13), output (JP14) won't work since no sound card present"
+     sleep 5
+  else
+    echo "FM TXC using Soundcard input (JP13), output JP14"
+  fi
+    
 fi
 
-# arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
-##arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
+DIREWOLF_CONF="/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
 
-# echo "Don't close the direwolf window or the Pacsatsim will stop running."
+echo "$ADEVICE" > $DIREWOLF_CONF
+echo "MYCALL $callsign-1" >> $DIREWOLF_CONF
+echo "$PTT" >> $DIREWOLF_CONF
+cat /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat.conf >> $DIREWOLF_CONF
+
+echo
+echo "$DIREWOLF_CONF"
+echo
+cat $DIREWOLF_CONF
+echo
+
+direwolf -r 48000 -c $DIREWOLF_CONF -t 0 &
 
 cd /home/pi/Desktop/PacsatGround/
 
-if [ "$loopback" = "1" ]; then
+if [ "$loopback" = "1" ] ; then
 
   setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGroundLoop" # removed &
 
@@ -152,13 +234,6 @@ else
   setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
 fi
-#cd /home/pi/Desktop/PacSatGround_0.46m_linux/
-
-#sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
-
-cd
-
-#sudo systemctl stop pacsatsim 
 
 sleep 10
 

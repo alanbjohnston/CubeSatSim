@@ -273,7 +273,7 @@ int main(int argc, char * argv[]) {
       }	    
     }
   } 
-
+/*
   if ( mode == PACSAT) {
 		FILE * pacsat_file = popen("sudo systemctl restart pacsatsim", "r");
         pclose(pacsat_file);
@@ -282,7 +282,7 @@ int main(int argc, char * argv[]) {
 		FILE * pacsat_file = popen("sudo systemctl stop pacsatsim", "r");
         pclose(pacsat_file);
   }
-
+*/
   // Open telemetry file with STEM Payload Data
   telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
   if (telem_file == NULL) 

@@ -26,7 +26,7 @@ def input(pin):
 #		print(f"Command run was: {query}")
 #		print("Sucess!")
 #		print(f"Output of the command (stdout): {result.stdout}")
-		print(f"{command}: {result.stdout}")
+#		print(f"{command}: {result.stdout}")
 		return int(result.stdout)
 	except subprocess.CalledProcessError as e:
 #		print(f"Command failed with return code: {e.returncode}")
@@ -324,7 +324,6 @@ if __name__ == "__main__":
 				print("Can't open .mode file, defaulting to FSK")
 	print("Mode is: ")
 	print(mode)
-#	system("sudo systemctl stop pacsatsim")
 
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
@@ -336,6 +335,9 @@ if __name__ == "__main__":
 			print("Can't open beacon_off file, defaulting to False")
 	print("Command_tx: ")
 	print(command_tx)
+
+	if (mode != "p") or (command_tx == False):
+		system("sudo systemctl stop pacsatsim")
 	
 	try:
 		file = open("/home/pi/CubeSatSim/command_count.txt", "r")
@@ -551,20 +553,43 @@ if __name__ == "__main__":
 					print("Pacsat Ground Station")
 				else:
 					print("Pacsat")
-#					system("sudo systemctl restart pacsatsim")
+					if (command_tx == True):
+						system("sudo systemctl restart pacsatsim")
+						print("Starting PacSatSim")
 				output(txLed, 0)
 				print("0")
-				
+				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &"
+				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3 > /dev/null 2>&1"
+				if not txc:
+					system(stop_rpitx)
+					system(rpitx)	
+					print("Safe Mode!")
 				while (True):
-					sleep(0.1)
-					while (input(ptt) != 0):
-						sleep(0.2)
-					output(txLed, 1)
-					print("1")
-					while (input(ptt) != 1):
-						sleep(0.2)					
-					output(txLed, 0)
-					print("0")
+					if (txc):
+						sleep(0.1)
+						while (input(ptt) != 0):
+							sleep(0.2)
+						output(txLed, 1)
+#						print("1")
+						while (input(ptt) != 1):
+							sleep(0.2)					
+						output(txLed, 0)
+#						print("0")
+					else:
+#						sleep(0.1)
+						while (input(17) == 0):
+							sleep(0.05)
+##						system(rpitx)
+						output(txLed, 1)
+#						print("1")
+						while (input(17) == 1):
+							sleep(0.05)					
+##						system(stop_rpitx)
+						output(txLed, 0)
+#						print("0")						
+						
+#						sleep(10)
+
 			else:
 				print("Transmit APRS Commands")
 				system("sudo systemctl stop command")
