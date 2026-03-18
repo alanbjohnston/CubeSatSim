@@ -343,7 +343,7 @@ if [ "$1" = "" ]; then
 	
 	timeout 1 rtl_test &> out.txt
 	if [[ $(grep "No supported" out.txt) ]] ; then
-	  echo "No RTL-SDR detected"
+#	  echo "No RTL-SDR detected"
 	  rtl=0
 	else
 	  echo "RTL-SDR detected"
