@@ -135,44 +135,10 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-echo
-
 #sudo systemctl restart pacsatsim
 
 #sudo /etc/init.d/alsa-utils stop
 #sudo /etc/init.d/alsa-utils start
-
-
-#echo "Waiting 10 seconds for Pacsatsim to start"
-
-#sleep 10
-
-#value=`cat /home/pi/CubeSatSim/sim.cfg`
-#echo "$value" > /dev/null
-#set -- $value
-
-#echo "Receive frequency is $8 MHz"	
-#echo "Transmit frequency is $7 MHz"	
-#echo 
-#echo "To change, quit and type CubeSatSim/config -F"
-#echo
-
-#frequency="$8e6"
-
-#echo "Note that the 'Tuned to' frequency will be different from the chosen frequency due to the way SDRs work."
-
-#echo
-
-echo 
-echo "The Pacsat Ground Station is running on this Pi using FM receiver or RTL-SDR"
-echo
-
-#cd /home/pi/Desktop/PacSatGround_0.46m_linux/
-
-#setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
-
-#direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0  # &
-#/usr/bin/x-terminal-emulator --geometry=120x40 -e "direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/groundstation/direwolf/direwolf-pacsat-loopback.conf -t 0"
 
 sudo usermod -a -G gpio pi
 
@@ -257,11 +223,6 @@ echo
 
 direwolf -r 48000 -c $DIREWOLF_CONF -t 0 &
 
-# arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
-##arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 435045 &
-
-# echo "Don't close the direwolf window or the Pacsatsim will stop running."
-
 cd /home/pi/Desktop/PacsatGround/
 
 if [ "$loopback" = "1" ] ; then
@@ -273,13 +234,6 @@ else
   setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
 fi
-#cd /home/pi/Desktop/PacSatGround_0.46m_linux/
-
-#sudo setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" 
-
-cd
-
-#sudo systemctl stop pacsatsim 
 
 sleep 10
 
