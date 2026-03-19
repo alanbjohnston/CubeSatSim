@@ -821,6 +821,8 @@ sed -i 's/quick_exec=0/quick_exec=1/' ~/.config/libfm/libfm.conf
 
 sudo apt install -y raspberrypi-ui-mods 
 
+sudo apt autoremove -y
+
 if [ "$noreboot" = "0" ] ; then  
 
 	if [ $FLAG -eq 1 ]; then # Not sure if this is needed
