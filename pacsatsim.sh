@@ -66,6 +66,8 @@ if [ ! -d "/home/pi/PacSat" ]; then
 
   cd
   sudo rm PacSat.zip
+  mkdir PacSat
+  mkdir PacSat/pacsat
   wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.1/PacSat.zip
   unzip PacSat.zip -d PacSat/pacsat
   sudo rm PacSat.zip
