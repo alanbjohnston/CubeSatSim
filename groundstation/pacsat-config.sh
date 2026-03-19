@@ -30,6 +30,7 @@ sudo killall -9 direwolf &>/dev/null
     echo " 4. Reset PacSat Satellite"
     echo
 	echo "Which do you choose?  Enter 1 - 4"
+	echo
 	
     read -r ANS
 
@@ -56,6 +57,7 @@ sudo killall -9 direwolf &>/dev/null
 	    echo " 2. Set Remote PacSat Satellite Callsign in Ground Station configuration"
 	    echo
 	    echo " 3. Reset PacSat Ground Station Configuration"
+		echo
 	
 		read -r CH
 
@@ -82,6 +84,7 @@ sudo killall -9 direwolf &>/dev/null
 			echo $oldcallsign
 					
 			echo "Enter new callsign in all capitals: "
+			echo
 			read callsign
 		
 			if [ -z $callsign ] ; then
@@ -122,6 +125,7 @@ sudo killall -9 direwolf &>/dev/null
 			echo
 				
 			echo "Enter new callsign in all capitals: "
+			echo
 			read callsign
 		
 			if [ -z $callsign ] ; then
@@ -147,27 +151,28 @@ sudo killall -9 direwolf &>/dev/null
 	
 	         echo "You have chosen to reset the PacSat Ground Station Configuration"
 	         echo 
-			 echo "Next time you run the Ground Station you will need to Add the PacSatSim spacecraft"
-			 echo
+#			 echo "Next time you run the Ground Station you will need to Add the PacSatSim spacecraft"
+#			 echo
 			 
 			 if [ "$ANS" = "1" ] ; then
 			 	sudo rm -r /home/pi/PacSatGround
-				cd
-				sudo rm PacSatGround.zip
-				wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-				unzip PacSatGround.zip -d PacSatGround
-				sudo rm PacSatGround.zip
+	#			cd
+	#			sudo rm PacSatGround.zip
+	#			wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+	#			unzip PacSatGround.zip -d PacSatGround
+	#			sudo rm PacSatGround.zip
 			 else
 			 	sudo rm -r /home/pi/PacSatGroundLoop
-				cd
-				sudo rm PacSatGround.zip
-				wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-				unzip PacSatGround.zip -d PacSatGroundLoop
-				sudo rm PacSatGround.zip				
+	#			cd
+	#			sudo rm PacSatGround.zip
+	#			wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+	#			unzip PacSatGround.zip -d PacSatGroundLoop
+	#			sudo rm PacSatGround.zip				
 			 fi
 		else
 
 			echo "Please choose an option 1-3"
+			echo
 
 		fi	 
 
