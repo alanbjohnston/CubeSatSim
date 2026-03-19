@@ -126,8 +126,7 @@ if [ ! -d "/home/pi/PacSatGround" ] ; then
   sudo rm PacSatGround.zip
         
   echo
-  echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
-  
+  echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign" 
   sleep 10
 
 fi
@@ -142,7 +141,6 @@ if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
   
   echo
   echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
-  
   sleep 10
 
 fi
