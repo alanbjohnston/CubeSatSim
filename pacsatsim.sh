@@ -65,12 +65,13 @@ if [ ! -d "/home/pi/PacSat" ]; then
   echo
 
   cd
-  sudo rm PacSat.zip
+  sudo rm pacsat-dir.zip
   mkdir PacSat
   mkdir PacSat/pacsat
-  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.1/PacSat.zip
-  unzip PacSat.zip -d PacSat/pacsat
-  sudo rm PacSat.zip
+  mkdir PacSat/pacsat/dir
+  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.1/pacsat-dir.zip
+  unzip pacsat-dir.zip -d PacSat/pacsat/dir
+  sudo rm pacsat-dir.zip
 
   cd
   sudo rm /home/pi/pi_pacsat/Debug/pacsat.config
