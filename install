@@ -482,17 +482,31 @@ if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
 	FLAG=1
 fi
 
-cd
-
-FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
-if [ ! -f "$FILE" ]; then
+if [ ! -d "/home/pi/g0kla_common" ]; then
 	cd
 	git clone https://github.com/alanbjohnston/g0kla_common.git
 	cd g0kla_common/Debug/
 	make clean
 	make all
 	sudo ./install.sh
+
+else
+	cd /home/pi/g0kla_common/Debug/
 	
+	git pull --no-rebase > .updated
+	grep 'changed' /home/pi/g0kla_common/Debug/.updated
+	if [[ $(grep 'changed' /home/pi/g0kla_common/Debug/.updated) ]]; then
+	
+		echo "updating g0kla_common"
+		make clean
+		make all
+		FLAG=1
+	fi
+fi
+
+FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
+if [ ! -f "$FILE" ]; then
+
 	cd
 	#git clone https://github.com/alanbjohnston/pi_pacsat.git
 	git clone https://github.com/ac2cz/pi_pacsat.git
@@ -502,38 +516,39 @@ if [ ! -f "$FILE" ]; then
 	make clean
 	make all
 	
-	mkdir /home/pi/PacSat
-	mkdir /home/pi/PacSat/pacsat
-	mkdir /home/pi/PacSat/pacsat/dir
+#	mkdir /home/pi/PacSat
+#	mkdir /home/pi/PacSat/pacsat
+#	mkdir /home/pi/PacSat/pacsat/dir
 	
-	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+#	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
 	
-	#value=`cat /home/pi/CubeSatSim/sim.cfg`
-	#echo "$value" > /dev/null
-	#set -- $value
+#	#value=`cat /home/pi/CubeSatSim/sim.cfg`
+#	#echo "$value" > /dev/null
+#	#set -- $value
 	
-	echo "bit_rate=9600" > pacsat.config
-	echo "bbs_callsign=AMSAT-12" >> pacsat.config
-	echo "broadcast_callsign=AMSAT-11" >> pacsat.config
-	echo "digi_callsign=AMSAT-1" >> pacsat.config
-	echo "max_frames_in_tx_buffer=5" >> pacsat.config
+#	echo "bit_rate=9600" > pacsat.config
+#	echo "bbs_callsign=AMSAT-12" >> pacsat.config
+#	echo "broadcast_callsign=AMSAT-11" >> pacsat.config
+#	echo "digi_callsign=AMSAT-1" >> pacsat.config
+#	echo "max_frames_in_tx_buffer=5" >> pacsat.config
 	
-	echo "pb_open=1" > pacsat.state
-	echo "uplink_open=1" >> pacsat.state
-	echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
-	echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
-fi
+#	echo "pb_open=1" > pacsat.state
+#	echo "uplink_open=1" >> pacsat.state
+#	echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
+#	echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
 
-cd /home/pi/pi_pacsat/Debug/
-
-git pull --no-rebase > .updated
-grep 'changed' /home/pi/pi_pacsat/Debug/.updated
-if [[ $(grep 'changed' /home/pi/pi_pacsat/Debug/.updated) ]]; then
-
-	echo "updating pi_pacsat"
-	make clean
-	make all
-	FLAG=1
+else
+	cd /home/pi/pi_pacsat/Debug/
+	
+	git pull --no-rebase > .updated
+	grep 'changed' /home/pi/pi_pacsat/Debug/.updated
+	if [[ $(grep 'changed' /home/pi/pi_pacsat/Debug/.updated) ]]; then
+	
+		echo "updating pi_pacsat"
+		make clean
+		make all
+		FLAG=1
+	fi
 fi
 
 FILE=/home/pi/pacsat_telem/Debug/pacsat_telem  # code has already been compiled
