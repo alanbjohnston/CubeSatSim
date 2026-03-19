@@ -64,28 +64,40 @@ if [ ! -d "/home/pi/PacSat" ]; then
   echo "Setting up PacSatSim default configuration"
   echo
 
-  mkdir /home/pi/PacSat
-  mkdir /home/pi/PacSat/pacsat
-  mkdir /home/pi/PacSat/pacsat/dir
+  cd
+  sudo rm PacSat.zip
+  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.1/PacSat.zip
+  unzip PacSat.zip -d PacSat/pacsat
+  sudo rm PacSat.zip
+
+  cd
+  sudo rm pi_pacsat.zip
+  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.1/pi_pacsat.zip
+  unzip pi_pacsat.zip -d /pi_pacsat/Debug 
+  sudo rm pi_pacsat.zip
+        
+#  mkdir /home/pi/PacSat
+#  mkdir /home/pi/PacSat/pacsat
+#  mkdir /home/pi/PacSat/pacsat/dir
   
-  cd /home/pi/pi_pacsat/Debug
+#  cd /home/pi/pi_pacsat/Debug
   
-  sudo rm pacsat_last_command_time.dat
-  sudo rm pacsat_upload_table.dat
-  sudo rm pacsat.state
+#  sudo rm pacsat_last_command_time.dat
+#  sudo rm pacsat_upload_table.dat
+#  sudo rm pacsat.state
   
-  echo "bit_rate=9600" > pacsat.config
-  echo "bbs_callsign=AMSAT-12" >> pacsat.config
-  echo "broadcast_callsign=AMSAT-11" >> pacsat.config
-  echo "digi_callsign=AMSAT-1" >> pacsat.config
-  echo "max_frames_in_tx_buffer=5" >> pacsat.config
+#  echo "bit_rate=9600" > pacsat.config
+#  echo "bbs_callsign=AMSAT-12" >> pacsat.config
+#  echo "broadcast_callsign=AMSAT-11" >> pacsat.config
+#  echo "digi_callsign=AMSAT-1" >> pacsat.config
+#  echo "max_frames_in_tx_buffer=5" >> pacsat.config
   
-  echo "pb_open=1" > pacsat.state
-  echo "uplink_open=1" >> pacsat.state
-  echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
-  echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
+#  echo "pb_open=1" > pacsat.state
+#  echo "uplink_open=1" >> pacsat.state
+#  echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
+#  echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
   
-  touch /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
+#  touch /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
 
 fi
 
