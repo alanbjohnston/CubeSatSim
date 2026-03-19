@@ -69,6 +69,7 @@ MODE=$1
 
 if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
 
+  echo
   echo "Mode is not PacSat Ground Station"
   echo
   echo "Would you like to change to PacSat Ground Station mode and reboot? (y/n)?"
@@ -81,19 +82,23 @@ if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
       exit
       
   else
-  
+
+      echo
       echo "You can run the PacSat Ground Station after you change mode and reboot."
+      sleep 10
       exit
       
   fi
 
 elif [ "$loopback" = "1" ] ; then
 
+  echo
   echo "Simulated PacSatSim so mode doesn't matter"
   echo
 
 else
 
+  echo
   echo "Mode is PacSat Ground Station"
   echo
 
