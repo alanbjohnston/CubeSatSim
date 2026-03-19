@@ -61,6 +61,44 @@ if [ -f "$FILE" ]; then
   
 fi  
 
+value=`cat /home/pi/CubeSatSim/.mode`
+echo "$value" > /dev/null
+set -- $value
+
+MODE=$1
+
+if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
+
+  echo "Mode is not PacSat Ground Station"
+  echo
+  echo "Would you like to change to PacSat Ground Station mode and reboot? (y/n)?"
+  
+  read -r ANS
+  
+  if [ "$ANS" = "y" ]; then
+  
+      /home/pi/CubeSatSim/config -I
+      exit
+      
+  else
+  
+      echo "You can run the PacSat Ground Station after you change mode and reboot."
+      exit
+      
+  fi
+
+elif [ "$loopback" = "1" ] ; then
+
+  echo "Simulated PacSatSim so mode doesn't matter"
+  echo
+
+else
+
+  echo "Mode is PacSat Ground Station"
+  echo
+
+fi
+
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
 set -- $value
