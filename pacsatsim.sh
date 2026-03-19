@@ -71,6 +71,9 @@ if [ ! -d "/home/pi/PacSat" ]; then
   sudo rm PacSat.zip
 
   cd
+  sudo rm /home/pi/pi_pacsat/Debug/pacsat.config
+  sudo rm /home/pi/pi_pacsat/Debug/pacsat.state
+  sudo rm /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
   sudo rm pi_pacsat.zip
   wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.1/pi_pacsat.zip
   unzip pi_pacsat.zip -d /pi_pacsat/Debug 
