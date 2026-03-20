@@ -99,12 +99,12 @@ elif [ "$loopback" = "1" ] ; then
     /home/pi/CubeSatSim/config -G n
   fi  
 
-#  if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
-  if [ ! "$loopback" = "1" ] ; then # don't do this for now.
+  if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
+#  if [ ! "$loopback" = "1" ] ; then # don't do this for now.
   
     cd
     sudo rm PacSatGroundLoop.zip &>/dev/null
-    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGroundLoop.zip
+    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
     unzip PacSatGroundLoop.zip -d PacSatGroundLoop
     sudo rm PacSatGroundLoop.zip
     
