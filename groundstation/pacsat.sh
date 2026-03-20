@@ -121,7 +121,7 @@ if [ ! -d "/home/pi/PacSatGround" ] ; then
 
   cd
   sudo rm PacSatGround.zip &>/dev/null
-  wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+  wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
   unzip PacSatGround.zip -d PacSatGround
   sudo rm PacSatGround.zip
         
@@ -134,10 +134,10 @@ fi
 if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
 
   cd
-  sudo rm PacSatGround.zip &>/dev/null
-  wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p-s/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-  unzip PacSatGround.zip -d PacSatGroundLoop
-  sudo rm PacSatGround.zip
+  sudo rm PacSatGroundLoop.zip &>/dev/null
+  wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGroundLoop.zip
+  unzip PacSatGroundLoop.zip -d PacSatGroundLoop
+  sudo rm PacSatGroundLoop.zip
   
   echo
   echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
