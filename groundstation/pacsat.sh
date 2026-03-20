@@ -92,7 +92,7 @@ if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
 
 elif [ "$loopback" = "1" ] ; then
 
-  if [ ! "$MODE" = "p" ]
+  if [ ! "$MODE" = "p" ] ; then
     echo
     echo "Switching to PacSat mode for the Simulated PacSat Satellite"
     echo  
