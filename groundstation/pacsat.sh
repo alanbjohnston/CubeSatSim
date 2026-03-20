@@ -104,7 +104,7 @@ elif [ "$loopback" = "1" ] ; then
   
     cd
     sudo rm PacSatGroundLoop.zip &>/dev/null
-    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGroundLoop.zip
     unzip PacSatGroundLoop.zip -d PacSatGroundLoop
     sudo rm PacSatGroundLoop.zip
     
