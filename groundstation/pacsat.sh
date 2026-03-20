@@ -92,15 +92,47 @@ if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
 
 elif [ "$loopback" = "1" ] ; then
 
-  echo
-  echo "Simulated PacSatSim so mode doesn't matter"
-  echo
+  if [ ! "$MODE" = "p" ]
+    echo
+    echo "Switching to PacSat mode for the Simulated PacSat Satellite"
+    echo  
+    /home/pi/CubeSatSim/config -G n
+  fi  
+
+#  if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
+  if [ ! "$loopback" = "1" ] ; then # don't do this for now.
+  
+    cd
+    sudo rm PacSatGroundLoop.zip &>/dev/null
+    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGroundLoop.zip
+    unzip PacSatGroundLoop.zip -d PacSatGroundLoop
+    sudo rm PacSatGroundLoop.zip
+    
+    echo
+    echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
+    sleep 10
+  
+  fi
 
 else
 
   echo
   echo "Mode is PacSat Ground Station"
   echo
+
+  if [ ! -d "/home/pi/PacSatGround" ] ; then
+  
+    cd
+    sudo rm PacSatGround.zip &>/dev/null
+    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+    unzip PacSatGround.zip -d PacSatGround
+    sudo rm PacSatGround.zip
+          
+    echo
+    echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign" 
+    sleep 10
+  
+  fi
 
 fi
 
@@ -116,34 +148,6 @@ echo $callsign
 echo -n "Transmit Frequency is "
 echo $frequency
 echo
-
-if [ ! -d "/home/pi/PacSatGround" ] ; then
-
-  cd
-  sudo rm PacSatGround.zip &>/dev/null
-  wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-  unzip PacSatGround.zip -d PacSatGround
-  sudo rm PacSatGround.zip
-        
-  echo
-  echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign" 
-  sleep 10
-
-fi
-
-if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
-
-  cd
-  sudo rm PacSatGroundLoop.zip &>/dev/null
-  wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGroundLoop.zip
-  unzip PacSatGroundLoop.zip -d PacSatGroundLoop
-  sudo rm PacSatGroundLoop.zip
-  
-  echo
-  echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
-  sleep 10
-
-fi
 
 sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGround/PacSatGround.properties
 sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
@@ -192,8 +196,6 @@ sudo killall -9 zenity &>/dev/null
 sudo usermod -a -G gpio pi
 
 if [ "$loopback" = "1" ] ; then
-
-  /home/pi/CubeSatSim/config -G n
 
   echo "Using Audio Loopback"
   ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
