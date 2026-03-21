@@ -92,12 +92,12 @@ if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
 
 elif [ "$loopback" = "1" ] ; then
 
-  if [ ! "$MODE" = "p" ] ; then
+#  if [ ! "$MODE" = "p" ] ; then
     echo
     echo "Switching to PacSat mode for the Simulated PacSat Satellite"
     echo  
     /home/pi/CubeSatSim/config -G n
-  fi  
+#  fi  
 
   if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
 #  if [ ! "$loopback" = "1" ] ; then # don't do this for now.
