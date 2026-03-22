@@ -144,6 +144,7 @@ if [ "$1" = "" ]; then
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+	MODE=$1
 
 	if [ "$1" = "a" ]; then
 		echo "Mode is APRS"
@@ -279,8 +280,8 @@ if [ "$1" = "" ]; then
 #	cat /home/pi/CubeSatSim/command_tx
 #	echo
 
-	echo $1
-	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+	echo $MODE
+	if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
 		echo "Squelch is off since PacSat or PacSat Ground Station mode"
 	else
 		echo -n "Squelch level is: "
