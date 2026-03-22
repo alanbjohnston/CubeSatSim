@@ -254,11 +254,11 @@ output(ptt, 1)
 txc = False
 if input(txc_pin) == False:
 	print("TXC is present")
-	txc = True;
+	txc = True
 else:
 	print("TXC not present")
 
-# txc = False  # forcing it off
+#  False  # forcing it off
 output(txLed, 1)
 sleep(1)
 output(txLed, 0)
@@ -561,9 +561,11 @@ if __name__ == "__main__":
 				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &"
 				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3 > /dev/null 2>&1"
 				if not txc:
+					print("txc is:")
+					print(txc)
 					system(stop_rpitx)
 					system(rpitx)	
-					print("Safe Mode!")
+					print("Safe Mode!!")
 				while (True):
 					if (txc):
 						sleep(0.1)
