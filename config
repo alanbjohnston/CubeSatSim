@@ -279,8 +279,12 @@ if [ "$1" = "" ]; then
 #	cat /home/pi/CubeSatSim/command_tx
 #	echo
 
-	echo -n "Squelch level is: "
-	echo $6
+	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+		echo "Squelch is off since PacSat or PacSat Ground Station mode"
+	else
+		echo -n "Squelch level is: "
+		echo $6
+	fi
 #	echo
 
 	FILE=/home/pi/CubeSatSim/command_control
