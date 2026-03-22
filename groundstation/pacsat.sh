@@ -141,12 +141,15 @@ echo "$value" > /dev/null
 set -- $value
 
 callsign="$1"
-frequency="$7e3"
+txfrequency="$7e3"
+rxfrequency="$8e3"
 
 echo -n "Callsign is "
 echo $callsign
 echo -n "Transmit Frequency is "
-echo $frequency
+echo $txfrequency
+echo -n "Receive Frequency is "
+echo $rxfrequency
 echo
 
 sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGround/PacSatGround.properties
