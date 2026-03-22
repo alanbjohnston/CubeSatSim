@@ -436,18 +436,19 @@ if __name__ == "__main__":
 	no_command = True
 	try:
 		f = open("/home/pi/CubeSatSim/command_control", "r")
+		no_command = False
 		f.close()
-		setup(squelch, "up")  ## pull up in case pin is not connected
-		if input(squelch) == False:
-			print("squelch not set correctly, no command input!")
-		else:
-			if (mode != 'n') and (mode != 'x'):
-				print("command and control is activated")
-				no_command = False
-				system("sudo systemctl start command")
-			else:
-				print("Command and control not activated since Transmit Commands mode")		
-				txc = True # Transmit commands only works with FM transceiver, so bypass Battery Saver if activated
+#		setup(squelch, "up")  ## pull up in case pin is not connected
+#		if input(squelch) == False:
+#			print("squelch not set correctly, no command input!")
+#		else:
+#			if (mode != 'n') and (mode != 'x'):
+#				print("command and control is activated")
+#				no_command = False
+#				system("sudo systemctl start command")
+#			else:
+#				print("Command and control not activated since Transmit Commands mode")		
+#				txc = True # Transmit commands only works with FM transceiver, so bypass Battery Saver if activated
 	except:
 		print("command and control not activated")
 
