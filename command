@@ -154,7 +154,7 @@ else
 
 	else
 
-		echo "Not running Carrier (squelch) Command and Control since PacSat or PacSat Ground Station mode!")
+		echo "Not running Carrier (squelch) Command and Control since PacSat or PacSat Ground Station mode!"
 		sleep 60
 
 	fi
