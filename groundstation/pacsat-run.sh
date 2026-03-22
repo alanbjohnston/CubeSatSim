@@ -16,7 +16,7 @@ sudo killall -9 direwolf &>/dev/null
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
-   profile=$(zenity --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=200 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated PacSat")
+   profile=$(zenity --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=220 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated PacSat")
 
    echo $profile
 
