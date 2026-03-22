@@ -59,6 +59,24 @@ else
   rtl=1
 fi
 
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
+callsign="$1"
+txfrequency="$7e3"
+rxfrequency="$8e3"
+
+echo -n "PacSat allsign is "
+echo $callsign
+echo -n "Transmit Frequency is "
+echo $txfrequency
+echo -n "Receive Frequency is "
+echo $rxfrequency
+echo
+
+sleep 2
+
 if [ ! -d "/home/pi/PacSat" ]; then
 
   echo "Setting up PacSatSim default configuration"
