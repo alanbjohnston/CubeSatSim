@@ -6,6 +6,12 @@ sudo modprobe snd-aloop
 
 sudo modprobe snd-aloop
 
+value=`cat /home/pi/CubeSatSim/.mode`
+echo "$value" > /dev/null
+set -- $value
+
+MODE=$1
+
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
     		echo "Radio command and control is ON"
@@ -126,17 +132,32 @@ else
 
 	fi
 
-	if [ "$1" = "d" ]; then
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 	
-		echo "debug mode"
-	
-		/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py d
-	
+	MODE=$1
+
+	if [ ! "$MODE" = "P" ] && [ ! "$MODE" = "P" ] ; then
+
+		if [ "$1" = "d" ]; then
+		
+			echo "debug mode"
+		
+			/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py d
+		
+		else
+		
+			/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py
+		
+		fi	 
+
 	else
-	
-		/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py
-	
-	fi	 
+
+		echo "Not running Carrier (squelch) Command and Control since PacSat or PacSat Ground Station mode!")
+		sleep 60
+
+	fi
 fi
 
 sudo killall -9 direwolf  &>/dev/null
