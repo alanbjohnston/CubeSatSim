@@ -151,6 +151,7 @@ echo $txfrequency
 echo -n "Receive Frequency is "
 echo $rxfrequency
 echo
+sleep 2
 
 sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGround/PacSatGround.properties
 sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
