@@ -297,10 +297,18 @@ if [ "$1" = "" ]; then
 			if [ -f "$FILE" ]; then
 				echo "Radio DTMF/APRS command and control is ON"
 			else
-				echo "Radio carrier command and control is ON"
+				if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
+					echo "Radio carrier command and control is off since PacSat or PacSat Ground Station mode"
+				else
+					echo "Radio carrier command and control is ON"
+				fi
 			fi
 		else
-			echo "Radio carrier command and control is ON"
+			if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
+				echo "Radio carrier command and control is off since PacSat or PacSat Ground Station mode"
+			else
+				echo "Radio carrier command and control is ON"
+			fi
 		fi
 	else 
     		echo "Radio command and control is OFF"
