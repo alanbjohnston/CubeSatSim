@@ -226,7 +226,19 @@ if [ "$loopback" = "1" ] ; then
   echo "Using audio loopback"
   ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=0"
   PTT="PTT GPIOD gpiochip0 17"
+
+  value=`cat /home/pi/CubeSatSim/.mode`
+  echo "$value" > /dev/null
+  set -- $value
   
+  MODE=$1
+  
+  if [ ! "$MODE" = "p" ] ; then
+
+    /home/pi/CubeSatSim/config -G n
+
+ fi   
+
 #  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
 
 #  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
