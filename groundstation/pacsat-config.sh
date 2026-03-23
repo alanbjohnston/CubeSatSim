@@ -147,7 +147,7 @@ sudo killall -9 direwolf &>/dev/null
 				echo $callsign
 				echo 
 				echo "You will see the change next time you run the PacSat Ground Station"
-				echo
+				echo "You can close this window"
 			fi
 	
 	    elif [ "$CH" = "3" ] ; then
