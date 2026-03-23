@@ -114,11 +114,14 @@ sudo killall -9 direwolf &>/dev/null
 	
 			echo "You have chosen to set the remote CubeSatSim PacSat Satellite callsign in ground station configuration"
 			echo
+			
+			PROPERTIES=/home/pi/PacSatGround/spacecraft/PacSatSim.properties
+			PROPERTIES_L=/home/pi/PacSatGroundLoop/spacecraft/PacSatSim.properties
 
 			if [ "$ANS" = "1" ] ; then
-				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties )
+				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' $PROPERTIES )
 			else
-				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties )
+				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' $PROPERTIES_L )
 			fi
 			echo "Current value of remote PacSat callsign is"	
 			echo $oldcallsign
@@ -135,9 +138,9 @@ sudo killall -9 direwolf &>/dev/null
 	
 			else
 				if [ "$ANS" = "1" ] ; then
-					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties 
+					sudo sed -i "s/$oldcallsign/$callsign/g" $PROPERTIES 
 				else
-					sudo sed -i "s/$oldcallsign/$callsign/g" /home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties 
+					sudo sed -i "s/$oldcallsign/$callsign/g" $PROPERTIES_L 
 				fi
 				echo
 				echo "Changing callsign to "
