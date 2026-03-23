@@ -233,13 +233,11 @@ if [ "$loopback" = "1" ] ; then
   
   MODE=$1
   
-  if [ ! "$MODE" = "p" ] ; then
+  if [ ! "$MODE" = "P" ] ; then
 
-    /home/pi/CubeSatSim/config -G n
+    /home/pi/CubeSatSim/config -I n
 
  fi   
- 
- sudo systemctl stop pacsatsim
  
 #  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
 
