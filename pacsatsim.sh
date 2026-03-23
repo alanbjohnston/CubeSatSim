@@ -238,7 +238,9 @@ if [ "$loopback" = "1" ] ; then
     /home/pi/CubeSatSim/config -G n
 
  fi   
-
+ 
+ sudo systemctl stop pacsatsim
+ 
 #  sudo /home/pi/CubeSatSim/pacsatsim-d.sh &
 
 #  direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-loopback.conf -t 0 &
