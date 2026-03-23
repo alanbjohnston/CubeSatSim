@@ -319,4 +319,4 @@ cd /home/pi/pi_pacsat/Debug
 
 ./pi_pacsat -c pacsat.config -d /home/pi/PacSat
 
-sleep 15
+sleep 60
