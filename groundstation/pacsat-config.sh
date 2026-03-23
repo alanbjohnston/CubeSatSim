@@ -172,6 +172,7 @@ sudo killall -9 direwolf &>/dev/null
 	#			unzip PacSatGround.zip -d PacSatGroundLoop
 	#			sudo rm PacSatGround.zip				
 			 fi
+			 echo "You can close this window now"
 		else
 
 			echo "Please choose an option 1-3"
