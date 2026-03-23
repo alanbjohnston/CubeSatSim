@@ -520,7 +520,7 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
-    } else if ((mode == BPSK) || (mode == PACSAT)) {
+    } else if ((mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) {
 ////    } else {
 
       bitRate = 1200;
@@ -601,7 +601,7 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));
 	
-  if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT)) // && !sim_mode)
+  if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
   else if (mode == FC) // && !sim_mode)
       get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
@@ -1292,7 +1292,7 @@ int main(int argc, char * argv[]) {
       sleep(rand_sleep);	    
 //      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
-    } else if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT)) {// FSK or BPSK
+    } else if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) {// FSK or BPSK
       get_tlm_fox();
     } else if ((mode == FC)) {
       get_tlm_fc();
@@ -2019,7 +2019,7 @@ void get_tlm_fox() {
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
     encodeA(b, 53 + head_offset, groundCommandCount);
 
-	if ((mode == BPSK) || (mode == PACSAT)) {	
+	if ((mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) {	
 	  encodeA(b_max, 51 + head_offset, status);
       encodeA(b_min, 51 + head_offset, status);
       encodeB(b_max, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
@@ -2044,7 +2044,7 @@ void get_tlm_fox() {
       encodeB(b, 74 + head_offset, 0xfff); 
     }
 
-	if (mode == PACSAT) 
+	if ((mode == PACSAT) || (mode == PACSATGND)) 
 	{
 		FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "wb");
 		if (telem_binary != NULL) {
@@ -2719,7 +2719,7 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
 		fprintf(stderr,"Turning Battery saver mode ON\n");  
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT) || (mode == PACSATGND)) {
 			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");
@@ -2736,7 +2736,7 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 		battery_saver_mode = OFF;
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT)) {
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT) || (mode == PACSATGND)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");
