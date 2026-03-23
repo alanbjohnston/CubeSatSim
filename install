@@ -696,7 +696,6 @@ if [ -f "$FILE" ]; then
 else
   echo "creating pacsatsim.service."
   sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
-  sudo systemctl enable command
   FLAG=1
 fi
 
