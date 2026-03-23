@@ -60,7 +60,7 @@ sudo killall -9 direwolf &>/dev/null
 
 	elif [ "$ANS" = "3" ] || [ "$profile" = "Simulate" ] ; then
 
-         echo "You have chosen the PacSat Ground Station with Local Simulated Satellite"
+        echo "You have chosen the PacSat Ground Station with Local Simulated Satellite"
 		 
 		sleep 1
 
@@ -68,7 +68,7 @@ sudo killall -9 direwolf &>/dev/null
 
 		sleep 1
 
-		 /home/pi/CubeSatSim/groundstation/pacsat.sh l
+		/home/pi/CubeSatSim/groundstation/pacsat.sh l
 	
     else
     
