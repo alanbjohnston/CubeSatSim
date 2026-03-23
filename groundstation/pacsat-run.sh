@@ -60,6 +60,8 @@ sudo killall -9 direwolf &>/dev/null
 
 	elif [ "$ANS" = "3" ] || [ "$profile" = "Simulate" ] ; then
 
+		sudo systemctl stop transmit
+
         echo "You have chosen the PacSat Ground Station with Local Simulated Satellite"
 		 
 		sleep 1
