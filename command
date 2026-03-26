@@ -1,8 +1,16 @@
 #!/bin/bash
 
-echo -e "\nCommand and Control script for CubeSatSim v2.1\n"
+echo -e "\nCommand and Control script for CubeSatSim v2.2\n"
 
 sudo modprobe snd-aloop
+
+sudo modprobe snd-aloop
+
+value=`cat /home/pi/CubeSatSim/.mode`
+echo "$value" > /dev/null
+set -- $value
+
+MODE=$1
 
 	FILE=/home/pi/CubeSatSim/command_control
 	if [ -f "$FILE" ]; then
@@ -58,11 +66,11 @@ if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 	
 		echo "debug mode"
 	
-		direwolf -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 	
 	else
 	
-		direwolf -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+		direwolf -P+ -D1 -r 48000 -c /home/pi/CubeSatSim/direwolf-cc.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 	
 	fi
 else
@@ -107,11 +115,11 @@ else
 			
 #				echo "debug mode"
 			
-#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
+#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py d
 			
 #			else
 			
-#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
+#				direwolf -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf.conf -t 0l | /home/pi/venv/bin/python3 /home/pi/CubeSatSim/dtmf_aprs_cc.py
 			
 #			fi
 
@@ -124,17 +132,32 @@ else
 
 	fi
 
-	if [ "$1" = "d" ]; then
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
 	
-		echo "debug mode"
-	
-		python3 /home/pi/CubeSatSim/squelch_cc.py d
-	
+	MODE=$1
+
+	if [ ! "$MODE" = "P" ] && [ ! "$MODE" = "P" ] ; then
+
+		if [ "$1" = "d" ]; then
+		
+			echo "debug mode"
+		
+			/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py d
+		
+		else
+		
+			/home/pi/venv/bin/python3 /home/pi/CubeSatSim/squelch_cc.py
+		
+		fi	 
+
 	else
-	
-		python3 /home/pi/CubeSatSim/squelch_cc.py
-	
-	fi	 
+
+		echo "Not running Carrier (squelch) Command and Control since PacSat or PacSat Ground Station mode!"
+		sleep 60
+
+	fi
 fi
 
 sudo killall -9 direwolf  &>/dev/null

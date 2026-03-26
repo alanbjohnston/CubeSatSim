@@ -1,0 +1,808 @@
+{
+    "version": 8,
+    "sdrs": {
+        "rtlsdr": {
+            "name": "RTL-SDR",
+            "type": "rtl_sdr",
+            "profiles": {
+                "70cm": {
+                    "name": "70cm Ham Band 435 MHz (CubeSatSim)",
+                    "center_freq": 435000000,
+                    "rf_gain": 10.0,
+                    "samp_rate": 2400000,
+                    "start_freq": 434900000,
+                    "start_mod": "nfm",
+                    "tuning_step": 1000,
+                    "direct_sampling": 0
+                },
+                "2m": {
+                    "name": "WX Band 161 MHz",
+                    "center_freq": 162400000,
+                    "rf_gain": 29,
+                    "samp_rate": 2048000,
+                    "start_freq": 157000000,
+                    "start_mod": "nfm"
+                },
+                "e59a4765-4139-4ab8-89c5-d8ac3343ba70": {
+                    "name": "2m Ham Band 146 MHz (ISS)",
+                    "center_freq": 145000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 145000000,
+                    "start_mod": "nfm",
+                    "rf_gain": 42.0,
+                    "direct_sampling": 0
+                },
+                "faf80b0b-1a96-4a9b-96fa-ce40b109c7e0": {
+                    "name": "70cm Ham Band 438 MHz (ISS)",
+                    "rf_gain": 29.0,
+                    "center_freq": 438000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 437800000,
+                    "start_mod": "nfm"
+                },
+                "a4fd4a5d-d2d0-4949-87e2-bda83cd83a37": {
+                    "name": "FM Band 95 MHz",
+                    "rf_gain": 29.0,
+                    "center_freq": 95000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 94000000,
+                    "start_mod": "wfm"
+                },
+                "ce2bca29-78cb-45d8-ab46-8dea3135981c": {
+                    "name": "10m Ham Band 28 MHz",
+                    "rf_gain": 29.0,
+                    "center_freq": 28000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 28000000,
+                    "start_mod": "usb",
+                    "direct_sampling": 0
+                },
+                "d6cdbf2d-74e4-4cac-aaa8-e793103a8e89": {
+                    "name": "6m Ham Band 51 MHz",
+                    "rf_gain": 29.0,
+                    "center_freq": 51000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 51000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "e2aba387-1d3b-4ca8-b280-e119282b8812": {
+                    "name": "90 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 90000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 90000000,
+                    "start_mod": "wfm"
+                },
+                "f700b99d-3c51-4524-b151-a0809b868ecc": {
+                    "name": "92 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 92000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 92000000,
+                    "start_mod": "wfm"
+                },
+                "dc6af94f-d607-4fee-a522-7f375f66a62c": {
+                    "name": "94 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 94000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 94000000,
+                    "start_mod": "wfm"
+                },
+                "6887e85a-a4dc-4245-810f-99801fc5e824": {
+                    "name": "96 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 96000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 96000000,
+                    "start_mod": "wfm"
+                },
+                "a2182ed6-70a8-4377-b233-ac6f8ccc91d7": {
+                    "name": "98 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 96000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 96000000,
+                    "start_mod": "wfm"
+                },
+                "57e38353-fb86-4935-899b-e365228b8ae5": {
+                    "name": "100 MHz FM Band",
+                    "center_freq": 100000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 100000000,
+                    "start_mod": "wfm"
+                },
+                "5e9ec6dd-905d-4781-bd13-9cb702f58e84": {
+                    "name": "102 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 102000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 102000000,
+                    "start_mod": "wfm"
+                },
+                "ef2c703c-2e22-4e87-82b5-581420d704bd": {
+                    "name": "104 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 104000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 104000000,
+                    "start_mod": "wfm"
+                },
+                "34cc3ddf-8018-4288-acb9-29e6940bc37e": {
+                    "name": "106 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 106000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 106000000,
+                    "start_mod": "wfm"
+                },
+                "b4693683-ccf5-474d-a2d9-9a47b0a18ee2": {
+                    "name": "108 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 108000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 108000000,
+                    "start_mod": "wfm"
+                },
+                "34224d77-7b61-467c-b78f-18c7f3af1a0c": {
+                    "name": "110 MHz FM Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 110000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 110000000,
+                    "start_mod": "wfm"
+                },
+                "8dd82d97-73db-4fa7-ac41-263c3026ea1d": {
+                    "name": "112 MHz",
+                    "rf_gain": 29.0,
+                    "center_freq": 112000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 112000000,
+                    "start_mod": "nfm"
+                },
+                "79304b30-f10d-469e-9617-50a19bfdb435": {
+                    "name": "114 MHz",
+                    "rf_gain": 29.0,
+                    "center_freq": 114000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 114000000,
+                    "start_mod": "nfm"
+                },
+                "c00bf096-27b8-4262-832c-df1a308d7eb9": {
+                    "name": "116 MHz",
+                    "rf_gain": 29.0,
+                    "center_freq": 116000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 116000000,
+                    "start_mod": "nfm"
+                },
+                "669d25a6-6c15-4131-a330-3c33dd2147f0": {
+                    "name": "118 Mhz Air Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 118000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 118000000,
+                    "start_mod": "am"
+                },
+                "948248fa-43d9-4e7d-bf86-afaadd391779": {
+                    "name": "120 MHz Air Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 120000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 120000000,
+                    "start_mod": "am"
+                },
+                "b634273b-8fc8-4e87-b5c4-e6226d4be0ac": {
+                    "name": "122 MHz Air Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 122000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 121000000,
+                    "start_mod": "nfm"
+                },
+                "c55289a2-8286-4a3d-a505-37ba2867571a": {
+                    "name": "124 Mhz Air Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 124000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 124000000,
+                    "start_mod": "am"
+                },
+                "4fe488b7-f369-43ba-bb49-91e1a185be7a": {
+                    "name": "126 MHz Air Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 126000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 126000000,
+                    "start_mod": "am"
+                },
+                "e79639a2-1384-4e92-8e46-f6e5670ec9fd": {
+                    "name": "128 MHz Air Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 128000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 128000000,
+                    "start_mod": "am"
+                },
+                "319f3fb2-b98a-4620-85a7-a99d5a722bd5": {
+                    "name": "130 MHz Air Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 130000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 130000000,
+                    "start_mod": "am"
+                },
+                "63c5c2ce-07de-496c-81f6-b188a7adbf39": {
+                    "name": "132 MHz Air Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 132000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 132000000,
+                    "start_mod": "am"
+                },
+                "386bdc7b-eb10-4e05-972a-69d730a23cd8": {
+                    "name": "134 MHz Air Band",
+                    "rf_gain": 29.0,
+                    "center_freq": 134000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 134000000,
+                    "start_mod": "am"
+                },
+                "ae8ea8b1-23de-45ef-b8c4-3b83a188e65d": {
+                    "name": "136 MHz Air Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 136000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 136000000,
+                    "start_mod": "am"
+                },
+                "c0b1a28c-5e07-400a-a5f3-07c62db27587": {
+                    "name": "138 MHz NOAA Weather Satellite Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 138000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 138000000,
+                    "start_mod": "nfm"
+                },
+                "20f7ce56-fd85-4b3e-8fac-94cbe9ba0e1d": {
+                    "name": "140 MHz ",
+                    "rf_gain": 42.0,
+                    "center_freq": 140000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 140000000,
+                    "start_mod": "nfm"
+                },
+                "882079f8-5697-428a-ae9d-bcc091269c7f": {
+                    "name": "142 MHz ",
+                    "rf_gain": 42.0,
+                    "center_freq": 142000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 142000000,
+                    "start_mod": "nfm"
+                },
+                "da1b3f12-2eba-40e9-8c62-33493adf74b3": {
+                    "name": "144 MHz 2m Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 144000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 144000000,
+                    "start_mod": "nfm"
+                },
+                "8d9cf1e1-44c5-41c4-bcea-7b1c69446e62": {
+                    "name": "146 MHz 2m Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 146000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 146000000,
+                    "start_mod": "nfm"
+                },
+                "eec8aa0d-3485-43d2-baa4-82f7d9e14df6": {
+                    "name": "148 MHz 2m Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 148000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 148000000,
+                    "start_mod": "nfm"
+                },
+                "bf66a908-1988-4aec-b998-06e2bc7d0a84": {
+                    "name": "150 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 150000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 150000000,
+                    "start_mod": "nfm"
+                },
+                "0389f270-b919-4aae-a313-f73697059f70": {
+                    "name": "152 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 152000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 152000000,
+                    "start_mod": "nfm"
+                },
+                "6ef9d955-76aa-46c0-8463-2c23def5e37b": {
+                    "name": "154 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 154000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 154000000,
+                    "start_mod": "nfm"
+                },
+                "5d0a64c7-3bce-408e-94d9-c8315bef7540": {
+                    "name": "156 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 156000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 156000000,
+                    "start_mod": "nfm"
+                },
+                "5b869cae-ffa7-4554-96af-7acd497bbaf3": {
+                    "name": "158 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 158000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 158000000,
+                    "start_mod": "nfm"
+                },
+                "0de7c5d4-14fc-4655-9a81-2bcebb2f4147": {
+                    "name": "160 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 160000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 160000000,
+                    "start_mod": "nfm"
+                },
+                "8ca54821-8b80-4938-a35c-9fe25e2320d1": {
+                    "name": "162 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 162000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 162000000,
+                    "start_mod": "nfm"
+                },
+                "f74d262d-9e98-4030-86b2-45676121ff1e": {
+                    "name": "164 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 164000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 164000000,
+                    "start_mod": "nfm"
+                },
+                "bfc9c686-6c06-4de2-b1d5-c8f012131042": {
+                    "name": "168 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 168000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 167000000,
+                    "start_mod": "nfm"
+                },
+                "5468e597-d529-42fe-9fcf-0ff4fa9e2d06": {
+                    "name": "170 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 170000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 170000000,
+                    "start_mod": "nfm"
+                },
+                "e124cc6e-7177-4d5f-ae5b-2ec6a6fa2956": {
+                    "name": "172 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 172000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 172000000,
+                    "start_mod": "nfm"
+                },
+                "1ce0f3ed-4763-4f00-916a-4f72d29ba410": {
+                    "name": "174 MHz ",
+                    "rf_gain": 42.0,
+                    "center_freq": 174000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 174000000,
+                    "start_mod": "nfm"
+                },
+                "639b1496-a2b9-4a42-ad28-3cda89fbe2fb": {
+                    "name": "420 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 420000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 420000000,
+                    "start_mod": "nfm"
+                },
+                "bbc9b57e-ea86-43ef-be65-cb2337615ae5": {
+                    "name": "422 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 422000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 422000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "3aed286d-7d13-4338-8621-d1c0dfdf3ac6": {
+                    "name": "424 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 424000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 424000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "9ae664b4-48f3-410a-8995-edc60127d746": {
+                    "name": "426 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 426000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 426000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "24d2467b-6740-42b5-8d3f-8f389fc0860b": {
+                    "name": "428 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 428000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 428000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "debbc3ab-081d-41e7-80fe-7d564838154e": {
+                    "name": "430 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 430000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 430000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "649233e0-fc85-415d-b88e-94750f49ca4b": {
+                    "name": "432 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 432000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 432000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "bed3b482-fd3b-45ee-b924-200aa4223ace": {
+                    "name": "434 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 434000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 434000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "58dfac9e-6030-4bb3-ba28-465285baa25e": {
+                    "name": "436 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 436000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 436000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "4c293b84-cd43-495f-95a5-1fcabfe4e4c7": {
+                    "name": "438 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 438000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 438000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "0e763161-a0e8-411a-abe6-c1af13045f27": {
+                    "name": "440 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 440000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 440000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "6dda77d3-e859-41b7-9b0b-22c2dee47472": {
+                    "name": "442 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 442000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 442000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "285813ef-aa6d-433f-a316-074f47e02073": {
+                    "name": "444 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 444000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 444000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "e0842b63-6857-4554-874b-fad99e4db03a": {
+                    "name": "446 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 446000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 446000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "c7b21c80-cfef-42e8-a6fe-c5eea4556c7e": {
+                    "name": "448 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 448000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 448000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "d98b4d4a-8247-4a99-9fc7-89780e5e1fef": {
+                    "name": "450 MHz 70cm Ham Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 450000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 450000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "a09a546f-c56f-41b5-ae34-c5511afbcef5": {
+                    "name": "460 MHz",
+                    "rf_gain": 42.0,
+                    "center_freq": 460000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 460000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "232b2ae6-88dd-4e58-b489-37f310e5e204": {
+                    "name": "462 MHz FRS/GMRS",
+                    "rf_gain": 42.0,
+                    "center_freq": 462000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 462000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "41db9b38-87d7-40a0-9f90-1f0c77c054d9": {
+                    "name": "464 MHz FRS/GMRS",
+                    "rf_gain": 42.0,
+                    "center_freq": 464000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 464000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "e9bb7781-eb9b-4314-b399-2d96c52716f0": {
+                    "name": "466 MHz FRS/GMRS",
+                    "rf_gain": 42.0,
+                    "center_freq": 466000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 466000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "5d9e07e8-eb42-4832-82c9-016f05d89027": {
+                    "name": "468 MHz FRS/GMRS",
+                    "rf_gain": 42.0,
+                    "center_freq": 468000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 468000000,
+                    "start_mod": "nfm",
+                    "direct_sampling": 0
+                },
+                "20m": {
+                    "name": "20m",
+                    "center_freq": 14150000,
+                    "samp_rate": 384000,
+                    "start_freq": 14070000,
+                    "start_mod": "usb",
+                    "tuning_step": "500",
+                    "rf_gain": 42.0,
+                    "direct_sampling": 1
+                },
+                "30m": {
+                    "name": "30m",
+                    "center_freq": 10125000,
+                    "samp_rate": 192000,
+                    "start_freq": 10142000,
+                    "start_mod": "usb",
+                    "tuning_step": "500",
+                    "rf_gain": 42.0,
+                    "direct_sampling": 1
+                },
+                "40m": {
+                    "name": "40m",
+                    "center_freq": 7100000,
+                    "samp_rate": 256000,
+                    "start_freq": 7070000,
+                    "start_mod": "lsb",
+                    "tuning_step": "500",
+                    "rf_gain": 42.0,
+                    "direct_sampling": 1
+                },
+                "80m": {
+                    "name": "80m",
+                    "center_freq": 3650000,
+                    "samp_rate": 384000,
+                    "start_freq": 3570000,
+                    "start_mod": "lsb",
+                    "tuning_step": "500",
+                    "rf_gain": 42.0,
+                    "direct_sampling": 1
+                },
+                "49m": {
+                    "name": "49m Broadcast",
+                    "center_freq": 6050000,
+                    "samp_rate": 384000,
+                    "start_freq": 6070000,
+                    "start_mod": "am",
+                    "tuning_step": "1000",
+                    "rf_gain": 42.0,
+                    "direct_sampling": 1
+                },
+                "c1982ce1-7504-455e-908c-dc097fa031a8": {
+                    "name": "1090 MHz ADS-B Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 1090000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 1090000000,
+                    "start_mod": "adsb",
+                    "tuning_step": 1,
+                    "direct_sampling": 0
+                },
+                "cb7f2f8e-e317-4a5e-9504-826dd3781791": {
+                    "name": "978 MHz ADS-B Band",
+                    "rf_gain": 42.0,
+                    "center_freq": 978000000,
+                    "samp_rate": 2400000,
+                    "start_freq": 978000000,
+                    "start_mod": "adsb",
+                    "tuning_step": 1
+                }
+            }
+        },
+        "airspy": {
+            "name": "Airspy HF+",
+            "type": "airspyhf",
+            "rf_gain": "auto",
+            "profiles": {
+                "20m": {
+                    "name": "20m",
+                    "center_freq": 14150000,
+                    "samp_rate": 384000,
+                    "start_freq": 14070000,
+                    "start_mod": "usb",
+                    "tuning_step": "500"
+                },
+                "30m": {
+                    "name": "30m",
+                    "center_freq": 10125000,
+                    "samp_rate": 192000,
+                    "start_freq": 10142000,
+                    "start_mod": "usb",
+                    "tuning_step": "500"
+                },
+                "40m": {
+                    "name": "40m",
+                    "center_freq": 7100000,
+                    "samp_rate": 256000,
+                    "start_freq": 7070000,
+                    "start_mod": "lsb",
+                    "tuning_step": "500"
+                },
+                "80m": {
+                    "name": "80m",
+                    "center_freq": 3650000,
+                    "samp_rate": 384000,
+                    "start_freq": 3570000,
+                    "start_mod": "lsb",
+                    "tuning_step": "500"
+                },
+                "49m": {
+                    "name": "49m Broadcast",
+                    "center_freq": 6050000,
+                    "samp_rate": 384000,
+                    "start_freq": 6070000,
+                    "start_mod": "am",
+                    "tuning_step": "1000"
+                }
+            }
+        },
+        "sdrplay": {
+            "name": "SDRPlay device",
+            "type": "sdrplay",
+            "antenna": "Antenna A",
+            "rf_gain": "auto",
+            "profiles": {
+                "20m": {
+                    "name": "20m",
+                    "center_freq": 14150000,
+                    "samp_rate": 500000,
+                    "start_freq": 14070000,
+                    "start_mod": "usb",
+                    "tuning_step": "500"
+                },
+                "30m": {
+                    "name": "30m",
+                    "center_freq": 10125000,
+                    "samp_rate": 250000,
+                    "start_freq": 10142000,
+                    "start_mod": "usb",
+                    "tuning_step": "500"
+                },
+                "40m": {
+                    "name": "40m",
+                    "center_freq": 7100000,
+                    "samp_rate": 500000,
+                    "start_freq": 7070000,
+                    "start_mod": "lsb",
+                    "tuning_step": "500"
+                },
+                "80m": {
+                    "name": "80m",
+                    "center_freq": 3650000,
+                    "samp_rate": 500000,
+                    "start_freq": 3570000,
+                    "start_mod": "lsb",
+                    "tuning_step": "500"
+                },
+                "49m": {
+                    "name": "49m Broadcast",
+                    "center_freq": 6000000,
+                    "samp_rate": 500000,
+                    "start_freq": 6070000,
+                    "start_mod": "am",
+                    "tuning_step": "1000"
+                }
+            }
+        }
+    },
+    "receiver_name": "ARISS Radio Pi",
+    "receiver_location": "Budapest, Hungary",
+    "receiver_asl": 200,
+    "receiver_admin": "example@example.com",
+    "receiver_gps": {
+        "lat": 39.95233,
+        "lon": -75.16379
+    },
+    "photo_title": "Panorama of Budapest from Sch\u00f6nherz Zolt\u00e1n Dormitory",
+    "photo_desc": "",
+    "max_clients": 20,
+    "keep_files": 20,
+    "session_timeout": 0,
+    "usage_policy_url": "policy",
+    "allow_chat": true,
+    "allow_audio_recording": true,
+    "allow_center_freq_changes": false,
+    "magic_key": "memagic",
+    "receiver_keys": [],
+    "waterfall_scheme": "GoogleTurboWaterfall",
+    "fft_fps": 9,
+    "fft_size": 4096,
+    "fft_voverlap_factor": 0.3,
+    "waterfall_levels": {
+        "min": -88.0,
+        "max": -20.0
+    },
+    "waterfall_auto_levels": {
+        "min": 3.0,
+        "max": 10.0
+    },
+    "waterfall_auto_level_default_mode": false,
+    "waterfall_auto_min_range": 50,
+    "audio_compression": "adpcm",
+    "fft_compression": "adpcm",
+    "tuning_precision": 2,
+    "eibi_bookmarks_range": 0,
+    "repeater_range": 0,
+    "map_type": "google",
+    "google_maps_api_key": "",
+    "openweathermap_api_key": "",
+    "map_position_retention_time": 7200,
+    "map_ignore_indirect_reports": false,
+    "map_prefer_recent_reports": true,
+    "callsign_url": "https://www.qrzcq.com/call/{}",
+    "vessel_url": "https://www.vesselfinder.com/vessels/details/{}",
+    "flight_url": "https://flightaware.com/live/flight/{}",
+    "modes_url": "https://flightaware.com/live/modes/{}/redirect"
+}
+

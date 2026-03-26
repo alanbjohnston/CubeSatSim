@@ -261,13 +261,28 @@ int main(int argc, char * argv[]) {
         printf("Mode is Repeater\n");
      } else if ( mode_string == 'n') {
         mode = TXCOMMAND;
-        printf("Mode is Transmit Command\n");	      
-      } else {
+        printf("Mode is Transmit Command\n");	    
+     } else if ( mode_string == 'p') {
+        mode = PACSAT;
+        printf("Mode is Pacsat\n");
+     } else if ( mode_string == 'P') {
+        mode = PACSATGND;
+        printf("Mode is Pacsat Ground Station\n");	
+     } else {
         printf("Mode is BPSK\n");
       }	    
     }
   } 
-
+/*
+  if ( mode == PACSAT) {
+		FILE * pacsat_file = popen("sudo systemctl restart pacsatsim", "r");
+        pclose(pacsat_file);
+  }
+  else  {
+		FILE * pacsat_file = popen("sudo systemctl stop pacsatsim", "r");
+        pclose(pacsat_file);
+  }
+*/
   // Open telemetry file with STEM Payload Data
   telem_file = fopen("/home/pi/CubeSatSim/telem.txt", "a");
   if (telem_file == NULL) 
@@ -315,13 +330,15 @@ int main(int argc, char * argv[]) {
   map[MINUS_X] = MINUS_Y;
   map[PLUS_Z] = MINUS_X;	
   map[MINUS_Y] = PLUS_Z;		  
-
+/*
   if (access("/dev/i2c-11", W_OK | R_OK) >= 0) { // Test if I2C Bus 11 is present			
       printf("/dev/i2c-11 is present\n\n");
       snprintf(busStr, 10, "%d %d", test_i2c_bus(1), test_i2c_bus(11));
   } else {
       snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);
   }
+*/
+  snprintf(busStr, 10, "%d %d", i2c_bus1, i2c_bus3);	
 
   FILE * os_test = popen("cat /etc/os-release", "r");
   fgets(cmdbuffer, 1000, os_test);
@@ -503,8 +520,9 @@ int main(int argc, char * argv[]) {
 	      
       printf("\n FSK Mode, %d bits per frame, %d bits per second, %d ms per frame, %d ms sample period\n",
         bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
-	   
-    } else if (mode == BPSK) {
+    } else if ((mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) {
+////    } else {
+
       bitRate = 1200;
       rsFrames = 3;
       payloads = 6;
@@ -526,8 +544,11 @@ int main(int argc, char * argv[]) {
 	   
       frameTime = ((float)((float)bufLen / (samples * frameCnt * bitRate))) * 1000; // frame time in ms
 
-      printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
-        bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	  if (mode == BPSK) 
+      	printf("\n BPSK Mode, bufLen: %d,  %d bits per frame, %d bits per second, %d ms per frame %d ms sample period\n",
+        	bufLen, bufLen / (samples * frameCnt), bitRate, frameTime, samplePeriod);
+	  else
+		  printf("\n dataLen: %d \n", dataLen);
 	   
       sin_samples = S_RATE/freq_Hz;	 		
 //      printf("Sin map: ");	 		
@@ -580,15 +601,8 @@ int main(int argc, char * argv[]) {
   memset(sensor, 0, sizeof(sensor));
   memset(other, 0, sizeof(other));
 	
-//  if (((mode == FSK) || (mode == BPSK))) // && !sim_mode)
-  if (mode == FSK) { // && !sim_mode)
-      get_tlm_fox();		
-//      get_tlm_fox();
-  }
-  if (mode == BPSK) { // && !sim_mode)
+  if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) // && !sim_mode)
       get_tlm_fox();	// fill transmit buffer with reset count 0 packets that will be ignored
-//	  get_tlm_fox();
-  }
   else if (mode == FC) // && !sim_mode)
       get_tlm_fc();	// fill transmit buffer with reset count 0 packets that will be ignored
   else if (mode == CW)
@@ -605,6 +619,8 @@ int main(int argc, char * argv[]) {
     strcat(pythonConfigStr, " c");  
 
     fprintf(stderr, "pythonConfigStr: %s\n", pythonConfigStr);
+
+	FILE *file2 = sopen(pythonVenv); // activate venv  
 	
     file1 = sopen(pythonConfigStr);  // python sensor polling function	  
 
@@ -1028,6 +1044,7 @@ int main(int argc, char * argv[]) {
       }
 	   
     if (sim_mode) { // simulated telemetry 
+	  printf("Simulated telemetry mode\n");	
 
       double time = ((long int)millis() - time_start) / 1000.0;
 
@@ -1066,9 +1083,9 @@ int main(int argc, char * argv[]) {
 //      float charging = eclipse * (fabs(amps_max[0] * 0.707) + fabs(amps_max[1] * 0.707) + rnd_float(-4.0, 4.0));
 
 //      current[map[BAT]] = ((current[map[BAT2]] * voltage[map[BAT2]]) / batt) - charging;
-      current[map[BAT]] = rnd_float(320, 510) - charging;
+	  current[map[BAT]] = rnd_float(320, 510) - charging;	
 
-        printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
+      printf("charging: %f bat curr: %f bus curr: %f bat volt: %f bus volt: %f \n",charging, current[map[BAT]], current[map[BAT2]], batt, voltage[map[BAT2]]);
 
       batt -= (batt > 3.5) ? current[map[BAT]] / 300000 : current[map[BAT]] / 30000;
       if (batt < 3.6) {
@@ -1275,11 +1292,11 @@ int main(int argc, char * argv[]) {
       sleep(rand_sleep);	    
 //      fprintf(stderr, "INFO: Sleeping for extra %d sec\n", rand_sleep);	  
 	    
-    } else if ((mode == FSK) || (mode == BPSK)) {// FSK or BPSK
+    } else if ((mode == FSK) || (mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) {// FSK or BPSK
       get_tlm_fox();
     } else if ((mode == FC)) {
       get_tlm_fc();
-    } else {  				// SSTV	    
+    } else {  				// SSTV	 or PACSATGND   
 //      fprintf(stderr, "Sleeping\n");
       sleep(30);	    
     }
@@ -1560,6 +1577,8 @@ void get_tlm_fox() {
 
   smaller = (int)(S_RATE / (2 * freq_Hz));
 
+//  if (mode == PACSAT)
+//	  dataLen = 78;
   short int b[dataLen];
   short int b_max[dataLen];
   short int b_min[dataLen];
@@ -1629,7 +1648,10 @@ void get_tlm_fox() {
 
       sampleTime = (unsigned int)millis();
     } else
-      printf("first or second time - no sleep\n");
+	{
+      printf("first time - no sleep\n");
+	  firstTime = OFF;	
+	}
 
     printf("++++ Loop time: %5.3f sec +++++\n", (millis() - loopTime) / 1000.0);
     fflush(stdout);
@@ -1640,7 +1662,6 @@ void get_tlm_fox() {
       for (int count1 = 0; count1 < 8; count1++) {
         if (voltage[count1] < voltage_min[count1]) voltage_min[count1] = voltage[count1];
         if (current[count1] < current_min[count1]) current_min[count1] = current[count1];
-
         if (voltage[count1] > voltage_max[count1]) voltage_max[count1] = voltage[count1];
         if (current[count1] > current_max[count1]) current_max[count1] = current[count1];
 
@@ -1998,8 +2019,8 @@ void get_tlm_fox() {
     encodeB(b, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
     encodeA(b, 53 + head_offset, groundCommandCount);
 
-    if (mode == BPSK) {
-      encodeA(b_max, 51 + head_offset, status);
+	if ((mode == BPSK) || (mode == PACSAT) || (mode == PACSATGND)) {	
+	  encodeA(b_max, 51 + head_offset, status);
       encodeA(b_min, 51 + head_offset, status);
       encodeB(b_max, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
       encodeB(b_min, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
@@ -2020,8 +2041,38 @@ void get_tlm_fox() {
       encodeA(b, 65 + head_offset, val >> 8);
       encodeA(b, 63 + head_offset, 0x00);
       encodeA(b, 62 + head_offset, 0x01);
-      encodeB(b, 74 + head_offset, 0xfff);
+      encodeB(b, 74 + head_offset, 0xfff); 
     }
+
+	if ((mode == PACSAT) || (mode == PACSATGND)) 
+	{
+		FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "wb");
+		if (telem_binary != NULL) {
+
+			int bytes_written = 4;
+			unsigned int now = (unsigned int)time(0);
+			fwrite(&now, sizeof(now), 1, telem_binary);
+			
+		    int count;
+			char byte;
+			printf("b is: \n");
+		    for (count = 0; count < dataLen; count++) {
+				byte = b[count];
+				fwrite(&byte, 1, 1, telem_binary);
+		        printf("%02X ", byte);
+				bytes_written++;
+		    }
+		    printf("\n");
+			printf("Writing %d bytes to tlm.bin\n", bytes_written + 4);
+			fclose(telem_binary);
+		}
+		else
+			printf("Error opening tlm.bin\n");
+	}
+	else
+	{ // extra bracket for some reason?
+	{
+		
     short int data10[headerLen + rsFrames * (rsFrameLen + parityLen)];
     short int data8[headerLen + rsFrames * (rsFrameLen + parityLen)];
 
@@ -2310,22 +2361,25 @@ void get_tlm_fox() {
                                           //	      max -= 1;
   }
 
-  ///    if (sock_ret == -1) {
-  ///      printf("Error: %s \n", strerror(errno));
-  ///      socket_open = 0;
-  // transmitStatus = -1;
-  ///    }
-  ///  }
+  if (socket_open == 1)	
+    firstTime = 0;
+//  else if (frames_sent > 0) //5)
+//    firstTime = 0;
+	
+ }
+  } // extra bracket for some reason?
+
   if (!transmit) {
     fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
     fprintf(stderr, " See http://cubesatsim.org/wiki for info about building a CubeSatSim\n\n");
   }
 
-  ///  if (socket_open == 1)
-  ///    firstTime = 0;
-  //  else if (frames_sent > 0) //5)
-  //    firstTime = 0;
-
+//  if (firstTime && (mode == PACSAT))
+//  {
+//	  firstTime = OFF;
+//	  fprintf(stderr, "No longer first time\n");
+//	  fflush(stdout);
+//  }
   return;
 }
 
@@ -2664,9 +2718,8 @@ if (setting == ON) {
 		FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
 		fprintf(stderr,"Turning Safe Mode ON\n"); 
-		fprintf(stderr,"Turning Battery saver mode ON\n"); 
-		battery_saver_mode = ON;
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		fprintf(stderr,"Turning Battery saver mode ON\n");  
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT) || (mode == PACSATGND)) {
 			command = popen("echo 'reboot due to turning ON Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");
@@ -2683,7 +2736,7 @@ if (setting == ON) {
 		pclose(command);
 		fprintf(stderr,"Turning Battery saver mode OFF\n"); 
 		battery_saver_mode = OFF;
-		if ((mode == AFSK) || (mode == SSTV) || (mode == CW)) {
+		if ((mode == AFSK) || (mode == SSTV) || (mode == CW) || (mode == PACSAT) || (mode == PACSATGND)) {
 			command = popen("echo 'reboot due to turning OFF Safe Mode!' | wall", "r");
 			pclose(command);
 			command = popen("sudo reboot now", "r");

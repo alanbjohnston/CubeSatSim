@@ -43,6 +43,9 @@ function transmit_command {
 			j)
 				number=7
 				;;
+			p)
+				number=8
+				;;
 			o)
 				number=10
 				;;
@@ -92,7 +95,9 @@ function check_restart {
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
+	elif [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
 			restart=1
@@ -139,6 +144,7 @@ if [ "$1" = "" ]; then
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+	MODE=$1
 
 	if [ "$1" = "a" ]; then
 		echo "Mode is APRS"
@@ -162,6 +168,10 @@ if [ "$1" = "" ]; then
 		else	
 			echo -n "APRS"
 		fi
+	elif [ "$1" = "p" ]; then
+		echo "Mode is Pacsat"	
+	elif [ "$1" = "P" ]; then
+		echo "Mode is Pacsat Ground Station"	
 	else
 		echo 
 	fi
@@ -270,8 +280,13 @@ if [ "$1" = "" ]; then
 #	cat /home/pi/CubeSatSim/command_tx
 #	echo
 
-	echo -n "Squelch level is: "
-	echo $6
+#	echo $MODE
+	if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
+		echo "Squelch is off since PacSat or PacSat Ground Station mode"
+	else
+		echo -n "Squelch level is: "
+		echo $6
+	fi
 #	echo
 
 	FILE=/home/pi/CubeSatSim/command_control
@@ -282,10 +297,18 @@ if [ "$1" = "" ]; then
 			if [ -f "$FILE" ]; then
 				echo "Radio DTMF/APRS command and control is ON"
 			else
-				echo "Radio carrier command and control is ON"
+				if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
+					echo "Radio carrier command and control is off since PacSat or PacSat Ground Station mode"
+				else
+					echo "Radio carrier command and control is ON"
+				fi
 			fi
 		else
-			echo "Radio carrier command and control is ON"
+			if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
+				echo "Radio carrier command and control is off since PacSat or PacSat Ground Station mode"
+			else
+				echo "Radio carrier command and control is ON"
+			fi
 		fi
 	else 
     		echo "Radio command and control is OFF"
@@ -313,6 +336,32 @@ if [ "$1" = "" ]; then
     		echo "Transmit beacon telemetry is OFF"
 	else
   		echo "Transmit beacon telemetry is ON"
+	fi
+
+	if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
+	  echo "USB Sound Card detected"
+	  soundcard=1
+	else
+	  echo "No USB Sound Card detected"
+	  soundcard=0
+	fi  
+	
+	gpio -g mode 7 up
+	if [[ $(gpio -g read 7 | grep 0) ]] ; then
+	  echo "FM TXC is present"
+	  txc=1
+	else
+	  echo "FM TXC not present"
+	  txc=0
+	fi  
+	
+	timeout 1 rtl_test &> out.txt
+	if [[ $(grep "No supported" out.txt) ]] ; then
+#	  echo "No RTL-SDR detected"
+	  rtl=0
+	else
+	  echo "RTL-SDR detected"
+	  rtl=1
 	fi
 
 	echo
@@ -383,7 +432,11 @@ elif [ "$1" = "-f" ]; then
 
 		echo "changing CubeSatSim to FSK mode"
 		sudo echo "f" > /home/pi/CubeSatSim/.mode
-		restart=1
+		if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
+		else
+			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-b" ]; then
@@ -400,7 +453,11 @@ elif [ "$1" = "-b" ]; then
 
 		echo "changing CubeSatSim to BPSK mode"
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
-		restart=1
+		if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
+		else
+			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-s" ]; then
@@ -482,8 +539,10 @@ elif [ "$1" = "-c" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
+	oldcallsign="$1"
+
 	echo "Current value of CALLSIGN is"	
-	echo $1
+	echo $oldcallsign
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13}
@@ -669,6 +728,7 @@ elif [ "$1" = "-C" ]; then
 	sudo systemctl stop cubesatsim
 	sudo systemctl stop transmit
 	sudo systemctl stop command
+	sudo systemctl stop pacsatsim
 
 	sudo mv -f /home/pi/CubeSatSim/telem.txt /home/pi/CubeSatSim/telem.txt.bk
 
@@ -856,7 +916,7 @@ elif [ "$1" = "-R" ]; then
 	echo 
 
 	echo "Current commands count is:"
-	cat /home/pi/CubeSatSim/commands_count.txt
+	cat /home/pi/CubeSatSim/command_count.txt
 	echo
 
 	echo "Do you want to reset the commands count to zero (y/n) "
@@ -1119,8 +1179,9 @@ elif [ "$1" = "-o" ]; then
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+	MODE=$1
 
-	if [ "$1" == "n" ]; then
+	if [ "$MODE" == "n" ]; then
 
 		transmit_command "o"
 
@@ -1131,35 +1192,19 @@ elif [ "$1" = "-o" ]; then
 	
 		FILE=/home/pi/CubeSatSim/beacon_off
 		if [ -f "$FILE" ]; then
-	    		echo "Transmit beacon telemetry is off"
-#			echo
-#			echo "Do you want to turn beacon telemetry ON (y/n) "
-#			read reset
-
-			reset="y"
+	    	echo "Transmit beacon telemetry is off"
 			echo
 	
-			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-				echo "Turn beacon telemetry ON"
-				sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
-				sudo systemctl restart transmit
-	#			restart=1
-			fi
-	
+			echo "Turn beacon telemetry ON"
+			sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
+			sudo systemctl restart transmit
 		else 
-	    		echo "Transmit beacon telemetry is on"
-#			echo
-#			echo "Do you want to turn beacon telemetry OFF (y/n) "
-#			read reset
-			reset="y"
+	    	echo "Transmit beacon telemetry is on"
 			echo
 	
-			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-				echo "Turn beacon telemetry OFF"
-				touch /home/pi/CubeSatSim/beacon_off
-				sudo systemctl restart transmit
-	#			restart=1
-			fi
+			echo "Turn beacon telemetry OFF"
+			touch /home/pi/CubeSatSim/beacon_off
+			sudo systemctl restart transmit
 		fi
 		sleep 3
 	fi
@@ -1239,7 +1284,11 @@ elif [ "$1" = "-e" ]; then
 
 		echo "changing CubeSatSim to Repeater mode"
 		sudo echo "e" > /home/pi/CubeSatSim/.mode	
-		restart=1
+		if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			reboot=1
+		else
+			restart=1
+		fi
 	fi
 
 elif [ "$1" = "-n" ]; then
@@ -1262,6 +1311,10 @@ elif [ "$1" = "-n" ]; then
 			echo "Switching to mode "$new 
 			sudo echo $new > /home/pi/CubeSatSim/.mode
 			restart=1
+		elif  [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+			echo "Switching to PacSat mode"
+			sudo echo $new > /home/pi/CubeSatSim/.mode
+			reboot=1
 		else
 			echo "Switching to BPSK mode"
 			sudo echo "b" > /home/pi/CubeSatSim/.mode
@@ -1314,7 +1367,7 @@ elif [ "$1" = "-A" ]; then
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop transmit
 	
-		sudo python3 -u /home/pi/CubeSatSim/transmit.py x > /dev/null 2>&1 &  # Force APRS mode
+#		sudo python3 -u /home/pi/CubeSatSim/transmit.py x > /dev/null 2>&1 &  # Force APRS mode
 	fi
 	sudo systemctl stop command
 
@@ -1323,7 +1376,7 @@ elif [ "$1" = "-A" ]; then
 	while [ "$MODE" != "x" ];
 	do
 
-		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, o=Beacon on/off x=Exit this mode"
+		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, p=PacSat, o=Beacon on/off x=Exit this mode"
 		read MODE
 
 		if [ "$MODE" != "x" ]; then
@@ -1747,6 +1800,61 @@ reboot=1
 
 	fi
 
+elif [ "$1" = "-G" ]; then
+
+	echo "Changing to PacSatSim mode"
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+
+#	echo "changing CubeSatSim to Pacsat mode"
+
+	reboot=1
+	sudo echo "p" > /home/pi/CubeSatSim/.mode	
+#	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
+#		FILE=/home/pi/CubeSatSim/battery_saver
+#		if [ -f "$FILE" ]; then
+#			restart=1
+#		else 
+#			reboot=1
+#		fi	
+#	else
+#		restart=1
+#	fi	
+
+elif [ "$1" = "-I" ]; then
+
+	echo "Changing to PacSat Ground Station mode"
+	echo
+	echo "Run the Pacsat Ground Station in the Desktop"
+	value=`cat /home/pi/CubeSatSim/.mode`	
+	echo "$value" > /dev/null
+	set -- $value
+
+#	echo "changing CubeSatSim to Pacsat mode"
+
+	reboot=1
+	sudo echo "P" > /home/pi/CubeSatSim/.mode	
+#	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
+#		FILE=/home/pi/CubeSatSim/battery_saver
+#		if [ -f "$FILE" ]; then
+#			restart=1
+#		else 
+#			reboot=1
+#		fi	
+#	else
+#		restart=1
+#	fi	
+
+elif [ "$1" = "-k" ]; then
+
+	echo
+	echo "Reset PacSatSim configuration"
+	echo
+	sudo systemctl stop pacsatsim &>/dev/null
+	sudo rm -r /home/pi/PacSat
+	reboot=1
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1762,13 +1870,16 @@ elif [ "$1" = "-h" ]; then
 	echo "   -j     Change to FUNcube mode"
   	echo "   -n     Change to Transmit Commands mode"
 	echo "   -e     Change to Repeater mode"
+	echo "   -j     Change to FUNcube mode"
+	echo "   -G     Change to PacSatSim mode"
+	echo "   -I     Change to PacSat Ground Station mode"
 	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
 	echo "   -r     Change the Resets Count in the configuration file sim.cfg"
 	echo "   -l     Change the Latitude and Longitude in the configuration file sim.cfg"
 	echo "   -S     Scan both I2C buses on the Raspberry Pi"
-	echo "   -C     Clear logs"
+	echo "   -C     Clear logs and reboot"
 	echo "   -T     Change command and control state"
 	echo "   -d     Change command and control Direwolf state"
 	echo "   -R     Change the Commands Count in the file command_count.txt"
@@ -1779,7 +1890,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -H     Change the Balloon (HAB) mode"
 	echo "   -p     Display payload sensor data for 3 seconds"
 	echo "   -v     Display voltage and current data"
-	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for RX and TX"
+	echo "   -P     Change the PL (Private Line) CTCSS/CDCSS codes for FM RX and TX"
 	echo "   -A     Transmit APRS control packets to control another CubeSatSim"
 	echo "   -D     Change Transmit Commands state APRS or DTMF"
 	echo "   -o     Change telemetry beacon transmit state"
@@ -1789,6 +1900,8 @@ elif [ "$1" = "-h" ]; then
 	echo "   -U     Change the random failure mode setting"
 	echo "   -N     Set next mode or failure"
 	echo "   -u     Change gpsd state"
+	echo "   -k     Reset the PacSatSim Configuration"
+
 	echo
 	exit
 

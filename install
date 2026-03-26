@@ -12,6 +12,10 @@ if [ -f "$FILE" ]; then
 
 	echo -e "\nUpdate script for CubeSatSim v2.2\n"
 
+	sudo rm /home/pi/CubeSatSim/telem.wav &>/dev/null
+	sudo rm /home/pi/CubeSatSim/t.txt  &>/dev/null
+	sudo rm /home/pi/CubeSatSim/uptime &>/dev/null
+
 	if [ -z "$1" ] ; then
 		checkout=0
 	else
@@ -61,9 +65,10 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 	  
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 	
-	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/cmdline.txt 
 	
-	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
 	
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
 	  
@@ -158,11 +163,17 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/firmware/cmdline.txt
 	
-	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/firmware/cmdline.txt 
+
 	
-	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+#	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
 	
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/firmware/config.txt
+
+	  sudo sed -i 's/#dtoverlay=vc4-fkms-v3d/dtoverlay=vc4-fkms-v3d/g' /boot/firmware/config.txt
+	  sudo sed -i 's/#dtoverlay=vc4-kms-v3d/dtoverlay=vc4-kms-v3d/g' /boot/firmware/config.txt
+
 	  
 	  if [[ $(grep 'dtoverlay=i2c-gpio,bus=3,i2c_gpio_delay_us=1,i2c_gpio_sda=23,i2c_gpio_scl=24' /boot/firmware/config.txt) ]]; then
 	    echo "dtoverlay=i2c-gpio already in /boot/firmware/config.txt"
@@ -332,6 +343,8 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 #	sudo apt install -y python3-pip
 # fi
 
+cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
+
 if [ ! -d "/home/pi/venv" ]; then
 
 	cd
@@ -353,14 +366,39 @@ sudo apt-get install -y gcc g++ make cmake libasound2-dev libudev-dev libavahi-c
 # removed wiringpi and python-picamera python3-picamera 
 sudo apt-get install -y git libasound2-dev i2c-tools build-essential libgd-dev libmagic-dev minicom
 
+if [ -d "/home/pi/direwolf" ]; then
+
+	cd
+	cd direwolf
+	# Get the URL of the 'origin' remote
+	REPO_URL=$(git config --get remote.origin.url)
+	
+	# Check if the command was successful and a URL was retrieved
+	if [ $? -eq 0 ] && [ -n "$REPO_URL" ]; then
+	
+		if [ ! "$REPO_URL" = "https://github.com/wb2osz/direwolf.git" ]; then
+	
+	    	echo "Current Direwolf git repository URL is $REPO_URL"
+			sudo rm -r /home/pi/direwolf
+		fi
+	else
+    	echo "Could not find the URL for the 'origin' remote for Direwolf"		
+	fi
+fi
+
 if [ ! -d "/home/pi/direwolf" ]; then
 
+	echo "Installing Direwolf from https://github.com/wb2osz/direwolf.git"
 	cd	
-	git clone https://github.com/alanbjohnston/direwolf.git
-	cd direwolf	
-	make -j
-	sudo make install	
-	make install-rpi
+	git clone https://github.com/wb2osz/direwolf.git
+	cd direwolf
+	mkdir build 
+	cd build
+	cmake ..
+	make -j4
+	sudo make install
+	make install-conf
+
 fi
 
 	sudo apt-get install -y gpsd gpsd-clients libgps-dev python3-gps
@@ -399,8 +437,16 @@ if [ $checkout -eq 1 ]; then
 	git checkout $branch	
 	git pull --no-rebase > .updated
 	FLAG=1
-	echo "Running update script again"
+	echo "Running update again"
 	/home/pi/CubeSatSim/install
+	exit
+fi
+
+grep 'install' /home/pi/CubeSatSim/.updated
+if [[ $(grep 'install' /home/pi/CubeSatSim/.updated) ]]; then
+	echo "install script updated, running again"
+	/home/pi/CubeSatSim/install
+	exit
 fi
 
 make debug
@@ -434,6 +480,121 @@ if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
 	echo "updating pi-power-button."
 	script/install
 	FLAG=1
+fi
+
+if [ ! -d "/home/pi/g0kla_common" ]; then
+	cd
+	git clone https://github.com/alanbjohnston/g0kla_common.git
+	cd g0kla_common/Debug/
+	make clean
+	make all
+	sudo ./install.sh
+
+else
+	cd /home/pi/g0kla_common/Debug/
+	
+	git pull --no-rebase > .updated
+	grep 'changed' /home/pi/g0kla_common/Debug/.updated
+	if [[ $(grep 'changed' /home/pi/g0kla_common/Debug/.updated) ]]; then
+	
+		echo "updating g0kla_common"
+		make clean
+		make all
+		FLAG=1
+	fi
+fi
+
+FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
+if [ ! -f "$FILE" ]; then
+
+	cd
+	#git clone https://github.com/alanbjohnston/pi_pacsat.git
+	git clone https://github.com/ac2cz/pi_pacsat.git
+	cd pi_pacsat
+	#git checkout master-debug
+	cd Debug
+	make clean
+	make all
+	
+#	mkdir /home/pi/PacSat
+#	mkdir /home/pi/PacSat/pacsat
+#	mkdir /home/pi/PacSat/pacsat/dir
+	
+#	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
+	
+#	#value=`cat /home/pi/CubeSatSim/sim.cfg`
+#	#echo "$value" > /dev/null
+#	#set -- $value
+	
+#	echo "bit_rate=9600" > pacsat.config
+#	echo "bbs_callsign=AMSAT-12" >> pacsat.config
+#	echo "broadcast_callsign=AMSAT-11" >> pacsat.config
+#	echo "digi_callsign=AMSAT-1" >> pacsat.config
+#	echo "max_frames_in_tx_buffer=5" >> pacsat.config
+	
+#	echo "pb_open=1" > pacsat.state
+#	echo "uplink_open=1" >> pacsat.state
+#	echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
+#	echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
+
+else
+	cd /home/pi/pi_pacsat/Debug/
+	
+	git pull --no-rebase > .updated
+	grep 'changed' /home/pi/pi_pacsat/Debug/.updated
+	if [[ $(grep 'changed' /home/pi/pi_pacsat/Debug/.updated) ]]; then
+	
+		echo "updating pi_pacsat"
+		make clean
+		make all
+		FLAG=1
+	fi
+fi
+
+FILE=/home/pi/pacsat_telem/Debug/pacsat_telem  # code has already been compiled
+if [ ! -f "$FILE" ]; then
+	cd
+	sudo apt-get install -y libbsd-dev
+	git clone https://github.com/alanbjohnston/pacsat_telem.git
+	cd pacsat_telem
+	git checkout master-fox
+	cd Debug
+	make clean
+	make all
+fi
+
+cd /home/pi/pacsat_telem/Debug/
+
+git pull --no-rebase > .updated
+# git checkout master-fox
+grep 'changed' /home/pi/pacsat_telem/Debug/.updated
+if [[ $(grep 'changed' /home/pi/pacsat_telem/Debug/.updated) ]]; then
+
+	echo "updating pacsat_telem"
+	make clean
+	make all
+	FLAG=1
+fi
+
+sudo sed -i 's/#hdmi_group=1/hdmi_group=2/g' /boot/config.txt
+sudo sed -i 's/#hdmi_mode=1/hdmi_mode=16/g' /boot/config.txt
+sudo sed -i 's/#hdmi_force_hotplug=1/hdmi_force_hotplug=1/g' /boot/config.txt
+
+sudo raspi-config nonint do_vnc 0
+
+
+
+if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
+
+	cd /tmp
+	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
+	tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
+	rm PacsatGround_unix_0_46o.tar.gz
+	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
+#	mkdir /home/pi/PacSatGround
+	sudo usermod -a -G gpio pi
+	sudo apt-get install default-jdk -y
+
 fi
 
 cd
@@ -481,7 +642,7 @@ if [ -f "$FILE" ]; then
 else
   echo "creating cubesatsim.service."
   sudo cp /home/pi/CubeSatSim/systemd/cubesatsim.service /etc/systemd/system/cubesatsim.service
-  sudo systemctl enable command
+  sudo systemctl enable cubesatsim
 
   FLAG=1
 fi
@@ -520,6 +681,21 @@ else
   echo "creating command.service."
   sudo cp /home/pi/CubeSatSim/systemd/command.service /etc/systemd/system/command.service
   sudo systemctl enable command
+  FLAG=1
+fi
+
+FILE=/etc/systemd/system/pacsatsim.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service) ]]; then
+    echo "changed pacsatsim.service."
+    sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
+    FLAG=1
+  else
+    echo "no change to pacsatsim.service."
+  fi
+else
+  echo "creating pacsatsim.service."
+  sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
   FLAG=1
 fi
 
@@ -655,9 +831,15 @@ cd
     
 #fi
 
+sed -i 's/quick_exec=0/quick_exec=1/' ~/.config/libfm/libfm.conf
+
+sudo apt install -y raspberrypi-ui-mods 
+
+sudo apt autoremove -y
+
 if [ "$noreboot" = "0" ] ; then  
 
-	if [ $FLAG -eq 1 ]; then
+	if [ $FLAG -eq 1 ]; then # Not sure if this is needed
 	  echo "systemctl daemon-reload and reboot"
 	  sudo systemctl daemon-reload 
 	  sudo reboot -h now
