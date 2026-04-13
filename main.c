@@ -1510,7 +1510,7 @@ void get_tlm(void) {
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
 	    
-      if (transmit) {
+      if (transmit && is_safe_input(str)) {
         FILE * file2 = popen(str, "r");
         pclose(file2);
 	      
@@ -1528,6 +1528,17 @@ void get_tlm(void) {
   }
 
   return;
+}
+
+int is_safe_input(const char *s) {
+  for (; *s; s++) {
+    if (!isdigit((unsigned char)*s)
+        && !isupper((unsigned char)*s)
+        && *s != '.' && *s != '-' && *s != '+'
+        && *s != ' ' && *s != '\n' && *s != '_')
+        return 0;
+  }
+  return 1;
 }
 
 // generates telemetry which is decoded by AMSAT's FoxTelem: https://www.amsat.org/foxtelem-software-for-windows-mac-linux/
