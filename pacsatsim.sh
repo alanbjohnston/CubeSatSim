@@ -67,7 +67,7 @@ callsign="$1"
 txfrequency="$7e3"
 rxfrequency="$8e3"
 
-echo -n "PacSat allsign is "
+echo -n "PacSat callsign is "
 echo $callsign
 echo -n "Transmit Frequency is "
 echo $txfrequency
