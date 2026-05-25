@@ -105,8 +105,8 @@ elif [ "$loopback" = "1" ] ; then
     cd
     sudo rm PacSatGroundLoop.zip &>/dev/null
     wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-    unzip PacSatGroundLoop.zip -d PacSatGroundLoop
-    sudo rm PacSatGroundLoop.zip
+    unzip PacSatGround.zip -d PacSatGroundLoop
+    sudo rm PacSatGround.zip
 
     FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties
     if [ -f "$FILE" ]; then
