@@ -65,10 +65,10 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 	  
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/cmdline.txt
 	
-	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=2 r/g' /boot/cmdline.txt # single core if Pi Zero 2
 #	  sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/cmdline.txt 
 	
-	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/maxcpus=1/maxcpus=2/g' /boot/cmdline.txt # single core if Pi Zero 2
 	
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/config.txt
 	  
@@ -163,10 +163,10 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	
 	  sudo sed -i 's/console=serial0,115200 //g' /boot/firmware/cmdline.txt
 	
-	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=1 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/console=tty1 r/console=tty1 maxcpus=2 r/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
 #	  sudo sed -i 's/console=tty1 maxcpus=1 r/console=tty1 r/g' /boot/firmware/cmdline.txt 
 	
-	  sudo sed -i 's/maxcpus=2/maxcpus=1/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
+	  sudo sed -i 's/maxcpus=1/maxcpus=2/g' /boot/firmware/cmdline.txt # single core if Pi Zero 2
 	
 	  sudo sed -i 's/#dtparam=i2c_arm=on/dtparam=i2c_arm=on/g' /boot/firmware/config.txt
 
@@ -586,10 +586,10 @@ sudo raspi-config nonint do_vnc 0
 if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
 
 	cd /tmp
-	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46o.tar.gz
-	tar -xzf PacsatGround_unix_0_46o.tar.gz -C /home/pi/Desktop
-	rm PacsatGround_unix_0_46o.tar.gz
-	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
+	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46q.tar.gz
+	tar -xzf PacsatGround_unix_0_46q.tar.gz -C /home/pi/Desktop
+	rm PacsatGround_unix_0_46q.tar.gz
+#	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
 #	mkdir /home/pi/PacSatGround
 	sudo usermod -a -G gpio pi
 	sudo apt-get install default-jdk -y

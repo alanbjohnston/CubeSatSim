@@ -104,14 +104,22 @@ elif [ "$loopback" = "1" ] ; then
   
     cd
     sudo rm PacSatGroundLoop.zip &>/dev/null
-    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGroundLoop.zip
-    unzip PacSatGroundLoop.zip -d PacSatGroundLoop
-    sudo rm PacSatGroundLoop.zip
-    
-    echo
-    echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
-    sleep 10
-  
+    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+    unzip PacSatGround.zip -d PacSatGroundLoop
+    sudo rm PacSatGround.zip
+
+    sudo sed -i 's/logfile_dir=\/home\/pi\/PacSatGround/logfile_dir=\/home\/pi\/PacSatGroundLoop/g' /home/pi/PacSatGroundLoop/PacSatGround.properties
+
+    FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties
+    if [ -f "$FILE" ]; then
+      FILE2=/home/pi/PacSatGroundLoop/spacecraft/PacSatSim.properties
+      sudo rm $FILE2
+      cp $FILE $FILE2
+    else       
+      echo
+      echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign"
+      sleep 10
+    fi
   fi
 
 else
@@ -127,10 +135,17 @@ else
     wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b-p/spacecraft/PacSatGround_0.46o/PacSatGround.zip
     unzip PacSatGround.zip -d PacSatGround
     sudo rm PacSatGround.zip
-          
-    echo
-    echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign" 
-    sleep 10
+
+    FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties
+    if [ -f "$FILE" ]; then
+      FILE2=/home/pi/PacSatGround/spacecraft/PacSatSim.properties
+      sudo rm $FILE2
+      cp $FILE $FILE2
+    else    
+      echo
+      echo "The first time you run the Ground Station, you will need to select Yes to override files, then put in your callsign" 
+      sleep 10
+    fi
   
   fi
 
