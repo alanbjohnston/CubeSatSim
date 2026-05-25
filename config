@@ -1835,6 +1835,25 @@ elif [ "$1" = "-I" ]; then
 
 	reboot=1
 	sudo echo "P" > /home/pi/CubeSatSim/.mode	
+
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [ "${7}" = "434.9" ] && [ "${8}" = "435" ]; then
+		echo "The default transmit frequency of 434.9 MHz is set"
+		echo
+		echo "Do you want to change it (for example to 435 MHz)?"
+
+		read input
+		echo
+
+		if [ "$input" = "y" ] || [ "$input" = "yes" ]  ; then
+			/home/pi/CubeSatSim/config -F n
+		fi
+	fi
+
+
 #	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
 #		FILE=/home/pi/CubeSatSim/battery_saver
 #		if [ -f "$FILE" ]; then
