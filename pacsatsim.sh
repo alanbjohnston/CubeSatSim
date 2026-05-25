@@ -88,7 +88,7 @@ if [ ! -d "/home/pi/PacSat" ]; then
   mkdir /home/pi/PacSat/pacsat
   mkdir /home/pi/PacSat/pacsat/dir
   wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pacsat-dir.zip
-  unzip pacsat-dir.zip -d /home/pi
+  unzip pacsat-dir.zip 
   sudo rm pacsat-dir.zip
 
   cd
@@ -97,7 +97,7 @@ if [ ! -d "/home/pi/PacSat" ]; then
   sudo rm /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
   sudo rm pi_pacsat.zip
   wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pi_pacsat.zip
-  unzip pi_pacsat.zip -d /home/pi
+  unzip pi_pacsat.zip 
   sudo rm pi_pacsat.zip
         
 #  mkdir /home/pi/PacSat
