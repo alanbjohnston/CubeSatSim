@@ -404,12 +404,20 @@ fi
 	sudo systemctl disable gpsd
 	sudo systemctl disable gpsd.socket
 
-if [ ! -d "/home/pi/WiringPi" ]; then
-	cd
-	git clone https://github.com/alanbjohnston/WiringPi
-	cd WiringPi
+#if [ ! -d "/home/pi/WiringPi" ]; then
+#	cd
+#	git clone https://github.com/alanbjohnston/WiringPi
+#	cd WiringPi
+#	./build debian
+#	sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+#fi
+
+if [ ! -d "/home/pi/WiringPi3" ]; then
+	git clone https://github.com/WiringPi/WiringPi.git WiringPi3
+	cd WiringPi3
 	./build debian
-	sudo dpkg -i debian-template/wiringpi-2.61-1.deb
+	mv debian-template/wiringpi*.deb .
+	sudo apt install ./wiringpi*.deb
 fi
 
 cd
