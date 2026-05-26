@@ -413,6 +413,7 @@ fi
 #fi
 
 if [ ! -d "/home/pi/WiringPi3" ]; then
+	cd
 	git clone https://github.com/WiringPi/WiringPi.git WiringPi3
 	cd WiringPi3
 	./build debian
