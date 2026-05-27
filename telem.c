@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
-  printf("CubeSatSim v2.1 INA219 Voltage and Current Telemetry\n");  
+  printf("CubeSatSim v2.2 INA219 Voltage and Current Telemetry\n");  
   map[MINUS_X] = MINUS_Y;
   map[PLUS_Z] = MINUS_X;	
   map[MINUS_Y] = PLUS_Z;			
@@ -30,6 +30,9 @@ int main(int argc, char *argv[]) {
    strcat(pythonConfigStr, " s");
 
    char cmdbuffer[1000];
+
+   FILE *file2 = sopen(pythonVenv); // activate venv
+	
    FILE *file1 = sopen(pythonConfigStr);  // try new function
    fgets(cmdbuffer, 1000, file1);
    if (debug == ON)

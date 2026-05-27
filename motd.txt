@@ -1,0 +1,11 @@
+
+This Raspberry Pi has the CubeSatSim v2.x software installed
+and runs automatically as systemd cubesatsim.service. For more
+information see https://CubeSatSim.org. To update
+to the latest version, enter this command:
+
+CubeSatSim/update
+
+To see configuration options, enter this command:
+
+CubeSatSim/config

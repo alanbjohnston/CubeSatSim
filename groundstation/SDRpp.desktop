@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/pi/CubeSatSim/groundstation/sdrpp.sh
+Name=SDRpp
+Comment=SDRpp
+Icon=/home/pi/Icons/sdrpp.png
+Path=/home/pi
+Terminal=true
+Categories=HamRadio
+Keywords=Ham Radio;SDR

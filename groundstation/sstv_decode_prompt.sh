@@ -4,9 +4,11 @@ echo "Script to decode SSTV using QSSTV with rtl_fm"
 
 echo
 
-sudo systemctl stop openwebrx
+sudo systemctl stop openwebrx  &>/dev/null
 
 sudo modprobe snd-aloop
+
+sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -16,7 +18,7 @@ sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp  &>/dev/null
 
 pkill -o chromium &>/dev/null
 
@@ -29,6 +31,9 @@ sudo killall -9 CubicSDR &>/dev/null
 sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
+
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
 
 sudo killall -9 rtl_fm &>/dev/null
 
