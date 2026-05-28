@@ -43,16 +43,19 @@ if [[ $(gpio -g read 7 | grep 0) ]] ; then
 else
   echo "TXC not present"
   txc=0
-fi  
 
-timeout 1 rtl_test &> out.txt
-if [[ $(grep "No supported" out.txt) ]] ; then
-  echo "No RTL-SDR detected"
-  rtl=0
-else
-  echo "RTL-SDR detected."
-  rtl=1
-fi
+  timeout 1 rtl_test &> out.txt
+  if [[ $(grep "No supported" out.txt) ]] ; then
+    echo "No RTL-SDR detected"
+    rtl=0
+  else
+    echo "RTL-SDR detected."
+    rtl=1
+  fi
+
+  sudo killall -9 rtl_test &>/dev/null
+  
+fi  
 
 FILE=/home/pi/CubeSatSim/battery_saver
 if [ -f "$FILE" ]; then
