@@ -310,6 +310,8 @@ else
 
 fi
 
+sudo killall -9 rtl_test &>/dev/null
+
 sleep 10
 
 #echo "Stopping Pacsatsim"
