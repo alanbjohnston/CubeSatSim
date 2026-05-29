@@ -50,14 +50,14 @@ else
   txc=0
 fi  
 
-timeout 1 rtl_test &> out.txt
-if [[ $(grep "No supported" out.txt) ]] ; then
-  echo "No RTL-SDR detected"
-  rtl=0
-else
-  echo "RTL-SDR detected."
-  rtl=1
-fi
+#timeout 1 rtl_test &> out.txt
+#if [[ $(grep "No supported" out.txt) ]] ; then
+#  echo "No RTL-SDR detected"
+#  rtl=0
+#else
+#  echo "RTL-SDR detected."
+#  rtl=1
+#fi
 
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
