@@ -620,6 +620,7 @@ fi
 
 if [ ! -d "/home/pi/rpitx" ]; then
 
+	sudo apt install -y libraspberrypi-dev
 	cd
 	git clone https://github.com/alanbjohnston/rpitx.git
 	cd rpitx
