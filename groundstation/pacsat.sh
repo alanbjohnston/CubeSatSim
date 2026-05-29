@@ -111,6 +111,12 @@ elif [ "$loopback" = "1" ] ; then
     unzip PacSatGround.zip -d PacSatGroundLoop
     sudo rm PacSatGround.zip
 
+    mkdir PacSatGroundLoop/spacecraft
+    mv PacSatGroundLoop/PacSatGround/spacecraft/PacSatSim.properties PacSatGroundLoop/spacecraft/PacSatSim.properties
+    mv PacSatGroundLoop/PacSatGround/stp.dat PacSatGroundLoop/stp.dat
+    mv PacSatGroundLoop/PacSatGround/seq.dat PacSatGroundLoop/seq.dat
+    mv PacSatGroundLoop/PacSatGround/PacSatGround.properties PacSatGroundLoop/PacSatGround.properties
+
     sudo sed -i 's/logfile_dir=\/home\/pi\/PacSatGround/logfile_dir=\/home\/pi\/PacSatGroundLoop/g' /home/pi/PacSatGroundLoop/PacSatGround.properties
 
     FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties
