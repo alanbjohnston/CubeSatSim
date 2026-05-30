@@ -43,16 +43,19 @@ if [[ $(gpio -g read 7 | grep 0) ]] ; then
 else
   echo "TXC not present"
   txc=0
-fi  
 
-timeout 1 rtl_test &> out.txt
-if [[ $(grep "No supported" out.txt) ]] ; then
-  echo "No RTL-SDR detected"
-  rtl=0
-else
-  echo "RTL-SDR detected."
-  rtl=1
-fi
+  timeout 1 rtl_test &> out.txt
+  if [[ $(grep "No supported" out.txt) ]] ; then
+    echo "No RTL-SDR detected"
+    rtl=0
+  else
+    echo "RTL-SDR detected."
+    rtl=1
+  fi
+
+  sudo killall -9 rtl_test &>/dev/null
+  
+fi  
 
 FILE=/home/pi/CubeSatSim/battery_saver
 if [ -f "$FILE" ]; then
@@ -108,6 +111,12 @@ elif [ "$loopback" = "1" ] ; then
     unzip PacSatGround.zip -d PacSatGroundLoop
     sudo rm PacSatGround.zip
 
+    mkdir PacSatGroundLoop/spacecraft
+    mv PacSatGroundLoop/PacSatGround/spacecraft/PacSatSim.properties PacSatGroundLoop/spacecraft/PacSatSim.properties
+    mv PacSatGroundLoop/PacSatGround/stp.dat PacSatGroundLoop/stp.dat
+    mv PacSatGroundLoop/PacSatGround/seq.dat PacSatGroundLoop/seq.dat
+    mv PacSatGroundLoop/PacSatGround/PacSatGround.properties PacSatGroundLoop/PacSatGround.properties
+
     sudo sed -i 's/logfile_dir=\/home\/pi\/PacSatGround/logfile_dir=\/home\/pi\/PacSatGroundLoop/g' /home/pi/PacSatGroundLoop/PacSatGround.properties
 
     FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties
@@ -133,7 +142,7 @@ else
     cd
     sudo rm PacSatGround.zip &>/dev/null
     wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b/spacecraft/PacSatGround_0.46o/PacSatGround.zip
-    unzip PacSatGround.zip -d PacSatGround
+    unzip PacSatGround.zip 
     sudo rm PacSatGround.zip
 
     FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.properties
@@ -306,6 +315,8 @@ else
   setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
 fi
+
+sudo killall -9 rtl_test &>/dev/null
 
 sleep 10
 
