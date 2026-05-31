@@ -95,9 +95,10 @@ function check_restart {
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
-			reboot=1
-	elif [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+#	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+#			reboot=1
+#el
+	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
 			restart=1
