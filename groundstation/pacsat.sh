@@ -75,19 +75,19 @@ if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
   echo
   echo "Mode is not PacSat Ground Station"
   echo
-  echo "Would you like to change to PacSat Ground Station mode and reboot? (y/n)?"
+  echo "Would you like to change to PacSat Ground Station mode? (y/n)?"
   
   read -r ANS
   
   if [ "$ANS" = "y" ]; then
   
       /home/pi/CubeSatSim/config -I
-      exit
+#      exit
       
   else
 
       echo
-      echo "You can run the PacSat Ground Station after you change mode and reboot."
+      echo "You can run the PacSat Ground Station after you change mode."
       sleep 10
       exit
       
