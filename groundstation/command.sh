@@ -20,7 +20,7 @@ echo
 
 autotune=0
 
-mode=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=390 --title="Transmit Command" --text="Choose the command to transmit" --column="Mode" --column="Result" a "APRS Mode" f "FSK Mode" b "BPSK Mode" s "SSTV Mode" m "CM Mode" e "Repeater Mode" j "FUNcube Mode" o "Beacon On/Off")
+mode=$(zenity --timeout=20 --list 2>/dev/null --width=300 --height=360 --title="Transmit Command" --text="Choose the command to transmit" --column="Mode" --column="Result" a "APRS Mode" f "FSK Mode" b "BPSK Mode" s "SSTV Mode" m "CM Mode" e "Repeater Mode" j "FUNcube Mode" o "Beacon On/Off")
 
 # echo $mode
 
