@@ -71,29 +71,15 @@ set -- $value
 MODE=$1
 
 if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
+    echo
+    echo "Changing to PacSat Ground Station Mode."
+    echo "You might reboot"
+    echo
+    sleep 5
+    /home/pi/CubeSatSim/config -I
+fi
 
-  echo
-  echo "Mode is not PacSat Ground Station"
-  echo
-  echo "Would you like to change to PacSat Ground Station mode? (y/n)?"
-  
-  read -r ANS
-  
-  if [ "$ANS" = "y" ]; then
-  
-      /home/pi/CubeSatSim/config -I
-#      exit
-      
-  else
-
-      echo
-      echo "You can run the PacSat Ground Station after you change mode."
-      sleep 10
-      exit
-      
-  fi
-
-elif [ "$loopback" = "1" ] ; then
+if [ "$loopback" = "1" ] ; then
 
 #  if [ ! "$MODE" = "p" ] ; then
     echo
