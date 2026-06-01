@@ -71,29 +71,15 @@ set -- $value
 MODE=$1
 
 if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
+    echo
+    echo "Changing to PacSat Ground Station Mode."
+    echo "You might reboot"
+    echo
+    sleep 5
+    /home/pi/CubeSatSim/config -I
+fi
 
-  echo
-  echo "Mode is not PacSat Ground Station"
-  echo
-  echo "Would you like to change to PacSat Ground Station mode and reboot? (y/n)?"
-  
-  read -r ANS
-  
-  if [ "$ANS" = "y" ]; then
-  
-      /home/pi/CubeSatSim/config -I
-      exit
-      
-  else
-
-      echo
-      echo "You can run the PacSat Ground Station after you change mode and reboot."
-      sleep 10
-      exit
-      
-  fi
-
-elif [ "$loopback" = "1" ] ; then
+if [ "$loopback" = "1" ] ; then
 
 #  if [ ! "$MODE" = "p" ] ; then
     echo
@@ -107,7 +93,8 @@ elif [ "$loopback" = "1" ] ; then
   
     cd
     sudo rm PacSatGroundLoop.zip &>/dev/null
-    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+#    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+    cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/PacSatGround.zip .
     unzip PacSatGround.zip -d PacSatGroundLoop
     sudo rm PacSatGround.zip
 
@@ -141,7 +128,8 @@ else
   
     cd
     sudo rm PacSatGround.zip &>/dev/null
-    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+#    wget https://github.com/alanbjohnston/CubeSatSim/raw/refs/heads/master-b/spacecraft/PacSatGround_0.46o/PacSatGround.zip
+    cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/PacSatGround.zip .
     unzip PacSatGround.zip 
     sudo rm PacSatGround.zip
 
@@ -302,7 +290,7 @@ echo
 cat $DIREWOLF_CONF
 echo
 
-direwolf -r 48000 -c $DIREWOLF_CONF -t 0 &
+direwolf -qd -r 48000 -c $DIREWOLF_CONF &
 
 cd /home/pi/Desktop/PacsatGround/
 

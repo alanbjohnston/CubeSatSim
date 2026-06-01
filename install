@@ -516,8 +516,8 @@ FILE=/home/pi/pi_pacsat/Debug/pi_pacsat  # code has already been compiled
 if [ ! -f "$FILE" ]; then
 
 	cd
-	#git clone https://github.com/alanbjohnston/pi_pacsat.git
-	git clone https://github.com/ac2cz/pi_pacsat.git
+	git clone https://github.com/alanbjohnston/pi_pacsat.git
+	#git clone https://github.com/ac2cz/pi_pacsat.git
 	cd pi_pacsat
 	#git checkout master-debug
 	cd Debug

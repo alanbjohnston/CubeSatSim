@@ -87,7 +87,8 @@ if [ ! -d "/home/pi/PacSat" ]; then
   mkdir /home/pi/PacSat
   mkdir /home/pi/PacSat/pacsat
   mkdir /home/pi/PacSat/pacsat/dir
-  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pacsat-dir.zip
+#  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pacsat-dir.zip
+  cp /home/pi/pi_pacsat/zip/pacsat-dir.zip .
   unzip pacsat-dir.zip 
   sudo rm pacsat-dir.zip
 
@@ -96,7 +97,8 @@ if [ ! -d "/home/pi/PacSat" ]; then
   sudo rm /home/pi/pi_pacsat/Debug/pacsat.state
   sudo rm /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
   sudo rm pi_pacsat.zip
-  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pi_pacsat.zip
+#  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pi_pacsat.zip
+  cp /home/pi/pi_pacsat/zip/pi_pacsat.zip .
   unzip pi_pacsat.zip -d /
   sudo rm pi_pacsat.zip
         
@@ -296,7 +298,8 @@ echo
 cat $DIREWOLF_CONF
 echo
 
-direwolf -P+ -D1 -qd -dp -r 48000 -c $DIREWOLF_CONF -t 0 &
+#direwolf -P+ -D1 -qd -dp -r 48000 -c $DIREWOLF_CONF -t 0 &
+direwolf -qd -r 48000 -c $DIREWOLF_CONF &
 
 #  arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
 ## arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f 434900 &
