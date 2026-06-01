@@ -1834,7 +1834,8 @@ elif [ "$1" = "-I" ]; then
 
 #	echo "changing CubeSatSim to Pacsat mode"
 
-	reboot=1
+#	reboot=1
+	check_restart
 	sudo echo "P" > /home/pi/CubeSatSim/.mode	
 
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
