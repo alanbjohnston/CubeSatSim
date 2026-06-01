@@ -8,8 +8,8 @@ set -- $value
 
 if [ "$1" != "n" ]; then
 
-  echo "Do you want to change to Transmit Commands mode?"
-
+  echo "You are not in Transmit Commands mode"
+  sleep 10
   exit
 
 fi
@@ -26,16 +26,16 @@ echo $mode
 
 if [ -z "$mode" ]; then 
 
-echo "No choice made."
+  echo "No choice made."
+  sleep 10
+  
+  exit
 
 fi
 
-if [ "$mode" = "a" ]; then
+/home/pi/CubeSatSim/config -$mode
+sleep 10
 
-  echo "Change to APRS mode"
 
-  /home/pi/CubeSatSim/config -a
-
-fi
 
   
