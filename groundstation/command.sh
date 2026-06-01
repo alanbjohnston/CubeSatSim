@@ -2,6 +2,18 @@
 
 # script to send APRS or DTMR commands to a CubeSatSim
 
+value=`cat /home/pi/CubeSatSim/.mode`
+echo "$value" > /dev/null
+set -- $value
+
+if [ "$1" != "n" ]; then
+
+  echo "Do you want to change to Transmit Commands mode?"
+
+  exit
+
+fi
+
 sudo killall -9 zenity &>/dev/null
 
 echo
@@ -18,9 +30,12 @@ echo "No choice made."
 
 fi
 
-if [ "mode" = "a" ]; then
+if [ "$mode" = "a" ]; then
 
-  echo "CHange to APRS mode"
+  echo "Change to APRS mode"
+
+  /home/pi/CubeSatSim/config -a
 
 fi
+
   
