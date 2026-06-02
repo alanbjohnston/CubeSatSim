@@ -1424,7 +1424,7 @@ elif [ "$1" = "-g" ]; then
 	
 	if [ "$rset" = "y" ] || [ "$rset" = "yes" ]  ; then
 
-		echo "Resetting and shutting down."
+		echo "Resetting"
 
 		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
 	
@@ -1457,7 +1457,15 @@ elif [ "$1" = "-g" ]; then
 
 		cat /dev/null > ~/.bash_history && history -c
 
+		sudo systemctl stop pacsatsim &>/dev/null
+		sudo rm -r /home/pi/PacSat
+
+		sudo rm -r /home/pi/PacSatGround
+
+		sudo rm -r /home/pi/PacSatGroundLoop
+
 		if [ "$noreboot" = "0" ] ; then 
+			echo "Shutting down."
 			sudo shutdown now
 		else
 			echo
