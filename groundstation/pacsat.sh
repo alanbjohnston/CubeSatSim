@@ -36,6 +36,15 @@ else
   soundcard=0
 fi  
 
+gpio -g mode 12 up
+  if [[ $(gpio -g read 12 | grep 0) ]] ; then
+  echo "LPF is present"
+  lpf=1
+else
+  echo "LPF not present"
+  lpf=0
+fi  
+
 gpio -g mode 7 up
 if [[ $(gpio -g read 7 | grep 0) ]] ; then
   echo "TXC is present"
@@ -212,6 +221,20 @@ sudo killall -9 zenity &>/dev/null
 #sudo /etc/init.d/alsa-utils start
 
 sudo usermod -a -G gpio pi
+
+if [ "$lpf" = "0" ] && [ "$txc" = "0" ] ; then
+  loopback=1
+
+  value=`aplay -l | grep "Loopback"`
+  echo "$value" > /dev/null
+  set -- $value
+  
+  #rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
+  rtl_fm -M fm -f $rxfrequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
+  
+  rtl_fm -M fm -f $rxfrequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+
+fi
 
 if [ "$loopback" = "1" ] ; then
 
