@@ -164,6 +164,7 @@ set -- $value
 callsign="$1"
 txfrequency="$7e3"
 rxfrequency="$8e3"
+frequency="$8e6"
 
 echo -n "Callsign is "
 echo $callsign
@@ -230,9 +231,9 @@ if [ "$lpf" = "0" ] && [ "$txc" = "0" ] ; then
   set -- $value
   
   #rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
-  rtl_fm -M fm -f $rxfrequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
+  rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
   
-  rtl_fm -M fm -f $rxfrequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+  rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
 
 fi
 
