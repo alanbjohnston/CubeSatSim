@@ -53,7 +53,7 @@ else
   echo "TXC not present"
   txc=0
 
-  timeout 1 rtl_test &> out.txt
+  timeout 1 timeout 1 rtl_test &> out.txt
   if [[ $(grep "No supported" out.txt) ]] ; then
     echo "No RTL-SDR detected"
     rtl=0
