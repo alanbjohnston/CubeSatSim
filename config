@@ -1442,6 +1442,8 @@ elif [ "$1" = "-g" ]; then
 
 		sudo rm /home/pi/CubeSatSim/failure_mode.txt > /dev/null 2>&1
 
+		sudo rm /home/pi/CubeSatSim/transmit_dtmf
+
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop transmit
 		sudo systemctl stop command
@@ -1455,7 +1457,13 @@ elif [ "$1" = "-g" ]; then
 
 		cat /dev/null > ~/.bash_history && history -c
 
-		sudo shutdown now
+		if [ "$noreboot" = "0" ] ; then 
+			sudo shutdown now
+		else
+			echo
+			echo "Shutdown or reboot to complete the operation."
+			echo
+		fi
 	
 #		reboot=1
 	else
@@ -1812,16 +1820,19 @@ elif [ "$1" = "-G" ]; then
 
 	reboot=1
 	sudo echo "p" > /home/pi/CubeSatSim/.mode	
-#	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] ; then
-#		FILE=/home/pi/CubeSatSim/battery_saver
-#		if [ -f "$FILE" ]; then
-#			restart=1
-#		else 
-#			reboot=1
-#		fi	
-#	else
-#		restart=1
-#	fi	
+
+	if [ "${7}" != "434.9" ]; then
+		echo "The default transmit frequency of 434.9 MHz is NOT set."
+		echo
+		echo "Do you want to change the transmit frequency (for example to 434.9 MHz)?"
+
+		read input
+		echo
+
+		if [ "$input" = "y" ] || [ "$input" = "yes" ]  ; then
+			/home/pi/CubeSatSim/config -F n
+		fi
+	fi
 
 elif [ "$1" = "-I" ]; then
 
