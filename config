@@ -1442,7 +1442,7 @@ elif [ "$1" = "-g" ]; then
 
 		sudo rm /home/pi/CubeSatSim/failure_mode.txt > /dev/null 2>&1
 
-		sudo rm /home/pi/CubeSatSim/transmit_dtmf
+		sudo rm /home/pi/CubeSatSim/transmit_dtmf > /dev/null 2>&1
 
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop transmit
@@ -1453,16 +1453,16 @@ elif [ "$1" = "-g" ]; then
 		sudo journalctl --rotate
 		sudo journalctl --vacuum-time=1s
 
-		rm -rf ~/.config/chromium/Singleton*
+		rm -rf ~/.config/chromium/Singleton* > /dev/null 2>&1
 
 		cat /dev/null > ~/.bash_history && history -c
 
 		sudo systemctl stop pacsatsim &>/dev/null
-		sudo rm -r /home/pi/PacSat
+		sudo rm -r /home/pi/PacSat > /dev/null 2>&1
 
-		sudo rm -r /home/pi/PacSatGround
+		sudo rm -r /home/pi/PacSatGround > /dev/null 2>&1
 
-		sudo rm -r /home/pi/PacSatGroundLoop
+		sudo rm -r /home/pi/PacSatGroundLoop > /dev/null 2>&1
 
 		if [ "$noreboot" = "0" ] ; then 
 			echo "Shutting down."
