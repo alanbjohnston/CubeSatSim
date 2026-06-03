@@ -19,7 +19,7 @@ sudo pkill -f "/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
 
 loopback=0
 vox=0
-#safe=0
+#rpitx=0
 #card=0
 #pwm=0
 
@@ -71,9 +71,11 @@ fi
 
 FILE=/home/pi/CubeSatSim/battery_saver
 if [ -f "$FILE" ]; then
-  safe=1
-else
-  safe=0
+  rpitx=1
+elif [ "$txc" = "0" ] && [ "$lpf" = "1" ]; then
+  rpitx=1
+else  
+  rpitx=0
 fi  
 
 
@@ -231,7 +233,7 @@ else
 
     if [ "$txc" = "1" ] ; then
       
-      if [ "$safe" = "1" ]; then
+      if [ "$rpitx" = "1" ]; then
 
         echo "2: Using FM for Receive and rpitx for Transmit"
         ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
