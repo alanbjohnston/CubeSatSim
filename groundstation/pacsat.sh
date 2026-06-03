@@ -231,7 +231,7 @@ else
 
   if [ "$lpf" = "1" ] ; then
 
-    if [ "$txc" = "1" ] && [ "$soundcard" = "1"] ; then
+    if [ "$txc" = "1" ] && [ "$soundcard" = "1" ] ; then
       
       if [ "$rpitx" = "1" ] ; then
 
@@ -247,7 +247,7 @@ else
 
       fi
 
-    elif [ "$txc" = "1" ] && [ "$soundcard" = "0"] ; then
+    elif [ "$txc" = "1" ] && [ "$soundcard" = "0" ] ; then
 
       if [ "$rtl" = "1" ]; then
       
