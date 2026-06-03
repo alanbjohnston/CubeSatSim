@@ -256,7 +256,7 @@ else
           echo "2b: Using RTL-SDR for Receive and rpitx for Transmit"
           start-rtl
  #         ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
-          ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+          ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1 plughw:CARD=Loopback,DEV=0" 
           PTT="PTT GPIOD gpiochip0 17" 
        
         else
@@ -281,13 +281,13 @@ else
         echo "4: Using RTL-SDR for Receive and rpitx for Transmit"
         start-rtl
 #        ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
-        ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+        ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1 plughw:CARD=Loopback,DEV=0" 
         PTT="PTT GPIOD gpiochip0 17" 
         
       else
 
         echo "5: Using Sound Card for Receive and rpitx for Transmit"
-        ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0"
+        ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
         PTT="PTT GPIOD gpiochip0 17" 
      
       fi
