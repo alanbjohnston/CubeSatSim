@@ -231,9 +231,9 @@ else
 
   if [ "$lpf" = "1" ] ; then
 
-    if [ "$txc" = "1" ] ; then
+    if [ "$txc" = "1" ] && [ "$soundcard" = "1"] ; then
       
-      if [ "$rpitx" = "1" ]; then
+      if [ "$rpitx" = "1" ] ; then
 
         echo "2: Using FM for Receive and rpitx for Transmit"
         ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
@@ -247,13 +247,41 @@ else
 
       fi
 
+    elif [ "$txc" = "1" ] && [ "$soundcard" = "0"] ; then
+
+      if [ "$rtl" = "1" ]; then
+      
+        if [ "$rpitx" = "1" ]; then
+  
+          echo "2b: Using RTL-SDR for Receive and rpitx for Transmit"
+          start-rtl
+ #         ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+          ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+          PTT="PTT GPIOD gpiochip0 17" 
+       
+        else
+  
+          echo "3b: RTL-SDR for Receive Only"
+          ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+          PTT="#PTT GPIOD gpiochip0 17" 
+  
+        fi  
+        
+      else
+
+        echo "Won't work since can't receive with Sound Card or RTL-SDR"
+        sleep 10
+        exit
+
+      fi
     else
 
       if [ "$rtl" = "1" ]; then
 
         echo "4: Using RTL-SDR for Receive and rpitx for Transmit"
         start-rtl
-        ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+#        ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+        ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
         PTT="PTT GPIOD gpiochip0 17" 
         
       else
