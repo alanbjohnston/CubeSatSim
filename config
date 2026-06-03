@@ -356,14 +356,13 @@ if [ "$1" = "" ]; then
 	  txc=0
 	fi  
 	
-#	timeout 1 rtl_test &> out.txt
-#	if [[ $(grep "No supported" out.txt) ]] ; then
-#	  echo "No RTL-SDR detected"
-#	  rtl=0
-#	else
-#	  echo "RTL-SDR detected"
-#	  rtl=1
-#	fi
+	if [[ $(lsusb | grep "RTL") ]] ; then
+	  echo "RTL-SDR detected"
+	  rtl=1
+	else
+	  echo "No RTL-SDR detected"
+	  rtl=0
+	fi
 
 	echo
 	echo -e "Current sim.cfg configuration file:"	
