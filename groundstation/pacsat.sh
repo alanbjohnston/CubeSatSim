@@ -210,8 +210,7 @@ sudo killall -9 zenity &>/dev/null
 
 sudo usermod -a -G gpio pi
 
-if [ "$lpf" = "0" ] && [ "$txc" = "0" ] ; then
-  loopback=1
+if [ "$txc" = "0" ] ; then
 
   value=`aplay -l | grep "Loopback"`
   echo "$value" > /dev/null
@@ -224,7 +223,7 @@ if [ "$lpf" = "0" ] && [ "$txc" = "0" ] ; then
 
 fi
 
-if [ "$loopback" = "1" ] ; then
+if [ "$loopback" = "1" ] || [ "$txc" = "0" ] ; then
 
   echo "Using Audio Loopback"
   ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
