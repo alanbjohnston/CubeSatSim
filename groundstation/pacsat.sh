@@ -16,9 +16,18 @@ elif [ "$1" = "v" ] ; then
   vox=1  
 elif [ "$1" = "c" ] ; then
   card=1  
+#else
+#  pwm=1  
+#fi  
+
+elif [[ $(lsusb | grep "RTL") ]] ; then
+  echo "RTL-SDR detected"
+  rtl=1
 else
-  pwm=1  
-fi  
+  echo "No RTL-SDR detected"
+  rtl=0
+  pwm=1
+fi
 
 if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
   echo "USB Sound Card detected"
@@ -44,14 +53,6 @@ if [[ $(gpio -g read 7 | grep 0) ]] ; then
 else
   echo "TXC not present"
   txc=0
-
-if [[ $(lsusb | grep "RTL") ]] ; then
-  echo "RTL-SDR detected"
-  rtl=1
-else
-  echo "No RTL-SDR detected"
-  rtl=0
-fi
   
 fi  
 
@@ -223,7 +224,7 @@ if [ "$txc" = "0" ] ; then
 
 fi
 
-if [ "$loopback" = "1" ] || [ "$txc" = "0" ] ; then
+if [ "$loopback" = "1" ] ; then
 
   echo "Using Audio Loopback"
   ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
@@ -256,7 +257,7 @@ elif [ "$vox" = "1" ] ; then
     sleep 5
   fi  
   
-elif [ "$pwm" = "1" ] ; then  
+elif [ "$pwm" = "1" ] && [ "$soundcard" = "1" ] ; then  
   
   ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
   PTT="PTT GPIOD gpiochip0 -20" 
@@ -270,7 +271,13 @@ elif [ "$pwm" = "1" ] ; then
   else
     echo "FM TXC using Soundcard input (JP13), PWM output"
   fi
-   
+
+elif [ "$txc" = "0" ] ; then
+
+  echo "Using RTL-SDR Audio Loopback"
+  ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+  PTT="#PTT GPIOD gpiochip0 1" 
+     
 else
   
   echo "FM TXC using Soundcard input (JP13) and output (JP14)"
