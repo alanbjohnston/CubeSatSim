@@ -1836,14 +1836,15 @@ elif [ "$1" = "-G" ]; then
 	if [ "${7}" != "434.9" ] && [ "${7}" != "434.900" ] ; then
 		echo "The default transmit frequency of 434.9 MHz is NOT set."
 		echo
-		echo "Do you want to change the transmit frequency (for example to 434.9 MHz)?"
+		echo "To change the transmit frequency (for example to 434.9 MHz) use the CubeSatSim/config -F command."
+		sleep 5
 
-		read input
-		echo
-
-		if [ "$input" = "y" ] || [ "$input" = "yes" ]  ; then
-			/home/pi/CubeSatSim/config -F n
-		fi
+#		read input
+#		echo
+#
+#		if [ "$input" = "y" ] || [ "$input" = "yes" ]  ; then
+#			/home/pi/CubeSatSim/config -F n
+#		fi
 	fi
 
 elif [ "$1" = "-I" ]; then
@@ -1868,14 +1869,14 @@ elif [ "$1" = "-I" ]; then
 	if [ "${7}" = "434.9" ] && [ "${8}" = "435" ]; then
 		echo "The default transmit frequency of 434.9 MHz is set"
 		echo
-		echo "Do you want to change it (for example to 435 MHz)?"
+		echo "To change it (for example to 435 MHz) use the CubeSatSim/config -F command."
 
-		read input
-		echo
-
-		if [ "$input" = "y" ] || [ "$input" = "yes" ]  ; then
-			/home/pi/CubeSatSim/config -F n
-		fi
+#		read input
+#		echo
+#
+#		if [ "$input" = "y" ] || [ "$input" = "yes" ]  ; then
+#			/home/pi/CubeSatSim/config -F n
+#		fi
 	fi
 
 elif [ "$1" = "-k" ]; then
