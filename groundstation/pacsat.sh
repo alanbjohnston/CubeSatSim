@@ -1,32 +1,45 @@
 #!/bin/bash
 
+function start-rtl {
+
+  value=`aplay -l | grep "Loopback"`
+  echo "$value" > /dev/null
+  set -- $value
+  
+  #rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
+  rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
+  
+  rtl_fm -g 48 -P+ -D1 -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+
+}
+
 # script to auto decode packets using Direwolf and FM TXC and run Pacsat Ground Station
 
 sudo pkill -f "/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
 
 loopback=0
 vox=0
-safe=0
-card=0
-pwm=0
+#safe=0
+#card=0
+#pwm=0
 
 if [ "$1" = "l" ] ; then
   loopback=1
 elif [ "$1" = "v" ] ; then
   vox=1  
-elif [ "$1" = "c" ] ; then
-  card=1  
+#elif [ "$1" = "c" ] ; then
+#  card=1  
 #else
 #  pwm=1  
-#fi  
+fi  
 
-elif [[ $(lsusb | grep "RTL") ]] ; then
+if [[ $(lsusb | grep "RTL") ]] ; then
   echo "RTL-SDR detected"
   rtl=1
 else
   echo "No RTL-SDR detected"
   rtl=0
-  pwm=1
+#  pwm=1
 fi
 
 if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
@@ -59,7 +72,18 @@ fi
 FILE=/home/pi/CubeSatSim/battery_saver
 if [ -f "$FILE" ]; then
   safe=1
+else
+  safe=0
 fi  
+
+
+if [ "$soundcard" = "0" ] && [ "$rtl" = "0" ]; then
+
+  echo "Won't work since can't receive with Sound Card or RTL-SDR"
+  sleep 10
+  exit
+
+fi    
 
 value=`cat /home/pi/CubeSatSim/.mode`
 echo "$value" > /dev/null
@@ -75,6 +99,18 @@ if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
     sleep 5
     /home/pi/CubeSatSim/config -I
 fi
+
+value=`cat /home/pi/CubeSatSim/sim.cfg`
+echo "$value" > /dev/null
+set -- $value
+
+callsign="$1"
+txfrequency="$7e3"
+rxfrequency="$8e3"
+frequency="$8e6"
+
+echo -n "Callsign is "
+echo $callsign
 
 if [ "$loopback" = "1" ] ; then
 
@@ -114,9 +150,16 @@ if [ "$loopback" = "1" ] ; then
       sleep 10
     fi
   fi
+  sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
 
 else
 
+  echo -n "Transmit Frequency is "
+  echo $txfrequency
+  echo -n "Receive Frequency is "
+  echo $rxfrequency
+  sleep 2
+  
   echo
   echo "Mode is PacSat Ground Station"
   echo
@@ -142,39 +185,12 @@ else
     fi
   
   fi
-
+  sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGround/PacSatGround.properties
 fi
-
-value=`cat /home/pi/CubeSatSim/sim.cfg`
-echo "$value" > /dev/null
-set -- $value
-
-callsign="$1"
-txfrequency="$7e3"
-rxfrequency="$8e3"
-frequency="$8e6"
-
-echo -n "Callsign is "
-echo $callsign
-echo -n "Transmit Frequency is "
-echo $txfrequency
-echo -n "Receive Frequency is "
-echo $rxfrequency
-echo
-sleep 2
-
-sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGround/PacSatGround.properties
-sudo sed -i "s/TNC_TX_DELAY=.*$/TNC_TX_DELAY=750/g" /home/pi/PacSatGroundLoop/PacSatGround.properties
 
 sudo modprobe snd-aloop
 
-#sudo systemctl stop cubesatsim >/dev/null 2>&1
-
-#sudo systemctl stop transmit >/dev/null 2>&1
-
 sudo systemctl stop command >/dev/null 2>&1
-
-#/home/pi/CubeSatSim/config -I
 
 sudo systemctl stop command >/dev/null 2>&1
 
@@ -188,11 +204,7 @@ pkill -o firefox &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
 
-#sudo killall -9 direwolf &>/dev/null
-
 sudo killall -9 sdrpp &>/dev/null
-
-#sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -204,96 +216,79 @@ sudo killall -9 CubicSDR &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
-#sudo systemctl restart pacsatsim
-
-#sudo /etc/init.d/alsa-utils stop
-#sudo /etc/init.d/alsa-utils start
-
 sudo usermod -a -G gpio pi
 
-if [ "$txc" = "0" ] ; then
-
-  value=`aplay -l | grep "Loopback"`
-  echo "$value" > /dev/null
-  set -- $value
-  
-  #rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
-  rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
-  
-  rtl_fm -g 48 -P+ -D1 -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
-
-fi
 
 if [ "$loopback" = "1" ] ; then
 
-  echo "Using Audio Loopback"
+  echo "1: Using Audio Loopback, No Transmit or Receive"
   ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
   PTT="PTT GPIOD gpiochip0 17" 
 
-elif [ "$safe" = "1" ] ; then
-
-  ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
-  PTT="PTT GPIOD gpiochip0 17"
-
-  if [ ! "$txc" = "1" ] ; then
-    echo "Safe mode - battery saver won't work since no TXC present"
-    sleep 5
-  elif [ ! "$soundcard" = "1" ] ; then
-     echo "Safe mode - battery saver won't work since no sound card present"
-     sleep 5
-  else
-    echo "Safe mode - battery saver"
-  fi  
-
-elif [ "$vox" = "1" ] ; then
-
-  ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
-  PTT="PTT GPIOD gpiochip0 17" 
-  
-  if [ "$soundcard" = "1" ] ; then
-     echo "Using Soundcard Audio TX and RX (VOX, no PTT)"
-  else
-    echo "Soundcard Audio TX and RX (VOX, no PTT) will not work since no sound card present"
-    sleep 5
-  fi  
-  
-elif [ "$pwm" = "1" ] && [ "$soundcard" = "1" ] ; then  
-  
-  ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
-  PTT="PTT GPIOD gpiochip0 -20" 
-
-  if [ ! "$txc" = "1" ] ; then
-    echo "FM TXC using Soundcard input (JP13), PWM output won't work since no TXC present"
-    sleep 5
-  elif [ ! "$soundcard" = "1" ] ; then
-     echo "FM TXC using Soundcard input (JP13), PWM output won't work since no sound card present"
-     sleep 5
-  else
-    echo "FM TXC using Soundcard input (JP13), PWM output"
-  fi
-
-elif [ "$txc" = "0" ] ; then
-
-  echo "Using RTL-SDR Audio Loopback"
-  ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
-  PTT="#PTT GPIOD gpiochip0 1" 
-     
 else
-  
-  echo "FM TXC using Soundcard input (JP13) and output (JP14)"
-  ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" 
-  PTT="PTT GPIOD gpiochip0 -20"
 
-  if [ ! "$txc" = "1" ] ; then
-    echo "FM TXC using Soundcard input (JP13) and output (JP14) won't work since no TXC present"
-    sleep 5
-  elif [ ! "$soundcard" = "1" ] ; then
-     echo "FM TXC using Soundcard input (JP13), output (JP14) won't work since no sound card present"
-     sleep 5
+  if [ "$lpf" = "1" ] ; then
+
+    if [ "$txc" = "1" ] ; then
+      
+      if [ "$safe" = "1" ]; then
+
+        echo "2: Using FM for Receive and rpitx for Transmit"
+        ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+        PTT="PTT GPIOD gpiochip0 17"
+     
+      else
+
+        echo "3: Using FM for Receive and Transmit"
+        ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+        PTT="#PTT GPIOD gpiochip0 -20" 
+
+      fi
+
+    else
+
+      if [ "$rtl" = "1" ]; then
+
+        echo "4: Using RTL-SDR for Receive and rpitx for Transmit"
+        start-rtl
+        ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
+        PTT="#PTT GPIOD gpiochip0 17" 
+        
+      else
+
+        echo "5: Using Sound Card for Receive and rpitx for Transmit"
+        ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0"
+        PTT="PTT GPIOD gpiochip0 17" 
+     
+      fi
+    fi
+
   else
-    echo "FM TXC using Soundcard input (JP13), output JP14"
-  fi
+
+    if [ "$txc" = "1" ] ; then
+
+      echo "6: Using FM for Receive Only"
+      ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+      PTT="#PTT GPIOD gpiochip0 -20" 
+  
+    else
     
+       if [ "$rtl" = "1" ] ; then
+
+        start-rtl
+        echo "7: Using RTL-SDR for Receive Only"
+        ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
+        PTT="#PTT GPIOD gpiochip0 17" 
+
+       else
+
+        echo "8: Using Sound Card for Receive and Transmit"
+        ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
+        PTT="PTT GPIOD gpiochip0 17" 
+        
+       fi
+    fi
+  fi
 fi
 
 DIREWOLF_CONF="/home/pi/CubeSatSim/groundstation/direwolf-pacsat-tmp.conf"
