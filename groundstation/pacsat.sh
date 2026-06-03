@@ -11,21 +11,13 @@ card=0
 pwm=0
 
 if [ "$1" = "l" ] ; then
-
   loopback=1
-
 elif [ "$1" = "v" ] ; then
-
   vox=1  
-
 elif [ "$1" = "c" ] ; then
-
   card=1  
-
 else
-
   pwm=1  
-  
 fi  
 
 if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
@@ -53,24 +45,19 @@ else
   echo "TXC not present"
   txc=0
 
-  timeout 1 timeout 1 rtl_test &> out.txt
-  if [[ $(grep "No supported" out.txt) ]] ; then
-    echo "No RTL-SDR detected"
-    rtl=0
-  else
-    echo "RTL-SDR detected."
-    rtl=1
-  fi
-
-  sudo killall -9 rtl_test &>/dev/null
+if [[ $(lsusb | grep "RTL") ]] ; then
+  echo "RTL-SDR detected"
+  rtl=1
+else
+  echo "No RTL-SDR detected"
+  rtl=0
+fi
   
 fi  
 
 FILE=/home/pi/CubeSatSim/battery_saver
 if [ -f "$FILE" ]; then
-
   safe=1
-  
 fi  
 
 value=`cat /home/pi/CubeSatSim/.mode`
@@ -329,8 +316,6 @@ else
   setsid java -Xmx512M -jar  PacSatGround.jar "/home/pi/PacSatGround" # removed &
 
 fi
-
-sudo killall -9 rtl_test &>/dev/null
 
 sleep 10
 
