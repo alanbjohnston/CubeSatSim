@@ -5,7 +5,7 @@ echo "Script to run Web SDR for ARISS Radio Pi"
 
 echo 
 
-echo "The Chromium browser will load in a few seconds with OpenWebRX."
+echo "The browser will load in a few seconds with OpenWebRX."
 
 echo "You can also use another web browser if you are on the same network as your Pi."
 
@@ -31,6 +31,8 @@ sudo killall -9 java &>/dev/null
 sudo killall -9 rtl_fm &>/dev/null
 
 pkill -o chromium &>/dev/null
+
+pkill -o firefox &>/dev/null
 
 sudo killall -9 rtl_tcp &>/dev/null
 
@@ -59,7 +61,8 @@ sudo systemctl restart openwebrx
 
 sleep 10
 
-setsid chromium-browser --password-store=basic --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars --app=http://localhost:8073 &>/dev/null & 
+#setsid chromium-browser --password-store=basic --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars --app=http://localhost:8073 &>/dev/null & 
+setsid x-www-browser http://localhost:8073/
 
 sleep 10
 

@@ -36,6 +36,15 @@ else
   soundcard=0
 fi  
 
+gpio -g mode 12 up
+  if [[ $(gpio -g read 12 | grep 0) ]] ; then
+  echo "LPF is present"
+  lpf=1
+else
+  echo "LPF not present"
+  lpf=0
+fi  
+
 gpio -g mode 7 up
 if [[ $(gpio -g read 7 | grep 0) ]] ; then
   echo "TXC is present"
@@ -44,7 +53,7 @@ else
   echo "TXC not present"
   txc=0
 
-  timeout 1 rtl_test &> out.txt
+  timeout 1 timeout 1 rtl_test &> out.txt
   if [[ $(grep "No supported" out.txt) ]] ; then
     echo "No RTL-SDR detected"
     rtl=0
@@ -155,6 +164,7 @@ set -- $value
 callsign="$1"
 txfrequency="$7e3"
 rxfrequency="$8e3"
+frequency="$8e6"
 
 echo -n "Callsign is "
 echo $callsign
@@ -186,6 +196,8 @@ sudo systemctl stop rtl_tcp >/dev/null 2>&1
 
 pkill -o chromium &>/dev/null
 
+pkill -o firefox &>/dev/null
+
 sudo killall -9 rtl_fm &>/dev/null
 
 #sudo killall -9 direwolf &>/dev/null
@@ -210,6 +222,20 @@ sudo killall -9 zenity &>/dev/null
 #sudo /etc/init.d/alsa-utils start
 
 sudo usermod -a -G gpio pi
+
+if [ "$lpf" = "0" ] && [ "$txc" = "0" ] ; then
+  loopback=1
+
+  value=`aplay -l | grep "Loopback"`
+  echo "$value" > /dev/null
+  set -- $value
+  
+  #rtl_fm -M fm -f 144.39M -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1
+  rtl_fm -M fm -f $frequency -s 48k | tee >(aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1) | aplay -r 48000 -t raw -f S16_LE -c 1
+  
+  rtl_fm -M fm -f $frequency -s 48k | aplay -D hw:${2:0:1},0,0 -r 48000 -t raw -f S16_LE -c 1 &
+
+fi
 
 if [ "$loopback" = "1" ] ; then
 

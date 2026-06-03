@@ -5,7 +5,7 @@ echo "Script to run FUNcube CubeSatSim Telemetry"
 
 echo 
 
-echo "The Chromium browser will load in a few seconds with fctelem."
+echo "The browser will load in a few seconds with fctelem."
 
 echo "You can also use another web browser if you are on the same network as your Pi."
 
@@ -33,6 +33,8 @@ sudo killall -9 python3 &>/dev/null
 #sudo killall -9 rtl_fm &>/dev/null
 
 #pkill -o chromium &>/dev/null
+
+#pkill -o firefox &>/dev/null
 
 #sudo killall -9 rtl_tcp &>/dev/null
 
@@ -174,7 +176,8 @@ cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg ./image_file.jpeg
 
 python3 -m http.server 8002 &
 
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8002 &>/dev/null & 
+#setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8002 &>/dev/null & 
+setsid x-www-browser http://127.0.0.1:8002/
 
 cd /home/pi/fctelem
 

@@ -17,6 +17,8 @@ sudo systemctl stop rtl_tcp &>/dev/null
 
 pkill -o chromium &>/dev/null
 
+pkill -o firefox &>/dev/null
+
 sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 rtl_fm &>/dev/null
