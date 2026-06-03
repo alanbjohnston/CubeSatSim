@@ -241,7 +241,7 @@ else
 
         echo "3: Using FM for Receive and Transmit"
         ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
-        PTT="#PTT GPIOD gpiochip0 -20" 
+        PTT="PTT GPIOD gpiochip0 -20" 
 
       fi
 
@@ -252,7 +252,7 @@ else
         echo "4: Using RTL-SDR for Receive and rpitx for Transmit"
         start-rtl
         ADEVICE="ADEVICE shared_mic plughw:CARD=Loopback,DEV=0"
-        PTT="#PTT GPIOD gpiochip0 17" 
+        PTT="PTT GPIOD gpiochip0 17" 
         
       else
 
