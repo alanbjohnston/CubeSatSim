@@ -99,7 +99,7 @@ if [ ! -d "/home/pi/PacSat" ]; then
   sudo rm pi_pacsat.zip
 #  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pi_pacsat.zip
   cp /home/pi/pi_pacsat/zip/pi_pacsat.zip .
-  unzip pi_pacsat.zip -d /
+  unzip pi_pacsat.zip 
   sudo rm pi_pacsat.zip
         
 #  mkdir /home/pi/PacSat
