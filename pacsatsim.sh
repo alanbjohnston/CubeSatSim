@@ -138,6 +138,7 @@ else
   
   touch /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
 
+  exit
 fi
 
 value=`cat /home/pi/CubeSatSim/sim.cfg`
