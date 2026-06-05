@@ -115,6 +115,7 @@ else
 
   echo "Resetting pi_pacsat to empty configuration"
   echo
+  sudo rm -r /home/pi/PacSat
   mkdir /home/pi/PacSat
   mkdir /home/pi/PacSat/pacsat
   mkdir /home/pi/PacSat/pacsat/dir
