@@ -262,6 +262,7 @@ else
         else
   
           echo "3b: RTL-SDR for Receive Only"
+          start-rtl
           ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
           PTT="#PTT GPIOD gpiochip0 17" 
   
@@ -305,8 +306,8 @@ else
     
        if [ "$rtl" = "1" ] ; then
 
-        start-rtl
         echo "7: Using RTL-SDR for Receive Only"
+        start-rtl
         ADEVICE="ADEVICE plughw:CARD=Loopback,DEV=1" 
         PTT="#PTT GPIOD gpiochip0 17" 
 
