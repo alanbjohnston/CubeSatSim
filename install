@@ -480,8 +480,17 @@ fi
 
 cd /home/pi/pi-power-button
 
+if [ ! $(git branch --show-current | grep master-b) ]; then
+
+	echo "updating branch of pi-power-button to master-b."
+	git pull
+	git checkout master-b
+	script/install
+	FLAG=1
+fi
+
 git pull --no-rebase > .updated_p
-git checkout master
+#git checkout master
 grep 'changed' /home/pi/pi-power-button/.updated_p
 if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
 

@@ -61,6 +61,7 @@ if __name__ == "__main__":
 					system("echo '\nBPSK Mode!!\n'")
 					mode = 'b'
 					change_mode = True
+					
 				elif ((line.find("MODE=s")) > 0):
 					system("echo '\nSSTV Mode!!\n'")
 					mode = 's'
@@ -85,20 +86,30 @@ if __name__ == "__main__":
 					system("echo '\nRepeater Mode!!\n'")
 					mode = 'e'
 					change_mode = True
-					
+
 				elif ((line.find(":t6#")) > 0):
+					system("echo '\nRepeater Mode!!\n'")
+					mode = 'e'
+					change_mode = True
+					
+				elif ((line.find("MODE=j")) > 0):
+					system("echo '\nFUNcube Mode!!\n'")
+					mode = 'j'
+					change_mode = True
+					
+				elif ((line.find(":t7#")) > 0):
 					system("echo '\nFUNcube Mode!!\n'")
 					mode = 'j'
 					change_mode = True	
 					
 				elif ((line.find("MODE=G")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'p'
+					mode = 'G'
 					change_mode = True
 					
 				elif ((line.find(":t8#")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'p'
+					mode = 'G'
 					change_mode = True
 					
 				elif ((line.find("MODE=n")) > 0):
