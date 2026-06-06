@@ -23,16 +23,16 @@ def input(pin):
 	command = "gpio -g read " + str(pin)
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
-#		print(f"Command run was: {query}")
-#		print("Sucess!")
-#		print(f"Output of the command (stdout): {result.stdout}")
-#		print(f"{command}: {result.stdout}")
+		print(f"Command run was: {query}")
+		print("Sucess!")
+		print(f"Output of the command (stdout): {result.stdout}")
+		print(f"{command}: {result.stdout}")
 		return int(result.stdout)
 	except subprocess.CalledProcessError as e:
-#		print(f"Command failed with return code: {e.returncode}")
-#		print(f"Command run was: {e.cmd}")
-#		print(f"Output of the command (stdout): {e.stdout}")
-#		print(f"Error output of the command (stderr): {e.stderr}")
+		print(f"Command failed with return code: {e.returncode}")
+		print(f"Command run was: {e.cmd}")
+		print(f"Output of the command (stdout): {e.stdout}")
+		print(f"Error output of the command (stderr): {e.stderr}")
 		print(f"{command}: -1")
 		return -1
 
@@ -83,7 +83,8 @@ def sim_failure_check():
 			sim_mode = True
 	except:
 		print("No failure mode")
-		card = "Headphones"
+#		card = "Headphones"
+		card = "Device"
 		if sim_config:
 			sim_mode = True
 
@@ -218,6 +219,8 @@ def camera_photo():
 		return False
 		
 print("CubeSatSim v2.2 transmit.py starting...")
+
+system("sudo rm /usr/bin/rpitx")
 
 pd = 21
 ptt = 20
@@ -472,9 +475,10 @@ if __name__ == "__main__":
 		os_status = "bullseye"
 	print (os_status)
 	
-	card = "Headphones"  # default using pcm audio output of Pi Zero
-#	card = "Device" # using USB sound card for audio output	
-
+#	card = "Headphones"  # default using pcm audio output of Pi Zero
+	card = "Device" # using USB sound card for audio output	
+	print ("card:")
+	print (card)
 	query = ["sudo", "systemctl", "is-active", "gpsd.socket"]
 	try:
 		result = subprocess.run(query, capture_output=True, text=True, check=True)
