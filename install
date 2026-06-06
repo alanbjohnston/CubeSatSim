@@ -629,23 +629,25 @@ fi
 
 if [ ! -d "/home/pi/rpitx" ]; then
 
-	sudo apt install -y libraspberrypi-dev
-	cd
-	git clone https://github.com/alanbjohnston/rpitx.git
-	cd rpitx
-	./install.sh
-	cd
-else
+	sudo rm /usr/bin/rpitx
 
-	if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
-	    echo "rpitx library already updated"
-	else
-	    echo "updating rpitx"
-	    cd  /home/pi/rpitx
-	    git pull
-	    ./update.sh
-	    cd
-	fi
+#	sudo apt install -y libraspberrypi-dev
+#	cd
+#	git clone https://github.com/alanbjohnston/rpitx.git
+#	cd rpitx
+#	./install.sh
+#	cd
+#else
+#
+#	if [[ $(grep 'SYNCWITHPWM'  /home/pi/rpitx/src/librpitx/src/fskburst.h) ]]; then
+#	    echo "rpitx library already updated"
+#	else
+#	    echo "updating rpitx"
+#	    cd  /home/pi/rpitx
+#	    git pull
+#	    ./update.sh
+#	    cd
+#	fi
 fi
 
 FILE=/etc/systemd/system/cubesatsim.service
