@@ -104,12 +104,12 @@ if __name__ == "__main__":
 					
 				elif ((line.find("MODE=G")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'p'
+					mode = 'G'
 					change_mode = True
 					
 				elif ((line.find(":t8#")) > 0):
 					system("echo '\nPacSatSim Mode!!\n'")
-					mode = 'p'
+					mode = 'G'
 					change_mode = True
 					
 				elif ((line.find("MODE=n")) > 0):
