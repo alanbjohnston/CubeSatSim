@@ -936,6 +936,10 @@ elif [ "$1" = "-B" ]; then
 	echo	
 	echo "Manually setting Safe Mode (battery saver mode)"
 	echo
+
+	echo "Pi 5 does not support Safe Mode (battery saver mode)"
+	echo
+	exit
 	
 	FILE=/home/pi/CubeSatSim/battery_saver
 	if [ -f "$FILE" ]; then
