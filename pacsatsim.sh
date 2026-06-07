@@ -286,7 +286,8 @@ elif [ "$vox" = "1" ]; then
 elif [ "$pwm" = "1" ] ; then  
   
     echo "FM TXC using Soundcard input (JP13), PWM output"
-    ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+#    ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+    ADEVICE="ADEVICE shared_mic plughw:CARD=Device,DEV=0" # Pi 5 no Headphones
     PTT="PTT GPIOD gpiochip0 -20" 
 
 #    direwolf -P+ -D1 -qd -dp -r 48000 -c /home/pi/CubeSatSim/direwolf/direwolf-pacsatsim-pwm.conf -t 0 &
