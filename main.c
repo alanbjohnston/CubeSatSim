@@ -2709,11 +2709,16 @@ int battery_saver_check() {
 	fclose(file);
 //        fprintf(stderr, "Safe Mode!\n");
 //	fprintf(stderr,"Battery saver mode is ON!\n");
-	return(ON);
+//	return(ON);
+	return(OFF);  // Pi 5 does not go into battery saver mode
 }
 
 void battery_saver(int setting) {
-if (setting == ON) {
+	
+  fprintf(stderr,"Pi 5 does not support battery saver mode\n"); 
+  return;
+	
+  if (setting == ON) {
 	if (battery_saver_check() == OFF) {
 		FILE *command = popen("touch /home/pi/CubeSatSim/battery_saver", "r");
 		pclose(command);
