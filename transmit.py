@@ -93,9 +93,10 @@ def battery_saver_check():
 		global txc
 		f = open("/home/pi/CubeSatSim/battery_saver", "r")
 		f.close()
-		txc = False
-		print("Safe Mode!")
-		print("battery saver activated")
+		print("Pi 5 does not support battery saver!")
+#		txc = False
+#		print("Safe Mode!")
+#		print("battery saver activated")
 	except:
 		print("battery saver not activated")
 #		txc = True
