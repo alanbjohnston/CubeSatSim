@@ -13,6 +13,8 @@ sudo killall -9 zenity &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
+sudo killall -9 aplay &>/dev/null
+
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
