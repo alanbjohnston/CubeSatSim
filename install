@@ -335,7 +335,8 @@ else
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
   
-sudo apt-get update && sudo apt-get dist-upgrade -y
+sudo apt-get update 
+#sudo apt-get dist-upgrade -y
 
 # if [ $BULLSEYE -eq 1 ]; then
 #	sudo apt purge -y python3-pip
@@ -349,6 +350,7 @@ if [ ! -d "/home/pi/venv" ]; then
 	cd
 	sudo apt install -y python3-venv
 	sudo python3 -m venv venv
+fi
 	source /home/pi/venv/bin/activate
 	
 	curl https://bootstrap.pypa.io/get-pip.py | sudo /home/pi/venv/bin/python3
@@ -356,7 +358,7 @@ if [ ! -d "/home/pi/venv" ]; then
 	sudo /home/pi/venv/bin/pip3 install adafruit_extended_bus
 	sudo /home/pi/venv/bin/pip3 install adafruit-circuitpython-ina219
 
-fi
+#fi
 
 sudo apt-get remove pulseaudio -y
 
@@ -381,7 +383,7 @@ if [ -d "/home/pi/direwolf" ]; then
 			sudo rm -r /home/pi/direwolf
 		fi
 	else
-    	echo "Could not find the URL for the 'origin' remote for Direwolf"		
+    	echo "Could not find the URL for the 'origin' remote for Direwolf"	
 	fi
 fi
 
