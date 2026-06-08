@@ -185,14 +185,14 @@ sudo killall -9 direwolf &>/dev/null
          echo "You have chosen to set the Frequency of the PacSat Ground Station"
          echo 
 
-		 /home/pi/CubeSatSim/config -F n
+		 /home/pi/CubeSatSim/config -F 
 
 	elif [ "$ANS" = "4" ] ; then
 
          echo "You have chosen to reset the PacSat Satellite"
          echo 
 
-		 /home/pi/CubeSatSim/config -k n
+		 /home/pi/CubeSatSim/config -k 
 		 		 
     else
     
