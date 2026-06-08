@@ -69,9 +69,11 @@ else
   txc=0
 fi  
 
+card="Headphones"
 if [[ $(gpio -v | grep "Pi 5") ]] ; then
-  echo "Since Pi 5, setting TXC to LPF setting"
+  echo "Since Pi 5, setting TXC to LPF setting and using USB headphones"
   txc=$lpf
+  card="Device"
 fi
 
 FILE=/home/pi/CubeSatSim/battery_saver
@@ -247,7 +249,7 @@ else
       else
 
         echo "3: Using FM for Receive and Transmit"
-        ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+        ADEVICE="ADEVICE shared_mic plughw:CARD=$card,DEV=0" 
         PTT="PTT GPIOD gpiochip0 -20" 
 
       fi
@@ -304,7 +306,7 @@ else
     if [ "$txc" = "1" ] ; then
 
       echo "6: Using FM for Receive Only"
-      ADEVICE="ADEVICE shared_mic plughw:CARD=Headphones,DEV=0" 
+      ADEVICE="ADEVICE shared_mic plughw:CARD=$card,DEV=0" 
       PTT="#PTT GPIOD gpiochip0 -20" 
   
     else
