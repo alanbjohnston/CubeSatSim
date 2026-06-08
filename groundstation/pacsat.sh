@@ -67,8 +67,12 @@ if [[ $(gpio -g read 7 | grep 0) ]] ; then
 else
   echo "TXC not present"
   txc=0
-  
 fi  
+
+if [[ $(gpio -v | grep "Pi 5") ]] ; then
+  echo "Since Pi 5, setting TXC to LPF setting"
+  txc=$lpf
+fi
 
 FILE=/home/pi/CubeSatSim/battery_saver
 if [ -f "$FILE" ]; then
