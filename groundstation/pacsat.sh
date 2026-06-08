@@ -1,4 +1,4 @@
-P#!/bin/bash
+#!/bin/bash
 
 function start-rtl {
 
