@@ -855,6 +855,14 @@ sudo apt install -y raspberrypi-ui-mods
 
 sudo apt autoremove -y
 
+if [ $(gpio -v | grep "Pi 4") ]; then
+	sudo raspi-config nonint do_browser chromium
+fi
+
+if [ $(gpio -v | grep "Pi 5") ]; then
+	sudo raspi-config nonint do_browser firefox
+fi
+
 if [ "$noreboot" = "0" ] ; then  
 
 	if [ $FLAG -eq 1 ]; then # Not sure if this is needed
