@@ -24,11 +24,13 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
-if [ $(gpio -v | grep "Pi 4") ]; then
+if [[ $(gpio -v | grep "Pi 4") ]] && [[ ! $(sudo raspi-config nonint get_browser | grep "chromium") ]] ; then
+	echo "Since Pi 4, changing default browser to Chromium"
 	sudo raspi-config nonint do_browser chromium
 fi
 
-if [ $(gpio -v | grep "Pi 5") ]; then
+if [[ $(gpio -v | grep "Pi 5") ]]&& [[ ! $(sudo raspi-config nonint get_browser | grep "firefox") ]] ; then
+	echo "Since Pi 5, changing default browser to Firefox"
 	sudo raspi-config nonint do_browser firefox
 fi
 
