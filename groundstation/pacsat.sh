@@ -73,7 +73,9 @@ card="Headphones"
 if [[ $(gpio -v | grep "Pi 5") ]] ; then
 #  echo "Since Pi 5, setting TXC to LPF setting and using USB headphones"
 #  txc=$lpf
-  txc=0 # don't use TXC for Pi 5 for now
+  echo "Don't use TXC for Pi 5 for now"
+  txc=0
+  lpf=0
   card="Device"
 fi
 
