@@ -24,6 +24,14 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
+if [ $(gpio -v | grep "Pi 4") ]; then
+	sudo raspi-config nonint do_browser chromium
+fi
+
+if [ $(gpio -v | grep "Pi 5") ]; then
+	sudo raspi-config nonint do_browser firefox
+fi
+
 sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 java &>/dev/null
