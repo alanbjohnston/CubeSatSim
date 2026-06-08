@@ -18,29 +18,15 @@ sudo killall -9 aplay &>/dev/null
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
-   profile=$(zenity --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=220 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated PacSat")
+   profile=$(zenity --timeout=10 --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=220 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated PacSat")
 
    echo $profile
 
    if [ -z "$profile" ]; then 
    
-	    echo "No choice made.  Exiting."
+	    echo "No choice made.  Default to PacSat Ground Station."
 	    
-	    sleep 3
-	    
-	    exit
-	
-    #echo "You need to choose your default FoxTelem profile."
-    #echo 
-    #echo "The choices are:"
-    #echo
-    #echo "1. Fox-in-a-Box.  Use this profile if you want to receive and decode telemetry from the AMSAT Fox satellites.  If you enter a callsign and a grid square, you can upload to the AMSAT telemetry server."
-    #echo 
-    #echo "2. CubeSatSim Ground Station.  Use this profile if you want to receive and decode telemetry from an AMSAT CubeSatSim or CubeSatSim Lite."
-    #echo
-    #echo "Which profile do you choose?  Enter 1 or 2"
-    
-    #read -r ANS
+	    profile="PacSat"
     
     fi
 
