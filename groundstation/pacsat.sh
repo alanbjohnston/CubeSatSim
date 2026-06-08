@@ -1,4 +1,4 @@
-#!/bin/bash
+P#!/bin/bash
 
 function start-rtl {
 
@@ -71,8 +71,9 @@ fi
 
 card="Headphones"
 if [[ $(gpio -v | grep "Pi 5") ]] ; then
-  echo "Since Pi 5, setting TXC to LPF setting and using USB headphones"
-  txc=$lpf
+#  echo "Since Pi 5, setting TXC to LPF setting and using USB headphones"
+#  txc=$lpf
+  txc=0 # don't use TXC for Pi 5 for now
   card="Device"
 fi
 
