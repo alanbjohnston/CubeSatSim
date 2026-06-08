@@ -1885,8 +1885,8 @@ elif [ "$1" = "-k" ]; then
 	echo
 	sudo systemctl stop pacsatsim &>/dev/null
 	sudo rm -r /home/pi/PacSat
-#	reboot=1
-	sudo systemctl restart pacsatsim
+	reboot=1
+#	sudo systemctl restart pacsatsim
 
 elif [ "$1" = "-h" ]; then
 
