@@ -325,7 +325,7 @@ else
 
         echo "8: Using Sound Card for Receive and Transmit"
         ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
-        PTT="PTT GPIOD gpiochip0 17" 
+        PTT="PTT /dev/ttyUSB0 RTS" 
         
        fi
     fi
