@@ -323,7 +323,7 @@ else
 
        else
 
-        echo "8: Using Sound Card for Receive and Transmit"
+        echo "8: Using USB Sound Card for Receive and Transmit with RTS PTT"
         ADEVICE="ADEVICE plughw:CARD=Device,DEV=0" 
         PTT="PTT /dev/ttyUSB0 RTS" 
         
