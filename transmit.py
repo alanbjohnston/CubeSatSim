@@ -242,7 +242,7 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
 	except:
 		print("Error in serial write")
-	output(pd, 0)
+#	output(pd, 0)  # Don't turn off receiver
 	if (gpsd_status == "active"):
 		print("Restarting gpsd.socket")
 		system("sudo systemctl restart gpsd.socket")
