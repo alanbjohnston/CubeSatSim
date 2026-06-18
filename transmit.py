@@ -1190,6 +1190,7 @@ if __name__ == "__main__":
 
 					relative_time = (time.perf_counter() - start_time) % 370
 					index = int(relative_time/10)
+					print(f"relative time: {relative_time} seconds after AOS is index: {index}")
 					table_row = doppler_table[index]
 					rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
 					tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
@@ -1198,7 +1199,7 @@ if __name__ == "__main__":
 					tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
 					print(f"Tx Doppler shift: {tx_doppler_freq_hz}")
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
-					print(txr)
+#					print(txr)
 					rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 					print(f"Rx Doppler shift: {rx_doppler_freq_hz}")
 					rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
