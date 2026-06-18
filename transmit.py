@@ -997,7 +997,7 @@ if __name__ == "__main__":
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 					print(txr)
 					print("Carrier detected")
-					start_repeater()
+					start_repeater(txr)
 					while (input(squelch) == False):
 						sleep(1)
 					print("No carrier detected")
