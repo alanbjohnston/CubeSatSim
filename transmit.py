@@ -1181,7 +1181,7 @@ if __name__ == "__main__":
 
 					relative_time = time.perf_counter() - start_time
 					index = int(relative_time/10)
-					table_row = iss_doppler_table[index]
+					table_row = doppler_table[index]
 					rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
 					tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
 					
