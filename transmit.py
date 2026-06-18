@@ -1142,6 +1142,32 @@ if __name__ == "__main__":
 			rx_doppler_start_hz = rxf * 1e6
 			rx_doppler_shift_hz = 0
 			print(rx_doppler_start_hz)
+
+			TARGET_PASS = 85           # Maximum elevation profile
+			PASS_START_TIME = -180     # The absolute time index where the pass begins
+			TIME_FROM_START = 30       # 30 seconds into the pass
+			
+			# Map the "time from start" to the "relative time index" used in the table
+			relative_time_index = PASS_START_TIME + TIME_FROM_START
+			index = 10/10
+			
+			try:
+			    # Navigate the dictionary structure
+			    pass_profile = iss_doppler_database[TARGET_PASS]
+			    data_entry = pass_profile[index]   # relative_time_index]
+			    
+			    # Extract the specific metric
+			    doppler_shift = data_entry["doppler_434"]
+			    
+			    print(f"Pass Elevation: {TARGET_PASS}°")
+#			    print(f"Time Index: {TIME_FROM_START} seconds from start (Relative: {relative_time_index}s)")
+			    print(f"Time Index: {index}")
+			    print(f"Extracted Doppler Shift (434.9 MHz): {doppler_shift} kHz")
+			
+			except KeyError:
+			    print("Error: The requested pass elevation or time index does not exist in the database.")		
+			
+			
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 					tx_doppler_shift_hz = ((time.perf_counter() - start_time) * 100) % 20000
