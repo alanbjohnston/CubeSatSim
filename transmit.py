@@ -269,7 +269,7 @@ def stop_repeater():
 	print("Finished resetting audio")
 #	print("Ready to detect carrier")
 
-iss_doppler_passes = {
+doppler_passes = {
     20: [
         {"time_sec": -180, "velocity_kms": -5.81, "doppler_434_khz": 8.43, "obs_434_mhz": 434.9084, "doppler_144_khz": 2.81, "obs_144_mhz": 144.9028},
         {"time_sec": -170, "velocity_kms": -5.68, "doppler_434_khz": 8.24, "obs_434_mhz": 434.9082, "doppler_144_khz": 2.75, "obs_144_mhz": 144.9027},
@@ -1161,26 +1161,16 @@ if __name__ == "__main__":
 			index = int(10/10)
 			
 			try:
-			    # Navigate the dictionary structure
-#			    pass_profile = iss_doppler_passes[TARGET_PASS]
-#			    data_entry = pass_profile[index]   # relative_time_index]
-
 				doppler_table = iss_doppler_passes[TARGET_PASS]
 				third_row = iss_doppler_passes[TARGET_PASS][index]
-								
-#				print("Full Third:")
-#				print(third_row)				
-#				print("\n" + "="*40 + "\n")
-				
 				time_index = third_row["time_sec"]
 				doppler_shift = third_row["doppler_434_khz"]
 				uhf_freq = third_row["obs_434_mhz"]
 			    
 				print(f"Pass Elevation: {TARGET_PASS}°")
-#			    print(f"Time Index: {TIME_FROM_START} seconds from start (Relative: {relative_time_index}s)")
 				print(f"Time Index: {index}")
-				print(f"Extracted Doppler Shift (435.0 MHz): {doppler_shift} kHz")
-				print(f"UHF frequency (435.0 MHz): {uhf_freq} MHz")
+				print(f"Extracted Doppler Shift (435.0 MHz): {doppler_shift:.2f} kHz")
+				print(f"UHF frequency (435.0 MHz): {uhf_freq:.4f} MHz")
 			
 			except KeyError:
 				print("Error: The requested pass elevation or time index does not exist in the database.")		
@@ -1190,18 +1180,18 @@ if __name__ == "__main__":
 
 					relative_time = (time.perf_counter() - start_time) % 370
 					index = int(relative_time/10)
-					print(f"relative time: {relative_time} seconds after AOS is index: {index}")
+					print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
 					table_row = doppler_table[index]
 					rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
 					tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
 					
 #					tx_doppler_shift_hz = ((time.perf_counter() - start_time) * 100) % 20000
 					tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-					print(f"Tx Doppler shift: {tx_doppler_freq_hz}")
+					print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 #					print(txr)
 					rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-					print(f"Rx Doppler shift: {rx_doppler_freq_hz}")
+					print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
 					rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 #					print(rx)
 					program_fm(rx,tx,rxpl_value,sq,txpl_value)
