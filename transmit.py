@@ -950,8 +950,9 @@ if __name__ == "__main__":
 
 			print("Ready to detect carrier")
 			start_time = time.perf_counter()
-			doppler_start_tz = txr * 1e6
+			doppler_start_hz = txr * 1e6
 			doppler_freq_hz = txr * 1e6
+			print(doppler_start_hz)
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 					doppler_freq_hz = doppler_start_hz + (time.perf_counter() - start_time) * 60
