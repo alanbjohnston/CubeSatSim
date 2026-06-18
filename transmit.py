@@ -1138,17 +1138,17 @@ if __name__ == "__main__":
 			start_time = time.perf_counter()
 			tx_doppler_start_hz = txrf * 1e6
 			tx_doppler_shift_hz = 0
-			print(tx_doppler_start_hz)
+			print(f"Tx center frequency: {tx_doppler_start_hz}")
 			rx_doppler_start_hz = rxf * 1e6
 			rx_doppler_shift_hz = 0
-			print(rx_doppler_start_hz)
+			print(f"Rx center frequency: {rx_doppler_start_hz}")
 
 			TARGET_PASS = 85           # Maximum elevation profile
-			PASS_START_TIME = -180     # The absolute time index where the pass begins
-			TIME_FROM_START = 30       # 30 seconds into the pass
+#			PASS_START_TIME = -180     # The absolute time index where the pass begins
+#			TIME_FROM_START = 30       # 30 seconds into the pass
 			
 			# Map the "time from start" to the "relative time index" used in the table
-			relative_time_index = PASS_START_TIME + TIME_FROM_START
+#			relative_time_index = PASS_START_TIME + TIME_FROM_START
 			index = int(10/10)
 			
 			try:
@@ -1159,9 +1159,9 @@ if __name__ == "__main__":
 				doppler_table = iss_doppler_passes[TARGET_PASS]
 				third_row = iss_doppler_passes[TARGET_PASS][index]
 								
-				print("Full Third:")
-				print(third_row)				
-				print("\n" + "="*40 + "\n")
+#				print("Full Third:")
+#				print(third_row)				
+#				print("\n" + "="*40 + "\n")
 				
 				time_index = third_row["time_sec"]
 				doppler_shift = third_row["doppler_434_khz"]
@@ -1170,8 +1170,8 @@ if __name__ == "__main__":
 				print(f"Pass Elevation: {TARGET_PASS}°")
 #			    print(f"Time Index: {TIME_FROM_START} seconds from start (Relative: {relative_time_index}s)")
 				print(f"Time Index: {index}")
-				print(f"Extracted Doppler Shift (434.9 MHz): {doppler_shift} kHz")
-				print(f"UHF frequency (434.9 MHz): {uhf_freq} MHz")
+				print(f"Extracted Doppler Shift (435.0 MHz): {doppler_shift} kHz")
+				print(f"UHF frequency (435.0 MHz): {uhf_freq} MHz")
 			
 			except KeyError:
 				print("Error: The requested pass elevation or time index does not exist in the database.")		
@@ -1179,7 +1179,7 @@ if __name__ == "__main__":
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 
-					relative_time = time.perf_counter() - start_time
+					relative_time = (time.perf_counter() - start_time) % 370
 					index = int(relative_time/10)
 					table_row = doppler_table[index]
 					rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
@@ -1190,7 +1190,7 @@ if __name__ == "__main__":
 					print(f"Tx Doppler shift: {tx_doppler_freq_hz}")
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 					print(txr)
-					rx_doppler_freq_hz = rx_doppler_start_hz + tx_doppler_shift_hz
+					rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 					print(f"Rx Doppler shift: {rx_doppler_freq_hz}")
 					rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 #					print(rx)
