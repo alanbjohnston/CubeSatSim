@@ -216,7 +216,37 @@ def camera_photo():
 		return True
 	else:
 		return False
-		
+
+def program_fm(rx, tx, rxpl_value, sq, txpl_value):
+
+	global gpsd_status
+	global pd
+	global ptt
+	if (gpsd_status == "active"):
+		print("Stopping gpsd.socket")
+		system("sudo systemctl stop gpsd.socket")
+	print("Programming FM module!\n");	
+	output(pd, 1)
+	output (ptt, 1)
+	try:
+		ser = serial.Serial("/dev/ttyAMA0", 9600)
+		print(ser.portstr)
+	#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
+		print(uhf_string)
+		for i in range(6):
+	#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
+			ser.write(uhf_string.encode())
+			sleep(0.1)
+		ser.close()
+		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
+	except:
+		print("Error in serial write")
+	output(pd, 0)
+	if (gpsd_status == "active"):
+		print("Restarting gpsd.socket")
+		system("sudo systemctl restart gpsd.socket")
+
 print("CubeSatSim v2.2 transmit.py starting...")
 
 pd = 21
@@ -389,12 +419,12 @@ if __name__ == "__main__":
 			print(f'squelch: {sq}')
 		if len(config) > 6:
 			txf = float(config[6])
+			tx = "{:.4f}".format(txf)
 			if (mode == 'e'):
 				txr = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
-				tx = "{:.4f}".format(txr)
+				print("Transmit frequency: ",txr)
 			else:
-				tx = "{:.4f}".format(txf)
-			print("Transmit frequency: ",tx)
+				print("Transmit frequency: ",tx)
 		if len(config) > 7:
                         rxf = float(config[7])
 #                        print(rxf)
@@ -488,33 +518,9 @@ if __name__ == "__main__":
 		print(f"Output of the command (stdout): {e.stdout}")
 #		print(f"Error output of the command (stderr): {e.stderr}")
   	
-	if (mode != 'e'): 
+#	if (mode != 'e'): 
+	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
 		
-		if (gpsd_status == "active"):
-			print("Stopping gpsd.socket")
-			system("sudo systemctl stop gpsd.socket")
-		print("Programming FM module!\n");	
-		output(pd, 1)
-		output (ptt, 1)
-		try:
-			ser = serial.Serial("/dev/ttyAMA0", 9600)
-			print(ser.portstr)
-	#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
-			uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
-			print(uhf_string)
-			for i in range(6):
-	#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
-				ser.write(uhf_string.encode())
-				sleep(0.1)
-			ser.close()
-			ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
-		except:
-			print("Error in serial write")
-		output(pd, 0)
-		if (gpsd_status == "active"):
-			print("Restarting gpsd.socket")
-			system("sudo systemctl restart gpsd.socket")
-			
 	sim_failure_check()
 	if (hab_mode == True) and (mode == 'a'):
 		print("Don't transmit CW ID since APRS HAB mode is active")
@@ -527,10 +533,17 @@ if __name__ == "__main__":
 				status = status + " C"
 			if sim_mode:
 				status = status + " S"
-			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+			if (mode != 'e'):	
+				if (debug_mode == 1):
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+				else:
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 			else:
-				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+				if (debug_mode == 1):
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3")
+				else:
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3 > /dev/null 2>&1")
+				
 			output(txLed, 0)
 	
 			sleep(1)
