@@ -1001,7 +1001,7 @@ if __name__ == "__main__":
 					print(txr)
 					rx_doppler_freq_hz = rx_doppler_start_hz + tx_doppler_shift_hz
 					print(rx_doppler_freq_hz)
-					rx = "{:.3f}".format(rx_doppler_freq_hz/1e6)
+					rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 					print(rx)
 					program_fm(rx,tx,rxpl_value,sq,txpl_value)
 					print("Carrier detected")
