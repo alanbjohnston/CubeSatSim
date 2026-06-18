@@ -988,7 +988,10 @@ if __name__ == "__main__":
 			start_time = time.perf_counter()
 			tx_doppler_start_hz = txrf * 1e6
 			tx_doppler_shift_hz = 0
-			print(tx_doppler_start_hz + tx_doppler_shift_hz)
+			print(tx_doppler_start_hz)
+			rx_doppler_start_hz = rxf * 1e6
+			rx_doppler_shift_hz = 0
+			print(rx_doppler_start_hz)			
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 					tx_doppler_shift_hz = (time.perf_counter() - start_time) * 60
@@ -996,6 +999,10 @@ if __name__ == "__main__":
 					print(tx_doppler_freq_hz)
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 					print(txr)
+					rx_doppler_freq_hz = rx_doppler_start_hz + tx_doppler_shift_hz
+					rx = "{:.3f}".format(rx_doppler_freq_hz/1e6)
+					print(tx)
+					program_fm(rx,tx,rxpl_value,sq,txpl_value)
 					print("Carrier detected")
 					start_repeater(txr)
 					while (input(squelch) == False):
