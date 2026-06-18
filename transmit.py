@@ -1163,13 +1163,14 @@ if __name__ == "__main__":
 				print("\n" + "="*40 + "\n")
 				
 				time_index = third_row["time_sec"]
-				doppler_shift = third_row["doppler_434"]
+				doppler_shift = third_row["doppler_434_khz"]
 				uhf_freq = third_row["obs_434_mhz"]
 			    
 				print(f"Pass Elevation: {TARGET_PASS}°")
 #			    print(f"Time Index: {TIME_FROM_START} seconds from start (Relative: {relative_time_index}s)")
 				print(f"Time Index: {index}")
 				print(f"Extracted Doppler Shift (434.9 MHz): {doppler_shift} kHz")
+				print(f"UHF frequency (434.9 MHz): {uhf_freq} MHz")
 			
 			except KeyError:
 				print("Error: The requested pass elevation or time index does not exist in the database.")		
