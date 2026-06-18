@@ -368,7 +368,7 @@ iss_doppler_passes = {
    		{"time_sec":      70, "velocity_kms":  5.55, "doppler_434_khz": -8.05, "obs_434_mhz": 434.8919, "doppler_144_khz": -2.68, "obs_144_mhz": 144.8973},
    		{"time_sec":       80, "velocity_kms":  5.86, "doppler_434_khz": -8.50, "obs_434_mhz": 434.8915, "doppler_144_khz": -2.83, "obs_144_mhz": 144.8972},
    		{"time_sec":       90, "velocity_kms":  6.17, "doppler_434_khz": -8.95, "obs_434_mhz": 434.8910, "doppler_144_khz": -2.98, "obs_144_mhz": 144.8970},
-   		{"time_sec":      100:, "velocity_kms":  6.32, "doppler_434_khz": -9.17, "obs_434_mhz": 434.8908, "doppler_144_khz": -3.05, "obs_144_mhz": 144.8969},
+   		{"time_sec":      100, "velocity_kms":  6.32, "doppler_434_khz": -9.17, "obs_434_mhz": 434.8908, "doppler_144_khz": -3.05, "obs_144_mhz": 144.8969},
         {"time_sec": 110, "velocity_kms":  6.47, "doppler_434_khz": -9.39, "obs_434_mhz": 434.8906, "doppler_144_khz": -3.13, "obs_144_mhz": 144.8969},
         {"time_sec": 120, "velocity_kms":  6.62, "doppler_434_khz": -9.60, "obs_434_mhz": 434.8904, "doppler_144_khz": -3.20, "obs_144_mhz": 144.8968},
         {"time_sec": 130, "velocity_kms":  6.70, "doppler_434_khz": -9.72, "obs_434_mhz": 434.8903, "doppler_144_khz": -3.24, "obs_144_mhz": 144.8968},
