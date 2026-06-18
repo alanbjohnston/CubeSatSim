@@ -992,7 +992,6 @@ if __name__ == "__main__":
 			rx_doppler_start_hz = rxf * 1e6
 			rx_doppler_shift_hz = 0
 			print(rx_doppler_start_hz)
-			print(rx_doppler_freq_hz)
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 					tx_doppler_shift_hz = (time.perf_counter() - start_time) * 60
