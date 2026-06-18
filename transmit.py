@@ -957,7 +957,7 @@ if __name__ == "__main__":
 				if (input(squelch) == False) and (command_tx == True):
 					doppler_freq_hz = doppler_start_hz + (time.perf_counter() - start_time) * 60
 					print(doppler_freq_hz)
-					tx = "{:.3f}".format(doppler_freq/1000)
+					tx = "{:.3f}".format(doppler_freq_hz/1000)
 					print(tx)
 					print("Carrier detected, starting repeater")
 					output(txLed, 1)
