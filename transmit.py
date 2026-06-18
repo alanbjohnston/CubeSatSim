@@ -247,6 +247,28 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		print("Restarting gpsd.socket")
 		system("sudo systemctl restart gpsd.socket")
 
+def start_repeater(txr):
+	global txLed
+	print("Starting repeater")
+	output(txLed, 1)
+	system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
+	sleep(0.5)
+	system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+
+def stop_repeater():
+	global txLed
+#	print("No carrier detected, stopping repeater")
+	output(txLed, 0)
+	system("sudo rpitx -i null > /dev/null 2>&1")
+	system("sudo killall -9 arecord > /dev/null 2>&1")
+	system("sudo killall -9 nc > /dev/null 2>&1")
+	system("sudo killall -9 rpitx > /dev/null 2>&1")
+	print("Resetting audio")
+	system("sudo /etc/init.d/alsa-utils stop")
+	system("sudo /etc/init.d/alsa-utils start")
+	print("Finished resetting audio")
+#	print("Ready to detect carrier")
+
 print("CubeSatSim v2.2 transmit.py starting...")
 
 pd = 21
@@ -974,24 +996,12 @@ if __name__ == "__main__":
 					print(tx_doppler_freq_hz)
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 					print(txr)
-					print("Carrier detected, starting repeater")
-					output(txLed, 1)
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
-					sleep(0.5)
-					system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+					print("Carrier detected")
+					start_repeater()
 					while (input(squelch) == False):
 						sleep(1)
-					print("No carrier detected, stopping repeater")
-					output(txLed, 0)
-					system("sudo rpitx -i null > /dev/null 2>&1")
-					system("sudo killall -9 arecord > /dev/null 2>&1")
-					system("sudo killall -9 nc > /dev/null 2>&1")
-					system("sudo killall -9 rpitx > /dev/null 2>&1")
-					print("Resetting audio")
-					system("sudo /etc/init.d/alsa-utils stop")
-					system("sudo /etc/init.d/alsa-utils start")
-					print("Finished resetting audio")
-					print("Ready to detect carrier")
+					print("No carrier detected")
+					stop_repeater()
 		else:
 			print("FSK") 
 			print("turn on FM rx")
