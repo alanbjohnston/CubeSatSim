@@ -964,18 +964,18 @@ if __name__ == "__main__":
 
 			print("Ready to detect carrier")
 			start_time = time.perf_counter()
-			doppler_start_hz = txr * 1e6
-			doppler_freq_hz = txr * 1e6
+			doppler_start_hz = txrf * 1e6
+			doppler_freq_hz = txrf * 1e6
 			print(doppler_start_hz)
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 					doppler_freq_hz = doppler_start_hz + (time.perf_counter() - start_time) * 60
 					print(doppler_freq_hz)
-					tx = "{:.3f}".format(doppler_freq_hz/1000)
-					print(tx)
+					txr = "{:.3f}".format(doppler_freq_hz/1000)
+					print(txr)
 					print("Carrier detected, starting repeater")
 					output(txLed, 1)
-					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + " > /dev/null 2>&1 &")
+					system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
 					sleep(0.5)
 					system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 					while (input(squelch) == False):
