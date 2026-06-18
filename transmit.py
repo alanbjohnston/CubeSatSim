@@ -269,7 +269,7 @@ def stop_repeater():
 	print("Finished resetting audio")
 #	print("Ready to detect carrier")
 
-iss_doppler_passes = {
+doppler_passes = {
     20: [
         {"time_sec": -180, "velocity_kms": -5.81, "doppler_434_khz": 8.43, "obs_434_mhz": 434.9084, "doppler_144_khz": 2.81, "obs_144_mhz": 144.9028},
         {"time_sec": -170, "velocity_kms": -5.68, "doppler_434_khz": 8.24, "obs_434_mhz": 434.9082, "doppler_144_khz": 2.75, "obs_144_mhz": 144.9027},
@@ -1156,6 +1156,7 @@ if __name__ == "__main__":
 #			    pass_profile = iss_doppler_passes[TARGET_PASS]
 #			    data_entry = pass_profile[index]   # relative_time_index]
 
+				doppler_table = iss_doppler_passes[TARGET_PASS]
 				third_row = iss_doppler_passes[TARGET_PASS][index]
 								
 				print("Full Third:")
@@ -1177,15 +1178,22 @@ if __name__ == "__main__":
 						
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
-					tx_doppler_shift_hz = ((time.perf_counter() - start_time) * 100) % 20000
+
+					relative_time = time.perf_counter() - start_time
+					index = int(relative_time/10)
+					table_row = iss_doppler_table[index]
+					rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
+					tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+					
+#					tx_doppler_shift_hz = ((time.perf_counter() - start_time) * 100) % 20000
 					tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-					print(tx_doppler_freq_hz)
+					print(f"Tx Doppler shift: {tx_doppler_freq_hz}")
 					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 					print(txr)
 					rx_doppler_freq_hz = rx_doppler_start_hz + tx_doppler_shift_hz
-					print(rx_doppler_freq_hz)
+					print(f"Rx Doppler shift: {rx_doppler_freq_hz}")
 					rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
-					print(rx)
+#					print(rx)
 					program_fm(rx,tx,rxpl_value,sq,txpl_value)
 					print("Carrier detected")
 					start_repeater(txr)
