@@ -1153,11 +1153,18 @@ if __name__ == "__main__":
 			
 			try:
 			    # Navigate the dictionary structure
-			    pass_profile = iss_doppler_passes[TARGET_PASS]
-			    data_entry = pass_profile[index]   # relative_time_index]
-			    
-			    # Extract the specific metric
-			    doppler_shift = data_entry["doppler_434"]
+#			    pass_profile = iss_doppler_passes[TARGET_PASS]
+#			    data_entry = pass_profile[index]   # relative_time_index]
+
+				third_row = iss_doppler_passes[TARGET_PASS][index]
+								
+				print("Full Third:")
+				print(third_row)				
+				print("\n" + "="*40 + "\n")
+				
+				time_index = third_row["time_sec"]
+				doppler_shift = third_row["doppler_434"]
+				uhf_freq = third_row["obs_434_mhz"]
 			    
 			    print(f"Pass Elevation: {TARGET_PASS}°")
 #			    print(f"Time Index: {TIME_FROM_START} seconds from start (Relative: {relative_time_index}s)")
