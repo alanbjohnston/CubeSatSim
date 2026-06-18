@@ -269,7 +269,7 @@ def stop_repeater():
 	print("Finished resetting audio")
 #	print("Ready to detect carrier")
 
-doppler_passes = {
+iss_doppler_passes = {
     20: [
         {"time_sec": -180, "velocity_kms": -5.81, "doppler_434_khz": 8.43, "obs_434_mhz": 434.9084, "doppler_144_khz": 2.81, "obs_144_mhz": 144.9028},
         {"time_sec": -170, "velocity_kms": -5.68, "doppler_434_khz": 8.24, "obs_434_mhz": 434.9082, "doppler_144_khz": 2.75, "obs_144_mhz": 144.9027},
