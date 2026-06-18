@@ -964,12 +964,13 @@ if __name__ == "__main__":
 
 			print("Ready to detect carrier")
 			start_time = time.perf_counter()
-			doppler_start_hz = txrf * 1e6
-			doppler_freq_hz = txrf * 1e6
-			print(doppler_start_hz)
+			tx_doppler_start_hz = txrf * 1e6
+			tx_doppler_shift_hz = 0
+			print(tx_doppler_start_hz + tx_doppler_shift_hz)
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
-					doppler_freq_hz = doppler_start_hz + (time.perf_counter() - start_time) * 60
+					doppler_shift_hz = (time.perf_counter() - start_time) * 60
+					doppler_freq_hz = doppler_start_hz + doppler_shift_hz
 					print(doppler_freq_hz)
 					txr = "{:.3f}".format(doppler_freq_hz/1000)
 					print(txr)
