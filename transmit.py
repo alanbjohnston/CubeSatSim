@@ -1149,7 +1149,7 @@ if __name__ == "__main__":
 			
 			# Map the "time from start" to the "relative time index" used in the table
 			relative_time_index = PASS_START_TIME + TIME_FROM_START
-			index = 10/10
+			index = int(10/10)
 			
 			try:
 			    # Navigate the dictionary structure
