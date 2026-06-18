@@ -1153,7 +1153,7 @@ if __name__ == "__main__":
 			
 			try:
 			    # Navigate the dictionary structure
-			    pass_profile = iss_doppler_database[TARGET_PASS]
+			    pass_profile = iss_doppler_passes[TARGET_PASS]
 			    data_entry = pass_profile[index]   # relative_time_index]
 			    
 			    # Extract the specific metric
