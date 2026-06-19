@@ -539,6 +539,7 @@ def update_doppler():
 		rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 		if (mode == 'e'):
 			tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
+			print(tx)
 		program_fm(rx,tx,rxpl_value,sq,txpl_value)
 	except:
 		print("update_doppler failed")
