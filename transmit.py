@@ -544,7 +544,7 @@ def update_doppler():
 			rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 		except:
 			print("1")
-		if (mode == 'e'):
+		if (mode != 'e'):
 			try:
 				tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
 			except:
