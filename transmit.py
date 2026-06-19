@@ -1144,7 +1144,7 @@ if __name__ == "__main__":
 							print ("Sending SSTV image")
 							if (doppler_mode == True):
 								update_doppler()
- 								txf = tx_doppler_freq_hz / 1000
+								txf = tx_doppler_freq_hz / 1000
 								tx = "{:.4f}".format(txf)
 							
 							output(txLed, 1)
@@ -1176,7 +1176,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							if (doppler_mode == True):
 								update_doppler()
- 								txf = tx_doppler_freq_hz / 1000
+								txf = tx_doppler_freq_hz / 1000
 								tx = "{:.4f}".format(txf)							
 							output(txLed, 1)
 						
