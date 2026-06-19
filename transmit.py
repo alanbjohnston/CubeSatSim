@@ -515,6 +515,7 @@ def update_doppler():
 	global rxpl_value
 	global txpl_value
 	global sq
+	print("update_doppler")
 	relative_time = (time.perf_counter() - start_time) % 370
 	index = int(relative_time/10)
 	print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
