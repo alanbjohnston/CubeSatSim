@@ -805,7 +805,10 @@ if __name__ == "__main__":
 	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
 
 	if (doppler_mode == True):
-		tx_doppler_start_hz = txrf * 1e6
+		if (mode == 'e'):
+			tx_doppler_start_hz = txrf * 1e6
+		else:
+			tx_doppler_start_hz = txf * 1e6
 		tx_doppler_shift_hz = 0
 		print(f"Tx center frequency: {tx_doppler_start_hz}")
 		rx_doppler_start_hz = rxf * 1e6
