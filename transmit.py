@@ -986,6 +986,7 @@ if __name__ == "__main__":
 #								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
+								print("aplay")
 								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
 								sleep(0.1)
 								output (ptt, 1)
@@ -1003,6 +1004,7 @@ if __name__ == "__main__":
 					sleep(10)
 				except:	
 #					command_control_check()
+					print("cw not ready")
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
