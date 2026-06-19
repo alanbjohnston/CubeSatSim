@@ -977,7 +977,7 @@ if __name__ == "__main__":
 							output(txLed, 1)					
 							if (doppler_mode == True):
 								update_doppler()
- 								txf = tx_doppler_freq_hz / 1000
+								txf = tx_doppler_freq_hz / 1000
 								tx = "{:.4f}".format(txf)
 							if (txc):
 								sim_failure_check()
