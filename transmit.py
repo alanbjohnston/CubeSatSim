@@ -219,33 +219,36 @@ def camera_photo():
 
 def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 
-	global gpsd_status
-	global pd
-	global ptt
-	if (gpsd_status == "active"):
-		print("Stopping gpsd.socket")
-		system("sudo systemctl stop gpsd.socket")
-	print("Programming FM module!\n");	
-	output(pd, 1)
-	output (ptt, 1)
 	try:
-		ser = serial.Serial("/dev/ttyAMA0", 9600)
-		print(ser.portstr)
-	#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
-		uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
-		print(uhf_string)
-		for i in range(6):
-	#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
-			ser.write(uhf_string.encode())
-			sleep(0.1)
-		ser.close()
-		ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
+		global gpsd_status
+		global pd
+		global ptt
+		if (gpsd_status == "active"):
+			print("Stopping gpsd.socket")
+			system("sudo systemctl stop gpsd.socket")
+		print("Programming FM module!\n");	
+		output(pd, 1)
+		output (ptt, 1)
+		try:
+			ser = serial.Serial("/dev/ttyAMA0", 9600)
+			print(ser.portstr)
+		#		uhf_string = "AT+DMOSETGROUP=0," + rx +"," + tx + ",0,3,0,0\r\n"
+			uhf_string = "AT+DMOSETGROUP=0," + rx + "," + tx + "," + rxpl_value + "," + sq + "," + txpl_value + ",0\r\n"
+			print(uhf_string)
+			for i in range(6):
+		#			ser.write(b"AT+DMOSETGROUP=0,435.0000,434.9000,0,3,0,0\r\n")
+				ser.write(uhf_string.encode())
+				sleep(0.1)
+			ser.close()
+			ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
+		except:
+			print("Error in serial write")
+	#	output(pd, 0)  # Don't turn off receiver
+		if (gpsd_status == "active"):
+			print("Restarting gpsd.socket")
+			system("sudo systemctl restart gpsd.socket")
 	except:
-		print("Error in serial write")
-#	output(pd, 0)  # Don't turn off receiver
-	if (gpsd_status == "active"):
-		print("Restarting gpsd.socket")
-		system("sudo systemctl restart gpsd.socket")
+		print("program_fm failed")
 
 def start_repeater(tx_doppler_freq_hz):
 	global txLed
