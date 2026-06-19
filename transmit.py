@@ -521,6 +521,7 @@ def update_doppler():
 		global sq
 		global doppler_table
 		global mode
+		global tx
 		print("update_doppler")
 		try:
 			relative_time = (time.perf_counter() - start_time) % 370
