@@ -517,6 +517,7 @@ def update_doppler():
 		global txpl_value
 		global sq
 		global doppler_table
+		global mode
 		print("update_doppler")
 		try:
 			relative_time = (time.perf_counter() - start_time) % 370
@@ -527,7 +528,10 @@ def update_doppler():
 		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
 		table_row = doppler_table[index]
 		rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
-		tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+		if (mode == 'e'):
+			tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+		else:
+			tx_doppler_shift_hz = rx_doppler_shift_hz 
 		tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
 		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
@@ -994,7 +998,6 @@ if __name__ == "__main__":
 #								output (pd, 1)
 								sleep(0.3)
 								output (ptt, 0)	
-								print("aplay")
 								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
 								sleep(0.1)
 								output (ptt, 1)
@@ -1012,7 +1015,7 @@ if __name__ == "__main__":
 					sleep(10)
 				except:	
 #					command_control_check()
-					print("cw not ready")
+#					print("cw not ready")
 					sleep(1)
 		elif (mode == 's'):
 			print("SSTV")
