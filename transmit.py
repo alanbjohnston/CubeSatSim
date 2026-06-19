@@ -711,7 +711,7 @@ if __name__ == "__main__":
 		if len(config) > 7:
 			rxf = float(config[7])
 			rx = "{:.4f}".format(rxf)
-            print(rx)
+			print(rx)
 		if len(config) > 8:
 			if config[8] == 'y' or config[8] == 'yes':		
 				hab_mode = True
