@@ -509,25 +509,28 @@ iss_doppler_passes = {
 
 def update_doppler():
 
-	global start_time
-	global tx_doppler_freq_hz
-	global rx_doppler_freq_hz
-	global rxpl_value
-	global txpl_value
-	global sq
-	print("update_doppler")
-	relative_time = (time.perf_counter() - start_time) % 370
-	index = int(relative_time/10)
-	print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
-	table_row = doppler_table[index]
-	rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
-	tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
-	tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-	print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
-	rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-	print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
-	rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
-#	program_fm(rx,tx,rxpl_value,sq,txpl_value)
+	try:
+		global start_time
+		global tx_doppler_freq_hz
+		global rx_doppler_freq_hz
+		global rxpl_value
+		global txpl_value
+		global sq
+		print("update_doppler")
+		relative_time = (time.perf_counter() - start_time) % 370
+		index = int(relative_time/10)
+		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
+		table_row = doppler_table[index]
+		rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
+		tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+		tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
+		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
+		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
+		print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
+		rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
+		program_fm(rx,tx,rxpl_value,sq,txpl_value)
+	except:
+		print("update_doppler failed")
 
 print("CubeSatSim v2.2 transmit.py starting...")
 
