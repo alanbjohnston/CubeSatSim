@@ -540,26 +540,12 @@ def update_doppler():
 		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 		print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
-		try:
-			rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
-		except:
-			print("1")
+		rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 		if (mode != 'e'):
-			try:
-				tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
-			except:
-				print("2")	
+			tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
 			print(tx)
-		try:
-			print(rx)
-			print(tx)
-			print(rxpl_value)
-			print(sq)
-			print(txpl_value)
-			print("Program_fm")
-			program_fm(rx,tx,rxpl_value,sq,txpl_value)
-		except:
-			print("3")
+		program_fm(rx,tx,rxpl_value,sq,txpl_value)
+		
 	except:
 		print("update_doppler failed")
 
