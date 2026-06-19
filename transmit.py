@@ -674,7 +674,7 @@ if __name__ == "__main__":
 	sim_mode = False
 	sim_config = False
 	hab_mode = False
-	doppler_mode = True
+	doppler_mode = False # True
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
