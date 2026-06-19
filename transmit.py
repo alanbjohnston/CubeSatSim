@@ -247,10 +247,11 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		print("Restarting gpsd.socket")
 		system("sudo systemctl restart gpsd.socket")
 
-def start_repeater(txr):
+def start_repeater(tx_doppler_freq_hz):
 	global txLed
 	print("Starting repeater")
 	output(txLed, 1)
+	txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
 	system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
 	sleep(0.5)
 	system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
@@ -506,6 +507,27 @@ iss_doppler_passes = {
 	]			
 }
 
+def update_doppler():
+
+	global start_time
+	global tx_doppler_freq_hz
+	global rx_doppler_freq_hz
+	global rxpl_value
+	global txpl_value
+	global sq
+	relative_time = (time.perf_counter() - start_time) % 370
+	index = int(relative_time/10)
+	print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
+	table_row = doppler_table[index]
+	rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
+	tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+	tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
+	print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
+	rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
+	print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
+	rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
+	program_fm(rx,tx,rxpl_value,sq,txpl_value)
+
 print("CubeSatSim v2.2 transmit.py starting...")
 
 pd = 21
@@ -652,6 +674,7 @@ if __name__ == "__main__":
 	sim_mode = False
 	sim_config = False
 	hab_mode = False
+	doppler_mode == True
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -780,6 +803,19 @@ if __name__ == "__main__":
   	
 #	if (mode != 'e'): 
 	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
+
+	if (doppler_mode == True):
+		tx_doppler_start_hz = txrf * 1e6
+		tx_doppler_shift_hz = 0
+		print(f"Tx center frequency: {tx_doppler_start_hz}")
+		rx_doppler_start_hz = rxf * 1e6
+		rx_doppler_shift_hz = 0
+		print(f"Rx center frequency: {rx_doppler_start_hz}")
+	
+		TARGET_PASS = 85           # Maximum elevation profile
+	
+		doppler_table = iss_doppler_passes[TARGET_PASS]
+		print(f"Pass Max Elevation: {TARGET_PASS}°")
 		
 	sim_failure_check()
 	if (hab_mode == True) and (mode == 'a'):
@@ -884,11 +920,10 @@ if __name__ == "__main__":
 					system("cat /home/pi/CubeSatSim/t.txt")
 					if (command_tx == True):
 						output(txLed, 1)
-#						output(pd, 1)
-#						output (ptt, 0)
-#						sleep(.1)
-#						
-#						battery_saver_check()
+						if (doppler_mode == True):
+							update_doppler()
+							txf = tx_doppler_freq_hz / 1000
+							tx = "{:.4f}".format(txf)
 						if (txc):
 							sim_failure_check()
 #							output(pd, 1)
@@ -940,7 +975,10 @@ if __name__ == "__main__":
 ##						chan = chan + 1						
 						if (command_tx == True):
 							output(txLed, 1)					
-	
+							if (doppler_mode == True):
+								update_doppler()
+ 								txf = tx_doppler_freq_hz / 1000
+								tx = "{:.4f}".format(txf)
 							if (txc):
 								sim_failure_check()
 #								output (pd, 1)
@@ -1028,10 +1066,13 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/camera_out.jpg") 
 					system("sudo rm /home/pi/CubeSatSim/camera_out.jpg > /dev/null 2>&1") 
 
-#					command_control_check()			
-
 					if (command_tx == True):
 						print ("Sending SSTV image")
+						if (doppler_mode == True):
+							update_doppler()
+							txf = tx_doppler_freq_hz / 1000
+							tx = "{:.4f}".format(txf)
+						
 						output(txLed, 1)
 #						battery_saver_check()
 
@@ -1099,11 +1140,13 @@ if __name__ == "__main__":
 					system("/home/pi/PiSSTVpp/pisstvpp -r 48000 -p s2 /home/pi/CubeSatSim/sstv_image_2_320_x_256.jpg")
 
 					while 1:
-
-#						command_control_check()		
-	
 						if (command_tx == True):
 							print ("Sending SSTV image")
+							if (doppler_mode == True):
+								update_doppler()
+ 								txf = tx_doppler_freq_hz / 1000
+								tx = "{:.4f}".format(txf)
+							
 							output(txLed, 1)
 #							battery_saver_check()
 
@@ -1131,11 +1174,11 @@ if __name__ == "__main__":
 							system("(while true; do (sleep 10 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					while 1:
 						if (command_tx == True):
-#							command_control_check()	
-							
+							if (doppler_mode == True):
+								update_doppler()
+ 								txf = tx_doppler_freq_hz / 1000
+								tx = "{:.4f}".format(txf)							
 							output(txLed, 1)
-
-#							battery_saver_check()
 						
 							if (txc):
 								sim_failure_check()
@@ -1223,58 +1266,15 @@ if __name__ == "__main__":
 
 			print("Ready to detect carrier")
 			start_time = time.perf_counter()
-			tx_doppler_start_hz = txrf * 1e6
-			tx_doppler_shift_hz = 0
-			print(f"Tx center frequency: {tx_doppler_start_hz}")
-			rx_doppler_start_hz = rxf * 1e6
-			rx_doppler_shift_hz = 0
-			print(f"Rx center frequency: {rx_doppler_start_hz}")
-
-			TARGET_PASS = 85           # Maximum elevation profile
-#			PASS_START_TIME = -180     # The absolute time index where the pass begins
-#			TIME_FROM_START = 30       # 30 seconds into the pass
-			
-			# Map the "time from start" to the "relative time index" used in the table
-#			relative_time_index = PASS_START_TIME + TIME_FROM_START
-			index = int(10/10)
-			
-			try:
-				doppler_table = iss_doppler_passes[TARGET_PASS]
-				third_row = iss_doppler_passes[TARGET_PASS][index]
-				time_index = third_row["time_sec"]
-				doppler_shift = third_row["doppler_434_khz"]
-				uhf_freq = third_row["obs_434_mhz"]
-			    
-				print(f"Pass Elevation: {TARGET_PASS}°")
-				print(f"Time Index: {index}")
-				print(f"Extracted Doppler Shift (435.0 MHz): {doppler_shift:.2f} kHz")
-				print(f"UHF frequency (435.0 MHz): {uhf_freq:.4f} MHz")
-			
-			except KeyError:
-				print("Error: The requested pass elevation or time index does not exist in the database.")		
 						
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
-
-					relative_time = (time.perf_counter() - start_time) % 370
-					index = int(relative_time/10)
-					print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
-					table_row = doppler_table[index]
-					rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
-					tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
-					
-#					tx_doppler_shift_hz = ((time.perf_counter() - start_time) * 100) % 20000
-					tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-					print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
-					txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
-#					print(txr)
-					rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-					print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
-					rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
-#					print(rx)
-					program_fm(rx,tx,rxpl_value,sq,txpl_value)
 					print("Carrier detected")
-					start_repeater(txr)
+					if (doppler_mode == True):
+						update_doppler()
+						start_repeater(tx_doppler_freq_hz)
+					else:
+						start_repeater(txr)
 					while (input(squelch) == False):
 						sleep(1)
 					print("No carrier detected")
