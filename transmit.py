@@ -549,7 +549,13 @@ def update_doppler():
 			except:
 				print("2")	
 			print(tx)
-		try:	
+		try:
+			print(rx)
+			print(tx)
+			print(rxpl_value)
+			print(sq)
+			print(txpl_value)
+			print("Program_fm")
 			program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		except:
 			print("3")
