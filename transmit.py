@@ -709,27 +709,25 @@ if __name__ == "__main__":
 			else:
 				print("Transmit frequency: ",tx)
 		if len(config) > 7:
-                        rxf = float(config[7])
-#                        print(rxf)
-#                        print( "{:.4f}".format(rxf))
-                        rx = "{:.4f}".format(rxf)
-                        print(rx)
+			rxf = float(config[7])
+			rx = "{:.4f}".format(rxf)
+            print(rx)
 		if len(config) > 8:
 			if config[8] == 'y' or config[8] == 'yes':		
 				hab_mode = True
 				print("Balloon (HAB) mode is configured.")				
 		if len(config) > 9:
-                        rxpl = float(config[9])
- #                       print(rxpl)
- #                       print( "{:.0f}".format(rxpl))
-                        rxpl_value = "{:.0f}".format(rxpl)
-                        print(rxpl_value)
+			rxpl = float(config[9])
+#                       print(rxpl)
+#                       print( "{:.0f}".format(rxpl))
+			rxpl_value = "{:.0f}".format(rxpl)
+			print(rxpl_value)
 		if len(config) > 10:
-                        txpl = float(config[10])
+			txpl = float(config[10])
 #                        print(txpl)
 #                        print( "{:.0f}".format(txpl))
-                        txpl_value = "{:.0f}".format(txpl)
-                        print(txpl_value)			
+			txpl_value = "{:.0f}".format(txpl)
+			print(txpl_value)			
 		print(config)
 		print
 #		print(callsign)
