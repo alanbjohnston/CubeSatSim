@@ -39,7 +39,7 @@ else
 	touch /home/pi/CubeSatSim/command_control_direwolf
 
     echo "creating $FILE"
-    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 
 	/home/pi/CubeSatSim/config -c -n
 
@@ -295,21 +295,22 @@ if [ -f "$FILE" ]; then
 	if [ -z "${11}" ] ; then m2="0" ; changed=1 ; else m2=${11} ; fi # tx pl code
 	if [ -z "${12}" ] ; then m3="no" ; changed=1 ; else m3=${12} ; fi # random fail
 	if [ -z "${13}" ] ; then m4="60" ; changed=1 ; else m4=${13} ; fi # random fail period
+	if [ -z "${14}" ] ; then m5="no" ; changed=1 ; else m5=${14} ; fi # doppler mode
 
 	if [ $changed -eq 1 ]; then
 		echo -e "Current sim.cfg configuration file:"	
 		echo
-		echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+		echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 		echo
-		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4
-		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4> /home/pi/CubeSatSim/sim.cfg
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4 $m5
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4 $m5 > /home/pi/CubeSatSim/sim.cfg
 		echo
 	fi
 
 else 
     echo "creating $FILE"
-    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 fi
 
 if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
