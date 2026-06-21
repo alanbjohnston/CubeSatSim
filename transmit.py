@@ -749,10 +749,10 @@ if __name__ == "__main__":
 #                        print( "{:.0f}".format(txpl))
 			txpl_value = "{:.0f}".format(txpl)
 			print(txpl_value)
-		if len(config) > 11:
-			if config[11] == 'y' or config[11] == 'yes':		
+		if len(config) > 13:
+			if config[13] == 'y' or config[13] == 'yes':		
 				doppler_mode = True
-				print("Doppler mode is configured.")				
+				print("Doppler frequency shift mode is configured.")				
 			
 		print(config)
 		print
