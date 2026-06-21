@@ -695,7 +695,7 @@ if __name__ == "__main__":
 	sim_mode = False
 	sim_config = False
 	hab_mode = False
-	doppler_mode = True
+	doppler_mode = False
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -748,7 +748,12 @@ if __name__ == "__main__":
 #                        print(txpl)
 #                        print( "{:.0f}".format(txpl))
 			txpl_value = "{:.0f}".format(txpl)
-			print(txpl_value)			
+			print(txpl_value)
+		if len(config) > 11:
+			if config[11] == 'y' or config[11] == 'yes':		
+				doppler_mode = True
+				print("Doppler mode is configured.")				
+			
 		print(config)
 		print
 #		print(callsign)
