@@ -834,6 +834,18 @@ if [ ! -f "/home/pi/ssdv/ssdv" ]; then
 	make
 fi
 
+if [ ! -f "/home/pi/FT857d" ]; then
+	cd
+	echo "Installing FT857d for Doppler rigctld control mode"
+	git clone https://github.com/alanbjohnston/FT857d.git
+	cd FT857d/examples/FT857d	
+	git checkout pi	
+	g++ main.c ../../src/ft857d.cpp -lwiringPi -o ft857d
+
+	sudo apt-get install -y libhamlib-utils socat gpredict
+
+fi
+
 cd
 
 #echo "Would you like to reboot to complete the installation (y/n)?"
