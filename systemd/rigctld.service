@@ -1,0 +1,14 @@
+[Unit]
+Description=rigctld
+
+[Service]
+TimeoutStopSec=5
+ExecStart=/home/pi/CubeSatSim/rigctld.sh
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=default.target
