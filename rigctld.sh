@@ -1,5 +1,9 @@
 #!/bin/bash
 
+sudo killall -9 ft857d &>/dev/null
+sudo killall -9 socat &>/dev/null
+sudo killall -9 rigctld &>/dev/null
+
 echo "Starting virtual serial ports /tmp/vttyA and /tmp/vttyB"
 
 socat -d -d PTY,raw,echo=0,link=/tmp/vttyA PTY,raw,echo=0,link=/tmp/vttyB &
