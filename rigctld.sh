@@ -2,7 +2,11 @@
 
 echo "Starting virtual serial ports /tmp/vttyA and /tmp/vttyB"
 
-socat -d -d PTY,raw,echo=0,link=/tmp/vttyA PTY,raw,echo=0,link=/tmp/vttyB
+socat -d -d PTY,raw,echo=0,link=/tmp/vttyA PTY,raw,echo=0,link=/tmp/vttyB &
+
+echo "Starting CubeSatSim FT857 emulation"
+
+/home/pi/FT857d/examples/FT857d/ft857d &
 
 echo "Starting rigctl emulating FT857 rig using virtual serial port /tmp/vttyB"
 
