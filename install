@@ -718,6 +718,22 @@ else
   FLAG=1
 fi
 
+FILE=/etc/systemd/system/rigctld.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/rigctld.service /etc/systemd/system/rigctld.service) ]]; then
+    echo "changed rigctld.service."
+    sudo cp /home/pi/CubeSatSim/systemd/rigctld.service /etc/systemd/system/rigctld.service
+    FLAG=1
+  else
+    echo "no change to rigctld.service."
+  fi
+else
+  echo "creating rigctld.service."
+  sudo cp /home/pi/CubeSatSim/systemd/rigctld.service /etc/systemd/system/rigctld.service
+  FLAG=1
+fi
+
+
 FILE=/etc/asound.conf
 if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
