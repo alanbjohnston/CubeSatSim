@@ -862,6 +862,17 @@ if [ ! -f "/home/pi/FT857d" ]; then
 
 fi
 
+cd /home/pi/FT857d
+git checkout pi
+git pull --no-rebase > .updated_p
+
+if [[ $(grep 'changed' //home/pi/FT857d/.updated_p) ]]; then
+	echo "updating FT857d"
+	g++ main.c ../../src/ft857d.cpp -lwiringPi -o ft857d
+else
+	echo "nothing to do for FT857d."
+fi 
+
 cd
 
 #echo "Would you like to reboot to complete the installation (y/n)?"
