@@ -524,7 +524,7 @@ elif [ "$1" = "-t" ]; then
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}> /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -1433,7 +1433,7 @@ elif [ "$1" = "-g" ]; then
 
 		echo "Resetting"
 
-		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
+		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 	
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
 	
