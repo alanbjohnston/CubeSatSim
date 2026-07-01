@@ -854,12 +854,12 @@ if [ ! -f "/home/pi/FT857d" ]; then
 	cd
 	echo "Installing FT857d for Doppler rigctld control mode"
 	git clone https://github.com/alanbjohnston/FT857d.git
-	cd FT857d/examples/FT857d	
+	cd FT857d
 	git checkout pi	
+	cd examples/FT857d	
 	g++ main.c ../../src/ft857d.cpp -lwiringPi -o ft857d
 
 	sudo apt-get install -y libhamlib-utils socat gpredict
-
 fi
 
 cd /home/pi/FT857d
