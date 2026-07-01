@@ -750,10 +750,17 @@ if __name__ == "__main__":
 			txpl_value = "{:.0f}".format(txpl)
 			print(txpl_value)
 		if len(config) > 13:
-			if config[13] == 'y' or config[13] == 'yes':		
+			if config[13] == 'sim':		
 				doppler_mode = True
-				print("Doppler frequency shift mode is configured.")				
-			
+				print("Simulated Doppler frequency shift is enabled.")				
+			if config[13] == 'rig':	
+				doppler_mode = True
+				system("sudo systemctl restart rigctld")
+				print("rigctl Doppler frequency shift is enabled.")	
+			else:
+				system("sudo systemctl stop rigctld")
+		else:
+			system("sudo systemctl stop rigctld")
 		print(config)
 		print
 #		print(callsign)
