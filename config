@@ -260,11 +260,11 @@ if [ "$1" = "" ]; then
 		echo "Random Failure Mode is OFF"
 	fi
 
-	echo ${14}
+#	echo ${14}
 	if [ "${14}" = "sim" ] ; then
-		echo "Simulated Doppler frequency shift mode enabled"
+		echo "Simulated Doppler frequency shift enabled"
 	elif [ "${14}" = "rig" ] ; then
-		echo "rigctld Doppler frequency shift mode enabled"
+		echo "rigctld Doppler frequency shift enabled"
 	else
 		echo "Doppler frequency shift is OFF"
 	fi
