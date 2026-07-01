@@ -260,8 +260,10 @@ if [ "$1" = "" ]; then
 		echo "Random Failure Mode is OFF"
 	fi
 
-	if [ "${14}" = "y" ] || [ "${14}" = "yes" ] ; then
-		echo "Doppler frequency shift mode enabled"
+	if [ "${14}" = "sim" ] ; then
+		echo "Simulated Doppler frequency shift mode enabled"
+	elif [ "${14}" = "rig" ] ; then
+		echo "rigctld Doppler frequency shift mode enabled"
 	else
 		echo "Doppler frequency shift is OFF"
 	fi
@@ -1905,10 +1907,12 @@ elif [ "$1" = "-K" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "${14}" = "yes" ] || [ "${14}" = "y" ]; then
-		echo "Doppler frequency shift mode is ON"
+	if [ "${14}" = "sim" ] ; then
+		echo "Simulated Doppler frequency shift mode enabled"
+	elif [ "${14}" = "rig" ] ; then
+		echo "rigctld Doppler frequency shift mode enabled"
 	else
-		echo " Doppler frequency shift mode is OFF"
+		echo "Doppler frequency shift is OFF"
 	fi
 	
 	echo
@@ -1921,7 +1925,17 @@ elif [ "$1" = "-K" ]; then
 	
 	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
 		doppler="yes"
-		echo "Doppler frequency shift is ON"
+		echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
+		read doppler
+
+		if [ "$doppler" = "sim" ] ; then
+			echo "Simulated Doppler frequency shift mode enabled"
+		elif [ "$doppler" = "rig" ] ; then
+			echo "rigctld Doppler frequency shift mode enabled"
+		else
+			doppler="no"
+			echo "sim or rig not entered. Doppler frequency shift is OFF"
+		fi
 	else
 		doppler="no"
 		echo " Doppler frequency shift is OFF"
