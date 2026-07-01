@@ -170,6 +170,7 @@ char sim_yes[10];
 char hab_yes[10];
 char fail_yes[10];
 int fail_time = 60;
+char doppler_mode[10];
 int squelch = 3; // default squelch
 char rx[12], tx[12];
 int tx_pl = 0;
