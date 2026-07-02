@@ -678,6 +678,9 @@ debug_mode = 0  # change to 1 to debug transmit
 
 skip = False
 
+tx_doppler_freq_hz = 0
+rx_doppler_freq_hz = 0
+
 if __name__ == "__main__":
 	mode = "y"
 	if (len(sys.argv)) > 1:
