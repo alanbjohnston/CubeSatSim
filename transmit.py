@@ -1076,9 +1076,12 @@ if __name__ == "__main__":
 					for chan in range(7):
 						if (doppler_mode):
 							try:
-								file = open("/home/pi/CubeSatSim/cw" + str(chan) + ".txt")
-								string = file.readline()
-								cw_transmit_string(string)
+								filename="/home/pi/CubeSatSim/cw" + str(chan) + ".txt"
+								print(filename)
+								file = open(filename)
+								cw_string = file.readline()
+								print(cw_string)
+								cw_transmit_string(cw_string)
 							except:
 								print("error reading cw string " + str(chan))
 						else:	
