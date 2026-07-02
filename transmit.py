@@ -510,7 +510,7 @@ iss_doppler_passes = {
 	]			
 }
 
-def update_doppler():
+def update_doppler(fm):
 
 	try:
 		global start_time
@@ -540,11 +540,12 @@ def update_doppler():
 		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 		print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
-		rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
-		if (mode != 'e'):
-			tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
-			print(tx)
-		program_fm(rx,tx,rxpl_value,sq,txpl_value)
+		if (fm != "no"):
+			rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
+			if (mode != 'e'):
+				tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
+				print(tx)
+			program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		
 	except:
 		print("update_doppler failed")
@@ -605,7 +606,7 @@ def cw_transmit_string(string):
 	
 def cw_transmit_char(character): 	
 	global morse_timing
-	update_doppler()
+	update_doppler("no")
 	i = 0
 	while (morse_table[(ord(character.upper()) - ord('0')) % 44][i] != 0): 
 		transmit_carrier(morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing);	  
@@ -1069,16 +1070,7 @@ if __name__ == "__main__":
 			while True:
 #				command_control_check()
 				output (pd, 1)
-				output (ptt, 1)	
-
-				update_doppler()
-				filename="/home/pi/CubeSatSim/cw0.txt"
-				print(filename)
-				file = open(filename)
-				cw_string = file.readline()
-				print(cw_string)
-				cw_transmit_string(cw_string)
-				
+				output (ptt, 1)					
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
@@ -1087,7 +1079,7 @@ if __name__ == "__main__":
 					for chan in range(7):
 						if (doppler_mode):
 							try:
-								update_doppler()
+#								update_doppler()
 								filename="/home/pi/CubeSatSim/cw" + str(chan) + ".txt"
 								print(filename)
 								file = open(filename)
