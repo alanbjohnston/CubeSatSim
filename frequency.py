@@ -338,7 +338,7 @@ try:
 #		else:
 		no_command = False		
 		print(no_command)
-    except Exception as e:
+	except Exception as e:
 		print(f"An error occurred: {e}")		
 		if (debug_mode == 1):
 			print("Can't read sim.cfg file")	
