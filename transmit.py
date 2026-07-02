@@ -549,6 +549,74 @@ def update_doppler():
 	except:
 		print("update_doppler failed")
 
+morse_table = [  # 0-9, A-Z only by (ASCII - 48)
+  [ 3, 3, 3, 3, 3, 0 ],	# 0		
+  [ 1, 3, 3, 3, 3, 0 ],	# 1		
+  [ 1, 1, 3, 3, 3, 0 ],	# 2		
+  [ 1, 1, 1, 3, 3, 0 ],	# 3	
+  [ 1, 1, 1, 1, 3, 0 ],	# 4
+  [ 1, 1, 1, 1, 1, 0 ],	# 5		
+  [ 3, 1, 1, 1, 1, 0 ],	# 6		
+  [ 3, 3, 1, 1, 1, 0 ],	# 7		
+  [ 3, 3, 3, 1, 1, 0 ],	# 8	
+  [ 3, 3, 3, 3, 1, 0 ],	# 9	
+  [ 0, 0, 0, 0, 0, 0 ],	# -		   
+  [ 0, 0, 0, 0, 0, 0 ],	# -		
+  [ 0, 0, 0, 0, 0, 0 ],	# -		   
+  [ 0, 0, 0, 0, 0, 0 ],	# -		   
+  [ 0, 0, 0, 0, 0, 0 ],	# -		   
+  [ 0, 0, 0, 0, 0, 0 ],	# -		
+  [ 0, 0, 0, 0, 0, 0 ],	# -		  
+  [ 1, 3, 0, 0, 0, 0 ],	# A
+  [ 3, 1, 1, 1, 0, 0 ],	# B
+  [ 3, 1, 3, 1, 0, 0 ],	# C	
+  [ 3, 1, 1, 0, 0, 0 ],	# D	
+  [ 1, 0, 0, 0, 0, 0 ],	# E		
+  [ 1, 1, 3, 1, 0, 0 ],	# F		
+  [ 3, 3, 1, 0, 0, 0 ],	# G	
+  [ 1, 1, 1, 1, 0, 0 ],	# H	
+  [ 1, 1, 0, 0, 0, 0 ],	# I	
+  [ 1, 3, 3, 3, 0, 0 ],	# J		
+  [ 3, 1, 3, 0, 0, 0 ],	# K	
+  [ 1, 3, 1, 1, 0, 0 ],	# L
+  [ 3, 3, 0, 0, 0, 0 ],	# M		
+  [ 3, 1, 0, 0, 0, 0 ],	# N	
+  [ 3, 3, 3, 0, 0, 0 ],	# O
+  [ 1, 3, 3, 1, 0, 0 ],	# P
+  [ 3, 3, 1, 3, 0, 0 ],	# Q
+  [ 1, 3, 1, 0, 0, 0 ],	# R	
+  [ 1, 1, 1, 0, 0, 0 ],	# S		
+  [ 3, 0, 0, 0, 0, 0 ],	# T		
+  [ 1, 1, 3, 0, 0, 0 ],	# U		
+  [ 1, 1, 1, 3, 0, 0 ],	# V		
+  [ 1, 3, 3, 0, 0, 0 ],	# W		
+  [ 3, 1, 1, 3, 0, 0 ],	# X		
+  [ 3, 1, 3, 3, 0, 0 ],	# Y	
+  [ 3, 3, 1, 1, 0, 0 ]	# Z	
+]
+
+def cw_transmit_string(string):
+	global morse_timing
+	for character in string: 	
+		if (character != ' '):	  
+			cw_transmit_char(character);
+		else:
+			sleep(6.0 * morse_timing);
+	
+def cw_transmit_char(character): 	
+	global morse_timing
+	i = 0
+	while (morse_table[(ord(character.upper()) - ord('0')) % 44][i] != 0): 
+		transmit_carrier(morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing);	  
+		i=i+1
+		sleep(morse_timing);
+	sleep(morse_timing * 3.0);
+
+def transmit_carrier(duration):
+	global tx_doppler_freq_hz
+	command = "timeout " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
+	system(command)
+
 print("CubeSatSim v2.2 transmit.py starting...")
 
 pd = 21
