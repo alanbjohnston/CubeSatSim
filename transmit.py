@@ -614,8 +614,11 @@ def cw_transmit_char(character):
 
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
+	global txLed
 	command = "timeout " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
+	output(txLed, 1)
 	system(command)
+	output(txLed, 0)
 
 print("CubeSatSim v2.2 transmit.py starting...")
 
@@ -1071,34 +1074,42 @@ if __name__ == "__main__":
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 ##					ch = 1
 					for chan in range(7):
-						command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
-						print(command)
-						system(command)
-##						chan = chan + 1						
-						if (command_tx == True):
-							output(txLed, 1)					
-							if (doppler_mode == True):
-								update_doppler()
-								txf = tx_doppler_freq_hz / 1000
-								tx = "{:.4f}".format(txf)
-							if (txc):
-								sim_failure_check()
-#								output (pd, 1)
-								sleep(0.3)
-								output (ptt, 0)	
-								system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
-								sleep(0.1)
-								output (ptt, 1)
-#								output (pd, 0)
+						if (doppler_mode):
+							try:
+								file = open("/home/pi/CubeSatSim/cw" + str(chan) + ".txt")
+								string = file.readline()
+								cw_transmit_string(string)
 							else:
-								if (debug_mode == 1):
-									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+								print("error reading cw string " + str(chan))
+						else:	
+							command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
+							print(command)
+							system(command)
+	##						chan = chan + 1						
+							if (command_tx == True):
+								output(txLed, 1)					
+								if (doppler_mode == True):
+									update_doppler()
+									txf = tx_doppler_freq_hz / 1000
+									tx = "{:.4f}".format(txf)
+								if (txc):
+									sim_failure_check()
+	#								output (pd, 1)
+									sleep(0.3)
+									output (ptt, 0)	
+									system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
+									sleep(0.1)
+									output (ptt, 1)
+	#								output (pd, 0)
 								else:
-									system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
-							output(txLed, 0)
-							
-#						command_control_check()
-						sleep(2)
+									if (debug_mode == 1):
+										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+									else:
+										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
+								output(txLed, 0)
+								
+	#						command_control_check()
+							sleep(2)
 					f.close()
 					sleep(10)
 				except:	
