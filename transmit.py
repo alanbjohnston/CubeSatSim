@@ -1094,7 +1094,7 @@ if __name__ == "__main__":
 								print(cw_string)
 								cw_transmit_string(cw_string)
 							except Exception as e:
-    							print(f"An error occurred: {e}")
+								print(f"An error occurred: {e}")
 								print("error reading cw string " + str(chan))
 						else:	
 							command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
