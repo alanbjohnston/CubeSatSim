@@ -9,6 +9,7 @@ if [ "$1" = "-h" ]  ; then
   echo " -c command and control"
   echo " -p pacsat"
   echo " -r rigctld"
+  echo " -f frequency"
   echo "Default is the log is dumpted to the screen and written to a file."
   echo "If an additional r is included, the log is realtime, and exits with a Control-C"
   echo
@@ -40,6 +41,11 @@ if [ "$REALTIME" = "1" ]  ; then
   #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
   elif [ "$1" = "-r" ]; then
     sudo journalctl -af -u rigctld # > /home/pi/CubeSatSim/logr.txt 
+  elif [ "$1" = "-f" ] ; then
+    while true; do 
+      cat /home/pi/CubeSatSim/frequency.txt
+      sleep 5
+    done
   else
     sudo journalctl -af -u cubesatsim  # > /home/pi/CubeSatSim/log.txt 
   #  cat /home/pi/CubeSatSim/log.txt
@@ -64,6 +70,8 @@ else
     sudo journalctl -a -u rigctld > /home/pi/CubeSatSim/logr.txt 
     cat /home/pi/CubeSatSim/logr.txt
     echo -e "\nrigtcld Log file also saved as /home/pi/CubeSatSim/logr.txt"
+  elif [ "$1" = "-f" ] ; then
+    cat /home/pi/CubeSatSim/frequency.txt
   else
     sudo journalctl -a -u cubesatsim  > /home/pi/CubeSatSim/log.txt 
     cat /home/pi/CubeSatSim/log.txt
