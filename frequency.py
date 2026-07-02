@@ -289,6 +289,19 @@ try:
 	sim_mode = False
 	sim_config = False
 	doppler_mode = "off"
+	debug_mode = True
+
+	try:
+		file = open("/home/pi/CubeSatSim/.mode")
+		mode = file.read(1)
+	except:
+		mode = 'f'
+		if (debug_mode == 1):
+			print("Can't open .mode file, defaulting to FSK")
+	file.close()
+	print("Mode is: ")
+	print(mode)
+	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
 		config = file.readline().split()		
