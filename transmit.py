@@ -1075,15 +1075,15 @@ if __name__ == "__main__":
 ##					ch = 1
 					for chan in range(7):
 						if (doppler_mode):
-							try:
-								filename="/home/pi/CubeSatSim/cw" + str(chan) + ".txt"
-								print(filename)
-								file = open(filename)
-								cw_string = file.readline()
-								print(cw_string)
-								cw_transmit_string(cw_string)
-							except:
-								print("error reading cw string " + str(chan))
+#							try:
+							filename="/home/pi/CubeSatSim/cw" + str(chan) + ".txt"
+							print(filename)
+							file = open(filename)
+							cw_string = file.readline()
+							print(cw_string)
+							cw_transmit_string(cw_string)
+#							except:
+#								print("error reading cw string " + str(chan))
 						else:	
 							command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
 							print(command)
