@@ -612,7 +612,7 @@ def cw_transmit_char(character):
 		transmit_carrier(morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing);	  
 		i=i+1
 		sleep(morse_timing);
-	sleep(morse_timing * 3.0);
+	sleep(morse_timing * 1.5);
 
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
@@ -630,7 +630,7 @@ txc_pin = 7
 squelch = 6
 green = 16
 powerPin = 16
-morse_timing = 0.1
+morse_timing = 0.07
 
 command_tx = True
 
