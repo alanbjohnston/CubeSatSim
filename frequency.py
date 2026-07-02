@@ -389,7 +389,7 @@ if (doppler_mode == 'sim'):
   current_index = 0;
   while True:
     relative_time = (time.perf_counter() - start_time) % 370
-    index = int(relative_time/10)
+    index = int(relative_time/10) % 37
     if (index > current_index):
       current_index = index
       print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
