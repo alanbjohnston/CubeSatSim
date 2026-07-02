@@ -279,6 +279,7 @@ def update_doppler():
 	except:
 		print("update_doppler failed")
 
+try:	
 	tx_value = '0'
 	rx_value = '0'
 	sq = '0'
@@ -337,10 +338,14 @@ def update_doppler():
 #		else:
 		no_command = False		
 		print(no_command)
-	except:
-		if (debug_mode == 1):
-			print("Can't read sim.cfg file")	
+    except Exception as e:
+      print(f"An error occurred: {e}")		
+      if (debug_mode == 1):
+        print("Can't read sim.cfg file")	
 	file.close()
+		  
+except Exception as e:
+  print(f"An error occurred: {e}")	
 
 if (doppler_mode == 'off'):
   tx_freq_hz = txf * 1000
