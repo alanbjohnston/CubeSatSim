@@ -1068,7 +1068,15 @@ if __name__ == "__main__":
 			while True:
 #				command_control_check()
 				output (pd, 1)
-				output (ptt, 1)				
+				output (ptt, 1)	
+
+				filename="/home/pi/CubeSatSim/cw0.txt"
+				print(filename)
+				file = open(filename)
+				cw_string = file.readline()
+				print(cw_string)
+				cw_transmit_string(cw_string)
+				
 				try:
 					f = open("/home/pi/CubeSatSim/cwready")
 					f.close()
