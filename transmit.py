@@ -1112,8 +1112,8 @@ if __name__ == "__main__":
 										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
 								output(txLed, 0)
 								
-	#						command_control_check()
-							sleep(2)
+#						command_control_check()
+						sleep(2)
 					f.close()
 					sleep(10)
 				except:	
