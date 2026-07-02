@@ -1079,7 +1079,7 @@ if __name__ == "__main__":
 								file = open("/home/pi/CubeSatSim/cw" + str(chan) + ".txt")
 								string = file.readline()
 								cw_transmit_string(string)
-							else:
+							except:
 								print("error reading cw string " + str(chan))
 						else:	
 							command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
