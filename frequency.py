@@ -358,21 +358,21 @@ if (doppler_mode == 'sim'):
     relative_time = (time.perf_counter() - start_time) % 370
     index = int(relative_time/10)
     if (index > current_index):
-      current_index = index
-  		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
-  		table_row = doppler_table[index]
-  		rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
-  		if (mode == 'e'):
-  			tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
-  		else:
-  			tx_doppler_shift_hz = rx_doppler_shift_hz 
-  		tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-  		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
-  		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-  		print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
+		current_index = index
+		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
+		table_row = doppler_table[index]
+		rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
+		if (mode == 'e'):
+			tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+		else:
+			tx_doppler_shift_hz = rx_doppler_shift_hz 
+		tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
+		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
+		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
+		print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
 
-      with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
-          file.write(f"{tx_doppler_freq_hz:.0f} {rx_doppler_freq_hz:.0f}")
+		with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
+			file.write(f"{tx_doppler_freq_hz:.0f} {rx_doppler_freq_hz:.0f}")
     sleep(1)
 
 if (doppler_mode == 'rig'):
