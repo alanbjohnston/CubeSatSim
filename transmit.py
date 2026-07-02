@@ -605,6 +605,7 @@ def cw_transmit_string(string):
 	
 def cw_transmit_char(character): 	
 	global morse_timing
+	update_doppler()
 	i = 0
 	while (morse_table[(ord(character.upper()) - ord('0')) % 44][i] != 0): 
 		transmit_carrier(morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing);	  
