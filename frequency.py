@@ -370,6 +370,10 @@ if (doppler_mode == 'off'):
         
 if (doppler_mode == 'sim'):
   print("Sim mode")
+  TARGET_PASS = 85           # Maximum elevation profile
+  doppler_table = iss_doppler_passes[TARGET_PASS]
+  print(f"Pass Max Elevation: {TARGET_PASS}°")
+	
   start_time = time.perf_counter() 
   current_index = 0;
   while True:
