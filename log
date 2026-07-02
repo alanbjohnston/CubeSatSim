@@ -44,6 +44,7 @@ if [ "$REALTIME" = "1" ]  ; then
   elif [ "$1" = "-f" ] ; then
     while true; do 
       cat /home/pi/CubeSatSim/frequency.txt
+      echo
       sleep 5
     done
   else
