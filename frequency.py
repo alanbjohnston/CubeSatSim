@@ -411,5 +411,24 @@ if (doppler_mode == 'sim'):
 if (doppler_mode == 'rig'):
   print("rig mode")
   while True:
-    sleep(1)
+
+    system("sudo killall -9 ft857d &>/dev/null")
+    system("udo killall -9 socat &>/dev/null")
+    system("sudo killall -9 rigctld &>/dev/null")
+
+    print("Starting virtual serial ports /tmp/vttyA and /tmp/vttyB")
+
+    system("socat -d -d PTY,raw,echo=0,link=/tmp/vttyA PTY,raw,echo=0,link=/tmp/vttyB &")
+
+	sleep(1.0)
+
+    print("Starting CubeSatSim FT857 emulation")
+    system("/home/pi/FT857d/examples/FT857d/ft857d &")
+
+	sleep(1.0)
+
+    print("Starting rigctl emulating FT857 rig using virtual serial port /tmp/vttyB")
+    system("rigctld -m 1022 -r /tmp/vttyB -t 4532 -vv")
+
+    print("rigctld ended")
 
