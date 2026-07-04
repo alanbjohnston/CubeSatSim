@@ -40,7 +40,7 @@ if [ "$REALTIME" = "1" ]  ; then
     cat /home/pi/CubeSatSim/logp.txt
   #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
   elif [ "$1" = "-r" ]; then
-    sudo journalctl -af -u rigctld # > /home/pi/CubeSatSim/logr.txt 
+    sudo journalctl -af -u frequency # > /home/pi/CubeSatSim/logr.txt 
   elif [ "$1" = "-f" ] ; then
     while true; do 
       cat /home/pi/CubeSatSim/frequency.txt
@@ -68,7 +68,7 @@ else
     cat /home/pi/CubeSatSim/logp.txt
     echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
   elif [ "$1" = "-r" ]; then
-    sudo journalctl -a -u rigctld > /home/pi/CubeSatSim/logr.txt 
+    sudo journalctl -a -u frequency > /home/pi/CubeSatSim/logr.txt 
     cat /home/pi/CubeSatSim/logr.txt
     echo -e "\nrigtcld Log file also saved as /home/pi/CubeSatSim/logr.txt"
   elif [ "$1" = "-f" ] ; then
