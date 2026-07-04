@@ -718,18 +718,18 @@ else
   FLAG=1
 fi
 
-FILE=/etc/systemd/system/rigctld.service
+FILE=/etc/systemd/system/frequency.service
 if [ -f "$FILE" ]; then
-  if [[ $(diff /home/pi/CubeSatSim/systemd/rigctld.service /etc/systemd/system/rigctld.service) ]]; then
-    echo "changed rigctld.service."
-    sudo cp /home/pi/CubeSatSim/systemd/rigctld.service /etc/systemd/system/rigctld.service
+  if [[ $(diff /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service) ]]; then
+    echo "changed frequency.service."
+    sudo cp /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service
     FLAG=1
   else
-    echo "no change to rigctld.service."
+    echo "no change to frequency.service."
   fi
 else
-  echo "creating rigctld.service."
-  sudo cp /home/pi/CubeSatSim/systemd/rigctld.service /etc/systemd/system/rigctld.service
+  echo "creating frequency.service."
+  sudo cp /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service
   FLAG=1
 fi
 
