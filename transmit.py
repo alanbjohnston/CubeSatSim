@@ -829,10 +829,11 @@ if __name__ == "__main__":
 		if len(config) > 13:
 			if config[13] == 'sim':		
 				doppler_mode = True
+				system("sudo systemctl restart frequency")
 				print("Simulated Doppler frequency shift is enabled.")				
-			if config[13] == 'rig':	
+			elif config[13] == 'rig':	
 				doppler_mode = True
-				system("sudo systemctl restart rigctld")
+				system("sudo systemctl restart frequency")
 				print("rigctl Doppler frequency shift is enabled.")	
 			else:
 				system("sudo systemctl stop rigctld")
