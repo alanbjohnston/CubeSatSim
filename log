@@ -1,4 +1,4 @@
-#!/bin/bash
+#!\bin\bash
 
 echo -e "\nLog file script for CubeSatSim\n"
 
@@ -46,7 +46,7 @@ if [ "$REALTIME" = "1" ]  ; then
       cat /home/pi/CubeSatSim/frequency.txt
 #      echo
       sleep 5
-      echo "/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b/b"
+      echo "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
     done
   else
     sudo journalctl -af -u cubesatsim  # > /home/pi/CubeSatSim/log.txt 
