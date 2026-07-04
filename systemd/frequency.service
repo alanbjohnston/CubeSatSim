@@ -1,9 +1,9 @@
 [Unit]
-Description=rigctld
+Description=frequency
 
 [Service]
 TimeoutStopSec=5
-ExecStart=/home/pi/CubeSatSim/rigctld.sh
+ExecStart=/home/pi/CubeSatSim/frequency.sh
 WorkingDirectory=/home/pi/CubeSatSim
 StandardOutput=inherit
 StandardError=inherit
