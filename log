@@ -73,6 +73,7 @@ else
     echo -e "\nrigtcld Log file also saved as /home/pi/CubeSatSim/logr.txt"
   elif [ "$1" = "-f" ] ; then
     cat /home/pi/CubeSatSim/frequency.txt
+    echo
   else
     sudo journalctl -a -u cubesatsim  > /home/pi/CubeSatSim/log.txt 
     cat /home/pi/CubeSatSim/log.txt
