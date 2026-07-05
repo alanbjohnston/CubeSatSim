@@ -70,7 +70,7 @@ else
     echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
   elif [ "$1" = "-r" ]; then
     sudo journalctl -a -u frequency > /home/pi/CubeSatSim/logr.txt 
-    cat /home/pi/CubeSatSim/logf.txt
+    cat /home/pi/CubeSatSim/logr.txt
     echo -e "\nFrequency Log file also saved as /home/pi/CubeSatSim/logf.txt"
   elif [ "$1" = "-f" ] ; then
     cat /home/pi/CubeSatSim/frequency.txt
