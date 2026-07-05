@@ -632,7 +632,7 @@ txc_pin = 7
 squelch = 6
 green = 16
 powerPin = 16
-morse_timing = 0.06
+morse_timing = 0.1
 
 command_tx = True
 
