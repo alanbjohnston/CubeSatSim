@@ -622,7 +622,7 @@ def transmit_carrier(duration):
 	global txLed
 #	command = "timeout " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
 	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
-	stop = "sudo killall -9 tune"
+	stop = "sudo rpitx -f 434.9e6 &"
 	output(txLed, 1)
 	system(start)
 	sleep(duration)
