@@ -608,13 +608,13 @@ def cw_transmit_char(character):
 	global morse_timing
 	update_doppler("no")
 	i = 0
-	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
+	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing
 	print(duration)
 	while (duration != 0): 
-		transmit_carrier(morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing)	  
+		transmit_carrier(duration)	  
 		sleep(morse_timing * 1.0)
 		i=i+1
-		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
+		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing
 	sleep(morse_timing * 0.7) # 1.5);
 
 def transmit_carrier(duration):
