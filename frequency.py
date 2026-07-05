@@ -334,7 +334,7 @@ try:
 			if config[13] == 'sim':		
 				doppler_mode = 'sim'
 				print("Simulated Doppler frequency shift is enabled.")				
-			if config[13] == 'rig':	
+			elif config[13] == 'rig':	
 				doppler_mode = 'rig'
 				print("rigctl Doppler frequency shift is enabled.")	
 			else:
@@ -364,7 +364,8 @@ except Exception as e:
 
 if (doppler_mode == 'off'):
   tx_freq_hz = txf * 1000
-  rx_freq_hz = txf * 1000
+  rx_freq_hz = rxf * 1000
+  print("writing sim.cfg frequency to frequency.txt")	
   with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
       file.write(f"{tx_freq_hz:.0f} {rx_freq_hz:.0f}")
   while True:
