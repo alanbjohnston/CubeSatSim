@@ -363,8 +363,8 @@ except Exception as e:
 	print(f"An error occurred: {e}")	
 
 if (doppler_mode == 'off'):
-  tx_freq_hz = txf * 1000
-  rx_freq_hz = rxf * 1000
+  tx_freq_hz = txf * 1e6
+  rx_freq_hz = rxf * 1e6
   print("writing sim.cfg frequency to frequency.txt")	
   with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
       file.write(f"{tx_freq_hz:.0f} {rx_freq_hz:.0f}")
