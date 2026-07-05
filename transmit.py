@@ -623,11 +623,15 @@ def transmit_carrier(duration):
 #	command = "timeout " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
 	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
 	stop = "sudo rpitx -f 434.9e6 &"
+	killrpitx = "sudo killall -9 rpitx &"
+	killtune = "sudo killall -9 tune &"
 	output(txLed, 1)
 	system(start)
 	sleep(duration)
 	system(stop)
 	output(txLed, 0)
+	system(killrpitx)
+	system(killtune)
 
 print("CubeSatSim v2.2 transmit.py starting...")
 
