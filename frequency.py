@@ -338,9 +338,11 @@ try:
 				doppler_mode = 'rig'
 				print("rigctl Doppler frequency shift is enabled.")	
 			else:
-				system("sudo systemctl stop rigctld")
+				doppler_mode = 'off'
+				print("Doppler frequency shift is disabled.")	
 		else:
-			system("sudo systemctl stop rigctld")
+			doppler_mode = 'off'
+			print("Doppler frequency shift is disabled.")	
 		print(config)
 		print
 #		print(callsign)
