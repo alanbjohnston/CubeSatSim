@@ -608,14 +608,18 @@ def cw_transmit_char(character):
 	global morse_timing
 #	update_doppler("no")
 	i = 0
-	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing
+	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
+	if duration == 1:
+		duration = 1.25
 	print(duration)
 	while (duration != 0): 
-		transmit_carrier(duration)	  
+		transmit_carrier(duration * morse_timing)	  
 		sleep(morse_timing)
 		i=i+1
-		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i] * morse_timing
-	sleep(morse_timing * 3.0) # 1.5);
+		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
+		if duration == 1:
+			duration = 1.25
+	sleep(morse_timing * 3) # 1.5);
 
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
