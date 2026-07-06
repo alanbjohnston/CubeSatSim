@@ -692,7 +692,8 @@ def update_doppler():
 		except:
 			start_time = time.perf_counter()
 			relative_time = (time.perf_counter() - start_time) % 661			
-		index = int(relative_time/10)
+#		index = int(relative_time/10)
+		index = int(relative_time)
 		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
 		table_row = doppler_table[index]
 		rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
