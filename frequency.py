@@ -826,9 +826,9 @@ if (doppler_mode == 'sim'):
       current_index = index
       print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
       table_row = doppler_table[index]
-      rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
+      rx_doppler_shift_hz = table_row["doppler_434_khz"] # * 1000
       if (mode == 'e'):
-        tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+        tx_doppler_shift_hz = table_row["doppler_144_khz"] # * 1000
       else:
         tx_doppler_shift_hz = rx_doppler_shift_hz 
       tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
