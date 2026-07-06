@@ -696,9 +696,9 @@ def update_doppler():
 		index = int(relative_time)
 		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
 		table_row = doppler_table[index]
-		rx_doppler_shift_hz = table_row["doppler_434_khz"] * 1000
+		rx_doppler_shift_hz = table_row["doppler_434_khz"] # * 1000
 		if (mode == 'e'):
-			tx_doppler_shift_hz = table_row["doppler_144_khz"] * 1000
+			tx_doppler_shift_hz = table_row["doppler_144_khz"] # * 1000
 		else:
 			tx_doppler_shift_hz = rx_doppler_shift_hz 
 		tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
@@ -822,7 +822,8 @@ if (doppler_mode == 'sim'):
   current_index = 0;
   while True:
     relative_time = (time.perf_counter() - start_time) % 661
-    index = int(relative_time/10) % 37
+#    index = int(relative_time/10) % 37
+    index = int(relative_time) % 661	  
     if (index > current_index):
       current_index = index
       print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
