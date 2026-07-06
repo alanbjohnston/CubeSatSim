@@ -614,7 +614,7 @@ def cw_transmit_char(character):
 	print(duration)
 	while (duration != 0): 
 		transmit_carrier(duration * morse_timing)	  
-		sleep(morse_timing * 0.9)
+		sleep(morse_timing * 0.7)
 		i=i+1
 		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
 		if duration == 1:
