@@ -821,12 +821,13 @@ if (doppler_mode == 'sim'):
   start_time = time.perf_counter() 
   current_index = 0;
   while True:
-    relative_time = (time.perf_counter() - start_time) % 661
+    relative_time = (time.perf_counter() - start_time) 
 #    index = int(relative_time/10) % 37
-    index = int(relative_time) % 661	  
+    index = int(relative_time) 	  
     if (index > current_index):
       current_index = index
-      print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
+      index = index % 661		
+      print(f"relative time: {relative_time:.1f} seconds after start is AOS index: {index}")
       table_row = doppler_table[index]
       rx_doppler_shift_hz = table_row["doppler_434_khz"] # * 1000
       if (mode == 'e'):
