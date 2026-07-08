@@ -45,7 +45,7 @@ if [ "$REALTIME" = "1" ]  ; then
     while true; do 
       cat /home/pi/CubeSatSim/frequency.txt | tr -d '\n'
 #      echo
-      sleep 5
+      sleep 1
       printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
     done
   else
