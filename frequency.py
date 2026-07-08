@@ -32,7 +32,7 @@ def check_frequency():
 	else:
 		rx_OK == True
 
-    if (tx_OK != True) or (rx_OK != True):
+	if (tx_OK != True) or (rx_OK != True):
 		print("Error - frequency out of range!")
 
 iss_doppler_passes = {
