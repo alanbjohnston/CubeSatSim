@@ -820,7 +820,7 @@ if (doppler_mode == 'sim'):
         tx_doppler_shift_hz = rx_doppler_shift_hz 
       tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
       rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-      check_freuquency()	
+      check_frequency()	
       print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")		
       print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
 
