@@ -11,20 +11,29 @@ def check_frequency():
 
 	global tx_doppler_freq_hz
 	global rx_doppler_freq_hz
+	tx_OK = False
+	rx_OK = False
 
 	if tx_doppler_freq_hz > 450000000:
 		tx_doppler_freq_hz = 435200000
 	elif (tx_doppler_freq_hz < 420000000) and (tx_doppler_freq_hz > 148000000):
 		tx_doppler_freq_hz = 434700000
-	if (tx_doppler_freq_hz < 144000000):
+	elif (tx_doppler_freq_hz < 144000000):
 		tx_doppler_freq_hz = 434600000
+	else:
+		tx_OK = True
 
 	if rx_doppler_freq_hz > 450000000:
 		rx_doppler_freq_hz = 435200000
 	elif (rx_doppler_freq_hz < 420000000) and (rx_doppler_freq_hz > 148000000):
 		rx_doppler_freq_hz = 434700000
-	if (rx_doppler_freq_hz < 144000000):
+	elif (rx_doppler_freq_hz < 144000000):
 		rx_doppler_freq_hz = 434600000
+	else:
+		rx_OK == True
+
+    if (tx_OK != True) or (rx_OK != True):
+		print("Error - frequency out of range!")
 
 iss_doppler_passes = {
 	88: [
