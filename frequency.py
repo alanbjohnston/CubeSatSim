@@ -7,6 +7,24 @@ from time import sleep
 import sys
 from os import system
 
+def check_frequency():
+
+	global tx_doppler_freq_hz
+	global rx_doppler_freq_hz
+
+	if tx_doppler_freq_hz > 450000000:
+		tx_doppler_freq_hz = 435200000
+	elif (tx_doppler_freq_hz < 420000000) and (tx_doppler_freq_hz > 148000000):
+		tx_doppler_freq_hz = 434700000
+	if (tx_doppler_freq_hz < 144000000):
+		tx_doppler_freq_hz = 434600000
+
+	if rx_doppler_freq_hz > 450000000:
+		rx_doppler_freq_hz = 435200000
+	elif (rx_doppler_freq_hz < 420000000) and (rx_doppler_freq_hz > 148000000):
+		rx_doppler_freq_hz = 434700000
+	if (rx_doppler_freq_hz < 144000000):
+		rx_doppler_freq_hz = 434600000
 
 iss_doppler_passes = {
 	88: [
@@ -674,41 +692,6 @@ iss_doppler_passes = {
 	]			
 }
 
-def update_doppler():
-
-	try:
-		global start_time
-		global tx_doppler_freq_hz
-		global rx_doppler_freq_hz
-		global rxpl_value
-		global txpl_value
-		global sq
-		global doppler_table
-		global mode
-		global tx
-		print("update_doppler")
-		try:
-			relative_time = (time.perf_counter() - start_time) % 661
-		except:
-			start_time = time.perf_counter()
-			relative_time = (time.perf_counter() - start_time) % 661			
-#		index = int(relative_time/10)
-		index = int(relative_time)
-		print(f"relative time: {relative_time:.1f} seconds after AOS is index: {index}")
-		table_row = doppler_table[index]
-		rx_doppler_shift_hz = table_row["doppler_434_khz"] # * 1000
-		if (mode == 'e'):
-			tx_doppler_shift_hz = table_row["doppler_144_khz"] # * 1000
-		else:
-			tx_doppler_shift_hz = rx_doppler_shift_hz 
-		tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-		print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
-		rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-		print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
-		
-	except:
-		print("update_doppler failed")
-
 try:	
 	tx_value = '0'
 	rx_value = '0'
@@ -795,6 +778,7 @@ except Exception as e:
 if (doppler_mode == 'off'):
   tx_freq_hz = txf * 1e6
   rx_freq_hz = rxf * 1e6
+  check_frequency()	
   print("writing sim.cfg frequency to frequency.txt")	
   with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
       file.write(f"{tx_freq_hz:.0f} {rx_freq_hz:.0f}")
@@ -835,8 +819,9 @@ if (doppler_mode == 'sim'):
       else:
         tx_doppler_shift_hz = rx_doppler_shift_hz 
       tx_doppler_freq_hz = tx_doppler_start_hz + tx_doppler_shift_hz
-      print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
       rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
+      check_freuquency()	
+      print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")		
       print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
 
       with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
@@ -863,7 +848,7 @@ if (doppler_mode == 'rig'):
     sleep(1.0)
 
     print("Starting rigctl emulating FT857 rig using virtual serial port /tmp/vttyB")
-    system("rigctld -m 1022 -r /tmp/vttyB -t 4532 -vv")
+    system("rigctld -m 1022 -r /tmp/vttyB -t 4532 -vv --vfo")
 
     print("rigctld ended")
 
