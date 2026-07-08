@@ -30,7 +30,7 @@ def check_frequency():
 	elif (rx_doppler_freq_hz < 144000000):
 		rx_doppler_freq_hz = 434600000
 	else:
-		rx_OK == True
+		rx_OK = True
 
 	if (tx_OK != True) or (rx_OK != True):
 		print("Error - frequency out of range!")
