@@ -510,7 +510,7 @@ iss_doppler_passes = {
 	]			
 }
 
-def update_doppler(fm):
+def update_doppler(fm="yes"):
 
 	try:
 		global start_time
