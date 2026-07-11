@@ -1085,7 +1085,7 @@ if __name__ == "__main__":
 					sleep(0.5)
 	
 				except Exception as e:
-					print(f"An error occurred: {e}")	
+#					print(f"An error occurred: {e}")	
 #					command_control_check()
 					sleep(1)
 		elif (mode == 'm'):
