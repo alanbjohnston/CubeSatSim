@@ -602,7 +602,7 @@ def cw_transmit_string(string):
 		if (character != ' '):	  
 			cw_transmit_char(character);
 		else:
-			sleep(6.0 * morse_timing);
+			sleep(7.0 * morse_timing);
 	
 def cw_transmit_char(character): 	
 	global morse_timing
@@ -619,7 +619,7 @@ def cw_transmit_char(character):
 		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
 		if duration == 1:
 			duration = 1.2
-	sleep(morse_timing * 3) # 1.5);
+	sleep(morse_timing * 2.5) # 3) # 1.5);
 
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
