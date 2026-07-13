@@ -948,8 +948,8 @@ if __name__ == "__main__":
 		doppler_table = iss_doppler_passes[TARGET_PASS]
 		print(f"Pass Max Elevation: {TARGET_PASS}°")
 
-		print("Sleeping 10 seconds")
-		sleep(10) # avoid jumping around at start
+		print("Sleeping 15 seconds")
+		sleep(15) # avoid jumping around at start
 		
 	sim_failure_check()
 	if (hab_mode == True) and (mode == 'a'):
