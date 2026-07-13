@@ -50,4 +50,4 @@ sim_mode_auto
 direwolf-pacsatsim-tmp.conf
 groundstation/direwolf-pacsat-tmp.conf
 tlm.bin
-doppler.txt
+frequency.txt
