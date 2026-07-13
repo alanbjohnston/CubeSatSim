@@ -672,6 +672,14 @@ if [ -f "$FILE" ]; then
   sudo rm /etc/systemd/system/rpitx.service
 fi
 
+FILE=/etc/systemd/system/packagekit.service
+if [ -f "$FILE" ]; then
+  echo "Removing packagekit so won't auto check for updates on boot"
+  sudo systemctl stop packagekit
+  sudo systemctl disable packagekit
+  sudo apt-get remove -y packagekit
+fi
+
 FILE=/etc/systemd/system/transmit.service
 if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service) ]]; then
