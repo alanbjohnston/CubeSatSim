@@ -672,8 +672,7 @@ if [ -f "$FILE" ]; then
   sudo rm /etc/systemd/system/rpitx.service
 fi
 
-FILE=/etc/systemd/system/packagekit.service
-if [ -f "$FILE" ]; then
+if [[ -z $(sudo systemctl is-active packagekit | grep inactive) ]]; then 
   echo "Removing packagekit so won't auto check for updates on boot"
   sudo systemctl stop packagekit
   sudo systemctl disable packagekit
