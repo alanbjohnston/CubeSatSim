@@ -546,8 +546,8 @@ def update_doppler(fm="yes"):
 				program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		else:
 			print("No frequency changes!")
-		
-	except:
+	except Exception as e:
+		print(f"An error occurred: {e}")	
 		print("update_doppler failed")
 
 morse_table = [  # 0-9, A-Z only by (ASCII - 48)
@@ -606,7 +606,7 @@ def cw_transmit_string(string):
 	
 def cw_transmit_char(character): 	
 	global morse_timing
-#	update_doppler("no")
+#	("no")
 	i = 0
 	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
 	if duration == 1:
@@ -624,7 +624,7 @@ def cw_transmit_char(character):
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
 	global txLed
-	update_doppler("no")
+	("no")
 	command = "timeout -k 0.5 " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
 	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
 	stop = "sudo rpitx -f 434.9e6 &"
@@ -1188,6 +1188,10 @@ if __name__ == "__main__":
 					
 					if (command_tx == True):
 						print ("Sending SSTV image")
+						if (doppler_mode):
+							update_doppler()
+							txf = tx_doppler_freq_hz / 1000
+							tx = "{:.4f}".format(txf)						
 						output(txLed, 1)
 #						battery_saver_check()
 
@@ -1217,7 +1221,7 @@ if __name__ == "__main__":
 
 					if (command_tx == True):
 						print ("Sending SSTV image")
-						if (doppler_mode == True):
+						if (doppler_mode):
 							update_doppler()
 							txf = tx_doppler_freq_hz / 1000
 							tx = "{:.4f}".format(txf)
@@ -1258,6 +1262,10 @@ if __name__ == "__main__":
 					if (command_tx == True):
 
 						print ("Sending SSTV image")
+						if (doppler_mode):
+							update_doppler()
+							txf = tx_doppler_freq_hz / 1000
+							tx = "{:.4f}".format(txf)							
 						output(txLed, 1)
 
 #						battery_saver_check()
@@ -1291,7 +1299,7 @@ if __name__ == "__main__":
 					while 1:
 						if (command_tx == True):
 							print ("Sending SSTV image")
-							if (doppler_mode == True):
+							if (doppler_mode):
 								update_doppler()
 								txf = tx_doppler_freq_hz / 1000
 								tx = "{:.4f}".format(txf)
@@ -1323,7 +1331,7 @@ if __name__ == "__main__":
 							system("(while true; do (sleep 10 && cat /home/pi/CubeSatSim/wav/sstv.wav); done) | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 &")
 					while 1:
 						if (command_tx == True):
-							if (doppler_mode == True):
+							if (doppler_mode):
 								update_doppler()
 								txf = tx_doppler_freq_hz / 1000
 								tx = "{:.4f}".format(txf)							
@@ -1347,9 +1355,11 @@ if __name__ == "__main__":
 		elif (mode == 'b') or (mode == 'j'):
 #			command_control_check()	
 			if (mode == 'b'):
-				print("BPSK")
+				print("BPSK")		
 			else:
 				print("FUNcube")
+			if (doppler_mode):
+				print("No doppler shift in this mode")					
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
@@ -1419,7 +1429,7 @@ if __name__ == "__main__":
 			while True:
 				if (input(squelch) == False) and (command_tx == True):
 					print("Carrier detected")
-					if (doppler_mode == True):
+					if (doppler_mode):
 						update_doppler()
 						start_repeater(tx_doppler_freq_hz)
 					else:
@@ -1430,6 +1440,8 @@ if __name__ == "__main__":
 					stop_repeater()
 		else:
 			print("FSK") 
+			if (doppler_mode):
+				print("No doppler shift in this mode")				
 			print("turn on FM rx")
 			output(pd, 1)
 			output(ptt, 1)
