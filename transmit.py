@@ -606,7 +606,7 @@ def cw_transmit_string(string):
 	
 def cw_transmit_char(character): 	
 	global morse_timing
-#	("no")
+#	update_doppler("no")
 	i = 0
 	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
 	if duration == 1:
@@ -624,7 +624,7 @@ def cw_transmit_char(character):
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
 	global txLed
-	("no")
+	update_doppler("no")
 	command = "timeout -k 0.5 " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
 	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
 	stop = "sudo rpitx -f 434.9e6 &"
