@@ -450,7 +450,21 @@ elif [ "$1" = "-m" ]; then
 	else
 
 		echo "changing CubeSatSim to CW mode"
-		check_restart
+
+		value=`cat /home/pi/CubeSatSim/sim.cfg`
+		echo "$value" > /dev/null
+		set -- $value
+		if [ "${14}" = "sim" ]  || [ "${14}" = "rig" ] ; then
+			DOPPLER=1
+		else
+			DOPPLER=0
+
+		if [ "$DOPPLER" = "1" ] ; then
+			restart=1
+		else
+			check_restart
+		fi
+
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
 
 	fi
