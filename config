@@ -260,22 +260,33 @@ if [ "$1" = "" ]; then
 		echo "Random Failure Mode is OFF"
 	fi
 
+HAB=$9
+SQUELCH=$6
+RXPL=${10}
+TXPL=${11}
+
 #	echo ${14}
 	if [ "${14}" = "sim" ] ; then
 		echo "Simulated Doppler frequency shift enabled"
+		echo -n "Current TX and RX Frequency (Hz) is: "
+		cat /home/pi/CubeSatSim/frequency.txt
+#		echo -n ${7}
+#		echo -n " MHz, RX Frequency is: "
+#		echo -n ${8}
+#		echo " MHz"
 	elif [ "${14}" = "rig" ] ; then
 		echo "rigctld Doppler frequency shift enabled"
 	else
 		echo "Doppler frequency shift is OFF"
+		echo -n "TX Frequency is: "
+		echo -n ${7}
+		echo -n " MHz, RX Frequency is: "
+		echo -n ${8}
+		echo " MHz"
+
 	fi
 
-	echo -n "TX Frequency is: "
-	echo -n ${7}
-	echo -n " MHz, RX Frequency is: "
-	echo -n ${8}
-	echo " MHz"
-
-	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
+	if [ "$HAB" = "yes" ] || [ "$HAB" = "y" ]; then
 		echo "Balloon mode is ON"
 	else
 		echo "Balloon mode is OFF"
@@ -295,7 +306,7 @@ if [ "$1" = "" ]; then
 		echo "Squelch is off since PacSat or PacSat Ground Station mode"
 	else
 		echo -n "Squelch level is: "
-		echo $6
+		echo $SQUELCH
 	fi
 #	echo
 
@@ -327,10 +338,10 @@ if [ "$1" = "" ]; then
 #	echo
 
 	echo -n "RX PL code is: "
-	echo -n ${10}
+	echo -n $RXPL
 #	echo
 	echo -n " TX PL code is: "
-	echo ${11}
+	echo $TXPL
 #	echo
 
 	FILE=/home/pi/CubeSatSim/battery_saver
@@ -377,7 +388,8 @@ if [ "$1" = "" ]; then
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+#	echo $1 $2 $3 $4 $5 $SQUELCH $7 $8 $HAB $RXPL $TXPL ${12} ${13} ${14}
+	cat /home/pi/CubeSatSim/sim.cfg
 	echo
 	
 	echo "To change, include an OPTION"
