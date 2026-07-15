@@ -1020,6 +1020,8 @@ if __name__ == "__main__":
 						while (input(ptt) != 1):
 							sleep(0.2)					
 						output(txLed, 0)
+						if (mode == 'p') and (doppler_mode):
+							update_doppler()
 #						print("0")
 					else:
 #						sleep(0.1)
@@ -1032,6 +1034,8 @@ if __name__ == "__main__":
 							sleep(0.05)					
 ##						system(stop_rpitx)
 						output(txLed, 0)
+						if (mode == 'p') and (doppler_mode):
+							update_doppler("no")						
 #						print("0")						
 						
 #						sleep(10)
