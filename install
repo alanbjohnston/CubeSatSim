@@ -366,6 +366,8 @@ elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 
 	  sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
 
+ 	  echo "pi ALL=(ALL) NOPASSWD: ALL"  /etc/sudoers.d/010_pi-nopasswd
+
 fi
 
 FILE=/home/pi/CubeSatSim/sim.cfg
