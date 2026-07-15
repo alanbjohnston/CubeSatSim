@@ -965,14 +965,14 @@ if __name__ == "__main__":
 				status = status + " S"
 			if (mode != 'e'):	
 				if (debug_mode == 1):
-					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3")
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3")
 				else:
-					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 			else:
 				if (debug_mode == 1):
-					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + txr + "e3")
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + txr + "e3")
 				else:
-					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + txr + "e3 > /dev/null 2>&1")
+					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + txr + "e3 > /dev/null 2>&1")
 				
 			output(txLed, 0)
 	
@@ -1075,9 +1075,9 @@ if __name__ == "__main__":
 						else:
 							system("echo 'AMSAT-11>APCSS:010101/hi hi ' >> t.txt")
 							if (debug_mode == 1):
-								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3")
+								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3")
 							else:
-								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+								system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/telem.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 					
 						sleep(0.1)  
 #						output (ptt, 1)
@@ -1142,9 +1142,9 @@ if __name__ == "__main__":
 	#								output (pd, 0)
 								else:
 									if (debug_mode == 1):
-										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3")
+										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3")
 									else:
-										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
+										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
 								output(txLed, 0)
 								
 #						command_control_check()
@@ -1451,7 +1451,7 @@ if __name__ == "__main__":
 			output(ptt, 1)
 			
 			if (command_tx == True):
-				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx-ui/rpitx-ui -i- -m RF -f " + tx + "e3 &")
+				system("sudo nc -l 8080 | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3 &")
 			print("Turning LED on/off and listening for carrier")
 			while 1:
 				output(txLed, 0)
