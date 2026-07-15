@@ -94,11 +94,21 @@ function check_restart {
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+	MODE=$1
 
-#	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	if [ "${14}" = "sim" ]  || [ "${14}" = "rig" ] ; then
+		DOPPLER=1
+	else
+		DOPPLER=0
+	fi
+
+#	if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
 #			reboot=1
 #el
-	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+	if [ "$MODE" == "f" ] || [ "$MODE" == "b" ]  || [ "$MODE" == "e" ] || [ "$MODE" == "j" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
 			restart=1
@@ -107,6 +117,8 @@ function check_restart {
 			reboot=1
 #			echo "Need to reboot"
 		fi	
+	elif [ "$MODE" == "m" ] || [ "$DOPPLER" == "1" ] ; then
+		reboot=1
 	else
 		restart=1
 #		echo "Need to restart"
@@ -122,11 +134,11 @@ echo
 
 sudo modprobe snd-aloop
 
-# if [ "$2" = "n" ] ; then
+# if [ "$2" = "-n" ] ; then
 if [ -z "$2" ] ; then
 	noreboot=0
 else
-	if [ "$2" = "n" ] ; then
+	if [ "$2" = "-n" ] ; then
 		echo "Reboot disabled"
 		noreboot=1
 	else
@@ -1135,7 +1147,7 @@ elif [ "$1" = "-P" ]; then
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
 
-	reboot=1
+	restart=1
 ##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
