@@ -530,7 +530,7 @@ def update_doppler(fm="yes"):
 		new_tx_frequency = int(frequencies[0])
 		new_rx_frequency = int(frequencies[1])
 		
-		print(f"New frequencies: {new_tx_frequency}, Second number: {new_tx_frequency}")
+		print(f"New frequencies: {new_tx_frequency}, Second number: {new_rx_frequency}")
 
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
