@@ -1034,8 +1034,8 @@ if __name__ == "__main__":
 							sleep(0.05)					
 ##						system(stop_rpitx)
 						output(txLed, 0)
-						if (mode == 'p') and (doppler_mode):
-							update_doppler("no")						
+#						if (mode == 'p') and (doppler_mode):
+#							update_doppler("no")						
 #						print("0")						
 						
 #						sleep(10)
