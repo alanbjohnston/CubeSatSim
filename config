@@ -2011,7 +2011,15 @@ elif [ "$1" = "-K" ]; then
 	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} $doppler > /home/pi/CubeSatSim/sim.cfg
 	echo
 
-	restart=1
+	value=`cat /home/pi/CubeSatSim/.mode`	
+	echo "$value" > /dev/null
+	set -- $value
+
+	if [[ ( "$sim" == "y" || "$sim" == "yes" ) && ( "$1" == "m" ) && ( "$doppler" == "no" ) ]] ; then
+		reboot=1
+	else
+		restart=1
+	fi
 
 elif [ "$1" = "-h" ]; then
 
