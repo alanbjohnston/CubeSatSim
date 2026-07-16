@@ -976,7 +976,7 @@ if __name__ == "__main__":
 				if (debug_mode == 1):
 		#			system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + txr + "e3")
 					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && sudo pinfm  --audio /home/pi/CubeSatSim/morse.wav --mode narrow --freq " + txr + "e6")
-					else:
+				else:
 		#			system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + txr + "e3 > /dev/null 2>&1")
 					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && sudo pinfm  --audio /home/pi/CubeSatSim/morse.wav --mode narrow --freq " + txr + "e6 > /dev/null 2>&1")
 				
