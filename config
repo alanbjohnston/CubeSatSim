@@ -1969,6 +1969,7 @@ elif [ "$1" = "-K" ]; then
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
+	doppler="${14}"
 
 	if [ "${14}" = "sim" ] ; then
 		echo "Simulated Doppler frequency shift mode enabled"
@@ -2015,11 +2016,11 @@ elif [ "$1" = "-K" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [[ ( "$sim" == "y" || "$sim" == "yes" ) && ( "$1" == "m" ) && ( "$doppler" == "no" ) ]] ; then
-		reboot=1
-	else
+#	if [[ ( "$doppler" == "y" || "$doppler" == "yes" ) && ( "$1" == "m" ) && ( "$doppler" == "no" ) ]] ; then
+#		reboot=1
+#	else
 		restart=1
-	fi
+#	fi
 
 elif [ "$1" = "-h" ]; then
 
