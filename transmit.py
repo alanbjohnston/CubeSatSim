@@ -1257,7 +1257,7 @@ if __name__ == "__main__":
 							if (debug_mode == 1):
 	#							system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3")
 								system("sudo pinfm  --audio /home/pi/CubeSatSim/camera_out.jpg.wav --mode narrow --freq " + tx + "e6")	
-				else:
+							else:
 #								system("cat /home/pi/CubeSatSim/camera_out.jpg.wav | csdr convert_i16_f | csdr gain_ff 14000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
 								system("sudo pinfm  --audio /home/pi/CubeSatSim/camera_out.jpg.wav --mode narrow --freq " + tx + "e6 > /dev/null 2>&1")	
 
