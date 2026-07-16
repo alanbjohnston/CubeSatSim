@@ -720,7 +720,7 @@ if __name__ == "__main__":
 		f = open("/home/pi/CubeSatSim/pi_zero2", "r")
 		f.close()
 		print("Pi Zero 2 detected!")
-		uptime_time = 30  # 30 second boot time if Pi Zero 2
+		uptime_time = 50  # increase from 30 seconds for Trixie
 	except:
 		print("Pi Zero 2 not detected")
 
