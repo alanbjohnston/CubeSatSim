@@ -174,7 +174,7 @@ def camera_photo():
 	system("sudo rm /home/pi/CubeSatSim/camera_out.jpg")
 	stored_image = False
 	try:
-		if os_status == "bookworm":
+		if os_status == "bookworm" or os_status == "trixie":
 			system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 		else:
 			system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
@@ -907,8 +907,10 @@ if __name__ == "__main__":
 		os_status = e.stdout.strip()
 		print(f"Output of the command (stdout): {e.stdout}")
 #		print(f"Error output of the command (stderr): {e.stderr}")
-	if os_status != "VERSION_CODENAME=bullseye":
+	if os_status == "VERSION_CODENAME=bookworm":
 		os_status = "bookworm"
+	elif os_status == "VERSION_CODENAME=trixie":
+		os_status = "trixie"
 	else:
 		os_status = "bullseye"
 	print (os_status)
@@ -1175,7 +1177,7 @@ if __name__ == "__main__":
 #					from pysstv.sstv import SSTV
 #				camera = PiCamera()
 				print("Testing for camera")
-				if os_status == "bookworm":
+				if os_status == "bookworm" or os_status == "trixie":
 					system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 				else:
 					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")			
