@@ -541,7 +541,7 @@ def update_doppler(fm="yes"):
 			if (fm != "no"):
 				rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 				if (mode != 'e'):
-					tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
+					"{:.4f}".format(tx_doppler_freq_hz/1e6)
 					print(tx)
 				program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		else:
@@ -628,7 +628,7 @@ def transmit_carrier(duration):
 	command = "timeout -k 0.5 " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
 	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
 	stop = "sudo rpitx -f 434.9e6 &"
-	killrpitx = "sudo killall -9 rpitx &"
+	killrpi"sudo killall -9 rpitx &"
 	killtune = "sudo killall -9 tune &"
 	output(txLed, 1)
 #	system(start)
@@ -651,7 +651,7 @@ green = 16
 powerPin = 16
 morse_timing = 0.09 # 0.1
 
-command_tx = True
+command_True
 
 setup(13, "up")
 setup(12, "up")
@@ -756,9 +756,9 @@ if __name__ == "__main__":
 	try:
 		file = open("/home/pi/CubeSatSim/beacon_off")
 		file.close()
-		command_tx = False
+		command_False
 	except:
-		command_tx = True
+		command_True
 		if (debug_mode == 1):
 			print("Can't open beacon_off file, defaulting to False")
 	print("Command_tx: ")
@@ -785,7 +785,7 @@ if __name__ == "__main__":
 	tx_value = '0'
 	rx_value = '0'
 	sq = '0'
-	tx = '434.9000'	
+	'434.9000'	
 	rx = '435.0000'
 	txr = '144.9000'
 	sim_mode = False
@@ -1060,7 +1060,7 @@ if __name__ == "__main__":
 						output(txLed, 1)
 						if (doppler_mode == True):
 							update_doppler()
-							txf = tx_doppler_freq_hz / 1000
+							txf = tx_doppler_freq_hz / 1e6
 							tx = "{:.4f}".format(txf)
 						if (txc):
 							sim_failure_check()
@@ -1129,7 +1129,7 @@ if __name__ == "__main__":
 								output(txLed, 1)					
 								if (doppler_mode == True):
 									update_doppler()
-									txf = tx_doppler_freq_hz / 1000
+									txf = tx_doppler_freq_hz / 1e6
 									tx = "{:.4f}".format(txf)
 								if (txc):
 									sim_failure_check()
@@ -1194,7 +1194,7 @@ if __name__ == "__main__":
 						print ("Sending SSTV image")
 						if (doppler_mode):
 							update_doppler()
-							txf = tx_doppler_freq_hz / 1000
+							txf = tx_doppler_freq_hz / 1e6
 							tx = "{:.4f}".format(txf)						
 						output(txLed, 1)
 #						battery_saver_check()
@@ -1227,7 +1227,7 @@ if __name__ == "__main__":
 						print ("Sending SSTV image")
 						if (doppler_mode):
 							update_doppler()
-							txf = tx_doppler_freq_hz / 1000
+							txf = tx_doppler_freq_hz / 1e6
 							tx = "{:.4f}".format(txf)
 						
 						output(txLed, 1)
@@ -1268,7 +1268,7 @@ if __name__ == "__main__":
 						print ("Sending SSTV image")
 						if (doppler_mode):
 							update_doppler()
-							txf = tx_doppler_freq_hz / 1000
+							txf = tx_doppler_freq_hz / 1e6
 							tx = "{:.4f}".format(txf)							
 						output(txLed, 1)
 
@@ -1305,7 +1305,7 @@ if __name__ == "__main__":
 							print ("Sending SSTV image")
 							if (doppler_mode):
 								update_doppler()
-								txf = tx_doppler_freq_hz / 1000
+								txf = tx_doppler_freq_hz / 1e6
 								tx = "{:.4f}".format(txf)
 							
 							output(txLed, 1)
@@ -1337,7 +1337,7 @@ if __name__ == "__main__":
 						if (command_tx == True):
 							if (doppler_mode):
 								update_doppler()
-								txf = tx_doppler_freq_hz / 1000
+								txf = tx_doppler_freq_hz / 1e6
 								tx = "{:.4f}".format(txf)							
 							output(txLed, 1)
 						
