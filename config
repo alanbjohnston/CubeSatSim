@@ -278,7 +278,14 @@ RXPL=${10}
 TXPL=${11}
 
 #	echo ${14}
-	if [ "${14}" = "sim" ] ; then
+	if [ ( "${14}" = "sim" || "${14}" = "rig" ) && ( "$MODE" = "f" || "$MODE" = "b" || "$MODE" = "j") ] ; then
+		echo "Doppler frequency shift is ON but not active in this mode (only APRS, CW, SSTV, and Repeater modes)"
+		echo -n "TX Frequency is: "
+		echo -n ${7}
+		echo -n " MHz, RX Frequency is: "
+		echo -n ${8}
+		echo " MHz"
+	elif [ "${14}" = "sim" ] ; then
 		echo "Simulated Doppler frequency shift enabled"
 		echo -n "Current TX and RX Frequency (Hz) is: "
 		cat /home/pi/CubeSatSim/frequency.txt
