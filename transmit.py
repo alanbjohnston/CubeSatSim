@@ -948,6 +948,8 @@ if __name__ == "__main__":
 		doppler_table = iss_doppler_passes[TARGET_PASS]
 		print(f"Pass Max Elevation: {TARGET_PASS}°")
 
+		print("MODE: ")
+		print(mode)
 		if (mode == 'm'):
 			print("Sleeping 15 seconds")
 			sleep(15) # avoid CW jumping around at start
