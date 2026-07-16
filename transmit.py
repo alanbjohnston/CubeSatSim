@@ -1150,10 +1150,10 @@ if __name__ == "__main__":
 								else:
 									if (debug_mode == 1):
 #										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3")
-										system("sudo pinfm  --audio /home/pi/CubeSatSim/telem.wav --mode narrow --freq " + tx + "e6")	
+										system("sudo pinfm  --audio /home/pi/CubeSatSim/morse.wav --mode narrow --freq " + tx + "e6")	
 									else:
 #										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo rpitx-ui -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
-										system("sudo pinfm  --audio /home/pi/CubeSatSim/telem.wav --mode narrow --freq " + tx + "e6 > /dev/null 2>&1")	
+										system("sudo pinfm  --audio /home/pi/CubeSatSim/morse.wav --mode narrow --freq " + tx + "e6 > /dev/null 2>&1")	
 
 								output(txLed, 0)
 								
