@@ -932,17 +932,18 @@ if __name__ == "__main__":
 #	if (mode != 'e'): 
 	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
 
-	if (mode == 'e'):
-		tx_doppler_start_hz = txrf * 1e6
-	else:
-		tx_doppler_start_hz = txf * 1e6
-	tx_doppler_shift_hz = 0
-	print(f"Tx center frequency: {tx_doppler_start_hz}")
-	rx_doppler_start_hz = rxf * 1e6
-	rx_doppler_shift_hz = 0
-	print(f"Rx center frequency: {rx_doppler_start_hz}")
-
 	if (doppler_mode == True):	
+	
+		if (mode == 'e'):
+			tx_doppler_start_hz = txrf * 1e6
+		else:
+			tx_doppler_start_hz = txf * 1e6
+		tx_doppler_shift_hz = 0
+		print(f"Tx center frequency: {tx_doppler_start_hz}")
+		rx_doppler_start_hz = rxf * 1e6
+		rx_doppler_shift_hz = 0
+		print(f"Rx center frequency: {rx_doppler_start_hz}")
+
 		TARGET_PASS = 85           # Maximum elevation profile
 	
 		doppler_table = iss_doppler_passes[TARGET_PASS]
@@ -1440,7 +1441,7 @@ if __name__ == "__main__":
 						update_doppler()
 						start_repeater(tx_doppler_freq_hz)
 					else:
-						start_repeater(txr)
+						start_repeater(txrf * 1e6)
 					while (input(squelch) == False):
 						sleep(1)
 					print("No carrier detected")
