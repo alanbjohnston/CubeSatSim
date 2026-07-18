@@ -1007,7 +1007,7 @@ if __name__ == "__main__":
 				output(txLed, 0)
 				print("0")
 				rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &"
-				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f 434.9e3 > /dev/null 2>&1"
+				stop_rpitx = "sudo killall -9 rpitx && sudo killall -9 arecord && sudo rpitx -m RF -f  434.9e3 > /dev/null 2>&1"
 				if not txc:
 					print("txc is:")
 					print(txc)
@@ -1026,20 +1026,21 @@ if __name__ == "__main__":
 						output(txLed, 0)
 						if (mode == 'p') and (doppler_mode):
 							update_doppler()
+							rpitx = "arecord -D plughw:CARD=Loopback,DEV=1 -f S16_LE -r 48000 -c 1 | csdr convert_s16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1 &"
 #						print("0")
 					else:
 #						sleep(0.1)
 						while (input(17) == 0):
 							sleep(0.05)
-##						system(rpitx)
+						system(rpitx)
 						output(txLed, 1)
 #						print("1")
 						while (input(17) == 1):
 							sleep(0.05)					
-##						system(stop_rpitx)
+						system(stop_rpitx)
 						output(txLed, 0)
-#						if (mode == 'p') and (doppler_mode):
-#							update_doppler("no")						
+						if (mode == 'p') and (doppler_mode):
+							update_doppler("no")						
 #						print("0")						
 						
 #						sleep(10)
