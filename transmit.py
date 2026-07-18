@@ -1013,7 +1013,7 @@ if __name__ == "__main__":
 					print("txc is:")
 					print(txc)
 					system(stop_rpitx)
-					system(rpitx)	
+#					system(rpitx)	
 					print("Safe Mode!!")
 				while (True):
 					if (txc):
