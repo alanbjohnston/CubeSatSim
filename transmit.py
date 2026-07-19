@@ -616,38 +616,38 @@ morse_table = [  # 0-9, A-Z only by (ASCII - 48)
   [ 3, 3, 1, 1, 0, 0 ]	# Z	
 ]
 
-def cw_transmit_id_fm():
+def cw_transmit_fm(morse, tx):
 	global txLed
-	global no_command
+#	global no_command
 	global debug_mode
-	global sim_mode
-	global callsign
-	global tx
-	global txr
+#	global sim_mode
+#	global callsign
+#	global tx
+#	global txr
 	
 	try:	
 		output(txLed, 1)
-		print("Transmit CW ID")
-		status = ""
-		if not no_command:
-			status = status + " C"
-		if sim_mode:
-			status = status + " S"
-		if (mode != 'e'):	
-			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
-			else:
-				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+		print("Transmit FM CW " + morse)
+#		status = ""
+#		if not no_command:
+#			status = status + " C"
+#		if sim_mode:
+#			status = status + " S"
+#		if (mode != 'e'):	
+		if (debug_mode == 1):
+			system("echo 'hi hi de " + morse + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 		else:
-			if (debug_mode == 1):
-				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3")
-			else:
-				system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3 > /dev/null 2>&1")
+			system("echo 'hi hi de " + morse + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
+#		else:
+#			if (debug_mode == 1):
+#				system("echo 'hi hi de " + morse + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3")
+#			else:
+#				system("echo 'hi hi de " + morse + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3 > /dev/null 2>&1")
 			
 		output(txLed, 0)
 	except Exception as e:
 		print(f"An error occurred: {e}")	
-		print("cw_transmit_id_fm failed")	
+		print("cw_transmit_fm failed")	
 	
 def cw_transmit_string(string):
 	global morse_timing
@@ -1015,20 +1015,22 @@ if __name__ == "__main__":
 		print("Don't transmit CW ID since APRS HAB mode is active")
 	else:	
 		if (((mode == 'a') or (mode == 'b') or (mode == 'f') or (mode == 's') or (mode == 'j') or (mode == 'p') or (mode == 'P')) and (command_tx == True) and (skip == False)) or ((mode == 'e') and (command_tx == True)):	#		battery_saver_mode
-			cw_transmit_id_fm()
+			
 #			output(txLed, 1)
 #			print("Transmit CW ID")
-#			status = ""
-#			if not no_command:
-#				status = status + " C"
-#			if sim_mode:
-#				status = status + " S"
-#			if (mode != 'e'):	
+			status = ""
+			if not no_command:
+				status = status + " C"
+			if sim_mode:
+				status = status + " S"
+			if (mode != 'e'):
+				cw_transmit_fm(callsign + status, tx)
 #				if (debug_mode == 1):
 #					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
 #				else:
 #					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")
-#			else:
+			else:
+				cw_transmit_fm(callsign + status, txr)
 #				if (debug_mode == 1):
 #					system("echo 'hi hi de " + callsign + status + "' > id.txt && gen_packets -M 20 /home/pi/CubeSatSim/id.txt -o /home/pi/CubeSatSim/morse.wav -r 48000 > /dev/null 2>&1 && cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + txr + "e3")
 #				else:
