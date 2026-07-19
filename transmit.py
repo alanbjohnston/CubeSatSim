@@ -537,13 +537,15 @@ def update_doppler(fm="yes"):
 			new_tx_frequency = vfoB_frequency
 			new_rx_frequency = vfoB_frequency + 289169117	# AO-73 U/V cross band repeater offset
 			print("Calculating RX frequency using offset from TX frequency")
+			print(f"Tx Frequency: {new_tx_frequency:.0f}")
+			print(f"Rx Frequency: {new_rx_frequency:.0f}")
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
 			rx_doppler_freq_hz = new_rx_frequency
 			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 #			rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-			print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
+			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 			if (fm != "no"):
 				rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 				if (mode != 'e'):
