@@ -537,7 +537,7 @@ def update_doppler(fm="yes"):
 			tx_center = 145960000 # AO-73
 			rx_center = 435140000
 			tx_doppler_shift = vfoB_frequency - tx_center
-			rx_doppler_shift = (rx_center/tx_center) * tx_doppler_shift
+			rx_doppler_shift = -1 * (rx_center/tx_center) * tx_doppler_shift
 			new_tx_frequency = vfoB_frequency
 			new_rx_frequency = rx_center + rx_doppler_shift
 			print("Calculating RX frequency using offset from TX frequency!")
