@@ -536,7 +536,7 @@ def update_doppler(fm="yes"):
 		if rigctl:
 			new_tx_frequency = vfoB_frequency
 			new_rx_frequency = vfoB_frequency + 289169117	# AO-73 U/V cross band repeater offset
-			print("Calculating RX frequency using offset from TX frequency")
+			print("Calculating RX frequency using offset from TX frequency!")
 			print(f"Tx Frequency: {new_tx_frequency:.0f}")
 			print(f"Rx Frequency: {new_rx_frequency:.0f}")
 		
