@@ -1011,6 +1011,13 @@ if __name__ == "__main__":
 			sleep(15) # avoid CW jumping around at start
 		
 	sim_failure_check()
+
+	status = ""
+	if not no_command:
+		status = status + " C"
+	if sim_mode:
+		status = status + " S"
+	
 	if (hab_mode == True) and (mode == 'a'):
 		print("Don't transmit CW ID since APRS HAB mode is active")
 	else:	
@@ -1018,11 +1025,7 @@ if __name__ == "__main__":
 			
 #			output(txLed, 1)
 #			print("Transmit CW ID")
-			status = ""
-			if not no_command:
-				status = status + " C"
-			if sim_mode:
-				status = status + " S"
+
 			if (mode != 'e'):
 				cw_transmit_fm(callsign + status, tx)
 #				if (debug_mode == 1):
@@ -1496,7 +1499,7 @@ if __name__ == "__main__":
 			if (doppler_mode):
 				update_doppler()
 				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
-			cw_transmit_id_fm()	
+			cw_transmit_fm(callsign + status)	
 			start_time = time.perf_counter()
 						
 			while True:
