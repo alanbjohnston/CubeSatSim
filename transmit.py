@@ -522,6 +522,7 @@ def update_doppler(fm="yes"):
 		global doppler_table
 		global mode
 		global tx
+		global rigctl
 		print("update_doppler")
 
 		with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
@@ -529,9 +530,13 @@ def update_doppler(fm="yes"):
 		
 		new_tx_frequency = int(frequencies[0])
 		new_rx_frequency = int(frequencies[1])
-		
+
 		print(f"New frequencies: {new_tx_frequency}, Second number: {new_rx_frequency}")
 
+		if rigctl:
+			new_rx_frequency = new_tx_frequency + 289169117	# AO-73 U/V cross band repeater offset
+			print("Calcualting RX frequency using offset from TX frequency"
+		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
 			rx_doppler_freq_hz = new_rx_frequency
@@ -792,6 +797,7 @@ if __name__ == "__main__":
 	sim_config = False
 	hab_mode = False
 	doppler_mode = False
+	rigctl = False
 	
 	try:
 		file = open("/home/pi/CubeSatSim/sim.cfg")
@@ -852,6 +858,7 @@ if __name__ == "__main__":
 				print("Simulated Doppler frequency shift is enabled.")				
 			elif config[13] == 'rig':	
 				doppler_mode = True
+				rigctl = True
 #				system("sudo systemctl restart frequency")
 				print("rigctl Doppler frequency shift is enabled.")	
 #			else:
