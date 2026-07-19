@@ -556,13 +556,13 @@ def update_doppler(fm="yes"):
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 #			rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
-			if (fm != "no"):
-				rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
-				if (mode != 'e'):
-					tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
+			rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
+			if (mode != 'e'):
+				tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
 #					print(tx)
-				else:
-					txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
+			else:
+				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
+			if (fm != "no"):
 				program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		else:
 			print("Not applying Doppler shift!")
@@ -1499,7 +1499,7 @@ if __name__ == "__main__":
 			if (doppler_mode):
 				update_doppler()
 				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
-			cw_transmit_fm(callsign + status)	
+			cw_transmit_fm(callsign + status, txr)	
 			start_time = time.perf_counter()
 						
 			while True:
