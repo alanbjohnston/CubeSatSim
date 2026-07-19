@@ -1468,6 +1468,9 @@ if __name__ == "__main__":
 						sleep(1)
 					print("No carrier detected")
 					stop_repeater()
+				if ((time.perf_counter() - start_time) > 10) and doppler_mode:
+					update_doppler()
+					start_time = time.perf_counter()
 		else:
 			print("FSK") 
 			if (doppler_mode):
