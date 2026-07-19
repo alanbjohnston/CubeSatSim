@@ -658,7 +658,8 @@ def cw_transmit_fm(morse, tx):
 def cw_transmit_string(string):
 	global morse_timing
 	for character in string: 	
-		if (character != ' '):	  
+		if (character != ' '):
+			update_doppler()
 			cw_transmit_char(character);
 		else:
 			sleep(7.0 * morse_timing);
@@ -1515,7 +1516,7 @@ if __name__ == "__main__":
 				if (input(squelch) == False) and (command_tx == True):
 					print("Carrier detected")
 					if (doppler_mode):
-						update_doppler()
+						update_doppler() 
 						start_repeater(tx_doppler_freq_hz)
 					else:
 						start_repeater(txrf * 1e6)
