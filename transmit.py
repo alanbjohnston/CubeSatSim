@@ -535,19 +535,25 @@ def update_doppler(fm="yes"):
 		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 		if rigctl:
-			if (tx_frequency > 145880000):
-				tx_center = 145960000 # AO-91
-				rx_center = 435250000 # AO-73 is same tx_center but 435140000
+			if (tx_frequency < 148000000):
+				if (tx_frequency > 145880000):
+					tx_center = 145960000 # AO-91
+					rx_center = 435250000 # AO-73 is same tx_center but 435140000
+				else:
+					tx_center = 145800000 # ISS U/V Repeater
+					rx_center = 437800000 			
+				tx_doppler_shift = tx_frequency - tx_center
+				rx_doppler_shift = -1 * (rx_center/tx_center) * tx_doppler_shift
+				new_tx_frequency = tx_frequency
+				new_rx_frequency = rx_center + rx_doppler_shift
+				print("Calculating RX frequency using offset from TX frequency!")
+				print(f"Tx Doppler Shift: {tx_doppler_shift:.0f}  Frequency: {new_tx_frequency:.0f}")
+				print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
 			else:
-				tx_center = 145800000 # ISS U/V Repeater
-				rx_center = 437800000 				
-			tx_doppler_shift = tx_frequency - tx_center
-			rx_doppler_shift = -1 * (rx_center/tx_center) * tx_doppler_shift
-			new_tx_frequency = tx_frequency
-			new_rx_frequency = rx_center + rx_doppler_shift
-			print("Calculating RX frequency using offset from TX frequency!")
-			print(f"Tx Doppler Shift: {tx_doppler_shift:.0f}  Frequency: {new_tx_frequency:.0f}")
-			print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
+				new_tx_frequency = tx_frequency
+				new_rx_frequency = tx_frequency
+				print(f"Tx Frequency: {new_tx_frequency:.0f}")
+				print(f"Rx Frequency: {new_rx_frequency:.0f}")				
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
