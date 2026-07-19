@@ -531,7 +531,7 @@ def update_doppler(fm="yes"):
 		tx_frequency = int(frequencies[0])
 		rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
 
-		print(f"New vfoA: {vfoA_frequency}, new vfoB: {vfoB_frequency}")
+		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 		if rigctl:
 			if (tx_frequency > 145880000):
