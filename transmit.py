@@ -534,8 +534,12 @@ def update_doppler(fm="yes"):
 		print(f"New vfoA: {vfoA_frequency}, new vfoB: {vfoB_frequency}")
 
 		if rigctl:
-			tx_center = 145960000 # AO-73
-			rx_center = 435140000
+			if (vfoB_frequency > 145880000):
+				tx_center = 145960000 # AO-91
+				rx_center = 435250000 # AO-73 is same tx_center but 435140000
+			else:
+				tx_center = 145800000 # ISS U/V Repeater
+				rx_center = 437800000 				
 			tx_doppler_shift = vfoB_frequency - tx_center
 			rx_doppler_shift = -1 * (rx_center/tx_center) * tx_doppler_shift
 			new_tx_frequency = vfoB_frequency
