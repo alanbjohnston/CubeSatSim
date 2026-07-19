@@ -1020,7 +1020,7 @@ if __name__ == "__main__":
 		status = status + " C"
 	if sim_mode:
 		status = status + " S"
-	if (
+	
 	if (hab_mode == True) and (mode == 'a'):
 		print("Don't transmit CW ID since APRS HAB mode is active")
 	else:	
