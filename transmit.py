@@ -528,13 +528,14 @@ def update_doppler(fm="yes"):
 		with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
 			frequencies = file.read().split()
 		
-		new_tx_frequency = int(frequencies[0])
-		new_rx_frequency = int(frequencies[1])
+		vfoA_frequency = int(frequencies[0])
+		vfoB_frequency = int(frequencies[1])
 
-		print(f"New frequencies: {new_tx_frequency}, Second number: {new_rx_frequency}")
+		print(f"New vfoA: {new_tx_frequency}, new vfoB: {new_rx_frequency}")
 
 		if rigctl:
-			new_rx_frequency = new_tx_frequency + 289169117	# AO-73 U/V cross band repeater offset
+			new_tx_frequency = vfoB_frequency
+			new_rx_frequency = vfoB_frequency + 289169117	# AO-73 U/V cross band repeater offset
 			print("Calculating RX frequency using offset from TX frequency")
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
