@@ -1454,6 +1454,8 @@ if __name__ == "__main__":
 				print("Beacon mode off so no repeater transmission")
 
 			print("Ready to detect carrier")
+			if (doppler_mode):
+				update_doppler()
 			start_time = time.perf_counter()
 						
 			while True:
