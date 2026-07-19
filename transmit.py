@@ -1499,10 +1499,10 @@ if __name__ == "__main__":
 				print("Beacon mode off so no repeater transmission")
 
 			print("Ready to detect carrier")
-			if (doppler_mode):
-				update_doppler()
-				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
-			cw_transmit_fm(callsign + status, txr)	
+#			if (doppler_mode):
+#				update_doppler()
+#				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
+#			cw_transmit_fm(callsign + status, txr)	
 			start_time = time.perf_counter()
 						
 			while True:
