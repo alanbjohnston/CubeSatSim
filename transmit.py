@@ -226,7 +226,15 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		if (gpsd_status == "active"):
 			print("Stopping gpsd.socket")
 			system("sudo systemctl stop gpsd.socket")
-		print("Programming FM module!\n");	
+		print("Programming FM module!\n");
+		txf = float(tx)
+		rxf = float(rx)
+		if (txf > 450.0) or (txf < 420.0):
+			tx = "434.9000"
+			print("Transmit frequency out of FM bounds")
+		if (rxf > 450.0) or (rxf < 420.0):
+			rx = "435.0000"		
+			print("Receive frequency out of FM bounds")
 		output(pd, 1)
 		output (ptt, 1)
 		try:
