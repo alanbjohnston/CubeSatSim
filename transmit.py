@@ -254,8 +254,8 @@ def start_repeater(tx_doppler_freq_hz):
 	global txLed
 	print("Starting repeater")
 	output(txLed, 1)
-	txr = "{:.3f}".format(tx_doppler_freq_hz/1000)
-	system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
+	txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
+	system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + "e3 > /dev/null 2>&1 &")
 	sleep(0.5)
 	system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
 
@@ -522,6 +522,7 @@ def update_doppler(fm="yes"):
 		global doppler_table
 		global mode
 		global tx
+		global txr
 		global rigctl
 		print("update_doppler")
 
@@ -560,6 +561,8 @@ def update_doppler(fm="yes"):
 				if (mode != 'e'):
 					tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
 #					print(tx)
+				else:
+					txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
 				program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		else:
 			print("Not applying Doppler shift!")
@@ -1490,6 +1493,7 @@ if __name__ == "__main__":
 			print("Ready to detect carrier")
 			if (doppler_mode):
 				update_doppler()
+				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
 			cw_transmit_id_fm()	
 			start_time = time.perf_counter()
 						
