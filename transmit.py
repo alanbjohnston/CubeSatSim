@@ -528,19 +528,19 @@ def update_doppler(fm="yes"):
 		with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
 			frequencies = file.read().split()
 		
-		vfoA_frequency = int(frequencies[0])
-		vfoB_frequency = int(frequencies[1])
+		tx_frequency = int(frequencies[0])
+		rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
 
 		print(f"New vfoA: {vfoA_frequency}, new vfoB: {vfoB_frequency}")
 
 		if rigctl:
-			if (vfoB_frequency > 145880000):
+			if (tx_frequency > 145880000):
 				tx_center = 145960000 # AO-91
 				rx_center = 435250000 # AO-73 is same tx_center but 435140000
 			else:
 				tx_center = 145800000 # ISS U/V Repeater
 				rx_center = 437800000 				
-			tx_doppler_shift = vfoB_frequency - tx_center
+			tx_doppler_shift = tx_frequency - tx_center
 			rx_doppler_shift = -1 * (rx_center/tx_center) * tx_doppler_shift
 			new_tx_frequency = vfoB_frequency
 			new_rx_frequency = rx_center + rx_doppler_shift
