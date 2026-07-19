@@ -534,11 +534,15 @@ def update_doppler(fm="yes"):
 		print(f"New vfoA: {vfoA_frequency}, new vfoB: {vfoB_frequency}")
 
 		if rigctl:
+			tx_center = 145960000 # AO-73
+			rx_center = 435140000
+			tx_doppler_shift = vfoB_frequency - tx_center
+			rx_doppler_shift = (rx_center/tx_center) * tx_doppler_shift
 			new_tx_frequency = vfoB_frequency
-			new_rx_frequency = vfoB_frequency + 289169117	# AO-73 U/V cross band repeater offset
+			new_rx_frequency = tx_center + rx_doppler_shift
 			print("Calculating RX frequency using offset from TX frequency!")
-			print(f"Tx Frequency: {new_tx_frequency:.0f}")
-			print(f"Rx Frequency: {new_rx_frequency:.0f}")
+			print(f"Tx Doppler Shift: {tx_doppler_shift :.0f}")
+			print(f"Rx Doppler Shift: {rx_doppler_shift :.0f}")
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
