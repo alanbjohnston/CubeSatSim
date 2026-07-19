@@ -539,25 +539,26 @@ def update_doppler(fm="yes"):
 			tx_doppler_shift = vfoB_frequency - tx_center
 			rx_doppler_shift = (rx_center/tx_center) * tx_doppler_shift
 			new_tx_frequency = vfoB_frequency
-			new_rx_frequency = tx_center + rx_doppler_shift
+			new_rx_frequency = rx_center + rx_doppler_shift
 			print("Calculating RX frequency using offset from TX frequency!")
-			print(f"Tx Doppler Shift: {tx_doppler_shift :.0f}")
-			print(f"Rx Doppler Shift: {rx_doppler_shift :.0f}")
+			print(f"Tx Doppler Shift: {tx_doppler_shift:.0f}  Frequency: {new_tx_frequency:.0f}")
+			print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
 			rx_doppler_freq_hz = new_rx_frequency
-			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
+			print("Applying Doppler shift!")
+#			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 #			rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
-			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
+#			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 			if (fm != "no"):
 				rx = "{:.4f}".format(rx_doppler_freq_hz/1e6)
 				if (mode != 'e'):
 					tx = "{:.4f}".format(tx_doppler_freq_hz/1e6)
-					print(tx)
+#					print(tx)
 				program_fm(rx,tx,rxpl_value,sq,txpl_value)
 		else:
-			print("No frequency changes!")
+			print("Not applying Doppler shift!")
 	except Exception as e:
 		print(f"An error occurred: {e}")	
 		print("update_doppler failed")
