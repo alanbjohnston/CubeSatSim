@@ -988,7 +988,8 @@ if __name__ == "__main__":
 	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
 
 	if (doppler_mode == True):	
-	
+
+		cw_transmit_fm("QSY", tx)
 		if (mode == 'e'):
 			tx_doppler_start_hz = txrf * 1e6
 		else:
@@ -1006,6 +1007,8 @@ if __name__ == "__main__":
 
 		print("MODE: ")
 		print(mode)
+
+		update_doppler()
 		if (mode == 'm'):
 			print("Sleeping 15 seconds")
 			sleep(15) # avoid CW jumping around at start
@@ -1017,7 +1020,7 @@ if __name__ == "__main__":
 		status = status + " C"
 	if sim_mode:
 		status = status + " S"
-	
+	if (
 	if (hab_mode == True) and (mode == 'a'):
 		print("Don't transmit CW ID since APRS HAB mode is active")
 	else:	
