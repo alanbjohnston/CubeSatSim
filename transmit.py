@@ -531,7 +531,7 @@ def update_doppler(fm="yes"):
 		vfoA_frequency = int(frequencies[0])
 		vfoB_frequency = int(frequencies[1])
 
-		print(f"New vfoA: {new_tx_frequency}, new vfoB: {new_rx_frequency}")
+		print(f"New vfoA: {vfoA_frequency}, new vfoB: {vfoB_frequency}")
 
 		if rigctl:
 			new_tx_frequency = vfoB_frequency
