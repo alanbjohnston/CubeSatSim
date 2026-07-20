@@ -587,7 +587,12 @@ def update_doppler(fm="yes"):
 				new_tx_frequency = tx_frequency
 				new_rx_frequency = tx_frequency
 				print(f"Tx Frequency: {new_tx_frequency:.0f}")
-				print(f"Rx Frequency: {new_rx_frequency:.0f}")				
+				print(f"Rx Frequency: {new_rx_frequency:.0f}")
+		else:
+			new_tx_frequency = tx_frequency
+			new_rx_frequency = tx_frequency
+			print(f"Tx Frequency: {new_tx_frequency:.0f}")
+			print(f"Rx Frequency: {new_rx_frequency:.0f}")			
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
