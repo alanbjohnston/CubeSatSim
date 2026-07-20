@@ -1166,6 +1166,7 @@ if __name__ == "__main__":
 					f.close()
 					if (debug_mode == 1):
 						print("Packet ready!")
+					system("sudo rm home/pi/CubeSatSim/t.txt")
 					system("gen_packets -o /home/pi/CubeSatSim/telem.wav /home/pi/CubeSatSim/t.txt -r 48000 > /dev/null 2>&1")
 					system("cat /home/pi/CubeSatSim/t.txt")
 					if (command_tx == True):
