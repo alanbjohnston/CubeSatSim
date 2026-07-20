@@ -223,15 +223,34 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		global gpsd_status
 		global pd
 		global ptt
+		global force_rpitx
+		global txc
+		global restore_txc
+		
 		if (gpsd_status == "active"):
 			print("Stopping gpsd.socket")
 			system("sudo systemctl stop gpsd.socket")
 		print("Programming FM module!\n");
 		txf = float(tx)
 		rxf = float(rx)
-		if (txf > 450.0) or (txf < 420.0):
+		
+		if (txf > 144.0) and (txf < 148.0):
+			two_meter_rpitx = True
+			if (txc):
+				restore_txc = True
+			txc = False
+			tx = "434.9000"
+		elif (two_meter_rpitx):
+			two_meter_rpitx = False
+			if (restore_txc):
+				txc = True
+				restore_txc = False
+			
+		if (txf > 450.0) or (txf < 420.0) and not two_meter_rpitx:
 			tx = "434.9000"
 			print("Transmit frequency out of FM bounds")
+		
+		
 		if (rxf > 450.0) or (rxf < 420.0):
 			rx = "435.0000"		
 			print("Receive frequency out of FM bounds")
@@ -718,6 +737,8 @@ squelch = 6
 green = 16
 powerPin = 16
 morse_timing = 0.09 # 0.1
+two_meter_rpitx = False
+restore_txc = False
 
 command_tx = True
 
