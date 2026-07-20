@@ -249,6 +249,8 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 				txc = True
 				restore_txc = False
 				print("Restoring FM with 70cm band")
+				print("Rebooting")
+				system("sudo reboot now")
 			
 		if (txf > 450.0) or (txf < 420.0) and not two_meter_rpitx:
 			tx = "434.9000"
