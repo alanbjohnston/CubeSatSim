@@ -857,7 +857,7 @@ if (doppler_mode == 'rig'):
     sleep(1.0)
 
     print("Starting rigctl emulating FT857 rig using virtual serial port /tmp/vttyB")
-    system("rigctld -m 1022 -r /tmp/vttyB -t 4532 -vv --vfo")
+    system("rigctld -m 1022 -r /tmp/vttyB -t 4532 -vvv")
 
     print("rigctld ended")
 
