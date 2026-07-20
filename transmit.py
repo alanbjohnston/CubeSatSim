@@ -237,24 +237,24 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		if (txf > 144.0) and (txf < 148.0):
 			two_meter_rpitx = True
 			print("Transmitting in 2m band using rptix")
-			if (txc):
-				restore_txc = True
-				print("Restore FM with 70cm band")
+#			if (txc):
+#				restore_txc = True
+#				print("Restore FM with 70cm band")
 			txc = False
 			tx = "434.9000"
-		elif (two_meter_rpitx):
-			two_meter_rpitx = False
-			print("Stop transmitting in 2m bacnd using rptix")
-			if (restore_txc):
-				txc = True
-				restore_txc = False
-				print("Restoring FM with 70cm band")
-				print("Rebooting")
-				system("sudo reboot now")
+#		elif (two_meter_rpitx):
+#			two_meter_rpitx = False
+#			print("Stop transmitting in 2m bacnd using rptix")
+#			if (restore_txc):
+#				txc = True
+#				restore_txc = False
+#				print("Restoring FM with 70cm band")
+#				print("Rebooting")
+#				system("sudo reboot now")
 			
-		if (txf > 450.0) or (txf < 420.0) and not two_meter_rpitx:
+		if (txf > 450.0) or ((txf < 420.0) and (txf > 148.0)) or (txf < 144.0) :
 			tx = "434.9000"
-			print("Transmit frequency out of 70cm band")
+			print("Transmit frequency out of amateur bands")
 		
 		if (rxf > 450.0) or (rxf < 420.0):
 			rx = "435.0000"		
