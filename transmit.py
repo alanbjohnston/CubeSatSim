@@ -223,7 +223,7 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		global gpsd_status
 		global pd
 		global ptt
-		global force_rpitx
+		global two_meter_rpitx
 		global txc
 		global restore_txc
 		
@@ -236,20 +236,23 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		
 		if (txf > 144.0) and (txf < 148.0):
 			two_meter_rpitx = True
+			print("Transmitting in 2m band using rptix")
 			if (txc):
 				restore_txc = True
+				print("Restore FM with 70cm band")
 			txc = False
 			tx = "434.9000"
 		elif (two_meter_rpitx):
 			two_meter_rpitx = False
+			print("Stop transmitting in 2m bacnd using rptix")
 			if (restore_txc):
 				txc = True
 				restore_txc = False
+				print("Restore FM with 70cm band")
 			
 		if (txf > 450.0) or (txf < 420.0) and not two_meter_rpitx:
 			tx = "434.9000"
-			print("Transmit frequency out of FM bounds")
-		
+			print("Transmit frequency out of 70cm band")
 		
 		if (rxf > 450.0) or (rxf < 420.0):
 			rx = "435.0000"		
@@ -268,13 +271,15 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 				sleep(0.1)
 			ser.close()
 			ser = serial.Serial("/dev/ttyAMA0", 115200) # reset back to 115200 for cubesatsim code for payload sensor data
-		except:
+		except Exception as e:
+			print(f"An error occurred: {e}")	
 			print("Error in serial write")
 	#	output(pd, 0)  # Don't turn off receiver
 		if (gpsd_status == "active"):
 			print("Restarting gpsd.socket")
 			system("sudo systemctl restart gpsd.socket")
-	except:
+	except Exception as e:
+		print(f"An error occurred: {e}")
 		print("program_fm failed")
 
 def start_repeater(tx_doppler_freq_hz):
