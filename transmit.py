@@ -29,7 +29,7 @@ def uptime_seconds():
 		return uptime		
 	except Exception as e:
 		print(f"An error occurred: {e}")	
-		print("uptime_seconds failed") 
+		print(" failed") 
 
 def input(pin):
 	# command = "gpio -g read " + str(pin)
@@ -1090,7 +1090,7 @@ if __name__ == "__main__":
 		print(mode)
 
 		update_doppler()
-		if (mode == 'm') and (uptime_seconds() < (uptime_time + 5)):
+		if (mode == 'm') and (skip == False):
 			print("Sleeping 15 seconds")
 			sleep(15) # avoid CW jumping around at start
 		
