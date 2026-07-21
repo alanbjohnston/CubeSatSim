@@ -573,18 +573,23 @@ def update_doppler(fm="yes"):
 			if (tx_frequency > 145955000) and (tx_frequency <= 145965000):
 				tx_center = 145960000 # AO-91
 				rx_center = 435250000 
+				print("AO-91 detected!")
 			elif (tx_frequency > 145965000) and (tx_frequency < 145975000):
 				tx_center = 145970000 # AO-73 center is shifted up 10kHz to avoid overlap with AO-91
 				rx_center = 435150000 
+				print("AO-73 detected!")				
 			elif (tx_frequency > 145795000) and (tx_frequency < 145805000):	
 				tx_center = 145800000 # ISS U/V Repeater
 				rx_center = 437800000 
+				print("ISS U/V detected!")				
 			elif (tx_frequency > 145945000) and (tx_frequency <= 145955000):	
 				tx_center = 145950000 # AO-7
 				rx_center = 432150000 	
+				print("AO-7 detected!")				
 			else:
 				tx_center = tx_frequency
 				rx_center = 435000000 # default RX requency	
+				print("No Satellite detected.  Using default RX frequency with no doppler shift")				
 
 			if (rx_center != 435000000):	# don't Doppler shift default RX frequency since don't know the shift 
 				tx_doppler_shift = tx_frequency - tx_center
