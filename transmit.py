@@ -557,6 +557,7 @@ def update_doppler(fm="yes"):
 		global doppler_table
 		global mode
 		global tx
+		global rxf
 		global txr
 		global rigctl
 		print("update_doppler")
@@ -588,10 +589,10 @@ def update_doppler(fm="yes"):
 				print("AO-7 detected!")				
 			else:
 				tx_center = tx_frequency
-				rx_center = 435000000 # default RX requency	
+				rx_center = rxf * 1e6 # default RX requency	
 				print("No Satellite detected.  Using default RX frequency with no doppler shift")				
 
-			if (rx_center != 435000000):	# don't Doppler shift default RX frequency since don't know the shift 
+			if (rx_center != rxf * 1e6):	# don't Doppler shift default RX frequency since don't know the shift 
 				tx_doppler_shift = tx_frequency - tx_center
 				rx_doppler_shift = -1 * (rx_center/tx_center) * tx_doppler_shift
 				new_tx_frequency = tx_frequency
@@ -601,7 +602,7 @@ def update_doppler(fm="yes"):
 				print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
 			else:
 				new_tx_frequency = tx_frequency
-				new_rx_frequency = rx_frequency
+				new_rx_frequency = rxf * 1e6 # default RX frequency or should we use same as tx frequency with doppler shift?
 				print(f"Tx Frequency: {new_tx_frequency:.0f}")
 				print(f"Rx Frequency: {new_rx_frequency:.0f}")
 		else:
