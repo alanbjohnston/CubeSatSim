@@ -577,7 +577,7 @@ def update_doppler(fm="yes"):
 				print("AO-91 detected!")
 			elif (tx_frequency > 145965000) and (tx_frequency < 145975000):
 				tx_center = 145960000 # AO-73 detection is shifted up 10kHz to avoid overlap with AO-91
-				rx_center = 435140000 
+				rx_center = 435150000 
 				print("AO-73 detected!")				
 			elif (tx_frequency > 145795000) and (tx_frequency < 145805000):	
 				tx_center = 145800000 # ISS U/V Repeater
