@@ -17,7 +17,7 @@ def output(pin, value):
 	system(command)
 	print(command)
 
-def uptime_seconds()
+def uptime_seconds():
 	try:
 		system("sudo cat /proc/uptime > /home/pi/CubeSatSim/uptime")
 		file = open("/home/pi/CubeSatSim/uptime")
@@ -26,7 +26,7 @@ def uptime_seconds()
 		uptime = float(up)
 		print(uptime)
 		file.close() 
-		return(uptime)		
+		return uptime		
 	except Exception as e:
 		print(f"An error occurred: {e}")	
 		print("uptime_seconds failed") 
