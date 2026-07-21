@@ -17,6 +17,20 @@ def output(pin, value):
 	system(command)
 	print(command)
 
+def uptime_seconds()
+	try:
+		system("sudo cat /proc/uptime > /home/pi/CubeSatSim/uptime")
+		file = open("/home/pi/CubeSatSim/uptime")
+		up = file.read().split(" ")[0]
+		print(up)
+		uptime = float(up)
+		print(uptime)
+		file.close() 
+		return(uptime)		
+	except Exception as e:
+		print(f"An error occurred: {e}")	
+		print("uptime_seconds failed") 
+
 def input(pin):
 	# command = "gpio -g read " + str(pin)
 	query = ["gpio", "-g", "read", str(pin)] # Read GPIO pin
@@ -842,22 +856,22 @@ if __name__ == "__main__":
 	except:
 		print("Pi Zero 2 not detected")
 
-	try:
-		system("sudo cat /proc/uptime > /home/pi/CubeSatSim/uptime")
-		file = open("/home/pi/CubeSatSim/uptime")
-		up = file.read().split(" ")[0]
-		print(up)
-		uptime = float(up)
-		print(uptime)
-		if (uptime < uptime_time):
-			print("Uptime < threshold seconds")
-		else:
-			print("Uptime > threshold seconds")
-			print("Skip CW ID")
-			skip = True
-		file.close() 
-	except:
-		print("Can't open /proc/uptime") 
+#	try:
+#		system("sudo cat /proc/uptime > /home/pi/CubeSatSim/uptime")
+#		file = open("/home/pi/CubeSatSim/uptime")
+#		up = file.read().split(" ")[0]
+#		print(up)
+#		uptime = float(up)
+#		print(uptime)
+	if (uptime_seconds() < uptime_time):
+		print("Uptime < threshold seconds")
+	else:
+		print("Uptime > threshold seconds")
+		print("Skip CW ID")
+		skip = True
+#		file.close() 
+#	except:
+#		print("Can't open /proc/uptime") 
 	print(skip)	
 
 	if ( mode == "y"):
@@ -1074,7 +1088,7 @@ if __name__ == "__main__":
 		print(mode)
 
 		update_doppler()
-		if (mode == 'm'):
+		if (mode == 'm') and (uptime_seconds() < (uptime_time + 5)):
 			print("Sleeping 15 seconds")
 			sleep(15) # avoid CW jumping around at start
 		
