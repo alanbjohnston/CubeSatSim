@@ -300,7 +300,7 @@ def stop_repeater():
 	system("sudo rpitx -i null > /dev/null 2>&1")
 	system("sudo killall -9 arecord > /dev/null 2>&1")
 	system("sudo killall -9 nc > /dev/null 2>&1")
-	system("sudo killall -9 rpitx > /dev/null 2>&1")
+#	system("sudo killall -9 rpitx > /dev/null 2>&1")
 	print("Resetting audio")
 	system("sudo /etc/init.d/alsa-utils stop")
 	system("sudo /etc/init.d/alsa-utils start")
@@ -727,7 +727,7 @@ def transmit_carrier(duration):
 	command = "timeout -k 0.5 " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
 	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
 	stop = "sudo rpitx -f 434.9e6 &"
-	killrpitx = "sudo killall -9 rpitx &"
+#	killrpitx = "sudo killall -9 rpitx &"
 	killtune = "sudo killall -9 tune &"
 	output(txLed, 1)
 #	system(start)
