@@ -1068,7 +1068,9 @@ if __name__ == "__main__":
 
 	if (doppler_mode == True):	
 
-		cw_transmit_fm("QSY", tx)
+		if (command_tx == True) and (skip == False):
+			cw_transmit_fm("QSY", tx)
+			
 		if (mode == 'e'):
 			tx_doppler_start_hz = txrf * 1e6
 		else:
