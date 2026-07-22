@@ -15,6 +15,23 @@ sudo killall -9 direwolf &>/dev/null
 
 sudo killall -9 aplay &>/dev/null
 
+if [ ! $(systemctl get-default | grep graphical) ]; then
+
+	echo "Graphical User Interface not running!"
+	echo 
+	echo "Do you want to reboot and switch to GUI so you can run the Pacsat Ground Station"
+	read answer
+
+	if [ "$answer" = "y" ] || [ "$answer" = "yes" ]; then
+		echo "Rebooting!"
+		sudo raspi-config nonint do_boot_behaviour B4
+		sudo reboot now
+	else
+		echo "You can run the Pacsat Ground Station next time you run the GUI."
+		exit
+	fi
+fi
+
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
