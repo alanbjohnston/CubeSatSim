@@ -841,10 +841,13 @@ if __name__ == "__main__":
 #	if (mode != 'e'): 
 	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
 
+	if ((doppler_mode == True) and (command_tx == True) and (skip == False)) or (mode == 'e'):
+		cw_transmit_fm("QSY", tx)
+	
 	if (doppler_mode == True):	
 
-		if (command_tx == True) and (skip == False):
-			cw_transmit_fm("QSY", tx)
+#		if (command_tx == True) and (skip == False):
+#			cw_transmit_fm("QSY", tx)
 			
 		if (mode == 'e'):
 			tx_doppler_start_hz = txrf * 1e6
