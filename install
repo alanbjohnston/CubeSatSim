@@ -344,6 +344,7 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 # fi
 
 cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
+cp /home/pi/CubeSatSim/groundstation/gpredict.desktop /home/pi/Desktop/gpredict.desktop
 
 if [ ! -d "/home/pi/venv" ]; then
 
