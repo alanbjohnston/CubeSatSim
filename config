@@ -298,7 +298,7 @@ TXPL=${11}
 		echo "rigctld Doppler frequency shift enabled"
 		echo -n "Current TX Frequency (Hz) is: "
 		head -c -11 frequency.txt
-		echo -e "\nCurrent RX Frequency (MHz) is: ${8} or set for a particular satellite\n"
+		echo -e "\nCurrent RX Frequency (MHz) is: ${8} or set for a particular satellite"
 	elif [[ ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j") ]] ; then
 		echo "Doppler frequency shift is OFF"
 		echo -n "TX Frequency is approximately: "
