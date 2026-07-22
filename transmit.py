@@ -1375,7 +1375,7 @@ if __name__ == "__main__":
 					print("Carrier detected")
 					if (doppler_mode):
 						update_doppler() 
-						start_repeater(tx_doppler_freq_hz, tx_doppler_freq_hz)
+						start_repeater(tx_doppler_freq_hz, rx_doppler_freq_hz)
 					else:
 						start_repeater(txrf * 1e6, rxf * 1e6)
 					while (input(squelch) == False):
