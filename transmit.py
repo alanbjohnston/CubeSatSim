@@ -714,6 +714,7 @@ if __name__ == "__main__":
 		if len(config) > 6:
 			txf = float(config[6])
 			tx = "{:.4f}".format(txf)
+			txrf = 0
 			if (mode == 'e'):
 				if (txf > 420.0) and (txf < 450.0):
 					txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
@@ -731,6 +732,16 @@ if __name__ == "__main__":
 			rxf = float(config[7])
 			rx = "{:.4f}".format(rxf)
 			print(rx)
+			if abs(rxf - 3 * txrf) < 10.0: 
+				txrf = txrf + 0.02
+				txr = "{:.4f}".format(txrf)
+				print("Adjusting Repeater TX frequency to avoid 3rd harmonic RX")
+				print("Transmit frequency: ",txr)
+			if abs(rxf - 3 * txf) < 10.0: 
+				txf = txf + 0.02
+				tx = "{:.4f}".format(txf)
+				print("Adjusting TX frequency to avoid 3rd harmonic RX")				
+				print("Transmit frequency: ",tx)			
 		if len(config) > 8:
 			if config[8] == 'y' or config[8] == 'yes':		
 				hab_mode = True
