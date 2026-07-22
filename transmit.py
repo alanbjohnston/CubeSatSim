@@ -298,11 +298,16 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		print(f"An error occurred: {e}")
 		print("program_fm failed")
 
-def start_repeater(tx_doppler_freq_hz):
+def start_repeater(tx_freq_hz, rx_freq_hz):
 	global txLed
 	print("Starting repeater")
+
+	if abs(rx_freq_hz - 3 * tx_freq_hz) < 10.0: 
+		tx_freq_hz = tx_freq_hz + 30000
+		print("Adjusting Repeater TX frequency to avoid 3rd harmonic RX")
+	
 	output(txLed, 1)
-	txr = "{:.3f}".format(tx_doppler_freq_hz/1e3)
+	txr = "{:.3f}".format(tx_freq_hz/1e3)
 	print(txr)
 	system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
 	sleep(0.5)
@@ -732,16 +737,6 @@ if __name__ == "__main__":
 			rxf = float(config[7])
 			rx = "{:.4f}".format(rxf)
 			print(rx)
-			if abs(rxf - 3 * txrf) < 10.0: 
-				txrf = txrf + 0.02
-				txr = "{:.4f}".format(txrf)
-				print("Adjusting Repeater TX frequency to avoid 3rd harmonic RX")
-				print("Transmit frequency: ",txr)
-			if abs(rxf - 3 * txf) < 10.0: 
-				txf = txf + 0.02
-				tx = "{:.4f}".format(txf)
-				print("Adjusting TX frequency to avoid 3rd harmonic RX")				
-				print("Transmit frequency: ",tx)			
 		if len(config) > 8:
 			if config[8] == 'y' or config[8] == 'yes':		
 				hab_mode = True
@@ -1380,9 +1375,9 @@ if __name__ == "__main__":
 					print("Carrier detected")
 					if (doppler_mode):
 						update_doppler() 
-						start_repeater(tx_doppler_freq_hz)
+						start_repeater(tx_doppler_freq_hz, tx_doppler_freq_hz)
 					else:
-						start_repeater(txrf * 1e6)
+						start_repeater(txrf * 1e6, rxf * 1e6)
 					while (input(squelch) == False):
 						sleep(1)
 					print("No carrier detected")
