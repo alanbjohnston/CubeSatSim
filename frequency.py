@@ -730,12 +730,13 @@ try:
 		if len(config) > 6:
 			txf = float(config[6])
 			tx = "{:.4f}".format(txf)
-			if (mode == 'e'):
-				txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
-				txr = "{:.4f}".format(txrf)
-				print("Transmit frequency: ",txr)
-			else:
-				print("Transmit frequency: ",tx)
+#			if (mode == 'e'):
+#				txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
+#				txr = "{:.4f}".format(txrf)
+#				print("Transmit frequency: ",txr)
+#			else:
+#				print("Transmit frequency: ",tx)
+			print("Transmit frequency: ",tx)
 		if len(config) > 7:
 			rxf = float(config[7])
 			rx = "{:.4f}".format(rxf)
@@ -797,10 +798,11 @@ if (doppler_mode == 'off'):
 if (doppler_mode == 'sim'):
   print("Sim mode")
 	
-  if (mode == 'e'):
-    tx_doppler_start_hz = txrf * 1e6
-  else:
-    tx_doppler_start_hz = txf * 1e6
+#  if (mode == 'e'):
+#    tx_doppler_start_hz = txrf * 1e6
+#  else:
+#    tx_doppler_start_hz = txf * 1e6
+  tx_doppler_start_hz = txf * 1e6	  
   tx_doppler_shift_hz = 0
   print(f"Tx center frequency: {tx_doppler_start_hz}")
   rx_doppler_start_hz = rxf * 1e6
