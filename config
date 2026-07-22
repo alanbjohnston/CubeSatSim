@@ -296,8 +296,9 @@ TXPL=${11}
 #		echo " MHz"
 	elif [ "${14}" = "rig" ] ; then
 		echo "rigctld Doppler frequency shift enabled"
-		echo -n "Current TX and RX Frequency (Hz) is: "
+		echo -n "Current TX Frequency (Hz) is: "
 		cat /home/pi/CubeSatSim/frequency.txt
+		printf "\b\b\b\b\b\b\b Current RX Frequency (Hz) is ${8} or set for a particular satellite"
 		echo
 	elif [[ ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j") ]] ; then
 		echo "Doppler frequency shift is OFF"
