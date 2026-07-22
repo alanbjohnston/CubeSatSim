@@ -302,7 +302,7 @@ def start_repeater(tx_freq_hz, rx_freq_hz):
 	global txLed
 	print("Starting repeater")
 
-	if abs(rx_freq_hz - 3 * tx_freq_hz) < 10.0: 
+	if abs(rx_freq_hz - 3 * tx_freq_hz) < 10000: 
 		tx_freq_hz = tx_freq_hz + 30000
 		print("Adjusting Repeater TX frequency to avoid 3rd harmonic RX")
 	
