@@ -39,7 +39,7 @@ else
 	touch /home/pi/CubeSatSim/command_control_direwolf
 
     echo "creating $FILE"
-    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 
 	/home/pi/CubeSatSim/config -c -n
 
@@ -295,21 +295,22 @@ if [ -f "$FILE" ]; then
 	if [ -z "${11}" ] ; then m2="0" ; changed=1 ; else m2=${11} ; fi # tx pl code
 	if [ -z "${12}" ] ; then m3="no" ; changed=1 ; else m3=${12} ; fi # random fail
 	if [ -z "${13}" ] ; then m4="60" ; changed=1 ; else m4=${13} ; fi # random fail period
+	if [ -z "${14}" ] ; then m5="no" ; changed=1 ; else m5=${14} ; fi # doppler mode
 
 	if [ $changed -eq 1 ]; then
 		echo -e "Current sim.cfg configuration file:"	
 		echo
-		echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+		echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 		echo
-		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4
-		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4> /home/pi/CubeSatSim/sim.cfg
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4 $m5
+		echo $n1 $n2 $n3 $n4 $n5 $n6 $n7 $n8 $n9 $m1 $m2 $m3 $m4 $m5 > /home/pi/CubeSatSim/sim.cfg
 		echo
 	fi
 
 else 
     echo "creating $FILE"
-    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60" > /home/pi/CubeSatSim/sim.cfg
+    echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 fi
 
 if [[ $(grep 'cubesatsim' /etc/motd) ]]; then
@@ -343,6 +344,7 @@ sudo apt-get update && sudo apt-get dist-upgrade -y
 # fi
 
 cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
+cp /home/pi/CubeSatSim/groundstation/gpredict.desktop /home/pi/Desktop/gpredict.desktop
 
 if [ ! -d "/home/pi/venv" ]; then
 
@@ -671,6 +673,13 @@ if [ -f "$FILE" ]; then
   sudo rm /etc/systemd/system/rpitx.service
 fi
 
+if [[ -z $(sudo systemctl is-active packagekit | grep inactive) ]]; then 
+  echo "Removing packagekit so won't auto check for updates on boot"
+  sudo systemctl stop packagekit
+  sudo systemctl disable packagekit
+  sudo apt-get remove -y packagekit
+fi
+
 FILE=/etc/systemd/system/transmit.service
 if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/systemd/transmit.service /etc/systemd/system/transmit.service) ]]; then
@@ -716,6 +725,22 @@ else
   sudo cp /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service
   FLAG=1
 fi
+
+FILE=/etc/systemd/system/frequency.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service) ]]; then
+    echo "changed frequency.service."
+    sudo cp /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service
+    FLAG=1
+  else
+    echo "no change to frequency.service."
+  fi
+else
+  echo "creating frequency.service."
+  sudo cp /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service
+  FLAG=1
+fi
+
 
 FILE=/etc/asound.conf
 if [ -f "$FILE" ]; then
@@ -833,6 +858,30 @@ if [ ! -f "/home/pi/ssdv/ssdv" ]; then
 	make
 fi
 
+if [ ! -f "/home/pi/FT857d/examples/FT857d/ft857d" ]; then
+	cd
+	echo "Installing FT857d for Doppler rigctld control mode"
+	git clone https://github.com/alanbjohnston/FT857d.git
+	cd FT857d
+	git checkout pi	
+	cd examples/FT857d	
+	g++ main.c ../../src/ft857d.cpp -lwiringPi -o ft857d
+
+	sudo apt-get install -y libhamlib-utils socat gpredict
+fi
+
+cd /home/pi/FT857d
+git checkout pi
+git pull --no-rebase > .updated_p
+
+if [[ $(grep 'changed' //home/pi/FT857d/.updated_p) ]]; then
+	echo "updating FT857d"
+	cd examples/FT857d	
+	g++ main.c ../../src/ft857d.cpp -lwiringPi -o ft857d
+else
+	echo "nothing to do for FT857d."
+fi 
+
 cd
 
 #echo "Would you like to reboot to complete the installation (y/n)?"
@@ -850,6 +899,15 @@ cd
 #fi
 
 sed -i 's/quick_exec=0/quick_exec=1/' ~/.config/libfm/libfm.conf
+
+if [ ! -d "/home/pi/Icons" ]; then
+	cd
+	mkdir Icons
+	cd Icons
+	#wget http://cubesatsim.org/icons/*
+	#wget -r -nd --no-parent -A 'bar.*.tar.gz' http://url/dir/
+	wget -r -nd --no-parent -A '*' https://cubesatsim.org/icons/
+fi
 
 sudo apt install -y raspberrypi-ui-mods 
 

@@ -94,11 +94,21 @@ function check_restart {
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
+	MODE=$1
 
-#	if [ "$1" = "p" ] || [ "$1" = "P" ] ; then
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	if [ "${14}" = "sim" ]  || [ "${14}" = "rig" ] ; then
+		DOPPLER=1
+	else
+		DOPPLER=0
+	fi
+
+#	if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
 #			reboot=1
 #el
-	if [ "$1" == "f" ] || [ "$1" == "b" ]  || [ "$1" == "e" ] || [ "$1" == "j" ] ; then
+	if [ "$MODE" == "f" ] || [ "$MODE" == "b" ]  || [ "$MODE" == "e" ] || [ "$MODE" == "j" ] ; then
 		FILE=/home/pi/CubeSatSim/battery_saver
 		if [ -f "$FILE" ]; then
 			restart=1
@@ -107,6 +117,8 @@ function check_restart {
 			reboot=1
 #			echo "Need to reboot"
 		fi	
+	elif [ "$MODE" == "m" ] || [ "$DOPPLER" == "1" ] ; then
+		reboot=1
 	else
 		restart=1
 #		echo "Need to restart"
@@ -122,11 +134,11 @@ echo
 
 sudo modprobe snd-aloop
 
-# if [ "$2" = "n" ] ; then
+# if [ "$2" = "-n" ] ; then
 if [ -z "$2" ] ; then
 	noreboot=0
 else
-	if [ "$2" = "n" ] ; then
+	if [ "$2" = "-n" ] ; then
 		echo "Reboot disabled"
 		noreboot=1
 	else
@@ -260,13 +272,51 @@ if [ "$1" = "" ]; then
 		echo "Random Failure Mode is OFF"
 	fi
 
-	echo -n "TX Frequency is: "
-	echo -n ${7}
-	echo -n " MHz, RX Frequency is: "
-	echo -n ${8}
-	echo " MHz"
+HAB=$9
+SQUELCH=$6
+RXPL=${10}
+TXPL=${11}
 
-	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
+#	echo ${14}
+	if [[ ( "${14}" == "sim" || "${14}" == "rig" ) && ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j") ]] ; then
+		echo "Doppler frequency shift is ON but not active in this mode (only APRS, CW, SSTV, and Repeater modes)"
+		echo -n "TX Frequency is approximately: "
+		echo -n ${7}
+		echo -n " MHz, RX Frequency is: "
+		echo -n ${8}
+		echo " MHz"
+	elif [ "${14}" = "sim" ] ; then
+		echo "Simulated Doppler frequency shift enabled"
+		echo -n "Current TX and RX Frequency (Hz) is: "
+		cat /home/pi/CubeSatSim/frequency.txt
+		echo
+#		echo -n ${7}
+#		echo -n " MHz, RX Frequency is: "
+#		echo -n ${8}
+#		echo " MHz"
+	elif [ "${14}" = "rig" ] ; then
+		echo "rigctld Doppler frequency shift enabled"
+		echo -n "Current TX Frequency (Hz) is: "
+		head -c -11 frequency.txt
+		echo -e "\nCurrent RX Frequency (MHz) is: ${8} or set for a particular satellite"
+	elif [[ ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j") ]] ; then
+		echo "Doppler frequency shift is OFF"
+		echo -n "TX Frequency is approximately: "
+		echo -n ${7}
+		echo -n " MHz, RX Frequency is: "
+		echo -n ${8}
+		echo " MHz"
+	else
+		echo "Doppler frequency shift is OFF"
+		echo -n "TX Frequency is: "
+		echo -n ${7}
+		echo -n " MHz, RX Frequency is: "
+		echo -n ${8}
+		echo " MHz"
+
+	fi
+
+	if [ "$HAB" = "yes" ] || [ "$HAB" = "y" ]; then
 		echo "Balloon mode is ON"
 	else
 		echo "Balloon mode is OFF"
@@ -286,7 +336,7 @@ if [ "$1" = "" ]; then
 		echo "Squelch is off since PacSat or PacSat Ground Station mode"
 	else
 		echo -n "Squelch level is: "
-		echo $6
+		echo $SQUELCH
 	fi
 #	echo
 
@@ -318,10 +368,10 @@ if [ "$1" = "" ]; then
 #	echo
 
 	echo -n "RX PL code is: "
-	echo -n ${10}
+	echo -n $RXPL
 #	echo
 	echo -n " TX PL code is: "
-	echo ${11}
+	echo $TXPL
 #	echo
 
 	FILE=/home/pi/CubeSatSim/battery_saver
@@ -368,7 +418,8 @@ if [ "$1" = "" ]; then
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $SQUELCH $7 $8 $HAB $RXPL $TXPL ${12} ${13} ${14}
+	cat /home/pi/CubeSatSim/sim.cfg
 	echo
 	
 	echo "To change, include an OPTION"
@@ -413,7 +464,22 @@ elif [ "$1" = "-m" ]; then
 	else
 
 		echo "changing CubeSatSim to CW mode"
-		check_restart
+
+		value=`cat /home/pi/CubeSatSim/sim.cfg`
+		echo "$value" > /dev/null
+		set -- $value
+		if [ "${14}" = "sim" ]  || [ "${14}" = "rig" ] ; then
+			DOPPLER=1
+		else
+			DOPPLER=0
+		fi
+
+		if [ "$DOPPLER" = "1" ] ; then
+			restart=1
+		else
+			check_restart
+		fi
+
 		sudo echo "m" > /home/pi/CubeSatSim/.mode
 
 	fi
@@ -497,7 +563,7 @@ elif [ "$1" = "-t" ]; then
 	
 	echo
 	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} 
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
 
 	echo "Do you want Simulated Telemetry ON (y/n) "
 	read sim
@@ -515,8 +581,8 @@ elif [ "$1" = "-t" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13}
-	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -545,7 +611,7 @@ elif [ "$1" = "-c" ]; then
 	echo $oldcallsign
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
 
 	echo "Enter callsign in all capitals: "
 	read callsign
@@ -559,8 +625,8 @@ elif [ "$1" = "-c" ]; then
 	
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
-		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	fi
 	
 	if [ "$norestart" = "1" ]; then
@@ -593,7 +659,7 @@ elif [ "$1" = "-r" ]; then
 	echo $2
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} 
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
 	echo -e "Enter Reset Count (integer): "
 
@@ -613,8 +679,8 @@ elif [ "$1" = "-r" ]; then
 
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
-		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+		echo $1 $resets $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	fi	
 
 	if [ "$norestart" = "1" ]; then
@@ -648,7 +714,7 @@ elif [ "$1" = "-l" ]; then
 	echo $3
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
 	echo -e "Enter latitude  (decimal degrees, positive is north): "
 
@@ -690,8 +756,8 @@ elif [ "$1" = "-l" ]; then
 	fi 
 
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
-	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
-	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	
 	if [ "$norestart" = "1" ]; then
 		echo 
@@ -1002,7 +1068,7 @@ elif [ "$1" = "-q" ]; then
 	echo $6
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
 	echo -e "Enter squelch  (integer 1 - 8): "
 
@@ -1024,8 +1090,8 @@ elif [ "$1" = "-q" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 ${10} ${11} ${12} ${13}
-	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $sq $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+	echo $1 $2 $3 $4 $4 $sq $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
 	echo "Restarting CubeSatSim with new configuration file"
 ##	echo
@@ -1061,7 +1127,7 @@ elif [ "$1" = "-P" ]; then
 	echo ${11}
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
 	echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
 
@@ -1104,13 +1170,13 @@ elif [ "$1" = "-P" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl ${12} ${13}
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl ${12} ${13} ${14}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 $rxpl $txpl ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
 
-	reboot=1
+	restart=1
 ##	sudo reboot now
 #	sudo systemctl restart cubesatsim
 
@@ -1135,7 +1201,7 @@ elif [ "$1" = "-F" ]; then
 	echo $8
 	echo	
 
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
 	echo "Enter tx frequency as 4XX.XXXX: "
 	read tx
@@ -1156,8 +1222,13 @@ elif [ "$1" = "-F" ]; then
 	fi
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
-	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13}
-	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} ${14}
+	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
+
+	rxf=$(echo "$rx * 1000000" | bc)
+	txf=$(echo "$tx * 1000000" | bc)
+	echo $txf $rxf
+	echo $txf $rxf > /home/pi/CubeSatSim/frequency.txt
 
 	echo
 	echo "Restarting CubeSatSim with new configuration file"
@@ -1228,7 +1299,7 @@ elif [ "$1" = "-H" ]; then
 	
 	echo
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13}
+#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} 
 
 	echo "Do you want Balloon mode ON (y/n) "
 	read hab
@@ -1245,8 +1316,8 @@ elif [ "$1" = "-H" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} ${12} ${13}
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} ${12} ${13} > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} ${12} ${13} ${14}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $hab ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
 ##	echo "Rebooting CubeSatSim with new configuration file"
 ##	echo
@@ -1425,7 +1496,7 @@ elif [ "$1" = "-g" ]; then
 
 		echo "Resetting"
 
-		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0" > /home/pi/CubeSatSim/sim.cfg
+		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 	
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
 	
@@ -1721,7 +1792,7 @@ elif [ "$1" = "-U" ]; then
 	
 	echo
 	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} 
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
 
 	echo "Do you want Random Simulated Failure ON (y/n) "
 	read sim
@@ -1761,8 +1832,8 @@ elif [ "$1" = "-U" ]; then
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time
-	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time > /home/pi/CubeSatSim/sim.cfg
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time ${14}
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} $sim $time ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
 
 	if [ "${12}" != "$sim" ] || [ "${13}" != "$time" ] ; then
@@ -1888,6 +1959,69 @@ elif [ "$1" = "-k" ]; then
 	reboot=1
 #	sudo systemctl restart pacsatsim
 
+elif [ "$1" = "-K" ]; then
+
+	echo	
+	echo "Editing the Doppler frequency shift setting in"
+	echo  "the configuration file for CubeSatSim"	
+	echo
+	
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	doppler="${14}"
+
+	if [ "${14}" = "sim" ] ; then
+		echo "Simulated Doppler frequency shift mode enabled"
+	elif [ "${14}" = "rig" ] ; then
+		echo "rigctld Doppler frequency shift mode enabled"
+	else
+		echo "Doppler frequency shift is OFF"
+	fi
+	
+	echo
+	
+#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+
+	echo "Do you want Doppler frequency shift ON (y/n) "
+	read sim
+	echo
+	
+	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+		doppler="yes"
+		echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
+		read doppler
+
+		if [ "$doppler" = "sim" ] ; then
+			echo "Simulated Doppler frequency shift mode enabled"
+		elif [ "$doppler" = "rig" ] ; then
+			echo "rigctld Doppler frequency shift mode enabled"
+		else
+			doppler="no"
+			echo "sim or rig not entered. Doppler frequency shift is OFF"
+		fi
+	else
+		doppler="no"
+		echo " Doppler frequency shift is OFF"
+	fi
+	
+#	echo
+	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
+#	echo
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} $doppler
+	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} $doppler > /home/pi/CubeSatSim/sim.cfg
+	echo
+
+	value=`cat /home/pi/CubeSatSim/.mode`	
+	echo "$value" > /dev/null
+	set -- $value
+
+#	if [[ ( "$doppler" == "y" || "$doppler" == "yes" ) && ( "$1" == "m" ) && ( "$doppler" == "no" ) ]] ; then
+#		reboot=1
+#	else
+		restart=1
+#	fi
+
 elif [ "$1" = "-h" ]; then
 
 	echo "config OPTION"
@@ -1934,6 +2068,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -N     Set next mode or failure"
 	echo "   -u     Change gpsd state"
 	echo "   -k     Reset the PacSatSim Configuration"
+	echo "   -K     Change the Doppler frequency shift setting"
 
 	echo
 	exit
