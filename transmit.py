@@ -1093,24 +1093,13 @@ if __name__ == "__main__":
 		if (mode == 'm') and (skip == False):
 			print("Sleeping 15 seconds")
 			sleep(15) # avoid CW jumping around at start
- 
-			query = ["systemctl", "get-default", "|", "grep graphical.target"] 
-			try:
-				result = subprocess.run(query, capture_output=True, text=True, check=True)
-				print(f"Command run was: {query}")
-				print(result)
-				gui_status = result.stdout.strip()
-				print(f"Output of the command (stdout): {gui_status}")
-			except subprocess.CalledProcessError as e:
-		#		print(f"Command failed with return code: {e.returncode}")
-				print(f"Command run was: {e.cmd}")
-				gui_status = e.stdout.strip()
-				print(f"Output of the command (stdout): {e.stdout}")
-		#		print(f"Error output of the command (stderr): {e.stderr}")
-			if gui_status == "graphical.target":
+
+			result = subprocess.run("systemctl get-default | grep graphical.target", shell=True, capture_output=True, text=True)
+			gui_result = result.stdout.strip()
+			print(gui_result)  
+			if gui_result == "graphical.target":
 				print("Sleep another 30 seconds")
 				sleep(30)  # sleep another 30 seconds for cpu to settle down
-			print (gui_status)
 		
 	sim_failure_check()
 
