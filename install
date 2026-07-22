@@ -900,6 +900,15 @@ cd
 
 sed -i 's/quick_exec=0/quick_exec=1/' ~/.config/libfm/libfm.conf
 
+if [ ! -d "/home/pi/Icons" ]; then
+	cd
+	mkdir Icons
+	cd Icons
+	#wget http://cubesatsim.org/icons/*
+	#wget -r -nd --no-parent -A 'bar.*.tar.gz' http://url/dir/
+	wget -r -nd --no-parent -A '*' https://cubesatsim.org/icons/
+fi
+
 sudo apt install -y raspberrypi-ui-mods 
 
 sudo apt autoremove -y
