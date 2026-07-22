@@ -1106,7 +1106,7 @@ if __name__ == "__main__":
 				gui_status = e.stdout.strip()
 				print(f"Output of the command (stdout): {e.stdout}")
 		#		print(f"Error output of the command (stderr): {e.stderr}")
-			if gui_status = "graphical.target":
+			if gui_status == "graphical.target":
 				sleep(30)  # sleep another 30 seconds for cpu to settle down
 			print (gui_status)
 		
