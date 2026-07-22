@@ -715,7 +715,12 @@ if __name__ == "__main__":
 			txf = float(config[6])
 			tx = "{:.4f}".format(txf)
 			if (mode == 'e'):
-				txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
+				if (txf > 420.0) and (txf < 450.0):
+					txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
+				elif (txf > 144.0) and (txf < 148.0):	
+					txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
+				else:
+					txf = 144.9
 				txr = "{:.4f}".format(txrf)
 				print("Transmit frequency: ",txr)
 			else:
