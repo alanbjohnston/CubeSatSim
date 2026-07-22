@@ -383,7 +383,7 @@ def update_doppler(fm="yes"):
 				print(f"Rx Frequency: {new_rx_frequency:.0f}")
 		else:
 			new_tx_frequency = tx_frequency
-			new_rx_frequency = tx_frequency
+			new_rx_frequency = rx_frequency
 			print(f"Tx Frequency: {new_tx_frequency:.0f}")
 			print(f"Rx Frequency: {new_rx_frequency:.0f}")			
 		
