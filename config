@@ -1225,8 +1225,8 @@ elif [ "$1" = "-F" ]; then
 	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} ${14}
 	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 
-	rxf=$(echo "$8 * 1000000" | bc)
-	txf=$(echo "$7 * 1000000" | bc)
+	rxf=$(echo "$rx * 1000000" | bc)
+	txf=$(echo "$tx * 1000000" | bc)
 	echo $txf $rxf
 	echo $txf $rxf > /home/pi/CubeSatSim/frequency.txt
 
