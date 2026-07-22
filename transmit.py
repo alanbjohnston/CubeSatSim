@@ -717,8 +717,10 @@ if __name__ == "__main__":
 			if (mode == 'e'):
 				if (txf > 420.0) and (txf < 450.0):
 					txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
+					print("Repeater mode subtracting 290 MHz from TX Frequency")
 				elif (txf > 144.0) and (txf < 148.0):	
-					txrf = (txf - 290.0) # - 0.1 # Cross Band Repeater mode transmit frequency in 2m band
+					txrf = txf # Cross Band Repeater mode transmit frequency is already in 2m band
+					print("Repeater mode using 2m TX Frequency")
 				else:
 					txf = 144.9
 				txr = "{:.4f}".format(txrf)
