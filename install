@@ -255,6 +255,8 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 
 	  sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
 
+	  sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
+
 elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 
 	echo "Trixie detected, installation continuing."
@@ -709,9 +711,10 @@ else
   FLAG=1
 fi
 
-if [ -d "/home/pi/pi-power-button" ]; then
+FILE=/etc/init.d/listen-for-shutdown.sh
+if [ -f $FILE ]; then
 	echo "Uninstalling pi-power-button"
-    sudo rm /etc/init.d/listen-for-shutdown.sh
+    sudo rm $FILE
 fi
 
 FILE=/etc/systemd/system/pushbutton.service
