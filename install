@@ -709,7 +709,7 @@ else
   FLAG=1
 fi
 
-if [ ! -d "/home/pi/pi-power-button" ]; then
+if [ -d "/home/pi/pi-power-button" ]; then
 	echo "Uninstalling pi-power-button"
 	pkill -f /usr/local/bin/listen-for-shutdown.py > /dev/null
 	sudo rm /etc/init.d/listen-for-shutdown.sh stop > /dev/null
