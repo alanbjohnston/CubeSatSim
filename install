@@ -469,28 +469,6 @@ else
     echo "b" > .mode
 fi
 
-if [ ! -d "/home/pi/pi-power-button" ]; then
-
-	cd
-	git clone https://github.com/alanbjohnston/pi-power-button.git
-	cd pi-power-button
-	git checkout master
-	./script/install	
-	sudo apt-get install -y libraspberrypi-dev
-
-fi
-
-cd /home/pi/pi-power-button
-
-if [ ! $(git branch --show-current | grep master-b) ]; then
-
-	echo "updating branch of pi-power-button to master-b."
-	git pull
-	git checkout master-b
-	script/install
-	FLAG=1
-fi
-
 git pull --no-rebase > .updated_p
 #git checkout master
 grep 'changed' /home/pi/pi-power-button/.updated_p
@@ -739,6 +717,11 @@ else
   echo "creating frequency.service."
   sudo cp /home/pi/CubeSatSim/systemd/frequency.service /etc/systemd/system/frequency.service
   FLAG=1
+fi
+
+if [ ! -d "/home/pi/pi-pushbutton" ]; then
+	pkill -f /usr/local/bin/listen-for-shutdown.py > /dev/null
+	sudo rm /etc/init.d/listen-for-shutdown.sh stop > /dev/null
 fi
 
 FILE=/etc/systemd/system/pushbutton.service
