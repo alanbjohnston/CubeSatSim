@@ -469,16 +469,6 @@ else
     echo "b" > .mode
 fi
 
-git pull --no-rebase > .updated_p
-#git checkout master
-grep 'changed' /home/pi/pi-power-button/.updated_p
-if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
-
-	echo "updating pi-power-button."
-	script/install
-	FLAG=1
-fi
-
 if [ ! -d "/home/pi/g0kla_common" ]; then
 	cd
 	git clone https://github.com/alanbjohnston/g0kla_common.git
