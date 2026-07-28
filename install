@@ -720,6 +720,7 @@ if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/systemd/pushbutton.service /etc/systemd/system/pushbutton.service) ]]; then
     echo "changed pushbutton.service."
     sudo cp /home/pi/CubeSatSim/systemd/pushbutton.service /etc/systemd/system/pushbutton.service
+	sudo systemctl enable pushbutton
     FLAG=1
   else
     echo "no change to pushbutton.service."
