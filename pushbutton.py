@@ -28,8 +28,9 @@ def change_mode():
 		os.system("echo 'reboot due to push button!' | wall")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
-		GPIO.output(powerPin, 0);		
-		subprocess.call(['reboot', '-h', 'now'], shell=False)
+		GPIO.output(powerPin, 0);
+		os.system("sudo reboot now")
+#		subprocess.call(['reboot', '-h', 'now'], shell=False)
 		return
 	blink(1)
 	if GPIO.input(push_button):
