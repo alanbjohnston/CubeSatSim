@@ -730,6 +730,7 @@ if [ -f "$FILE" ]; then
 else
   echo "creating pushbutton.service."
   sudo cp /home/pi/CubeSatSim/systemd/pushbutton.service /etc/systemd/system/pushbutton.service
+  sudo systemctl enable pushbutton
   FLAG=1
 fi
 
