@@ -165,12 +165,16 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 #		os.system("sudo nmcli device disconnect wlan0")
 #		os.system("sudo nmcli connection up uuid d437746a-411f-4f02-95ea-7b2f7665d59a") # Hotspot-Manual")
 		result = subprocess.run(['nmcli', 'connection', 'modify', 'Hotspot-Manual', 'connection.interface-name', 'wlan0'], capture_output=True, text=True)
-		print(result, flush=True) #.stdout)
+		print(result, flush=True) #.stdout)	
 #		result = subprocess.run(['nmcli', 'connection', 'down', 'preconfigured'], capture_output=True, text=True)
 #		print(result, flush=True) #.stdout)
 #		os.system("sudo nmcli connection up Hotspot-Manual")
 		result = subprocess.run(['nmcli', 'connection', 'up', 'Hotspot-Manual'], capture_output=True, text=True)
 		print(result, flush=True) #.stdout)
+#		if (result.returncode != 0):
+		print(result.returncode)
+		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
+		print(result, flush=True)			
 		sleep(2)
 else:
 		result = subprocess.run(['nmcli', 'connection', 'modify', 'preconfigured', 'connection.interface-name', 'wlan0'], capture_output=True, text=True)
@@ -179,6 +183,10 @@ else:
 #		print(result, flush=True) # .stdout)
 		result = subprocess.run(['nmcli', 'connection', 'up', 'preconfigured'], capture_output=True, text=True)
 		print(result, flush=True) # .stdout)
+#		if (result.returncode != 0):
+		print(result.returncode)
+		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
+		print(result, flush=True)			
 #		os.system("sudo nmcli connection up preconfigured")
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 1)
