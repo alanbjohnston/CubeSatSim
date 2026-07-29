@@ -169,6 +169,8 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 #		result = subprocess.run(['nmcli', 'connection', 'down', 'preconfigured'], capture_output=True, text=True)
 #		print(result, flush=True) #.stdout)
 #		os.system("sudo nmcli connection up Hotspot-Manual")
+		result = subprocess.run(['nmcli', 'radio', 'wifi', 'on'], capture_output=True, text=True)
+		print(result, flush=True)	
 		result = subprocess.run(['nmcli', 'connection', 'up', 'Hotspot-Manual'], capture_output=True, text=True)
 		print(result, flush=True) #.stdout)
 #		if (result.returncode != 0):
@@ -181,6 +183,8 @@ else:
 		print(result, flush=True) #.stdout)	
 #		result = subprocess.run(['nmcli', 'connection', 'down', 'Hotspot-Manual'], capture_output=True, text=True)
 #		print(result, flush=True) # .stdout)
+		result = subprocess.run(['nmcli', 'radio', 'wifi', 'on'], capture_output=True, text=True)
+		print(result, flush=True)		
 		result = subprocess.run(['nmcli', 'connection', 'up', 'preconfigured'], capture_output=True, text=True)
 		print(result, flush=True) # .stdout)
 #		if (result.returncode != 0):
