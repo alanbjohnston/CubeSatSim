@@ -156,10 +156,16 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 		GPIO.output(powerPin, 1) 
 		sleep(0.3)
 		GPIO.output(powerPin, 0)
-		print("sudo nmcli device wifi hotspot con-name HotSpot ifname wlan0 ssid CubeSat password amsatao7")	
+		success = 1
+		count = 0
+		while (success != 0) and (count < 5):
+#			print("sudo nmcli device wifi hotspot con-name HotSpot ifname wlan0 ssid CubeSat password amsatao7")	
 ##		os.system("sudo nmcli device wifi hotspot con-name HotSpot ifname wlan0 ssid CubeSat password amsatao7")
-		result = subprocess.run(['nmcli', 'device', 'wifi', 'hotspot', 'con-name', 'MyHotspot', 'ifname', 'wlan0', 'ssid', 'CubeSat', 'password', 'amsatao7'], capture_output=True, text=True)
-		print(result, flush=True) #.stdout)	
+			result = subprocess.run(['nmcli', 'device', 'wifi', 'hotspot', 'con-name', 'Hotspot', 'ifname', 'wlan0', 'ssid', 'CubeSat', 'password', 'amsatao7'], capture_output=True, text=True)
+			print(result, flush=True) #.stdout)
+			count = count +1
+			success = result.returncode
+			sleep(1)	
 #		os.system("sudo nmcli c add type wifi ifname wlan0 con-name Hotspot-Manual ssid MyHotspot")
 #		os.system("sudo nmcli connection modify Hotspot-Manual 802-11-wireless.mode ap 802-11-wireless.band bg")
 	#	# os.system("sudo nmcli connection modify Hotspot-Manual wifi-sec.key-mgmt wpa-psk wifi-sec.psk 'YourPassword123' ipv4.method shared")
@@ -180,17 +186,17 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
 		print(result, flush=True)			
 		sleep(2)
-else:
-		result = subprocess.run(['nmcli', 'connection', 'modify', 'preconfigured', 'connection.interface-name', 'wlan0'], capture_output=True, text=True)
-		print(result, flush=True) #.stdout)	
+###else:
+###		result = subprocess.run(['nmcli', 'connection', 'modify', 'preconfigured', 'connection.interface-name', 'wlan0'], capture_output=True, text=True)
+###		print(result, flush=True) #.stdout)	
 #		result = subprocess.run(['nmcli', 'connection', 'down', 'Hotspot-Manual'], capture_output=True, text=True)
 #		print(result, flush=True) # .stdout)
-		result = subprocess.run(['nmcli', 'radio', 'wifi', 'on'], capture_output=True, text=True)
-		print(result, flush=True)		
-		result = subprocess.run(['nmcli', 'connection', 'up', 'preconfigured'], capture_output=True, text=True)
-		print(result, flush=True) # .stdout)
+###		result = subprocess.run(['nmcli', 'radio', 'wifi', 'on'], capture_output=True, text=True)
+###		print(result, flush=True)		
+###		result = subprocess.run(['nmcli', 'connection', 'up', 'preconfigured'], capture_output=True, text=True)
+###		print(result, flush=True) # .stdout)
 #		if (result.returncode != 0):
-		print(result.returncode)
+###		print(result.returncode)
 		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
 		print(result, flush=True)			
 #		os.system("sudo nmcli connection up preconfigured")
