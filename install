@@ -255,6 +255,15 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 
 	  sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
 
+	  sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
+
+	  if [ ! -d "/var/log/journal" ]; then # persistant journal logs across boots
+		sudo mkdir -p /var/log/journal
+		sudo systemd-tmpfiles --create --prefix /var/log/journal
+		sudo systemctl restart systemd-journal-flush.service
+		sudo sed -i 's/Storage=volatile/Storage=persistent/g' /etc/systemd/journald.conf
+	  fi
+
 elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 
 	echo "Trixie detected, installation continuing."
@@ -467,38 +476,6 @@ if [ -f "$FILE" ]; then
 else 
     echo "creating $FILE"
     echo "b" > .mode
-fi
-
-if [ ! -d "/home/pi/pi-power-button" ]; then
-
-	cd
-	git clone https://github.com/alanbjohnston/pi-power-button.git
-	cd pi-power-button
-	git checkout master
-	./script/install	
-	sudo apt-get install -y libraspberrypi-dev
-
-fi
-
-cd /home/pi/pi-power-button
-
-if [ ! $(git branch --show-current | grep master-b) ]; then
-
-	echo "updating branch of pi-power-button to master-b."
-	git pull
-	git checkout master-b
-	script/install
-	FLAG=1
-fi
-
-git pull --no-rebase > .updated_p
-#git checkout master
-grep 'changed' /home/pi/pi-power-button/.updated_p
-if [[ $(grep 'changed' /home/pi/pi-power-button/.updated_p) ]]; then
-
-	echo "updating pi-power-button."
-	script/install
-	FLAG=1
 fi
 
 if [ ! -d "/home/pi/g0kla_common" ]; then
@@ -741,6 +718,28 @@ else
   FLAG=1
 fi
 
+FILE=/etc/init.d/listen-for-shutdown.sh
+if [ -f $FILE ]; then
+	echo "Uninstalling pi-power-button"
+    sudo rm $FILE
+fi
+
+FILE=/etc/systemd/system/pushbutton.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/pushbutton.service /etc/systemd/system/pushbutton.service) ]]; then
+    echo "changed pushbutton.service."
+    sudo cp /home/pi/CubeSatSim/systemd/pushbutton.service /etc/systemd/system/pushbutton.service
+	sudo systemctl enable pushbutton
+    FLAG=1
+  else
+    echo "no change to pushbutton.service."
+  fi
+else
+  echo "creating pushbutton.service."
+  sudo cp /home/pi/CubeSatSim/systemd/pushbutton.service /etc/systemd/system/pushbutton.service
+  sudo systemctl enable pushbutton
+  FLAG=1
+fi
 
 FILE=/etc/asound.conf
 if [ -f "$FILE" ]; then
