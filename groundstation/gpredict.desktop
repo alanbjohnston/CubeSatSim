@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Exec=/usr/bin/gpredict
+Exec=/home/pi/CubeSatSim/groundstation/gpredict.sh
 Name=Gpredict
 Comment=ISS and Satellite Tracking for ARISS Radio Pi
 Icon=/home/pi/Icons/gpredict.png
