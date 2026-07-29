@@ -24,13 +24,7 @@ def change_mode():
 	txPin = 27
 	sleep(0.75)
 	if GPIO.input(push_button):
-###		os.system("sudo nmcli connection down preconfigured")
-#		result = subprocess.run(['nmcli', 'connection', 'down', 'preconfigured'], capture_output=True, text=True)
-#		print(result, flush=True)
-#		result = subprocess.run(['nmcli', 'connection', 'down', 'Hotspot-Manual'], capture_output=True, text=True)
-#		print(result, flush=True)
-###		os.system("sudo nmcli connection down Hotspot-Manual")
-		print("sudo reboot -h now")
+		print("sudo reboot -h now", flush=True)
 		os.system("echo 'reboot due to push button!' | wall")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
@@ -40,49 +34,49 @@ def change_mode():
 		return
 	blink(1)
 	if GPIO.input(push_button):
-		print("switch to AFSK")
+		print("switch to AFSK", flush=True)
 		os.system("echo 'switch to AFSK due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -a")
 		return
 	blink(2)	
 	if GPIO.input(push_button):
-		print("switch to FSK")
+		print("switch to FSK", flush=True)
 		os.system("echo 'switch to FSK due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -f")		
 		return
 	blink(3)
 	if GPIO.input(push_button):
-		print("switch to BPSK")
+		print("switch to BPSK", flush=True)
 		os.system("echo 'switch to BPSK due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -b")
 		return
 	blink(4)
 	if GPIO.input(push_button):
-		print("switch to SSTV")
+		print("switch to SSTV", flush=True)
 		os.system("echo 'switch to SSTV due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -s")
 		return
 	blink(5)
 	if GPIO.input(push_button):
-		print("switch to CW")
+		print("switch to CW", flush=True)
 		os.system("echo 'switch to CW due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -m")
 		return
 	blink(6)
 	if GPIO.input(push_button):
-		print("switch to Repeater")
+		print("switch to Repeater", flush=True)
 		os.system("echo 'switch to Repeater due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -e")
 		return
 	blink(7)
 	if GPIO.input(push_button):
-		print("switch to FunCube")
+		print("switch to FunCube", flush=True)
 		os.system("echo 'switch to FunCube due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -j")
 		return
 	blink(8)
 	if GPIO.input(push_button):
-		print("switch to PacSat")
+		print("switch to PacSat", flush=True)
 		os.system("echo 'switch to PacSat due to push button!' | wall")
 		os.system("/home/pi/CubeSatSim/config -G")
 		return
@@ -93,14 +87,7 @@ def change_mode():
 		sleep(0.35)
 	sleep(0.65)
 	if GPIO.input(push_button):
-		print("sudo nmcli connection up preconfigured")
-###		os.system("sudo nmcli connection down preconfigured")
-#		result = subprocess.run(['nmcli', 'connection', 'down', 'preconfigured'], capture_output=True, text=True)
-#		print(result, flush=True)
-#		result = subprocess.run(['nmcli', 'connection', 'down', 'Hotspot-Manual'], capture_output=True, text=True)
-#		print(result, flush=True)
-###		os.system("sudo nmcli connection down Hotspot-Manual")
-		print("sudo shutdown -h now")
+		print("sudo shutdown -h now", flush=True)
 		os.system("echo 'shutdown due to push button!' | wall")
 		GPIO.setwarnings(False)
 		GPIO.setup(powerPin, GPIO.OUT)
@@ -112,16 +99,16 @@ def change_mode():
 		GPIO.output(powerPin, 1)
 		sleep(0.7)
 	sleep(0.7)
-	print("toggle command and control mode")
+	print("toggle command and control mode", flush=True)
 	try:
 		f = open("/home/pi/CubeSatSim/command_control", "r")
 		f.close()
-		print("command and control will be deactivated")
+		print("command and control will be deactivated", flush=True)
 		os.system('sudo rm /home/pi/CubeSatSim/command_control')
 		os.system("echo 'command and control deactivated by push button!' | wall")
 		os.system('sudo systemctl restart command')
 	except:
-		print("command and control will be activated")
+		print("command and control will be activated", flush=True)
 		os.system('touch /home/pi/CubeSatSim/command_control')
 		os.system("echo 'command and control activated by push button!' | wall")
 		os.system('sudo systemctl restart command')
@@ -136,15 +123,11 @@ GPIO.setup(txPin, GPIO.OUT)
 GPIO.output(txPin, 0)
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 0)
-# GPIO.output(powerPin, 1) 
-# sleep(0.5)
-# GPIO.output(powerPin, 0)
-# sleep(0.5)
 
 GPIO.setup(push_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
-# sleep(1)
+
 if not GPIO.input(push_button): # if pushbutton is held down during boot
-		print("Activating WiFi access point!")
+		print("Activating WiFi access point!", flush=True)
 		GPIO.output(powerPin, 1) 
 		sleep(0.1)
 		GPIO.output(powerPin, 0)
@@ -159,47 +142,14 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 		success = 1
 		count = 0
 		while (success != 0) and (count < 5):
-#			print("sudo nmcli device wifi hotspot con-name HotSpot ifname wlan0 ssid CubeSat password amsatao7")	
-##		os.system("sudo nmcli device wifi hotspot con-name HotSpot ifname wlan0 ssid CubeSat password amsatao7")
 			result = subprocess.run(['nmcli', 'device', 'wifi', 'hotspot', 'con-name', 'Hotspot', 'ifname', 'wlan0', 'ssid', 'CubeSat', 'password', 'amsatao7'], capture_output=True, text=True)
 			print(result, flush=True) #.stdout)
-			count = count +1
+			count = count + 1
 			success = result.returncode
 			sleep(1)	
-#		os.system("sudo nmcli c add type wifi ifname wlan0 con-name Hotspot-Manual ssid MyHotspot")
-#		os.system("sudo nmcli connection modify Hotspot-Manual 802-11-wireless.mode ap 802-11-wireless.band bg")
-	#	# os.system("sudo nmcli connection modify Hotspot-Manual wifi-sec.key-mgmt wpa-psk wifi-sec.psk 'YourPassword123' ipv4.method shared")
-#		os.system("sudo nmcli connection down uuid 335c2e13-cab4-40bf-a297-7ff2535ec214") # preconfigured")
-#		os.system("sudo nmcli device disconnect wlan0")
-#		os.system("sudo nmcli connection up uuid d437746a-411f-4f02-95ea-7b2f7665d59a") # Hotspot-Manual")
-##		result = subprocess.run(['nmcli', 'connection', 'modify', 'Hotspot-Manual', 'connection.interface-name', 'wlan0'], capture_output=True, text=True)
-##		print(result, flush=True) #.stdout)	
-#		result = subprocess.run(['nmcli', 'connection', 'down', 'preconfigured'], capture_output=True, text=True)
-#		print(result, flush=True) #.stdout)
-#		os.system("sudo nmcli connection up Hotspot-Manual")
-##		result = subprocess.run(['nmcli', 'radio', 'wifi', 'on'], capture_output=True, text=True)
-##		print(result, flush=True)	
-##		result = subprocess.run(['nmcli', 'connection', 'up', 'Hotspot-Manual'], capture_output=True, text=True)
-##		print(result, flush=True) #.stdout)
-#		if (result.returncode != 0):
-#		print(result.returncode)
 		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
 		print(result, flush=True)			
-		sleep(2)
-###else:
-###		result = subprocess.run(['nmcli', 'connection', 'modify', 'preconfigured', 'connection.interface-name', 'wlan0'], capture_output=True, text=True)
-###		print(result, flush=True) #.stdout)	
-#		result = subprocess.run(['nmcli', 'connection', 'down', 'Hotspot-Manual'], capture_output=True, text=True)
-#		print(result, flush=True) # .stdout)
-###		result = subprocess.run(['nmcli', 'radio', 'wifi', 'on'], capture_output=True, text=True)
-###		print(result, flush=True)		
-###		result = subprocess.run(['nmcli', 'connection', 'up', 'preconfigured'], capture_output=True, text=True)
-###		print(result, flush=True) # .stdout)
-#		if (result.returncode != 0):
-###		print(result.returncode)
-		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
-		print(result, flush=True)			
-#		os.system("sudo nmcli connection up preconfigured")
+		sleep(2)		
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 1)
 while (True):
