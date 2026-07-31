@@ -150,8 +150,7 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
 		print(result, flush=True)			
 		sleep(2)
-		result = subprocess.run(['ttyd', '-p', '8080', 'bash', '&'], capture_output=True, text=True)
-		print(result, flush=True) 
+ 		subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-p', '8080', 'bash'])
 
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 1)
