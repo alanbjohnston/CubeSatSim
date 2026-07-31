@@ -2014,6 +2014,14 @@ elif [ "$1" = "-K" ]; then
 		fi
 	else
 		doppler="$param2"
+		if [ "$doppler" = "sim" ] ; then
+			echo "Simulated Doppler frequency shift mode enabled"
+		elif [ "$doppler" = "rig" ] ; then
+			echo "Radio Control Doppler frequency shift mode enabled"
+		else
+			echo "Doppler frequency shift is OFF"
+			doppler="no"
+		fi
 	fi
 
 #	echo
