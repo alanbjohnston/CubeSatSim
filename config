@@ -132,6 +132,11 @@ echo
 # echo $2
 # echo
 
+param1=$1
+param2=$2
+param3=$3
+param4=$4
+
 sudo modprobe snd-aloop
 
 # if [ "$2" = "-n" ] ; then
@@ -1965,46 +1970,52 @@ elif [ "$1" = "-K" ]; then
 	echo "Editing the Doppler frequency shift setting in"
 	echo  "the configuration file for CubeSatSim"	
 	echo
-	
+
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
-	doppler="${14}"
 
-	if [ "${14}" = "sim" ] ; then
-		echo "Simulated Doppler frequency shift mode enabled"
-	elif [ "${14}" = "rig" ] ; then
-		echo "rigctld Doppler frequency shift mode enabled"
-	else
-		echo "Doppler frequency shift is OFF"
-	fi
-	
-	echo
-	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+	if [ -z "$param2" ] ; then
 
-	echo "Do you want Doppler frequency shift ON (y/n) "
-	read sim
-	echo
+		doppler="${14}"
 	
-	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
-		doppler="yes"
-		echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
-		read doppler
-
-		if [ "$doppler" = "sim" ] ; then
+		if [ "${14}" = "sim" ] ; then
 			echo "Simulated Doppler frequency shift mode enabled"
-		elif [ "$doppler" = "rig" ] ; then
+		elif [ "${14}" = "rig" ] ; then
 			echo "rigctld Doppler frequency shift mode enabled"
 		else
+			echo "Doppler frequency shift is OFF"
+		fi
+		
+		echo
+		
+	#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+	
+		echo "Do you want Doppler frequency shift ON (y/n) "
+		read sim
+		echo
+		
+		if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+			doppler="yes"
+			echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
+			read doppler
+	
+			if [ "$doppler" = "sim" ] ; then
+				echo "Simulated Doppler frequency shift mode enabled"
+			elif [ "$doppler" = "rig" ] ; then
+				echo "rigctld Doppler frequency shift mode enabled"
+			else
+				doppler="no"
+				echo "sim or rig not entered. Doppler frequency shift is OFF"
+			fi
+		else
 			doppler="no"
-			echo "sim or rig not entered. Doppler frequency shift is OFF"
+			echo " Doppler frequency shift is OFF"
 		fi
 	else
-		doppler="no"
-		echo " Doppler frequency shift is OFF"
+		doppler="$param2"
 	fi
-	
+
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
