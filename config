@@ -139,9 +139,10 @@ param4=$4
 
 sudo modprobe snd-aloop
 
-# if [ "$2" = "-n" ] ; then
-if [ -z "$2" ] ; then
+if [ "$2" = "-n" ] ; then
+# if [ -z "$2" ] ; then
 	noreboot=0
+	param2=""
 else
 	if [ "$2" = "-n" ] ; then
 		echo "Reboot disabled"
@@ -599,8 +600,7 @@ elif [ "$1" = "-t" ]; then
 elif [ "$1" = "-c" ]; then
 
 	echo	
-	echo "Setting the CALLSIGN in the"
-	echo  "configuration file for CubeSatSim"	
+	echo "Setting the CALLSIGN"
 	echo
 
 #	echo -e "Current sim.cfg configuration file:"	
