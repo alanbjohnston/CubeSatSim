@@ -149,7 +149,10 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 			sleep(1)	
 		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
 		print(result, flush=True)			
-		sleep(2)		
+		sleep(2)
+		result = subprocess.run(['ttyd', '-p', '8080', 'bash', '&'], capture_output=True, text=True)
+		print(result, flush=True) 
+
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 1)
 while (True):
