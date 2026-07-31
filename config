@@ -612,8 +612,7 @@ elif [ "$1" = "-c" ]; then
 
 	oldcallsign="$1"
 
-	echo "Current value of CALLSIGN is"	
-	echo $oldcallsign
+	echo "Current value of CALLSIGN is"	 $oldcallsign
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
@@ -655,8 +654,7 @@ elif [ "$1" = "-r" ]; then
 	set -- $value
 	
 	echo
-	echo "Current value of Reset Count is"	
-	echo $2
+	echo "Current value of Reset Count is"	$2
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
@@ -710,8 +708,7 @@ elif [ "$1" = "-l" ]; then
 	set -- $value
 
 	echo
-	echo "Current value of latitude is"	
-	echo $3
+	echo "Current value of latitude is"	$3
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
@@ -734,8 +731,7 @@ elif [ "$1" = "-l" ]; then
 	fi 
 	
 	echo
-	echo "Current value of longitude is"	
-	echo $4
+	echo "Current value of longitude is" $4	
 	echo
 
 	echo -e "Enter longitude (decimal degrees, positive is east): "
@@ -1064,8 +1060,7 @@ elif [ "$1" = "-q" ]; then
 	set -- $value
 
 	echo
-	echo "Current value of squelch is"	
-	echo $6
+	echo "Current value of squelch is"	$6
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
@@ -1121,10 +1116,8 @@ elif [ "$1" = "-P" ]; then
 	set -- $value
 
 	echo
-	echo "Current value of RX PL is"	
-	echo ${10}
-	echo "Current value of TX PL is"	
-	echo ${11}
+	echo "Current value of RX PL is" ${10}	
+	echo "Current value of TX PL is" ${11}	
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
