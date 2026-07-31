@@ -1188,8 +1188,7 @@ elif [ "$1" = "-P" ]; then
 elif [ "$1" = "-F" ]; then
 
 	echo	
-	echo "Editing the tx and rx frequency in the"
-	echo  "configuration file for CubeSatSim"	
+	echo "Editing the RX and RX frequency"
 	echo
 
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
@@ -1228,7 +1227,7 @@ elif [ "$1" = "-F" ]; then
 		fi
 
 	else
-		tx="$param2"`
+		tx="$param2"
 		echo "Changing TX frequency to (MHz)" $tx
 		if [ -z "$param3" ] ; then
 			rx="$8"
