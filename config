@@ -1191,40 +1191,54 @@ elif [ "$1" = "-F" ]; then
 	echo "Editing the tx and rx frequency in the"
 	echo  "configuration file for CubeSatSim"	
 	echo
-	echo "Return keeps current value."
-#	echo -e "Current sim.cfg configuration file:"	
-#	echo
-	
+
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "Current value of tx is"	
+	echo "Current value of TX frequency (MHz) is"	
 	echo $7
 	echo
-	echo "Current value of rx is"	
+	echo "Current value of RX frequency (MHz) is"	
 	echo $8
 	echo	
 
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
-	echo "Enter tx frequency as 4XX.XXXX: "
-	read tx
+	if [ -z "$param2" ] ; then
 
-	if [ -z $tx ] ; then
+		echo "Return keeps current value."
+	
+		echo "Enter TX frequency in MHz (2m or 70cm band): "
+		read tx
+	
+		if [ -z $tx ] ; then
+	
+			tx="$7"
+			echo "Keeping value of" $tx
+		fi
+	
+		echo "Enter RX frequency in MHz (70cm band only): "
+		read rx
+	
+		if [ -z $rx ] ; then
+	
+			rx="$8"
+			echo "Keeping RX value of" $rx
+		fi
 
-		tx="$7"
-		echo "Keeping value of" $tx
+	else
+		tx="$param2"`
+		echo "Changing TX frequency to (MHz)" $tx
+		if [ -z "$param3" ] ; then
+			rx="$8"
+			echo "Keeping RX value of" $rx
+		else
+			rx="$param3"
+			echo "Changing TX frequency to (MHz)" $rx
+		fi
 	fi
 
-	echo "Enter rx frequency as 4XX.XXXX: "
-	read rx
-
-	if [ -z $rx ] ; then
-
-		rx="$8"
-		echo "Keeping value of" $rx
-	fi
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
 	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} ${14}
