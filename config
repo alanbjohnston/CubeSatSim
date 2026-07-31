@@ -1967,8 +1967,7 @@ elif [ "$1" = "-k" ]; then
 elif [ "$1" = "-K" ]; then
 
 	echo	
-	echo "Editing the Doppler frequency shift setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting the Doppler frequency shift mode setting"
 	echo
 
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
