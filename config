@@ -599,10 +599,10 @@ elif [ "$1" = "-t" ]; then
 elif [ "$1" = "-c" ]; then
 
 	echo	
-	echo "Editing the CALLSIGN in the"
+	echo "Setting the CALLSIGN in the"
 	echo  "configuration file for CubeSatSim"	
 	echo
-	echo "Return keeps current value."
+
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
@@ -618,11 +618,18 @@ elif [ "$1" = "-c" ]; then
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
 
-	echo "Enter callsign in all capitals: "
-	read callsign
+	if [ -z "$param2" ] ; then
 
+		echo "Return keeps current value."
+	
+		echo "Enter callsign in all capitals: "
+		read callsign
+
+	else
+		callsign="$param2"
+	fi
+	
 	if [ -z $callsign ] ; then
-
 		callsign="$1"
 		echo "Keeping value of" $callsign
 		norestart=1
@@ -633,7 +640,7 @@ elif [ "$1" = "-c" ]; then
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	fi
-	
+
 	if [ "$norestart" = "1" ]; then
 		echo 
 	else
