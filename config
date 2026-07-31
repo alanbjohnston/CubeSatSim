@@ -1195,9 +1195,9 @@ elif [ "$1" = "-F" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "Current value of TX frequency (MHz) is" $7	
+	echo "Current value of TX frequency is" $7 "MHz"	
 	echo
-	echo "Current value of RX frequency (MHz) is" $8	
+	echo "Current value of RX frequency is" $8"MHz"
 	echo	
 
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
@@ -1226,13 +1226,13 @@ elif [ "$1" = "-F" ]; then
 
 	else
 		tx="$param2"
-		echo "Changing TX frequency to " $tx "MHz"
+		echo "Changing TX frequency to" $tx "MHz"
 		if [ -z "$param3" ] ; then
 			rx="$8"
 			echo "Keeping RX value of" $rx
 		else
 			rx="$param3"
-			echo "Changing TX frequency to" $rx "MHz"
+			echo "Changing RX frequency to" $rx "MHz"
 		fi
 	fi
 
