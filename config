@@ -1221,18 +1221,18 @@ elif [ "$1" = "-F" ]; then
 		if [ -z $rx ] ; then
 	
 			rx="$8"
-			echo "Keeping RX value of" $rx
+			echo "Keeping RX value of" $rx "MHz"
 		fi
 
 	else
 		tx="$param2"
-		echo "Changing TX frequency to (MHz)" $tx
+		echo "Changing TX frequency to " $tx "MHz"
 		if [ -z "$param3" ] ; then
 			rx="$8"
 			echo "Keeping RX value of" $rx
 		else
 			rx="$param3"
-			echo "Changing TX frequency to (MHz)" $rx
+			echo "Changing TX frequency to" $rx "MHz"
 		fi
 	fi
 
