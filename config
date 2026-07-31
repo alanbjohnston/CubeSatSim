@@ -1195,11 +1195,9 @@ elif [ "$1" = "-F" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "Current value of TX frequency (MHz) is"	
-	echo $7
+	echo "Current value of TX frequency (MHz) is" $7	
 	echo
-	echo "Current value of RX frequency (MHz) is"	
-	echo $8
+	echo "Current value of RX frequency (MHz) is" $8	
 	echo	
 
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
