@@ -126,67 +126,67 @@ actions:
     onclick: execution-dialog
     timeout: 60
     
-  - title: "CubeSatSim Log"
+  - title: "Log"
     shell: /home/pi/CubeSatSim/log -d
     icon: logs
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Realtime CubeSatSim Transmit Log"
+  - title: "Realtime Transmit Log"
     shell: /home/pi/CubeSatSim/log -t r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "CubeSatSim Transmit Log"
+  - title: "Transmit Log"
     shell: /home/pi/CubeSatSim/log -t
     icon: logs
     onclick: execution-dialog
     timeout: 5
     
-  - title: "Realtime CubeSatSim Frequency Control Log"
+  - title: "Realtime Frequency Control Log"
     shell: /home/pi/CubeSatSim/log -r r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "CubeSatSim Frequency Control Log"
+  - title: "Frequency Control Log"
     shell: /home/pi/CubeSatSim/log -r
     icon: logs
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Realtime CubeSatSim Frequency Display Log"
+  - title: "Realtime Frequency Display Log"
     shell: /home/pi/CubeSatSim/log -f r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "CubeSatSim Frequency Display Log"
+  - title: "Frequency Display Log"
     shell: /home/pi/CubeSatSim/log -f
     icon: logs
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Realtime CubeSatSim Pacsat Log"
+  - title: "Realtime Pacsat Log"
     shell: /home/pi/CubeSatSim/log -p r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "CubeSatSim Pacsat Log"
+  - title: "Pacsat Log"
     shell: /home/pi/CubeSatSim/log -p
     icon: logs
     onclick: execution-dialog
     timeout: 5    
 
-  - title: "Realtime CubeSatSim Pushbutton Log"
+  - title: "Realtime Pushbutton Log"
     shell: /home/pi/CubeSatSim/log -b r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "CubeSatSim Pushbutton Log"
+  - title: "Pushbutton Log"
     shell: /home/pi/CubeSatSim/log -b
     icon: logs
     onclick: execution-dialog
