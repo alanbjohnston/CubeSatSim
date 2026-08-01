@@ -103,3 +103,12 @@ actions:
     arguments:
       - name: params 
         type: ascii_sentence    
+
+  - title: "Show CubeSatSim Log Realtime"
+    shell: /home/pi/CubeSatSim/log -c r
+    onclick: execution-dialog
+
+  - title: "Show CubeSatSim Log"
+    shell: /home/pi/CubeSatSim/log -c
+    onclick: execution-dialog
+    
