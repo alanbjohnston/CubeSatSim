@@ -40,7 +40,7 @@ actions:
     shell: /home/pi/CubeSatSim/config -G 
     onclick: execution-dialog
 
-  - title: "Change Mode to Pacsat Ground"
+  - title: "Change Mode to Pacsat Ground Station"
     shell: /home/pi/CubeSatSim/config -I 
     onclick: execution-dialog
 
@@ -125,18 +125,21 @@ actions:
 dashboards:
   - title: CubeSatSim Dashboard
     contents:
-      - title: Fieldset 1
-        type: fieldset
+      - title: "Show CubeSatSim Config"
+      - title: Mode Changes
         contents:
-          - title: Mode Changes
-            contents:
-              - title: "Change Mode to APRS"
-              - title: "Change Mode to FSK"
-
-              - title: Config
-                contents:
-                  - title: "Change Mode to CW"
-
-          - title: Settings
-            contents:
-              - title: "Change Mode to FUNcube"
+          - title: "Change Mode to APRS"
+          - title: "Change Mode to FSK"
+          - title: "Change Mode to BPSK"
+          - title: "Change Mode to SSTV"
+          - title: "Change Mode to CW"
+          - title: "Change Mode to FUNcube"
+          - title: "Change Mode to Repeater"
+          - title: "Change Mode to Pacsat"
+          - title: "Change Mode to Pacsat Ground Station"
+      - title: Settings
+        contents:
+          - title: "Change Mode to Battery Saver"
+      - title: Logs
+        contents:
+          - title: "Show Command and Control Log"
