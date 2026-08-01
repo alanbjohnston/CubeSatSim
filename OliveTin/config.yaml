@@ -126,7 +126,7 @@ actions:
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Log"
+  - title: "CubeSatSim Log"
     shell: /home/pi/CubeSatSim/log -d
     icon: logs
     onclick: execution-dialog
