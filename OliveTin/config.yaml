@@ -21,7 +21,7 @@ actions:
 
   - title: "Show All Commands"
     shell: /home/pi/CubeSatSim/config -h
-    icon: "&#9881;" # gear
+    icon: logs
     onclick: execution-dialog
     timeout: 5   
     
@@ -322,6 +322,15 @@ actions:
     icon: "&#10060;" # red X
     onclick: execution-dialog
     timeout: 5
+
+  - title: "Set Reset Count" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -r {{ resets }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: resets 
+        type: ascii_sentence    
     
 dashboards:
   - title: CubeSatSim Dashboard
