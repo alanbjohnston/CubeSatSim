@@ -49,25 +49,33 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Change Mode to Battery Saver"
-    shell: bash -c "/home/pi/CubeSatSim/config -B <<< y" 
+  - title: "Turn Battery Saver Mode ON"
+    shell: bash -c "/home/pi/CubeSatSim/config -B yes" 
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Battery Saver Mode OFF"
+    shell: bash -c "/home/pi/CubeSatSim/config -B no" 
+    icon: "&#10060;" # red X
     onclick: execution-dialog
     timeout: 5
  
   - title: "Turn Doppler Mode OFF"
     shell: /home/pi/CubeSatSim/config -K no 
-    icon: "&#10060;"
+    icon: "&#10060;" # red X
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turn Simulated Doppler Mode ON"
     shell: /home/pi/CubeSatSim/config -K sim
-    icon: "&#128994;"
+    icon: "&#128994;" # green ball
     onclick: execution-dialog
     timeout: 5
  
   - title: "Turn Radio Control Doppler Mode ON"
-    shell: /home/pi/CubeSatSim/config -K rig 
+    shell: /home/pi/CubeSatSim/config -K rig
+    icon: "&#128994;" # green ball
     onclick: execution-dialog
     timeout: 5
 
@@ -169,31 +177,37 @@ actions:
 
   - title: "Turning Simulated Telemetry ON"
     shell: /home/pi/CubeSatSim/config -t yes
+    icon: "&#128994;" # green ball
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turning Simulated Telemetry OFF"
     shell: /home/pi/CubeSatSim/config -t no
+    icon: "&#10060;" # red X
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turning Balloon Mode ON"
     shell: /home/pi/CubeSatSim/config -H yes
+    icon: "&#128994;" # green ball
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turning Balloon Mode OFF"
     shell: /home/pi/CubeSatSim/config -H no
+    icon: "&#10060;" # red X
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turning Command and Control ON"
     shell: /home/pi/CubeSatSim/config -T yes
+    icon: "&#128994;" # green ball
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turning Command and Control OFF"
     shell: /home/pi/CubeSatSim/config -T no
+    icon: "&#10060;" # red X
     onclick: execution-dialog
     timeout: 5
     
@@ -217,7 +231,8 @@ dashboards:
           
       - title: Settings
         contents:
-          - title: "Change Mode to Battery Saver"
+          - title: "Turn Battery Saver Mode ON"
+          - title: "Turn Battery Saver Mode OFF"
           - title: "Turn Doppler Mode OFF"
           - title: "Turn Simulated Doppler Mode ON"
           - title: "Turn Radio Control Doppler Mode ON"
