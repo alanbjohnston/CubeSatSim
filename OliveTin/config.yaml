@@ -1,9 +1,4 @@
 actions:
-  - title: Say Hello
-    shell: echo "Hello World!"
-    icon: smile
-    onclick: execution-dialog
-
   - title: "Show CubeSatSim Config"
     shell: /home/pi/CubeSatSim/config 
     onclick: execution-dialog
