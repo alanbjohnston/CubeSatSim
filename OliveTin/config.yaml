@@ -129,6 +129,16 @@ actions:
       - name: rx 
         type: ascii_sentence
 
+  - title: "Set PL (Private Line) CTCSS/CDCSS" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -P {{ pl_tx }} {{ pl_rx }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: pl_tx 
+        type: ascii_sentence
+      - name: pl_rx 
+
   - title: "Change Callsign" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -c {{ callsign }}
@@ -263,7 +273,7 @@ actions:
     onclick: execution-dialog
     timeout: 5
     
-  - title: "Read Squelch"    
+  - title: "Display Squelch"    
     shell: /home/pi/CubeSatSim/config -Q
     icon: logs
     onclick: execution-dialog  
@@ -384,6 +394,7 @@ dashboards:
           - title: "Change TX and RX Frequency" 
           - title: "Set FoxTelem Reset Count"
           - title: "Set Squelch Level" 
+          - title: "Set PL (Private Line) CTCSS/CDCSS" 
           - title: "Reset the Commands Count"
           - title: "Reset the Pacsat Configuration" 
           - title: "Turn Simulated Doppler Mode ON"
@@ -428,7 +439,7 @@ dashboards:
       - title: Diagnostics
         contents:
           - title: "Scan I2C Bus"
-          - title: "Read Squelch" 
+          - title: "Display Squelch" 
           - title: "Display Payload Sensor Data"
           - title: "Display Voltage and Current Data" 
           
