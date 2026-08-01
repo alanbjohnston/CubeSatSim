@@ -1025,14 +1025,19 @@ elif [ "$1" = "-R" ]; then
 	echo "Reset the Commands Count in the file command_count.txt"
 	echo 
 
-	echo "Current commands count is:"
-	cat /home/pi/CubeSatSim/command_count.txt
-	echo
+	if [ -z "$param2" ] ; then
 
-	echo "Do you want to reset the commands count to zero (y/n) "
-	read reset
-	echo
+		echo "Current commands count is:"
+		cat /home/pi/CubeSatSim/command_count.txt
+		echo
 	
+		echo "Do you want to reset the commands count to zero (y/n) "
+		read reset
+		echo
+	else
+		reset="$param2"
+	fi
+
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 		sudo rm /home/pi/CubeSatSim/command_count.txt > /dev/null 2>&1
 		echo "Commands count reset to 0"
