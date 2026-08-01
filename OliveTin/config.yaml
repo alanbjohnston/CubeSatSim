@@ -2,63 +2,78 @@ actions:
   - title: "Show CubeSatSim Config"
     shell: /home/pi/CubeSatSim/config 
     onclick: execution-dialog
+    timeout: 5
     
   - title: "Change Mode to APRS"
     shell: /home/pi/CubeSatSim/config -a 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to FSK"
     shell: /home/pi/CubeSatSim/config -f 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to BPSK"
     shell: /home/pi/CubeSatSim/config -b 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to SSTV"
     shell: /home/pi/CubeSatSim/config -s 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to CW"
     shell: /home/pi/CubeSatSim/config -m 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to Repeater"
     shell: /home/pi/CubeSatSim/config -e 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to FUNcube"
     shell: /home/pi/CubeSatSim/config -j 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to Pacsat"
     shell: /home/pi/CubeSatSim/config -G 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to Pacsat Ground Station"
     shell: /home/pi/CubeSatSim/config -I 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change Mode to Battery Saver"
     shell: bash -c "/home/pi/CubeSatSim/config -B <<< y" 
     onclick: execution-dialog
+    timeout: 5
  
   - title: "Turn Doppler Mode OFF"
     shell: /home/pi/CubeSatSim/config -K no 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Turn Simulated Doppler Mode ON"
     shell: /home/pi/CubeSatSim/config -K sim 
     onclick: execution-dialog
+    timeout: 5
  
   - title: "Turn Radio Control Doppler Mode ON"
     shell: /home/pi/CubeSatSim/config -K rig 
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Change TX and RX Frequency" 
     icon: smile
     shell: /home/pi/CubeSatSim/config -F {{ tx }} {{ rx }}
     onclick: execution-dialog
+    timeout: 5
     arguments:
       - name: tx 
         type: ascii_sentence
@@ -69,6 +84,7 @@ actions:
     icon: smile
     shell: /home/pi/CubeSatSim/config -c {{ callsign }}
     onclick: execution-dialog
+    timeout: 5
     arguments:
       - name: callsign 
         type: ascii_sentence
@@ -77,6 +93,7 @@ actions:
     icon: smile
     shell: /home/pi/CubeSatSim/config -l {{ lat }} {{ lon }}
     onclick: execution-dialog
+    timeout: 5
     arguments:
       - name: lat
         type: ascii_sentence
@@ -86,11 +103,13 @@ actions:
   - title: "Show CubeSatSim Log Realtime"
     shell: /home/pi/CubeSatSim/log -d r
     onclick: execution-dialog
+    timeout: 5
     timeout: 60
     
   - title: "Show CubeSatSim Log"
     shell: /home/pi/CubeSatSim/log -d
     onclick: execution-dialog
+    timeout: 5
     
   - title: "Show Command and Control Log Realtime"
     shell: /home/pi/CubeSatSim/log -c r
@@ -100,18 +119,22 @@ actions:
   - title: "Show Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c
     onclick: execution-dialog
+    timeout: 5
 
   - title: "Restart CubeSatSim"
     shell: echo "Restarting CubeSatSim now!" && sudo reboot now
-    onclick: execution-dialog    
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Shutdown CubeSatSim"
     shell: echo "Shutting Down CubeSatSim now!" && sudo shutdown now
-    onclick: execution-dialog      
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Restart CubeSatSim Software"
     shell: /home/pi/CubeSatSim/config -i
-    onclick: execution-dialog   
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Scan I2C Bus"    
     shell: /home/pi/CubeSatSim/config -S
@@ -120,7 +143,8 @@ actions:
     
   - title: "Clear Logs and Restart"    
     shell: /home/pi/CubeSatSim/config -C
-    onclick: execution-dialog  
+    onclick: execution-dialog
+    timeout: 5
     
   - title: "Read Squelch"    
     shell: /home/pi/CubeSatSim/config -Q
@@ -139,23 +163,28 @@ actions:
 
   - title: "Reset the Pacsat Configuration"
     shell: /home/pi/CubeSatSim/config -k
-    onclick: execution-dialog  
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Turning Simulated Telemetry ON"
     shell: /home/pi/CubeSatSim/config -t yes
-    onclick: execution-dialog  
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Turning Simulated Telemetry OFF"
     shell: /home/pi/CubeSatSim/config -t no
-    onclick: execution-dialog  
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Turning Balloon Mode ON"
     shell: /home/pi/CubeSatSim/config -H yes
-    onclick: execution-dialog      
+    onclick: execution-dialog
+    timeout: 5
 
   - title: "Turning Balloon Mode OFF"
     shell: /home/pi/CubeSatSim/config -H no
-    onclick: execution-dialog  
+    onclick: execution-dialog
+    timeout: 5
     
 dashboards:
   - title: CubeSatSim Dashboard
