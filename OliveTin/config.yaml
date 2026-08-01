@@ -1,0 +1,77 @@
+actions:
+  - title: "Change Mode to APRS"
+    shell: /home/pi/CubeSatSim/config -a 
+    onclick: execution-dialog
+
+  - title: "Show Config"
+    shell: /home/pi/CubeSatSim/config 
+    onclick: execution-dialog
+
+  - title: echo a message
+    icon: smile
+    shell: echo {{ message }}
+    arguments:
+      - name: message
+        default: Hello World
+        type: ascii_sentence
+    onclick: execution-dialog
+
+  - title: Save text to file
+    shell: echo "$CONTENT" > file.txt
+    arguments:
+      - name: content
+        type: ascii_sentence 
+    onclick: execution-dialog
+
+  - title: "Change Mode to Battery Saver"
+    shell: bash -c "/home/pi/CubeSatSim/config -B <<< y" 
+    onclick: execution-dialog
+ 
+  - title: "Turn Doppler Mode OFF"
+    shell: /home/pi/CubeSatSim/config -K no 
+    onclick: execution-dialog
+
+  - title: "Turn Simulated Doppler Mode ON"
+    shell: /home/pi/CubeSatSim/config -K sim 
+    onclick: execution-dialog
+ 
+  - title: "Turn Radio Control Dppler Mode ON"
+    shell: /home/pi/CubeSatSim/config -K rig 
+    onclick: execution-dialog
+
+  - title: "Change TX and RX Frequency" 
+    icon: smile
+    shell: /home/pi/CubeSatSim/config -F {{ tx }} {{ rx }}
+    onclick: execution-dialog
+    arguments:
+      - name: tx 
+        type: ascii_sentence
+      - name: rx 
+        type: ascii_sentence
+
+  - title: "Change Callsign" 
+    icon: smile
+    shell: /home/pi/CubeSatSim/config -c {{ callsign }}
+    onclick: execution-dialog
+    arguments:
+      - name: callsign 
+        type: ascii_sentence
+
+  - title: "Change Latitude and Longitude" 
+    icon: smile
+    shell: /home/pi/CubeSatSim/config -l {{ lat }} {{ lon }}
+    onclick: execution-dialog
+    arguments:
+      - name: lat
+        type: ascii_sentence
+      - name: lon 
+        type: ascii_sentence
+
+  - title: "Generic Config Command" 
+    icon: smile
+    shell: /home/pi/CubeSatSim/config {{ params }}
+    onclick: execution-dialog
+    arguments:
+      - name: params 
+        type: ascii_sentence
+
