@@ -920,66 +920,71 @@ elif [ "$1" = "-d" ]; then
 		echo "Direwolf will not run unless one is plugged in."
 	fi
 
-	FILE=/home/pi/CubeSatSim/command_control_direwolf
-	if [ -f "$FILE" ]; then
-    		echo "Radio command and control with Direwolf for DTMF and APRS is ON"
-		echo
-		echo "Do you want to turn Direwolf OFF and do Carrier command and control (y/n) "
-		read reset
-		echo
-
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control Direwolf set to OFF"
-			sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
-#			reboot=1
-##			echo "rebooting"
-			sudo systemctl restart command
-##			sudo reboot now	
+	if [ -z "$param2" ] ; then
+	
+		FILE=/home/pi/CubeSatSim/command_control_direwolf
+		if [ -f "$FILE" ]; then
+			echo "Radio command and control with Direwolf for DTMF and APRS is ON"
+			echo
+			echo "Do you want to turn Direwolf OFF and do Carrier command and control (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Command and control Direwolf set to OFF"
+				sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
+				sudo systemctl restart command
+			fi
+	
+		else 
+	    	echo "Radio command and control with Direwolf for DTMF and APRS is OFF so carrier command and control is enabled"
+			echo
+			echo "Do you want to set command and control with Direwolf for DTMF and APRS to ON (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Command and control Direwolf set to ON"
+				sudo touch /home/pi/CubeSatSim/command_control_direwolf
+				sudo systemctl restart command
+				if [[ $(arecord -l | grep card) ]]; then
+					restart=1
+				fi
+			fi
+	
 		fi
 
-	else 
-    		echo "Radio command and control with Direwolf for DTMF and APRS is OFF so carrier command and control is enabled"
-		echo
-		echo "Do you want to set command and control with Direwolf for DTMF and APRS to ON (y/n) "
-		read reset
-		echo
-
+		FILE=/home/pi/CubeSatSim/command_control
+		if [ -f "$FILE" ]; then
+			echo		
+		else 
+			echo "Radio command and control is OFF"
+			echo
+			echo "Do you want to set command and control to ON (y/n) "
+			read reset
+			echo
+		
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Command and control set to ON"
+				sudo touch /home/pi/CubeSatSim/command_control
+				echo "restarting command and control"
+				sudo systemctl restart command
+			fi		
+		fi
+	else
+		reset="$param2"
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control Direwolf set to ON"
 			sudo touch /home/pi/CubeSatSim/command_control_direwolf
-##			echo "rebooting"
-#			reboot=1
 			sudo systemctl restart command
 			if [[ $(arecord -l | grep card) ]]; then
 				restart=1
-###				echo "restarting cubesatsim software"
-###				sudo systemctl restart cubesatsim
 			fi
-##			sudo reboot now	
-		fi
-
-	fi
-
-	FILE=/home/pi/CubeSatSim/command_control
-	if [ -f "$FILE" ]; then
-    		echo
-
-	else 
-    		echo "Radio command and control is OFF"
-		echo
-		echo "Do you want to set command and control to ON (y/n) "
-		read reset
-		echo
-
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control set to ON"
-			sudo touch /home/pi/CubeSatSim/command_control
-			echo "restarting command and control"
-#			reboot=1
+		else
+			echo "Command and control Direwolf set to OFF"
+			sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
 			sudo systemctl restart command
-##			sudo reboot now	
 		fi
-
 	fi
 
 elif [ "$1" = "-D" ]; then
