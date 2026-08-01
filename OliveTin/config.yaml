@@ -323,6 +323,18 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
+  - title: "Turn Command and Control Direwolf ON"
+    shell: /home/pi/CubeSatSim/config -d yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Command and Control Direwolf OFF"
+    shell: /home/pi/CubeSatSim/config -d no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+
   - title: "Set Reset Count" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -r {{ resets }}
@@ -362,6 +374,8 @@ dashboards:
           - title: "Turn Doppler Mode OFF"
           - title: "Turn Command and Control ON"
           - title: "Turn Command and Control OFF"
+          - title: "Turn Command and Control Direwolf ON"
+          - title: "Turn Command and Control Direwolf OFF"
           - title: "Turn Battery Saver Mode ON"
           - title: "Turn Battery Saver Mode OFF"
           - title: "Turn Simulated Telemetry ON"
