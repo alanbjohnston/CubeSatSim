@@ -190,7 +190,7 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Turning BCommand and Control OFF"
+  - title: "Turning Command and Control OFF"
     shell: /home/pi/CubeSatSim/config -T no
     onclick: execution-dialog
     timeout: 5
@@ -227,6 +227,8 @@ dashboards:
           - title: "Turning Simulated Telemetry OFF"
           - title: "Turning Balloon Mode ON"
           - title: "Turning Balloon Mode OFF"
+          - title: "Turning Command and Control ON"
+          - title: "Turning Command and Control OFF"
           
       - title: Logs
         contents:
