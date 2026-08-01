@@ -70,7 +70,7 @@ actions:
     timeout: 5
 
   - title: "Change TX and RX Frequency" 
-    icon: hugeicons:ToggleOffIcon
+    icon: "&#11093;"
     shell: /home/pi/CubeSatSim/config -F {{ tx }} {{ rx }}
     onclick: execution-dialog
     timeout: 5
