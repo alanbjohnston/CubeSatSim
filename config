@@ -668,7 +668,7 @@ elif [ "$1" = "-r" ]; then
 		read resets
 	else
 		resets="$param2"
-		echo "Reset Count set to" $$param2
+		echo "Reset Count set to" $param2
 	fi
 
 	if [ -z $resets ] ; then
