@@ -141,17 +141,22 @@ sudo modprobe snd-aloop
 
 if [ "$2" = "-n" ] ; then
 # if [ -z "$2" ] ; then
-	noreboot=0
+	echo "Reboot disabled"
+	noreboot=1
 	param2=""
 else
-	if [ "$2" = "-n" ] ; then
-		echo "Reboot disabled"
-		noreboot=1
+	noreboot=0
+fi
+
+#else
+#	if [ "$2" = "-n" ] ; then
+#		echo "Reboot disabled"
+#		noreboot=1
 #	else
 #		fail=$2
-	fi
+#	fi
 #
-fi
+# fi
 
 # echo "No reboot"
 # echo $noreboot
