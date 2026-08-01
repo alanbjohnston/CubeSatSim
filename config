@@ -647,10 +647,8 @@ elif [ "$1" = "-c" ]; then
 elif [ "$1" = "-r" ]; then
 
 	echo	
-	echo "Editing the Reset Count in the"
-	echo  "configuration file for CubeSatSim"	
+	echo "Set the Reset Count for FoxTelem"
 	echo
-	echo "Return keeps current value."
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
@@ -664,9 +662,14 @@ elif [ "$1" = "-r" ]; then
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
-	echo -e "Enter Reset Count (integer): "
-
-	read resets
+	if [ -z "$param2" ] ; then
+		echo "Return keeps current value."
+		echo -e "Enter Reset Count (integer): "
+		read resets
+	else
+		resets="$param2"
+		echo "Reset Count set to" $$param2
+	fi
 
 	if [ -z $resets ] ; then
 		resets="$2"
@@ -689,12 +692,7 @@ elif [ "$1" = "-r" ]; then
 	if [ "$norestart" = "1" ]; then
 		echo
 	else
-##		echo
-##		echo "Rebooting CubeSatSim with new configuration file"
-##		echo
 		reboot=1
-##		sudo reboot now
-#		sudo systemctl restart cubesatsim
 	fi
 	
 elif [ "$1" = "-l" ]; then
