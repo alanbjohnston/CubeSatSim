@@ -1226,7 +1226,7 @@ elif [ "$1" = "-P" ]; then
 
 	else
 		rxpl="$param2"
-
+		echo "Changing RX PL to" $rxpl
 		if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 	
 			echo "Error: not a number!"
@@ -1237,14 +1237,17 @@ elif [ "$1" = "-P" ]; then
 		fi 
 		if [ -z "$param3" ] ; then
 			txpl="$param3"
+			echo "Changing TX PL to" $txpl
 			if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 				echo "Error: not a number!"
 				txpl="${11}"
 				echo "Keeping value of" $txpl
 			fi 
+		else
+
 		fi
 	fi
-	
+
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
