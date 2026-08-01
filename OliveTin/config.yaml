@@ -1,5 +1,4 @@
 actions:
-
   - title: "Show CubeSatSim Config"
     shell: /home/pi/CubeSatSim/config 
     onclick: execution-dialog
