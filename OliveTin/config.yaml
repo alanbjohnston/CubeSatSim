@@ -287,6 +287,12 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
+  - title: "Reset the Commands Count"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -R yes
+    onclick: execution-dialog
+    timeout: 5   
+
   - title: "Turn Simulated Telemetry ON"
     shell: /home/pi/CubeSatSim/config -t yes
     icon: "&#128994;" # green ball
@@ -335,7 +341,7 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Set Reset Count" 
+  - title: "Set FoxTelem Reset Count" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -r {{ resets }}
     onclick: execution-dialog
@@ -367,7 +373,8 @@ dashboards:
           - title: "Change Callsign"
           - title: "Change Latitude and Longitude" 
           - title: "Change TX and RX Frequency" 
-          - title: "Set Reset Count" 
+          - title: "Set FoxTelem Reset Count"
+          - title: "Reset the Commands Count"
           - title: "Reset the Pacsat Configuration" 
           - title: "Turn Simulated Doppler Mode ON"
           - title: "Turn Radio Control Doppler Mode ON"
