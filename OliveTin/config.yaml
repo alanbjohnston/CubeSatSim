@@ -164,7 +164,7 @@ actions:
 
   - title: "Scan I2C Bus"    
     shell: /home/pi/CubeSatSim/config -S
-    icon: restart
+    icon: logs
     onclick: execution-dialog  
     timeout: 60
     
@@ -271,6 +271,7 @@ dashboards:
           - title: "Turning Command and Control OFF"
           
       - title: Logs
+        icon: logs
         contents:
           - title: "Show CubeSatSim Log"
           - title: "Show CubeSatSim Log Realtime"
