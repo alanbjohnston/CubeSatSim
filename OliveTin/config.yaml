@@ -46,6 +46,7 @@ actions:
 
   - title: "Change Mode to Pacsat Ground Station"
     shell: /home/pi/CubeSatSim/config -I 
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
@@ -80,7 +81,7 @@ actions:
     timeout: 5
 
   - title: "Change TX and RX Frequency" 
-    icon: "&#11093;"
+    icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -F {{ tx }} {{ rx }}
     onclick: execution-dialog
     timeout: 5
@@ -91,7 +92,7 @@ actions:
         type: ascii_sentence
 
   - title: "Change Callsign" 
-    icon: "&#9881;"
+    icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -c {{ callsign }}
     onclick: execution-dialog
     timeout: 5
@@ -100,7 +101,7 @@ actions:
         type: ascii_sentence
 
   - title: "Change Latitude and Longitude" 
-    icon: smile
+    icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -l {{ lat }} {{ lon }}
     onclick: execution-dialog
     timeout: 5
@@ -171,6 +172,7 @@ actions:
     timeout: 15
 
   - title: "Reset the Pacsat Configuration"
+    icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -k
     onclick: execution-dialog
     timeout: 5
