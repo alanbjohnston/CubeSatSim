@@ -746,6 +746,7 @@ if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/OliveTin/config.yaml /etc/OliveTin/config.yaml) ]]; then
     echo "changed config.yaml"
     sudo cp /home/pi/CubeSatSim/OliveTin/config.yaml /etc/OliveTin/config.yaml
+	sudo systemctl restart OliveTin
   else
     echo "no change to config.yaml"
   fi
@@ -756,6 +757,23 @@ else
   sudo dpkg -i OliveTin_linux_armv7.deb
   sudo cp /home/pi/CubeSatSim/OliveTin/config.yaml /etc/OliveTin/config.yaml
   sudo systemctl enable --now OliveTin
+fi
+
+FILE=/etc/systemd/system/OliveTin.service
+if [ -f "$FILE" ]; then
+  if [[ $(diff /home/pi/CubeSatSim/systemd/OliveTin.service /etc/systemd/system/OliveTin.service) ]]; then
+    echo "changed OliveTin.service."
+    sudo cp /home/pi/CubeSatSim/systemd/OliveTin.service /etc/systemd/system/OliveTin.service
+	sudo systemctl restart OliveTin
+    FLAG=1
+  else
+    echo "no change to OliveTin.service."
+  fi
+else
+  echo "creating OliveTin.service."
+  sudo cp /home/pi/CubeSatSim/systemd/OliveTin.service /etc/systemd/system/OliveTin.service
+  sudo systemctl enable OliveTin
+  FLAG=1
 fi
 
 FILE=/etc/asound.conf
