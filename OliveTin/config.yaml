@@ -1,26 +1,43 @@
 actions:
+
+  - title: "Show CubeSatSim Config"
+    shell: /home/pi/CubeSatSim/config 
+    onclick: execution-dialog
+    
   - title: "Change Mode to APRS"
     shell: /home/pi/CubeSatSim/config -a 
     onclick: execution-dialog
 
-  - title: "Show Config"
-    shell: /home/pi/CubeSatSim/config 
+  - title: "Change Mode to FSK"
+    shell: /home/pi/CubeSatSim/config -f 
     onclick: execution-dialog
 
-  - title: echo a message
-    icon: smile
-    shell: echo {{ message }}
-    arguments:
-      - name: message
-        default: Hello World
-        type: ascii_sentence
+  - title: "Change Mode to BPSK"
+    shell: /home/pi/CubeSatSim/config -b 
     onclick: execution-dialog
 
-  - title: Save text to file
-    shell: echo "$CONTENT" > file.txt
-    arguments:
-      - name: content
-        type: ascii_sentence 
+  - title: "Change Mode to SSTV"
+    shell: /home/pi/CubeSatSim/config -s 
+    onclick: execution-dialog
+
+  - title: "Change Mode to CW"
+    shell: /home/pi/CubeSatSim/config -m 
+    onclick: execution-dialog
+
+  - title: "Change Mode to Repeater"
+    shell: /home/pi/CubeSatSim/config -e 
+    onclick: execution-dialog
+
+  - title: "Change Mode to FUNcube"
+    shell: /home/pi/CubeSatSim/config -j 
+    onclick: execution-dialog
+
+  - title: "Change Mode to Pacsat"
+    shell: /home/pi/CubeSatSim/config -G 
+    onclick: execution-dialog
+
+  - title: "Change Mode to Pacsat Ground"
+    shell: /home/pi/CubeSatSim/config -I 
     onclick: execution-dialog
 
   - title: "Change Mode to Battery Saver"
@@ -75,3 +92,19 @@ actions:
       - name: params 
         type: ascii_sentence
 
+  - title: "Generic Bash Command" 
+    icon: smile
+    shell: {{ params }}
+    onclick: execution-dialog
+    arguments:
+      - name: params 
+        type: ascii_sentence
+
+   - title: "Generic Sudo Command" 
+    icon: smile
+    shell: sudo {{ params }}
+    onclick: execution-dialog
+    arguments:
+      - name: params 
+        type: ascii_sentence    
+        
