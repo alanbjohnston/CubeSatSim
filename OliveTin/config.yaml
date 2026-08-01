@@ -121,3 +121,22 @@ actions:
   - title: "Show Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c
     onclick: execution-dialog
+
+dashboards:
+  - title: CubeSatSim Dashboard
+    contents:
+      - title: Fieldset 1
+        type: fieldset
+        contents:
+          - title: Mode Changes
+            contents:
+              - title: "Change Mode to APRS"
+              - title: "Change Mode to FSK"
+
+              - title: Config
+                contents:
+                  - title: "Change Mode to CW"
+
+          - title: Settings
+            contents:
+              - title: "Change Mode to FUNcube"
