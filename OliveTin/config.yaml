@@ -131,13 +131,14 @@ actions:
 
   - title: "Set PL (Private Line) CTCSS/CDCSS" 
     icon: "&#9881;" # gear
-    shell: /home/pi/CubeSatSim/config -P {{ pl_tx }} {{ pl_rx }}
+    shell: /home/pi/CubeSatSim/config -P {{ pl_rx }} {{ pl_tx }}
     onclick: execution-dialog
     timeout: 5
     arguments:
+      - name: pl_rx 
+        type: ascii_sentence
       - name: pl_tx 
         type: ascii_sentence
-      - name: pl_rx 
 
   - title: "Change Callsign" 
     icon: "&#9881;" # gear
