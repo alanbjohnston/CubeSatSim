@@ -120,85 +120,85 @@ actions:
       - name: lon 
         type: ascii_sentence
 
-  - title: "Show CubeSatSim Log Realtime"
+  - title: "Realtime CubeSatSim Log"
     shell: /home/pi/CubeSatSim/log -d r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Show CubeSatSim Log"
+  - title: "CubeSatSim Log"
     shell: /home/pi/CubeSatSim/log -d
     icon: logs
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Show CubeSatSim Transmit Log Realtime"
+  - title: "Realtime CubeSatSim Transmit Log"
     shell: /home/pi/CubeSatSim/log -t r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Show CubeSatSim Transmit Log"
+  - title: "CubeSatSim Transmit Log"
     shell: /home/pi/CubeSatSim/log -t
     icon: logs
     onclick: execution-dialog
     timeout: 5
     
-  - title: "Show CubeSatSim Frequency Control Log Realtime"
+  - title: "Realtime CubeSatSim Frequency Control Log"
     shell: /home/pi/CubeSatSim/log -r r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Show CubeSatSim Frequency Control Log"
+  - title: "CubeSatSim Frequency Control Log"
     shell: /home/pi/CubeSatSim/log -r
     icon: logs
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Show CubeSatSim Frequency Display Log Realtime"
+  - title: "Realtime CubeSatSim Frequency Display Log"
     shell: /home/pi/CubeSatSim/log -f r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Show CubeSatSim Frequency Display Log"
+  - title: "CubeSatSim Frequency Display Log"
     shell: /home/pi/CubeSatSim/log -f
     icon: logs
     onclick: execution-dialog
     timeout: 5
 
-  - title: "Show CubeSatSim Pacsat Log Realtime"
+  - title: "Realtime CubeSatSim Pacsat Log"
     shell: /home/pi/CubeSatSim/log -p r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Show CubeSatSim Pacsat Log"
+  - title: "CubeSatSim Pacsat Log"
     shell: /home/pi/CubeSatSim/log -p
     icon: logs
     onclick: execution-dialog
     timeout: 5    
 
-  - title: "Show CubeSatSim Pushbutton Log Realtime"
+  - title: "Realtime CubeSatSim Pushbutton Log"
     shell: /home/pi/CubeSatSim/log -b r
     icon: logs
     onclick: execution-dialog
     timeout: 60
     
-  - title: "Show CubeSatSim Pushbutton Log"
+  - title: "CubeSatSim Pushbutton Log"
     shell: /home/pi/CubeSatSim/log -b
     icon: logs
     onclick: execution-dialog
     timeout: 5    
     
-  - title: "Show Command and Control Log Realtime"
+  - title: "Realtime Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c r
     icon: logs
     onclick: execution-dialog
     timeout: 60
 
-  - title: "Show Command and Control Log"
+  - title: "Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c
     icon: logs
     onclick: execution-dialog
@@ -334,12 +334,24 @@ dashboards:
         contents:
           - title: Static Logs
             contents:        
-              - title: "Show CubeSatSim Log"
-              - title: "Show Command and Control Log"
+              - title: "CubeSatSim Log"
+              - title: "Transmit Log"
+              - title: "Command and Control Log"
+              - title: "Pacsat Log"
+              - title: "Frequency Control Log"
+              - title: "Frequency Display Log"
+              - title: "Pushbutton Log"
+              - title: "OliveTin Log"
           - title: Realtime Logs
             contents:        
-              - title: "Show CubeSatSim Log Realtime"
-              - title: "Show Command and Control Log Realtime"
+              - title: "Realtime CubeSatSim Log"
+              - title: "Realtime Transmit Log"
+              - title: "Realtime Command and Control Log"
+              - title: "Realtime Pacsat Log"
+              - title: "Realtime Frequency Control Log"
+              - title: "Realtime Frequency Display Log"
+              - title: "Realtime Pushbutton Log"
+              - title: "Realtime OliveTin Log"
               
       - title: Diagnostics
         contents:
