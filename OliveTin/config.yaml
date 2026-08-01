@@ -2,6 +2,8 @@ additionalNavigationLinks:
   - title: CubeSatSim Wiki
     url: https://CubeSatSim.org/wiki
     target: _blank
+    
+showNavigation: false
 
   - title: CubeSatSim Code
     url: https://CubeSatSim.org/code
