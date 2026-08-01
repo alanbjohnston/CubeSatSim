@@ -97,7 +97,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -d
     onclick: execution-dialog
     
-  - title: "Show Command and ControlLog Realtime"
+  - title: "Show Command and Control Log Realtime"
     shell: /home/pi/CubeSatSim/log -c r
     onclick: execution-dialog
     timeout: 60
@@ -136,7 +136,7 @@ dashboards:
           
       - title: Logs
         contents:
-          - title: "Show CubSatSim Log"
-          - title: "Show CubeSatSIm Log"
+          - title: "Show CubeSatSim Log"
+          - title: "Show CubeSatSim Log Realtime"
           - title: "Show Command and Control Log"
           - title: "Show Command and Control Log Realtime"
