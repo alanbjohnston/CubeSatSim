@@ -102,11 +102,11 @@ actions:
     onclick: execution-dialog
 
   - title: "Restart CubeSatSim"
-    shell: sudo reboot now
+    shell: echo "Restarting CubeSatSim now!" && sudo reboot now
     onclick: execution-dialog    
 
   - title: "Shutdown CubeSatSim"
-    shell: sudo shutdown now
+    shell: echo "Shutting Down CubeSatSim now!" && sudo shutdown now
     onclick: execution-dialog      
 
 dashboards:
