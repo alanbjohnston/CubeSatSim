@@ -355,6 +355,7 @@ dashboards:
           - title: "Change Callsign"
           - title: "Change Latitude and Longitude" 
           - title: "Change TX and RX Frequency" 
+          - title: "Set Reset Count" 
           - title: "Reset the Pacsat Configuration" 
           - title: "Turn Simulated Doppler Mode ON"
           - title: "Turn Radio Control Doppler Mode ON"
