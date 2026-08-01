@@ -109,6 +109,18 @@ actions:
     shell: echo "Shutting Down CubeSatSim now!" && sudo shutdown now
     onclick: execution-dialog      
 
+  - title: "Restart CubeSatSim Software"
+    shell: /home/pi/CubeSatSim/config -i
+    onclick: execution-dialog   
+
+  - title: "Scan I2C Bus"    
+    shell: /home/pi/CubeSatSim/config -S
+    onclick: execution-dialog  
+
+  - title: "Clear Logs and Restart"    
+    shell: /home/pi/CubeSatSim/config -C
+    onclick: execution-dialog  
+    
 dashboards:
   - title: CubeSatSim Dashboard
     contents:
@@ -143,8 +155,14 @@ dashboards:
           - title: "Show CubeSatSim Log Realtime"
           - title: "Show Command and Control Log"
           - title: "Show Command and Control Log Realtime"
+
+      - title: Diagnostics
+        contents:
+          - title: "Scan I2C Bus"
           
       - title: Restart and Shutdown
         contents:
           - title: "Restart CubeSatSim"
           - title: "Shutdown CubeSatSim"
+          - title: "Restart CubeSatSim Software"
+          - title: "Clear Logs and Restart" 
