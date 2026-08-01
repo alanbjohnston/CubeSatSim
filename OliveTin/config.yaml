@@ -184,6 +184,16 @@ actions:
     shell: /home/pi/CubeSatSim/config -H no
     onclick: execution-dialog
     timeout: 5
+
+  - title: "Turning Command and Control ON"
+    shell: /home/pi/CubeSatSim/config -T yes
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turning BCommand and Control OFF"
+    shell: /home/pi/CubeSatSim/config -T no
+    onclick: execution-dialog
+    timeout: 5
     
 dashboards:
   - title: CubeSatSim Dashboard
