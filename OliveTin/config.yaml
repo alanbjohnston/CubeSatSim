@@ -88,22 +88,6 @@ actions:
       - name: lon 
         type: ascii_sentence
 
-  - title: "Generic Config Command" 
-    icon: smile
-    shell: /home/pi/CubeSatSim/config {{ params }}
-    onclick: execution-dialog
-    arguments:
-      - name: params 
-        type: ascii_sentence
-
-  - title: "Generic Sudo Command" 
-    icon: smile
-    shell: sudo {{ params }}
-    onclick: execution-dialog
-    arguments:
-      - name: params 
-        type: ascii_sentence    
-
   - title: "Show CubeSatSim Log Realtime"
     shell: /home/pi/CubeSatSim/log -d r
     onclick: execution-dialog
@@ -139,9 +123,20 @@ dashboards:
           - title: "Change Mode to Repeater"
           - title: "Change Mode to Pacsat"
           - title: "Change Mode to Pacsat Ground Station"
+          
       - title: Settings
         contents:
           - title: "Change Mode to Battery Saver"
+          - title: "Turn Doppler Mode OFF"
+          - title: "Turn Simulated Doppler Mode ON"
+          - title: "Turn Radio Control Doppler Mode ON"
+          - title: "Change TX and RX Frequency" 
+          - title: "Change Callsign"
+          - title: "Change Latitude and Longitude" 
+          
       - title: Logs
         contents:
+          - title: "Show CubSatSim Log"
+          - title: "Show CubeSatSIm Log"
           - title: "Show Command and Control Log"
+          - title: "Show Command and Control Log Realtime"
