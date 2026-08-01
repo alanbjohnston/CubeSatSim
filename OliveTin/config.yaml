@@ -133,7 +133,7 @@ actions:
     timeout: 15
 
   - title: "Display Voltage and Current Data"    
-    shell: /home/pi/CubeSatSim/config -p
+    shell: /home/pi/CubeSatSim/config -v
     onclick: execution-dialog  
     timeout: 15
 
