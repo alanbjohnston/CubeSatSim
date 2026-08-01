@@ -746,6 +746,7 @@ if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/OliveTin/config.yaml /etc/OliveTin/config.yaml) ]]; then
     echo "changed config.yaml"
     sudo cp /home/pi/CubeSatSim/OliveTin/config.yaml /etc/OliveTin/config.yaml
+	sudo systemctl daemon-reload
 	sudo systemctl restart OliveTin
   else
     echo "no change to config.yaml"
