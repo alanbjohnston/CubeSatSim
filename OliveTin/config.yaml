@@ -105,7 +105,7 @@ actions:
     shell: sudo reboot now
     onclick: execution-dialog    
 
-   - title: "Shutdown CubeSatSim"
+  - title: "Shutdown CubeSatSim"
     shell: sudo shutdown now
     onclick: execution-dialog      
 
