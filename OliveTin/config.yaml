@@ -1,46 +1,55 @@
 actions:
   - title: "Show CubeSatSim Config"
-    shell: /home/pi/CubeSatSim/config 
+    shell: /home/pi/CubeSatSim/config
+    icon: "&#9881;" # gear
     onclick: execution-dialog
     timeout: 5
     
   - title: "Change Mode to APRS"
-    shell: /home/pi/CubeSatSim/config -a 
+    shell: /home/pi/CubeSatSim/config -a
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to FSK"
-    shell: /home/pi/CubeSatSim/config -f 
+    shell: /home/pi/CubeSatSim/config -f
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to BPSK"
-    shell: /home/pi/CubeSatSim/config -b 
+    shell: /home/pi/CubeSatSim/config -b
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to SSTV"
-    shell: /home/pi/CubeSatSim/config -s 
+    shell: /home/pi/CubeSatSim/config -s
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to CW"
-    shell: /home/pi/CubeSatSim/config -m 
+    shell: /home/pi/CubeSatSim/config -m
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to Repeater"
-    shell: /home/pi/CubeSatSim/config -e 
+    shell: /home/pi/CubeSatSim/config -e
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to FUNcube"
-    shell: /home/pi/CubeSatSim/config -j 
+    shell: /home/pi/CubeSatSim/config -j
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
   - title: "Change Mode to Pacsat"
-    shell: /home/pi/CubeSatSim/config -G 
+    shell: /home/pi/CubeSatSim/config -G
+    icon: "&#128752;" # satellite
     onclick: execution-dialog
     timeout: 5
 
@@ -113,6 +122,7 @@ actions:
 
   - title: "Show CubeSatSim Log Realtime"
     shell: /home/pi/CubeSatSim/log -d r
+    icon: logs
     onclick: execution-dialog
     timeout: 60
     
