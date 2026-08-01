@@ -137,6 +137,8 @@ param2=$2
 param3=$3
 param4=$4
 
+echo "param3" $param3
+
 sudo modprobe snd-aloop
 
 if [ "$2" = "-n" ] ; then
@@ -1243,6 +1245,9 @@ elif [ "$1" = "-P" ]; then
 				txpl="${11}"
 				echo "Keeping value of" $txpl
 			fi 
+		else
+			txpl="${11}"
+			echo "No param3"
 		fi
 	fi
 
