@@ -56,11 +56,13 @@ actions:
  
   - title: "Turn Doppler Mode OFF"
     shell: /home/pi/CubeSatSim/config -K no 
+    icon: "&#10060;"
     onclick: execution-dialog
     timeout: 5
 
   - title: "Turn Simulated Doppler Mode ON"
-    shell: /home/pi/CubeSatSim/config -K sim 
+    shell: /home/pi/CubeSatSim/config -K sim
+    icon: "&#128994;"
     onclick: execution-dialog
     timeout: 5
  
