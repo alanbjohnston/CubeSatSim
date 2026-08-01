@@ -11,6 +11,7 @@ if [ "$1" = "-h" ]  ; then
   echo " -r frequency control"
   echo " -f frequency display"
   echo " -b pushbutton"
+  echo " -o OliveTin"
   echo "Default is the log is dumpted to the screen and written to a file."
   echo "If an additional r is included, the log is realtime, and exits with a Control-C"
   echo
@@ -51,7 +52,8 @@ if [ "$REALTIME" = "1" ]  ; then
     done
   elif [ "$1" = "-b" ]; then
     sudo journalctl -b all  -af -u pushbutton # > /home/pi/CubeSatSim/logb.txt 
-    cat /home/pi/CubeSatSim/logb.txt
+  elif [ "$1" = "-o" ]; then
+    sudo journalctl -b all  -af -u OliveTin # > /home/pi/CubeSatSim/logb.txt 
   else
     sudo journalctl -b all  -af -u cubesatsim  # > /home/pi/CubeSatSim/log.txt 
   #  cat /home/pi/CubeSatSim/log.txt
@@ -83,7 +85,10 @@ else
     sudo journalctl -b all  -a -u pushbutton > /home/pi/CubeSatSim/logb.txt 
     cat /home/pi/CubeSatSim/logb.txt
     echo -e "\nPushbutton Log file also saved as /home/pi/CubeSatSim/logb.txt"
-
+  elif [ "$1" = "-o" ]; then
+    sudo journalctl -b all  -a -u OliveTin > /home/pi/CubeSatSim/logo.txt 
+    cat /home/pi/CubeSatSim/logo.txt
+    echo -e "\nOliveTin Log file also saved as /home/pi/CubeSatSim/logo.txt"
   else
     sudo journalctl -b all  -a -u cubesatsim  > /home/pi/CubeSatSim/log.txt 
     cat /home/pi/CubeSatSim/log.txt
