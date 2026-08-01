@@ -147,7 +147,15 @@ actions:
 
   - title: "Turning Simulated Telemetry OFF"
     shell: /home/pi/CubeSatSim/config -t no
-    onclick: execution-dialog     
+    onclick: execution-dialog  
+
+  - title: "Turning Balloon Mode ON"
+    shell: /home/pi/CubeSatSim/config -H yes
+    onclick: execution-dialog      
+
+  - title: "Turning Balloon Mode OFF"
+    shell: /home/pi/CubeSatSim/config -H no
+    onclick: execution-dialog  
     
 dashboards:
   - title: CubeSatSim Dashboard
@@ -179,6 +187,8 @@ dashboards:
           - title: "Reset the Pacsat Configuration" 
           - title: "Turning Simulated Telemetry ON"
           - title: "Turning Simulated Telemetry OFF"
+          - title: "Turning Balloon Mode ON"
+          - title: "Turning Balloon Mode OFF"
           
       - title: Logs
         contents:
