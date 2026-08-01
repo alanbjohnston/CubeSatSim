@@ -103,7 +103,6 @@ actions:
   - title: "Show CubeSatSim Log Realtime"
     shell: /home/pi/CubeSatSim/log -d r
     onclick: execution-dialog
-    timeout: 5
     timeout: 60
     
   - title: "Show CubeSatSim Log"
