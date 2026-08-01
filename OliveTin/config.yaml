@@ -30,9 +30,9 @@ actions:
     icon: "&#9881;" # gear
     onclick: execution-dialog
     timeout: 5
-        arguments:
-          - name: config 
-            type: ascii_sentence
+    arguments:
+      - name: config 
+        type: ascii_sentence
     
   - title: "Change Mode to APRS"
     shell: /home/pi/CubeSatSim/config -a
