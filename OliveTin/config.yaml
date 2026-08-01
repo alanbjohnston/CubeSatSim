@@ -120,6 +120,26 @@ actions:
   - title: "Clear Logs and Restart"    
     shell: /home/pi/CubeSatSim/config -C
     onclick: execution-dialog  
+    timeout: 60
+    
+  - title: "Read Squelch"    
+    shell: /home/pi/CubeSatSim/config -Q
+    onclick: execution-dialog  
+    timeout: 15
+
+  - title: "Display Payload Sensor Data"    
+    shell: /home/pi/CubeSatSim/config -p
+    onclick: execution-dialog  
+    timeout: 15
+
+  - title: "Display Voltage and Current Data"    
+    shell: /home/pi/CubeSatSim/config -p
+    onclick: execution-dialog  
+    timeout: 15
+
+  - title: "Reset the Pacsat Configuration"
+    shell: /home/pi/CubeSatSim/config -k
+    onclick: execution-dialog  
     
 dashboards:
   - title: CubeSatSim Dashboard
@@ -148,6 +168,7 @@ dashboards:
           - title: "Change TX and RX Frequency" 
           - title: "Change Callsign"
           - title: "Change Latitude and Longitude" 
+          - title: "Reset the Pacsat Configuration" 
           
       - title: Logs
         contents:
@@ -159,6 +180,9 @@ dashboards:
       - title: Diagnostics
         contents:
           - title: "Scan I2C Bus"
+          - title: "Read Squelch" 
+          - title: "Display Payload Sensor Data"
+          - title: "Display Voltage and Current Data" 
           
       - title: Restart and Shutdown
         contents:
