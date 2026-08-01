@@ -101,6 +101,14 @@ actions:
     shell: /home/pi/CubeSatSim/log -c
     onclick: execution-dialog
 
+  - title: "Restart CubeSatSim"
+    shell: sudo reboot now
+    onclick: execution-dialog    
+
+   - title: "Shutdown CubeSatSim"
+    shell: sudo shutdown now
+    onclick: execution-dialog      
+
 dashboards:
   - title: CubeSatSim Dashboard
     contents:
@@ -135,3 +143,8 @@ dashboards:
           - title: "Show CubeSatSim Log Realtime"
           - title: "Show Command and Control Log"
           - title: "Show Command and Control Log Realtime"
+          
+      - title: Restart and Shutdown
+        contents:
+          - title: "Restart CubeSatSim"
+          - title: "Shutdown CubeSatSim"
