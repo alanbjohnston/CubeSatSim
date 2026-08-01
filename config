@@ -1303,28 +1303,30 @@ elif [ "$1" = "-o" ]; then
 elif [ "$1" = "-H" ]; then
 
 #	echo	
-	echo "Editing the Balloon mode setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting Balloon mode"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
-		echo "Balloon mode is ON"
+	if [ -z "$param2" ] ; then
+		if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
+			echo "Balloon mode is ON"
+		else
+			echo "Balloon mode is OFF"
+		fi
+		
+		echo
+		
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} 
+	
+		echo "Do you want Balloon mode ON (y/n) "
+		read hab
+		echo
 	else
-		echo "Balloon mode is OFF"
+		hab="$param2"
 	fi
-	
-	echo
-	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} 
-
-	echo "Do you want Balloon mode ON (y/n) "
-	read hab
-	echo
-	
 	if [ "$hab" = "y" ] || [ "$hab" = "yes" ]  ; then
 		hab="yes"
 		echo "Balloon mode is ON"
