@@ -128,56 +128,67 @@ actions:
     
   - title: "Show CubeSatSim Log"
     shell: /home/pi/CubeSatSim/log -d
+    icon: logs
     onclick: execution-dialog
     timeout: 5
     
   - title: "Show Command and Control Log Realtime"
     shell: /home/pi/CubeSatSim/log -c r
+    icon: logs
     onclick: execution-dialog
     timeout: 60
 
   - title: "Show Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c
+    icon: logs
     onclick: execution-dialog
     timeout: 5
 
   - title: "Restart CubeSatSim"
     shell: echo "Restarting CubeSatSim now!" && sudo reboot now
+    icon: restart
     onclick: execution-dialog
     timeout: 5
 
   - title: "Shutdown CubeSatSim"
     shell: echo "Shutting Down CubeSatSim now!" && sudo shutdown now
+    icon: restart
     onclick: execution-dialog
     timeout: 5
 
   - title: "Restart CubeSatSim Software"
     shell: /home/pi/CubeSatSim/config -i
+    icon: restart
     onclick: execution-dialog
     timeout: 5
 
   - title: "Scan I2C Bus"    
     shell: /home/pi/CubeSatSim/config -S
+    icon: restart
     onclick: execution-dialog  
     timeout: 60
     
   - title: "Clear Logs and Restart"    
     shell: /home/pi/CubeSatSim/config -C
+    icon: restart
     onclick: execution-dialog
     timeout: 5
     
   - title: "Read Squelch"    
     shell: /home/pi/CubeSatSim/config -Q
+    icon: logs
     onclick: execution-dialog  
     timeout: 15
 
   - title: "Display Payload Sensor Data"    
     shell: /home/pi/CubeSatSim/config -p
+    icon: logs
     onclick: execution-dialog  
     timeout: 15
 
   - title: "Display Voltage and Current Data"    
     shell: /home/pi/CubeSatSim/config -v
+    icon: logs
     onclick: execution-dialog  
     timeout: 15
 
