@@ -1043,24 +1043,32 @@ elif [ "$1" = "-B" ]; then
 	echo	
 	echo "Manually setting Safe Mode (battery saver mode)"
 	echo
-	
-	FILE=/home/pi/CubeSatSim/battery_saver
-	if [ -f "$FILE" ]; then
-		echo "Safe Mode! Battery saver mode is ON."
-		mode=1
- 	else 
-		echo "Safe Mode is OFF."
-    		echo "Battery saver mode is OFF."
-		mode=0
-	fi
-	
-	echo
-	
-	echo "Do you want Safe Mode (battery saver mode) ON (y/n) "
-	read saver
-	echo
 
-##	reboot=0
+	if [ -z "$param2" ] ; then
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			echo "Safe Mode! Battery saver mode is ON."
+			mode=1
+	 	else 
+			echo "Safe Mode is OFF."
+	    		echo "Battery saver mode is OFF."
+			mode=0
+		fi
+		
+		echo
+		
+		echo "Do you want Safe Mode (battery saver mode) ON (y/n) "
+		read saver
+		echo
+	else
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			mode=1
+	 	else 
+			mode=0
+		fi
+		saver="$param2"
+	fi
 
 	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
 		if [ "$mode" = "0" ] ; then
