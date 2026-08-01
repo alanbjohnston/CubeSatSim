@@ -1170,58 +1170,79 @@ elif [ "$1" = "-Q" ]; then
 elif [ "$1" = "-P" ]; then
 
 	echo	
-	echo "Editing the PL (Private Line) CTCSS/CDCSS setting in"
-	echo "the configuration file for CubeSatSim"	
+	echo "Setting the PL (Private Line) CTCSS/CDCSS setting"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo
-	echo "Current value of RX PL is" ${10}	
-	echo "Current value of TX PL is" ${11}	
-	echo
+	if [ -z "$param2" ] ; then
+
+		echo
+		echo "Current value of RX PL is" ${10}	
+		echo "Current value of TX PL is" ${11}	
+		echo
+		
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+		echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
+	
+		read rxpl 
+	
+		if [ -z $rxpl ] ; then
+	
+			rxpl="${10}"
+			echo "Keeping value of" $rxpl
+		else
+			restart=1
+		fi
+	
+		if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	
+			echo "Error: not a number!"
+			rxpl="${10}"
+			echo "Keeping value of" $rxpl
+		else
+			restart=1
+		fi 
+	
+		echo -e "Enter TX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
+	
+		read txpl 
+	
+		if [ -z $txpl ] ; then
+	
+			txpl="${11}"
+			echo "Keeping value of" $txpl
+		fi
+	
+		if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	
+			echo "Error: not a number!"
+			txpl="${11}"
+			echo "Keeping value of" $txpl
+		fi 
 
-	echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
-
-	read rxpl 
-
-	if [ -z $rxpl ] ; then
-
-		rxpl="${10}"
-		echo "Keeping value of" $rxpl
 	else
-		restart=1
+		rxpl="$param2"
+
+		if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	
+			echo "Error: not a number!"
+			rxpl="${10}"
+			echo "Keeping value of" $rxpl
+		else
+			restart=1
+		fi 
+		if [ -z "$param3" ] ; then
+			txpl="$param3"
+			if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+				echo "Error: not a number!"
+				txpl="${11}"
+				echo "Keeping value of" $txpl
+			fi 
 	fi
-
-	if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
-		echo "Error: not a number!"
-		rxpl="${10}"
-		echo "Keeping value of" $rxpl
-	else
-		restart=1
-	fi 
-
-	echo -e "Enter TX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
-
-	read txpl 
-
-	if [ -z $txpl ] ; then
-
-		txpl="${11}"
-		echo "Keeping value of" $txpl
-	fi
-
-	if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
-		echo "Error: not a number!"
-		txpl="${11}"
-		echo "Keeping value of" $txpl
-	fi 
 	
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
