@@ -366,3 +366,16 @@ dashboards:
           - title: "Shutdown CubeSatSim"
           - title: "Restart CubeSatSim Software"
           - title: "Clear Logs and Restart" 
+          
+additionalNavigationLinks:
+  - title: CubeSatSim Wiki
+    url: https://CubeSatSim.org/wiki
+    target: _blank
+
+  - title: CubeSatSim Code
+    url: https://CubeSatSim.org/code
+    target: _blank   
+
+  - title: CubeSatSim YouTube Videos
+    url: https://www.youtube.com/@ku2y
+    target: _blank    
