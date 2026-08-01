@@ -823,62 +823,91 @@ elif [ "$1" = "-T" ]; then
 	echo "Change command and control state"
 	echo 
 
-	FILE=/home/pi/CubeSatSim/command_control
-	if [ -f "$FILE" ]; then
-    		echo "Radio command and control is ON"
-		echo
-		echo "Do you want to turn command and control to OFF (y/n) "
-		read reset
-		echo
+	if [ -z "$param2" ] ; then
+		FILE=/home/pi/CubeSatSim/command_control
+		if [ -f "$FILE" ]; then
+	    	echo "Radio command and control is ON"
+			echo
+			echo "Do you want to turn command and control to OFF (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Turning command and control OFF"
+				sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
+	#			reboot=1
+				echo "restarting command and control"
+				sudo systemctl restart command
+				echo "restarting transmit"
+				sudo systemctl restart transmit
+	##			sudo reboot now	
+			fi
+	
+		else 
+	    	echo "Radio command and control is OFF"
+			echo
+			echo "Do you want to set command and control to ON (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+	
+				value=`cat /home/pi/CubeSatSim/.mode`
+				echo "$value" > /dev/null
+				set -- $value
+		
+				if [ "$1" != "n" ] ; then
+					echo "Turning command and control ON"
+	
+					value=`cat /home/pi/CubeSatSim/sim.cfg`
+					echo "$value" > /dev/null
+					set -- $value
+					
+					echo -n "RX Frequency is: "
+					echo -n ${8}
+					echo " MHz"
+					echo
+	
+					sudo touch /home/pi/CubeSatSim/command_control
+					echo "restarting command and control"
+	#				reboot=1
+					sudo systemctl restart command
+					echo "restarting transmit"
+					sudo systemctl restart transmit
+	##				sudo reboot now	
+				else
+					echo "Can't turn on Command and control in Transmit Commands mode."
+				fi
+			fi
+	
+		fi
+	else
+		reset="$param2"
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Turning command and control OFF"
-			sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
-#			reboot=1
+			echo "Turning command and control ON"
+			value=`cat /home/pi/CubeSatSim/sim.cfg`
+			echo "$value" > /dev/null
+			set -- $value
+			
+			echo -n "RX Frequency is: "
+			echo -n ${8}
+			echo " MHz"
+			echo
+
+			sudo touch /home/pi/CubeSatSim/command_control
 			echo "restarting command and control"
 			sudo systemctl restart command
 			echo "restarting transmit"
 			sudo systemctl restart transmit
-##			sudo reboot now	
+		else	
+			echo "Turning command and control OFF"
+			sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
+			echo "restarting command and control"
+			sudo systemctl restart command
+			echo "restarting transmit"
+			sudo systemctl restart transmit
 		fi
-
-	else 
-    	echo "Radio command and control is OFF"
-		echo
-		echo "Do you want to set command and control to ON (y/n) "
-		read reset
-		echo
-
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-
-			value=`cat /home/pi/CubeSatSim/.mode`
-			echo "$value" > /dev/null
-			set -- $value
-	
-			if [ "$1" != "n" ] ; then
-				echo "Turning command and control ON"
-
-				value=`cat /home/pi/CubeSatSim/sim.cfg`
-				echo "$value" > /dev/null
-				set -- $value
-				
-				echo -n "RX Frequency is: "
-				echo -n ${8}
-				echo " MHz"
-				echo
-
-				sudo touch /home/pi/CubeSatSim/command_control
-				echo "restarting command and control"
-#				reboot=1
-				sudo systemctl restart command
-				echo "restarting transmit"
-				sudo systemctl restart transmit
-##				sudo reboot now	
-			else
-				echo "Can't turn on Command and control in Transmit Commands mode."
-			fi
-		fi
-
 	fi
 
 elif [ "$1" = "-d" ]; then
