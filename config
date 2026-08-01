@@ -149,7 +149,7 @@ else
 		noreboot=1
 #	else
 #		fail=$2
-#	fi
+	fi
 #
 fi
 
