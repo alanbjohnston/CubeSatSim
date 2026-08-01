@@ -15,7 +15,7 @@ additionalNavigationLinks:
 actions:
   - title: "Show CubeSatSim Config"
     shell: /home/pi/CubeSatSim/config
-    icon: "&#9881;" # gear
+    icon: logs
     onclick: execution-dialog
     timeout: 5
 
@@ -349,6 +349,15 @@ actions:
     arguments:
       - name: resets 
         type: ascii_sentence    
+
+  - title: "Set Squelch Level" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -q {{ squelch }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: squelch 
+        type: ascii_sentence    
     
 dashboards:
   - title: CubeSatSim Dashboard
@@ -374,6 +383,7 @@ dashboards:
           - title: "Change Latitude and Longitude" 
           - title: "Change TX and RX Frequency" 
           - title: "Set FoxTelem Reset Count"
+          - title: "Set Squelch Level" 
           - title: "Reset the Commands Count"
           - title: "Reset the Pacsat Configuration" 
           - title: "Turn Simulated Doppler Mode ON"
