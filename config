@@ -1583,10 +1583,11 @@ elif [ "$1" = "-j" ]; then
 
 elif [ "$1" = "-M" ]; then
 
-	if [ $fail ]; then
-		MODE=$fail
-	else
+#	if [ $fail ]; then
+#		MODE=$fail
+#	else
 
+	if [ -z "$param2" ] ; then
 		FILE=/home/pi/CubeSatSim/failure_mode.txt
 		if [ -f "$FILE" ]; then
 			if [[ $(grep "\-1" $FILE) ]]; then
@@ -1659,6 +1660,8 @@ elif [ "$1" = "-M" ]; then
 		echo "Enter the failure number to set: 0 - 11" 
 		read MODE
 		echo
+	else
+		MODE="$param2"
 	fi
 
 	if [ "$MODE" = "0" ]; then
