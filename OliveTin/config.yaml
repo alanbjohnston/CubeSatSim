@@ -125,7 +125,9 @@ actions:
 dashboards:
   - title: CubeSatSim Dashboard
     contents:
-      - title: "Show CubeSatSim Config"
+      - title: Show Configuration
+        contents:
+          - title: "Show CubeSatSim Config"
       - title: Mode Changes
         contents:
           - title: "Change Mode to APRS"
