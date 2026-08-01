@@ -147,10 +147,10 @@ else
 	if [ "$2" = "-n" ] ; then
 		echo "Reboot disabled"
 		noreboot=1
-	else
-		fail=$2
-	fi
-
+#	else
+#		fail=$2
+#	fi
+#
 fi
 
 # echo "No reboot"
