@@ -1112,32 +1112,34 @@ elif [ "$1" = "-B" ]; then
 elif [ "$1" = "-q" ]; then
 
 	echo	
-	echo "Editing the Squelch setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting the Squelch setting"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo
-	echo "Current value of squelch is"	$6
-	echo
+	if [ -z "$param2" ] ; then
+
+		echo
+		echo "Current value of squelch is"	$6
+		echo
+		
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
-
-	echo -e "Enter squelch  (integer 1 - 8): "
-
-	read sq 
+		echo -e "Enter squelch  (integer 1 - 8): "
+	
+		read sq 
+	else
+		sq="$param2"
+	fi
 
 	if [ -z $sq ] ; then
-
 		sq="$6"
 		echo "Keeping value of" $lat
 	fi
 
 	if ! [[ $sq =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
 		echo "Error: not a number!"
 		sq="$6"
 		echo "Keeping value of" $sq
