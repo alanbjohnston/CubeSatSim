@@ -83,7 +83,7 @@ actions:
         type: ascii_sentence
 
   - title: "Change Callsign" 
-    icon: smile
+    icon: "&#9881;"
     shell: /home/pi/CubeSatSim/config -c {{ callsign }}
     onclick: execution-dialog
     timeout: 5
