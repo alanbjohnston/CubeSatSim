@@ -1243,8 +1243,6 @@ elif [ "$1" = "-P" ]; then
 				txpl="${11}"
 				echo "Keeping value of" $txpl
 			fi 
-		else
-
 		fi
 	fi
 
