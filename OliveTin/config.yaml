@@ -51,7 +51,7 @@ actions:
     shell: /home/pi/CubeSatSim/config -K sim 
     onclick: execution-dialog
  
-  - title: "Turn Radio Control Dppler Mode ON"
+  - title: "Turn Radio Control Doppler Mode ON"
     shell: /home/pi/CubeSatSim/config -K rig 
     onclick: execution-dialog
 
