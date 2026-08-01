@@ -1,4 +1,9 @@
 actions:
+  - title: Say Hello
+    shell: echo "Hello World!"
+    icon: smile
+    onclick: execution-dialog
+
   - title: "Show CubeSatSim Config"
     shell: /home/pi/CubeSatSim/config 
     onclick: execution-dialog
@@ -91,19 +96,10 @@ actions:
       - name: params 
         type: ascii_sentence
 
-  - title: "Generic Bash Command" 
-    icon: smile
-    shell: {{ params }}
-    onclick: execution-dialog
-    arguments:
-      - name: params 
-        type: ascii_sentence
-
-   - title: "Generic Sudo Command" 
+  - title: "Generic Sudo Command" 
     icon: smile
     shell: sudo {{ params }}
     onclick: execution-dialog
     arguments:
       - name: params 
         type: ascii_sentence    
-        
