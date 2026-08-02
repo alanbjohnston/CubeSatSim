@@ -195,13 +195,13 @@ actions:
 
   - title: "Change Latitude and Longitude" 
     icon: "&#9881;" # gear
-    shell: /home/pi/CubeSatSim/config -l {{ lat }} {{ lon }}
+    shell: /home/pi/CubeSatSim/config -l {{ latitude }} {{ longitude }}
     onclick: execution-dialog
     timeout: 5
     arguments:
-      - name: lat
+      - name: latitude
         type: ascii_sentence
-      - name: lon 
+      - name: longitude 
         type: ascii_sentence
 
   - title: "Realtime CubeSatSim Log"
@@ -288,6 +288,18 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
+  - title: "Realtime Web (OliveTin) Log"
+    shell: /home/pi/CubeSatSim/log -o r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+
+  - title: "Web (OliveTin) Log"
+    shell: /home/pi/CubeSatSim/log -o 
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+    
   - title: "Update CubeSatSim Software"
     shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
     icon:  "&#9203;"
@@ -535,7 +547,7 @@ dashboards:
               - title: "Frequency Control Log"
               - title: "Frequency Display Log"
               - title: "Pushbutton Log"
-              - title: "OliveTin Log"
+              - title: "Web (OliveTin) Log"
           - title: Realtime Logs
             contents:        
               - title: "Realtime CubeSatSim Log"
@@ -545,7 +557,7 @@ dashboards:
               - title: "Realtime Frequency Control Log"
               - title: "Realtime Frequency Display Log"
               - title: "Realtime Pushbutton Log"
-              - title: "Realtime OliveTin Log"
+              - title: "Realtime Web (OliveTin) Log"
               
       - title: Diagnostics
         contents:
