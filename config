@@ -1604,8 +1604,10 @@ elif [ "$1" = "-g" ]; then
 		sudo touch /home/pi/CubeSatSim/command_control_direwolf 
 	
 		sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
+
+		sudo rm /home/pi/CubeSatSim/command_count.txt
 	
-	    sudo echo "0" > /home/pi/CubeSatSim/command_count.txt
+	    echo "0" > /home/pi/CubeSatSim/command_count.txt
 
 		sudo rm /home/pi/CubeSatSim/failure_mode.txt > /dev/null 2>&1
 
@@ -1614,6 +1616,12 @@ elif [ "$1" = "-g" ]; then
 		sudo systemctl stop cubesatsim
 		sudo systemctl stop transmit
 		sudo systemctl stop command
+		sudo systemctl stop pacsatsim
+		sudo systemctl stop frequency
+		sudo systemctl stop pushbutton
+		sudo systemctl stop OliveTin
+
+		rpi-connect signout
 	
 		sudo mv -f /home/pi/CubeSatSim/telem.txt /home/pi/CubeSatSim/telem.txt.bk
 	
