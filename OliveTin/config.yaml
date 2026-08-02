@@ -277,13 +277,13 @@ actions:
     timeout: 5
 
   - title: "Update CubeSatSim Software"
-    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && /home/pi/CubeSatSim/update
+    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
     icon:  "&#9203;"
     onclick: execution-dialog
     timeout: 600   
 
   - title: "Update CubeSatSim Software to Branch"
-    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && /home/pi/CubeSatSim/update {branch}
+    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update {branch}
     icon:  "&#9203;"
     onclick: execution-dialog
     timeout: 600
