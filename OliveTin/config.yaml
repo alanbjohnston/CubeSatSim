@@ -131,13 +131,22 @@ actions:
 
   - title: "Connect to WiFi using SSID and Password" 
     icon: "&#9881;" # gear
-    shell: sudo nmcli device wifi rescan && sleep 1 && sudo nmcli device wifi connect "{{ wifi_ssid }}" password "{{ wifi_password }}"
+    shell: echo "If this works, this web page won't work again until you connect to the new WiFi network!" && sudo nmcli device wifi rescan && sleep 1 && sudo nmcli device wifi connect "{{ wifi_ssid }}" password "{{ wifi_password }}"
     onclick: execution-dialog
     timeout: 10
     arguments:
       - name: wifi_ssid
         type: ascii_sentence
       - name: wifi_password 
+        type: ascii_sentence
+
+  - title: "Change Hostname and Reboot" 
+    icon: "&#9881;" # gear
+    shell: sudo hostnamectl set-hostname {{ hostname }} && sudo reboot now
+    onclick: execution-dialog
+    timeout: 10
+    arguments:
+      - name: hostname
         type: ascii_sentence
 
   - title: "Set PL (Private Line) CTCSS/CDCSS" 
