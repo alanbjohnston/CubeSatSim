@@ -155,23 +155,23 @@ actions:
     onclick: execution-dialog
     timeout: 10    
 
-  - title: "Signin to Raspberry Pi Connect"
-    icon: "&#127827;" # strawberry
-    shell: sudo su pi - rpi-connect signin
-    onclick: execution-dialog
-    timeout: 60    
+#  - title: "Signin to Raspberry Pi Connect"
+#    icon: "&#127827;" # strawberry
+#    shell: sudo su pi - rpi-connect signin
+#    onclick: execution-dialog
+#    timeout: 60    
 
-  - title: "Signout of Raspberry Pi Connect"
-    icon: "&#127827;" # strawberry
-    shell: sudo su pi - rpi-connect signout
-    onclick: execution-dialog
-    timeout: 5    
+#  - title: "Signout of Raspberry Pi Connect"
+#    icon: "&#127827;" # strawberry
+#    shell: sudo su pi - rpi-connect signout
+#    onclick: execution-dialog
+#    timeout: 5    
 
-  - title: "Status of Raspberry Pi Connect"
-    icon: "&#127827;" # strawberry
-    shell: sudo su pi - rpi-connect doctor
-    onclick: execution-dialog
-    timeout: 60       
+#  - title: "Status of Raspberry Pi Connect"
+#    icon: "&#127827;" # strawberry
+#    shell: sudo su pi - rpi-connect doctor
+#    onclick: execution-dialog
+#    timeout: 60       
     
   - title: "Show Network Configuration"
     icon: "&#128732;" # wireless
@@ -598,8 +598,8 @@ dashboards:
           - title: "Change Hostname and Restart" 
           - title: "Show Network Configuration"
           - title: "Show Available WiFi Networks"
-          - title: "Signin to Raspberry Pi Connect"
-          - title: "Signout of Raspberry Pi Connect"
-          - title: "Status of Raspberry Pi Connect"
+#          - title: "Signin to Raspberry Pi Connect"  # OliveTin needs to run as pi
+#          - title: "Signout of Raspberry Pi Connect"
+#          - title: "Status of Raspberry Pi Connect"
           
 
