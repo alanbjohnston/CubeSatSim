@@ -10,6 +10,7 @@ After=local-fs.target
 ExecStart=/usr/local/bin/OliveTin
 Restart=always
 Environment="PORT=80"
+User=pi
 
 [Install]
 WantedBy=multi-user.target
