@@ -1564,7 +1564,7 @@ elif [ "$1" = "-A" ]; then
 elif [ "$1" = "-L" ]; then
 
 	echo	
-	echo "Setting microphone level for command and control"
+	echo "Set microphone level for command and control"
 	echo
 
 	if [ -z "$param2" ] ; then
