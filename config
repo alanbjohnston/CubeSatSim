@@ -1271,14 +1271,14 @@ elif [ "$1" = "-F" ]; then
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "Current value of TX frequency is" $7 "MHz"	
-	echo
-	echo "Current value of RX frequency is" $8 "MHz"
-	echo	
-
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
-
 	if [ -z "$param2" ] ; then
+
+		echo "Current value of TX frequency is" $7 "MHz"	
+		echo
+		echo "Current value of RX frequency is" $8 "MHz"
+		echo	
+	
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
 		echo "Return keeps current value."
 	
@@ -1352,17 +1352,17 @@ elif [ "$1" = "-o" ]; then
 		echo	
 		echo "Change telemetry beacon transmit state"
 		echo 
-	
+
 		FILE=/home/pi/CubeSatSim/beacon_off
 		if [ -f "$FILE" ]; then
-	    	echo "Transmit beacon telemetry is off"
+			echo "Transmit beacon telemetry is off"
 			echo
 	
 			echo "Turn beacon telemetry ON"
 			sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
 			sudo systemctl restart transmit
 		else 
-	    	echo "Transmit beacon telemetry is on"
+			echo "Transmit beacon telemetry is on"
 			echo
 	
 			echo "Turn beacon telemetry OFF"
