@@ -1794,7 +1794,7 @@ elif [ "$1" = "-M" ]; then
 
 #	echo $MODE
 	echo
-	sudo rm /home/pi/CubeSatSim/failure_mode.txt
+	sudo rm /home/pi/CubeSatSim/failure_mode.txt &>/dev/null
 	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
 
 	echo "Changing simulated failure mode to $MODE" | wall
