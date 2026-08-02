@@ -134,7 +134,7 @@ actions:
 
   - title: "Connect to WiFi using SSID and Password" 
     icon: "&#128732;" # wireless
-    shell: echo "If this works, this web page won't work again until you connect to the new WiFi network!" && echo && sudo nmcli device wifi rescan && sleep 1 && sudo nmcli device wifi connect "{{ wifi_ssid }}" password "{{ wifi_password }}"
+    shell: echo "If this works, this web page won't work again until you connect to the new WiFi network!" && echo && sudo nmcli device wifi rescan && sleep 1 && sudo nmcli device wifi connect "{{ wifi_ssid }}" password "{{ wifi_password }}" && sudo reboot now 
     onclick: execution-dialog
     timeout: 10
     arguments:
