@@ -155,6 +155,24 @@ actions:
     onclick: execution-dialog
     timeout: 10    
 
+  - title: "Signin to Raspberry Pi Connect"
+    icon: "&#127827;" # strawberry
+    shell: rpi-connect signin
+    onclick: execution-dialog
+    timeout: 60    
+
+  - title: "Signout of Raspberry Pi Connect"
+    icon: "&#127827;" # strawberry
+    shell: rpi-connect signout
+    onclick: execution-dialog
+    timeout: 5    
+
+  - title: "Status of Raspberry Pi Connect"
+    icon: "&#127827;" # strawberry
+    shell: rpi-connect doctor
+    onclick: execution-dialog
+    timeout: 60       
+    
   - title: "Show Network Configuration"
     icon: "&#128732;" # wireless
     shell: ifconfig
@@ -580,5 +598,8 @@ dashboards:
           - title: "Change Hostname and Restart" 
           - title: "Show Network Configuration"
           - title: "Show Available WiFi Networks"
+          - title: "Signin to Raspberry Pi Connect"
+          - title: "Signout of Raspberry Pi Connect"
+          - title: "Status of Raspberry Pi Connect"
           
 
