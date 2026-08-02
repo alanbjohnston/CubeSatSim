@@ -328,6 +328,18 @@ actions:
     onclick: execution-dialog
     timeout: 5
 
+  - title: "Turn gpsd ON"
+    shell: /home/pi/CubeSatSim/config -u yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn gpsd OFF"
+    shell: /home/pi/CubeSatSim/config -u no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5    
+
   - title: "Turn Command and Control ON"
     shell: /home/pi/CubeSatSim/config -T yes
     icon: "&#128994;" # green ball
@@ -448,6 +460,8 @@ dashboards:
           - title: "Turn Simulated Telemetry OFF"     
           - title: "Turn Balloon Mode ON"
           - title: "Turn Balloon Mode OFF"
+          - title: "Turn gpsd ON"
+          - title: "Turn gpsd OFF"
           - title: "Show All Commands"
           - title: "General CubeSatSim Config"
           
