@@ -378,6 +378,15 @@ actions:
     arguments:
       - name: mic_level 
         type: ascii_sentence    
+
+  - title: "Set Simulated Failure Mode"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -M {{ failure_mode }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: failure_mode 
+        type: ascii_sentence           
         
   - title: "Change Telemetry Beacon Transmit State"
     icon: "&#9881;" # gear
@@ -415,6 +424,7 @@ dashboards:
           - title: "Reset the Pacsat Configuration" 
           - title: "Change Telemetry Beacon Transmit State"
           - title: "Set Microphone Level for Command and Control"
+          - title: "Set Simulated Failure Mode"
           - title: "Turn Simulated Doppler Mode ON"
           - title: "Turn Radio Control Doppler Mode ON"
           - title: "Turn Doppler Mode OFF"
@@ -425,7 +435,7 @@ dashboards:
           - title: "Turn Battery Saver Mode ON"
           - title: "Turn Battery Saver Mode OFF"
           - title: "Turn Simulated Telemetry ON"
-          - title: "Turn Simulated Telemetry OFF"
+          - title: "Turn Simulated Telemetry OFF"     
           - title: "Turn Balloon Mode ON"
           - title: "Turn Balloon Mode OFF"
           - title: "Show All Commands"
