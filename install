@@ -12,6 +12,10 @@ if [ -f "$FILE" ]; then
 
 	echo -e "\nUpdate script for CubeSatSim v2.2\n"
 
+	echo "You should restart when this update completes with command:"
+	echo "sudo reboot now"
+	echo
+
 	sudo rm /home/pi/CubeSatSim/telem.wav &>/dev/null
 	sudo rm /home/pi/CubeSatSim/t.txt  &>/dev/null
 	sudo rm /home/pi/CubeSatSim/uptime &>/dev/null
@@ -35,6 +39,10 @@ if [ -f "$FILE" ]; then
 else
 
 	echo -e "\nInstallation script for CubeSatSim v2.2\n"
+
+	echo "You should restart when this install completes with command:"
+	echo "sudo reboot now"
+	echo
 
 	touch /home/pi/CubeSatSim/command_control_direwolf
 
@@ -980,3 +988,8 @@ else
 		echo "reboot needed for changes to take effect" | wall
 	fi
 fi
+
+echo
+echo "You should restart to complete this operation with command:"
+echo "sudo reboot now"
+echo
