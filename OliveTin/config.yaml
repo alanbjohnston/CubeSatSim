@@ -161,11 +161,17 @@ actions:
     onclick: execution-dialog
     timeout: 5    
 
-  - title: "Show Audio Devices Speakers and Microphones"
+  - title: "List Audio Devices Speakers and Microphones"
     icon: "&#128265;" # speaker
     shell: aplay -l && arecord -l
     onclick: execution-dialog
-    timeout: 5        
+    timeout: 5      
+
+  - title: "List USB Devices" 
+    icon: "&#9881;" # gear
+    shell: lsusb
+    onclick: execution-dialog
+    timeout: 5   
     
   - title: "Set PL (Private Line) CTCSS/CDCSS" 
     icon: "&#9881;" # gear
@@ -548,6 +554,7 @@ dashboards:
           - title: "Display Payload Sensor Data"
           - title: "Display Voltage and Current Data" 
           - title: "List Audio Devices Speakers and Microphones"
+          - title: "List USB Devices" 
           
       - title: Utilitites
         contents:
