@@ -369,6 +369,12 @@ actions:
     arguments:
       - name: squelch 
         type: ascii_sentence    
+
+  - title: "Change Telemetry Beacon Transmit State"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -o
+    onclick: execution-dialog
+    timeout: 5
     
 dashboards:
   - title: CubeSatSim Dashboard
@@ -398,6 +404,7 @@ dashboards:
           - title: "Set PL (Private Line) CTCSS/CDCSS" 
           - title: "Reset the Commands Count"
           - title: "Reset the Pacsat Configuration" 
+          - title: "Change Telemetry Beacon Transmit State"
           - title: "Turn Simulated Doppler Mode ON"
           - title: "Turn Radio Control Doppler Mode ON"
           - title: "Turn Doppler Mode OFF"
