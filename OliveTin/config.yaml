@@ -1,4 +1,7 @@
 showNavigation: false
+pageTitle: CubeSatSim Dashboard
+logLevel: "INFO"
+showFooter: false
 additionalNavigationLinks:
   - title: CubeSatSim Wiki
     url: https://CubeSatSim.org/wiki
