@@ -157,19 +157,19 @@ actions:
 
   - title: "Signin to Raspberry Pi Connect"
     icon: "&#127827;" # strawberry
-    shell: rpi-connect signin
+    shell: sudo su pi - rpi-connect signin
     onclick: execution-dialog
     timeout: 60    
 
   - title: "Signout of Raspberry Pi Connect"
     icon: "&#127827;" # strawberry
-    shell: rpi-connect signout
+    shell: sudo su pi - rpi-connect signout
     onclick: execution-dialog
     timeout: 5    
 
   - title: "Status of Raspberry Pi Connect"
     icon: "&#127827;" # strawberry
-    shell: rpi-connect doctor
+    shell: sudo su pi - rpi-connect doctor
     onclick: execution-dialog
     timeout: 60       
     
