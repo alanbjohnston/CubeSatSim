@@ -1,0 +1,608 @@
+showNavigation: false
+pageTitle: CubeSatSim Dashboard
+logLevel: "INFO"
+showFooter: false
+additionalNavigationLinks:
+  - title: CubeSatSim Wiki
+    url: https://CubeSatSim.org/wiki
+    target: _blank
+  
+  - title: CubeSatSim Code
+    url: https://CubeSatSim.org/code
+    target: _blank   
+
+  - title: CubeSatSim YouTube Videos
+    url: https://www.youtube.com/@ku2y
+    target: _blank    
+
+actions:
+  - title: "Show CubeSatSim Config"
+    shell: /home/pi/CubeSatSim/config
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Show All Commands"
+    shell: /home/pi/CubeSatSim/config -h
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5   
+    
+  - title: "General CubeSatSim Config"
+    shell: /home/pi/CubeSatSim/config {{ config }}
+    icon: "&#9881;" # gear
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: config 
+        type: ascii_sentence
+    
+  - title: "Change Mode to APRS"
+    shell: /home/pi/CubeSatSim/config -a
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to FSK"
+    shell: /home/pi/CubeSatSim/config -f
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to BPSK"
+    shell: /home/pi/CubeSatSim/config -b
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to SSTV"
+    shell: /home/pi/CubeSatSim/config -s
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to CW"
+    shell: /home/pi/CubeSatSim/config -m
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to Repeater"
+    shell: /home/pi/CubeSatSim/config -e
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to FUNcube"
+    shell: /home/pi/CubeSatSim/config -j
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to Pacsat"
+    shell: /home/pi/CubeSatSim/config -G
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change Mode to Pacsat Ground Station"
+    shell: /home/pi/CubeSatSim/config -I 
+    icon: "&#128752;" # satellite
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Battery Saver Mode ON"
+    shell: bash -c "/home/pi/CubeSatSim/config -B yes" 
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Battery Saver Mode OFF"
+    shell: bash -c "/home/pi/CubeSatSim/config -B no" 
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+ 
+  - title: "Turn Doppler Mode OFF"
+    shell: /home/pi/CubeSatSim/config -K no 
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Simulated Doppler Mode ON"
+    shell: /home/pi/CubeSatSim/config -K sim
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+ 
+  - title: "Turn Radio Control Doppler Mode ON"
+    shell: /home/pi/CubeSatSim/config -K rig
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Change TX and RX Frequency" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -F {{ tx }} {{ rx }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: tx 
+        type: ascii_sentence
+      - name: rx 
+        type: ascii_sentence
+
+  - title: "Connect to WiFi using SSID and Password" 
+    icon: "&#128732;" # wireless
+    shell: echo "If this works, this web page won't work again until you connect to the new WiFi network!" && echo && sudo nmcli device wifi rescan && sleep 1 && sudo nmcli device wifi connect "{{ wifi_ssid }}" password "{{ wifi_password }}"
+    onclick: execution-dialog
+    timeout: 10
+    arguments:
+      - name: wifi_ssid
+        type: ascii_sentence
+      - name: wifi_password 
+        type: ascii_sentence
+
+  - title: "Change Hostname and Restart" 
+    icon: "&#128732;" # wireless
+    shell: echo "If this works, this web page won't work again until you connect using the new host name after the restart!" && echo && sudo hostnamectl set-hostname {{ hostname }} && sudo reboot now
+    onclick: execution-dialog
+    timeout: 10
+    arguments:
+      - name: hostname
+        type: ascii_sentence
+
+  - title: "Show Available WiFi Networks"
+    icon: "&#128732;" # wireless
+    shell: sudo nmcli device wifi rescan && nmcli device wifi list
+    onclick: execution-dialog
+    timeout: 10    
+
+#  - title: "Signin to Raspberry Pi Connect"
+#    icon: "&#127827;" # strawberry
+#    shell: sudo su pi - rpi-connect signin
+#    onclick: execution-dialog
+#    timeout: 60    
+
+#  - title: "Signout of Raspberry Pi Connect"
+#    icon: "&#127827;" # strawberry
+#    shell: sudo su pi - rpi-connect signout
+#    onclick: execution-dialog
+#    timeout: 5    
+
+#  - title: "Status of Raspberry Pi Connect"
+#    icon: "&#127827;" # strawberry
+#    shell: sudo su pi - rpi-connect doctor
+#    onclick: execution-dialog
+#    timeout: 60       
+    
+  - title: "Show Network Configuration"
+    icon: "&#128732;" # wireless
+    shell: ifconfig
+    onclick: execution-dialog
+    timeout: 5    
+
+  - title: "List Audio Devices Speakers and Microphones"
+    icon: "&#128265;" # speaker
+    shell: aplay -l && arecord -l
+    onclick: execution-dialog
+    timeout: 5      
+
+  - title: "List USB Devices" 
+    icon: "&#9881;" # gear
+    shell: lsusb
+    onclick: execution-dialog
+    timeout: 5   
+    
+  - title: "Set PL (Private Line) CTCSS/CDCSS" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -P {{ pl_rx }} {{ pl_tx }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: pl_rx 
+        type: ascii_sentence
+      - name: pl_tx 
+        type: ascii_sentence
+
+  - title: "Change Callsign" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -c {{ callsign }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: callsign 
+        type: ascii_sentence
+
+  - title: "Change Latitude and Longitude" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -l {{ latitude }} {{ longitude }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: latitude
+        type: ascii_sentence
+      - name: longitude 
+        type: ascii_sentence
+
+  - title: "Realtime CubeSatSim Log"
+    shell: /home/pi/CubeSatSim/log -d r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+    
+  - title: "CubeSatSim Log"
+    shell: /home/pi/CubeSatSim/log -d
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Realtime Transmit Log"
+    shell: /home/pi/CubeSatSim/log -t r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+    
+  - title: "Transmit Log"
+    shell: /home/pi/CubeSatSim/log -t
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+    
+  - title: "Realtime Frequency Control Log"
+    shell: /home/pi/CubeSatSim/log -r r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+    
+  - title: "Frequency Control Log"
+    shell: /home/pi/CubeSatSim/log -r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Realtime Frequency Display Log"
+    shell: /home/pi/CubeSatSim/log -f r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+    
+  - title: "Frequency Display Log"
+    shell: /home/pi/CubeSatSim/log -f
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Realtime Pacsat Log"
+    shell: /home/pi/CubeSatSim/log -p r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+    
+  - title: "Pacsat Log"
+    shell: /home/pi/CubeSatSim/log -p
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5    
+
+  - title: "Realtime Pushbutton Log"
+    shell: /home/pi/CubeSatSim/log -b r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+    
+  - title: "Pushbutton Log"
+    shell: /home/pi/CubeSatSim/log -b
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5    
+    
+  - title: "Realtime Command and Control Log"
+    shell: /home/pi/CubeSatSim/log -c r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+
+  - title: "Command and Control Log"
+    shell: /home/pi/CubeSatSim/log -c
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Realtime Web (OliveTin) Log"
+    shell: /home/pi/CubeSatSim/log -o r
+    icon: logs
+    onclick: execution-dialog
+    timeout: 60
+
+  - title: "Web (OliveTin) Log"
+    shell: /home/pi/CubeSatSim/log -o 
+    icon: logs
+    onclick: execution-dialog
+    timeout: 5
+    
+  - title: "Update CubeSatSim Software"
+    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
+    icon:  "&#9203;"
+    onclick: execution-dialog
+    timeout: 600   
+
+  - title: "Update CubeSatSim Software to Branch"
+    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update {{ branch }}
+    icon:  "&#9203;"
+    onclick: execution-dialog
+    timeout: 600
+    arguments:
+      - name: branch 
+        type: ascii_sentence   
+
+  - title: "Restart CubeSatSim"
+    shell: echo "Restarting CubeSatSim now!" && sudo reboot now
+    icon: restart
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Shutdown CubeSatSim"
+    shell: echo "Shutting Down CubeSatSim now!" && sudo shutdown now
+    icon: restart
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Restart CubeSatSim Software"
+    shell: /home/pi/CubeSatSim/config -i
+    icon: restart
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Scan I2C Bus"    
+    shell: /home/pi/CubeSatSim/config -S
+    icon: logs
+    onclick: execution-dialog  
+    timeout: 60
+    
+  - title: "Clear Logs and Restart"    
+    shell: /home/pi/CubeSatSim/config -C
+    icon: restart
+    onclick: execution-dialog
+    timeout: 5
+    
+  - title: "Display Squelch"    
+    shell: /home/pi/CubeSatSim/config -Q
+    icon: logs
+    onclick: execution-dialog  
+    timeout: 15
+
+  - title: "Display Payload Sensor Data"    
+    shell: /home/pi/CubeSatSim/config -p
+    icon: logs
+    onclick: execution-dialog  
+    timeout: 15
+
+  - title: "Display Voltage and Current Data"    
+    shell: /home/pi/CubeSatSim/config -v
+    icon: logs
+    onclick: execution-dialog  
+    timeout: 15
+
+  - title: "Reset the Pacsat Configuration"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -k
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Reset the Commands Count"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -R yes
+    onclick: execution-dialog
+    timeout: 5   
+
+  - title: "Turn Simulated Telemetry ON"
+    shell: /home/pi/CubeSatSim/config -t yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Simulated Telemetry OFF"
+    shell: /home/pi/CubeSatSim/config -t no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Balloon Mode ON"
+    shell: /home/pi/CubeSatSim/config -H yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Balloon Mode OFF"
+    shell: /home/pi/CubeSatSim/config -H no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn gpsd ON"
+    shell: /home/pi/CubeSatSim/config -u yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 30
+
+  - title: "Turn gpsd OFF"
+    shell: /home/pi/CubeSatSim/config -u no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 30    
+
+  - title: "Turn Command and Control ON"
+    shell: /home/pi/CubeSatSim/config -T yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Command and Control OFF"
+    shell: /home/pi/CubeSatSim/config -T no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Command and Control Direwolf ON"
+    shell: /home/pi/CubeSatSim/config -d yes
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Turn Command and Control Direwolf OFF"
+    shell: /home/pi/CubeSatSim/config -d no
+    icon: "&#10060;" # red X
+    onclick: execution-dialog
+    timeout: 5
+
+  - title: "Set FoxTelem Reset Count" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -r {{ resets }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: resets 
+        type: ascii_sentence    
+
+  - title: "Set Squelch Level" 
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -q {{ squelch }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: squelch 
+        type: ascii_sentence    
+
+  - title: "Set Microphone Level for Command and Control"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -L {{ mic_level }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: mic_level 
+        type: ascii_sentence    
+
+  - title: "Set Simulated Failure Mode"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -M {{ failure_mode }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: failure_mode 
+        type: ascii_sentence         
+
+  - title: "Set Random Simulated Failure Time"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -U {{ random_time }}
+    onclick: execution-dialog
+    timeout: 5
+    arguments:
+      - name: random_time 
+        type: ascii_sentence        
+        
+  - title: "Change Telemetry Beacon Transmit State"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -o
+    onclick: execution-dialog
+    timeout: 5
+    
+dashboards:
+  - title: CubeSatSim Dashboard
+    contents:
+      - title: Show Configuration
+        contents:
+          - title: "Show CubeSatSim Config"
+      - title: Mode Changes
+        contents:
+          - title: "Change Mode to APRS"
+          - title: "Change Mode to FSK"
+          - title: "Change Mode to BPSK"
+          - title: "Change Mode to SSTV"
+          - title: "Change Mode to CW"
+          - title: "Change Mode to FUNcube"
+          - title: "Change Mode to Repeater"
+          - title: "Change Mode to Pacsat"
+          - title: "Change Mode to Pacsat Ground Station"
+          
+      - title: Settings
+        contents:
+          - title: "Change Callsign"
+          - title: "Change Latitude and Longitude" 
+          - title: "Change TX and RX Frequency" 
+          - title: "Set FoxTelem Reset Count"
+          - title: "Set Squelch Level" 
+          - title: "Set PL (Private Line) CTCSS/CDCSS" 
+          - title: "Reset the Commands Count"
+          - title: "Reset the Pacsat Configuration" 
+          - title: "Change Telemetry Beacon Transmit State"
+          - title: "Set Microphone Level for Command and Control"
+          - title: "Set Simulated Failure Mode"
+          - title: "Set Random Simulated Failure Time"
+          - title: "Turn Simulated Doppler Mode ON"
+          - title: "Turn Radio Control Doppler Mode ON"
+          - title: "Turn Doppler Mode OFF"
+          - title: "Turn Command and Control ON"
+          - title: "Turn Command and Control OFF"
+          - title: "Turn Command and Control Direwolf ON"
+          - title: "Turn Command and Control Direwolf OFF"
+          - title: "Turn Battery Saver Mode ON"
+          - title: "Turn Battery Saver Mode OFF"
+          - title: "Turn Simulated Telemetry ON"
+          - title: "Turn Simulated Telemetry OFF"     
+          - title: "Turn Balloon Mode ON"
+          - title: "Turn Balloon Mode OFF"
+          - title: "Turn gpsd ON"
+          - title: "Turn gpsd OFF"
+          - title: "Show All Commands"
+          - title: "General CubeSatSim Config"
+          
+      - title: Logs
+        contents:
+          - title: Static Logs
+            contents:        
+              - title: "CubeSatSim Log"
+              - title: "Transmit Log"
+              - title: "Command and Control Log"
+              - title: "Pacsat Log"
+              - title: "Frequency Control Log"
+              - title: "Frequency Display Log"
+              - title: "Pushbutton Log"
+              - title: "Web (OliveTin) Log"
+          - title: Realtime Logs
+            contents:        
+              - title: "Realtime CubeSatSim Log"
+              - title: "Realtime Transmit Log"
+              - title: "Realtime Command and Control Log"
+              - title: "Realtime Pacsat Log"
+              - title: "Realtime Frequency Control Log"
+              - title: "Realtime Frequency Display Log"
+              - title: "Realtime Pushbutton Log"
+              - title: "Realtime Web (OliveTin) Log"
+              
+      - title: Diagnostics
+        contents:
+          - title: "Scan I2C Bus"
+          - title: "Display Squelch" 
+          - title: "Display Payload Sensor Data"
+          - title: "Display Voltage and Current Data" 
+          - title: "List Audio Devices Speakers and Microphones"
+          - title: "List USB Devices" 
+          
+      - title: Utilitites
+        contents:
+          - title: "Update CubeSatSim Software"
+          - title: "Update CubeSatSim Software to Branch"          
+          - title: "Restart CubeSatSim"
+          - title: "Shutdown CubeSatSim"
+          - title: "Restart CubeSatSim Software"
+          - title: "Clear Logs and Restart" 
+          - title: "Connect to WiFi using SSID and Password" 
+          - title: "Change Hostname and Restart" 
+          - title: "Show Network Configuration"
+          - title: "Show Available WiFi Networks"
+#          - title: "Signin to Raspberry Pi Connect"  # OliveTin needs to run as pi
+#          - title: "Signout of Raspberry Pi Connect"
+#          - title: "Status of Raspberry Pi Connect"
+          
+

@@ -132,20 +132,31 @@ echo
 # echo $2
 # echo
 
+param1=$1
+param2=$2
+param3=$3
+param4=$4
+
 sudo modprobe snd-aloop
 
-# if [ "$2" = "-n" ] ; then
-if [ -z "$2" ] ; then
-	noreboot=0
+if [ "$2" = "-n" ] ; then
+# if [ -z "$2" ] ; then
+	echo "Reboot disabled"
+	noreboot=1
+	param2=""
 else
-	if [ "$2" = "-n" ] ; then
-		echo "Reboot disabled"
-		noreboot=1
-	else
-		fail=$2
-	fi
-
+	noreboot=0
 fi
+
+#else
+#	if [ "$2" = "-n" ] ; then
+#		echo "Reboot disabled"
+#		noreboot=1
+#	else
+#		fail=$2
+#	fi
+#
+# fi
 
 # echo "No reboot"
 # echo $noreboot
@@ -547,28 +558,32 @@ elif [ "$1" = "-s" ]; then
 elif [ "$1" = "-t" ]; then
 
 	echo	
-	echo "Editing the Simulated Telemetry setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting the Simulated Telemetry setting"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "$5" = "yes" ] || [ "$5" = "y" ]; then
-		echo "Simulated Telemetry is ON"
-	else
-		echo "Simulated Telemetry is OFF"
-	fi
-	
-	echo
-	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+	if [ -z "$param2" ] ; then
 
-	echo "Do you want Simulated Telemetry ON (y/n) "
-	read sim
-	echo
-	
+		if [ "$5" = "yes" ] || [ "$5" = "y" ]; then
+			echo "Simulated Telemetry is ON"
+		else
+			echo "Simulated Telemetry is OFF"
+		fi
+		
+		echo
+		
+	#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+
+		echo "Do you want Simulated Telemetry ON (y/n) "
+		read sim
+		echo
+	else
+		sim="$param2"
+	fi
+		
 	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
 		sim="yes"
 		echo "Simulated Telemetry is ON"
@@ -577,27 +592,22 @@ elif [ "$1" = "-t" ]; then
 		echo "Simulated Telemetry is OFF"
 		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
 	fi
-	
+
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 	echo $1 $2 $3 $4 $sim $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	echo
-##	echo "Rebooting CubeSatSim with new configuration file"
-##	echo
 
 	reboot=1
-##	sudo reboot now
-#	sudo  restart cubesatsim
 	
 elif [ "$1" = "-c" ]; then
 
 	echo	
-	echo "Editing the CALLSIGN in the"
-	echo  "configuration file for CubeSatSim"	
+	echo "Setting the CALLSIGN"
 	echo
-	echo "Return keeps current value."
+
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
@@ -607,46 +617,38 @@ elif [ "$1" = "-c" ]; then
 
 	oldcallsign="$1"
 
-	echo "Current value of CALLSIGN is"	
-	echo $oldcallsign
+	echo "Current value of CALLSIGN is"	 $oldcallsign
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
 
-	echo "Enter callsign in all capitals: "
-	read callsign
+	if [ -z "$param2" ] ; then
 
+		echo "Return keeps current value."
+	
+		echo "Enter callsign in all capitals: "
+		read callsign
+
+	else
+		callsign="$param2"
+	fi
+	
 	if [ -z $callsign ] ; then
-
 		callsign="$1"
 		echo "Keeping value of" $callsign
-		norestart=1
 	else
-	
+		restart=1
 		echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 		echo $callsign $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
 	fi
 	
-	if [ "$norestart" = "1" ]; then
-		echo 
-	else
-		echo
-##		echo "Rebooting CubeSatSim with new configuration file"
-##		echo
-		reboot=1
-##		sudo reboot now
-#		sudo systemctl restart cubesatsim
-	fi
-	
 elif [ "$1" = "-r" ]; then
 
 	echo	
-	echo "Editing the Reset Count in the"
-	echo  "configuration file for CubeSatSim"	
+	echo "Set the Reset Count for FoxTelem"
 	echo
-	echo "Return keeps current value."
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
@@ -655,15 +657,19 @@ elif [ "$1" = "-r" ]; then
 	set -- $value
 	
 	echo
-	echo "Current value of Reset Count is"	
-	echo $2
+	echo "Current value of Reset Count is"	$2
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
-	echo -e "Enter Reset Count (integer): "
-
-	read resets
+	if [ -z "$param2" ] ; then
+		echo "Return keeps current value."
+		echo -e "Enter Reset Count (integer): "
+		read resets
+	else
+		resets="$param2"
+		echo "Reset Count set to" $param2
+	fi
 
 	if [ -z $resets ] ; then
 		resets="$2"
@@ -686,12 +692,7 @@ elif [ "$1" = "-r" ]; then
 	if [ "$norestart" = "1" ]; then
 		echo
 	else
-##		echo
-##		echo "Rebooting CubeSatSim with new configuration file"
-##		echo
 		reboot=1
-##		sudo reboot now
-#		sudo systemctl restart cubesatsim
 	fi
 	
 elif [ "$1" = "-l" ]; then
@@ -701,7 +702,6 @@ elif [ "$1" = "-l" ]; then
 	echo "configuration file for CubeSatSim"
 	echo "(Only used for APRS telemetry)"
 	echo
-	echo "Return keeps current value."
 #	echo -e "Current sim.cfg configuration file:"	
 #	echo
 	
@@ -710,42 +710,50 @@ elif [ "$1" = "-l" ]; then
 	set -- $value
 
 	echo
-	echo "Current value of latitude is"	
-	echo $3
+	echo "Current value of latitude is"	$3
 	echo
 	
 #	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
-	echo -e "Enter latitude  (decimal degrees, positive is north): "
+	if [ -z "$param2" ] ; then
 
-	read lat 
-
-	if [ -z $lat ] ; then
-
-		lat="$3"
-		echo "Keeping value of" $lat
-	fi
-
-	if ! [[ $lat =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
-		echo "Error: not a number!"
-		lat="$3"
-		echo "Keeping value of" $lat
-	fi 
+		echo "Return keeps current value."
+		echo
+		echo -e "Enter latitude  (decimal degrees, positive is north): "
 	
-	echo
-	echo "Current value of longitude is"	
-	echo $4
-	echo
+		read lat 
+	
+		if [ -z $lat ] ; then
+	
+			lat="$3"
+			echo "Keeping value of" $lat
+		fi
+		
+		echo
+		echo "Current value of longitude is" $4	
+		echo
+	
+		echo -e "Enter longitude (decimal degrees, positive is east): "
+	
+		read long 
+	
+		if [ -z $long ] ; then
+	
+			long="$4"
+			echo "Keeping value of" $long
+		fi
 
-	echo -e "Enter longitude (decimal degrees, positive is east): "
 
-	read long 
-
-	if [ -z $long ] ; then
-
-		long="$4"
-		echo "Keeping value of" $long
+	else
+		lat="$param2"
+		echo "Changing Latitude to" $lat
+		if [ -z "$param3" ] ; then
+			lon="$3"
+			echo "Keeping Longitude of" $lon
+		else
+			long="$param3"
+			echo "Changing Longitude to" $long
+		fi
 	fi
 
 	if ! [[ $long =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
@@ -755,6 +763,13 @@ elif [ "$1" = "-l" ]; then
 		echo "Keeping value of" $long
 	fi 
 
+	if ! [[ $lat =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+
+		echo "Error: not a number!"
+		lat="$3"
+		echo "Keeping value of" $lat
+	fi 
+
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 	echo $1 $2 $lat $long $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} > /home/pi/CubeSatSim/sim.cfg
@@ -762,12 +777,7 @@ elif [ "$1" = "-l" ]; then
 	if [ "$norestart" = "1" ]; then
 		echo 
 	else
-##		echo
-##		echo "Rebooting CubeSatSim with new configuration file"
-##		echo
 		reboot=1
-##		sudo reboot now
-#		sudo systemctl restart cubesatsim
 	fi
 
 elif [ "$1" = "-S" ]; then
@@ -811,62 +821,91 @@ elif [ "$1" = "-T" ]; then
 	echo "Change command and control state"
 	echo 
 
-	FILE=/home/pi/CubeSatSim/command_control
-	if [ -f "$FILE" ]; then
-    		echo "Radio command and control is ON"
-		echo
-		echo "Do you want to turn command and control to OFF (y/n) "
-		read reset
-		echo
+	if [ -z "$param2" ] ; then
+		FILE=/home/pi/CubeSatSim/command_control
+		if [ -f "$FILE" ]; then
+	    	echo "Radio command and control is ON"
+			echo
+			echo "Do you want to turn command and control to OFF (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Turning command and control OFF"
+				sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
+	#			reboot=1
+				echo "restarting command and control"
+				sudo systemctl restart command
+				echo "restarting transmit"
+				sudo systemctl restart transmit
+	##			sudo reboot now	
+			fi
+	
+		else 
+	    	echo "Radio command and control is OFF"
+			echo
+			echo "Do you want to set command and control to ON (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+	
+				value=`cat /home/pi/CubeSatSim/.mode`
+				echo "$value" > /dev/null
+				set -- $value
+		
+				if [ "$1" != "n" ] ; then
+					echo "Turning command and control ON"
+	
+					value=`cat /home/pi/CubeSatSim/sim.cfg`
+					echo "$value" > /dev/null
+					set -- $value
+					
+					echo -n "RX Frequency is: "
+					echo -n ${8}
+					echo " MHz"
+					echo
+	
+					sudo touch /home/pi/CubeSatSim/command_control
+					echo "restarting command and control"
+	#				reboot=1
+					sudo systemctl restart command
+					echo "restarting transmit"
+					sudo systemctl restart transmit
+	##				sudo reboot now	
+				else
+					echo "Can't turn on Command and control in Transmit Commands mode."
+				fi
+			fi
+	
+		fi
+	else
+		reset="$param2"
 
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Turning command and control OFF"
-			sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
-#			reboot=1
+			echo "Turning command and control ON"
+			value=`cat /home/pi/CubeSatSim/sim.cfg`
+			echo "$value" > /dev/null
+			set -- $value
+			
+			echo -n "RX Frequency is: "
+			echo -n ${8}
+			echo " MHz"
+			echo
+
+			sudo touch /home/pi/CubeSatSim/command_control
 			echo "restarting command and control"
 			sudo systemctl restart command
 			echo "restarting transmit"
 			sudo systemctl restart transmit
-##			sudo reboot now	
+		else	
+			echo "Turning command and control OFF"
+			sudo rm /home/pi/CubeSatSim/command_control > /dev/null 2>&1
+			echo "restarting command and control"
+			sudo systemctl restart command
+			echo "restarting transmit"
+			sudo systemctl restart transmit
 		fi
-
-	else 
-    	echo "Radio command and control is OFF"
-		echo
-		echo "Do you want to set command and control to ON (y/n) "
-		read reset
-		echo
-
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-
-			value=`cat /home/pi/CubeSatSim/.mode`
-			echo "$value" > /dev/null
-			set -- $value
-	
-			if [ "$1" != "n" ] ; then
-				echo "Turning command and control ON"
-
-				value=`cat /home/pi/CubeSatSim/sim.cfg`
-				echo "$value" > /dev/null
-				set -- $value
-				
-				echo -n "RX Frequency is: "
-				echo -n ${8}
-				echo " MHz"
-				echo
-
-				sudo touch /home/pi/CubeSatSim/command_control
-				echo "restarting command and control"
-#				reboot=1
-				sudo systemctl restart command
-				echo "restarting transmit"
-				sudo systemctl restart transmit
-##				sudo reboot now	
-			else
-				echo "Can't turn on Command and control in Transmit Commands mode."
-			fi
-		fi
-
 	fi
 
 elif [ "$1" = "-d" ]; then
@@ -881,66 +920,71 @@ elif [ "$1" = "-d" ]; then
 		echo "Direwolf will not run unless one is plugged in."
 	fi
 
-	FILE=/home/pi/CubeSatSim/command_control_direwolf
-	if [ -f "$FILE" ]; then
-    		echo "Radio command and control with Direwolf for DTMF and APRS is ON"
-		echo
-		echo "Do you want to turn Direwolf OFF and do Carrier command and control (y/n) "
-		read reset
-		echo
-
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control Direwolf set to OFF"
-			sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
-#			reboot=1
-##			echo "rebooting"
-			sudo systemctl restart command
-##			sudo reboot now	
+	if [ -z "$param2" ] ; then
+	
+		FILE=/home/pi/CubeSatSim/command_control_direwolf
+		if [ -f "$FILE" ]; then
+			echo "Radio command and control with Direwolf for DTMF and APRS is ON"
+			echo
+			echo "Do you want to turn Direwolf OFF and do Carrier command and control (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Command and control Direwolf set to OFF"
+				sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
+				sudo systemctl restart command
+			fi
+	
+		else 
+	    	echo "Radio command and control with Direwolf for DTMF and APRS is OFF so carrier command and control is enabled"
+			echo
+			echo "Do you want to set command and control with Direwolf for DTMF and APRS to ON (y/n) "
+			read reset
+			echo
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Command and control Direwolf set to ON"
+				sudo touch /home/pi/CubeSatSim/command_control_direwolf
+				sudo systemctl restart command
+				if [[ $(arecord -l | grep card) ]]; then
+					restart=1
+				fi
+			fi
+	
 		fi
 
-	else 
-    		echo "Radio command and control with Direwolf for DTMF and APRS is OFF so carrier command and control is enabled"
-		echo
-		echo "Do you want to set command and control with Direwolf for DTMF and APRS to ON (y/n) "
-		read reset
-		echo
-
+		FILE=/home/pi/CubeSatSim/command_control
+		if [ -f "$FILE" ]; then
+			echo		
+		else 
+			echo "Radio command and control is OFF"
+			echo
+			echo "Do you want to set command and control to ON (y/n) "
+			read reset
+			echo
+		
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "Command and control set to ON"
+				sudo touch /home/pi/CubeSatSim/command_control
+				echo "restarting command and control"
+				sudo systemctl restart command
+			fi		
+		fi
+	else
+		reset="$param2"
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 			echo "Command and control Direwolf set to ON"
 			sudo touch /home/pi/CubeSatSim/command_control_direwolf
-##			echo "rebooting"
-#			reboot=1
 			sudo systemctl restart command
 			if [[ $(arecord -l | grep card) ]]; then
 				restart=1
-###				echo "restarting cubesatsim software"
-###				sudo systemctl restart cubesatsim
 			fi
-##			sudo reboot now	
-		fi
-
-	fi
-
-	FILE=/home/pi/CubeSatSim/command_control
-	if [ -f "$FILE" ]; then
-    		echo
-
-	else 
-    		echo "Radio command and control is OFF"
-		echo
-		echo "Do you want to set command and control to ON (y/n) "
-		read reset
-		echo
-
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "Command and control set to ON"
-			sudo touch /home/pi/CubeSatSim/command_control
-			echo "restarting command and control"
-#			reboot=1
+		else
+			echo "Command and control Direwolf set to OFF"
+			sudo rm /home/pi/CubeSatSim/command_control_direwolf > /dev/null 2>&1
 			sudo systemctl restart command
-##			sudo reboot now	
 		fi
-
 	fi
 
 elif [ "$1" = "-D" ]; then
@@ -981,14 +1025,19 @@ elif [ "$1" = "-R" ]; then
 	echo "Reset the Commands Count in the file command_count.txt"
 	echo 
 
-	echo "Current commands count is:"
-	cat /home/pi/CubeSatSim/command_count.txt
-	echo
+	if [ -z "$param2" ] ; then
 
-	echo "Do you want to reset the commands count to zero (y/n) "
-	read reset
-	echo
+		echo "Current commands count is:"
+		cat /home/pi/CubeSatSim/command_count.txt
+		echo
 	
+		echo "Do you want to reset the commands count to zero (y/n) "
+		read reset
+		echo
+	else
+		reset="$param2"
+	fi
+
 	if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
 		sudo rm /home/pi/CubeSatSim/command_count.txt > /dev/null 2>&1
 		echo "Commands count reset to 0"
@@ -1002,24 +1051,32 @@ elif [ "$1" = "-B" ]; then
 	echo	
 	echo "Manually setting Safe Mode (battery saver mode)"
 	echo
-	
-	FILE=/home/pi/CubeSatSim/battery_saver
-	if [ -f "$FILE" ]; then
-		echo "Safe Mode! Battery saver mode is ON."
-		mode=1
- 	else 
-		echo "Safe Mode is OFF."
-    		echo "Battery saver mode is OFF."
-		mode=0
-	fi
-	
-	echo
-	
-	echo "Do you want Safe Mode (battery saver mode) ON (y/n) "
-	read saver
-	echo
 
-##	reboot=0
+	if [ -z "$param2" ] ; then
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			echo "Safe Mode! Battery saver mode is ON."
+			mode=1
+	 	else 
+			echo "Safe Mode is OFF."
+	    		echo "Battery saver mode is OFF."
+			mode=0
+		fi
+		
+		echo
+		
+		echo "Do you want Safe Mode (battery saver mode) ON (y/n) "
+		read saver
+		echo
+	else
+		FILE=/home/pi/CubeSatSim/battery_saver
+		if [ -f "$FILE" ]; then
+			mode=1
+	 	else 
+			mode=0
+		fi
+		saver="$param2"
+	fi
 
 	if [ "$saver" = "y" ] || [ "$saver" = "yes" ]  ; then
 		if [ "$mode" = "0" ] ; then
@@ -1055,33 +1112,34 @@ elif [ "$1" = "-B" ]; then
 elif [ "$1" = "-q" ]; then
 
 	echo	
-	echo "Editing the Squelch setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting the Squelch setting"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo
-	echo "Current value of squelch is"	
-	echo $6
-	echo
+	if [ -z "$param2" ] ; then
+
+		echo
+		echo "Current value of squelch is"	$6
+		echo
+		
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
-
-	echo -e "Enter squelch  (integer 1 - 8): "
-
-	read sq 
+		echo -e "Enter squelch  (integer 1 - 8): "
+	
+		read sq 
+	else
+		sq="$param2"
+	fi
 
 	if [ -z $sq ] ; then
-
 		sq="$6"
 		echo "Keeping value of" $lat
 	fi
 
 	if ! [[ $sq =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
 		echo "Error: not a number!"
 		sq="$6"
 		echo "Keeping value of" $sq
@@ -1112,61 +1170,84 @@ elif [ "$1" = "-Q" ]; then
 elif [ "$1" = "-P" ]; then
 
 	echo	
-	echo "Editing the PL (Private Line) CTCSS/CDCSS setting in"
-	echo "the configuration file for CubeSatSim"	
+	echo "Setting the PL (Private Line) CTCSS/CDCSS setting"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo
-	echo "Current value of RX PL is"	
-	echo ${10}
-	echo "Current value of TX PL is"	
-	echo ${11}
-	echo
+	if [ -z "$param2" ] ; then
+
+		echo
+		echo "Current value of RX PL is" ${10}	
+		echo "Current value of TX PL is" ${11}	
+		echo
+		
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+		echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
+	
+		read rxpl 
+	
+		if [ -z $rxpl ] ; then
+	
+			rxpl="${10}"
+			echo "Keeping value of" $rxpl
+		else
+			restart=1
+		fi
+	
+		if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	
+			echo "Error: not a number!"
+			rxpl="${10}"
+			echo "Keeping value of" $rxpl
+		else
+			restart=1
+		fi 
+	
+		echo -e "Enter TX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
+	
+		read txpl 
+	
+		if [ -z $txpl ] ; then
+	
+			txpl="${11}"
+			echo "Keeping value of" $txpl
+		fi
+	
+		if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	
+			echo "Error: not a number!"
+			txpl="${11}"
+			echo "Keeping value of" $txpl
+		fi 
 
-	echo -e "Enter RX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
-
-	read rxpl 
-
-	if [ -z $rxpl ] ; then
-
-		rxpl="${10}"
-		echo "Keeping value of" $rxpl
 	else
-		restart=1
+		rxpl="$param2"
+		echo "Changing RX PL to" $rxpl
+		if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+	
+			echo "Error: not a number!"
+			rxpl="${10}"
+			echo "Keeping value of" $rxpl
+		else
+			restart=1
+		fi 
+		if [ -z "$param3" ] ; then
+			txpl="${11}"
+		else
+			txpl="$param3"
+			echo "Changing TX PL to" $txpl
+			if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
+				echo "Error: not a number!"
+				txpl="${11}"
+				echo "Keeping value of" $txpl
+			fi 
+		fi
 	fi
 
-	if ! [[ $rxpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
-		echo "Error: not a number!"
-		rxpl="${10}"
-		echo "Keeping value of" $rxpl
-	else
-		restart=1
-	fi 
-
-	echo -e "Enter TX PL value integer 0: None, 01-38： CTCSS （analog, 39-121：CDCSS （digital）"
-
-	read txpl 
-
-	if [ -z $txpl ] ; then
-
-		txpl="${11}"
-		echo "Keeping value of" $txpl
-	fi
-
-	if ! [[ $txpl =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-
-		echo "Error: not a number!"
-		txpl="${11}"
-		echo "Keeping value of" $txpl
-	fi 
-	
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
@@ -1183,43 +1264,54 @@ elif [ "$1" = "-P" ]; then
 elif [ "$1" = "-F" ]; then
 
 	echo	
-	echo "Editing the tx and rx frequency in the"
-	echo  "configuration file for CubeSatSim"	
+	echo "Editing the RX and RX frequency"
 	echo
-	echo "Return keeps current value."
-#	echo -e "Current sim.cfg configuration file:"	
-#	echo
-	
+
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	echo "Current value of tx is"	
-	echo $7
-	echo
-	echo "Current value of rx is"	
-	echo $8
-	echo	
+	if [ -z "$param2" ] ; then
 
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
+		echo "Current value of TX frequency is" $7 "MHz"	
+		echo
+		echo "Current value of RX frequency is" $8 "MHz"
+		echo	
+	
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
-	echo "Enter tx frequency as 4XX.XXXX: "
-	read tx
+		echo "Return keeps current value."
+	
+		echo "Enter TX frequency in MHz (2m or 70cm band): "
+		read tx
+	
+		if [ -z $tx ] ; then
+	
+			tx="$7"
+			echo "Keeping value of" $tx "MHz"
+		fi
+	
+		echo "Enter RX frequency in MHz (70cm band only): "
+		read rx
+	
+		if [ -z $rx ] ; then
+	
+			rx="$8"
+			echo "Keeping RX value of" $rx "MHz"
+		fi
 
-	if [ -z $tx ] ; then
-
-		tx="$7"
-		echo "Keeping value of" $tx
+	else
+		tx="$param2"
+		echo "Changing TX frequency to" $tx "MHz"
+		if [ -z "$param3" ] ; then
+			rx="$8"
+			echo "Keeping RX value of" $rx "MHz"
+		else
+			rx="$param3"
+			echo "Changing RX frequency to" $rx "MHz"
+		fi
 	fi
 
-	echo "Enter rx frequency as 4XX.XXXX: "
-	read rx
-
-	if [ -z $rx ] ; then
-
-		rx="$8"
-		echo "Keeping value of" $rx
-	fi
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 
 	echo $1 $2 $3 $4 $5 $6 $tx $rx $9 ${10} ${11} ${12} ${13} ${14}
@@ -1260,17 +1352,17 @@ elif [ "$1" = "-o" ]; then
 		echo	
 		echo "Change telemetry beacon transmit state"
 		echo 
-	
+
 		FILE=/home/pi/CubeSatSim/beacon_off
 		if [ -f "$FILE" ]; then
-	    	echo "Transmit beacon telemetry is off"
+			echo "Transmit beacon telemetry is off"
 			echo
 	
 			echo "Turn beacon telemetry ON"
 			sudo rm /home/pi/CubeSatSim/beacon_off > /dev/null 2>&1
 			sudo systemctl restart transmit
 		else 
-	    	echo "Transmit beacon telemetry is on"
+			echo "Transmit beacon telemetry is on"
 			echo
 	
 			echo "Turn beacon telemetry OFF"
@@ -1283,28 +1375,30 @@ elif [ "$1" = "-o" ]; then
 elif [ "$1" = "-H" ]; then
 
 #	echo	
-	echo "Editing the Balloon mode setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting Balloon mode"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
-		echo "Balloon mode is ON"
+	if [ -z "$param2" ] ; then
+		if [ "$9" = "yes" ] || [ "$9" = "y" ]; then
+			echo "Balloon mode is ON"
+		else
+			echo "Balloon mode is OFF"
+		fi
+		
+		echo
+		
+	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} 
+	
+		echo "Do you want Balloon mode ON (y/n) "
+		read hab
+		echo
 	else
-		echo "Balloon mode is OFF"
+		hab="$param2"
 	fi
-	
-	echo
-	
-#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14} 
-
-	echo "Do you want Balloon mode ON (y/n) "
-	read hab
-	echo
-	
 	if [ "$hab" = "y" ] || [ "$hab" = "yes" ]  ; then
 		hab="yes"
 		echo "Balloon mode is ON"
@@ -1470,15 +1564,18 @@ elif [ "$1" = "-A" ]; then
 elif [ "$1" = "-L" ]; then
 
 	echo	
-	echo "Setting microphone level for command and control"
+	echo "Set microphone level for command and control"
 	echo
 
-	echo -e "Enter microphone level in percentage  (integer 0 - 100): "
-
-	read mic 
+	if [ -z "$param2" ] ; then
+		echo -e "Enter microphone level in percentage  (integer 0 - 100): "		
+		read mic 
+	else
+		mic="$param2"
+	fi
 
 	if ! [ -z $mic ] &&  [[ $mic =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-		echo "Updating mic level"
+		echo "Updating mic level to" $mic "%"
 		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set Mic $mic%
 	else
 		echo "Not updating mic level"
@@ -1568,10 +1665,11 @@ elif [ "$1" = "-j" ]; then
 
 elif [ "$1" = "-M" ]; then
 
-	if [ $fail ]; then
-		MODE=$fail
-	else
+#	if [ $fail ]; then
+#		MODE=$fail
+#	else
 
+	if [ -z "$param2" ] ; then
 		FILE=/home/pi/CubeSatSim/failure_mode.txt
 		if [ -f "$FILE" ]; then
 			if [[ $(grep "\-1" $FILE) ]]; then
@@ -1644,19 +1742,14 @@ elif [ "$1" = "-M" ]; then
 		echo "Enter the failure number to set: 0 - 11" 
 		read MODE
 		echo
+	else
+		MODE="$param2"
+#		echo "Setting Simulated Failure" $MODE
 	fi
 
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
 		MODE=-1
-#    elif [ "$MODE" = "12" ]; then
-	
-#		if [ "$norestart" = "1" ]; then
-#			echo
-#		else
-#			reboot=1
-#		fi
-
 	else	
 		case $MODE in
 			1)
@@ -1701,7 +1794,7 @@ elif [ "$1" = "-M" ]; then
 
 #	echo $MODE
 	echo
-	sudo rm /home/pi/CubeSatSim/failure_mode.txt
+	sudo rm /home/pi/CubeSatSim/failure_mode.txt &>/dev/null
 	echo $MODE > /home/pi/CubeSatSim/failure_mode.txt
 
 	echo "Changing simulated failure mode to $MODE" | wall
@@ -1776,58 +1869,70 @@ elif [ "$1" = "-N" ]; then
 elif [ "$1" = "-U" ]; then
 
 	echo	
-	echo "Changing the Random Simulated Failure setting in"
-	echo "the configuration file for CubeSatSim"	
+	echo "Changing the Random Simulated Failure setting"
 	echo
 	
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
 
-	if [ "${12}" = "yes" ] || [ "${12}" = "y" ]; then
-		echo "Random Simulated Failure is ON"
-	else
-		echo "Random Simulated Failure is OFF"
-	fi
-	
-	echo
-	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+	if [ -z "$param2" ] ; then
 
-	echo "Do you want Random Simulated Failure ON (y/n) "
-	read sim
-	echo
-	
-	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
-		sim="yes"
-		echo "Random Simulated Failure is ON"
-		echo	
-		echo "A new random failure is selected every"
-		echo  ${13} "seconds."	
-		echo 
-		echo "Enter a new value or Return keeps current value."
-			
-		echo "Enter time in seconds (integer): "
-	
-		read time
-	
-		if [ -z $time ] ; then
-			time="${13}"
-			echo "Keeping value of " $time " seconds"
+		if [ "${12}" = "yes" ] || [ "${12}" = "y" ]; then
+			echo "Random Simulated Failure is ON"
+		else
+			echo "Random Simulated Failure is OFF"
 		fi
+		
+		echo
+		
+	#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
 	
+		echo "Do you want Random Simulated Failure ON (y/n) "
+		read sim
+		echo
+
+		if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+			sim="yes"
+			echo "Random Simulated Failure is ON"
+			echo	
+			echo "A new random failure is selected every"
+			echo  ${13} "seconds."	
+			echo 
+			echo "Enter a new value or Return keeps current value."
+				
+			echo "Enter time in seconds (integer): "
+		
+			read time
+	
+			if [ -z $time ] ; then
+				time="${13}"
+				echo "Keeping value of " $time " seconds"
+			fi
+		
+			if ! [[ $time =~ ^[0-9]+$ ]] ; then
+				echo "Error: not an integer!"
+				time="${13}"
+				echo "Keeping value of" $time
+			fi
+	
+		else
+			sim="no"
+			echo "Random Simulated Failure is OFF"
+			time="${13}"
+	#		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
+		fi
+
+	else
+		time="$param2"
+		echo "Set Random Simulated Failure Time to" $time
+
 		if ! [[ $time =~ ^[0-9]+$ ]] ; then
-			echo "Error: not an integer!"
-			time="${13}"
-			echo "Keeping value of" $time
-		fi
-
-	else
-		sim="no"
-		echo "Random Simulated Failure is OFF"
-		time="${13}"
-#		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
-	fi
+				echo "Error: not an integer!"
+				time="${13}"
+				echo "Keeping value of" $time
+		fi	
+	fi	
 	
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
@@ -1843,48 +1948,76 @@ elif [ "$1" = "-U" ]; then
 elif [ "$1" = "-u" ]; then
 
 	echo	
-	echo "Change gpsd state"
+	echo "Change gpsd State"
 	echo 
 
-	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
-    	echo "gpsd is inactive"
-		echo
-		echo "Do you want to turn gpsd to ON (y/n) "
-		read reset
-		echo
+    if [ -z "$param2" ] ; then
 
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "gpsd set to ON"
-			sudo systemctl enable gpsd
-			sudo systemctl enable gpsd.socket
+		if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
+	    	echo "gpsd is inactive"
 			echo
-			echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+			echo "Do you want to turn gpsd to ON (y/n) "
+			read reset
 			echo
-
-			cat /etc/default/gpsd
-
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "gpsd set to ON"
+				sudo systemctl enable gpsd
+				sudo systemctl enable gpsd.socket
+				echo
+				echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+				echo
+	
+				cat /etc/default/gpsd
+	
+				echo
+				echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+				echo
+				echo "To monitor your gps device, use the gpsmon command."
+				echo
+				reboot=1
+			fi
+	
+		else 
+	    	echo "gpsd is active"
 			echo
-			echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+			echo "Do you want to turn gpsd to OFF (y/n) "
+			read reset
 			echo
-			echo "To monitor your gps device, use the gpsmon command."
-			echo
-			reboot=1
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "gpsd set to OFF"
+				sudo systemctl disable gpsd
+				sudo systemctl disable gpsd.socket
+				reboot=1
+			fi
+	
 		fi
-
-	else 
-    	echo "gpsd is active"
-		echo
-		echo "Do you want to turn gpsd to OFF (y/n) "
-		read reset
-		echo
-
+	else
+		reset="$param2"
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "gpsd set to ON"
+				sudo systemctl enable gpsd
+				sudo systemctl enable gpsd.socket
+				echo
+				echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+				echo
+	
+				cat /etc/default/gpsd
+	
+				echo
+				echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+				echo
+				echo "To monitor your gps device, use the gpsmon command."
+				echo
+				reboot=1
+		
+		else
 			echo "gpsd set to OFF"
 			sudo systemctl disable gpsd
 			sudo systemctl disable gpsd.socket
-reboot=1
+			reboot=1
 		fi
-
 	fi
 
 elif [ "$1" = "-G" ]; then
@@ -1962,49 +2095,62 @@ elif [ "$1" = "-k" ]; then
 elif [ "$1" = "-K" ]; then
 
 	echo	
-	echo "Editing the Doppler frequency shift setting in"
-	echo  "the configuration file for CubeSatSim"	
+	echo "Setting the Doppler frequency shift mode setting"
 	echo
-	
+
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
 	echo "$value" > /dev/null
 	set -- $value
-	doppler="${14}"
 
-	if [ "${14}" = "sim" ] ; then
-		echo "Simulated Doppler frequency shift mode enabled"
-	elif [ "${14}" = "rig" ] ; then
-		echo "rigctld Doppler frequency shift mode enabled"
+	if [ -z "$param2" ] ; then
+
+		doppler="${14}"
+	
+		if [ "${14}" = "sim" ] ; then
+			echo "Simulated Doppler frequency shift mode enabled"
+		elif [ "${14}" = "rig" ] ; then
+			echo "rigctld Doppler frequency shift mode enabled"
+		else
+			echo "Doppler frequency shift is OFF"
+		fi
+		
+		echo
+		
+	#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
+	
+		echo "Do you want Doppler frequency shift ON (y/n) "
+		read sim
+		echo
+		
+		if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+			doppler="yes"
+			echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
+			read doppler
+	
+			if [ "$doppler" = "sim" ] ; then
+				echo "Simulated Doppler frequency shift mode enabled"
+			elif [ "$doppler" = "rig" ] ; then
+				echo "rigctld Doppler frequency shift mode enabled"
+			else
+				doppler="no"
+				echo "sim or rig not entered. Doppler frequency shift is OFF"
+			fi
+		else
+			doppler="no"
+			echo " Doppler frequency shift is OFF"
+		fi
 	else
-		echo "Doppler frequency shift is OFF"
-	fi
-	
-	echo
-	
-#	$1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${12} ${13} ${14}
-
-	echo "Do you want Doppler frequency shift ON (y/n) "
-	read sim
-	echo
-	
-	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
-		doppler="yes"
-		echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
-		read doppler
-
+		doppler="$param2"
 		if [ "$doppler" = "sim" ] ; then
 			echo "Simulated Doppler frequency shift mode enabled"
 		elif [ "$doppler" = "rig" ] ; then
-			echo "rigctld Doppler frequency shift mode enabled"
+			echo "Radio Control Doppler frequency shift mode enabled"
 		else
+			echo "Doppler frequency shift is OFF"
 			doppler="no"
-			echo "sim or rig not entered. Doppler frequency shift is OFF"
 		fi
-	else
-		doppler="no"
-		echo " Doppler frequency shift is OFF"
 	fi
-	
+
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
 #	echo
