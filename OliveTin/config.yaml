@@ -332,13 +332,13 @@ actions:
     shell: /home/pi/CubeSatSim/config -u yes
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Turn gpsd OFF"
     shell: /home/pi/CubeSatSim/config -u no
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5    
+    timeout: 30    
 
   - title: "Turn Command and Control ON"
     shell: /home/pi/CubeSatSim/config -T yes
