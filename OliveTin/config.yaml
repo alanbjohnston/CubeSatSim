@@ -129,6 +129,17 @@ actions:
       - name: rx 
         type: ascii_sentence
 
+  - title: "Connect to WiFi using SSID and Password" 
+    icon: "&#9881;" # gear
+    shell: sudo nmcli device wifi connect "{{ wifi_ssid }}" password "{{ wifi_password }}"
+    onclick: execution-dialog
+    timeout: 10
+    arguments:
+      - name: wifi_ssid
+        type: ascii_sentence
+      - name: wifi_password 
+        type: ascii_sentence
+
   - title: "Set PL (Private Line) CTCSS/CDCSS" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -P {{ pl_rx }} {{ pl_tx }}
