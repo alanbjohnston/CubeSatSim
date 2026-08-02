@@ -1567,9 +1567,12 @@ elif [ "$1" = "-L" ]; then
 	echo "Setting microphone level for command and control"
 	echo
 
-	echo -e "Enter microphone level in percentage  (integer 0 - 100): "
-
-	read mic 
+	if [ -z "$param2" ] ; then
+		echo -e "Enter microphone level in percentage  (integer 0 - 100): "		
+		read mic 
+	else
+		mic="$param2"
+	fi
 
 	if ! [ -z $mic ] &&  [[ $mic =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 		echo "Updating mic level"
