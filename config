@@ -1948,48 +1948,76 @@ elif [ "$1" = "-U" ]; then
 elif [ "$1" = "-u" ]; then
 
 	echo	
-	echo "Change gpsd state"
+	echo "Change gpsd State"
 	echo 
 
-	if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
-    	echo "gpsd is inactive"
-		echo
-		echo "Do you want to turn gpsd to ON (y/n) "
-		read reset
-		echo
+    if [ -z "$param2" ] ; then
 
-		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-			echo "gpsd set to ON"
-			sudo systemctl enable gpsd
-			sudo systemctl enable gpsd.socket
+		if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
+	    	echo "gpsd is inactive"
 			echo
-			echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+			echo "Do you want to turn gpsd to ON (y/n) "
+			read reset
 			echo
-
-			cat /etc/default/gpsd
-
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "gpsd set to ON"
+				sudo systemctl enable gpsd
+				sudo systemctl enable gpsd.socket
+				echo
+				echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+				echo
+	
+				cat /etc/default/gpsd
+	
+				echo
+				echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+				echo
+				echo "To monitor your gps device, use the gpsmon command."
+				echo
+				reboot=1
+			fi
+	
+		else 
+	    	echo "gpsd is active"
 			echo
-			echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+			echo "Do you want to turn gpsd to OFF (y/n) "
+			read reset
 			echo
-			echo "To monitor your gps device, use the gpsmon command."
-			echo
-			reboot=1
+	
+			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "gpsd set to OFF"
+				sudo systemctl disable gpsd
+				sudo systemctl disable gpsd.socket
+				reboot=1
+			fi
+	
 		fi
-
-	else 
-    	echo "gpsd is active"
-		echo
-		echo "Do you want to turn gpsd to OFF (y/n) "
-		read reset
-		echo
-
+	else
+		reset="$param2"
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+				echo "gpsd set to ON"
+				sudo systemctl enable gpsd
+				sudo systemctl enable gpsd.socket
+				echo
+				echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+				echo
+	
+				cat /etc/default/gpsd
+	
+				echo
+				echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+				echo
+				echo "To monitor your gps device, use the gpsmon command."
+				echo
+				reboot=1
+		
+		else
 			echo "gpsd set to OFF"
 			sudo systemctl disable gpsd
 			sudo systemctl disable gpsd.socket
-reboot=1
+			reboot=1
 		fi
-
 	fi
 
 elif [ "$1" = "-G" ]; then
