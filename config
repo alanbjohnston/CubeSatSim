@@ -1744,19 +1744,12 @@ elif [ "$1" = "-M" ]; then
 		echo
 	else
 		MODE="$param2"
+#		echo "Setting Simulated Failure" $MODE
 	fi
 
 	if [ "$MODE" = "0" ]; then
 		echo "Setting No Simulated Failure"
 		MODE=-1
-#    elif [ "$MODE" = "12" ]; then
-	
-#		if [ "$norestart" = "1" ]; then
-#			echo
-#		else
-#			reboot=1
-#		fi
-
 	else	
 		case $MODE in
 			1)
