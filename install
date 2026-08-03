@@ -952,7 +952,7 @@ if [ ! -d "/home/pi/Icons" ]; then
 	wget -r -nd --no-parent -A '*' https://cubesatsim.org/icons/
 fi
 
-sudo apt install -y raspberrypi-ui-mods 
+sudo apt install -y raspberrypi-ui-mods rpi-connect
 
 sudo apt autoremove -y
 
