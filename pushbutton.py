@@ -7,6 +7,38 @@ import subprocess
 import time
 import os
 from time import sleep
+import configparser
+
+def read_config_ini():
+	global hotspot_ssid
+	global hotspot_password
+	global web_term_hotspot
+	global web_term_wifi
+	global dashboard_port
+	try:
+		# Initialize the parser
+		config = configparser.ConfigParser()
+	
+		# Read the file
+		config.read('/home/pi/CubeSatSim/hotspot.ini')
+	
+		# Access the values like a dictionary
+		hotspot_ssid = config['Hotspot']['hotspot_ssid']
+		hotspot_password = config['Hotspot']['hotspot_password']
+		web_term_hotspot = config['Hotspot']['web_term_hotspot']
+		web_term_wifi = config['Hotspot']['web_term_wifi']
+		dashboard_port = config.getint('Hotspot', 'dashboard_port') 
+	
+		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi} Port: {dashboard_port}")
+	
+	except Exception as e:
+		print(f"An error occurred: {e}")	
+		print(" failed, setting defaults") 
+		hotspot_ssid = "CubeSat"
+		hotspot_password = "amsat"
+		web_term_hotspot = "yes"
+		web_term_wifi = "no"
+		dashboard_port = 80
 
 def blink(times):
 	blink_time = 0.1
@@ -142,15 +174,19 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 		success = 1
 		count = 0
 		while (success != 0) and (count < 5):
-			result = subprocess.run(['nmcli', 'device', 'wifi', 'hotspot', 'con-name', 'Hotspot', 'ifname', 'wlan0', 'ssid', 'CubeSat', 'password', 'amsatao7'], capture_output=True, text=True)
+			read_config_ini()
+			result = subprocess.run(['nmcli', 'device', 'wifi', 'hotspot', 'con-name', 'Hotspot', 'ifname', 'wlan0', 'ssid', hotspot_ssid, 'password', hotspot_password], capture_output=True, text=True)
 			print(result, flush=True) #.stdout)
 			count = count + 1
 			success = result.returncode
 			sleep(1)	
+		print(f"Starting Wi-Fi Hotspot with SSID: {hotspot_ssid} and password: {hotspot_password}")	
 		result = subprocess.run(['nmcli', 'connection', 'show'], capture_output=True, text=True)
 		print(result, flush=True)			
 		sleep(2)
-		subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-p', '8081', 'bash'])
+		if web_term_hotspot == "yes":
+			subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-p', '8081', 'bash'])
+			print("Starting web terminal on port 8081")
 
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 1)
