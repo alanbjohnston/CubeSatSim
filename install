@@ -596,9 +596,9 @@ sudo raspi-config nonint do_vnc 0
 if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
 
 	cd /tmp
-	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_46q.tar.gz
-	tar -xzf PacsatGround_unix_0_46q.tar.gz -C /home/pi/Desktop
-	rm PacsatGround_unix_0_46q.tar.gz
+	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_47a.tar.gz
+	tar -xzf PacsatGround_unix_0_47a.tar.gz -C /home/pi/Desktop
+	rm PacsatGround_unix_0_47a.tar.gz
 #	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
 #	mkdir /home/pi/PacSatGround
 	sudo usermod -a -G gpio pi
