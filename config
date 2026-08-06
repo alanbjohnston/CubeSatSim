@@ -1593,7 +1593,17 @@ elif [ "$1" = "-g" ]; then
 
 		echo "Resetting"
 
+		sudo systemctl stop cubesatsim
+		sudo systemctl stop transmit
+		sudo systemctl stop command
+		sudo systemctl stop pacsatsim
+		sudo systemctl stop frequency
+		sudo systemctl stop pushbutton
+		sudo systemctl stop OliveTin
+
 		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
+
+		echo "434900000 435000000" > frequency.txt
 	
 		sudo echo "b" > /home/pi/CubeSatSim/.mode
 	
@@ -1612,14 +1622,6 @@ elif [ "$1" = "-g" ]; then
 		sudo rm /home/pi/CubeSatSim/failure_mode.txt > /dev/null 2>&1
 
 		sudo rm /home/pi/CubeSatSim/transmit_dtmf > /dev/null 2>&1
-
-		sudo systemctl stop cubesatsim
-		sudo systemctl stop transmit
-		sudo systemctl stop command
-		sudo systemctl stop pacsatsim
-		sudo systemctl stop frequency
-		sudo systemctl stop pushbutton
-		sudo systemctl stop OliveTin
 
 		cp /home/pi/CubeSatSim/hotspot_ini /home/pi/CubeSatSim/hotspot.ini
 
