@@ -51,6 +51,8 @@ else
 
 	echo "434900000 435000000" > frequency.txt
 
+	cp /home/pi/CubeSatSim/hotspot_ini /home/pi/CubeSatSim/hotspot.ini
+
 	/home/pi/CubeSatSim/config -c -n
 
 	/home/pi/CubeSatSim/config -l -n
