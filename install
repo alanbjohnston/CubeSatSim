@@ -786,6 +786,12 @@ else
   FLAG=1
 fi
 
+FILE=/home/pi/CubeSatSim/hotspot.ini
+if [ ! -f "$FILE" ]; then
+	cp /home/pi/CubeSatSim/hotspot_ini /home/pi/CubeSatSim/hotspot.ini
+	echo "Creating hotspot.ini"
+fi
+
 FILE=/etc/asound.conf
 if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/asound.conf /etc/asound.conf) ]]; then
