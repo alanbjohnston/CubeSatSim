@@ -356,11 +356,11 @@ else
     echo "0\n" > /home/pi/CubeSatSim/command_count.txt
 fi
   
-sudo apt-get update && sudo apt-get dist-upgrade -y
+sudo apt-get  update && sudo apt-get dist-upgrade -y
 
 # if [ $BULLSEYE -eq 1 ]; then
-#	sudo apt purge -y python3-pip
-#	sudo apt install -y python3-pip
+#	sudo apt-get purge -y python3-pip
+#	sudo apt-get install -y python3-pip
 # fi
 
 cp /home/pi/CubeSatSim/groundstation/pacsat.desktop /home/pi/Desktop/pacsat.desktop
@@ -369,7 +369,7 @@ cp /home/pi/CubeSatSim/groundstation/gpredict.desktop /home/pi/Desktop/gpredict.
 if [ ! -d "/home/pi/venv" ]; then
 
 	cd
-	sudo apt install -y python3-venv
+	sudo apt-getinstall -y python3-venv
 	sudo python3 -m venv venv
 	source /home/pi/venv/bin/activate
 	
@@ -440,16 +440,16 @@ if [ ! -d "/home/pi/WiringPi3" ]; then
 	cd WiringPi3
 	./build debian
 	mv debian-template/wiringpi*.deb .
-	sudo apt install ./wiringpi*.deb
+	sudo apt-get install ./wiringpi*.deb
 fi
 
 cd
 
 if [ ! $BULLSEYE -eq 1 ]; then
-	sudo apt install -y libtiff6
+	sudo apt-get install -y libtiff6
 fi
 
-sudo apt install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
+sudo apt-get install -y python3-pip python3-smbus libjpeg-dev zlib1g-dev libfreetype6-dev libopenjp2-7 python3-pil python3-serial libusb-1.0-0 libusb-1.0-0-dev
 
 if [ $BULLSEYE -eq 1 ] || [ $UPDATE -eq 0 ] ; then
 
@@ -619,7 +619,7 @@ fi
 
 if [ ! -d "/home/pi/rpitx" ]; then
 
-	sudo apt install -y libraspberrypi-dev
+	sudo apt-get install -y libraspberrypi-dev
 	cd
 	git clone https://github.com/alanbjohnston/rpitx.git
 	cd rpitx
@@ -888,7 +888,7 @@ fi
 if [ ! -f "/home/pi/fcdctl/fcdctl" ]; then
 	echo "Installing fcdctl to set FUNcubeDongle Pro gain"
 	sudo rm /var/lib/dpkg/info/python3-pip.list
-	sudo apt install python3-pip --reinstall
+	sudo apt-get install python3-pip --reinstall
 	sudo apt-get install -y python3-smbus libusb-1.0 
 	cd
 	git clone https://github.com/csete/fcdctl.git
@@ -955,9 +955,9 @@ if [ ! -d "/home/pi/Icons" ]; then
 	wget -r -nd --no-parent -A '*' https://cubesatsim.org/icons/
 fi
 
-sudo apt install -y raspberrypi-ui-mods rpi-connect ttyd
+sudo apt-get install -y raspberrypi-ui-mods rpi-connect ttyd
 
-sudo apt autoremove -y
+sudo apt-get autoremove -y
 
 if [[ $(gpio -v | grep "Pi 4") ]] && [[ ! $(sudo raspi-config nonint get_browser | grep "chromium") ]] ; then
 	echo "Since Pi 4, changing default browser to Chromium"
