@@ -158,6 +158,7 @@ GPIO.output(powerPin, 0)
 
 GPIO.setup(push_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
+read_config_ini()
 if not GPIO.input(push_button): # if pushbutton is held down during boot
 		print("Activating WiFi access point!", flush=True)
 		GPIO.output(powerPin, 1) 
@@ -173,8 +174,7 @@ if not GPIO.input(push_button): # if pushbutton is held down during boot
 		GPIO.output(powerPin, 0)
 		success = 1
 		count = 0
-		while (success != 0) and (count < 5):
-			read_config_ini()
+		while (success != 0) and (count < 5):		
 			result = subprocess.run(['nmcli', 'device', 'wifi', 'hotspot', 'con-name', 'Hotspot', 'ifname', 'wlan0', 'ssid', hotspot_ssid, 'password', hotspot_password], capture_output=True, text=True)
 			print(result, flush=True) #.stdout)
 			count = count + 1
