@@ -14,7 +14,7 @@ def read_config_ini():
 	global hotspot_password
 	global web_term_hotspot
 	global web_term_wifi
-	global dashboard_port
+#	global dashboard_port
 	try:
 		# Initialize the parser
 		config = configparser.ConfigParser()
@@ -27,9 +27,9 @@ def read_config_ini():
 		hotspot_password = config['Hotspot']['hotspot_password']
 		web_term_hotspot = config['Hotspot']['web_term_hotspot']
 		web_term_wifi = config['Hotspot']['web_term_wifi']
-		dashboard_port = config.getint('Hotspot', 'dashboard_port') 
+#		dashboard_port = config.getint('Hotspot', 'dashboard_port') 
 	
-		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi} Port: {dashboard_port}")
+		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi}") # : {dashboard_}")
 	
 	except Exception as e:
 		print(f"An error occurred: {e}")	
@@ -38,7 +38,7 @@ def read_config_ini():
 		hotspot_password = "amsat"
 		web_term_hotspot = "yes"
 		web_term_wifi = "no"
-		dashboard_port = 80
+#		dashboard_port = 80
 
 def blink(times):
 	blink_time = 0.1
