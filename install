@@ -595,12 +595,11 @@ sudo raspi-config nonint do_vnc 0
 
 if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
 
-	cd /tmp
-	wget https://www.g0kla.com/pacsat/downloads/test/PacsatGround_unix_0_47a.tar.gz
-	tar -xzf PacsatGround_unix_0_47a.tar.gz -C /home/pi/Desktop
-	rm PacsatGround_unix_0_47a.tar.gz
-#	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/* /home/pi/Desktop/PacsatGround/spacecraft/
-#	mkdir /home/pi/PacSatGround
+	URL="https://www.g0kla.com/pacsat/downloads/test/"
+	FILENAME=$(wget -q -O - $URL | grep -E -o -m 1 'PacsatGround_unix...........gz' | head -n 1)
+	echo "Downloading latest PacsatGround Station version" $FILENAME
+	wget $URL/$FILENAME -O PacsatGround_unix.tar.gz
+	tar -xzf PacsatGround_unix.tar.gz -C /home/pi/Desktop
 	sudo usermod -a -G gpio pi
 	sudo apt-get install default-jdk -y
 
