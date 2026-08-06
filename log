@@ -44,6 +44,7 @@ if [ "$REALTIME" = "1" ]  ; then
   elif [ "$1" = "-r" ]; then
     sudo journalctl -b all  -af -u frequency # > /home/pi/CubeSatSim/logr.txt 
   elif [ "$1" = "-f" ] ; then
+    echo "Transmit  Receive"
     while true; do 
       cat /home/pi/CubeSatSim/frequency.txt | tr -d '\n'
 #      echo
