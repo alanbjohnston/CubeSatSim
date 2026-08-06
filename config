@@ -1433,6 +1433,7 @@ elif [ "$1" = "-v" ]; then
 
 	echo "Real-time output from the INA219 voltage and current sensors:"
 	echo
+	/home/pi/CubeSatSim/venv.sh
 	/home/pi/CubeSatSim/telem
 
 elif [ "$1" = "-e" ]; then
