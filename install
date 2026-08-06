@@ -371,7 +371,7 @@ cp /home/pi/CubeSatSim/groundstation/gpredict.desktop /home/pi/Desktop/gpredict.
 if [ ! -d "/home/pi/venv" ]; then
 
 	cd
-	sudo apt-getinstall -y python3-venv
+	sudo apt-get install -y python3-venv
 	sudo python3 -m venv venv
 	source /home/pi/venv/bin/activate
 	
