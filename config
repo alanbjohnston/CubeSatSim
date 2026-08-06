@@ -1621,6 +1621,8 @@ elif [ "$1" = "-g" ]; then
 		sudo systemctl stop pushbutton
 		sudo systemctl stop OliveTin
 
+		cp /home/pi/CubeSatSim/hotspot_ini /home/pi/CubeSatSim/hotspot.ini
+
 		rpi-connect signout
 	
 		sudo mv -f /home/pi/CubeSatSim/telem.txt /home/pi/CubeSatSim/telem.txt.bk
