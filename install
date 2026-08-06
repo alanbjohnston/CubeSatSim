@@ -265,13 +265,13 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 
 	  sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
 
-	  if [ ! -d "/var/log/journal" ]; then # persistant journal logs across boots
+#	  if [ ! -d "/var/log/journal" ]; then # persistant journal logs across boots
 		echo "Setting up journal logs across boots"
-		sudo mkdir -p /var/log/journal
+		sudo mkdir -p /var/log/journal &>/dev/null
 		sudo systemd-tmpfiles --create --prefix /var/log/journal
 		sudo systemctl restart systemd-journal-flush.service
 		sudo sed -i 's/Storage=volatile/Storage=persistent/g' /etc/systemd/journald.conf
-	  fi
+#	  fi
 
 elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 
