@@ -34,7 +34,7 @@ if [ "$REALTIME" = "1" ]  ; then
   #  cat /home/pi/CubeSatSim/logt.txt
   #  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
   elif [ "$1" = "-c" ]; then
-    sudo journaclt -b all  -af -u command # > /home/pi/CubeSatSim/logc.txt 
+    sudo journalctl -b all -af -u command # > /home/pi/CubeSatSim/logc.txt 
     cat /home/pi/CubeSatSim/logc.txt
   #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
   elif [ "$1" = "-p" ]; then
