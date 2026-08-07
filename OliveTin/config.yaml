@@ -235,7 +235,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -d
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Transmit Log"
     shell: /home/pi/CubeSatSim/log -t r
@@ -247,7 +247,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -t
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
     
   - title: "Realtime Frequency Control Log"
     shell: /home/pi/CubeSatSim/log -r r
@@ -259,7 +259,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -r
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Frequency Display Log"
     shell: /home/pi/CubeSatSim/log -f r
@@ -271,7 +271,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -f
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Pacsat Log"
     shell: /home/pi/CubeSatSim/log -p r
@@ -283,7 +283,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -p
     icon: logs
     onclick: execution-dialog
-    timeout: 5    
+    timeout: 30    
 
   - title: "Realtime Pushbutton Log"
     shell: /home/pi/CubeSatSim/log -b r
@@ -295,7 +295,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -b
     icon: logs
     onclick: execution-dialog
-    timeout: 5    
+    timeout: 30    
     
   - title: "Realtime Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c r
@@ -307,7 +307,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -c
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Web (OliveTin) Log"
     shell: /home/pi/CubeSatSim/log -o r
@@ -319,7 +319,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -o 
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
     
   - title: "Update CubeSatSim Software"
     shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
