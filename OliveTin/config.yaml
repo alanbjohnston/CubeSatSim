@@ -154,7 +154,8 @@ actions:
 
   - title: "Ping a Host or IP address"
     icon: "&#128732;" # wireless 
-    shell: echo "This will run for 15 seconds" && ping {{ hostname_or_ip_address }}
+#    shell: echo "This will run for 15 seconds" && ping {{ hostname_or_ip_address }}
+    shell: ping {{ hostname_or_ip_address }}
     onclick: execution-dialog
     timeout: 15
     arguments:
@@ -163,7 +164,8 @@ actions:
         
   - title: "See Running Processes" 
     icon: logs 
-    shell: echo "This command will timeout after 15 seconds" && top
+#    shell: echo "This command will timeout after 15 seconds" && top
+    shell: top
     onclick: execution-dialog
     timeout: 15    
 
