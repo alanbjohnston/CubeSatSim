@@ -152,6 +152,21 @@ actions:
       - name: hostname
         type: ascii_sentence
 
+  - title: "Ping a Host or IP address"
+    icon: &#128732;" # wireless 
+    shell: echo "This will run for 15 seconds" && ping {{ hostname_or_ip_address }}
+    onclick: execution-dialog
+    timeout: 15
+    arguments:
+      - name: hostname_or_ip_address
+        type: ascii_sentence
+        
+  - title: "See Running Processes (htop)" 
+    icon: logs 
+    shell: echo "You can't interact with this command.  It will timeout after 15 seconds" && htop
+    onclick: execution-dialog
+    timeout: 15    
+
   - title: "Show Available WiFi Networks"
     icon: "&#128732;" # wireless
     shell: sudo nmcli device wifi rescan && nmcli device wifi list
@@ -601,6 +616,8 @@ dashboards:
           - title: "Change Hostname and Restart" 
           - title: "Show Network Configuration"
           - title: "Show Available WiFi Networks"
+          - title: "Ping a Host or IP address"
+          - title: "See Running Processes"
 #          - title: "Signin to Raspberry Pi Connect"  # OliveTin needs to run as pi
 #          - title: "Signout of Raspberry Pi Connect"
 #          - title: "Status of Raspberry Pi Connect"
