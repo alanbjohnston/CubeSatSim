@@ -2026,15 +2026,16 @@ void get_tlm_fox() {
       encodeB(b_min, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
     }
 
-	int tlm_skip = FALSE
+	int tlm_skip = FALSE;
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
-	  tlm_skip = TRUE	
+	  tlm_skip = TRUE;	
     }
     if (rxAntennaDeployed == 0) {
       rxAntennaDeployed = 1;
       printf("RX Antenna Deployed!\n");
+	  tlm_skip = TRUE;	
     }
 
     if (mode == BPSK) {  // wod field experiments
