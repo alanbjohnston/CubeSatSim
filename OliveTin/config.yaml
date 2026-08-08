@@ -165,7 +165,7 @@ actions:
   - title: "See Running Processes" 
     icon: logs 
 #    shell: echo "This command will timeout after 15 seconds" && top
-    shell: top
+    shell: top -b -n 1 2>&1
     onclick: execution-dialog
     timeout: 15    
 
