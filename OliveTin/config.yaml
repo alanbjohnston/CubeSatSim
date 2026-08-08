@@ -161,9 +161,9 @@ actions:
       - name: hostname_or_ip_address
         type: ascii_sentence
         
-  - title: "See Running Processes (htop)" 
+  - title: "See Running Processes" 
     icon: logs 
-    shell: echo "You can't interact with this command.  It will timeout after 15 seconds" && htop
+    shell: echo "This command will timeout after 15 seconds" && top
     onclick: execution-dialog
     timeout: 15    
 
