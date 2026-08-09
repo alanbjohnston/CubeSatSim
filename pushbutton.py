@@ -161,7 +161,7 @@ GPIO.output(powerPin, 0)
 GPIO.setup(push_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 read_config_ini()
-if not GPIO.input(push_button) or hotspot_always_on = "yes": # if pushbutton is held down during boot or configured always on
+if not GPIO.input(push_button) or hotspot_always_on == "yes": # if pushbutton is held down during boot or configured always on
 		print("Activating WiFi access point!", flush=True)
 		GPIO.output(powerPin, 1) 
 		sleep(0.1)
