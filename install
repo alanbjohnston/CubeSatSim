@@ -51,12 +51,16 @@ else
 
 	echo "434900000 435000000" > frequency.txt
 
-	cp /home/pi/CubeSatSim/hotspot_ini /home/pi/CubeSatSim/hotspot.ini
-
 	/home/pi/CubeSatSim/config -c -n
 
 	/home/pi/CubeSatSim/config -l -n
 
+fi
+
+FILE=/home/pi/CubeSatSim/hotspot.ini
+if [ ! -f "$FILE" ]; then
+	echo "Creating hotspot.ini configuration file. You can edit it to change Wi-Fi hotspot options"
+	cp /home/pi/CubeSatSim/hotspot_ini /home/pi/CubeSatSim/hotspot.ini
 fi
 
 if [[ $(grep '11.' /etc/debian_version) ]]; then
