@@ -31,7 +31,7 @@ def read_config_ini():
 		web_term_wifi = config['Hotspot']['web_term_wifi']
 #		dashboard_port = config.getint('Hotspot', 'dashboard_port') 
 	
-		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi}") # : {dashboard_}")
+		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Hotspot Default: {hotspot_default} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi}") # : {dashboard_}")
 	
 	except Exception as e:
 		print(f"An error occurred: {e}")	
