@@ -35,7 +35,7 @@ def read_config_ini():
 		print(f"An error occurred: {e}")	
 		print(" failed, setting defaults") 
 		hotspot_ssid = "CubeSat"
-		hotspot_password = "amsat"
+		hotspot_password = "amsatcubesat"
 		web_term_hotspot = "yes"
 		web_term_wifi = "no"
 #		dashboard_port = 80
