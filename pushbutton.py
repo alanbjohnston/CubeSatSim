@@ -12,6 +12,7 @@ import configparser
 def read_config_ini():
 	global hotspot_ssid
 	global hotspot_password
+	global hotspot_always_on
 	global web_term_hotspot
 	global web_term_wifi
 #	global dashboard_port
