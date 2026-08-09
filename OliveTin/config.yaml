@@ -169,6 +169,12 @@ actions:
     onclick: execution-dialog
     timeout: 15    
 
+  - title: "CubeSatSim Directory" 
+    icon: logs 
+    shell: ls -all /home/pi/CubeSatSim
+    onclick: execution-dialog
+    timeout: 15        
+
   - title: "Show Available WiFi Networks"
     icon: "&#128732;" # wireless
     shell: sudo nmcli device wifi rescan && nmcli device wifi list
@@ -620,6 +626,7 @@ dashboards:
           - title: "Show Available WiFi Networks"
           - title: "Ping a Host or IP address"
           - title: "See Running Processes"
+          - title: "CubeSatSim Directory" 
 #          - title: "Signin to Raspberry Pi Connect"  # OliveTin needs to run as pi
 #          - title: "Signout of Raspberry Pi Connect"
 #          - title: "Status of Raspberry Pi Connect"
