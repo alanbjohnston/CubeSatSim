@@ -777,6 +777,7 @@ if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/systemd/OliveTin.service /etc/systemd/system/OliveTin.service) ]]; then
     echo "changed OliveTin.service."
     sudo cp /home/pi/CubeSatSim/systemd/OliveTin.service /etc/systemd/system/OliveTin.service
+	sudo systemctl daemon-reload
 	sudo systemctl restart OliveTin
     FLAG=1
   else
@@ -785,6 +786,7 @@ if [ -f "$FILE" ]; then
 else
   echo "creating OliveTin.service."
   sudo cp /home/pi/CubeSatSim/systemd/OliveTin.service /etc/systemd/system/OliveTin.service
+  sudo systemctl daemon-reload
   sudo systemctl enable OliveTin
   FLAG=1
 fi
