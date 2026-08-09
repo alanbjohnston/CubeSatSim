@@ -4,7 +4,7 @@ hotspot_ssid=CubeSat
 # WiFi hotspot password - note: this password is stored in the clear!
 hotspot_password=amsatcubesat	
 # WiFi hotspot always on regardless of pushbutton
-hotspot_always_on=no	
+hotspot_default=no	
 # Web Dashboard port number. If 80, no port needs to be entered in browser
 # dashboard_port=80
 # Web terminal setting during hotspot - note, there is no authentication for this!
