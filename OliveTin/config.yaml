@@ -152,6 +152,29 @@ actions:
       - name: hostname
         type: ascii_sentence
 
+  - title: "Ping a Host or IP address"
+    icon: "&#128732;" # wireless 
+#    shell: echo "This will run for 15 seconds" && ping {{ hostname_or_ip_address }}
+    shell: ping {{ hostname_or_ip_address }}
+    onclick: execution-dialog
+    timeout: 15
+    arguments:
+      - name: hostname_or_ip_address
+        type: ascii_sentence
+        
+  - title: "See Running Processes" 
+    icon: logs 
+#    shell: echo "This command will timeout after 15 seconds" && top
+    shell: top -b -n 1 2>&1
+    onclick: execution-dialog
+    timeout: 15    
+
+  - title: "CubeSatSim Directory" 
+    icon: logs 
+    shell: ls -all /home/pi/CubeSatSim
+    onclick: execution-dialog
+    timeout: 15        
+
   - title: "Show Available WiFi Networks"
     icon: "&#128732;" # wireless
     shell: sudo nmcli device wifi rescan && nmcli device wifi list
@@ -235,7 +258,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -d
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Transmit Log"
     shell: /home/pi/CubeSatSim/log -t r
@@ -247,7 +270,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -t
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
     
   - title: "Realtime Frequency Control Log"
     shell: /home/pi/CubeSatSim/log -r r
@@ -259,7 +282,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -r
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Frequency Display Log"
     shell: /home/pi/CubeSatSim/log -f r
@@ -271,7 +294,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -f
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Pacsat Log"
     shell: /home/pi/CubeSatSim/log -p r
@@ -283,7 +306,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -p
     icon: logs
     onclick: execution-dialog
-    timeout: 5    
+    timeout: 30    
 
   - title: "Realtime Pushbutton Log"
     shell: /home/pi/CubeSatSim/log -b r
@@ -295,7 +318,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -b
     icon: logs
     onclick: execution-dialog
-    timeout: 5    
+    timeout: 30    
     
   - title: "Realtime Command and Control Log"
     shell: /home/pi/CubeSatSim/log -c r
@@ -307,7 +330,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -c
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Realtime Web (OliveTin) Log"
     shell: /home/pi/CubeSatSim/log -o r
@@ -319,7 +342,7 @@ actions:
     shell: /home/pi/CubeSatSim/log -o 
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
     
   - title: "Update CubeSatSim Software"
     shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
@@ -601,6 +624,9 @@ dashboards:
           - title: "Change Hostname and Restart" 
           - title: "Show Network Configuration"
           - title: "Show Available WiFi Networks"
+          - title: "Ping a Host or IP address"
+          - title: "See Running Processes"
+          - title: "CubeSatSim Directory" 
 #          - title: "Signin to Raspberry Pi Connect"  # OliveTin needs to run as pi
 #          - title: "Signout of Raspberry Pi Connect"
 #          - title: "Status of Raspberry Pi Connect"

@@ -20,6 +20,7 @@
  */
 
 #include "main.h"
+#include <signal.h>
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
@@ -2026,13 +2027,16 @@ void get_tlm_fox() {
       encodeB(b_min, 52 + head_offset, rxAntennaDeployed + txAntennaDeployed * 2 + c2cStatus * 4);
     }
 
+	int tlm_skip = FALSE;
     if (txAntennaDeployed == 0) {
       txAntennaDeployed = 1;
       printf("TX Antenna Deployed!\n");
+	  tlm_skip = TRUE;	
     }
     if (rxAntennaDeployed == 0) {
       rxAntennaDeployed = 1;
       printf("RX Antenna Deployed!\n");
+	  tlm_skip = TRUE;	
     }
 
     if (mode == BPSK) {  // wod field experiments
@@ -2044,7 +2048,7 @@ void get_tlm_fox() {
       encodeB(b, 74 + head_offset, 0xfff); 
     }
 
-	if ((mode == PACSAT) || (mode == PACSATGND)) 
+	if (((mode == PACSAT) || (mode == PACSATGND)) && (tlm_skip == FALSE)) 
 	{
 		FILE *telem_binary = fopen("/home/pi/CubeSatSim/tlm.bin", "wb");
 		if (telem_binary != NULL) {
@@ -2407,6 +2411,7 @@ FILE *sopen(const char *program)
             _exit(127);
         }
         /* parent */
+		signal(SIGCHLD, SIG_IGN);
         close(fds[1]);
         return fdopen(fds[0], "r+");
     }

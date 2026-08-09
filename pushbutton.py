@@ -12,6 +12,7 @@ import configparser
 def read_config_ini():
 	global hotspot_ssid
 	global hotspot_password
+	global hotspot_default
 	global web_term_hotspot
 	global web_term_wifi
 #	global dashboard_port
@@ -25,17 +26,19 @@ def read_config_ini():
 		# Access the values like a dictionary
 		hotspot_ssid = config['Hotspot']['hotspot_ssid']
 		hotspot_password = config['Hotspot']['hotspot_password']
+		hotspot_default = config['Hotspot']['hotspot_default']
 		web_term_hotspot = config['Hotspot']['web_term_hotspot']
 		web_term_wifi = config['Hotspot']['web_term_wifi']
 #		dashboard_port = config.getint('Hotspot', 'dashboard_port') 
 	
-		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi}") # : {dashboard_}")
+		print(f"SSID: {hotspot_ssid} Password: {hotspot_password} Hotspot Default: {hotspot_default} Term Hotspot: {web_term_hotspot} Term WiFi {web_term_wifi}") # : {dashboard_}")
 	
 	except Exception as e:
 		print(f"An error occurred: {e}")	
 		print(" failed, setting defaults") 
 		hotspot_ssid = "CubeSat"
-		hotspot_password = "amsat"
+		hotspot_password = "amsatcubesat"
+		hotspot_default = "no"
 		web_term_hotspot = "yes"
 		web_term_wifi = "no"
 #		dashboard_port = 80
@@ -159,7 +162,7 @@ GPIO.output(powerPin, 0)
 GPIO.setup(push_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 read_config_ini()
-if not GPIO.input(push_button): # if pushbutton is held down during boot
+if not GPIO.input(push_button) or hotspot_default == "yes": # if pushbutton is held down during boot or configured as default
 		print("Activating WiFi access point!", flush=True)
 		GPIO.output(powerPin, 1) 
 		sleep(0.1)
