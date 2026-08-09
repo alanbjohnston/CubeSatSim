@@ -25,6 +25,7 @@ def read_config_ini():
 		# Access the values like a dictionary
 		hotspot_ssid = config['Hotspot']['hotspot_ssid']
 		hotspot_password = config['Hotspot']['hotspot_password']
+		hotspot_always_on = config['Hotspot']['hotspot_hotspot_always_on']
 		web_term_hotspot = config['Hotspot']['web_term_hotspot']
 		web_term_wifi = config['Hotspot']['web_term_wifi']
 #		dashboard_port = config.getint('Hotspot', 'dashboard_port') 
@@ -35,7 +36,8 @@ def read_config_ini():
 		print(f"An error occurred: {e}")	
 		print(" failed, setting defaults") 
 		hotspot_ssid = "CubeSat"
-		hotspot_password = "amsat"
+		hotspot_password = "amsatcubesat"
+		hotspot_always_on = "no"
 		web_term_hotspot = "yes"
 		web_term_wifi = "no"
 #		dashboard_port = 80
@@ -159,7 +161,7 @@ GPIO.output(powerPin, 0)
 GPIO.setup(push_button, GPIO.IN, pull_up_down=GPIO.PUD_UP)
 
 read_config_ini()
-if not GPIO.input(push_button): # if pushbutton is held down during boot
+if not GPIO.input(push_button) || hotspot_always_on = "yes": # if pushbutton is held down during boot or configured always on
 		print("Activating WiFi access point!", flush=True)
 		GPIO.output(powerPin, 1) 
 		sleep(0.1)
