@@ -2410,6 +2410,7 @@ FILE *sopen(const char *program)
             _exit(127);
         }
         /* parent */
+		signal(SIGCHLD, SIG_IGN);
         close(fds[1]);
         return fdopen(fds[0], "r+");
     }
