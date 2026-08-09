@@ -20,6 +20,7 @@
  */
 
 #include "main.h"
+#include <signal.h>
 
 //#define HAB  // uncomment to change APRS icon from Satellite to Balloon and only BAT telemetry
 
