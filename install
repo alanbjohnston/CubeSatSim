@@ -161,6 +161,38 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 	  if ! grep -q force_turbo=1 /boot/config.txt ; then sudo sh -c 'echo "force_turbo=1" >> /boot/config.txt'; fi
 	
 	  sudo sh -c 'echo "\n" >> /boot/config.txt'
+
+	  if [[ $(sudo systemctl is-active NetworkManager | grep inactive) ]]; then
+	    	echo "NetworkManager is inactive"
+	    	echo "In order to use the Wi-Fi hotspot, NetworkManager needs to be enabled and configured."
+			echo
+			echo "Do you want to re-configure your Wi-Fi (y/n) "
+			read choice
+			echo
+			if [ "$choice" = "y" ] || [ "$choice" = "yes" ]  ; then
+				sudo systemctl disable dhcpcd
+				sudo systemctl enable NetworkManager
+				echo "Enter your Wi-Fi SSID"
+				read ssid
+				echo "Enter your Wi-Fi password"
+				read password
+				sudo nmcli dev wifi connect "$ssid" password "$password"
+				echo "Wi-Fi will be updated after reboot"
+			else
+				echo "Not enabling NetworkManager."
+			fi
+	  fi
+
+	  FILE=/usr/bin/ttyd
+	  if [ -f "$FILE" ]; then
+    	  echo "$FILE exists."
+	  else
+	      cd /tmp
+		  wget https://github.com/tsl0922/ttyd/releases/download/1.7.7/ttyd.armhf
+		  chmod +x ttyd.armhf
+	      sudo cp ttyd.armhf $FILE
+	  fi
+
   fi
 
 if [[ $(grep 'bookworm' /etc/os-release) ]]; then
@@ -272,6 +304,14 @@ if [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	  sudo sh -c 'echo "\n" >> /boot/firmware/config.txt'
 
 	  sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
+
+	FILE=/boot/firmware/cmdline.txt
+	if [[ $(grep "vc4.force_hotplug=1" $FILE) ]]; then
+		echo "vc4.force_hotplug=1 already in $FILE"; 
+	else
+		echo "adding vc4.force_hotplug=1 to $FILE";
+		sudo sed -i '1s/^/vc4.force_hotplug=1 /' $FILE
+	fi
 
 #	  if [ ! -d "/var/log/journal" ]; then # persistant journal logs across boots
 		echo "Setting up journal logs across boots"
