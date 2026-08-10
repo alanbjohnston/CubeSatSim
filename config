@@ -289,7 +289,7 @@ RXPL=${10}
 TXPL=${11}
 
 #	echo ${14}
-	if [[ ( "${14}" == "sim" || "${14}" == "rig" ) && ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j")  || "$MODE" == "G") ]] ; then
+	if [[ ( "${14}" == "sim" || "${14}" == "rig" ) && ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j" || "$MODE" == "G") ]] ; then
 		echo "Doppler frequency shift is ON but not active in this mode (only APRS, CW, SSTV, PacSat, and Repeater modes)"
 		echo -n "TX Frequency is approximately: "
 		echo -n ${7}
