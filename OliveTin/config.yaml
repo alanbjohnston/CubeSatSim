@@ -83,13 +83,13 @@ actions:
     shell: /home/pi/CubeSatSim/config -G
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Change Mode to Pacsat Ground Station"
     shell: /home/pi/CubeSatSim/config -I 
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 30
 
   - title: "Turn Battery Saver Mode ON"
     shell: bash -c "/home/pi/CubeSatSim/config -B yes" 
