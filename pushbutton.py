@@ -188,10 +188,10 @@ if not GPIO.input(push_button) or hotspot_default == "yes": # if pushbutton is h
 		print(result, flush=True)			
 		sleep(2)
 		if web_term_hotspot == "yes":
-			subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-p', '8081', 'bash'])
+			subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-W', '-p', '8081', 'bash'])
 			print("Starting web terminal on port 8081")
 elif web_term_wifi == "yes":
-		subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-p', '8081', 'bash'])
+		subprocess.Popen(['sudo', '-u', 'pi', 'ttyd', '-W', '-p', '8081', 'bash'])
 		print("Starting web terminal on port 8081")	
 GPIO.setup(powerPin, GPIO.OUT)
 GPIO.output(powerPin, 1)
