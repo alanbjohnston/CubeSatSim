@@ -172,6 +172,7 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 			if [ "$choice" = "y" ] || [ "$choice" = "yes" ]  ; then
 				sudo systemctl disable dhcpcd
 				sudo systemctl enable NetworkManager
+				sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
 				echo "Enter your Wi-Fi SSID"
 				read ssid
 				echo "Enter your Wi-Fi password"
