@@ -443,6 +443,12 @@ actions:
     onclick: execution-dialog
     timeout: 10
 
+  - title: "Next Mode or Failure Mode"
+    shell: /home/pi/CubeSatSim/config -N
+    icon: "&#128994;" # green ball
+    onclick: execution-dialog
+    timeout: 10    
+
   - title: "Turn gpsd ON"
     shell: /home/pi/CubeSatSim/config -u yes
     icon: "&#128994;" # green ball
@@ -578,6 +584,7 @@ dashboards:
           - title: "Turn Simulated Failure Mode OFF"
           - title: "Turn Random Simulated Failure Mode ON"
           - title: "Turn Random Simulated Failure Mode OFF"
+          - title: "Next Mode or Failure Mode"
           - title: "Turn Simulated Doppler Mode ON"
           - title: "Turn Radio Control Doppler Mode ON"
           - title: "Turn Doppler Mode OFF"
