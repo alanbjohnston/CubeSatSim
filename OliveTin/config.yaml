@@ -20,19 +20,19 @@ actions:
     shell: /home/pi/CubeSatSim/config
     icon: logs
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Show All Commands"
     shell: /home/pi/CubeSatSim/config -h
     icon: logs
     onclick: execution-dialog
-    timeout: 5   
+    timeout: 10   
     
   - title: "General CubeSatSim Config"
     shell: /home/pi/CubeSatSim/config {{ config }}
     icon: "&#9881;" # gear
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: config 
         type: ascii_sentence
@@ -41,43 +41,43 @@ actions:
     shell: /home/pi/CubeSatSim/config -a
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to FSK"
     shell: /home/pi/CubeSatSim/config -f
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to BPSK"
     shell: /home/pi/CubeSatSim/config -b
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to SSTV"
     shell: /home/pi/CubeSatSim/config -s
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to CW"
     shell: /home/pi/CubeSatSim/config -m
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to Repeater"
     shell: /home/pi/CubeSatSim/config -e
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to FUNcube"
     shell: /home/pi/CubeSatSim/config -j
     icon: "&#128752;" # satellite
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change Mode to Pacsat"
     shell: /home/pi/CubeSatSim/config -G
@@ -95,37 +95,37 @@ actions:
     shell: bash -c "/home/pi/CubeSatSim/config -B yes" 
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Battery Saver Mode OFF"
     shell: bash -c "/home/pi/CubeSatSim/config -B no" 
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
  
   - title: "Turn Doppler Mode OFF"
     shell: /home/pi/CubeSatSim/config -K no 
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Simulated Doppler Mode ON"
     shell: /home/pi/CubeSatSim/config -K sim
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
  
   - title: "Turn Radio Control Doppler Mode ON"
     shell: /home/pi/CubeSatSim/config -K rig
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Change TX and RX Frequency" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -F {{ tx }} {{ rx }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: tx 
         type: ascii_sentence
@@ -191,7 +191,7 @@ actions:
 #    icon: "&#127827;" # strawberry
 #    shell: sudo su pi - rpi-connect signout
 #    onclick: execution-dialog
-#    timeout: 5    
+#    timeout: 10    
 
 #  - title: "Status of Raspberry Pi Connect"
 #    icon: "&#127827;" # strawberry
@@ -203,25 +203,25 @@ actions:
     icon: "&#128732;" # wireless
     shell: ifconfig
     onclick: execution-dialog
-    timeout: 5    
+    timeout: 10    
 
   - title: "List Audio Devices Speakers and Microphones"
     icon: "&#128265;" # speaker
     shell: aplay -l && arecord -l
     onclick: execution-dialog
-    timeout: 5      
+    timeout: 10      
 
   - title: "List USB Devices" 
     icon: logs
     shell: lsusb
     onclick: execution-dialog
-    timeout: 5   
+    timeout: 10   
     
   - title: "Set PL (Private Line) CTCSS/CDCSS" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -P {{ pl_rx }} {{ pl_tx }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: pl_rx 
         type: ascii_sentence
@@ -232,7 +232,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -c {{ callsign }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: callsign 
         type: ascii_sentence
@@ -241,7 +241,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -l {{ latitude }} {{ longitude }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: latitude
         type: ascii_sentence
@@ -363,19 +363,19 @@ actions:
     shell: echo "Restarting CubeSatSim now!" && sudo reboot now
     icon: restart
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Shutdown CubeSatSim"
     shell: echo "Shutting Down CubeSatSim now!" && sudo shutdown now
     icon: restart
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Restart CubeSatSim Software"
     shell: /home/pi/CubeSatSim/config -i
     icon: restart
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Scan I2C Bus"    
     shell: /home/pi/CubeSatSim/config -S
@@ -387,7 +387,7 @@ actions:
     shell: /home/pi/CubeSatSim/config -C
     icon: restart
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     
   - title: "Display Squelch"    
     shell: /home/pi/CubeSatSim/config -Q
@@ -411,37 +411,37 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -k
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Reset the Commands Count"
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -R yes
     onclick: execution-dialog
-    timeout: 5   
+    timeout: 10   
 
   - title: "Turn Simulated Telemetry ON"
     shell: /home/pi/CubeSatSim/config -t yes
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Simulated Telemetry OFF"
     shell: /home/pi/CubeSatSim/config -t no
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Balloon Mode ON"
     shell: /home/pi/CubeSatSim/config -H yes
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Balloon Mode OFF"
     shell: /home/pi/CubeSatSim/config -H no
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn gpsd ON"
     shell: /home/pi/CubeSatSim/config -u yes
@@ -459,31 +459,31 @@ actions:
     shell: /home/pi/CubeSatSim/config -T yes
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Command and Control OFF"
     shell: /home/pi/CubeSatSim/config -T no
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Command and Control Direwolf ON"
     shell: /home/pi/CubeSatSim/config -d yes
     icon: "&#128994;" # green ball
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Turn Command and Control Direwolf OFF"
     shell: /home/pi/CubeSatSim/config -d no
     icon: "&#10060;" # red X
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
 
   - title: "Set FoxTelem Reset Count" 
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -r {{ resets }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: resets 
         type: ascii_sentence    
@@ -492,7 +492,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -q {{ squelch }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: squelch 
         type: ascii_sentence    
@@ -501,7 +501,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -L {{ mic_level }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: mic_level 
         type: ascii_sentence    
@@ -510,7 +510,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -M {{ failure_mode }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: failure_mode 
         type: ascii_sentence         
@@ -519,7 +519,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -U {{ random_time }}
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     arguments:
       - name: random_time 
         type: ascii_sentence        
@@ -528,7 +528,7 @@ actions:
     icon: "&#9881;" # gear
     shell: /home/pi/CubeSatSim/config -o
     onclick: execution-dialog
-    timeout: 5
+    timeout: 10
     
 dashboards:
   - title: CubeSatSim Dashboard
