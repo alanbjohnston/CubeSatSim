@@ -1935,7 +1935,7 @@ elif [ "$1" = "-U" ]; then
 	
 		if [ -z $time ] ; then
 			time="${13}"
-			echo "Keeping value of " $time " seconds"
+			echo "Keeping value of" $time "seconds"
 		fi
 	
 		if ! [[ $time =~ ^[0-9]+$ ]] ; then
