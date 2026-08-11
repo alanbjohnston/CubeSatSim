@@ -1904,11 +1904,18 @@ elif [ "$1" = "-U" ]; then
 		echo "Do you want Random Simulated Failure ON (y/n) "
 		read sim
 		echo
+	else
+		sim="$param2"
+	fi
 
-		if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
-			sim="yes"
-			echo "Random Simulated Failure is ON"
-			echo	
+	if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
+		sim="yes"
+		echo "Random Simulated Failure is ON"
+		echo
+	
+
+	    if [ -z "$param3" ] ; then 
+	
 			echo "A new random failure is selected every"
 			echo  ${13} "seconds."	
 			echo 
@@ -1917,35 +1924,32 @@ elif [ "$1" = "-U" ]; then
 			echo "Enter time in seconds (integer): "
 		
 			read time
-	
-			if [ -z $time ] ; then
-				time="${13}"
-				echo "Keeping value of " $time " seconds"
-			fi
-		
-			if ! [[ $time =~ ^[0-9]+$ ]] ; then
-				echo "Error: not an integer!"
-				time="${13}"
-				echo "Keeping value of" $time
-			fi
-	
 		else
-			sim="no"
-			echo "Random Simulated Failure is OFF"
-			time="${13}"
-	#		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
+			if [ "$sim" != "0" ] 
+				time="$param3"
+				echo "Set Random Simulated Failure Time to" $time
+			else
+				time=""
+			fi
 		fi
-
-	else
-		time="$param2"
-		echo "Set Random Simulated Failure Time to" $time
-
+	
+		if [ -z $time ] ; then
+			time="${13}"
+			echo "Keeping value of " $time " seconds"
+		fi
+	
 		if ! [[ $time =~ ^[0-9]+$ ]] ; then
-				echo "Error: not an integer!"
-				time="${13}"
-				echo "Keeping value of" $time
-		fi	
-	fi	
+			echo "Error: not an integer!"
+			time="${13}"
+			echo "Keeping value of" $time
+		fi
+		
+	else
+		sim="no"
+		echo "Random Simulated Failure is OFF"
+		time="${13}"
+#		echo "-1" > /home/pi/CubeSatSim/failure_mode.txt  # make sure to turn off any simulated failures
+	fi
 	
 #	echo
 	echo -e "\nCubeSatSim configuration sim.cfg file updated to: \n"
