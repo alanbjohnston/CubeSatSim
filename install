@@ -403,7 +403,7 @@ if [ -f "$FILE" ]; then
     echo "$FILE exists."
 else 
     echo "creating $FILE"
-    echo "0\n" > /home/pi/CubeSatSim/command_count.txt
+    echo -n "0" > /home/pi/CubeSatSim/command_count.txt
 fi
   
 sudo apt-get  update && sudo apt-get dist-upgrade -y
