@@ -515,7 +515,7 @@ actions:
       - name: failure_mode 
         type: ascii_sentence         
 
-  - title: "Turn Off Simulated Failure Mode"
+  - title: "Turn Simulated Failure Mode OFF"
     icon: "&#10060;" # red X
     shell: /home/pi/CubeSatSim/config -M 0
     onclick: execution-dialog
@@ -581,6 +581,7 @@ dashboards:
           - title: "Turn Simulated Telemetry ON"
           - title: "Turn Simulated Telemetry OFF"               
           - title: "Set Simulated Failure Mode"
+          - title: "Turn Simulated Failure Mode OFF"
           - title: "Turn Random Simulated Failure Mode ON"
           - title: "Turn Random Simulated Failure Mode OFF"
           - title: "Set Random Simulated Failure Time"
