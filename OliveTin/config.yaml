@@ -212,7 +212,7 @@ actions:
     timeout: 5      
 
   - title: "List USB Devices" 
-    icon: "&#9881;" # gear
+    icon: logs
     shell: lsusb
     onclick: execution-dialog
     timeout: 5   
