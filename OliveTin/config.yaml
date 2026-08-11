@@ -381,7 +381,7 @@ actions:
     shell: /home/pi/CubeSatSim/config -S
     icon: logs
     onclick: execution-dialog  
-    timeout: 60
+    timeout: 120
     
   - title: "Clear Logs and Restart"    
     shell: /home/pi/CubeSatSim/config -C
