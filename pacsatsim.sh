@@ -136,6 +136,7 @@ else
   echo "uplink_open=1" >> pacsat.state
   echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
   echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
+  echo "dir_max_file_age_in_seconds = 6048000" >> pacsat.state
   
   touch /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
 
