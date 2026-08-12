@@ -108,6 +108,13 @@ if [ "$reset" = "0" ] ; then
     cp /home/pi/pi_pacsat/zip/pi_pacsat.zip .
     unzip pi_pacsat.zip 
     sudo rm pi_pacsat.zip
+
+     echo "dir_max_file_age_in_seconds = 6048000" >> /home/pi/pi_pacsat/Debug/pacsat.state
+
+     echo
+     echo "pacsat.state:"
+     cat /home/pi/pi_pacsat/Debug/pacsat.state
+     echo
   
   fi
 
