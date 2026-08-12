@@ -653,6 +653,11 @@ if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
 
 fi
 
+FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.commands
+if [ ! -f "$FILE" ]; then
+	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/PacSatSim.commands $FILE
+fi
+
 cd
 
 if [ ! -d "/home/pi/PiSSTVpp" ]; then
