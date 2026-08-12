@@ -345,7 +345,8 @@ echo
 cat $DIREWOLF_CONF
 echo
 
-direwolf -P+ -D1 -qd -r 48000 -c $DIREWOLF_CONF &
+# direwolf -P+ -D1 -qd -r 48000 -c $DIREWOLF_CONF &
+direwolf -D3 -qd -r 48000 -c $DIREWOLF_CONF &
 
 cd /home/pi/Desktop/PacsatGround/
 
