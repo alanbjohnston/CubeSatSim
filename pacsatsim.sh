@@ -109,8 +109,8 @@ if [ "$reset" = "0" ] ; then
     unzip pi_pacsat.zip 
     sudo rm pi_pacsat.zip
 
-    sudo sed -i 's/dir_max_file_age_in_seconds=4320000/dir_max_file_age_in_seconds=6048000/g' /home/pi/pi_pacsat/Debug/pacsat.state
-    sudo sed -i 's/ftl0_max_upload_age_in_seconds=4320000/ftl0_max_upload_age_in_seconds=6048000/g' /home/pi/pi_pacsat/Debug/pacsat.state
+    sudo sed -i 's/dir_max_file_age_in_seconds=4320000/dir_max_file_age_in_seconds=60480000/g' /home/pi/pi_pacsat/Debug/pacsat.state
+    sudo sed -i 's/ftl0_max_upload_age_in_seconds=432000/ftl0_max_upload_age_in_seconds=60480000/g' /home/pi/pi_pacsat/Debug/pacsat.state
 
     echo
     echo "pacsat.state:"
