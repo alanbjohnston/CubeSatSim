@@ -109,12 +109,12 @@ if [ "$reset" = "0" ] ; then
     unzip pi_pacsat.zip 
     sudo rm pi_pacsat.zip
 
-     echo "dir_max_file_age_in_seconds = 6048000" >> /home/pi/pi_pacsat/Debug/pacsat.state
-
-     echo
-     echo "pacsat.state:"
-     cat /home/pi/pi_pacsat/Debug/pacsat.state
-     echo
+    sudo sed -i 's/dir_max_file_age_in_seconds=4320000/dir_max_file_age_in_seconds=6048000/g' /home/pi/pi_pacsat/Debug/pacsat.state
+     
+    echo
+    echo "pacsat.state:"
+    cat /home/pi/pi_pacsat/Debug/pacsat.state
+    echo
   
   fi
 
