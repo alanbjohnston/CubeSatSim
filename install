@@ -655,6 +655,7 @@ fi
 
 FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.commands
 if [ ! -f "$FILE" ]; then
+	echo "copying missing commands file"
 	cp /home/pi/CubeSatSim/spacecraft/PacSatGround_0.46o/PacSatSim.commands $FILE
 fi
 
