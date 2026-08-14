@@ -1021,10 +1021,7 @@ fi
 if [ "$NETWORK" = "0" ]  ; then
 	echo "Enabling NetworkManager.  You will need to login again and restart to complete the install/update."
 	sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
-	sudo systemctl disable dhcpcd
-	sudo systemctl enable NetworkManager
-	sudo systemctl start NetworkManager
-	sudo nmcli dev wifi connect "$ssid" password "$password"
+	sudo systemctl enable --now NetworkManager && sudo nmcli networking on && sleep 5 && sudo nmcli dev wifi connect "$ssid" password "$password"
 fi
 
 if [ "$noreboot" = "0" ] ; then  
