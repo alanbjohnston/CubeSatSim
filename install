@@ -4,6 +4,7 @@ FLAG=0
 checkout=0
 BULLSEYE=0
 UPDATE=0
+NETWORK=1
 
 FILE=/home/pi/CubeSatSim/cubesatsim  # code has already been compiled
 if [ -f "$FILE" ]; then
@@ -166,24 +167,28 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 
 	  if [[ $(sudo systemctl is-active NetworkManager | grep inactive) ]]; then
 	    	echo "NetworkManager is inactive"
-	    	echo "In order to use the Wi-Fi hotspot, NetworkManager needs to be enabled and configured."
+	    	echo "In order to use the Wi-Fi Hotspot, NetworkManager needs to be enabled and configured."
 			echo
-			echo "Do you want to re-configure your Wi-Fi (y/n) "
+			echo "Do you want to enable NetworkManager and re-configure your Wi-Fi (y/n) "
 			read choice
 			echo
 			if [ "$choice" = "y" ] || [ "$choice" = "yes" ]  ; then
-				sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
-				sudo systemctl disable dhcpcd
-				sudo systemctl enable NetworkManager
-				sudo systemctl start NetworkManager
+				NETWORK=0
+
+#				sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
+#				sudo systemctl disable dhcpcd
+#				sudo systemctl enable NetworkManager
+#				sudo systemctl start NetworkManager
+#				sudo nmcli dev wifi connect "$ssid" password "$password"
+
 				echo "Enter your Wi-Fi SSID"
 				read ssid
 				echo "Enter your Wi-Fi password"
 				read password
-				sudo nmcli dev wifi connect "$ssid" password "$password"
-				echo "Wi-Fi will be updated after reboot"
+
+				echo "Wi-Fi will be updated at the end of this install/update.  You will need to log back in."
 			else
-				echo "Not enabling NetworkManager."
+				echo "Not enabling NetworkManager. Wi-Fi Hotspot feature will not be available."
 			fi
 	  fi
 
@@ -1005,6 +1010,16 @@ fi
 if [[ $(gpio -v | grep "Pi 5") ]] && [[ ! $(sudo raspi-config nonint get_browser | grep "firefox") ]] ; then
 	echo "Since Pi 5, changing default browser to Firefox"
 	sudo raspi-config nonint do_browser firefox
+fi
+
+
+if [ "$NETWORK" = "0" ]  ; then
+	echo "Enabling NetworkManager.  You will need to login again and restart to complete the install/update."
+	sudo sed -i 's/managed=false/managed=true/g' /etc/NetworkManager/NetworkManager.conf # allow nmcli to manage WiFi
+	sudo systemctl disable dhcpcd
+	sudo systemctl enable NetworkManager
+	sudo systemctl start NetworkManager
+	sudo nmcli dev wifi connect "$ssid" password "$password"
 fi
 
 if [ "$noreboot" = "0" ] ; then  
