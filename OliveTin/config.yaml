@@ -255,7 +255,7 @@ actions:
     timeout: 120
     
   - title: "CubeSatSim Log"
-    shell: /home/pi/CubeSatSim/log -d
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -d
     icon: logs
     onclick: execution-dialog
     timeout: 30
@@ -267,7 +267,7 @@ actions:
     timeout: 120
     
   - title: "Transmit Log"
-    shell: /home/pi/CubeSatSim/log -t
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -t
     icon: logs
     onclick: execution-dialog
     timeout: 30
@@ -279,7 +279,7 @@ actions:
     timeout: 120
     
   - title: "Frequency Control Log"
-    shell: /home/pi/CubeSatSim/log -r
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -r
     icon: logs
     onclick: execution-dialog
     timeout: 30
@@ -303,7 +303,7 @@ actions:
     timeout: 120
     
   - title: "Pacsat Log"
-    shell: /home/pi/CubeSatSim/log -p
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -p
     icon: logs
     onclick: execution-dialog
     timeout: 30    
@@ -315,7 +315,7 @@ actions:
     timeout: 120
     
   - title: "Pushbutton Log"
-    shell: /home/pi/CubeSatSim/log -b
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -b
     icon: logs
     onclick: execution-dialog
     timeout: 30    
@@ -327,7 +327,7 @@ actions:
     timeout: 120
 
   - title: "Command and Control Log"
-    shell: /home/pi/CubeSatSim/log -c
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -c
     icon: logs
     onclick: execution-dialog
     timeout: 30
@@ -339,19 +339,19 @@ actions:
     timeout: 120
 
   - title: "Web (OliveTin) Log"
-    shell: /home/pi/CubeSatSim/log -o 
+    shell: echo "If this log file is too long, it might timeout.  If that happens, try the Realtime Log instead" && /home/pi/CubeSatSim/log -o 
     icon: logs
     onclick: execution-dialog
     timeout: 30
     
   - title: "Update CubeSatSim Software"
-    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
+    shell: echo "This will take tens of minutes and only works if connected to internet. It might timeout and need to be run again. You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update
     icon:  "&#9203;"
     onclick: execution-dialog
     timeout: 600   
 
   - title: "Update CubeSatSim Software to Branch"
-    shell: echo "This will take tens of minutes and only works if connected to internet.  You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update {{ branch }}
+    shell: echo "This will take tens of minutes and only works if connected to internet. It might timeout and need to be run again. You should restart when finished!" && sudo su pi - /home/pi/CubeSatSim/update {{ branch }}
     icon:  "&#9203;"
     onclick: execution-dialog
     timeout: 600
