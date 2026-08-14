@@ -166,7 +166,9 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 	  sudo sh -c 'echo "\n" >> /boot/config.txt'
 
 	  if [[ $(sudo systemctl is-active NetworkManager | grep inactive) ]]; then
+			echo
 	    	echo "NetworkManager is inactive"
+			echo
 	    	echo "In order to use the Wi-Fi Hotspot, NetworkManager needs to be enabled and configured."
 			echo
 			echo "Do you want to enable NetworkManager and re-configure your Wi-Fi (y/n) "
