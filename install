@@ -572,28 +572,8 @@ if [ ! -f "$FILE" ]; then
 	cd Debug
 	make clean
 	make all
+	/home/pi/CubeSatSim/config -k -n
 	
-#	mkdir /home/pi/PacSat
-#	mkdir /home/pi/PacSat/pacsat
-#	mkdir /home/pi/PacSat/pacsat/dir
-	
-#	export LD_LIBRARY_PATH=/mnt/usb-disk/ariss/lib:/usr/local/lib/iors_common:$LD_LIBRARY_PATH
-	
-#	#value=`cat /home/pi/CubeSatSim/sim.cfg`
-#	#echo "$value" > /dev/null
-#	#set -- $value
-	
-#	echo "bit_rate=9600" > pacsat.config
-#	echo "bbs_callsign=AMSAT-12" >> pacsat.config
-#	echo "broadcast_callsign=AMSAT-11" >> pacsat.config
-#	echo "digi_callsign=AMSAT-1" >> pacsat.config
-#	echo "max_frames_in_tx_buffer=5" >> pacsat.config
-	
-#	echo "pb_open=1" > pacsat.state
-#	echo "uplink_open=1" >> pacsat.state
-#	echo "pb_max_period_for_client_in_seconds=60" >> pacsat.state
-#	echo "uplink_max_period_for_client_in_seconds=60" >> pacsat.state
-
 else
 	cd /home/pi/pi_pacsat/Debug/
 	
@@ -604,6 +584,7 @@ else
 		echo "updating pi_pacsat"
 		make clean
 		make all
+		/home/pi/CubeSatSim/config -k -n
 		FLAG=1
 	fi
 fi
