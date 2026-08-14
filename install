@@ -188,7 +188,10 @@ if [[ $(grep '11.' /etc/debian_version) ]]; then
 				echo "Enter your Wi-Fi password"
 				read password
 
+				echo
 				echo "Wi-Fi will be updated at the end of this install/update.  You will need to log back in."
+				echo
+				sleep 5
 			else
 				echo "Not enabling NetworkManager. Wi-Fi Hotspot feature will not be available."
 			fi
