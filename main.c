@@ -126,7 +126,7 @@ int main(int argc, char * argv[]) {
 	FILE * sim_mode_auto = popen("touch /home/pi/CubeSatSim/sim_mode_auto", "r"); // store sim_mode_auto flag
     pclose(sim_mode_auto);   
   }	else {
-	FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+	FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto > /dev/null 2>&1", "r"); // remove sim_mode_auto flag
     pclose(sim_mode_auto);  
   }
 	
@@ -416,7 +416,7 @@ int main(int argc, char * argv[]) {
 		  if (sim_mode && payload && !sim_config) { 
 		    sim_mode = FALSE;
 		    printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.\n");
-		    FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+		    FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto > /dev/null 2>&1", "r"); // remove sim_mode_auto flag
 		    pclose(sim_mode_auto);  
 		  } 
 	    } else {
@@ -735,7 +735,7 @@ int main(int argc, char * argv[]) {
 				if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 					sim_mode = FALSE; 
 					fprintf(stderr, "Turning off Sim Mode since battery sensor 2 is present\n");
-					FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+					FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto > /dev/null 2>&1", "r"); // remove sim_mode_auto flag
 	    			pclose(sim_mode_auto);  
 				}
 			}
@@ -744,7 +744,7 @@ int main(int argc, char * argv[]) {
 			if (sim_mode && !sim_config) {	// if Voltage sensor on Battery board is present, exit simulated telemetry mode
 				sim_mode = FALSE; 
 				fprintf(stderr, "Turning off Sim Mode since battery sensor is present\n");
-				FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+				FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto > /dev/null 2>&1", "r"); // remove sim_mode_auto flag
     			pclose(sim_mode_auto);  
 			}
 		}
@@ -770,7 +770,7 @@ int main(int argc, char * argv[]) {
 	if (sim_mode && payload && !sim_config) { 
 		sim_mode = FALSE;
 		printf("Turning off Sim Mode since payload is present and Sim Mode not manually configured.\n");
-		FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto", "r"); // remove sim_mode_auto flag
+		FILE * sim_mode_auto = popen("sudo rm /home/pi/CubeSatSim/sim_mode_auto > /dev/null 2>&1", "r"); // remove sim_mode_auto flag
 		pclose(sim_mode_auto);  
 	}
   
