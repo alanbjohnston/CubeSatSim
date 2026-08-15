@@ -848,6 +848,12 @@ if __name__ == "__main__":
 	
 	if (doppler_mode == True):	
 
+		if (gpsd_status == "active"):
+			gpsd_status = "inactive" 
+			print("Turning off gpsd since Doppler mode")
+			system("sudo systemctl stop gpsd.socket")
+			system("sudo systemctl stop gpsd")
+
 #		if (command_tx == True) and (skip == False):
 #			cw_transmit_fm("QSY", tx)
 			
@@ -1039,11 +1045,6 @@ if __name__ == "__main__":
 		elif (mode == 'm'):
 #			system("touch /home/pi/CubeSatSim/cwready")
 			print("CW")
-			if (doppler_mode) and (gpsd_status == "active"):
-				gpsd_status = "inactive" 
-				print("Turning off gpsd since Doppler mode")
-				system("sudo systemctl stop gpsd.socket")
-				system("sudo systemctl stop gpsd")
 			while True:
 #				command_control_check()
 				output (pd, 1)
