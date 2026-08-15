@@ -1039,6 +1039,9 @@ if __name__ == "__main__":
 		elif (mode == 'm'):
 #			system("touch /home/pi/CubeSatSim/cwready")
 			print("CW")
+			if (doppler_mode) and (gpsd_status == "active"):
+				gpsd_status = "inactive" 
+				print("Turning off gpsd since Doppler mode")
 			while True:
 #				command_control_check()
 				output (pd, 1)
