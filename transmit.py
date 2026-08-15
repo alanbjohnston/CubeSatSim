@@ -343,7 +343,7 @@ def update_doppler(fm="yes"):
 		global rxf
 		global txr
 		global rigctl
-		print("update_doppler")
+##		print("update_doppler")
 
 		with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
 			frequencies = file.read().split()
@@ -351,7 +351,7 @@ def update_doppler(fm="yes"):
 		tx_frequency = int(frequencies[0])
 		rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
 
-		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
+##		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 		if rigctl:
 			if (tx_frequency > 145955000) and (tx_frequency <= 145965000):
@@ -381,23 +381,23 @@ def update_doppler(fm="yes"):
 				new_tx_frequency = tx_frequency
 				new_rx_frequency = rx_center + rx_doppler_shift
 				print("Calculating RX frequency using offset from TX frequency!")
-				print(f"Tx Doppler Shift: {tx_doppler_shift:.0f}  Frequency: {new_tx_frequency:.0f}")
-				print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
+##				print(f"Tx Doppler Shift: {tx_doppler_shift:.0f}  Frequency: {new_tx_frequency:.0f}")
+##				print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
 			else:
 				new_tx_frequency = tx_frequency
 				new_rx_frequency = rxf * 1e6 # default RX frequency or should we use same as tx frequency with doppler shift?
-				print(f"Tx Frequency: {new_tx_frequency:.0f}")
-				print(f"Rx Frequency: {new_rx_frequency:.0f}")
+##				print(f"Tx Frequency: {new_tx_frequency:.0f}")
+##				print(f"Rx Frequency: {new_rx_frequency:.0f}")
 		else:
 			new_tx_frequency = tx_frequency
 			new_rx_frequency = rx_frequency
-			print(f"Tx Frequency: {new_tx_frequency:.0f}")
-			print(f"Rx Frequency: {new_rx_frequency:.0f}")			
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
-			rx_doppler_freq_hz = new_rx_frequency
+			rx_doppler_freq_hz = new_rx_frequency			
 			print("Applying Doppler shift!")
+			print(f"Tx Frequency: {new_tx_frequency:.0f}")
+			print(f"Rx Frequency: {new_rx_frequency:.0f}")						
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 #			rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
@@ -409,8 +409,8 @@ def update_doppler(fm="yes"):
 				txr = "{:.3f}".format(tx_doppler_freq_hz/1e6)
 			if (fm != "no"):
 				program_fm(rx,tx,rxpl_value,sq,txpl_value)
-		else:
-			print("Not applying Doppler shift!")
+##		else:
+##			print("Not applying Doppler shift!")
 	except Exception as e:
 		print(f"An error occurred: {e}")	
 		print("update_doppler failed")
