@@ -1041,9 +1041,9 @@ if __name__ == "__main__":
 			print("CW")
 			if (doppler_mode) and (gpsd_status == "active"):
 				gpsd_status = "inactive" 
-				system("sudo systemctl stop gpsd")
-				system("sudo systemctl stop gpsd.socket")
 				print("Turning off gpsd since Doppler mode")
+				system("sudo systemctl stop gpsd.socket")
+				system("sudo systemctl stop gpsd")
 			while True:
 #				command_control_check()
 				output (pd, 1)
