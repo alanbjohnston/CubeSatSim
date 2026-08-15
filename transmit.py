@@ -532,6 +532,7 @@ def transmit_carrier(duration):
 	output(txLed, 1)
 #	system(start)
 	system(command)
+	system("gpio -g mode 20 out && gpio -g write 20 1")
 #	sleep(duration)
 #	system(stop)
 	output(txLed, 0)
