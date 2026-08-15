@@ -15,7 +15,7 @@ import subprocess
 def output(pin, value):
 	command = "gpio -g write " + str(pin) + " " + str(value)
 	system(command)
-	print(command)
+###	print(command)
 
 def uptime_seconds():
 	try:
@@ -54,7 +54,7 @@ def setup(pin, config):
 	if config == "in" or config == "out" or config == "up" or config == "down":
 		command = "gpio -g mode " + str(pin) + " " + config
 		system(command)
-		print(command)
+###		print(command)
 	else:
 		print(f"Unknown gpio setup configuration: {config}")
 
