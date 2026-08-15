@@ -294,6 +294,8 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 		if (gpsd_status == "active"):
 			print("Restarting gpsd.socket")
 			system("sudo systemctl restart gpsd.socket")
+			sleep(2)
+			system("sudo systemctl restart gpsd.socket")			
 	except Exception as e:
 		print(f"An error occurred: {e}")
 		print("program_fm failed")
