@@ -1971,31 +1971,53 @@ elif [ "$1" = "-u" ]; then
 	echo "If your GPS module is connected to J12 on the CubeSatSim Main board, always keep gpsd inactive."
 	echo
 
+	value=`cat /home/pi/CubeSatSim/.mode`
+	echo "$value" > /dev/null
+	set -- $value
+	MODE=$1
+
+	value=`cat /home/pi/CubeSatSim/sim.cfg`
+	echo "$value" > /dev/null
+	set -- $value
+	if [ "${14}" = "sim" ]  || [ "${14}" = "rig" ] ; then
+		DOPPLER=1
+	else
+		DOPPLER=0
+	fi
+
     if [ -z "$param2" ] ; then
 
 		if [[ $(sudo systemctl is-active gpsd.socket | grep inactive) ]]; then
 	    	echo "gpsd is inactive"
-			echo
-			echo "Do you want to turn gpsd to ON (y/n) "
-			read reset
-			echo
-	
-			if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-				echo "gpsd set to ON"
-				sudo systemctl enable gpsd
-				sudo systemctl enable gpsd.socket
+
+			if [ "$DOPPLER" = "0" ] ; then
 				echo
-				echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+				echo "Do you want to turn gpsd to ON (y/n) "
+				read reset
 				echo
-	
-				cat /etc/default/gpsd
-	
+		
+				if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
+					echo "gpsd set to ON"
+					sudo systemctl enable gpsd
+					sudo systemctl enable gpsd.socket
+					echo
+					echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+					echo
+		
+					cat /etc/default/gpsd
+		
+					echo
+					echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+					echo
+					echo "To monitor your gps device, use the gpsmon command."
+					echo
+					reboot=1
+				fi
+			else
 				echo
-				echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
-				echo
-				echo "To monitor your gps device, use the gpsmon command."
-				echo
-				reboot=1
+				echo "gpsd cannot be turned on with Doppler mode. "
+				echo "To turn on gpsd, first turn off Doppler mode."
+				echo	
 			fi
 	
 		else 
@@ -2016,21 +2038,30 @@ elif [ "$1" = "-u" ]; then
 	else
 		reset="$param2"
 		if [ "$reset" = "y" ] || [ "$reset" = "yes" ]  ; then
-				echo "gpsd set to ON"
-				sudo systemctl enable gpsd
-				sudo systemctl enable gpsd.socket
-				echo
-				echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
-				echo
-	
-				cat /etc/default/gpsd
-	
-				echo
-				echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
-				echo
-				echo "To monitor your gps device, use the gpsmon command."
-				echo
-				reboot=1
+				if [ "$DOPPLER" = "0" ] ; then
+					echo "gpsd set to ON"
+					sudo systemctl enable gpsd
+					sudo systemctl enable gpsd.socket
+					echo
+					echo "Here is the current gpsd configuration /etc/default/gpsd which will work with many GPS modules:"
+					echo
+		
+					cat /etc/default/gpsd
+		
+					echo
+					echo "To change this configuration edit the file with sudo nano /etc/default/gpsd then restart gpsd."
+					echo
+					echo "To monitor your gps device, use the gpsmon command."
+					echo
+					reboot=1
+				else
+					echo
+					echo "gpsd cannot be turned on with Doppler mode. "
+					echo "To turn on gpsd, first turn off Doppler mode."
+					echo	
+					sudo systemctl disable gpsd
+					sudo systemctl disable gpsd.socket
+				fi
 		
 		else
 			echo "gpsd set to OFF"
