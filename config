@@ -1964,7 +1964,6 @@ elif [ "$1" = "-U" ]; then
 
 elif [ "$1" = "-u" ]; then
 
-	echo	
 	echo "Change gpsd State"
 	echo 
 	echo "Note: this is just for a GPS module connected to J12 on the CubeSatSim Lite board."
