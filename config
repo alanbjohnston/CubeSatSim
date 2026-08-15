@@ -1967,6 +1967,9 @@ elif [ "$1" = "-u" ]; then
 	echo	
 	echo "Change gpsd State"
 	echo 
+	echo "Note: this is just for a GPS module connected to J12 on the CubeSatSim Lite board."
+	echo "If your GPS module is connected to J12 on the CubeSatSim Main board, always keep gpsd inactive."
+	echo
 
     if [ -z "$param2" ] ; then
 
