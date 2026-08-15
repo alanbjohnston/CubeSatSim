@@ -20,7 +20,9 @@ bme280test Displays the results of reading the BME280 sensor: Temperature, Press
 
 GetAllData  Displays the results of reading the MPU6050 sensor: Temperature, X, Y, and Z Axes: Acceleration, Gyor (Rotation Rate), and Angle.  Requires the following libraries: MPU6050_tockn.
 
-Payload_BME280_MPU6050_XS  This code answers the query from the Raspberry Pi CubeSatSim software over the UART so that the STEM Payload is marked "OK" in the FoxTelem CubeSatSim-FSK or CubeSatSim-BPSK Health tab and also replies with BME280 and MPU6050 sensor data.  In FoxTelem, this is displayed as the X, Y, and Z Gyro (dps) and in AFSK mode, it is appended to the telemetry string.
+Payload_BME280_MPU6050_XS  This code answers the query from the Raspberry Pi CubeSatSim software over the UART so that the STEM Payload is marked "OK" in the FoxTelem CubeSatSim-FSK or CubeSatSim-BPSK Health tab and also replies with BME280 and MPU6050 sensor data.  In FoxTelem, this is displayed as the X, Y, and Z Gyro (dps) and in AFSK mode, it is appended to the telemetry string. This code also supports a serial GPS module.
+
+ayload_BME280_MPU6050_YPR_EEPROM This code adds to the Payload_BME280_MPU6050_XS code Yaw Pitch and Roll (YPR) determination.
 
 For information about programming the Sparkfun Pro Micro or STM32, see the v1.2 wiki instructions: https://github.com/alanbjohnston/CubeSatSim/wiki/v1.2-8.-STEM-Payload-Board
 
