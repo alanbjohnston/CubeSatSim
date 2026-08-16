@@ -360,29 +360,40 @@ def update_doppler(fm="yes"):
 			with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
 				frequencies = file.read().split()
 		except Exception as e:
-			print(f"An error 3 occurred: {e}")	
-			print("reading frequency.txt failed")
-		if frequencies is None:
+			print(f"An error 1 occurred: {e}")	
+			print("reading file frequency.txt failed")
+		try:
+			tx_frequency = int(frequencies[0])
+			rx_frequency = int(frequencies[1])
+		except Exception as e:
+			print(f"An error 2 occurred: {e}")	
+			print("reading frequency.txt failed")			
 			sleep(0.1)
 			try:
 				with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
 					frequencies = file.read().split()
 			except Exception as e:
+				print(f"An error 3 occurred: {e}")	
+				print("reading file frequency.txt failed")
+			try:
+				tx_frequency = int(frequencies[0])
+				rx_frequency = int(frequencies[1])
+			except Exception as e:
 				print(f"An error 4 occurred: {e}")	
-				print("reading frequency.txt failed")
-			
-		if (len(frequencies) > 0):
-			tx_frequency = int(frequencies[0])
-		else:
-			print("error 1 in reading frequency.txt")
-			print(frequencies)
-			tx_frequency = 434900000
-		if (len(frequencies) > 1):
-			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
-		else:
-			print("error 2 in reading frequency.txt")
-			print(frequencies)
-			rx_frequency = 435000000
+				print("reading frequency.txt failed")				
+				return
+#		if (len(frequencies) > 0):
+#			tx_frequency = int(frequencies[0])
+#		else:
+#			print("error 1 in reading frequency.txt")
+#			print(frequencies)
+#			tx_frequency = 434900000
+#		if (len(frequencies) > 1):
+#			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
+#		else:
+#			print("error 2 in reading frequency.txt")
+#			print(frequencies)
+#			rx_frequency = 435000000
 ##		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 		if rigctl:
