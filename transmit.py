@@ -361,8 +361,11 @@ def update_doppler(fm="yes"):
 			frequencies = file.read().split()
 		
 		tx_frequency = int(frequencies[0])
-		rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
-
+		if (len(frequencies) > 1):
+			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
+		else:
+			print("error in reading frequency.txt")
+			print(frequencies)
 ##		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 		if rigctl:
