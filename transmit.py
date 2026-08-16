@@ -414,6 +414,7 @@ def update_doppler(fm="yes"):
 	except Exception as e:
 		print(f"An error occurred: {e}")	
 		print("update_doppler failed")
+		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 morse_table = [  # 0-9, A-Z only by (ASCII - 48)
   [ 3, 3, 3, 3, 3, 0 ],	# 0		
