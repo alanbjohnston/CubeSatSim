@@ -378,6 +378,7 @@ def update_doppler(fm="yes"):
 			try:
 				tx_frequency = int(frequencies[0])
 				rx_frequency = int(frequencies[1])
+				print("Success reading frequency.txt again")
 			except Exception as e:
 				print(f"An error 4 occurred: {e}")	
 				print("reading frequency.txt failed")				
