@@ -362,12 +362,17 @@ def update_doppler(fm="yes"):
 		except Exception as e:
 			print(f"An error occurred: {e}")	
 			print("reading frequency.txt failed")
-	
-		tx_frequency = int(frequencies[0])
+
+		if (len(frequencies) > 0):
+			tx_frequency = int(frequencies[0])
+		else:
+			print("error 1 in reading frequency.txt")
+			print(frequencies)
+			tx_frequency = 434900000
 		if (len(frequencies) > 1):
 			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
 		else:
-			print("error in reading frequency.txt")
+			print("error 2 in reading frequency.txt")
 			print(frequencies)
 			rx_frequency = 435000000
 ##		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
