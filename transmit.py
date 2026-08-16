@@ -110,7 +110,7 @@ def battery_saver_check():
 		txc = False
 		print("Safe Mode!")
 		print("battery saver activated")
-	except
+	except:
 		print("battery saver not activated")
 #		txc = True
 
