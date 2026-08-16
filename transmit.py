@@ -407,9 +407,7 @@ def update_doppler(fm="yes"):
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
 			rx_doppler_freq_hz = new_rx_frequency			
-			print("Applying Doppler shift!")
-			print(f"Tx Frequency: {new_tx_frequency:.0f}")
-			print(f"Rx Frequency: {new_rx_frequency:.0f}")						
+			print(f"Applying Doppler shift! Tx Frequency: {new_tx_frequency:.0f} Rx Frequency: {new_rx_frequency:.0f}")						
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 #			rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
