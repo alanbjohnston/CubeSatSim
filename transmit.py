@@ -95,7 +95,8 @@ def sim_failure_check():
 			print("Other failure mode")
 			card = "Headphones"
 			sim_mode = True
-	except:
+	except Exception as e:
+		print(f"An error occurred: {e}")
 		print("No failure mode")
 		card = "Headphones"
 		if sim_config:
@@ -127,10 +128,10 @@ def increment_mode():
 	try:
 		file = open("/home/pi/CubeSatSim/.mode")
 		mode = file.read(1)
-	except:
+	except Exception as e:
+		print(f"An error occurred: {e}")
 #		mode = "f"
-		if (debug_mode == 1):
-			print("Can't open .mode file") # , defaulting to FSK")
+		print("Can't open .mode file") # , defaulting to FSK")
 	file.close()
 	print("Mode is: ")
 	print(mode)
@@ -178,7 +179,8 @@ def increment_mode():
 		system("reboot -h now")
 
 		sleep(10);
-	except:
+	except Exception as e:
+		print(f"An error occurred: {e}")
 		print("can't write to .mode file")
 		
 def camera_photo():
@@ -199,7 +201,8 @@ def camera_photo():
 			system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
 			print("Using stored image")
 			stored_image = True
-	except:
+	except Exception as e:
+		print(f"An error occurred: {e}")
 		system("cp /home/pi/CubeSatSim/sstv//sstv_image_2_320_x_256.jpeg /home/pi/CubeSatSim/camera_out.jpg")
 		print("Using stored image")
 		stored_image = True
@@ -211,7 +214,8 @@ def camera_photo():
 		try:
 			filep = open("/home/pi/CubeSatSim/telem_string.txt")
 			telem_string = filep.readline()
-		except:
+		except Exception as e:
+			print(f"An error occurred: {e}")
 			telem_string = ""
 			if (debug_mode == 1):
 				print("Can't read telem_string.txt")		
@@ -302,32 +306,40 @@ def program_fm(rx, tx, rxpl_value, sq, txpl_value):
 
 def start_repeater(tx_freq_hz, rx_freq_hz):
 	global txLed
-	print("Starting repeater")
-
-	if abs(rx_freq_hz - 3 * tx_freq_hz) < 10000: 
-		tx_freq_hz = tx_freq_hz + 30000
-		print("Adjusting Repeater TX frequency to avoid 3rd harmonic RX")
+	try:
+		print("Starting repeater")
 	
-	output(txLed, 1)
-	txr = "{:.3f}".format(tx_freq_hz/1e3)
-	print(txr)
-	system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
-	sleep(0.5)
-	system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+		if abs(rx_freq_hz - 3 * tx_freq_hz) < 10000: 
+			tx_freq_hz = tx_freq_hz + 30000
+			print("Adjusting Repeater TX frequency to avoid 3rd harmonic RX")
+		
+		output(txLed, 1)
+		txr = "{:.3f}".format(tx_freq_hz/1e3)
+		print(txr)
+		system("sudo nc -l 8011 | csdr convert_i16_f | csdr gain_ff 4000 | csdr convert_f_samplerf 20833 | sudo rpitx -i- -m RF -f " + txr + " > /dev/null 2>&1 &")
+		sleep(0.5)
+		system("sudo arecord -D shared_mic -r48000 -fS16_LE -c1 | nc localhost 8011 &")
+	except Exception as e:
+		print(f"An error occurred: {e}")
+		print("start_repeater failed")
 
 def stop_repeater():
 	global txLed
-#	print("No carrier detected, stopping repeater")
-	output(txLed, 0)
-	system("sudo rpitx -i null > /dev/null 2>&1")
-	system("sudo killall -9 arecord > /dev/null 2>&1")
-	system("sudo killall -9 nc > /dev/null 2>&1")
-#	system("sudo killall -9 rpitx > /dev/null 2>&1")
-	print("Resetting audio")
-	system("sudo /etc/init.d/alsa-utils stop")
-	system("sudo /etc/init.d/alsa-utils start")
-	print("Finished resetting audio")
-#	print("Ready to detect carrier")
+	try:
+	#	print("No carrier detected, stopping repeater")
+		output(txLed, 0)
+		system("sudo rpitx -i null > /dev/null 2>&1")
+		system("sudo killall -9 arecord > /dev/null 2>&1")
+		system("sudo killall -9 nc > /dev/null 2>&1")
+	#	system("sudo killall -9 rpitx > /dev/null 2>&1")
+		print("Resetting audio")
+		system("sudo /etc/init.d/alsa-utils stop")
+		system("sudo /etc/init.d/alsa-utils start")
+		print("Finished resetting audio")
+	#	print("Ready to detect carrier")
+	except Exception as e:
+		print(f"An error occurred: {e}")
+		print("stop_repeater failed")
 
 def update_doppler(fm="yes"):
 
@@ -349,8 +361,11 @@ def update_doppler(fm="yes"):
 			frequencies = file.read().split()
 		
 		tx_frequency = int(frequencies[0])
-		rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
-
+		if (len(frequencies) > 1):
+			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
+		else:
+			print("error in reading frequency.txt")
+			print(frequencies)
 ##		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
 
 		if rigctl:
@@ -395,9 +410,7 @@ def update_doppler(fm="yes"):
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
 			rx_doppler_freq_hz = new_rx_frequency			
-			print("Applying Doppler shift!")
-			print(f"Tx Frequency: {new_tx_frequency:.0f}")
-			print(f"Rx Frequency: {new_rx_frequency:.0f}")						
+			print(f"Applying Doppler shift! Tx Frequency: {new_tx_frequency:.0f} Rx Frequency: {new_rx_frequency:.0f}")						
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
 #			rx_doppler_freq_hz = rx_doppler_start_hz + rx_doppler_shift_hz
 #			print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")
@@ -497,48 +510,60 @@ def cw_transmit_fm(morse, tx):
 	
 def cw_transmit_string(string):
 	global morse_timing
-	for character in string: 	
-		if (character != ' '):
-			update_doppler()
-			cw_transmit_char(character);
-		else:
-			sleep(7.0 * morse_timing);
+	try:
+		for character in string: 	
+			if (character != ' '):
+				update_doppler()
+				cw_transmit_char(character);
+			else:
+				sleep(7.0 * morse_timing);
+	except Exception as e:
+		print(f"An error occurred: {e}")
+		print("cw_transmit_string failed")
 	
 def cw_transmit_char(character): 	
 	global morse_timing
-#	update_doppler("no")
-	i = 0
-	duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
-	if duration == 1:
-		duration = 1.2
-#	print(duration)
-	while (duration != 0): 
-		transmit_carrier(duration * morse_timing)	  
-		sleep(morse_timing * 0.4)  # 6)
-		i=i+1
+	try:
+	#	update_doppler("no")
+		i = 0
 		duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
 		if duration == 1:
 			duration = 1.2
-	sleep(morse_timing * 2.0) # 3) # 1.5);
+	#	print(duration)
+		while (duration != 0): 
+			transmit_carrier(duration * morse_timing)	  
+			sleep(morse_timing * 0.4)  # 6)
+			i=i+1
+			duration = morse_table[(ord(character.upper()) - ord('0')) % 44][i]
+			if duration == 1:
+				duration = 1.2
+		sleep(morse_timing * 2.0) # 3) # 1.5);
+	except Exception as e:
+		print(f"An error occurred: {e}")
+		print("cw_transmit_char failed")
 
 def transmit_carrier(duration):
 	global tx_doppler_freq_hz
 	global txLed
-	update_doppler("no")
-	command = "timeout -k 0.5 " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
-	start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
-	stop = "sudo rpitx -f 434.9e6 &"
-#	killrpitx = "sudo killall -9 rpitx &"
-	killtune = "sudo killall -9 tune &"
-	output(txLed, 1)
-#	system(start)
-	system(command)
-	system("gpio -g mode 20 out && gpio -g write 20 1")
-#	sleep(duration)
-#	system(stop)
-	output(txLed, 0)
-#	system(killrpitx)
-#	system(killtune)
+	try:
+		update_doppler("no")
+		command = "timeout -k 0.5 " + str(duration) + " sudo tune -f " + str(tx_doppler_freq_hz) + " > /dev/null 2>&1" # 434.9e6
+		start = "sudo tune -f " + str(tx_doppler_freq_hz) + " &" # + " & > /dev/null 2>&1" # 434.9e6
+		stop = "sudo rpitx -f 434.9e6 &"
+	#	killrpitx = "sudo killall -9 rpitx &"
+		killtune = "sudo killall -9 tune &"
+		output(txLed, 1)
+	#	system(start)
+		system(command)
+		system("gpio -g mode 20 out && gpio -g write 20 1")
+	#	sleep(duration)
+	#	system(stop)
+		output(txLed, 0)
+	#	system(killrpitx)
+	#	system(killtune)
+	except Exception as e:
+		print(f"An error occurred: {e}")
+		print("transmit_carrier failed")
 
 print("CubeSatSim v2.2 transmit.py starting...")
 
@@ -1056,51 +1081,54 @@ if __name__ == "__main__":
 					f.close()
 					system("sudo rm /home/pi/CubeSatSim/cwready")
 ##					ch = 1
-					for chan in range(7):
-						if (doppler_mode):
-							if (command_tx == True):
-								try:
-	#								update_doppler()
-									filename="/home/pi/CubeSatSim/cw" + str(chan) + ".txt"
-									print(filename)
-									file = open(filename)
-									cw_string = file.readline()
-									print(cw_string)
-									cw_transmit_string(cw_string)
-								except Exception as e:
-									print(f"An error occurred: {e}")
-									print("error reading cw string " + str(chan))
-						else:	
-							command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
-							print(command)
-							system(command)
-	##						chan = chan + 1						
-							if (command_tx == True):
-								output(txLed, 1)					
-								if (doppler_mode == True):
-									update_doppler()
-									txf = tx_doppler_freq_hz / 1e6
-									tx = "{:.4f}".format(txf)
-								if (txc):
-									sim_failure_check()
-	#								output (pd, 1)
-									sleep(0.3)
-									output (ptt, 0)	
-									system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
-									sleep(0.1)
-									output (ptt, 1)
-	#								output (pd, 0)
-								else:
-									if (debug_mode == 1):
-										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+					try:
+						for chan in range(7):
+							if (doppler_mode):
+								if (command_tx == True):
+									try:
+		#								update_doppler()
+										filename="/home/pi/CubeSatSim/cw" + str(chan) + ".txt"
+										print(filename)
+										file = open(filename)
+										cw_string = file.readline()
+										print(cw_string)
+										cw_transmit_string(cw_string)
+									except Exception as e:
+										print(f"An error occurred: {e}")
+										print("error reading cw string " + str(chan))
+							else:	
+								command = "gen_packets -M 20 -o /home/pi/CubeSatSim/morse.wav /home/pi/CubeSatSim/cw" + str(chan) + ".txt -r 48000 > /dev/null 2>&1"
+								print(command)
+								system(command)
+		##						chan = chan + 1						
+								if (command_tx == True):
+									output(txLed, 1)					
+									if (doppler_mode == True):
+										update_doppler()
+										txf = tx_doppler_freq_hz / 1e6
+										tx = "{:.4f}".format(txf)
+									if (txc):
+										sim_failure_check()
+		#								output (pd, 1)
+										sleep(0.3)
+										output (ptt, 0)	
+										system("aplay -D plughw:CARD=" + card + ",DEV=0 /home/pi/CubeSatSim/morse.wav")
+										sleep(0.1)
+										output (ptt, 1)
+		#								output (pd, 0)
 									else:
-										system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
-								output(txLed, 0)
-								
-#						command_control_check()
-						sleep(2)
-					f.close()
-					sleep(10)
+										if (debug_mode == 1):
+											system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3")
+										else:
+											system("cat /home/pi/CubeSatSim/morse.wav | csdr convert_i16_f | csdr gain_ff 7000 | csdr convert_f_samplerf 20833 | sudo /home/pi/rpitx/rpitx -i- -m RF -f " + tx + "e3 > /dev/null 2>&1")		
+									output(txLed, 0)
+									
+	#						command_control_check()
+							sleep(2)
+						f.close()
+						sleep(10)
+					except Exception as e:
+						print(f"An error occurred: {e}")	
 				except:	
 #					command_control_check()
 #					print("cw not ready")
