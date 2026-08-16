@@ -360,9 +360,17 @@ def update_doppler(fm="yes"):
 			with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
 				frequencies = file.read().split()
 		except Exception as e:
-			print(f"An error occurred: {e}")	
+			print(f"An error 3 occurred: {e}")	
 			print("reading frequency.txt failed")
-
+		if frequencies is None:
+			sleep(0.1)
+			try:
+				with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
+					frequencies = file.read().split()
+			except Exception as e:
+				print(f"An error 4 occurred: {e}")	
+				print("reading frequency.txt failed")
+			
 		if (len(frequencies) > 0):
 			tx_frequency = int(frequencies[0])
 		else:
