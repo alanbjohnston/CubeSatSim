@@ -356,10 +356,13 @@ def update_doppler(fm="yes"):
 		global txr
 		global rigctl
 ##		print("update_doppler")
-
-		with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
-			frequencies = file.read().split()
-		
+		try:
+			with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
+				frequencies = file.read().split()
+		except Exception as e:
+			print(f"An error occurred: {e}")	
+			print("reading frequency.txt failed")
+	
 		tx_frequency = int(frequencies[0])
 		if (len(frequencies) > 1):
 			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
