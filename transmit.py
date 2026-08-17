@@ -900,7 +900,7 @@ if __name__ == "__main__":
 	program_fm(rx,tx,rxpl_value,sq,txpl_value)	
 
 	if ((doppler_mode == True) and (rigctl == True) and (command_tx == True) and (skip == False)) or (mode == 'e'):
-		cw_transmit_fm(callsign + "QSY", tx)
+		cw_transmit_fm(callsign + " QSY", tx)
 	
 	if (doppler_mode == True):	
 
