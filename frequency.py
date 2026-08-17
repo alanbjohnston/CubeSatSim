@@ -792,8 +792,8 @@ if (doppler_mode == 'off'):
   tx_freq_hz = txf * 1e6
   rx_freq_hz = rxf * 1e6
 #  check_frequency()	
-  print("writing sim.cfg frequency to frequency.txt")	
-  with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
+  print("writing sim.cfg frequency to freq.txt")	
+  with open("/home/pi/CubeSatSim/freq.txt", "w") as file:
       file.write(f"{tx_freq_hz:.0f} {rx_freq_hz:.0f}")
   while True:
     sleep(1)
@@ -839,7 +839,7 @@ if (doppler_mode == 'sim'):
       print(f"Tx Doppler shift: {tx_doppler_freq_hz:.0f}")		
       print(f"Rx Doppler shift: {rx_doppler_freq_hz:.0f}")
 
-      with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
+      with open("/home/pi/CubeSatSim/freq.txt", "w") as file:
         file.write(f"{tx_doppler_freq_hz:.0f} {rx_doppler_freq_hz:.0f}")
     sleep(1)
 
