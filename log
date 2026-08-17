@@ -35,11 +35,11 @@ if [ "$REALTIME" = "1" ]  ; then
   #  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
   elif [ "$1" = "-c" ]; then
     sudo journalctl -b all -af -u command # > /home/pi/CubeSatSim/logc.txt 
-    cat /home/pi/CubeSatSim/logc.txt
+  #  cat /home/pi/CubeSatSim/logc.txt
   #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
   elif [ "$1" = "-p" ]; then
     sudo journalctl -b all  -af -u pacsatsim # > /home/pi/CubeSatSim/logp.txt 
-    cat /home/pi/CubeSatSim/logp.txt
+  #  cat /home/pi/CubeSatSim/logp.txt
   #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
   elif [ "$1" = "-r" ]; then
     sudo journalctl -b all  -af -u frequency # > /home/pi/CubeSatSim/logr.txt 
