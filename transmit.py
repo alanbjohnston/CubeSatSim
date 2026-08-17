@@ -437,7 +437,7 @@ def update_doppler(fm="yes"):
 			new_rx_frequency = rx_frequency
 
 ##### write true freq here  ######	
-		print("writing actual tx and rx frequency to frequency.txt")
+		print(f"writing actual tx and rx frequency to frequency.txt Tx Frequency: {new_tx_frequency:.0f} Rx Frequency: {new_rx_frequency:.0f}")	
 		with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
 			file.write(f"{new_tx_frequency:.0f} {new_rx_frequency:.0f}")
 		
