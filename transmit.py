@@ -357,42 +357,42 @@ def update_doppler(fm="yes"):
 		global rigctl
 ##		print("update_doppler")
 		try:
-			with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
+			with open("/home/pi/CubeSatSim/freq.txt", "r") as file:
 				frequencies = file.read().split()
 		except Exception as e:
 			print(f"An error 1 occurred: {e}")	
-			print("reading file frequency.txt failed")
+			print("reading file freq.txt failed")
 		try:
 			tx_frequency = int(frequencies[0])
 			rx_frequency = int(frequencies[1])
 		except Exception as e:
 			print(f"An error 2 occurred: {e}")	
-			print("reading frequency.txt failed")			
+			print("reading freq.txt failed")			
 			sleep(0.1)
 			try:
-				with open("/home/pi/CubeSatSim/frequency.txt", "r") as file:
+				with open("/home/pi/CubeSatSim/freq.txt", "r") as file:
 					frequencies = file.read().split()
 			except Exception as e:
 				print(f"An error 3 occurred: {e}")	
-				print("reading file frequency.txt failed")
+				print("reading file freq.txt failed")
 			try:
 				tx_frequency = int(frequencies[0])
 				rx_frequency = int(frequencies[1])
-				print("Success reading frequency.txt again")
+				print("Success reading freq.txt again")
 			except Exception as e:
 				print(f"An error 4 occurred: {e}")	
-				print("reading frequency.txt failed")				
+				print("reading freq.txt failed")				
 				return
 #		if (len(frequencies) > 0):
 #			tx_frequency = int(frequencies[0])
 #		else:
-#			print("error 1 in reading frequency.txt")
+#			print("error 1 in reading freq.txt")
 #			print(frequencies)
 #			tx_frequency = 434900000
 #		if (len(frequencies) > 1):
 #			rx_frequency = int(frequencies[1])  # Not used right now as FT857 emulation only updates transmit frequency
 #		else:
-#			print("error 2 in reading frequency.txt")
+#			print("error 2 in reading freq.txt")
 #			print(frequencies)
 #			rx_frequency = 435000000
 ##		print(f"New TX Frequency: {tx_frequency}, new RX Frequency: {rx_frequency}")
@@ -435,6 +435,11 @@ def update_doppler(fm="yes"):
 		else:
 			new_tx_frequency = tx_frequency
 			new_rx_frequency = rx_frequency
+
+##### write true freq here  ######	
+		print("writing actual tx and rx frequency to frequency.txt")	
+ 		with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
+      		file.write(f"{new_tx_frequency:.0f} {new_rx_frequency:.0f}")
 		
 		if (tx_doppler_freq_hz != new_tx_frequency) or (rx_doppler_freq_hz != new_rx_frequency):
 			tx_doppler_freq_hz = new_tx_frequency
