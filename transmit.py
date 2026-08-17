@@ -417,7 +417,7 @@ def update_doppler(fm="yes"):
 			else:
 				tx_center = tx_frequency
 				rx_center = rxf * 1e6 # default RX requency	
-				print("No Satellite detected.  Using default RX frequency with no doppler shift")				
+				print(f"No Satellite detected. TX frequency: {tx_frequency:.0f} Using default RX frequency with no doppler shift")				
 
 			if (rx_center != rxf * 1e6):	# don't Doppler shift default RX frequency since don't know the shift 
 				tx_doppler_shift = tx_frequency - tx_center
