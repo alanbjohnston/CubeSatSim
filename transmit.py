@@ -439,7 +439,10 @@ def update_doppler(fm="yes"):
 			new_tx_frequency = tx_frequency
 			new_rx_frequency = rx_frequency
 			
-		check_frequency()
+#		check_frequency()
+		new_tx_frequency = check_frequency(new_tx_frequency)
+		new_rx_frequency = check_frequency(new_rx_frequency)
+		
 		print(f"writing actual tx and rx frequency to frequency.txt Tx Frequency: {new_tx_frequency:.0f} Rx Frequency: {new_rx_frequency:.0f}")	
 		with open("/home/pi/CubeSatSim/frequency.txt", "w") as file:
 			file.write(f"{new_tx_frequency:.0f} {new_rx_frequency:.0f}")
@@ -465,38 +468,19 @@ def update_doppler(fm="yes"):
 		print(f"An error occurred: {e}")	
 		print("update_doppler failed")
 
-def check_frequency():
+def check_frequency(frequency):
 
-	try:
-		global new_tx_frequency
-		global new_rx_frequency
-		tx_OK = False
-		rx_OK = False
-	
-		if new_tx_frequency > 450000000:
-			new_tx_frequency = 435200000
-		elif (new_tx_frequency < 420000000) and (new_tx_frequency > 148000000):
-			new_tx_frequency = 434700000
-		elif (new_tx_frequency < 144000000):
-			new_tx_frequency = 434600000
-		else:
-			tx_OK = True
-	
-		if new_rx_frequency > 450000000:
-			new_rx_frequency = 435200000
-		elif (new_rx_frequency < 420000000) and (new_rx_frequency > 148000000):
-			new_rx_frequency = 434700000
-		elif (new_rx_frequency < 144000000):
-			new_rx_frequency = 434600000
-		else:
-			rx_OK = True
-	
-		if (tx_OK != True) or (rx_OK != True):
-			print("Error - frequency out of range!")
+		if frequency > 450000000:
+			frequency = 435200000
+			print("Frequency out of band!")
+		elif (frequency < 420000000) and (frequency > 148000000):
+			frequency = 434700000
+			print("Frequency out of band!")
+		elif (frequency < 144000000):
+			frequency = 434600000
+			print("Frequency out of band!")
 			
-	except Exception as e:
-		print(f"An error occurred: {e}")	
-		print("check_frequency failed")
+	return(frequency)
 
 morse_table = [  # 0-9, A-Z only by (ASCII - 48)
   [ 3, 3, 3, 3, 3, 0 ],	# 0		
