@@ -11,7 +11,7 @@ if [ -f "$FILE" ]; then
 
 	UPDATE=1
 
-	echo -e "\nUpdate script for CubeSatSim v2.2\n"
+	echo -e "\nUpdate script for CubeSatSim v2.3\n"
 
 	echo "You should restart when this update completes with command:"
 	echo "sudo reboot now"
@@ -39,7 +39,7 @@ if [ -f "$FILE" ]; then
 
 else
 
-	echo -e "\nInstallation script for CubeSatSim v2.2\n"
+	echo -e "\nInstallation script for CubeSatSim v2.3\n"
 
 	echo "You should restart when this install completes with command:"
 	echo "sudo reboot now"
