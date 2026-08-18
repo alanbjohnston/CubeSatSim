@@ -820,6 +820,9 @@ if __name__ == "__main__":
 				print("Transmit frequency: ",tx)
 		if len(config) > 7:
 			rxf = float(config[7])
+			if (rxf > 450) or (rxf < 420):
+				print("RX Frequency out of band!")
+				rxf = 435
 			rx = "{:.4f}".format(rxf)
 			print(rx)
 		if len(config) > 8:
