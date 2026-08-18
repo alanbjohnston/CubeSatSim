@@ -470,15 +470,15 @@ def update_doppler(fm="yes"):
 
 def check_frequency(frequency):
 
-		if frequency > 450000000:
-			frequency = 435200000
-			print("Frequency out of band!")
-		elif (frequency < 420000000) and (frequency > 148000000):
-			frequency = 434700000
-			print("Frequency out of band!")
-		elif (frequency < 144000000):
-			frequency = 434600000
-			print("Frequency out of band!")
+	if frequency > 450000000:
+		frequency = 435200000
+		print("Frequency out of band!")
+	elif (frequency < 420000000) and (frequency > 148000000):
+		frequency = 434700000
+		print("Frequency out of band!")
+	elif (frequency < 144000000):
+		frequency = 434600000
+		print("Frequency out of band!")
 			
 	return(frequency)
 
