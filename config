@@ -309,8 +309,9 @@ TXPL=${11}
 		echo "rigctld Doppler frequency shift enabled"
 		echo -n "Current TX Frequency (Hz) is: "
 		head -c -11 /home/pi/CubeSatSim/frequency.txt
-		echo -n "\nCurrent RX Frequency (Hz) is: "
+		echo -n "Current RX Frequency (Hz) is: "
 		head -n 1 /home/pi/CubeSatSim/frequency.txt | cut -d ' ' -f 2
+		echo
 	elif [[ ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j") ]] ; then
 		echo "Doppler frequency shift is OFF"
 		echo -n "TX Frequency is approximately: "
