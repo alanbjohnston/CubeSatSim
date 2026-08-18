@@ -618,7 +618,7 @@ def transmit_carrier(duration):
 		print(f"An error occurred: {e}")
 		print("transmit_carrier failed")
 
-print("CubeSatSim v2.2 transmit.py starting...")
+print("CubeSatSim v2.3 transmit.py starting...")
 
 system("sudo systemctl restart frequency")
 
