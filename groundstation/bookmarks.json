@@ -45,6 +45,11 @@
         "modulation": "sstv"
     },
     {
+        "name": "CubeSatSim RX",
+        "frequency": 435000000,
+        "modulation": "nfm"
+    },    
+    {
         "name": "ISS SSTV/Voice",
         "frequency": 145800000,
         "modulation": "nfm"
@@ -58,5 +63,25 @@
         "name": "ISS Voice Repeater",
         "frequency": 437800000,
         "modulation": "nfm"
-    }
+    },
+    {
+        "name": "AO-91",
+        "frequency": 145960000,
+        "modulation": "nfm"
+    },  
+    {
+        "name": "AO-73",
+        "frequency": 145970000,
+        "modulation": "nfm"
+    },   
+    {
+        "name": "ISS U/V",
+        "frequency": 145800000,
+        "modulation": "nfm"
+    },   
+    {
+        "name": "AO-7 Mode B",
+        "frequency": 145950000,
+        "modulation": "nfm"
+    }   
 ]
