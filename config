@@ -308,7 +308,7 @@ TXPL=${11}
 	elif [ "${14}" = "rig" ] ; then
 		echo "rigctld Doppler frequency shift enabled"
 		echo -n "Current TX Frequency (Hz) is: "
-		head -c -11 /home/pi/CubeSatSim/frequency.txt
+		head -n 1 /home/pi/CubeSatSim/frequency.txt | cut -d ' ' -f 1
 		echo
 		echo -n "Current RX Frequency (Hz) is: "
 		head -n 1 /home/pi/CubeSatSim/frequency.txt | cut -d ' ' -f 2
