@@ -126,7 +126,7 @@ function check_restart {
 }
 
 echo
-echo "CubeSatSim v2.2 configuration tool"
+echo "CubeSatSim v2.3 configuration tool"
 echo
 # echo $1
 # echo $2
