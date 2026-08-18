@@ -428,6 +428,7 @@ def update_doppler(fm="yes"):
 ##				print(f"Tx Doppler Shift: {tx_doppler_shift:.0f}  Frequency: {new_tx_frequency:.0f}")
 ##				print(f"Rx Doppler Shift: {rx_doppler_shift:.0f}  Frequency: {new_rx_frequency:.0f}")
 			else:
+				print("Don't doppler shift RX frequency")
 				new_tx_frequency = tx_frequency
 				new_rx_frequency = rxf * 1e6 # default RX frequency or should we use same as tx frequency with doppler shift?
 ##				print(f"Tx Frequency: {new_tx_frequency:.0f}")
