@@ -347,6 +347,8 @@ def update_doppler(fm="yes"):
 		global start_time
 		global tx_doppler_freq_hz
 		global rx_doppler_freq_hz
+		global new_tx_frequency
+		global new_rx_frequency
 		global rxpl_value
 		global txpl_value
 		global sq
@@ -694,6 +696,9 @@ skip = False
 
 tx_doppler_freq_hz = 0
 rx_doppler_freq_hz = 0
+
+new_tx_frequency = 0
+new_rx_frequency = 0
 
 if __name__ == "__main__":
 	mode = "y"
