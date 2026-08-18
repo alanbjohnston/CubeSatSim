@@ -461,35 +461,39 @@ def update_doppler(fm="yes"):
 	except Exception as e:
 		print(f"An error occurred: {e}")	
 		print("update_doppler failed")
-		print(f"Frequencies: {frequencies}")
 
 def check_frequency():
 
-	global new_tx_frequency
-	global new_rx_frequency
-	tx_OK = False
-	rx_OK = False
-
-	if new_tx_frequency > 450000000:
-		new_tx_frequency = 435200000
-	elif (new_tx_frequency < 420000000) and (new_tx_frequency > 148000000):
-		new_tx_frequency = 434700000
-	elif (new_tx_frequency < 144000000):
-		new_tx_frequency = 434600000
-	else:
-		tx_OK = True
-
-	if new_rx_frequency > 450000000:
-		new_rx_frequency = 435200000
-	elif (new_rx_frequency < 420000000) and (new_rx_frequency > 148000000):
-		new_rx_frequency = 434700000
-	elif (new_rx_frequency < 144000000):
-		new_rx_frequency = 434600000
-	else:
-		rx_OK = True
-
-	if (tx_OK != True) or (rx_OK != True):
-		print("Error - frequency out of range!")
+	try:
+		global new_tx_frequency
+		global new_rx_frequency
+		tx_OK = False
+		rx_OK = False
+	
+		if new_tx_frequency > 450000000:
+			new_tx_frequency = 435200000
+		elif (new_tx_frequency < 420000000) and (new_tx_frequency > 148000000):
+			new_tx_frequency = 434700000
+		elif (new_tx_frequency < 144000000):
+			new_tx_frequency = 434600000
+		else:
+			tx_OK = True
+	
+		if new_rx_frequency > 450000000:
+			new_rx_frequency = 435200000
+		elif (new_rx_frequency < 420000000) and (new_rx_frequency > 148000000):
+			new_rx_frequency = 434700000
+		elif (new_rx_frequency < 144000000):
+			new_rx_frequency = 434600000
+		else:
+			rx_OK = True
+	
+		if (tx_OK != True) or (rx_OK != True):
+			print("Error - frequency out of range!")
+			
+	except Exception as e:
+		print(f"An error occurred: {e}")	
+		print("check_frequency failed")
 
 morse_table = [  # 0-9, A-Z only by (ASCII - 48)
   [ 3, 3, 3, 3, 3, 0 ],	# 0		
