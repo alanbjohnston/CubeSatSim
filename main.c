@@ -1761,8 +1761,11 @@ void get_tlm_fox() {
 
     encodeA(b, 9 + head_offset, battCurr);
 
-    encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5));  // Temp
-
+	if (sensor[TEMP] > 0 )  
+    	encodeB(b, 10 + head_offset, (int)(sensor[TEMP] * 10 + 0.5));  // Temp
+	else
+		encodeB(b, 10 + head_offset, 0);
+	  
     if (mode == FSK) {
       encodeA(b, 12 + head_offset, posXv);
       encodeB(b, 13 + head_offset, negXv);
@@ -1830,7 +1833,11 @@ void get_tlm_fox() {
         encodeB(b_max, 43 + head_offset, (int)(sensor_max[GYRO_Z] + 0.5) + 2048);
 
         //	      encodeB(b_max, 49 + head_offset, (int)(sensor_max[XS1] * 10 + 0.5) + 2048);
-        encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5));
+		if (sensor_max[TEMP] > 0)  
+        	encodeB(b_max, 10 + head_offset, (int)(sensor_max[TEMP] * 10 + 0.5));
+		else
+			encodeB(b_max, 10 + head_offset, 0);
+		  
         encodeA(b_max, 45 + head_offset, (int)(sensor_max[HUMI] * 10 + 0.5));
 		if (failureMode != FAIL_PAYLOAD) {
         	encodeA(b_max, 48 + head_offset, (int)(sensor_max[DTEMP] * 10 + 0.5) + 2048);		
@@ -1893,8 +1900,12 @@ void get_tlm_fox() {
         encodeB(b_min, 43 + head_offset, (int)(sensor_min[GYRO_Z] + 0.5) + 2048);
 
         //	      encodeB(b_min, 49 + head_offset, (int)(sensor_min[XS1] * 10 + 0.5) + 2048);
-        encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5));
-        encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
+		if (sensor_min[TEMP] > 0)  
+        	encodeB(b_min, 10 + head_offset, (int)(sensor_min[TEMP] * 10 + 0.5));
+		else
+			encodeB(b_min, 10 + head_offset, 0);
+		  
+    	encodeA(b_min, 45 + head_offset, (int)(sensor_min[HUMI] * 10 + 0.5));
 
 		if (failureMode != FAIL_PAYLOAD) {
 			encodeA(b_min, 48 + head_offset, (int)(sensor_min[DTEMP] * 10 + 0.5) + 2048);	
@@ -1955,7 +1966,10 @@ void get_tlm_fox() {
 	if (sensor[ALT] < 0)  sensor[ALT] = 0.0;
 	encodeB(b, 34 + head_offset, (int)(sensor[ALT] / 10.0 + 0.5));  // Altitude
     encodeA(b, 45 + head_offset, (int)(sensor[HUMI] * 10 + 0.5));   // in place of sensor1
-    encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
+	if (other[TEMP] > 0)  
+    	encodeA(b, 39 + head_offset, (int)(other[TEMP] * 10 + 0.5));
+	else
+		encodeA(b, 39 + head_offset, 0);
 
     encodeA(b, 36 + head_offset, Resets);
     encodeB(b, 37 + head_offset, (int)(other[RSSI] + 0.5) + 2048);
