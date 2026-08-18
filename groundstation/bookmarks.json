@@ -35,9 +35,14 @@
         "modulation": "nfm"
     },
     {
+        "name": "CubeSatSim Cross Band Repeater",
+        "frequency": 144900000,
+        "modulation": "nfm"
+    },
+    {
         "name": "CubeSatSim",
         "frequency": 434900000,
-        "modulation": "packet"
+        "modulation": "sstv"
     },
     {
         "name": "ISS SSTV/Voice",
