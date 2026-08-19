@@ -639,10 +639,11 @@ if [ ! -d "/home/pi/Desktop/PacsatGround" ]; then
 	echo "Downloading latest PacsatGround Station version" $FILENAME
 	wget $URL/$FILENAME -O PacsatGround_unix.tar.gz
 	tar -xzf PacsatGround_unix.tar.gz -C /home/pi/Desktop
-	sudo usermod -a -G gpio pi
-	sudo apt-get install default-jdk -y
 
 fi
+
+sudo usermod -a -G gpio pi
+sudo apt-get install default-jdk -y
 
 FILE=/home/pi/Desktop/PacsatGround/spacecraft/PacSatSim.commands
 if [ ! -f "$FILE" ]; then
