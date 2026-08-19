@@ -98,6 +98,7 @@ extern const unsigned char ALPHA_TO[];
 // const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count);
 void program_radio();
 void socket_send(int length);
+int is_safe_input(const char *s);
 
 int socket_open = 0;
 int sock = 0;
