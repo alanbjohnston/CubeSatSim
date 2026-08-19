@@ -426,6 +426,16 @@ TXPL=${11}
 	  rtl=0
 	fi
 
+#if [[ $(grep '11.' /etc/debian_version) ]]; then
+if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+	echo "Pi OS is Bullseye (Debian 11)"
+elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
+	echo "Pi OS is Bookworm (Debian 12)"
+elif [[ $(grep 'trixie' /etc/os-release) ]]; then
+	echo "Pi OS is Trixie (Debian 13)"
+fi
+
+
 	echo
 	echo -e "Current sim.cfg configuration file:"	
 #	echo
