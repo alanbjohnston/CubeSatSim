@@ -1547,12 +1547,16 @@ void get_tlm(void) {
 	    
       printf("\n\nTelemetry string is %s \n\n", str);	
 	    
-      if (transmit && is_safe_input(str)) {
+      if (transmit) {
+		if (is_safe_input(str))
+			printf("String is safe")
+		else
+			printf("String is not safe")
         FILE * file2 = popen(str, "r");
         pclose(file2);
 	      
-	sleep(2);
-	digitalWrite(txLed, txLedOff);
+		sleep(2);
+		digitalWrite(txLed, txLedOff);
       
       } else {
         fprintf(stderr, "\nNo CubeSatSim Band Pass Filter detected.  No transmissions after the CW ID.\n");
