@@ -1548,10 +1548,10 @@ void get_tlm(void) {
       printf("\n\nTelemetry string is %s \n\n", str);	
 	    
       if (transmit) {
-		if (is_safe_input(str))
-			fprintf(stderr, "String is safe");
-		else
-			fprintf(stderr, "String is not safe");
+//		if (is_safe_input(str))
+//			fprintf(stderr, "String is safe");
+//		else
+//			fprintf(stderr, "String is not safe");
         FILE * file2 = popen(str, "r");
         pclose(file2);
 	      
@@ -1571,6 +1571,7 @@ void get_tlm(void) {
   return;
 }
 
+/*
 int is_safe_input(const char *s) {
   for (; *s; s++) {
     if (!isdigit((unsigned char)*s)
@@ -1581,6 +1582,7 @@ int is_safe_input(const char *s) {
   }
   return 1;
 }
+*/
 
 // generates telemetry which is decoded by AMSAT's FoxTelem: https://www.amsat.org/foxtelem-software-for-windows-mac-linux/
 // for more info about how we use FoxTelem see https://www.g0kla.com/foxtelem/amsat_telemetry_designers_handbook.pdf
