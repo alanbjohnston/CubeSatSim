@@ -1549,9 +1549,9 @@ void get_tlm(void) {
 	    
       if (transmit) {
 		if (is_safe_input(str))
-			printf("String is safe")
+			printf("String is safe");
 		else
-			printf("String is not safe")
+			printf("String is not safe");
         FILE * file2 = popen(str, "r");
         pclose(file2);
 	      
