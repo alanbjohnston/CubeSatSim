@@ -41,6 +41,7 @@ fi
 if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
   echo "USB Sound Card detected"
   soundcard=1
+  amixer -c 2 set MicVolume 200
 else
   echo "No USB Sound Card detected"
   soundcard=0
