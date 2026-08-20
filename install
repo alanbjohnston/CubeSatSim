@@ -352,6 +352,21 @@ elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 	fi
 fi
 
+FILE=/etc/modprobe.d/alsa-base.conf
+if [ -f "$FILE" ]; then
+	echo "$FILE exists."
+	if [[ $(grep "options snd-usb-audio index=2" $FILE) ]]; then
+		echo "options snd-usb-audio index=2 already in $FILE"; 
+	else
+		echo "adding options snd-usb-audio index=2 to $FILE";
+		sudo sed -i '$a options snd-usb-audio index=2' $FILE
+		echo "options snd-usb-audio index=2" | sudo tee -a $FILE # > /dev/null
+	fi
+else
+	echo "creating $FILE"
+	echo "options snd-usb-audio index=2" | sudo tee $FILE  # > /dev/null
+fi
+
 FILE=/home/pi/CubeSatSim/sim.cfg
 if [ -f "$FILE" ]; then
     echo "$FILE exists."
