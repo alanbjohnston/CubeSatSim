@@ -848,7 +848,7 @@ if (doppler_mode == 'rig'):
   while True:
 
     system("sudo killall -9 ft857d &>/dev/null")
-    system("udo killall -9 socat &>/dev/null")
+    system("sudo killall -9 socat &>/dev/null")
     system("sudo killall -9 rigctld &>/dev/null")
 
     print("Starting virtual serial ports /tmp/vttyA and /tmp/vttyB")
