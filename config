@@ -2241,20 +2241,7 @@ elif [ "$1" = "-V" ]; then
 
 	if [ -z "$param2" ] ; then
 
-		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then
-
-			sudo sed -i 's/maxcpus=$CPUS/maxcpus=$param2/g'
-			echo "Setting maxcpus="$param2
-
-		else
-
-			echo "invalid maxcpus value"
-
-		fi
-
-	else
-
-		echo "Current maxcpus="$CPUs
+		echo "Current maxcpus="$CPUS
 		echo
 		echo "How many CPUs do you want to set (1-3) ?"
 		echo "Return keeps current value."
@@ -2273,6 +2260,21 @@ elif [ "$1" = "-V" ]; then
 		else
 			echo "Invalid maxcpus setting. No change made."
 		fi
+
+
+
+		fi
+
+	else
+
+		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then
+
+			sudo sed -i 's/maxcpus=$CPUS/maxcpus=$param2/g'
+			echo "Setting maxcpus="$param2
+
+		else
+
+			echo "invalid maxcpus value"
 	fi
 				
 elif [ "$1" = "-h" ]; then
