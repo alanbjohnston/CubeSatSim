@@ -2241,7 +2241,7 @@ elif [ "$1" = "-V" ]; then
 
 	if [ -z "$param2" ] ; then
 
-		if [ "$param2" = "1" ] || [ "$param2" = "2" ] || [ "$param2" = "3" ] ; then
+		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then
 
 			sudo sed -i 's/maxcpus=$CPUS/maxcpus=$param2/g'
 			echo "Setting maxcpus="$param2
@@ -2262,12 +2262,12 @@ elif [ "$1" = "-V" ]; then
 
 		read NEWCPU
 
-		if [ $NEWCPU = "" ] ; then
+		if [ $NEWCPU == "" ] ; then
 			echo "No change to maxcpus"
-		elif [ $NEWCPU = "0" ]
+		elif [ $NEWCPU == "0" ] ; then
 			sudo sed -i 's/maxcpus=$CPUS//g'
 			echo "Removing maxcpus setting"
-		elif [ $NEWCPU = "1" ] || [ $NEWCPU = "2" ] || [ $NEWCPU = "3" ] 
+		elif [ $NEWCPU == "1" ] || [ $NEWCPU == "2" ] || [ $NEWCPU == "3" ] ; then 
 			sudo sed -i 's/maxcpus=$CPUS/maxcpus=$NEWCPU/g'
 			echo "Setting maxcpus="$NEWCPU	
 		else
