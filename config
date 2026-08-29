@@ -2261,10 +2261,6 @@ elif [ "$1" = "-V" ]; then
 			echo "Invalid maxcpus setting. No change made."
 		fi
 
-
-
-		fi
-
 	else
 
 		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then
@@ -2275,6 +2271,8 @@ elif [ "$1" = "-V" ]; then
 		else
 
 			echo "invalid maxcpus value"
+
+		fi
 	fi
 				
 elif [ "$1" = "-h" ]; then
