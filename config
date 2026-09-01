@@ -2264,7 +2264,7 @@ elif [ "$1" = "-V" ]; then
 		elif [ $NEWCPU == "1" ] || [ $NEWCPU == "2" ] || [ $NEWCPU == "3" ] ; then 
 			echo "Setting maxcpus="$NEWCPU	
 			if [ -z "$CPUS" ] ; then
-				sudo sed -i "s/console=tty1 r/console=tty1 maxcpus=$NEWCPU r/g" 
+				sudo sed -i "s/console=tty1 r/console=tty1 maxcpus=$NEWCPU r/g" $CMDLINE
 			else
 				sudo sed -i "s/maxcpus=$CPUS/maxcpus=$NEWCPU/g" $CMDLINE
 			fi
@@ -2277,7 +2277,7 @@ elif [ "$1" = "-V" ]; then
 		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then		
 			echo "Setting maxcpus="$param2
 			if [ -z "$CPUS" ] ; then
-				sudo sed -i "s/console=tty1 r/console=tty1 maxcpus=$param2 r/g" 
+				sudo sed -i "s/console=tty1 r/console=tty1 maxcpus=$param2 r/g" $CMDLINE
 			else
 				sudo sed -i "s/maxcpus=$CPUS/maxcpus=$param2/g" $CMDLINE
 			fi
