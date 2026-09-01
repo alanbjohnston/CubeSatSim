@@ -2237,7 +2237,16 @@ elif [ "$1" = "-V" ]; then
 	echo "Changing the maxcpus setting"
 	echo
 
-	CMDLINE=/boot/firmware/cmdline.txt
+	if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+		echo "Pi OS is Bullseye (Debian 11)"
+		CMDLINE=/boot/cmdline.txt
+	elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
+		echo "Pi OS is Bookworm (Debian 12)"
+		CMDLINE=/boot/firmware/cmdline.txt
+	else [[ $(grep 'trixie' /etc/os-release) ]]; then
+		echo "Pi OS is Trixie (Debian 13) or later"
+		CMDLINE=/boot/firmware/cmdline.txt
+	fi
 
 	CPUS=$(cat $CMDLINE| grep -oP 'maxcpus=\K\d+')
 
