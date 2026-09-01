@@ -2239,41 +2239,50 @@ elif [ "$1" = "-V" ]; then
 
 	CMDLINE=/boot/firmware/cmdline.txt
 
-	CPUS=$(cat $CMDLINE| grep -oP 'maxcpus=\K\d+')
+	CPUVALUE=$(cat $CMDLINE| grep -oP 'maxcpus=\K\d+')
 
 	if [ -z "$param2" ] ; then
 
-		echo "Current maxcpus="$CPUS
+		if [ -z "$CPUS" ] ; then
+			echo "No current maxcpus is set"
+		else
+			echo "Current maxcpus="$CPUS
+		fi
 		echo
 		echo "How many CPUs do you want to set (1-3) ?"
 		echo "Return keeps current value."
 		echo "0 removes any maxcpus setting"
 
+		NEWCPU="-1"
 		read NEWCPU
 
 		if [ -z $NEWCPU ] ; then
 			echo "No change to maxcpus"
 		elif [ $NEWCPU == "0" ] ; then
-			sudo sed -i 's/maxcpus=$CPUS//g' $CMDLINE
 			echo "Removing maxcpus setting"
+			sudo sed -i "s/maxcpus=$CPUS//g" $CMDLINE
 		elif [ $NEWCPU == "1" ] || [ $NEWCPU == "2" ] || [ $NEWCPU == "3" ] ; then 
-			sudo sed -i "s/maxcpus=$CPUS/maxcpus=$NEWCPU/g" $CMDLINE
 			echo "Setting maxcpus="$NEWCPU	
+			if [ -z "$CPUS" ] ; then
+				sudo sed -i "s/console=tty1 r/console=tty1 maxcpus=$NEWCPU r/g" 
+			else
+				sudo sed -i "s/maxcpus=$CPUS/maxcpus=$NEWCPU/g" $CMDLINE
+			fi
 		else
 			echo "Invalid maxcpus setting. No change made."
 		fi
 
 	else
 
-		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then
-
-			sudo sed -i "s/maxcpus=$CPUS/maxcpus=$param2/g" $CMDLINE
+		if [ "$param2" == "1" ] || [ "$param2" == "2" ] || [ "$param2" == "3" ] ; then		
 			echo "Setting maxcpus="$param2
-
+			if [ -z "$CPUS" ] ; then
+				sudo sed -i "s/console=tty1 r/console=tty1 maxcpus=$param2 r/g" 
+			else
+				sudo sed -i "s/maxcpus=$CPUS/maxcpus=$param2/g" $CMDLINE
+			fi
 		else
-
-			echo "invalid maxcpus value"
-
+			echo "invalid maxcpus value. No change mode."
 		fi
 	fi
 				
