@@ -521,6 +521,15 @@ actions:
       - name: failure_mode 
         type: ascii_sentence         
 
+  - title: "Set maxcpus Value"
+    icon: "&#9881;" # gear
+    shell: /home/pi/CubeSatSim/config -V {{ maxcpus_value }}
+    onclick: execution-dialog
+    timeout: 10
+    arguments:
+      - name: maxcpus_value
+        type: ascii_sentence             
+
   - title: "Turn Simulated Failure Mode OFF"
     icon: "&#10060;" # red X
     shell: /home/pi/CubeSatSim/config -M 0
@@ -598,6 +607,7 @@ dashboards:
           - title: "Turn Balloon Mode OFF"
           - title: "Turn gpsd ON"
           - title: "Turn gpsd OFF"
+          - title: "Set maxcpus Value"
           - title: "Show All Commands"
           - title: "General CubeSatSim Config"
           
