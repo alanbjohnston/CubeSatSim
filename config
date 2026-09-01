@@ -2243,7 +2243,7 @@ elif [ "$1" = "-V" ]; then
 	elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
 		echo "Pi OS is Bookworm (Debian 12)"
 		CMDLINE=/boot/firmware/cmdline.txt
-	else [[ $(grep 'trixie' /etc/os-release) ]]; then
+	else
 		echo "Pi OS is Trixie (Debian 13) or later"
 		CMDLINE=/boot/firmware/cmdline.txt
 	fi
