@@ -2314,6 +2314,7 @@ elif [ "$1" = "-w" ]; then
 	echo
 	echo "cat" $CMDLINE
 	echo
+	echo
 	cat $CMDLINE
 	echo
 	echo "cat" $CONFIG
