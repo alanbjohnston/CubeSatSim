@@ -2260,7 +2260,7 @@ elif [ "$1" = "-V" ]; then
 			echo "No change to maxcpus"
 		elif [ $NEWCPU == "0" ] ; then
 			echo "Removing maxcpus setting"
-			sudo sed -i "s/maxcpus=$CPUS//g" $CMDLINE
+			sudo sed -i "s/maxcpus=$CPUS //g" $CMDLINE
 		elif [ $NEWCPU == "1" ] || [ $NEWCPU == "2" ] || [ $NEWCPU == "3" ] ; then 
 			echo "Setting maxcpus="$NEWCPU	
 			if [ -z "$CPUS" ] ; then
