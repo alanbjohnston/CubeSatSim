@@ -2239,7 +2239,7 @@ elif [ "$1" = "-V" ]; then
 
 	CMDLINE=/boot/firmware/cmdline.txt
 
-	CPUVALUE=$(cat $CMDLINE| grep -oP 'maxcpus=\K\d+')
+	CPUS=$(cat $CMDLINE| grep -oP 'maxcpus=\K\d+')
 
 	if [ -z "$param2" ] ; then
 
