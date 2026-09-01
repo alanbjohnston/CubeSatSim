@@ -2292,6 +2292,32 @@ elif [ "$1" = "-V" ]; then
 			echo "invalid maxcpus value. No change mode."
 		fi
 	fi
+
+elif [ "$1" = "-w" ]; then
+
+	echo "Showing PiOS Boot Files"
+	echo
+	if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+		echo "Pi OS is Bullseye (Debian 11)"
+		CMDLINE=/boot/cmdline.txt
+		CONFIG=/boot/config.txt
+	elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
+		echo "Pi OS is Bookworm (Debian 12)"
+		CMDLINE=/boot/firmware/cmdline.txt
+		CONFIG=/boot/firmware/config.txt
+	elif [[ $(grep 'trixie' /etc/os-release) ]]; then
+		echo "Pi OS is Trixie (Debian 13)"
+		CMDLINE=/boot/firmware/cmdline.txt
+		CONFIG=/boot/firmware/config.txt
+	fi
+
+	echo
+	echo "cat" $CMDLINE
+	cat $CMDLINE
+	echo
+	echo "cat" $CONFIG
+	cat $CONFIG
+	echo
 				
 elif [ "$1" = "-h" ]; then
 
@@ -2341,6 +2367,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -k     Reset the PacSatSim Configuration"
 	echo "   -K     Change the Doppler frequency shift setting"
 	echo "   -V     Set the maximum CPUs"
+	echo "   -w     Show PiOS boot files"
 
 	echo
 	exit
