@@ -1604,7 +1604,9 @@ elif [ "$1" = "-L" ]; then
 	if ! [ -z $mic ] &&  [[ $mic =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
 		systemctl --user stop wireplumber
 		echo "Updating mic level to" $mic "%"
-		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set MicVolume $mic
+#		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set MicVolume $mic
+		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} sset MicVolume $mic
+
   		systemctl --user start wireplumber
 	else
 		echo "Not updating mic level"
