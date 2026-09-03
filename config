@@ -1579,6 +1579,21 @@ elif [ "$1" = "-L" ]; then
 	echo "Set microphone level for command and control"
 	echo
 
+	USBCARD=$(aplay -l | grep "Device" | grep -oP "card \d" | grep -oP "\d")
+	echo "USB sound card is card" $USBCARD
+	
+	CARD=$(grep -P "card \d" /etc/asound.conf | grep -oP '\d')
+	echo "asound.conf is card" $CARD
+
+	if [ ! "$USBCARD" == "$CARD" ] ; then
+		echo "Change card number in /etc/asound.conf"
+		sudo sed -i "s/card $CARD/card $USBCARD/g" /etc/asound.conf
+		echo "/etc/asound.conf has been updated to:"
+		cat /etc/asound.conf
+		echo "reinitializing alsa"
+		sudo alsactl init 
+	fi
+
 	if [ -z "$param2" ] ; then
 		echo -e "Enter microphone level (integer 0 - 255): "		
 		read mic 
