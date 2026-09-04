@@ -1579,6 +1579,26 @@ elif [ "$1" = "-L" ]; then
 	echo "Set microphone level for command and control"
 	echo
 
+	CARDUSB=$(aplay -l | grep "Device" | grep -oP '(?<=card )\d{1,2}')
+	USBCARD=${CARDUSB:0:1}
+	
+	CARD=$(grep -oP '(?<=card )\d{1,2}' /etc/asound.conf)
+
+	if [ -z $USBCARD ] ; then
+		echo "No USB sound card detected"
+	else
+		echo "USB sound card is card" $USBCARD
+		echo "asound.conf is card" $CARD
+		if [ ! "$USBCARD" == "$CARD" ] ; then
+			echo "Change card number in /etc/asound.conf"
+			sudo sed -i "s/card $CARD/card $USBCARD/g" /etc/asound.conf
+			echo "/etc/asound.conf has been updated to:"
+			cat /etc/asound.conf
+			echo "reinitializing alsa"
+			sudo alsactl init 
+		fi
+	fi
+
 	if [ -z "$param2" ] ; then
 		echo -e "Enter microphone level (integer 0 - 255): "		
 		read mic 
@@ -1587,10 +1607,12 @@ elif [ "$1" = "-L" ]; then
 	fi
 
 	if ! [ -z $mic ] &&  [[ $mic =~ ^[+-]?[0-9]+([.][0-9]+)?$ ]] ; then
-		systemctl --user stop wireplumber
+#		systemctl --user stop wireplumber
 		echo "Updating mic level to" $mic "%"
-		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set MicVolume $mic
-  		systemctl --user start wireplumber
+#		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set MicVolume $mic
+		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c $USBCARD sset 'MicVolume' $mic
+
+#  		systemctl --user start wireplumber
 	else
 		echo "Not updating mic level"
 	fi

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nCommand and Control script for CubeSatSim v2.2\n"
+echo -e "\nCommand and Control script for CubeSatSim v2.3\n"
 
 sudo modprobe snd-aloop
 
@@ -61,6 +61,7 @@ FILE=/home/pi/CubeSatSim/command_control_direwolf
 if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 
 	echo "Starting Direwolf DTMF and APRS Command and Control"
+	/home/pi/CubeSatSim/config -L 200
 
 	if [ "$debug" = "1" ]; then
 	
