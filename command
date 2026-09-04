@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e "\nCommand and Control script for CubeSatSim v2.2\n"
+echo -e "\nCommand and Control script for CubeSatSim v2.3\n"
 
 sudo modprobe snd-aloop
 
