@@ -1581,18 +1581,22 @@ elif [ "$1" = "-L" ]; then
 
 	CARDUSB=$(aplay -l | grep "Device" | grep -oP '(?<=card )\d{1,2}')
 	USBCARD=${CARDUSB:0:1}
-	echo "USB sound card is card" $USBCARD
 	
 	CARD=$(grep -oP '(?<=card )\d{1,2}' /etc/asound.conf)
-	echo "asound.conf is card" $CARD
 
-	if [ ! "$USBCARD" == "$CARD" ] ; then
-		echo "Change card number in /etc/asound.conf"
-		sudo sed -i "s/card $CARD/card $USBCARD/g" /etc/asound.conf
-		echo "/etc/asound.conf has been updated to:"
-		cat /etc/asound.conf
-		echo "reinitializing alsa"
-		sudo alsactl init 
+	if [ -z $USBCARD ] ; then
+		echo "No USB sound card detected"
+	else
+		echo "USB sound card is card" $USBCARD
+		echo "asound.conf is card" $CARD
+		if [ ! "$USBCARD" == "$CARD" ] ; then
+			echo "Change card number in /etc/asound.conf"
+			sudo sed -i "s/card $CARD/card $USBCARD/g" /etc/asound.conf
+			echo "/etc/asound.conf has been updated to:"
+			cat /etc/asound.conf
+			echo "reinitializing alsa"
+			sudo alsactl init 
+		fi
 	fi
 
 	if [ -z "$param2" ] ; then
