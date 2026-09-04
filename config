@@ -1579,7 +1579,8 @@ elif [ "$1" = "-L" ]; then
 	echo "Set microphone level for command and control"
 	echo
 
-	USBCARD=$(aplay -l | grep "Device" | grep -oP '(?<=card )\d{1,2}')
+	CARDUSB=$(aplay -l | grep "Device" | grep -oP '(?<=card )\d{1,2}')
+	USBCARD=${CARDUSB:0:1}
 	echo "USB sound card is card" $USBCARD
 	
 	CARD=$(grep -oP '(?<=card )\d{1,2}' /etc/asound.conf)
