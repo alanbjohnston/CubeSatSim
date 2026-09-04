@@ -51,6 +51,7 @@ direwolf-pacsatsim-tmp.conf
 groundstation/direwolf-pacsat-tmp.conf
 tlm.bin
 frequency.txt
+freq.txt
 logb.txt
 logo.txt
 logp.txt
