@@ -1583,8 +1583,12 @@ elif [ "$1" = "-L" ]; then
 		fi
 	fi
 
+	echo "Current MicVolume setting is:"
+	value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c $USBCARD sget 'MicVolume' 
+	echo
+
 	if [ -z "$param2" ] ; then
-		echo -e "Enter microphone level (percent 0 - 100): "		
+		echo -e "Enter MicVolume level (percent 0 - 100): "		
 		read mic 
 	else
 		mic="$param2"
