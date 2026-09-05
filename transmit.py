@@ -139,21 +139,30 @@ def increment_mode():
 		mode = 'f'
 		blink(2)
 		sleep(2.5)
-
 	elif (mode == 'f'):
 		mode = 'b'
 		blink(3)
-		sleep(2.5)
-	
+		sleep(2.5)	
 	elif (mode == 'b'):
 		mode = 's'
 		blink(4)
 		sleep(2.5)
-
 	elif (mode == 's'):
 		mode = 'm'
 		blink(5)
 		sleep(2.5)
+	elif (mode == 'm'):
+		mode = 'e'
+		blink(6)
+		sleep(2.5)
+	elif (mode == 'e'):
+		mode = 'j'
+		blink(7)
+		sleep(2.5)
+	elif (mode == 'j'):
+		mode = 'p'
+		blink(8)
+		sleep(2.5)	
 	else:
 		mode = 'a'
 		blink(1)
