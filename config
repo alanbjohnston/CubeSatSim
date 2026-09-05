@@ -290,7 +290,7 @@ TXPL=${11}
 
 #	echo ${14}
 	if [[ ( "${14}" == "sim" || "${14}" == "rig" ) && ( "$MODE" == "f" || "$MODE" == "b" || "$MODE" == "j" || "$MODE" == "G") ]] ; then
-		echo "Doppler frequency shift is ON but not active in this mode (only APRS, CW, SSTV, PacSat, and Repeater modes)"
+		echo "Doppler frequency shift is ON but not active in this mode (only APRS, CW, SSTV, Pacsat, and Repeater modes)"
 		echo -n "TX Frequency is approximately: "
 		echo -n ${7}
 		echo -n " MHz, RX Frequency is: "
@@ -306,7 +306,7 @@ TXPL=${11}
 #		echo -n ${8}
 #		echo " MHz"
 	elif [ "${14}" = "rig" ] ; then
-		echo "rigctld Doppler frequency shift enabled"
+		echo "Radio Control Doppler frequency shift enabled"
 		echo -n "Current TX Frequency (Hz) is: "
 		head -n 1 /home/pi/CubeSatSim/frequency.txt | cut -d ' ' -f 1
 		echo -n "Current RX Frequency (Hz) is: "
@@ -345,7 +345,7 @@ TXPL=${11}
 
 #	echo $MODE
 	if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
-		echo "Squelch is off since PacSat or PacSat Ground Station mode"
+		echo "Squelch is off since Pacsat or Pacsat Ground Station mode"
 	else
 		echo -n "Squelch level is: "
 		echo $SQUELCH
@@ -361,14 +361,14 @@ TXPL=${11}
 				echo "Radio DTMF/APRS command and control is ON"
 			else
 				if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
-					echo "Radio carrier command and control is off since PacSat or PacSat Ground Station mode"
+					echo "Radio carrier command and control is off since Pacsat or Pacsat Ground Station mode"
 				else
 					echo "Radio carrier command and control is ON"
 				fi
 			fi
 		else
 			if [ "$MODE" = "p" ] || [ "$MODE" = "P" ] ; then
-				echo "Radio carrier command and control is off since PacSat or PacSat Ground Station mode"
+				echo "Radio carrier command and control is off since Pacsat or Pacsat Ground Station mode"
 			else
 				echo "Radio carrier command and control is ON"
 			fi
@@ -568,7 +568,6 @@ elif [ "$1" = "-s" ]; then
 
 elif [ "$1" = "-t" ]; then
 
-	echo	
 	echo "Setting the Simulated Telemetry setting"
 	echo
 	
@@ -615,7 +614,6 @@ elif [ "$1" = "-t" ]; then
 	
 elif [ "$1" = "-c" ]; then
 
-	echo	
 	echo "Setting the CALLSIGN"
 	echo
 
@@ -657,7 +655,6 @@ elif [ "$1" = "-c" ]; then
 	
 elif [ "$1" = "-r" ]; then
 
-	echo	
 	echo "Set the Reset Count for FoxTelem"
 	echo
 #	echo -e "Current sim.cfg configuration file:"	
@@ -708,7 +705,6 @@ elif [ "$1" = "-r" ]; then
 	
 elif [ "$1" = "-l" ]; then
 
-	echo	
 	echo "Editing latitude and longitude in the"
 	echo "configuration file for CubeSatSim"
 	echo "(Only used for APRS telemetry)"
@@ -793,7 +789,6 @@ elif [ "$1" = "-l" ]; then
 
 elif [ "$1" = "-S" ]; then
 
-	echo	
 	echo "Scan both I2C buses on the Raspberry Pi"
 	echo 
 
@@ -808,7 +803,6 @@ elif [ "$1" = "-S" ]; then
 
 elif [ "$1" = "-C" ]; then
 
-	echo	
 	echo "Clear logs"
 	echo 
 
@@ -921,7 +915,6 @@ elif [ "$1" = "-T" ]; then
 
 elif [ "$1" = "-d" ]; then
 
-	echo	
 	echo "Change command and control Direwolf state"
 	echo 
 	if [[ $(arecord -l | grep card) ]]; then
@@ -1000,7 +993,6 @@ elif [ "$1" = "-d" ]; then
 
 elif [ "$1" = "-D" ]; then
 
-	echo	
 	echo "Change Transmit Commands state"
 	echo 
 
@@ -1032,7 +1024,6 @@ elif [ "$1" = "-D" ]; then
 
 elif [ "$1" = "-R" ]; then
 
-	echo	
 	echo "Reset the Commands Count in the file command_count.txt"
 	echo 
 
@@ -1059,7 +1050,6 @@ elif [ "$1" = "-R" ]; then
 
 elif [ "$1" = "-B" ]; then
 
-	echo	
 	echo "Manually setting Safe Mode (battery saver mode)"
 	echo
 
@@ -1122,7 +1112,6 @@ elif [ "$1" = "-B" ]; then
 
 elif [ "$1" = "-q" ]; then
 
-	echo	
 	echo "Setting the Squelch setting"
 	echo
 	
@@ -1171,16 +1160,14 @@ elif [ "$1" = "-q" ]; then
 
 elif [ "$1" = "-Q" ]; then
 
-#	echo	
 	echo "Reading current Squelch for 10 seconds"
-	echo  "Squelch is active low (0 means squelch broken)"	
+	echo  "Squelch is active low (0 means squelch broken, received a signal)"	
 	echo
 
 	timeout 10 bash -c -- 'while true; do (gpio read 22 && sleep 1); done'
 
 elif [ "$1" = "-P" ]; then
 
-	echo	
 	echo "Setting the PL (Private Line) CTCSS/CDCSS setting"
 	echo
 	
@@ -1274,8 +1261,7 @@ elif [ "$1" = "-P" ]; then
 
 elif [ "$1" = "-F" ]; then
 
-	echo	
-	echo "Editing the RX and RX frequency"
+	echo "Editing the TX and RX frequency"
 	echo
 
 	value=`cat /home/pi/CubeSatSim/sim.cfg`
@@ -1286,8 +1272,6 @@ elif [ "$1" = "-F" ]; then
 
 		echo "Current value of TX frequency is" $7 "MHz"	
 		echo
-		echo "Current value of RX frequency is" $8 "MHz"
-		echo	
 	
 	#	echo $1 $2 $3 $4 $5 $6 $7 $8 $9 ${10} ${11} ${12} ${13} ${14}
 
@@ -1301,7 +1285,9 @@ elif [ "$1" = "-F" ]; then
 			tx="$7"
 			echo "Keeping value of" $tx "MHz"
 		fi
-	
+		echo
+		echo "Current value of RX frequency is" $8 "MHz"
+		echo	
 		echo "Enter RX frequency in MHz (70cm band only): "
 		read rx
 	
@@ -1385,7 +1371,6 @@ elif [ "$1" = "-o" ]; then
 
 elif [ "$1" = "-H" ]; then
 
-#	echo	
 	echo "Setting Balloon mode"
 	echo
 	
@@ -1489,7 +1474,7 @@ elif [ "$1" = "-n" ]; then
 			sudo echo $new > /home/pi/CubeSatSim/.mode
 			restart=1
 		elif  [ "$1" = "p" ] || [ "$1" = "P" ] ; then
-			echo "Switching to PacSat mode"
+			echo "Switching to Pacsat mode"
 			sudo echo $new > /home/pi/CubeSatSim/.mode
 			reboot=1
 		else
@@ -1553,7 +1538,7 @@ elif [ "$1" = "-A" ]; then
 	while [ "$MODE" != "x" ];
 	do
 
-		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, p=PacSat, o=Beacon on/off x=Exit this mode"
+		echo "Enter the mode to change: a=APRS, f=FSK, b=BPSK, s=SSTV, m=CW, e=Repeater, j=FUNcube, p=Pacsat, o=Beacon on/off x=Exit this mode"
 		read MODE
 
 		if [ "$MODE" != "x" ]; then
@@ -1575,8 +1560,7 @@ elif [ "$1" = "-A" ]; then
 
 elif [ "$1" = "-L" ]; then
 
-	echo	
-	echo "Set microphone level for command and control"
+	echo "Set microphone level for command and control and Pacsat"
 	echo
 
 	CARDUSB=$(aplay -l | grep "Device" | grep -oP '(?<=card )\d{1,2}')
@@ -1901,6 +1885,14 @@ elif [ "$1" = "-N" ]; then
 			echo "Current mode is FUNcube"	
 			echo "Next mode is Repeater"
 			/home/pi/CubeSatSim/config -e
+		elif [ "$1" = "e" ]; then
+			echo "Current mode is Repeater"	
+			echo "Next mode is Pacsat"
+			/home/pi/CubeSatSim/config -G
+		elif [ "$1" = "p" ]; then
+			echo "Current mode is Pacsat"	
+			echo "Next mode is APRS"
+			/home/pi/CubeSatSim/config -a
 		else
 			echo "Unknown mode"
 		fi
@@ -1918,7 +1910,6 @@ elif [ "$1" = "-N" ]; then
 
 elif [ "$1" = "-U" ]; then
 
-	echo	
 	echo "Changing the Random Simulated Failure setting"
 	echo
 	
@@ -2109,7 +2100,7 @@ elif [ "$1" = "-u" ]; then
 
 elif [ "$1" = "-G" ]; then
 
-	echo "Changing to PacSatSim mode"
+	echo "Changing to Pacsat mode"
 	value=`cat /home/pi/CubeSatSim/.mode`
 	echo "$value" > /dev/null
 	set -- $value
@@ -2139,7 +2130,7 @@ elif [ "$1" = "-G" ]; then
 
 elif [ "$1" = "-I" ]; then
 
-	echo "Changing to PacSat Ground Station mode"
+	echo "Changing to Pacsat Ground Station mode"
 	echo
 	echo "Run the Pacsat Ground Station in the Desktop"
 	value=`cat /home/pi/CubeSatSim/.mode`	
@@ -2171,8 +2162,7 @@ elif [ "$1" = "-I" ]; then
 
 elif [ "$1" = "-k" ]; then
 
-	echo
-	echo "Reset PacSatSim configuration"
+	echo "Reset Pacsat configuration"
 	echo
 	sudo systemctl stop pacsatsim &>/dev/null
 	sudo rm -r /home/pi/PacSat
@@ -2181,7 +2171,6 @@ elif [ "$1" = "-k" ]; then
 
 elif [ "$1" = "-K" ]; then
 
-	echo	
 	echo "Setting the Doppler frequency shift mode setting"
 	echo
 
@@ -2196,7 +2185,7 @@ elif [ "$1" = "-K" ]; then
 		if [ "${14}" = "sim" ] ; then
 			echo "Simulated Doppler frequency shift mode enabled"
 		elif [ "${14}" = "rig" ] ; then
-			echo "rigctld Doppler frequency shift mode enabled"
+			echo "Radio Control Doppler frequency shift mode enabled"
 		else
 			echo "Doppler frequency shift is OFF"
 		fi
@@ -2211,13 +2200,13 @@ elif [ "$1" = "-K" ]; then
 		
 		if [ "$sim" = "y" ] || [ "$sim" = "yes" ]  ; then
 			doppler="yes"
-			echo "Do you want simulated Doppler shift or rigctld Doppler (sim/rig)"
+			echo "Do you want Simulated Doppler shift or Radio Control Doppler (sim/rig)"
 			read doppler
 	
 			if [ "$doppler" = "sim" ] ; then
 				echo "Simulated Doppler frequency shift mode enabled"
 			elif [ "$doppler" = "rig" ] ; then
-				echo "rigctld Doppler frequency shift mode enabled"
+				echo "Radio Control Doppler frequency shift mode enabled"
 			else
 				doppler="no"
 				echo "sim or rig not entered. Doppler frequency shift is OFF"
@@ -2257,7 +2246,6 @@ elif [ "$1" = "-K" ]; then
 
 elif [ "$1" = "-V" ]; then
 
-	echo	
 	echo "Changing the maxcpus setting"
 	echo
 
@@ -2371,8 +2359,8 @@ elif [ "$1" = "-h" ]; then
   	echo "   -n     Change to Transmit Commands mode"
 	echo "   -e     Change to Repeater mode"
 	echo "   -j     Change to FUNcube mode"
-	echo "   -G     Change to PacSatSim mode"
-	echo "   -I     Change to PacSat Ground Station mode"
+	echo "   -G     Change to Pacsat mode"
+	echo "   -I     Change to Pacsat Ground Station mode"
 	echo "   -i     Restart CubeSatsim software"
 	echo "   -c     Change the CALLSIGN in the configuration file sim.cfg"
 	echo "   -t     Change the Simulated Telemetry setting in sim.cfg"
@@ -2400,7 +2388,7 @@ elif [ "$1" = "-h" ]; then
 	echo "   -U     Change the random failure mode setting"
 	echo "   -N     Set next mode or failure"
 	echo "   -u     Change gpsd state"
-	echo "   -k     Reset the PacSatSim Configuration"
+	echo "   -k     Reset the Pacsat Configuration"
 	echo "   -K     Change the Doppler frequency shift setting"
 	echo "   -V     Set the maximum CPUs"
 	echo "   -w     Show PiOS boot files"
