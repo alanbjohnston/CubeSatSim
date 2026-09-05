@@ -1,7 +1,7 @@
 #!/bin/bash
 # script to run FoxTelem 
 
-echo "Script to configure the PacSat Ground Station for FIAB v4"
+echo "Script to configure the Pacsat Ground Station for FIAB v4"
 
 echo 
 
@@ -16,18 +16,18 @@ sudo killall -9 direwolf &>/dev/null
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
-#   profile=$(zenity --text="Choice:" --list 2>/dev/null --width=410 --height=120 --title="PacSat Ground Station Choice" --column="Choice" --column="Result" "PacSat" "Receive from CubeSatSim PacSatSim" "Configure" "Configure PacSat Ground Station" "Loopback" "Run a Locally Simulated PacSat")
+#   profile=$(zenity --text="Choice:" --list 2>/dev/null --width=410 --height=120 --title=" Ground Station Choice" --column="Choice" --column="Result" "" "Receive from CubeSatSim PacSatSim" "Configure" "Configure PacSat Ground Station" "Loopback" "Run a Locally Simulated PacSat")
 #   echo $profile
 
-    echo "Here are the PacSat configuration choices:"
+    echo "Here are the  configuration choices:"
     echo 
-    echo " 1. PacSat Ground Station Configuration"
+    echo " 1. Pacsat Ground Station Configuration"
     echo
-    echo " 2. PacSat Ground Station Simulation Configuration"
+    echo " 2. Pacsat Ground Station Simulation Configuration"
     echo
 	echo " 3. Set Frequencies"
     echo
-    echo " 4. Reset PacSat Satellite"
+    echo " 4. Reset Pacsat Satellite"
     echo
 	echo "Which do you choose?  Enter 1 - 4"
 	echo
@@ -47,16 +47,16 @@ sudo killall -9 direwolf &>/dev/null
 	if [ "$ANS" = "1" ]  || [ "$ANS" = "2" ]  ; then
 
 		if [ "$ANS" = "1" ] ; then
-			echo "Here are your PacSat Ground Station Configuration choices:"
+			echo "Here are your Pacsat Ground Station Configuration choices:"
 		else	
-			echo "Here are your PacSat Ground Station Simulation Configuration choices:"
+			echo "Here are your Pacsat Ground Station Simulation Configuration choices:"
 		fi	
 		echo
-	    echo " 1. PacSat Ground Station Callsign"
+	    echo " 1. Pacsat Ground Station Callsign"
 	    echo
-	    echo " 2. Set Remote PacSat Satellite Callsign in Ground Station configuration"
+	    echo " 2. Set Remote Pacsat Satellite Callsign in Ground Station configuration"
 	    echo
-	    echo " 3. Reset PacSat Ground Station Configuration"
+	    echo " 3. Reset Pacsat Ground Station Configuration"
 		echo
 	
 		read -r CH
@@ -112,7 +112,7 @@ sudo killall -9 direwolf &>/dev/null
 
 		elif [ "$CH" = "2" ] ; then
 	
-			echo "You have chosen to set the remote CubeSatSim PacSat Satellite callsign in ground station configuration"
+			echo "You have chosen to set the remote CubeSatSim Pacsat Satellite callsign in ground station configuration"
 			echo
 			
 			PROPERTIES=/home/pi/PacSatGround/spacecraft/PacSatSim.properties
@@ -123,7 +123,7 @@ sudo killall -9 direwolf &>/dev/null
 			else
 				oldcallsign=$(grep -oP '(?<=bbsCallsign=).*(?=-)' $PROPERTIES_L )
 			fi
-			echo "Current value of remote PacSat callsign is"	
+			echo "Current value of remote Pacsat callsign is"	
 			echo $oldcallsign
 			echo
 				
@@ -146,13 +146,13 @@ sudo killall -9 direwolf &>/dev/null
 				echo "Changing callsign to "
 				echo $callsign
 				echo 
-				echo "You will see the change next time you run the PacSat Ground Station"
+				echo "You will see the change next time you run the Pacsat Ground Station"
 				echo "You can close this window"
 			fi
 	
 	    elif [ "$CH" = "3" ] ; then
 	
-	         echo "You have chosen to reset the PacSat Ground Station Configuration"
+	         echo "You have chosen to reset the Pacsat Ground Station Configuration"
 	         echo 
 #			 echo "Next time you run the Ground Station you will need to Add the PacSatSim spacecraft"
 #			 echo
@@ -182,14 +182,16 @@ sudo killall -9 direwolf &>/dev/null
 
     elif [ "$ANS" = "3" ] ; then
 
-         echo "You have chosen to set the Frequency of the PacSat Ground Station"
+         echo "You have chosen to set the Frequency of the Pacsat Ground Station"
          echo 
 
 		 /home/pi/CubeSatSim/config -F 
 
+		 echo "You can close this window now"
+
 	elif [ "$ANS" = "4" ] ; then
 
-         echo "You have chosen to reset the PacSat Satellite"
+         echo "You have chosen to reset the Pacsat Satellite"
          echo 
 
 		 /home/pi/CubeSatSim/config -k 
