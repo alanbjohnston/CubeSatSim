@@ -1560,7 +1560,7 @@ elif [ "$1" = "-A" ]; then
 
 elif [ "$1" = "-L" ]; then
 
-	echo "Set microphone level for command and control and Pacsat"
+	echo "MicVolume level for Command and Control and Pacsat"
 	echo
 
 	CARDUSB=$(aplay -l | grep "Device" | grep -oP '(?<=card )\d{1,2}')
