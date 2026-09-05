@@ -60,6 +60,8 @@ fi
 FILE=/home/pi/CubeSatSim/command_control_direwolf
 if [[ $(arecord -l | grep "USB Audio Device") ]] && [ -f "$FILE" ]; then
 
+	/home/pi/CubeSatSim/config -L -1
+
 	echo "Starting Direwolf DTMF and APRS Command and Control"
 
 	if [ "$debug" = "1" ]; then
