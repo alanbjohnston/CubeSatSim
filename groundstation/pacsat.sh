@@ -106,7 +106,7 @@ MODE=$1
 
 if [ ! "$MODE" = "P" ] && [ ! "$loopback" = "1" ] ; then
     echo
-    echo "Changing to PacSat Ground Station Mode."
+    echo "Changing to Pacsat Ground Station Mode."
     echo "You might reboot"
     echo
     sleep 5
@@ -129,7 +129,7 @@ if [ "$loopback" = "1" ] ; then
 
 #  if [ ! "$MODE" = "p" ] ; then
     echo
-    echo "Switching to PacSat mode for the Simulated PacSat Satellite"
+    echo "Switching to Pacsat mode for the Simulated Pacsat Satellite"
     echo  
     /home/pi/CubeSatSim/config -G -n
 #  fi  
@@ -174,7 +174,7 @@ else
   sleep 2
   
   echo
-  echo "Mode is PacSat Ground Station"
+  echo "Mode is Pacsat Ground Station"
   echo
 
   if [ ! -d "/home/pi/PacSatGround" ] ; then
