@@ -869,6 +869,8 @@ else
   FLAG=1
 fi
 
+/home/pi/CubeSatSim/config -L 75
+
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
     echo "Copying SSTV image 1."
