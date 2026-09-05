@@ -1600,7 +1600,7 @@ elif [ "$1" = "-L" ]; then
 	fi
 
 	if [ -z "$param2" ] ; then
-		echo -e "Enter microphone level (integer 0 - 255): "		
+		echo -e "Enter microphone level (percent 0 - 100): "		
 		read mic 
 	else
 		mic="$param2"
@@ -1610,7 +1610,7 @@ elif [ "$1" = "-L" ]; then
 #		systemctl --user stop wireplumber
 		echo "Updating mic level to" $mic "%"
 #		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c ${2:0:1} set MicVolume $mic
-		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c $USBCARD sset 'MicVolume' $mic
+		value=`arecord -l | grep "card"` && echo "$value" > /dev/null && set -- $value && amixer -c $USBCARD sset 'MicVolume' $mic%
 
 #  		systemctl --user start wireplumber
 	else
@@ -1636,6 +1636,8 @@ elif [ "$1" = "-g" ]; then
 		sudo systemctl stop frequency
 		sudo systemctl stop pushbutton
 		sudo systemctl stop OliveTin
+
+		/home/pi/CubeSatSim/config -L 75
 
 		echo "AMSAT 0 0 0 no 3 434.9 435 no 0 0 no 60 no" > /home/pi/CubeSatSim/sim.cfg
 
