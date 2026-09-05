@@ -41,8 +41,6 @@ fi
 if [[ $(arecord -l | grep "USB Audio Device") ]] ; then
   echo "USB Sound Card detected"
   soundcard=1
-  /home/pi/CubeSatSim/config -L 200
-  
 else
   echo "No USB Sound Card detected"
   soundcard=0
