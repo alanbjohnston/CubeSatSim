@@ -1,7 +1,7 @@
 #!/bin/bash
 # script to run FoxTelem 
 
-echo "Startup script to run the PacSat Ground Station for FIAB v4"
+echo "Startup script to run the Pacsat Ground Station"
 
 echo 
 
@@ -35,21 +35,21 @@ fi
 #FILE=/home/pi/.pacsatprofile  
 #if [ ! -f "$FILE" ]; then
 
-   profile=$(zenity --timeout=10 --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=220 --title="PacSat Ground Station" --column="Choice" --column="Result" "PacSat" "Run PacSat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated PacSat")
+   profile=$(zenity --timeout=10 --text="Choose what you want to do:" --list 2>/dev/null --width=410 --height=220 --title="Pacsat Ground Station" --column="Choice" --column="Result" "Pacsat" "Run Pacsat Ground Station" "Configure" "Configure the Pacsat Ground Station" "Simulate" "Run a Locally Simulated Pacsat")
 
    echo $profile
 
    if [ -z "$profile" ]; then 
    
-	    echo "No choice made.  Default to PacSat Ground Station."
+	    echo "No choice made.  Default to Pacsat Ground Station."
 	    
-	    profile="PacSat"
+	    profile="Pacsat"
     
     fi
 
-    if [ "$ANS" = "1" ] || [ "$profile" = "PacSat" ] ; then
+    if [ "$ANS" = "1" ] || [ "$profile" = "Pacsat" ] ; then
 
-		echo "You have chosen to run the PacSat Ground Station"
+		echo "You have chosen to run the Pacsat Ground Station"
 	#        echo "p" > /home/pi/.pacsatprofile 
 		echo 
 		
@@ -58,7 +58,7 @@ fi
 
     elif [ "$ANS" = "2" ] || [ "$profile" = "Configure" ] ; then
 
-        echo "You have chosen to configure the PacSat Ground Station"
+        echo "You have chosen to configure the Pacsat Ground Station"
 		echo
 
 		/home/pi/CubeSatSim/groundstation/pacsat-config.sh
@@ -67,7 +67,7 @@ fi
 
 		sudo systemctl stop transmit
 
-        echo "You have chosen the PacSat Ground Station with Local Simulated Satellite"
+        echo "You have chosen the Pacsat Ground Station with Local Simulated Satellite"
 		 
 		sleep 1
 
