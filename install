@@ -763,6 +763,15 @@ else
   FLAG=1
 fi
 
+ech "Turn Command and Control on and off to activate MicVolume"
+touch /home/pi/CubeSatSim/command_control
+sudo systemctl start command
+sleep 1
+sudo rm /home/pi/CubeSatSim/command_control
+sudo systemctl restart command
+sudo alsactl init 
+/home/pi/CubeSatSim/config -L 75
+
 FILE=/etc/systemd/system/pacsatsim.service
 if [ -f "$FILE" ]; then
   if [[ $(diff /home/pi/CubeSatSim/systemd/pacsatsim.service /etc/systemd/system/pacsatsim.service) ]]; then
@@ -868,11 +877,6 @@ else
   sudo cp /home/pi/CubeSatSim/asound.conf /etc/asound.conf
   FLAG=1
 fi
-
-sudo alsactl init 
-/home/pi/CubeSatSim/config -L 75
-sudo alsactl init 
-/home/pi/CubeSatSim/config -L 75
 
 FILE=/home/pi/CubeSatSim/sstv_image_1_320_x_256.jpg
 if [ ! -f "$FILE" ]; then
