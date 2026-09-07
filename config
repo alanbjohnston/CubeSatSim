@@ -2416,7 +2416,7 @@ if [ "$reboot" = "1" ] ; then
 	if [ "$noreboot" = "0" ] ; then 
 		echo 'Reboot due to config change!' | wall
 		echo "Rebooting"
-		sudo systemctl stop transmit
+		sudo systemctl stop transmit &>/dev/null
 		sudo reboot now
 	else
 		echo "Reboot needed for changes to take effect"
@@ -2427,8 +2427,8 @@ if [ "$restart" = "1" ] ; then
 	if [ "$reboot" = "0" ] ; then 
 		echo "Restarting"
 #		sudo systemctl stop transmit
-		sudo systemctl restart cubesatsim
-		sudo systemctl restart transmit
+		sudo systemctl restart cubesatsim &>/dev/null
+		sudo systemctl restart transmit &>/dev/null
 	else
 		echo "Restart needed for changes to take effect"
 	fi
