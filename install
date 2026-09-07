@@ -763,13 +763,16 @@ else
   FLAG=1
 fi
 
-ech "Turn Command and Control on and off to activate MicVolume"
+sudo alsactl init 
+sleep 5
+echo "Turn Command and Control on and off to activate MicVolume"
 touch /home/pi/CubeSatSim/command_control
 sudo systemctl start command
-sleep 1
+sleep 10
 sudo rm /home/pi/CubeSatSim/command_control
 sudo systemctl restart command
 sudo alsactl init 
+sleep 5
 /home/pi/CubeSatSim/config -L 75
 
 FILE=/etc/systemd/system/pacsatsim.service
