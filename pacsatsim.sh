@@ -129,8 +129,8 @@ if [ ! -d "/home/pi/PacSat" ]; then
   mkdir /home/pi/PacSat
   mkdir /home/pi/PacSat/pacsat
   mkdir /home/pi/PacSat/pacsat/dir
-  mkdir /home/pi/PacSat/pacsat
-  mkdir /home/pi/PacSat/pacsat/dir
+  mkdir /home/pi/PacSat/pacsat/txt
+  cp /home/pi/CubeSatSim/Welcome_Message.txt /home/pi/PacSat/pacsat/txt/Welcome_Message.txt
   cd /home/pi/pi_pacsat/Debug
   
   sudo rm pacsat_last_command_time.dat
@@ -156,7 +156,7 @@ if [ ! -d "/home/pi/PacSat" ]; then
   
   touch /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
 
-  exit
+#  exit
 fi
 
 value=`cat /home/pi/CubeSatSim/sim.cfg`
