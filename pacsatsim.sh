@@ -83,44 +83,45 @@ echo
 
 sleep 2
 
-if [ "$reset" = "0" ] ; then
+# if [ "$reset" = "0" ] ; then
+if [ ! -d "/home/pi/PacSat" ]; then
 
-  if [ ! -d "/home/pi/PacSat" ]; then
+#  if [ ! -d "/home/pi/PacSat" ]; then
   
-    echo "Setting up PacSatSim default configuration"
-    echo
+#    echo "Setting up PacSatSim default configuration"
+#    echo
   
-    cd
-    sudo rm pacsat-dir.zip
-    mkdir /home/pi/PacSat
-    mkdir /home/pi/PacSat/pacsat
-    mkdir /home/pi/PacSat/pacsat/dir
-  #  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pacsat-dir.zip
-    cp /home/pi/pi_pacsat/zip/pacsat-dir.zip .
-    unzip pacsat-dir.zip 
-    sudo rm pacsat-dir.zip
+#    cd
+#    sudo rm pacsat-dir.zip
+#    mkdir /home/pi/PacSat
+#    mkdir /home/pi/PacSat/pacsat
+#    mkdir /home/pi/PacSat/pacsat/dir
+##  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pacsat-dir.zip
+ #   cp /home/pi/pi_pacsat/zip/pacsat-dir.zip .
+  #  unzip pacsat-dir.zip 
+  #  sudo rm pacsat-dir.zip
   
-    cd
-    sudo rm /home/pi/pi_pacsat/Debug/pacsat.config
-    sudo rm /home/pi/pi_pacsat/Debug/pacsat.state
-    sudo rm /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
-    sudo rm pi_pacsat.zip
-  #  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pi_pacsat.zip
-    cp /home/pi/pi_pacsat/zip/pi_pacsat.zip .
-    unzip pi_pacsat.zip 
-    sudo rm pi_pacsat.zip
+   # cd
+  #  sudo rm /home/pi/pi_pacsat/Debug/pacsat.config
+  #  sudo rm /home/pi/pi_pacsat/Debug/pacsat.state
+  #  sudo rm /home/pi/pi_pacsat/Debug/pacsat_upload_table.dat
+  #  sudo rm pi_pacsat.zip
+  ##  wget https://github.com/alanbjohnston/pi_pacsat/releases/download/v0.2/pi_pacsat.zip
+#    cp /home/pi/pi_pacsat/zip/pi_pacsat.zip .
+ #   unzip pi_pacsat.zip 
+  #  sudo rm pi_pacsat.zip
+#
+ #   sudo sed -i 's/dir_max_file_age_in_seconds=4320000/dir_max_file_age_in_seconds=60480000/g' /home/pi/pi_pacsat/Debug/pacsat.state
+  #  sudo sed -i 's/ftl0_max_upload_age_in_seconds=432000/ftl0_max_upload_age_in_seconds=60480000/g' /home/pi/pi_pacsat/Debug/pacsat.state
 
-    sudo sed -i 's/dir_max_file_age_in_seconds=4320000/dir_max_file_age_in_seconds=60480000/g' /home/pi/pi_pacsat/Debug/pacsat.state
-    sudo sed -i 's/ftl0_max_upload_age_in_seconds=432000/ftl0_max_upload_age_in_seconds=60480000/g' /home/pi/pi_pacsat/Debug/pacsat.state
-
-    echo
-    echo "pacsat.state:"
-    cat /home/pi/pi_pacsat/Debug/pacsat.state
-    echo
+   # echo
+    #echo "pacsat.state:"
+    # cat /home/pi/pi_pacsat/Debug/pacsat.state
+ #   echo
   
-  fi
+#  fi
 
-else
+# else
 
   echo "Resetting pi_pacsat to empty configuration"
   echo
@@ -128,7 +129,8 @@ else
   mkdir /home/pi/PacSat
   mkdir /home/pi/PacSat/pacsat
   mkdir /home/pi/PacSat/pacsat/dir
-  
+  mkdir /home/pi/PacSat/pacsat
+  mkdir /home/pi/PacSat/pacsat/dir
   cd /home/pi/pi_pacsat/Debug
   
   sudo rm pacsat_last_command_time.dat
