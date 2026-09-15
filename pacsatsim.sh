@@ -159,6 +159,21 @@ if [ ! -d "/home/pi/PacSat" ]; then
 #  exit
 fi
 
+if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+	echo "Pi OS is Bullseye (Debian 11)"
+  raspistill -o /home/pi/CubeSatSim/camera.jpg -w 32 -h 25 &>/dev/null
+elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
+	echo "Pi OS is Bookworm (Debian 12)"
+  rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 32 --height 25 &>/dev/null
+elif [[ $(grep 'trixie' /etc/os-release) ]]; then
+	echo "Pi OS is Trixie (Debian 13)"
+  rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 32 --height 25 &>/dev/null
+fi
+
+echo "Copying camera.jpg to pacsat txt directory"
+sudo rm /home/pi/PacSat/pacsat/txt/camera.jpg
+cp /home/pi/CubeSatSim/camera.jpg /home/pi/PacSat/pacsat/txt/camera.jpg
+
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
 set -- $value
