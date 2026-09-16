@@ -1665,6 +1665,8 @@ elif [ "$1" = "-g" ]; then
 
 		sudo rm -r /home/pi/PacSatGroundLoop > /dev/null 2>&1
 
+		sudo rm /home/pi/CubeSatSim/camera.jpg > /dev/null 2>&1
+
 		if [ "$noreboot" = "0" ] ; then 
 			echo "Shutting down."
 			sudo shutdown now

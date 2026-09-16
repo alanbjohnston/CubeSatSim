@@ -131,6 +131,8 @@ if [ ! -d "/home/pi/PacSat" ]; then
   mkdir /home/pi/PacSat/pacsat/dir
   mkdir /home/pi/PacSat/pacsat/txt
   cp /home/pi/CubeSatSim/Welcome_Message.txt /home/pi/PacSat/pacsat/txt/Welcome_Message.txt
+  mkdir /home/pi/PacSat/pacsat/img
+  cp /home/pi/CubeSatSim/sstv/sstv_image_tiny.jpg /home/pi/PacSat/pacsat/img/sstv_image_tiny.jpg
   cd /home/pi/pi_pacsat/Debug
   
   sudo rm pacsat_last_command_time.dat
@@ -158,6 +160,20 @@ if [ ! -d "/home/pi/PacSat" ]; then
 
 #  exit
 fi
+
+if [[ $(grep 'bullseye' /etc/os-release) ]]; then
+	echo "Pi OS is Bullseye (Debian 11)"
+  	raspistill -o /home/pi/CubeSatSim/camera.jpg -w 86 -h 64 &>/dev/null
+elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
+	echo "Pi OS is Bookworm (Debian 12)"
+  	rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 86 --height 64 -q 70 &>/dev/null
+elif [[ $(grep 'trixie' /etc/os-release) ]]; then
+	echo "Pi OS is Trixie (Debian 13)"
+  	rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 86 --height 64 -q 70 &>/dev/null
+fi
+
+echo "Taking camera image and copying to pacsat img directory"
+cp /home/pi/CubeSatSim/camera.jpg /home/pi/PacSat/pacsat/img/camera.jpg
 
 value=`cat /home/pi/CubeSatSim/sim.cfg`
 echo "$value" > /dev/null
