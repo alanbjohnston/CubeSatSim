@@ -166,10 +166,10 @@ if [[ $(grep 'bullseye' /etc/os-release) ]]; then
   	raspistill -o /home/pi/CubeSatSim/camera.jpg -w 67 -h 50 &>/dev/null
 elif [[ $(grep 'bookworm' /etc/os-release) ]]; then
 	echo "Pi OS is Bookworm (Debian 12)"
-  	rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 67 --height 50 &>/dev/null
+  	rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 67 --height 50 -q 70 &>/dev/null
 elif [[ $(grep 'trixie' /etc/os-release) ]]; then
 	echo "Pi OS is Trixie (Debian 13)"
-  	rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 67 --height 50 &>/dev/null
+  	rpicam-still -o /home/pi/CubeSatSim/camera.jpg --width 67 --height 50 -q 70 &>/dev/null
 fi
 
 echo "Taking camera image and copying to pacsat img directory"
