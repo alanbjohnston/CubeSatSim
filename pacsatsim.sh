@@ -131,6 +131,8 @@ if [ ! -d "/home/pi/PacSat" ]; then
   mkdir /home/pi/PacSat/pacsat/dir
   mkdir /home/pi/PacSat/pacsat/txt
   cp /home/pi/CubeSatSim/Welcome_Message.txt /home/pi/PacSat/pacsat/txt/Welcome_Message.txt
+  mkdir /home/pi/PacSat/pacsat/img
+  cp /home/pi/CubeSatSim/sstv/sstv_image_tiny.jpg /home/pi/PacSat/pacsat/img/sstv_image_tiny.jpg
   cd /home/pi/pi_pacsat/Debug
   
   sudo rm pacsat_last_command_time.dat
