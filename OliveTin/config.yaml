@@ -563,6 +563,12 @@ actions:
     shell: /home/pi/CubeSatSim/config -o
     onclick: execution-dialog
     timeout: 10
+
+  - title: "Take Camera Photo for PacSat"
+    shell: /home/pi/CubeSatSim/config -z
+    icon: "&#128247;" # camera
+    onclick: execution-dialog
+    timeout: 30
     
 dashboards:
   - title: CubeSatSim Dashboard
@@ -617,6 +623,7 @@ dashboards:
           - title: "Set maxcpus Value"
           - title: "Show All Commands"
           - title: "General CubeSatSim Config"
+          - title: "Take Camera Photo for PacSat"
           
       - title: Logs
         contents:
