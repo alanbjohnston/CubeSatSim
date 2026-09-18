@@ -569,6 +569,14 @@ actions:
     icon: "&#128247;" # camera
     onclick: execution-dialog
     timeout: 30
+
+
+  - title: "Raspberry Pi Software and Hardware"
+    shell: hostnamectl && echo && cat /sys/firmware/devicetree/base/model && echo
+    icon: logs
+    onclick: execution-dialog
+    timeout: 30
+    
     
 dashboards:
   - title: CubeSatSim Dashboard
@@ -672,7 +680,8 @@ dashboards:
           - title: "Ping a Host or IP address"
           - title: "See Running Processes"
           - title: "Show PiOS Boot Files" 
-          - title: "CubeSatSim Directory" 
+          - title: "CubeSatSim Directory"
+          - title: "Raspberry Pi Software and Hardware"
 #          - title: "Signin to Raspberry Pi Connect"  # OliveTin needs to run as pi
 #          - title: "Signout of Raspberry Pi Connect"
 #          - title: "Status of Raspberry Pi Connect"
