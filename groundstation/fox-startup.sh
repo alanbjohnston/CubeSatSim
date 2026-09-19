@@ -5,6 +5,12 @@ echo "Startup script to run FoxTelem for FIAB v4"
 
 echo 
 
+value=`cat /home/pi/CubeSatSim/.mode`
+echo "$value" > /dev/null
+set -- $value
+echo $1
+if [ "$1" != "P" ] ; then
+
 sudo killall -9 FoxTelem &>/dev/null
 
 FILE=/home/pi/FoxTelemetryData/.foxprofile  
@@ -33,6 +39,12 @@ else
 fi
 
 sleep 10
+
+fi    
+
+else
+	echo "Don't run FoxTelem since PacSat Ground Station mode is set"
+#	/home/pi/CubeSatSim/groundstation/pacsat-run.sh
 
 fi    
 

@@ -118,6 +118,16 @@ if (latitude != 0) and (longitude != 0):
   system(longSedStr)
 
   print("\nKLAtracker configuration updated with your latitude and longitude")  
+
+  latSedStr = 'sed -i "s/latitude=.*/latitude=' + str(latitude) + '/g" /home/pi/PacSatGround/PacSatGround.properties'
+  #print (latSedStr)
+  system(latSedStr)
+
+  longSedStr = 'sed -i "s/longitude=.*/longitude=' + str(longitude) + '/g" /home/pi/PacSatGround/PacSatGround.properties'
+  #print (longSedStr)
+  system(longSedStr)
+
+  print("\nPacsat configuration updated with your latitude and longitude")  
       
   receiver_gpsSedStr = 'sudo sed -i "s/        ' + dquote + 'lat' + dquote  + ': .*/        ' + dquote + 'lat' + dquote +  ': ' + str(latitude) + ',/g" /var/lib/openwebrx/settings.json'
   #print (receiver_gpsSedStr)

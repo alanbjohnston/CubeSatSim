@@ -1,0 +1,18 @@
+Welcome!
+
+Hello, and welcome to the CubeSatSim Pacsat Simulator!
+
+Here's what you can do with your PacSatSim:
+
+1. Downlink a Message by clicking on the message then the "FILE" button.  When it is Downlinked, the Message will show as "New". If you double click on it you can view it and save it to your computer using the 'Export' button.
+2. Uplink a Message using the "New Msg" button.  Under "Select Type" select "ASCII", type your message and then "Send"
+3. Reply to a Message by first Downlinking the message using the "FILE" button, then opening the Message and selecting "Reply" then "Send"
+4. Uplink a File using the "New Msg" button.  Under "Select Type" select "JPG" or "BINARY".  Remember the link is just 1200 bps, so don't try to Uplink anything larger than a few kilobytes.  You could Downlink the SSTV image and try Uplinking it.
+5. Send a Command using the "Command" button.  Under "Type" select "File System". Under "Commands" you can try "Pacsat Broadcast" then try setting "stop" or "start" then click "Send" to send the Command.  Or under "Type" select "File Uploads". You can select "Off" or "All Stations" and click "Send" to send the Command. You can restore using config -k
+6. You can clear the current Pacsat Directory.  You can always restore the default Directory contents running CubeSatSim/config -k and selecting Option 4 Reset PacSat Satellite. Using the "Command" button,  select "Delete Folder Contents" then select "PACSAT dir" and then "Send" to send the Command.
+
+You can post questions and comments on the CubeSatSim Discussions Board https://github.com/alanbjohnston/CubeSatSim/discussions
+
+73,
+Alan
+KU2Y

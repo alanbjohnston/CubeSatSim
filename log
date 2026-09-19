@@ -2,16 +2,105 @@
 
 echo -e "\nLog file script for CubeSatSim\n"
 
-if [ "$1" = "-r" ] || [ "$1" = "-t" ] ; then
-  sudo journalctl -a -u transmit > /home/pi/CubeSatSim/logt.txt 
-  cat /home/pi/CubeSatSim/logt.txt
-  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
-elif [ "$1" = "-c" ]; then
-  sudo journalctl -a -u command > /home/pi/CubeSatSim/logc.txt 
-  cat /home/pi/CubeSatSim/logc.txt
-  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
+if [ "$1" = "-h" ]  ; then
+  echo "Displays systemd logs for the chose process.  The choices are:"
+  echo " -d cubesatsim (also no choice gives you this)"
+  echo " -t transmit"
+  echo " -c command and control"
+  echo " -p pacsat"
+  echo " -r frequency control"
+  echo " -f frequency display"
+  echo " -b pushbutton"
+  echo " -o OliveTin"
+  echo "Default is the log is dumpted to the screen and written to a file."
+  echo "If an additional r is included, the log is realtime, and exits with a Control-C"
+  echo
+  exit
+fi
+
+REALTIME=0
+if [ "$2" = "r" ]  ; then
+  REALTIME=1
+fi
+
+if [ "$REALTIME" = "1" ]  ; then
+
+  echo "To exit, type Control-C"
+  echo
+  sleep 2
+  
+  if [ "$1" = "-t" ] ; then
+    sudo journalctl -b all  -af -u transmit # > /home/pi/CubeSatSim/logt.txt 
+  #  cat /home/pi/CubeSatSim/logt.txt
+  #  echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
+  elif [ "$1" = "-c" ]; then
+    sudo journalctl -b all -af -u command # > /home/pi/CubeSatSim/logc.txt 
+  #  cat /home/pi/CubeSatSim/logc.txt
+  #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
+  elif [ "$1" = "-p" ]; then
+    sudo journalctl -b all  -af -u pacsatsim # > /home/pi/CubeSatSim/logp.txt 
+  #  cat /home/pi/CubeSatSim/logp.txt
+  #  echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logp.txt"
+  elif [ "$1" = "-r" ]; then
+    sudo journalctl -b all  -af -u frequency # > /home/pi/CubeSatSim/logr.txt 
+  elif [ "$1" = "-f" ] ; then
+    echo "Transmit  Receive"
+    while true; do 
+      cat /home/pi/CubeSatSim/frequency.txt | tr -d '\n'
+#      echo
+      sleep 1
+      printf "\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b\b"
+    done
+  elif [ "$1" = "-b" ]; then
+    sudo journalctl -b all  -af -u pushbutton # > /home/pi/CubeSatSim/logb.txt 
+  elif [ "$1" = "-o" ]; then
+    sudo journalctl -b all  -af -u OliveTin # > /home/pi/CubeSatSim/logb.txt 
+  else
+    sudo journalctl -b all  -af -u cubesatsim  # > /home/pi/CubeSatSim/log.txt 
+  #  cat /home/pi/CubeSatSim/log.txt
+  #  echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
+  fi
+
 else
-  sudo journalctl -a -u cubesatsim > /home/pi/CubeSatSim/log.txt 
-  cat /home/pi/CubeSatSim/log.txt
-  echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
+  
+  if [ "$1" = "-t" ] ; then
+    sudo rm /home/pi/CubeSatSim/logt.txt
+    sudo journalctl -b all  -a -u transmit > /home/pi/CubeSatSim/logt.txt 
+    cat /home/pi/CubeSatSim/logt.txt
+    echo -e "\nTransmit Log file also saved as /home/pi/CubeSatSim/logt.txt"
+  elif [ "$1" = "-c" ]; then
+    sudo rm /home/pi/CubeSatSim/logc.txt
+    sudo journalctl -b all  -a -u command > /home/pi/CubeSatSim/logc.txt 
+    cat /home/pi/CubeSatSim/logc.txt
+    echo -e "\nCommand and Control Log file also saved as /home/pi/CubeSatSim/logc.txt"
+  elif [ "$1" = "-p" ]; then
+    sudo rm /home/pi/CubeSatSim/logp.txt
+    sudo journalctl -b all  -a -u pacsatsim > /home/pi/CubeSatSim/logp.txt 
+    cat /home/pi/CubeSatSim/logp.txt
+    echo -e "\nPacSat Log file also saved as /home/pi/CubeSatSim/logp.txt"
+  elif [ "$1" = "-r" ]; then
+    sudo rm /home/pi/CubeSatSim/logr.txt
+    sudo journalctl -b all  -a -u frequency > /home/pi/CubeSatSim/logr.txt 
+    cat /home/pi/CubeSatSim/logr.txt
+    echo -e "\nFrequency Log file also saved as /home/pi/CubeSatSim/logr.txt"
+  elif [ "$1" = "-f" ] ; then
+    cat /home/pi/CubeSatSim/frequency.txt
+    echo
+  elif [ "$1" = "-b" ]; then
+    sudo rm /home/pi/CubeSatSim/logb.txt
+    sudo journalctl -b all  -a -u pushbutton > /home/pi/CubeSatSim/logb.txt 
+    cat /home/pi/CubeSatSim/logb.txt
+    echo -e "\nPushbutton Log file also saved as /home/pi/CubeSatSim/logb.txt"
+  elif [ "$1" = "-o" ]; then
+    sudo rm /home/pi/CubeSatSim/logo.txt
+    sudo journalctl -b all  -a -u OliveTin > /home/pi/CubeSatSim/logo.txt 
+    cat /home/pi/CubeSatSim/logo.txt
+    echo -e "\nOliveTin Log file also saved as /home/pi/CubeSatSim/logo.txt"
+  else
+    sudo rm /home/pi/CubeSatSim/log.txt
+    sudo journalctl -b all  -a -u cubesatsim  > /home/pi/CubeSatSim/log.txt 
+    cat /home/pi/CubeSatSim/log.txt
+    echo -e "\nLog file also saved as /home/pi/CubeSatSim/log.txt"
+  fi
+
 fi

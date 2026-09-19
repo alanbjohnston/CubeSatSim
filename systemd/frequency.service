@@ -1,0 +1,17 @@
+[Unit]
+Description=frequency
+
+[Service]
+TimeoutStopSec=5
+ExecStart=python3 -u /home/pi/CubeSatSim/frequency.py
+WorkingDirectory=/home/pi/CubeSatSim
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+CPUQuota=15%
+CPUWeight=70
+CPUAccounting=true
+
+[Install]
+WantedBy=default.target

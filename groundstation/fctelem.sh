@@ -5,7 +5,7 @@ echo "Script to run FUNcube CubeSatSim Telemetry"
 
 echo 
 
-echo "The Chromium browser will load in a few seconds with fctelem."
+echo "The browser will load in a few seconds with fctelem."
 
 echo "You can also use another web browser if you are on the same network as your Pi."
 
@@ -24,6 +24,16 @@ echo "Note: you need to be on the Wifi network: $ssid"
 
 echo
 
+if [[ $(gpio -v | grep "Pi 4") ]] && [[ ! $(sudo raspi-config nonint get_browser | grep "chromium") ]] ; then
+	echo "Since Pi 4, changing default browser to Chromium"
+	sudo raspi-config nonint do_browser chromium
+fi
+
+if [[ $(gpio -v | grep "Pi 5") ]] && [[ ! $(sudo raspi-config nonint get_browser | grep "firefox") ]] ; then
+	echo "Since Pi 5, changing default browser to Firefox"
+	sudo raspi-config nonint do_browser firefox
+fi
+
 sudo killall -9 fctelem &>/dev/null
 
 sudo killall -9 python3 &>/dev/null
@@ -33,6 +43,8 @@ sudo killall -9 python3 &>/dev/null
 #sudo killall -9 rtl_fm &>/dev/null
 
 #pkill -o chromium &>/dev/null
+
+#pkill -o firefox &>/dev/null
 
 #sudo killall -9 rtl_tcp &>/dev/null
 
@@ -80,8 +92,9 @@ else
     echo
 fi
 
+autotune=0
 
-frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=180 --title="FUNcube Telem Decoding" --text="Choose the frequency for FUNcube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Other "Choose another frequency")
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=220 --title="FUNcube Telem Decoding" --text="Choose the frequency for FUNcube decoding:" --column="kHz" --column="Use" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" Other "Choose another frequency")
 
 echo $frequency
 
@@ -96,6 +109,11 @@ if [ "$frequency" = "434900" ]; then
 
 	frequency=434900000
 
+elif [ "$frequency" = "Auto-tune" ]; then
+
+	frequency=434900000
+	autotune=1
+
 elif [ "$frequency" = "Other" ]; then
 
 	echo
@@ -108,6 +126,39 @@ elif [ "$frequency" = "Other" ]; then
 	
 	frequency=$frequency"000"
 
+fi
+
+if [ "$autotune" = "1" ]; then
+  threshold=1
+  delay=5
+  retries=5
+
+  echo "Starting Auto-tune scanning"
+  echo "Scan will stop when confidence exceeds threshold value of" $threshold "or after" $retries "retries"
+  tries=0
+  confidence=0
+  delay=$((delay-2))  # subtract 2 second built in delay
+  while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+
+    sleep $delay
+    source /home/pi/venv/bin/activate
+    python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    # echo "auto-tune.txt"
+    # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo "Auto tune confidence:" $confidence
+    tries=$((tries+1))
+
+  done
+  
+  if [ "$confidence" -gt "$threshold" ]; then
+    frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo "Auto tune frequency:" $frequency
+  else
+    echo "Auto tune failed, frequency unchanged"
+  fi
+
+sleep 5
 fi
 
 echo "Frequency is" $frequency
@@ -135,7 +186,8 @@ cp /home/pi/CubeSatSim/sstv/sstv_image_1_320_x_256.jpg ./image_file.jpeg
 
 python3 -m http.server 8002 &
 
-setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8002 &>/dev/null & 
+#setsid chromium-browser --check-for-update-interval=1 --simulate-critical-update  --noerrdialogs --disable-infobars http://127.0.0.1:8002 &>/dev/null & 
+setsid x-www-browser http://127.0.0.1:8002/
 
 cd /home/pi/fctelem
 

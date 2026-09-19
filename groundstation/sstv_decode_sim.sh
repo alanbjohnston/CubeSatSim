@@ -21,6 +21,8 @@ sudo systemctl stop rtl_tcp
 
 pkill -o chromium &>/dev/null
 
+pkill -o firefox &>/dev/null
+
 sudo killall -9 qsstv &>/dev/null
 
 sudo killall -9 rtl_tcp &>/dev/null

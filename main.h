@@ -98,6 +98,7 @@ extern const unsigned char ALPHA_TO[];
 // const unsigned char *CCodecAO40::encode(unsigned char *source_bytes, int byte_count);
 void program_radio();
 void socket_send(int length);
+int is_safe_input(const char *s);
 
 int socket_open = 0;
 int sock = 0;
@@ -125,7 +126,9 @@ FILE *image_file;
 #define CW 5
 #define FC 6
 #define REPEATER 7
+#define PACSAT 8
 #define TXCOMMAND 12
+#define PACSATGND 13
 
 #define FAIL_COUNT 11
 #define FAIL_NONE -1
@@ -168,6 +171,7 @@ char sim_yes[10];
 char hab_yes[10];
 char fail_yes[10];
 int fail_time = 60;
+char doppler_mode[10];
 int squelch = 3; // default squelch
 char rx[12], tx[12];
 int tx_pl = 0;
@@ -200,7 +204,8 @@ char sensor_string[SENSOR_FIELDS][32];
 int test_i2c_bus(int bus);
 
 //const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/python/voltcurrent.py ";
-const char pythonCmd[] = "python3 -u /home/pi/CubeSatSim/ina219.py ";
+const char pythonVenv[] = "/home/pi/CubeSatSim/venv.sh";
+const char pythonCmd[] = "/home/pi/venv/bin/python3 -u /home/pi/CubeSatSim/ina219.py ";
 char pythonStr[100], pythonConfigStr[100], busStr[10];
 int map[8] = {0, 1, 2, 3, 4, 5, 6, 7};
 char src_addr[5] = "";

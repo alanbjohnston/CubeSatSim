@@ -4,9 +4,11 @@ echo "Script to decode SSTV using QSSTV with rtl_fm"
 
 echo
 
-sudo systemctl stop openwebrx
+sudo systemctl stop openwebrx  &>/dev/null
 
 sudo modprobe snd-aloop
+
+sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 qsstv &>/dev/null
 
@@ -16,9 +18,11 @@ sudo killall -9 aplay &>/dev/null
 
 sudo killall -9 direwolf &>/dev/null
 
-sudo systemctl stop rtl_tcp
+sudo systemctl stop rtl_tcp  &>/dev/null
 
 pkill -o chromium &>/dev/null
+
+pkill -o firefox &>/dev/null
 
 sudo killall -9 rtl_tcp &>/dev/null
 
@@ -30,11 +34,16 @@ sudo killall -9 sdrpp &>/dev/null
 
 sudo killall -9 zenity &>/dev/null
 
+sudo /etc/init.d/alsa-utils stop
+sudo /etc/init.d/alsa-utils start
+
 sudo killall -9 rtl_fm &>/dev/null
 
 #echo "s" >> .mode
 
-frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=220 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
+autotune=0
+
+frequency=$(zenity --timeout=10 --list 2>/dev/null --width=410 --height=270 --title="SSTV Decoding using QSSTV" --text="Choose the frequency for SSTV decoding:" --column="kHz" --column="Use" 145800 "ISS" 434900 "CubeSatSim" Auto-tune "CubeSatSim Auto-tune" Other "Choose another frequency" SSTV "Test SSTV decoding with WAV file")
 
 echo $frequency
 
@@ -69,6 +78,11 @@ echo "Frequency is" $frequency
 echo
 echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
 echo "Note: if you see and hear an SSTV signal but don't get any images, the CubeSatSim signal might have a frequency offset.  Try rebooting the CubeSatSim to fix."
+
+elif [ "$frequency" = "Auto-tune" ]; then
+
+frequency=434900000
+autotune=1
 
 elif [ "$choice" = "3" ] || [ "$frequency" = "Other" ]; then
 
@@ -115,14 +129,48 @@ echo
 
 echo -e "Auto decoding SSTV on $frequency Hz"
 
-sleep 2
+#sleep 2
 
 setsid qsstv &
 
-sleep 5
+#sleep 5
+
+if [ "$autotune" = "1" ]; then
+  threshold=1
+  delay=5
+  retries=5
+
+  echo "Starting Auto-tune scanning"
+  echo "Scan will stop when confidence exceeds threshold value of" $threshold "or after" $retries "retries"
+  tries=0
+  confidence=0
+  delay=$((delay-2))  # subtract 2 second built in delay
+  while [ $tries -le $retries ] && [ "$confidence" -le "$threshold" ]; do
+
+    sleep $delay
+    source /home/pi/venv/bin/activate
+    python3 /home/pi/CubeSatSim/groundstation/auto-tune.py 434900000 n 2> null > /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    # echo "auto-tune.txt"
+    # cat /home/pi/CubeSatSim/groundstation/auto-tune.txt
+    confidence=$(awk '{print $2}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo "Auto tune confidence:" $confidence
+    tries=$((tries+1))
+
+  done
+  
+  if [ "$confidence" -gt "$threshold" ]; then
+    frequency=$(awk '{print $1}' /home/pi/CubeSatSim/groundstation/auto-tune.txt)
+    echo "Auto tune frequency:" $frequency
+  else
+    echo "Auto tune failed, frequency unchanged"
+  fi
+  echo
+  echo "If your CubeSatSim is transmitting in SSTV mode (mode 4) you should get images."
+  echo
+
+fi
 
 #sudo systemctl restart cubesatsim
-
 
 value=`aplay -l | grep "Loopback"`
 echo "$value" > /dev/null
