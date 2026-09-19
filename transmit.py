@@ -200,9 +200,9 @@ def camera_photo():
 	stored_image = False
 	try:
 		if os_status == "bookworm":
-			system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+			system("rpicam-still -n -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 		else:
-			system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
+			system("raspistill -n -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")
 		f = open("/home/pi/CubeSatSim/camera_out.jpg")
 		f.close()
 		print("Photo taken")
@@ -1212,9 +1212,9 @@ if __name__ == "__main__":
 #				camera = PiCamera()
 				print("Testing for camera")
 				if os_status == "bookworm":
-					system("rpicam-still -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
+					system("rpicam-still -n -o /home/pi/CubeSatSim/camera_out.jpg --width 320 --height 256") #  > /dev/null 2>&1")
 				else:
-					system("raspistill -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")			
+					system("raspistill -n -o /home/pi/CubeSatSim/camera_out.jpg -w 320 -h 256")			
 				f = open("/home/pi/CubeSatSim/camera_out.jpg")
 				f.close()
 				print("Camera present")
