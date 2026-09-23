@@ -39,15 +39,11 @@ See the Wiki Software Install page for details: [https://github.com/alanbjohnsto
 Use the Raspberry Pi Imager https://www.raspberrypi.com/software/ and select the Bookworm Legacy option.  Make sure you set your username as pi.  You can also preset your password, localization, and WiFi settings.
 
 
-`cd`
-
-`git clone http://github.com/alanbjohnston/CubeSatSim.git`
-
-`cd CubeSatSim`
-
-`git checkout master`
-
-`./install`
+       cd
+       git clone http://github.com/alanbjohnston/CubeSatSim.git
+       cd CubeSatSim
+       git checkout master
+       ./install
 
 The installation script will run for quite a while.  You will get prompted for your amateur radio callsign in all capitals, if you have one.  If you don't you can put some other word which will be transmitted as a CW ID.  You will also be prompted for your latitude and longitude for APRS packets.  You will need to reboot after the script completes.
 
