@@ -853,6 +853,8 @@ if (doppler_mode == 'rig'):
     system("pkill socat &>/dev/null")
     system("sudo killall -9 rigctld &>/dev/null")
 
+	sleep(5.0)  
+
     print("Starting virtual serial ports /tmp/vttyA and /tmp/vttyB")
 
     system("socat -d -d PTY,raw,echo=0,link=/tmp/vttyA PTY,raw,echo=0,link=/tmp/vttyB &")
