@@ -859,12 +859,12 @@ if (doppler_mode == 'rig'):
 
     system("socat -d -d PTY,raw,echo=0,link=/tmp/vttyA PTY,raw,echo=0,link=/tmp/vttyB &")
 
-    sleep(5.0)
+    sleep(2.0)
 
     print("Starting CubeSatSim FT857 emulation")
     system("/home/pi/FT857d/examples/FT857d/ft857d &")
 
-    sleep(5.0)
+    sleep(2.0)
 
     print("Starting rigctl emulating FT857 rig using virtual serial port /tmp/vttyB")
     system("rigctld -m 1022 -r /tmp/vttyB -t 4532 -vvv")
