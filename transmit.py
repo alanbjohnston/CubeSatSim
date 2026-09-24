@@ -96,7 +96,7 @@ def sim_failure_check():
 			card = "Headphones"
 			sim_mode = True
 	except Exception as e:
-		print(f"An error occurred: {e}")
+	#	print(f"An error occurred: {e}")
 		print("No failure mode")
 		card = "Headphones"
 		if sim_config:
