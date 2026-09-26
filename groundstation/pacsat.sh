@@ -131,7 +131,11 @@ if [ "$loopback" = "1" ] ; then
     echo
     echo "Switching to Pacsat mode for the Simulated Pacsat Satellite"
     echo  
-    /home/pi/CubeSatSim/config -G -n
+#    /home/pi/CubeSatSim/config -G -n
+
+  echo "Changing to Pacsat mode"
+	sudo echo "p" > /home/pi/CubeSatSim/.mode	
+    
 #  fi  
 
   if [ ! -d "/home/pi/PacSatGroundLoop" ] ; then
